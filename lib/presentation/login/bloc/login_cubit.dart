@@ -9,10 +9,6 @@ part 'login_state.dart';
 class LoginCubit extends BaseCubit<LoginState> {
   LoginCubit() : super(LoginInitial());
 
-  final LocalAuthentication auth = LocalAuthentication();
-
-  String _authorized = 'Not Authorized';
-  bool isAuthenticating = false;
 
   bool hidePass = true;
 
@@ -23,26 +19,20 @@ class LoginCubit extends BaseCubit<LoginState> {
 
   Future<void> checkPass(String pass) async {}
 
-  Future<void> authenticateWithBiometrics() async {
+  String authorized = 'Not Authorized';
+  bool authenticated = false;
+  final LocalAuthentication auth = LocalAuthentication();
+
+  Future<void> authenticate() async {
     emit(LoginLoading());
-    bool authenticated = false;
-    try {
-      isAuthenticating = true;
-      authenticated = await auth.authenticate(
-          localizedReason:
-              'Scan your fingerprint (or face or whatever) to authenticate',
-          stickyAuth: true,
-          biometricOnly: true,);
-    } on PlatformException catch (e) {
-      isAuthenticating = false;
-      _authorized = 'Error - ${e.message}';
-      return;
-    }
-    if (authenticated == true) {
+    authenticated = await auth.authenticate(
+      localizedReason:
+      'Scan your fingerprint (or face or whatever) to authenticate',
+      stickyAuth: true,
+      biometricOnly: true,
+    );
+    if(authenticated == true) {
       emit(LoginSuccess());
-    }
-    else {
-      emit(LoginError(_authorized));
     }
   }
 }
