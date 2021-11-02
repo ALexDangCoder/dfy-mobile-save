@@ -1,20 +1,23 @@
 import 'dart:ui';
 
 import 'package:Dfy/domain/model/item.dart';
+import 'package:Dfy/widgets/show_modal_bottomsheet/bloc/bloc_creare_seedphrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BoxListPassPhrare extends StatefulWidget {
+class BoxListPassWordPhrase extends StatefulWidget {
   final List<Item> listTitle;
+  final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
-  const BoxListPassPhrare({Key? key, required this.listTitle})
+  const BoxListPassWordPhrase(
+      {Key? key, required this.listTitle, required this.bLocCreateSeedPhrase})
       : super(key: key);
 
   @override
-  _BoxListPassPhrareState createState() => _BoxListPassPhrareState();
+  _BoxListPassWordPhraseState createState() => _BoxListPassWordPhraseState();
 }
 
-class _BoxListPassPhrareState extends State<BoxListPassPhrare> {
+class _BoxListPassWordPhraseState extends State<BoxListPassWordPhrase> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,7 +40,8 @@ class _BoxListPassPhrareState extends State<BoxListPassPhrare> {
                 return widget.listTitle[index].isCheck
                     ? GestureDetector(
                         onTap: () {
-                          listTitle[index].isCheck = false;
+                          widget.listTitle[index].isCheck = false;
+                          setState(() {});
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
@@ -50,7 +54,7 @@ class _BoxListPassPhrareState extends State<BoxListPassPhrare> {
                                 const BorderRadius.all(Radius.circular(10)),
                           ),
                           child: Text(
-                            '${index + 1}. ${widget.listTitle[index].title}',
+                            '${index}. ${widget.listTitle[index].title}',
                             style:
                                 TextStyle(color: Colors.white, fontSize: 16.sp),
                           ),

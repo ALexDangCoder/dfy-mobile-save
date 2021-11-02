@@ -1,6 +1,7 @@
 import 'package:Dfy/presentation/example_view/ui/example.dart';
 import 'package:Dfy/presentation/main/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/widgets/show_modal_bottomsheet/bloc/bloc_creare_seedphrase.dart';
 import 'package:flutter/material.dart';
 
 typedef AppWidgetBuilder = Widget Function(BuildContext, RouteSettings);
@@ -22,7 +23,10 @@ class AppRouter {
       case example:
         return MaterialPageRoute(builder: (ctx) => const ExampleScreen());
       case main:
-        return MaterialPageRoute(builder: (ctx) => const MainScreen());
+        return MaterialPageRoute(
+            builder: (ctx) => MainScreen(
+                  bLocCreateSeedPhrase: BLocCreateSeedPhrase(),
+                ));
     }
   }
 }

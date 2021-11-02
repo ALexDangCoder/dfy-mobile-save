@@ -2,14 +2,15 @@ import 'dart:ui';
 import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom.dart';
-import 'package:Dfy/widgets/from/from_text.dart';
-import 'package:Dfy/widgets/item_create/item_passphrase.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase.dart';
 import 'package:Dfy/widgets/list_passphrase/list_passphrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showCreateSeedPhrase2(BuildContext context) {
+import 'bloc/bloc_creare_seedphrase.dart';
+
+void showCreateSeedPhrase2(
+    BuildContext context, BLocCreateSeedPhrase bLocCreateSeedPhrase) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -20,7 +21,7 @@ void showCreateSeedPhrase2(BuildContext context) {
         width: 375.w,
         decoration: BoxDecoration(
           // shape: BoxShape.circle,
-          color: Color(0xff24234C),
+          color: const Color(0xff24234C),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.h),
             topRight: Radius.circular(30.h),
@@ -89,14 +90,26 @@ void showCreateSeedPhrase2(BuildContext context) {
                 SizedBox(
                   height: 20.h,
                 ),
-                BoxListPassPhrare(
-                  listTitle: listTitle,
-                ),
-                SizedBox(
-                  height: 24.h,
-                ),
-                ListPassPhrase(
-                  listTitle: listTitle,
+                StreamBuilder(
+                  stream: bLocCreateSeedPhrase.listTitle,
+                  builder: (context, AsyncSnapshot<List<Item>> snapshot) {
+                    final listTitle = snapshot.data;
+                    return Column(
+                      children: [
+                        BoxListPassWordPhrase(
+                          listTitle: listTitle ?? [],
+                          bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+                        ),
+                        SizedBox(
+                          height: 24.h,
+                        ),
+                        ListPassPhrase(
+                          listTitle: listTitle ?? [],
+                          bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+                        ),
+                      ],
+                    );
+                  },
                 ),
                 SizedBox(
                   height: 41.h,

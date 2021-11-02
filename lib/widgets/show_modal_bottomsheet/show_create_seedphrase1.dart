@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom.dart';
 import 'package:Dfy/widgets/from/from_text.dart';
@@ -8,7 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showCreateSeedPhrase1(BuildContext context) {
+import 'bloc/bloc_creare_seedphrase.dart';
+
+void showCreateSeedPhrase1(
+    BuildContext context, BLocCreateSeedPhrase bLocCreateSeedPhrase) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -77,64 +79,62 @@ void showCreateSeedPhrase1(BuildContext context) {
             SizedBox(
               height: 24.h,
             ),
-           SingleChildScrollView(
-             child: Column(
-               crossAxisAlignment: CrossAxisAlignment.center,
-               children: [
-                 const FromText(
-                   title: 'Wallet name',
-                   urlSuffixIcon: '',
-                   urlPrefixIcon: 'assets/images/wallet.png',
-                 ),
-                 SizedBox(
-                   height: 16.h,
-                 ),
-                 const FromText(
-                   title: 'Wallet name',
-                   urlSuffixIcon: 'assets/images/copy.png',
-                   urlPrefixIcon: 'assets/images/address.png',
-                 ),
-                 SizedBox(
-                   height: 16.h,
-                 ),
-                 const FromText(
-                   title: 'Private key',
-                   urlSuffixIcon: 'assets/images/copy.png',
-                   urlPrefixIcon: 'assets/images/key.png',
-                 ),
-                 SizedBox(
-                   height: 20.h,
-                 ),
-                 Column(
-                   crossAxisAlignment: CrossAxisAlignment.center,
-                   children: [
-                     ItemPassPhrase(
-                       listTitle: listTitle,
-                     ),
-                     SizedBox(
-                       height: 17.h,
-                     ),
-                       CheckBoxCustom(
-                         title:
-                         'Do not provide your recovery key to anyone',
-                       ),
-
-                     SizedBox(
-                       height: 18.h,
-                     ),
-                     GestureDetector(
-                       onTap: () {
-                         print('continue');
-                       },
-                       child: const ButtonGold(
-                         title: 'Continue',
-                       ),
-                     ),
-                   ],
-                 )
-               ],
-             ),
-           )
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const FromText(
+                    title: 'Wallet name',
+                    urlSuffixIcon: '',
+                    urlPrefixIcon: 'assets/images/wallet.png',
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  const FromText(
+                    title: 'Wallet name',
+                    urlSuffixIcon: 'assets/images/copy.png',
+                    urlPrefixIcon: 'assets/images/address.png',
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  const FromText(
+                    title: 'Private key',
+                    urlSuffixIcon: 'assets/images/copy.png',
+                    urlPrefixIcon: 'assets/images/key.png',
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // ItemPassPhrase(
+                      //   listTitle: bLocCreateSeedPhrase.listTitle,
+                      // ),
+                      SizedBox(
+                        height: 17.h,
+                      ),
+                      CheckBoxCustom(
+                        title: 'Do not provide your recovery key to anyone',
+                      ),
+                      SizedBox(
+                        height: 18.h,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          print('continue');
+                        },
+                        child: const ButtonGold(
+                          title: 'Continue',
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
           ],
         ),
       );
