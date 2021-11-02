@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,6 +14,11 @@ class SetupPassWord extends StatefulWidget {
 class _SetupPassWordState extends State<SetupPassWord> {
   bool showPass = false;
   bool showPassConfirm = false;
+  bool validatePassword = false;
+  bool validateMatchPassword = false;
+
+  TextEditingController password = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +50,16 @@ class _SetupPassWordState extends State<SetupPassWord> {
                   formSetupPassWord(
                     hintText: 'New password',
                   ),
+                  showTextValidatePassword(),
                   SizedBox(
                     height: 16.h,
                   ),
                   formSetupPassWordConfirm(
                     hintText: 'Confirm password',
                   ),
+                  showTextValidateMatchPassword(),
                   SizedBox(
-                    height: 24.h,
+                    height: 25.h,
                   ),
                   ckcBoxAndTextSetupPass(),
                   SizedBox(
@@ -61,7 +69,17 @@ class _SetupPassWordState extends State<SetupPassWord> {
               ),
             ),
           ),
-          btnContinue(),
+          GestureDetector(
+            child: btnContinue(),
+            onTap: () {
+              if(password.text.length < 8) {
+                print(password.text.length.toString());
+                setState(() {
+                  validatePassword = !validatePassword;
+                });
+              }
+            },
+          ),
           SizedBox(
             height: 38.h,
           )
@@ -70,32 +88,80 @@ class _SetupPassWordState extends State<SetupPassWord> {
     );
   }
 
-  Container btnContinue() {
-    return Container(
-          width: 298.w,
-          height: 64.h,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(22.r)),
-            gradient: const LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              colors: [
-                Color.fromRGBO(228, 172, 26, 1),
-                Color.fromRGBO(255, 226, 132, 1),
-              ],
-            ),
-          ),
-          child: Center(
-            child: Text(
-              'Continue',
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w700,
-                color: const Color.fromRGBO(255, 255, 255, 1),
+  Visibility showTextValidatePassword() {
+    return Visibility(
+                  visible: validatePassword,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 4.h,),
+                      Container(
+                        width: 323.w,
+                        height: 30.h,
+                        child: Text(
+                          'Password must include at least a number, '
+                              'an upper case, a lower\n case and a special '
+                              'character',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: const Color.fromRGBO(255, 108, 108, 1),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                );
+  }
+
+  Visibility showTextValidateMatchPassword() {
+    return Visibility(
+        visible: validateMatchPassword,
+        child: Column(
+          children: [
+            SizedBox(height: 4.h,),
+            Container(
+              width: 323.w,
+              height: 30.h,
+              child: Text(
+                'Your password did not match',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: const Color.fromRGBO(255, 108, 108, 1),
+                ),
               ),
             ),
+          ],
+        )
+    );
+  }
+
+  Container btnContinue() {
+    return Container(
+      width: 298.w,
+      height: 64.h,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(22.r)),
+        gradient: const LinearGradient(
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+          colors: [
+            Color.fromRGBO(228, 172, 26, 1),
+            Color.fromRGBO(255, 226, 132, 1),
+          ],
+        ),
+      ),
+      child: Center(
+        child: Text(
+          'Continue',
+          style: TextStyle(
+            fontSize: 20.sp,
+            fontWeight: FontWeight.w700,
+            color: const Color.fromRGBO(255, 255, 255, 1),
           ),
-        );
+        ),
+      ),
+    );
   }
 
   SizedBox ckcBoxAndTextSetupPass() {
@@ -160,13 +226,14 @@ class _SetupPassWordState extends State<SetupPassWord> {
           ),
           color: Color.fromRGBO(167, 167, 167, 0.5),
         ),
-        child: TextField(
+        child: TextFormField(
+          controller: password,
           expands: true,
           maxLines: null,
           cursorColor: Colors.white,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 4.h),
-            hintText: 'Confirm password',
+            hintText: hintText,
             hintStyle: textNormal(
               Colors.grey,
               14.sp,
@@ -206,13 +273,13 @@ class _SetupPassWordState extends State<SetupPassWord> {
           ),
           color: Color.fromRGBO(167, 167, 167, 0.5),
         ),
-        child: TextField(
-          expands: true,
+        child: TextFormField(
+          controller: confirmPassword,
           maxLines: null,
           cursorColor: Colors.white,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 4.h),
-            hintText: 'Confirm password',
+            hintText: hintText,
             hintStyle: textNormal(
               Colors.grey,
               14.sp,
