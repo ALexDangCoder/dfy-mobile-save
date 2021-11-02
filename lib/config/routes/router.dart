@@ -1,3 +1,5 @@
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/test_screen_init.dart';
 import 'package:Dfy/presentation/example_view/ui/example.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,8 @@ class AppRouter {
   static const splash = '/splash';
   static const example = '/example';
   static const main = '/main';
+  static const setupPassWord = '/setupPassWord';
+  static const testScreen = '/testScreen';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
@@ -18,6 +22,10 @@ class AppRouter {
     switch (settings.name) {
       // case splash:
       //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
+      case testScreen:
+        return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
+      case setupPassWord:
+        return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
       case example:
         return MaterialPageRoute(builder: (ctx) => const ExampleScreen());
     }

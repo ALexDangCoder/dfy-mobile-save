@@ -69,6 +69,7 @@ dependencies:
   dots_indicator: ^2.0.0
   #svg
   flutter_svg: ^0.22.0
+  formz: ^0.4.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

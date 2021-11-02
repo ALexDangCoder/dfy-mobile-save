@@ -8,6 +8,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -72,7 +73,7 @@ class _MyAppState extends State<MyApp> {
       ],
       locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
       onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: token.isNotEmpty ? AppRouter.main : AppRouter.example,
+      initialRoute: AppRouter.testScreen,
     );
   }
 }
