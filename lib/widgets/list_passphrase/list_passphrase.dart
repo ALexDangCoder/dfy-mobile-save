@@ -1,8 +1,10 @@
 import 'package:Dfy/domain/model/item.dart';
+import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
 import 'package:Dfy/widgets/show_modal_bottomsheet/bloc/bloc_creare_seedphrase.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ListPassPhrase extends StatefulWidget {
+class ListPassPhrase extends StatelessWidget {
   final List<Item> listTitle;
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
@@ -11,44 +13,28 @@ class ListPassPhrase extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ListPassPhraseState createState() => _ListPassPhraseState();
-}
-
-class _ListPassPhraseState extends State<ListPassPhrase> {
-  @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 12,
-      runSpacing: 12,
-      children: List<Widget>.generate(
-        widget.listTitle.length,
-        (int index) {
-          return GestureDetector(
-            onTap: () {
-              print(index);
-              widget.listTitle[index].isCheck = true;
-              widget.bLocCreateSeedPhrase.getList();
+    return SingleChildScrollView(
+      child: Container(
+        height: 123.h,
+        padding: EdgeInsets.only(right: 26.w, left: 26.w),
+        child: Wrap(
+          spacing: 12.w,
+          runSpacing: 12.h,
+          children: List<Widget>.generate(
+            listTitle.length,
+            (int index) {
+              return GestureDetector(
+                  onTap: () {
+                    listTitle[index].isCheck = true;
+                    bLocCreateSeedPhrase.getList2();
+                  },
+                  child: listTitle[index].isCheck
+                      ? const SizedBox()
+                      : ItemSeedPhrase(title: listTitle[index].title));
             },
-            child: widget.listTitle[index].isCheck
-                ? const SizedBox(
-                    height: 0,
-                    width: 0,
-                  )
-                : Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      border: Border.all(color: Colors.white, width: 0.5),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: Text(
-                      ' ${widget.listTitle[index].title}',
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

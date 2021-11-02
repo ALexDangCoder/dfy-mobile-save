@@ -13,22 +13,24 @@ class CheckBoxCustom extends StatefulWidget {
 class _CheckBoxCustomState extends State<CheckBoxCustom> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Checkbox(
-          value: true,
-          onChanged: (value) {},
-          activeColor: const Color(0xffE4AC1A),
-        ),
-        Text(
-          widget.title,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 14.sp,
+    return Container(
+      margin: EdgeInsets.only(right: 26.w, left: 26.w),
+      child: Row(
+        children: [
+          Checkbox(
+            value: true,
+            onChanged: (value) {},
+            activeColor: const Color(0xffE4AC1A),
           ),
-        )
-      ],
+          Text(
+            widget.title,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14.sp,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

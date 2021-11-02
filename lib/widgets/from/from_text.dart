@@ -26,7 +26,7 @@ class _FromTextState extends State<FromText> {
         margin: EdgeInsets.symmetric(horizontal: 26.w),
         padding: EdgeInsets.symmetric(horizontal: 15.5.w, vertical: 23.h),
         decoration: const BoxDecoration(
-          color: Color(0x80A7A7A7),
+          color: Color(0xff32324c),
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
         child: Row(
@@ -36,8 +36,8 @@ class _FromTextState extends State<FromText> {
               children: [
                 Image.asset(
                   widget.urlPrefixIcon,
-                  height: 17.67,
-                  width: 19.14,
+                  height: 17.67.h,
+                  width: 19.14.w,
                 ),
                 SizedBox(
                   width: 17.5.w,
@@ -58,6 +58,6 @@ class _FromTextState extends State<FromText> {
                   : null,
             )
           ],
-        ));
+        ),);
   }
 }

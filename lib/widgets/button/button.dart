@@ -14,6 +14,8 @@ class _ButtonGoldState extends State<ButtonGold> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(right: 26.w, left: 26.w),
+
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [

@@ -26,7 +26,7 @@ class _FromSwitchState extends State<FromSwitch> {
       margin: EdgeInsets.symmetric(horizontal: 26.w),
       padding: EdgeInsets.symmetric(horizontal: 15.5.w, vertical: 23.h),
       decoration: const BoxDecoration(
-        color: Color(0x80A7A7A7),
+        color: Color(0xff32324c),
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       child: Row(
@@ -40,7 +40,7 @@ class _FromSwitchState extends State<FromSwitch> {
             ),
             Text(
               widget.title,
-              style: TextStyle(fontSize: 16, color: Colors.white),
+              style: const TextStyle(fontSize: 16, color: Colors.white),
             ),
           ],
         ),
