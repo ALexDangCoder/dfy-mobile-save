@@ -6,6 +6,13 @@ class ImageAssets {
   ///Svg path
   static const String icBack = '$baseImg/ic_back.svg';
   static const String icMenu = '$baseImg/ic_menu.svg';
+  static const String back = '$baseImg/back.png';
+  static const String security = '$baseImg/security.png';
+  static const String lock = '$baseImg/Lock.png';
+  static const String expand = '$baseImg/expanded.png';
+  static const String key = '$baseImg/key.png';
+  static const String show = '$baseImg/Show.png';
+  static const String hide = '$baseImg/Hide.png';
 
   static SvgPicture svgAssets(
     String name, {

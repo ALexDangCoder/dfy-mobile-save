@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
       ],
       locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
       onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: token.isNotEmpty ? AppRouter.main : AppRouter.example,
+      initialRoute: token.isNotEmpty ? AppRouter.main : AppRouter.test,
     );
   }
 }
