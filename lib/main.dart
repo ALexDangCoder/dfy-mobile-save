@@ -19,7 +19,7 @@ Future<void> mainApp() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light),
+        statusBarIconBrightness: Brightness.light,),
   );
   configureDependencies();
   runApp(const MyApp());
@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
       ],
       locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
       onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: token.isNotEmpty ? AppRouter.main : AppRouter.example,
+      initialRoute: AppRouter.login,
     );
   }
 }
