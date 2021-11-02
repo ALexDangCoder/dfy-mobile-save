@@ -30,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                showCreateSuccessfully(context);//(context,widget.bLocCreateSeedPhrase);
+                showCreateSeedPhrase2(context,widget.bLocCreateSeedPhrase);
               },
               icon: const Icon(Icons.padding))
         ],

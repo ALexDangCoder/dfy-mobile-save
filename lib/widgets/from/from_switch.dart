@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FromSwitch extends StatefulWidget {
+class FromSwitch extends StatelessWidget {
   final bool isCheck;
   final String title;
   final String urlPrefixIcon;
@@ -13,11 +13,6 @@ class FromSwitch extends StatefulWidget {
       required this.urlPrefixIcon})
       : super(key: key);
 
-  @override
-  _FromSwitchState createState() => _FromSwitchState();
-}
-
-class _FromSwitchState extends State<FromSwitch> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,24 +27,21 @@ class _FromSwitchState extends State<FromSwitch> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-        Row(
-          children: [
-            Image.asset(widget.urlPrefixIcon),
-            SizedBox(
-              width: 11.w,
-            ),
-            Text(
-              widget.title,
-              style: const TextStyle(fontSize: 16, color: Colors.white),
-            ),
-          ],
-        ),
+          Row(
+            children: [
+              Image.asset(urlPrefixIcon),
+              SizedBox(
+                width: 11.w,
+              ),
+              Text(
+                title,
+                style: const TextStyle(fontSize: 16, color: Colors.white),
+              ),
+            ],
+          ),
           Switch(
-            value: widget.isCheck,
-            onChanged: (value) {
-              setState(() {});
-            },
-
+            value: isCheck,
+            onChanged: (value) {},
             activeTrackColor: Colors.amber,
             activeColor: Colors.white,
           ),

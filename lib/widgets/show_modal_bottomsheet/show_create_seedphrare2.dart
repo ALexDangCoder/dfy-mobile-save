@@ -55,7 +55,7 @@ void showCreateSeedPhrase2(
                     margin: EdgeInsets.only(right: 26.w, left: 26.w),
                     child: Text(
                       'Tap the words to put them next to each other in '
-                      'the corect order',
+                      'the correct order',
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                     ),
                   ),

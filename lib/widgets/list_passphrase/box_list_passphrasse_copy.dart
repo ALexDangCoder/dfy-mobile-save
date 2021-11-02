@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -34,7 +35,9 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  FlutterClipboard.copy(listTitle.toString());
+                },
                 child: Image.asset(
                   'assets/images/copy.png',
                   height: 17.67.h,
@@ -53,7 +56,7 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
               listTitle.length,
               (int index) {
                 return ItemSeedPhrase(
-                  title: '. ${listTitle[index]}',
+                  title: ' ${listTitle[index]}',
                 );
               },
             ),
