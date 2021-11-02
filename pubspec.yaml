@@ -31,7 +31,7 @@ dependencies:
   flutter_html: ^2.1.1
   auto_size_text: ^3.0.0-nullsafety.0
   optimized_cached_image: ^3.0.0
-
+  clipboard: ^0.1.3
   #Favourite library
   share: ^2.0.1
   provider: ^5.0.0
