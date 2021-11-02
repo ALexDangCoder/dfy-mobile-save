@@ -1,3 +1,3 @@
 class Strings {
-  static const String app_name = 'Pilot';
+  static const String app_name = 'Dfy';
 }
