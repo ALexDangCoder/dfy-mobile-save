@@ -1,8 +1,12 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/di/module.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SetupPassWord extends StatefulWidget {
@@ -20,6 +24,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   int indexPW = 1;
   int indexConfirmPW = 1;
+  int checkBox = 1;
+  int isValidPass = 1;
+  int isMatchPass = 1;
 
   @override
   void initState() {
@@ -87,8 +94,16 @@ class _SetupPassWordState extends State<SetupPassWord> {
             onTap: () {
               isValidPassCubit.isValidate(password.text);
               isValidPassCubit.isMatchPW(
-                  password: password.text, confirmPW: confirmPassword.text);
-              showCreateSeedPhrase1(context, BLocCreateSeedPhrase());
+                password: password.text,
+                confirmPW: confirmPassword.text,
+              );
+              if (checkBox == 2 &&
+                  isValidPassCubit.isValidFtMatchPW(
+                    password.text,
+                    confirmPassword.text,
+                  )) {
+                showCreateSeedPhrase1(context, BLocCreateSeedPhrase());
+              }
             },
           ),
           SizedBox(
@@ -200,13 +215,25 @@ class _SetupPassWordState extends State<SetupPassWord> {
             child: SizedBox(
               width: 24.w,
               height: 24.h,
-              child: Checkbox(
-                activeColor: const Color.fromRGBO(228, 172, 26, 1),
-                // checkColor: const Colors,
-                onChanged: (bool? value) {
-                  null;
+              child: StreamBuilder(
+                stream: isValidPassCubit.ckcBoxStream,
+                builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                  return Checkbox(
+                    fillColor:
+                        MaterialStateProperty.all(const Color(0xffE4AC1A)),
+                    activeColor: const Color.fromRGBO(228, 172, 26, 1),
+                    // checkColor: const Colors,
+                    onChanged: (bool? value) {
+                      isValidPassCubit.ckcBoxSink.add(value ?? false);
+                      if (value == true) {
+                        checkBox = 2;
+                      } else {
+                        checkBox = 1;
+                      }
+                    },
+                    value: snapshot.data,
+                  );
                 },
-                value: true,
               ),
             ),
           ),
@@ -249,7 +276,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         stream: isValidPassCubit.showPWStream,
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           return TextFormField(
-            obscureText: snapshot.data,
+            obscureText: snapshot.data ?? false,
             style: textNormal(
               Colors.white,
               16.sp,
