@@ -37,11 +37,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final token = PrefsService.getToken();
 
-  @override
-  void initState() {
-    trustWalletChannel.setMethodCallHandler(nativeMethodCallBackTrustWallet);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,23 +73,4 @@ class _MyAppState extends State<MyApp> {
       initialRoute: AppRouter.main,
     );
   }
-}
-
-Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-  switch (methodCall.method) {
-    case "checkPasswordCallback":
-      break;
-
-    default:
-      break;
-  }
-}
-
-Future<void> checkPasswordWallet(String password) async {
-  try {
-    final data = {
-      'password': password,
-    };
-    await trustWalletChannel.invokeMethod('checkPassword', data);
-  } on PlatformException {}
 }

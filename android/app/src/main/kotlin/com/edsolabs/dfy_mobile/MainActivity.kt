@@ -12,10 +12,6 @@ class MainActivity : FlutterFragmentActivity() {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
     }
 
-    init {
-        System.loadLibrary("TrustWalletCore")
-    }
-
     private val CHANNEL_TRUST_WALLET = "flutter/trust_wallet"
     private var channel: MethodChannel? = null
 
