@@ -1,4 +1,4 @@
-import 'package:Dfy/presentation/example_view/ui/example.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -9,17 +9,14 @@ class AppRouter {
 
   ///Main App
   static const splash = '/splash';
-  static const example = '/example';
   static const main = '/main';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
 
     switch (settings.name) {
-      // case splash:
-      //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
-      case example:
-        return MaterialPageRoute(builder: (ctx) => const ExampleScreen());
+      case main:
+        return MaterialPageRoute(builder: (ctx) => MainScreen());
     }
   }
 }

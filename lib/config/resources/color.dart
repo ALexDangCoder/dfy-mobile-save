@@ -15,7 +15,7 @@ const highlightTxtColor = Color(0xff303742);
 const subTitleTxtColor = Color(0xff9097A3);
 
 //bottom navigation color
-const bgBottomTab = Color(0xFFFCFCFC);
+const bgBottomTab = Color(0xFF3A3956);
 const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
 
@@ -39,6 +39,7 @@ const subMenuColor = Color(0xff303742);
 const colorLineSearch = Color(0x80CACFD7);
 const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
+const shadowTabIcon = Color(0xFF6C6CF4);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {

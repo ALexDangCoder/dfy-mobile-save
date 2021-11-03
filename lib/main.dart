@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/color.dart';
+import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -72,7 +73,7 @@ class _MyAppState extends State<MyApp> {
       ],
       locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
       onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: token.isNotEmpty ? AppRouter.main : AppRouter.example,
+      initialRoute: AppRouter.main,
     );
   }
 }
