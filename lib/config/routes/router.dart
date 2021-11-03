@@ -1,6 +1,6 @@
-import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/example_view/ui/example.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +13,7 @@ class AppRouter {
   static const splash = '/splash';
   static const main = '/main';
   static const login = '/login';
+  static const wallet = '/wallet';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
@@ -22,10 +23,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (ctx) => MainScreen());
       // case splash:
       //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
-      case example:
-        return MaterialPageRoute(builder: (ctx) => const ExampleScreen());
       case login:
         return MaterialPageRoute(builder: (ctx) => const LoginScreen());
+      case wallet:
+        return MaterialPageRoute(builder: (ctx) => const WalletScreen());
     }
   }
 }

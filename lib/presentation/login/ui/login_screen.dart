@@ -32,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       designSize: const Size(375, 812),
       builder: () =>
           Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Container(
               width: 375.sw,
               height: 812.h,
@@ -94,7 +95,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               Expanded(
                                 child: TextFormField(
-                                  autofocus: true,
                                   cursorColor: Colors.white,
                                   style: TextStyle(fontSize: 18.sp),
                                   controller: controller,
@@ -169,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       bloc: _cubit,
                       listener: (context, state) {
                         if(state is LoginSuccess) {
-                          Navigator.pushNamed(context, AppRouter.example);
+                          Navigator.pushNamed(context, AppRouter.wallet,);
                         }
                       },
                       child: GestureDetector(
