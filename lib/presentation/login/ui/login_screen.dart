@@ -94,6 +94,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               Expanded(
                                 child: TextFormField(
+                                  autofocus: true,
+                                  cursorColor: Colors.white,
                                   style: TextStyle(fontSize: 18.sp),
                                   controller: controller,
                                   obscureText: _cubit.hidePass,
