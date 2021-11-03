@@ -47,48 +47,52 @@ void showCreateSuccessfully(BuildContext context) {
             SizedBox(
               height: 24.h,
             ),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  Image.asset('assets/images/frame.png'),
-                  SizedBox(
-                    height: 22.h,
-                  ),
-                  Text(
-                    'Congratulation!',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32.sp),
-                  ),
-                  SizedBox(
-                    height: 111.h,
-                  ),
-                  const FromSwitch(
-                    title: 'Use face/touch ID',
-                    isCheck: true,
-                    urlPrefixIcon: 'assets/images/faceid.png',
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  const FromSwitch(
-                    title: 'Wallet app lock',
-                    isCheck: false,
-                    urlPrefixIcon: 'assets/images/password.png',
-                  ),
-                  SizedBox(
-                    height: 56.h,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      print('continue');
-                    },
-                    child: const ButtonGold(
-                      title: 'Complete',
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Image.asset('assets/images/frame.png'),
+                    SizedBox(
+                      height: 22.h,
                     ),
-                  ),
-                ],
+                    Text(
+                      'Congratulation!',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 32.sp),
+                    ),
+                    SizedBox(
+                      height: 111.h,
+                    ),
+                    const FromSwitch(
+                      title: 'Use face/touch ID',
+                      isCheck: true,
+                      urlPrefixIcon: 'assets/images/faceid.png',
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    const FromSwitch(
+                      title: 'Wallet app lock',
+                      isCheck: false,
+                      urlPrefixIcon: 'assets/images/password.png',
+                    ),
+                    SizedBox(
+                      height: 56.h,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Center(
+              child: GestureDetector(
+                onTap: () {
+                  print('continue');
+                },
+                child: const ButtonGold(
+                  title: 'Complete',
+                ),
               ),
             ),
           ],

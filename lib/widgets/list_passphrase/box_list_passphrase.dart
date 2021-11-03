@@ -34,20 +34,16 @@ class BoxListPassWordPhrase extends StatelessWidget {
             children: List<Widget>.generate(
               listTitle.length,
               (int index) {
-                return listTitle[index].isCheck
-                    ? GestureDetector(
-                        onTap: () {
-                          listTitle[index].isCheck = false;
-                          bLocCreateSeedPhrase.getList2();
-                        },
-                        child: ItemSeedPhrase(
-                          title: '. ${listTitle[index].title}',
-                        ),
-                      )
-                    : const SizedBox(
-                        width: 0,
-                        height: 0,
-                      );
+                return GestureDetector(
+                  onTap: () {
+                    bLocCreateSeedPhrase.getList4(listTitle[index].title);
+                    bLocCreateSeedPhrase.listTitle3.removeAt(index);
+                    bLocCreateSeedPhrase.getList2();
+                  },
+                  child: ItemSeedPhrase(
+                    title: '${index + 1}. ${listTitle[index].title}',
+                  ),
+                );
               },
             ),
           ),

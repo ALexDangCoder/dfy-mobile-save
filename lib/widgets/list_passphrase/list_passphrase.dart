@@ -27,6 +27,9 @@ class ListPassPhrase extends StatelessWidget {
               return GestureDetector(
                   onTap: () {
                     listTitle[index].isCheck = true;
+                    bLocCreateSeedPhrase.listTitle3.add(
+                      Item(title: listTitle[index].title, isCheck: true),
+                    );
                     bLocCreateSeedPhrase.getList2();
                   },
                   child: listTitle[index].isCheck

@@ -11,6 +11,7 @@ class CheckBoxCustom extends StatefulWidget {
 }
 
 class _CheckBoxCustomState extends State<CheckBoxCustom> {
+  bool isCheck=true;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,8 +19,16 @@ class _CheckBoxCustomState extends State<CheckBoxCustom> {
       child: Row(
         children: [
           Checkbox(
-            value: true,
-            onChanged: (value) {},
+            fillColor: MaterialStateProperty.all(Color(0xffE4AC1A)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+            ),
+            value: isCheck,
+            onChanged: (value) {
+              setState(() {
+                isCheck=value ?? false;
+              });
+            },
             activeColor: const Color(0xffE4AC1A),
           ),
           Text(

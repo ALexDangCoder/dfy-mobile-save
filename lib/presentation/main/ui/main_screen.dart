@@ -1,5 +1,4 @@
 import 'package:Dfy/widgets/show_modal_bottomsheet/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/widgets/show_modal_bottomsheet/show_create_seedphrare2.dart';
 import 'package:Dfy/widgets/show_modal_bottomsheet/show_create_seedphrase1.dart';
 import 'package:Dfy/widgets/show_modal_bottomsheet/show_create_successfully.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                showCreateSeedPhrase2(context,widget.bLocCreateSeedPhrase);
+                showCreateSeedPhrase1(context,BLocCreateSeedPhrase());
               },
               icon: const Icon(Icons.padding))
         ],

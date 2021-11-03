@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:list_tile_switch/list_tile_switch.dart';
 
-class FromSwitch extends StatelessWidget {
+class FromSwitch extends StatefulWidget {
   final bool isCheck;
   final String title;
   final String urlPrefixIcon;
@@ -14,38 +15,44 @@ class FromSwitch extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<FromSwitch> createState() => _FromSwitchState();
+}
+
+class _FromSwitchState extends State<FromSwitch> {
+  bool isCheck1 = true;
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: 323.w,
       height: 64.h,
       margin: EdgeInsets.symmetric(horizontal: 26.w),
-      padding: EdgeInsets.symmetric(horizontal: 15.5.w, vertical: 23.h),
+      //padding: EdgeInsets.symmetric(horizontal: 15.5.w),
       decoration: const BoxDecoration(
         color: Color(0xff32324c),
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Image.asset(urlPrefixIcon),
-              SizedBox(
-                width: 11.w,
-              ),
-              Text(
-                title,
-                style: const TextStyle(fontSize: 16, color: Colors.white),
-              ),
-            ],
+      child: Center(
+        child: ListTileSwitch(
+          switchScale: 1,
+          value: isCheck1,
+          leading: Image.asset(widget.urlPrefixIcon),
+          onChanged: (value) {
+            setState(() {
+              isCheck1 = value;
+            });
+          },
+          switchActiveColor: const Color(0xffE4AC1A),
+          switchType: SwitchType.cupertino,
+          title:  Text(
+              widget.title,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.sp
+
+            ),
           ),
-          Switch(
-            value: isCheck,
-            onChanged: (value) {},
-            activeTrackColor: Colors.amber,
-            activeColor: Colors.white,
-          ),
-        ],
+        ),
       ),
     );
   }
