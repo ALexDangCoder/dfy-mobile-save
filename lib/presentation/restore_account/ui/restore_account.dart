@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/restore_account/bloc/pass_cubit.dart';
 import 'package:Dfy/presentation/restore_account/bloc/state.dart';
 import 'package:Dfy/presentation/restore_account/bloc/string_cubit.dart';
@@ -19,13 +20,26 @@ class RestoreAccount extends StatefulWidget {
 }
 
 class _RestoreAccountState extends State<RestoreAccount> {
-  String dropdownValue = 'Seed phrase';
+  String dropdownValue = S.current.seed_phrase;
   final newCubit = NewPassCubit();
   final conCubit = ConPassCubit();
-  final stringCubit = StringCubit();
+  late StringCubit stringCubit;
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController keyController = TextEditingController();
   bool visible = false;
+  FormType formType = FormType.SEED_PHRASE;
+
+  @override
+  void initState() {
+    super.initState();
+    stringCubit = StringCubit();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    stringCubit.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,115 +141,94 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   children: [
                     Column(
                       children: [
-                        Container(
-                          height: 64.h,
-                          width: 323.w,
-                          padding: EdgeInsets.only(
-                            top: 6.h,
-                            bottom: 6.h,
-                            right: 8.w,
-                            left: 8.w,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                            color: AppTheme.getInstance().itemBtsColor(),
-                          ),
-                          child: BlocBuilder(
+                        BlocBuilder(
                             bloc: stringCubit,
                             builder: (context, state) {
-                              return Row(
+                              if (state is StringInitial) {
+                                dropdownValue = state.key;
+                                formType = FormType.SEED_PHRASE;
+                              }
+                              if (state is StringSelectSeed) {
+                                dropdownValue = state.key;
+                                formType = FormType.SEED_PHRASE;
+                              }
+
+                              if (state is StringSelectPrivate) {
+                                dropdownValue = state.key;
+                                formType = FormType.PASSWORD;
+                              }
+                              return Column(
                                 children: [
-                                  Image.asset(
-                                    ImageAssets.security,
-                                    color: Colors.white,
+                                  Container(
+                                    height: 64.h,
+                                    width: 323.w,
+                                    padding: EdgeInsets.only(
+                                      top: 6.h,
+                                      bottom: 6.h,
+                                      right: 8.w,
+                                      left: 8.w,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                      color:
+                                          AppTheme.getInstance().itemBtsColor(),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          ImageAssets.security,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(
+                                          width: 14.w,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            stringCubit.show();
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(top: 8.h),
+                                            height: 24.h,
+                                            width: 215.w,
+                                            child: Text(
+                                              dropdownValue,
+                                              style: textNormal(
+                                                null,
+                                                16.sp,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 27.15.w,
+                                        ),
+                                        const Expanded(
+                                          child: ImageIcon(
+                                            AssetImage(ImageAssets.expand),
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(
-                                    width: 14.w,
+                                    height: 20.h,
                                   ),
-                                  if (state is StringInitial) ...[
-                                    GestureDetector(
-                                      onTap: () {
-                                        stringCubit.show();
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(top: 8.h),
-                                        height: 24.h,
-                                        width: 215.w,
-                                        child: Text(
-                                          state.key,
-                                          style: textNormal(
-                                            null,
-                                            16.sp,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                  if (state is StringSelectSeed) ...[
-                                    GestureDetector(
-                                      onTap: () {
-                                        stringCubit.show();
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(top: 8.h),
-                                        height: 24.h,
-                                        width: 215.w,
-                                        child: Text(
-                                          state.key,
-                                          style: textNormal(
-                                            null,
-                                            16.sp,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                  if (state is StringSelectPrivate) ...[
-                                    GestureDetector(
-                                      onTap: () {
-                                        stringCubit.show();
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(top: 8.h),
-                                        height: 24.h,
-                                        width: 215.w,
-                                        child: Text(
-                                          state.key,
-                                          style: textNormal(
-                                            null,
-                                            16.sp,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                  SizedBox(
-                                    width: 27.15.w,
-                                  ),
-                                  const Expanded(
-                                    child: ImageIcon(
-                                      AssetImage(ImageAssets.expand),
-                                      color: Colors.white,
-                                    ),
+                                  ItemForm(
+                                    leadPath: ImageAssets.key,
+                                    trailingPath: ImageAssets.show,
+                                    hint: formType == FormType.SEED_PHRASE
+                                        ? 'Wallet secret seed phrase'
+                                        : '',
+                                    formType: formType,
+                                    isShow: true,
+                                    controller: keyController,
                                   ),
                                 ],
                               );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        ItemForm(
-                          leadPath: ImageAssets.key,
-                          trailingPath: ImageAssets.show,
-                          hint: 'Wallet secret seed phrase',
-                          formType: FormType.SEED_PHRASE,
-                          isShow: true,
-                          controller: keyController,
-                        ),
+                            }),
                         SizedBox(
                           height: 20.h,
                         ),
@@ -319,7 +312,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                               ),
                             ),
                           );
-                        }  else {
+                        } else {
                           return Container();
                         }
                       },

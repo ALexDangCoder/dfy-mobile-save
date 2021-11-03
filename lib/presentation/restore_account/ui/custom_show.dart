@@ -1,5 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/presentation/restore_account/bloc/state.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/restore_account/bloc/string_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +13,7 @@ class CustomDialog extends StatefulWidget {
 }
 
 class _CustomDialogState extends State<CustomDialog> {
-  final List<String> text = ['Seed phrase', 'Private key'];
+  final List<String> text = [S.current.seed_phrase, S.current.private_key];
 
   @override
   Widget build(BuildContext context) {
