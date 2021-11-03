@@ -1,5 +1,6 @@
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:flutter/material.dart';
 
 import '../../../main.dart';
@@ -22,7 +23,6 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +31,13 @@ class _MainScreenState extends State<MainScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                showCreateSeedPhrase1(context, BLocCreateSeedPhrase());
+                showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) {
+                      return const SetupPassWord();
+                    });
               },
               icon: const Icon(Icons.padding))
         ],

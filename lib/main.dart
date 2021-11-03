@@ -39,16 +39,10 @@ class _MyAppState extends State<MyApp> {
   final token = PrefsService.getToken();
 
   @override
-  void initState() {
-    trustWalletChannel.setMethodCallHandler(nativeMethodCallBackTrustWallet);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375,812),
-      builder:() =>  GetMaterialApp(
+      designSize: const Size(375, 812),
+      builder: () => GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: Strings.app_name,
         theme: ThemeData(
@@ -83,4 +77,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-

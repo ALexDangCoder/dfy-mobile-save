@@ -111,7 +111,8 @@ void showCreateSeedPhrase2(
             Center(
               child: GestureDetector(
                 onTap: () {
-                  if (bLocCreateSeedPhrase.isCheckBox2.value) {
+                  if (bLocCreateSeedPhrase.isCheckBox2.value &&
+                      bLocCreateSeedPhrase.getCheck()) {
                     showCreateSuccessfully(context);
                   }
                 },

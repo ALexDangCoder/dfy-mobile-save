@@ -6,7 +6,7 @@ import '../../../../main.dart';
 
 class BLocCreateSeedPhrase {
   BLocCreateSeedPhrase() {
-    getListTitle();
+    getStringToList();
   }
 
   dispose() {
@@ -20,20 +20,27 @@ class BLocCreateSeedPhrase {
   BehaviorSubject<bool> isCheckBox2 = BehaviorSubject.seeded(false);
   BehaviorSubject<List<Item>> listTitle = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
-  List<String> listTitle1 = [
-    'happy',
-    'lovely',
-    'eternity',
-    'victory',
-    'school',
-    'trust',
-    'careful',
-    'success',
-    'confident',
-    'drama',
-    'patient',
-    'hold',
-  ];
+
+  var data =
+      "happy lovely eternity victory school trust careful success confident drama patient hold";
+
+  void getStringToList() {
+    listTitle1 = data.split(' ');
+    getListTitle();
+  }
+
+  bool getCheck() {
+    String isData = '';
+    for (final Item value in listTitle3) {
+      isData += value.title + ' ';
+    }
+    if (data + ' ' == isData) {
+      return true;
+    }
+    return false;
+  }
+
+  List<String> listTitle1 = [];
   final List<Item> listTitle2 = [];
   final List<Item> listTitle3 = [];
 

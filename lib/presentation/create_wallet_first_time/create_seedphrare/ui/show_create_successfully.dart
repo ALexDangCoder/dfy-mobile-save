@@ -91,7 +91,7 @@ void showCreateSuccessfully(BuildContext context) {
                   Navigator.pop(context);
 
                   Navigator.pop(context);
-
+                  Navigator.pop(context);
                   Navigator.pop(context);
                 },
                 child: const ButtonGold(

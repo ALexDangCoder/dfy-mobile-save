@@ -1,10 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/di/module.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SetupPassWord extends StatefulWidget {
@@ -90,6 +88,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               isValidPassCubit.isValidate(password.text);
               isValidPassCubit.isMatchPW(
                   password: password.text, confirmPW: confirmPassword.text);
+              showCreateSeedPhrase1(context, BLocCreateSeedPhrase());
             },
           ),
           SizedBox(
@@ -265,7 +264,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               ),
               suffixIcon: InkWell(
                 onTap: () {
-                  if(indexPW == 1) {
+                  if (indexPW == 1) {
                     isValidPassCubit.isShowPW(1);
                     indexPW = 2;
                   } else {
@@ -323,7 +322,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               ),
               suffixIcon: InkWell(
                 onTap: () {
-                  if(indexConfirmPW == 1) {
+                  if (indexConfirmPW == 1) {
                     isValidPassCubit.isShowConfirmPW(1);
                     indexConfirmPW = 2;
                   } else {
