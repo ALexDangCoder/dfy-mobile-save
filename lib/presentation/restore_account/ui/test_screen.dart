@@ -10,19 +10,23 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
+  String dropdownValue = 'One';
+
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(375, 812),
-      builder: () => Scaffold(
-        body: Center(
+    return Scaffold(
+      body: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: () => Center(
           child: ElevatedButton(
-            onPressed: () => showModalBottomSheet(
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (context) => const RestoreAccount(),
-            ),
+            onPressed: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (context) => const RestoreAccount(),
+              );
+            },
             child: const Text('Click'),
           ),
         ),
