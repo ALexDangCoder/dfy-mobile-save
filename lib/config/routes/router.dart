@@ -1,4 +1,6 @@
+import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,8 @@ class AppRouter {
   ///Main App
   static const splash = '/splash';
   static const main = '/main';
+  static const login = '/login';
+  static const wallet = '/wallet';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
@@ -17,6 +21,12 @@ class AppRouter {
     switch (settings.name) {
       case main:
         return MaterialPageRoute(builder: (ctx) => MainScreen());
+      // case splash:
+      //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
+      case login:
+        return MaterialPageRoute(builder: (ctx) => const LoginScreen());
+      case wallet:
+        return MaterialPageRoute(builder: (ctx) => const WalletScreen());
     }
   }
 }
@@ -51,10 +61,10 @@ class PageTransition<T> extends PageRouteBuilder<T> {
     this.reverseDuration = const Duration(milliseconds: 300),
     RouteSettings? settings,
   })  : assert(
-            inheritTheme, "'ctx' cannot be null when 'inheritTheme' is true"),
+            inheritTheme, "'ctx' cannot be null when 'inheritTheme' is true",),
         super(
           pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
+              Animation<double> secondaryAnimation,) {
             return inheritTheme
                 ? InheritedTheme.captureAll(
                     ctx!,
@@ -69,7 +79,7 @@ class PageTransition<T> extends PageRouteBuilder<T> {
           transitionsBuilder: (BuildContext context,
               Animation<double> animation,
               Animation<double> secondaryAnimation,
-              Widget child) {
+              Widget child,) {
             switch (type) {
               case PageTransitionType.FADE:
                 return FadeTransition(opacity: animation, child: child);

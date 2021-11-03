@@ -45,10 +45,11 @@ abstract class BaseState<T extends StatefulWidget> extends BaseSetState<T> {
 
   void _showUnAuthDialog() {
     DialogUtils.showAlert(
-        content: S.current.unauthorized,
-        onConfirm: () {
-          //todo clear data storage and  -> move to example_view
-        });
+      content: S.current.unauthorized,
+      onConfirm: () {
+        //todo clear data storage and  -> move to example_view
+      },
+    );
   }
 }
 

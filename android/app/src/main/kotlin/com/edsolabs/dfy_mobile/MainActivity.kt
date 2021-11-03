@@ -1,10 +1,11 @@
 package com.edsolabs.dfy_mobile
 
-import android.os.Bundle
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
+import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugins.GeneratedPluginRegistrant
 
-class MainActivity : FlutterActivity() {
+class MainActivity : FlutterFragmentActivity() {
     init {
         System.loadLibrary("TrustWalletCore")
     }
@@ -12,13 +13,14 @@ class MainActivity : FlutterActivity() {
     private val CHANNEL_TRUST_WALLET = "flutter/trust_wallet"
     private var channel: MethodChannel? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        channel = MethodChannel(flutterEngine?.dartExecutor?.binaryMessenger, CHANNEL_TRUST_WALLET)
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        GeneratedPluginRegistrant.registerWith(flutterEngine)
+        channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL_TRUST_WALLET)
         channel?.setMethodCallHandler { call, _ ->
             when (call.method) {
                 "checkPassword" -> {
-                    val password = call.argument<String>("password") ?: return@setMethodCallHandler
+                    val password = call.argument<String>("password")
+                        ?: return@setMethodCallHandler
                     checkPassWordWallet(password)
 
                 }
@@ -27,16 +29,20 @@ class MainActivity : FlutterActivity() {
                 }
                 "importWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
-                    val content = call.argument<String>("content") ?: return@setMethodCallHandler
-                    val password = call.argument<String>("password") ?: return@setMethodCallHandler
+                    val content = call.argument<String>("content")
+                        ?: return@setMethodCallHandler
+                    val password = call.argument<String>("password")
+                        ?: return@setMethodCallHandler
                     importWallet(type, content, password)
                 }
                 "getListWallets" -> {
-                    val password = call.argument<String>("password") ?: return@setMethodCallHandler
+                    val password = call.argument<String>("password")
+                        ?: return@setMethodCallHandler
                     getListWallets(password)
                 }
                 "generateWallet" -> {
-                    val password = call.argument<String>("password") ?: return@setMethodCallHandler
+                    val password = call.argument<String>("password")
+                        ?: return@setMethodCallHandler
                     generateWallet(password)
                 }
                 "storeWallet" -> {
@@ -59,21 +65,24 @@ class MainActivity : FlutterActivity() {
                 }
                 "getListShowedToken" -> {
                     val walletAddress =
-                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
                     val password =
                         call.argument<String>("password") ?: return@setMethodCallHandler
                     getListShowedToken(walletAddress, password)
                 }
                 "getListShowedNft" -> {
                     val walletAddress =
-                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
                     val password =
                         call.argument<String>("password") ?: return@setMethodCallHandler
                     getListShowedNft(walletAddress, password)
                 }
                 "importToken" -> {
                     val walletAddress =
-                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
                     val tokenAddress =
                         call.argument<String>("tokenAddress") ?: return@setMethodCallHandler
                     val symbol =
@@ -86,7 +95,8 @@ class MainActivity : FlutterActivity() {
                 }
                 "getListSupportedToken" -> {
                     val walletAddress =
-                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
                     val password =
                         call.argument<String>("password") ?: return@setMethodCallHandler
                     getListSupportedToken(walletAddress, password)
@@ -177,5 +187,4 @@ class MainActivity : FlutterActivity() {
         val hasMap = HashMap<String, Any>()
         channel?.invokeMethod("getListSupportedTokenCallback", hasMap)
     }
-
 }
