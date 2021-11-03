@@ -24,7 +24,6 @@ Future<void> mainApp() async {
         statusBarIconBrightness: Brightness.light),
   );
   configureDependencies();
-  trustWalletChannel.setMethodCallHandler(nativeMethodCallHandler);
   runApp(const MyApp());
 }
 
@@ -40,6 +39,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    trustWalletChannel.setMethodCallHandler(nativeMethodCallBackTrustWallet);
     super.initState();
   }
 
@@ -78,37 +78,23 @@ class _MyAppState extends State<MyApp> {
       initialRoute: AppRouter.main,
     );
   }
+}
 
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    switch (methodCall.method) {
-      case "createWalletCallBack":
-        print('createWalletCallBack' + DateTime.now().toString());
-        print(methodCall.arguments.toString());
-        break;
-      case "importWalletCallBack":
-        print('importWalletCallBack' + DateTime.now().toString());
-        print(methodCall.arguments.toString());
-        break;
-      default:
-        break;
-    }
-  }
+Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+  switch (methodCall.method) {
+    case "checkPasswordCallback":
+      break;
 
-  Future<void> checkPassWallet() async {
-    try {
-      print('createWallet' + DateTime.now().toString());
-      trustWalletChannel.invokeMethod('createWallet');
-    } on PlatformException {}
+    default:
+      break;
   }
+}
 
-  Future<void> getPassWallet() async {
-    try {
-      var data = {
-        "seedPhrase":
-            "robust balance table arch slide easy bulb welcome pact express unhappy early",
-      };
-      print('importWallet' + DateTime.now().toString());
-      trustWalletChannel.invokeMethod('importWallet', data);
-    } on PlatformException {}
-  }
+Future<void> checkPasswordWallet(String password) async {
+  try {
+    final data = {
+      'password': password,
+    };
+    await trustWalletChannel.invokeMethod('checkPassword', data);
+  } on PlatformException {}
 }
