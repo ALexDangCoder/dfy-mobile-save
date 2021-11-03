@@ -1,6 +1,4 @@
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/test_screen_init.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
@@ -14,7 +12,6 @@ class AppRouter {
 
   ///Main App
   static const splash = '/splash';
-  static const example = '/example';
   static const main = '/main';
   static const setupPassWord = '/setupPassWord';
   static const testScreen = '/testScreen';
@@ -27,8 +24,8 @@ class AppRouter {
     switch (settings.name) {
       // case splash:
       //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
-      case testScreen:
-        return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
+      // case testScreen:
+      //   return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
       case setupPassWord:
         return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
       case main:
@@ -38,6 +35,7 @@ class AppRouter {
       //       builder: (ctx) => MainScreen(
       //             bLocCreateSeedPhrase: BLocCreateSeedPhrase(),
       //           ),);
+
       case login:
         return MaterialPageRoute(builder: (ctx) => const LoginScreen());
       case wallet:

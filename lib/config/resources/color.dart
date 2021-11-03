@@ -20,6 +20,8 @@ const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
 
 //custom color
+const itemBtsColor = Color(0xffA7A7A7);
+const backgroundBottomSheet = Color(0xff3E3D5C);
 const signInRowColor = Color(0xFFA9B8BD);
 const signInTextColor = Color(0xff0ABAB5);
 const sideTextInactiveColor = Color(0xFFB9C4D0);
@@ -66,6 +68,12 @@ abstract class AppColor {
   Color sideBtnColor();
 
   Color disableColor();
+
+  Color bgBtsColor();
+
+  Color itemBtsColor();
+
+  Color divideColor();
 }
 
 class LightApp extends AppColor {
@@ -128,6 +136,21 @@ class LightApp extends AppColor {
   Color disableColor() {
     return const Color(0xFFA9B8BD);
   }
+
+  @override
+  Color bgBtsColor() {
+    return backgroundBottomSheet;
+  }
+
+  @override
+  Color itemBtsColor() {
+    return const Color.fromRGBO(167, 167, 167, 0.5);
+  }
+
+  @override
+  Color divideColor() {
+   return const Color.fromRGBO(255, 255, 255, 0.1);
+  }
 }
 
 class DarkApp extends AppColor {
@@ -189,6 +212,24 @@ class DarkApp extends AppColor {
   @override
   Color disableColor() {
     return Colors.grey;
+  }
+
+  @override
+  Color bgBtsColor() {
+    // TODO: implement backgroundBtsColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color itemBtsColor() {
+    // TODO: implement itemBtsColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color divideColor() {
+    // TODO: implement divideColor
+    throw UnimplementedError();
   }
 }
 

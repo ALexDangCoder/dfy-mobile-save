@@ -49,7 +49,7 @@ dependencies:
   lint: ^1.6.0
   table_calendar: ^3.0.2
   image_picker: ^0.8.4+3
-  image_res: ^0.3.0
+
 
   #Library helpful
   intl: ^0.17.0
@@ -92,6 +92,9 @@ dependencies:
   #  get_storage: ^2.0.2
   # Loading style
   tuple: ^2.0.0
+  image_res: ^0.3.0
+  auto_size_text_field: ^1.0.1
+  get_it: ^7.2.0
   #flutter_appavailability: ^0.0.21
 
 dev_dependencies:
