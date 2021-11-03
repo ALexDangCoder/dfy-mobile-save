@@ -17,7 +17,7 @@ class CheckBoxCustom2 extends StatelessWidget {
       child: Row(
         children: [
           StreamBuilder(
-              stream: bLocCreateSeedPhrase.isCheck2,
+              stream: bLocCreateSeedPhrase.isCheckBox2,
               builder: (context, AsyncSnapshot<bool> snapshot) {
                 return Checkbox(
                   fillColor: MaterialStateProperty.all(const Color(0xffE4AC1A)),
@@ -26,9 +26,9 @@ class CheckBoxCustom2 extends StatelessWidget {
                   ),
                   value: snapshot.data ?? false,
                   onChanged: (value) {
-                    bLocCreateSeedPhrase.isCheck2.sink.add(true);
+                    bLocCreateSeedPhrase.isCheckBox2.sink.add(true);
                     if(snapshot.data??false){
-                      bLocCreateSeedPhrase.isCheck2.sink.add(false);
+                      bLocCreateSeedPhrase.isCheckBox2.sink.add(false);
                     }
                   },
                   activeColor: const Color(0xffE4AC1A),

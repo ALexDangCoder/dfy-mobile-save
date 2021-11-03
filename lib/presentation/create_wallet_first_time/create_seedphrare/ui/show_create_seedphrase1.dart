@@ -3,7 +3,7 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrare2.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom.dart';
-import 'package:Dfy/widgets/from/from_text.dart';
+import 'package:Dfy/widgets/form/form_text.dart';
 import 'package:Dfy/widgets/header_create/header_create.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrasse_copy.dart';
 import 'package:flutter/cupertino.dart';
@@ -82,7 +82,7 @@ void showCreateSeedPhrase1(
                         SizedBox(
                           height: 17.h,
                         ),
-                         CheckBoxCustom(
+                        CheckBoxCustom(
                           title: 'Do not provide your recovery key to anyone',
                           bLocCreateSeedPhrase: blocCreateSeedPhrase,
                         ),
@@ -98,7 +98,9 @@ void showCreateSeedPhrase1(
             Center(
               child: GestureDetector(
                 onTap: () {
-                  showCreateSeedPhrase2(context, blocCreateSeedPhrase);
+                  if (blocCreateSeedPhrase.isCheckBox1.value) {
+                    showCreateSeedPhrase2(context, blocCreateSeedPhrase);
+                  }
                 },
                 child: const ButtonGold(
                   title: 'Continue',

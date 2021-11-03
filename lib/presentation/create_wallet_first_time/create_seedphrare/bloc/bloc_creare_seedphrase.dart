@@ -1,14 +1,23 @@
 import 'package:Dfy/domain/model/item.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../../../main.dart';
 
 class BLocCreateSeedPhrase {
   BLocCreateSeedPhrase() {
     getListTitle();
   }
 
-  BehaviorSubject<bool> isCheck = BehaviorSubject.seeded(false);
+  dispose() {
+    isCheckBox1.close();
+    isCheckBox2.close();
+    listTitle.close();
+    listSeedPhrase.close();
+  }
 
-  BehaviorSubject<bool> isCheck2 = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckBox1 = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckBox2 = BehaviorSubject.seeded(false);
   BehaviorSubject<List<Item>> listTitle = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
   List<String> listTitle1 = [
@@ -52,5 +61,32 @@ class BLocCreateSeedPhrase {
   void reloadListTitle() {
     listTitle.sink.add(listTitle2);
     reloadListSeedPhrase();
+  }
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'checkPasswordCallback':
+        break;
+      case 'storeWalletCallback':
+        bool isSuccess = methodCall.arguments['isSuccess'];
+        break;
+      default:
+        break;
+    }
+  }
+
+  Future<void> storeWallet(
+    bool isAppLock,
+    bool isFaceID,
+    String password,
+  ) async {
+    try {
+      final data = {
+        'isAppLock': isAppLock,
+        'isFaceID': isFaceID,
+        'password': password,
+      };
+      await trustWalletChannel.invokeListMethod('storeWallet', data);
+    } on PlatformException {}
   }
 }

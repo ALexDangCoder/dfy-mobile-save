@@ -111,7 +111,9 @@ void showCreateSeedPhrase2(
             Center(
               child: GestureDetector(
                 onTap: () {
-                  showCreateSuccessfully(context);
+                  if (bLocCreateSeedPhrase.isCheckBox2.value) {
+                    showCreateSuccessfully(context);
+                  }
                 },
                 child: const ButtonGold(
                   title: 'Create',

@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/from/from_switch.dart';
+import 'package:Dfy/widgets/form/form_switch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -88,13 +88,18 @@ void showCreateSuccessfully(BuildContext context) {
             Center(
               child: GestureDetector(
                 onTap: () {
-                  print('continue');
+                  Navigator.pop(context);
+
+                  Navigator.pop(context);
+
+                  Navigator.pop(context);
                 },
                 child: const ButtonGold(
                   title: 'Complete',
                 ),
               ),
-            ), SizedBox(
+            ),
+            SizedBox(
               height: 38.h,
             ),
           ],

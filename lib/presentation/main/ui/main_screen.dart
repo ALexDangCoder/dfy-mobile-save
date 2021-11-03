@@ -2,6 +2,8 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:flutter/material.dart';
 
+import '../../../main.dart';
+
 class MainScreen extends StatefulWidget {
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
@@ -15,10 +17,11 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
-    // TODO: implement initState
+    trustWalletChannel.setMethodCallHandler(
+        widget.bLocCreateSeedPhrase.nativeMethodCallBackTrustWallet);
     super.initState();
-    // widget.bLocCreateSeedPhrase.getList();
   }
+
 
   @override
   Widget build(BuildContext context) {
