@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/color.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -12,6 +11,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
 
 Future<void> mainApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +39,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    trustWalletChannel.setMethodCallHandler(nativeMethodCallBackTrustWallet);
     super.initState();
   }
 
@@ -76,4 +78,23 @@ class _MyAppState extends State<MyApp> {
       initialRoute: AppRouter.main,
     );
   }
+}
+
+Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+  switch (methodCall.method) {
+    case "checkPasswordCallback":
+      break;
+
+    default:
+      break;
+  }
+}
+
+Future<void> checkPasswordWallet(String password) async {
+  try {
+    final data = {
+      'password': password,
+    };
+    await trustWalletChannel.invokeMethod('checkPassword', data);
+  } on PlatformException {}
 }
