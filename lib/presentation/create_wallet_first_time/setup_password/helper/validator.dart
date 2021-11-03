@@ -7,4 +7,9 @@ class Validator {
     }
   }
 
+  static bool validateStructure(String value){
+    const String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    final RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
 }

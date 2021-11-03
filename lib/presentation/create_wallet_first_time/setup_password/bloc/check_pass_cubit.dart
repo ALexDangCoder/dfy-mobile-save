@@ -1,7 +1,10 @@
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../../../main.dart';
 part 'check_pass_state.dart';
 class CheckPassCubit extends Cubit<CheckPassState> {
 
@@ -23,8 +26,10 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   Sink<bool> get showPWSink => _showPW.sink;
   Sink<bool> get showConfirmPWSink => _showConfirmPW.sink;
 
+
+
   void isValidate(String value) {
-    if (Validator.isValidPassword(value)) {
+    if (Validator.validateStructure(value)) {
       //if validate widget warning will not appear
       validatePWSink.add(false);
     } else {
@@ -58,6 +63,43 @@ class CheckPassCubit extends Cubit<CheckPassState> {
       showConfirmPWSink.add(true);
     }
   }
+
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    String privateKey;
+    String walletAddress;
+    String passPhrase;
+    switch (methodCall.method) {
+      case 'generateWalletCallBack':
+        privateKey = methodCall.arguments['privateKey'];
+        walletAddress = methodCall.arguments['walletAddress'];
+        passPhrase = methodCall.arguments['passPhrase'];
+        break;
+      default:
+        break;
+    }
+  }
+
+  // Future<void> checkPasswordWallet(String password) async {
+  //   try {
+  //     final data = {
+  //       'password': password,
+  //     };
+  //     await trustWalletChannel.invokeMethod('checkPassword', data);
+  //   } on PlatformException {}
+  // }
+
+  Future<void> generateWallet({required String password}) async {
+    try {
+      final data = {
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('generateWallet', data);
+    } on PlatformException {
+      //todo
+    }
+  }
+
 
   @override
   Future<void> close() {
