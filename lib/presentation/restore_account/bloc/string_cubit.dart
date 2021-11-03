@@ -1,4 +1,4 @@
-import 'package:Dfy/presentation/restore_account/bloc/pass_state.dart';
+import 'package:Dfy/presentation/restore_account/bloc/string_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 

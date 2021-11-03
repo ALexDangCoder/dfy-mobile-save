@@ -2,8 +2,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/restore_account/bloc/pass_cubit.dart';
-import 'package:Dfy/presentation/restore_account/bloc/pass_state.dart';
 import 'package:Dfy/presentation/restore_account/bloc/string_cubit.dart';
+import 'package:Dfy/presentation/restore_account/bloc/string_state.dart';
 import 'package:Dfy/presentation/restore_account/bloc/validate_cubit.dart';
 import 'package:Dfy/presentation/restore_account/ui/custom_show.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -160,93 +160,94 @@ class _RestoreAccountState extends State<RestoreAccount> {
                       Column(
                         children: [
                           BlocBuilder(
-                              bloc: stringCubit,
-                              builder: (context, state) {
-                                if (state is StringInitial) {
-                                  dropdownValue = state.key;
-                                  formType = FormType.SEED_PHRASE;
-                                }
-                                if (state is StringSelectSeed) {
-                                  dropdownValue = state.key;
-                                  formType = FormType.SEED_PHRASE;
-                                }
+                            bloc: stringCubit,
+                            builder: (context, state) {
+                              if (state is StringInitial) {
+                                dropdownValue = state.key;
+                                formType = FormType.SEED_PHRASE;
+                              }
+                              if (state is StringSelectSeed) {
+                                dropdownValue = state.key;
+                                formType = FormType.SEED_PHRASE;
+                              }
 
-                                if (state is StringSelectPrivate) {
-                                  dropdownValue = state.key;
-                                  formType = FormType.PASSWORD;
-                                }
-                                return Column(
-                                  children: [
-                                    Container(
-                                      height: 64.h,
-                                      width: 323.w,
-                                      padding: EdgeInsets.only(
-                                        top: 6.h,
-                                        bottom: 6.h,
-                                        right: 8.w,
-                                        left: 8.w,
+                              if (state is StringSelectPrivate) {
+                                dropdownValue = state.key;
+                                formType = FormType.PASSWORD;
+                              }
+                              return Column(
+                                children: [
+                                  Container(
+                                    height: 64.h,
+                                    width: 323.w,
+                                    padding: EdgeInsets.only(
+                                      top: 6.h,
+                                      bottom: 6.h,
+                                      right: 8.w,
+                                      left: 8.w,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20),
                                       ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(20),
+                                      color:
+                                          AppTheme.getInstance().itemBtsColor(),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          ImageAssets.security,
+                                          color: Colors.white,
                                         ),
-                                        color: AppTheme.getInstance()
-                                            .itemBtsColor(),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            ImageAssets.security,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(
-                                            width: 14.w,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              stringCubit.showPopMenu();
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.only(top: 8.h),
-                                              height: 24.h,
-                                              width: 215.w,
-                                              child: Text(
-                                                dropdownValue,
-                                                style: textNormal(
-                                                  null,
-                                                  16.sp,
-                                                ),
+                                        SizedBox(
+                                          width: 14.w,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            stringCubit.showPopMenu();
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(top: 8.h),
+                                            height: 24.h,
+                                            width: 215.w,
+                                            child: Text(
+                                              dropdownValue,
+                                              style: textNormal(
+                                                null,
+                                                16.sp,
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 27.15.w,
+                                        ),
+                                        SizedBox(
+                                          width: 27.15.w,
+                                        ),
+                                        const Expanded(
+                                          child: ImageIcon(
+                                            AssetImage(ImageAssets.expand),
+                                            color: Colors.white,
                                           ),
-                                          const Expanded(
-                                            child: ImageIcon(
-                                              AssetImage(ImageAssets.expand),
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    ItemForm(
-                                      leadPath: ImageAssets.key,
-                                      trailingPath: ImageAssets.show,
-                                      hint: formType == FormType.SEED_PHRASE
-                                          ? S.current.wallet_secret
-                                          : S.current.private_key,
-                                      formType: formType,
-                                      isShow: true,
-                                      controller: privateKeyController,
-                                    ),
-                                  ],
-                                );
-                              }),
+                                  ),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  ItemForm(
+                                    leadPath: ImageAssets.key,
+                                    trailingPath: ImageAssets.show,
+                                    hint: formType == FormType.SEED_PHRASE
+                                        ? S.current.wallet_secret
+                                        : S.current.private_key,
+                                    formType: formType,
+                                    isShow: true,
+                                    controller: privateKeyController,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                           SizedBox(
                             height: 20.h,
                           ),
