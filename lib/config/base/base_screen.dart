@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class BaseScreen extends StatefulWidget {
-  BaseScreen({Key? key}) : super(key: key);
+  const BaseScreen({Key? key}) : super(key: key);
 }
 
 abstract class BaseState<T extends BaseScreen> extends State<T> {
@@ -32,11 +32,12 @@ abstract class BaseState<T extends BaseScreen> extends State<T> {
 
   void _showUnAuthDialog() {
     DialogUtils.showAlert(
-        content: S.current.unauthorized,
-        onConfirm: () {
-          PrefsService.clearAuthData();
-          //todo
-          // openScreenAndRemoveUtil(context, AppRouter.);
-        });
+      content: S.current.unauthorized,
+      onConfirm: () {
+        PrefsService.clearAuthData();
+        //todo
+        // openScreenAndRemoveUtil(context, AppRouter.);
+      },
+    );
   }
 }

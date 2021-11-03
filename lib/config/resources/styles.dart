@@ -48,10 +48,11 @@ TextStyle textNormal(Color? color, double? fontSize) {
   );
 }
 
-TextStyle textNormalCustom(Color? color, double? fontSize, FontWeight? fontWeight) {
+TextStyle textNormalCustom(
+    Color? color, double? fontSize, FontWeight? fontWeight,) {
   return GoogleFonts.sen(
     color: color ?? Colors.white,
-    fontWeight: fontWeight ??FontWeight.w500,
+    fontWeight: fontWeight ?? FontWeight.w500,
     fontStyle: FontStyle.normal,
     fontSize: fontSize ?? 14,
   );

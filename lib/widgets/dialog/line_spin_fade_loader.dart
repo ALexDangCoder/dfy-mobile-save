@@ -40,18 +40,18 @@ class _LineSpinFadeLoaderState extends State<LineSpinFadeLoader>
     super.initState();
     for (int i = 0; i < _kLineSize; i++) {
       _animationControllers.add(AnimationController(
-          vsync: this, duration: const Duration(seconds: 1)));
+          vsync: this, duration: const Duration(seconds: 1),),);
       _opacityAnimations.add(TweenSequence([
         TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.3), weight: 0.7),
         TweenSequenceItem(tween: Tween(begin: 0.3, end: 1.0), weight: 0.7),
       ]).animate(CurvedAnimation(
-          parent: _animationControllers[i], curve: Curves.linear)));
+          parent: _animationControllers[i], curve: Curves.linear,),),);
 
       _delayFeatures.add(CancelableOperation.fromFuture(
           Future.delayed(Duration(milliseconds: _BEGIN_TIMES[i])).then((t) {
         _animationControllers[i].repeat();
         return 0;
-      })));
+      }),),);
     }
   }
 
@@ -99,6 +99,6 @@ class _LineSpinFadeLoaderState extends State<LineSpinFadeLoader>
         fit: StackFit.expand,
         children: widgets,
       );
-    });
+    },);
   }
 }

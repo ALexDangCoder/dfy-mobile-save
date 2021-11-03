@@ -73,7 +73,7 @@ linter:
     # Don't declare multiple variables on a single line.
     avoid_multiple_declarations_per_line: true
 
-    # Avoid returning null from members whose return type is bool, double, int, or num.
+    # Avoid returning null form members whose return type is bool, double, int, or num.
     avoid_returning_null: false
 
     # Prefer using lowerCamelCase for constant names.

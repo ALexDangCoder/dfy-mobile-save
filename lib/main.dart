@@ -8,6 +8,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,39 +39,44 @@ class _MyAppState extends State<MyApp> {
   final token = PrefsService.getToken();
 
 
+
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: Strings.app_name,
-      theme: ThemeData(
-        primaryColor: AppTheme.getInstance().primaryColor(),
-        cardColor: Colors.white,
-        textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
-        appBarTheme: const AppBarTheme(
-          color: Colors.white,
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      builder: () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: Strings.app_name,
+        theme: ThemeData(
+          primaryColor: AppTheme.getInstance().primaryColor(),
+          cardColor: Colors.white,
+          textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
+          appBarTheme: const AppBarTheme(
+            color: Colors.white,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+          ),
+          dividerColor: dividerColor,
+          scaffoldBackgroundColor: Colors.white,
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: AppTheme.getInstance().primaryColor(),
+            selectionColor: AppTheme.getInstance().primaryColor(),
+            selectionHandleColor: AppTheme.getInstance().primaryColor(),
+          ),
+          colorScheme: ColorScheme.fromSwatch()
+              .copyWith(secondary: AppTheme.getInstance().accentColor()),
         ),
-        dividerColor: dividerColor,
-        scaffoldBackgroundColor: Colors.white,
-        textSelectionTheme: TextSelectionThemeData(
-          cursorColor: AppTheme.getInstance().primaryColor(),
-          selectionColor: AppTheme.getInstance().primaryColor(),
-          selectionHandleColor: AppTheme.getInstance().primaryColor(),
-        ),
-        colorScheme: ColorScheme.fromSwatch()
-            .copyWith(secondary: AppTheme.getInstance().accentColor()),
+        supportedLocales: S.delegate.supportedLocales,
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
+        onGenerateRoute: AppRouter.generateRoute,
+        initialRoute: AppRouter.main,
       ),
-      supportedLocales: S.delegate.supportedLocales,
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
-      onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: AppRouter.main,
     );
   }
 }
+
