@@ -3,10 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum FormType {
-  SEED_PHRASE,
-  PASSWORD,
-}
+enum FormType { SEED_PHRASE, PASSWORD, PRIVATE_KEY }
 
 class ItemForm extends StatelessWidget {
   const ItemForm({
@@ -57,7 +54,7 @@ class ItemForm extends StatelessWidget {
               hintText: hint,
               hintStyle: textNormal(
                 Colors.grey,
-                14.sp,
+                16.sp,
               ),
               suffixIcon: InkWell(
                 onTap: () {},
@@ -90,6 +87,7 @@ class ItemForm extends StatelessWidget {
           color: AppTheme.getInstance().itemBtsColor(),
         ),
         child: TextFormField(
+          controller: controller,
           obscureText: isShow,
           style: textNormal(
             Colors.white,
@@ -100,7 +98,7 @@ class ItemForm extends StatelessWidget {
             hintText: hint,
             hintStyle: textNormal(
               Colors.grey,
-              14.sp,
+              16.sp,
             ),
             suffixIcon: InkWell(
               onTap: callback,

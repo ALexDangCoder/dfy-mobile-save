@@ -9,5 +9,6 @@
   "unauthorized": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
   "search": "Tìm kiếm...",
   "seed_phrase": "Seed phrase",
-  "private_key": "Private key"
+  "private_key": "Private key",
+  "wallet_secret": "Cụm từ bí mât trên ví"
 }

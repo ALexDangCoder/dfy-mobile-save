@@ -9,5 +9,6 @@
   "unauthorized": "Your session has expired. Please sign in.",
   "search": "Search...",
   "seed_phrase": "Seed phrase",
-  "private_key": "Private key"
+  "private_key": "Private key",
+  "wallet_secret": "Wallet secret seed phrase"
 }
