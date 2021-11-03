@@ -94,6 +94,8 @@ void showCreateSuccessfully(BuildContext context) {
                   title: 'Complete',
                 ),
               ),
+            ), SizedBox(
+              height: 38.h,
             ),
           ],
         ),

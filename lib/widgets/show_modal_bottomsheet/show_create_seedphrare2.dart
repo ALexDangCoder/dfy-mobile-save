@@ -118,6 +118,9 @@ void showCreateSeedPhrase2(
                 ),
               ),
             ),
+            SizedBox(
+              height: 38.h,
+            ),
           ],
         ),
       );

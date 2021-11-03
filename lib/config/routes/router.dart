@@ -1,4 +1,5 @@
 import 'package:Dfy/presentation/example_view/ui/example.dart';
+import 'package:Dfy/presentation/main/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/widgets/show_modal_bottomsheet/bloc/bloc_creare_seedphrase.dart';
 import 'package:flutter/material.dart';
