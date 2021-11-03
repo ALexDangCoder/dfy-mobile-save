@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/color.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -13,6 +12,8 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
+
 Future<void> mainApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -23,6 +24,7 @@ Future<void> mainApp() async {
         statusBarIconBrightness: Brightness.light),
   );
   configureDependencies();
+  trustWalletChannel.setMethodCallHandler(nativeMethodCallHandler);
   runApp(const MyApp());
 }
 
@@ -75,5 +77,38 @@ class _MyAppState extends State<MyApp> {
       onGenerateRoute: AppRouter.generateRoute,
       initialRoute: AppRouter.main,
     );
+  }
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case "createWalletCallBack":
+        print('createWalletCallBack' + DateTime.now().toString());
+        print(methodCall.arguments.toString());
+        break;
+      case "importWalletCallBack":
+        print('importWalletCallBack' + DateTime.now().toString());
+        print(methodCall.arguments.toString());
+        break;
+      default:
+        break;
+    }
+  }
+
+  Future<void> checkPassWallet() async {
+    try {
+      print('createWallet' + DateTime.now().toString());
+      trustWalletChannel.invokeMethod('createWallet');
+    } on PlatformException {}
+  }
+
+  Future<void> getPassWallet() async {
+    try {
+      var data = {
+        "seedPhrase":
+            "robust balance table arch slide easy bulb welcome pact express unhappy early",
+      };
+      print('importWallet' + DateTime.now().toString());
+      trustWalletChannel.invokeMethod('importWallet', data);
+    } on PlatformException {}
   }
 }
