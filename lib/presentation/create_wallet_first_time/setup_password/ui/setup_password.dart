@@ -15,16 +15,24 @@ class SetupPassWord extends StatefulWidget {
 }
 
 class _SetupPassWordState extends State<SetupPassWord> {
-  final isValidPassCubit = getIt.get<CheckPassCubit>();
-  final isMatchPassCubit = getIt.get<CheckMatchPassCubit>();
-
-  bool showPass = false;
-  bool showPassConfirm = false;
-  bool validatePassword = false;
-  bool validateMatchPassword = false;
+  late CheckPassCubit isValidPassCubit;
 
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
+
+  int index = 1;
+
+  @override
+  void initState() {
+    isValidPassCubit = CheckPassCubit();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    isValidPassCubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,10 +87,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
             child: btnContinue(),
             onTap: () {
               isValidPassCubit.isValidate(password.text);
-              isMatchPassCubit.isMatchPassword(
-                password.text,
-                confirmPassword.text,
-              );
+              isValidPassCubit.isMatchPW(
+                  password: password.text, confirmPW: confirmPassword.text);
             },
           ),
           SizedBox(
@@ -93,87 +99,66 @@ class _SetupPassWordState extends State<SetupPassWord> {
     );
   }
 
-  BlocBuilder showTextValidatePassword() {
-    return BlocBuilder(
-      bloc: isValidPassCubit,
-      builder: (ctx, state) {
-        if (state) {
-          return Visibility(
-            visible: !state,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 4.h,
-                ),
-                SizedBox(
-                  width: 323.w,
-                  height: 30.h,
-                  child: Text(
-                    'Password must include at least a number, '
-                    'an upper case, a lower\n case and a special '
-                    'character',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color.fromRGBO(255, 108, 108, 1),
-                    ),
+  Widget showTextValidatePassword() {
+    return StreamBuilder(
+      stream: isValidPassCubit.validatePWStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 323.w,
+                height: 30.h,
+                child: Text(
+                  'Password must include at least a number, '
+                  'an upper case, a lower\n case and a special '
+                  'character',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color.fromRGBO(255, 108, 108, 1),
                   ),
                 ),
-              ],
-            ),
-          );
-        } else {
-          return Visibility(
-            visible: state,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 4.h,
-                ),
-                SizedBox(
-                  width: 323.w,
-                  height: 30.h,
-                  child: Text(
-                    'Password must include at least a number, '
-                    'an upper case, a lower\n case and a special '
-                    'character',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color.fromRGBO(255, 108, 108, 1),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
+              ),
+            ],
+          ),
+        );
       },
     );
   }
 
-  Visibility showTextValidateMatchPassword() {
-    return Visibility(
-        visible: validateMatchPassword,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 4.h,
-            ),
-            Container(
-              width: 323.w,
-              height: 30.h,
-              child: Text(
-                'Your password did not match',
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: const Color.fromRGBO(255, 108, 108, 1),
+  Widget showTextValidateMatchPassword() {
+    return StreamBuilder(
+      stream: isValidPassCubit.matchPWStream,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 323.w,
+                height: 30.h,
+                child: Text(
+                  'Your password did not match',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color.fromRGBO(255, 108, 108, 1),
+                  ),
                 ),
               ),
-            ),
-          ],
-        ));
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Container btnContinue() {
@@ -266,28 +251,45 @@ class _SetupPassWordState extends State<SetupPassWord> {
           ),
           color: Color.fromRGBO(167, 167, 167, 0.5),
         ),
-        child: TextFormField(
-          controller: password,
-          expands: true,
-          maxLines: null,
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 4.h),
-            hintText: hintText,
-            hintStyle: textNormal(
-              Colors.grey,
-              14.sp,
-            ),
-            suffixIcon: const ImageIcon(
-              AssetImage('assets/images/Hide.png'),
-              color: Colors.white,
-            ),
-            prefixIcon: const ImageIcon(
-              AssetImage('assets/images/Lock.png'),
-              color: Colors.white,
-            ),
-            border: InputBorder.none,
-          ),
+        child: StreamBuilder(
+          stream: isValidPassCubit.showPWStream,
+          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+            return TextFormField(
+              // obscureText: snapshot.data,
+              controller: password,
+              expands: true,
+              maxLines: null,
+              cursorColor: Colors.white,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 4.h),
+                hintText: hintText,
+                hintStyle: textNormal(
+                  Colors.grey,
+                  14.sp,
+                ),
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    if(index == 1) {
+                      isValidPassCubit.isShowPW(1);
+                      index = 2;
+                    } else {
+                      isValidPassCubit.isShowPW(0);
+                      index = 1;
+                    }
+                  },
+                  child: const ImageIcon(
+                    AssetImage('assets/images/Hide.png'),
+                    color: Colors.white,
+                  ),
+                ),
+                prefixIcon: const ImageIcon(
+                  AssetImage('assets/images/Lock.png'),
+                  color: Colors.white,
+                ),
+                border: InputBorder.none,
+              ),
+            );
+          },
         ),
       ),
     );
