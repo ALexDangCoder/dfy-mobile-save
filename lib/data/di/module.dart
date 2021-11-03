@@ -5,13 +5,10 @@ import 'package:Dfy/presentation/restore_account/bloc/pass_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
-import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-GetIt getIt = GetIt.instance;
+
 void configureDependencies() {
-  getIt.registerFactory<NewPassCubit>(() => NewPassCubit());
-  getIt.registerFactory<ConPassCubit>(() => ConPassCubit());
 }
 
 int _connectTimeOut = 60000;
