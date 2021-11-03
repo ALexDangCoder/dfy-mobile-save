@@ -11,14 +11,17 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   final BehaviorSubject<bool> _validatePW = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _matchPW =  BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _showPW =  BehaviorSubject<bool>.seeded(true);
+  final BehaviorSubject<bool> _showConfirmPW = BehaviorSubject<bool>.seeded(true);
 
   Stream<bool> get validatePWStream => _validatePW.stream;
   Stream<bool> get matchPWStream => _matchPW.stream;
   Stream<bool> get showPWStream => _showPW.stream;
+  Stream<bool> get showConfirmPWStream => _showConfirmPW.stream;
 
   Sink<bool> get validatePWSink => _validatePW.sink;
   Sink<bool> get matchPWSink => _matchPW.sink;
   Sink<bool> get showPWSink => _showPW.sink;
+  Sink<bool> get showConfirmPWSink => _showConfirmPW.sink;
 
   void isValidate(String value) {
     if (Validator.isValidPassword(value)) {
@@ -47,10 +50,21 @@ class CheckPassCubit extends Cubit<CheckPassState> {
     }
   }
 
+  void isShowConfirmPW(int index) {
+    if(index == 1) {
+      //if 1 show pass
+      showConfirmPWSink.add(false);
+    } else {
+      showConfirmPWSink.add(true);
+    }
+  }
+
   @override
   Future<void> close() {
     _validatePW.close();
     _matchPW.close();
+    _showConfirmPW.close();
+    _showPW.close();
     return super.close();
   }
 

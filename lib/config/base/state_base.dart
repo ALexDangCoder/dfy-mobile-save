@@ -48,7 +48,7 @@ abstract class BaseState<T extends StatefulWidget> extends BaseSetState<T> {
         content: S.current.unauthorized,
         onConfirm: () {
           //todo clear data storage and  -> move to example_view
-        });
+        },);
   }
 }
 

@@ -20,7 +20,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
 
-  int index = 1;
+  int indexPW = 1;
+  int indexConfirmPW = 1;
 
   @override
   void initState() {
@@ -231,112 +232,118 @@ class _SetupPassWordState extends State<SetupPassWord> {
     );
   }
 
-  ConstrainedBox formSetupPassWord({required String hintText}) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minWidth: 323.w,
-        maxHeight: 200.h,
-        minHeight: 64.h,
+  Container formSetupPassWord({required String hintText}) {
+    return Container(
+      height: 64.h,
+      width: 323.w,
+      padding: EdgeInsets.only(
+        top: 12.h,
+        bottom: 12.h,
       ),
-      child: Container(
-        width: 323.w,
-        height: 64.h,
-        padding: EdgeInsets.only(
-          top: 14.h,
-          bottom: 14.h,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20),
         ),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
-          color: Color.fromRGBO(167, 167, 167, 0.5),
-        ),
-        child: StreamBuilder(
-          stream: isValidPassCubit.showPWStream,
-          builder: (context, AsyncSnapshot<dynamic> snapshot) {
-            return TextFormField(
-              // obscureText: snapshot.data,
-              controller: password,
-              expands: true,
-              maxLines: null,
-              cursorColor: Colors.white,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical: 4.h),
-                hintText: hintText,
-                hintStyle: textNormal(
-                  Colors.grey,
-                  14.sp,
-                ),
-                suffixIcon: GestureDetector(
-                  onTap: () {
-                    if(index == 1) {
-                      isValidPassCubit.isShowPW(1);
-                      index = 2;
-                    } else {
-                      isValidPassCubit.isShowPW(0);
-                      index = 1;
-                    }
-                  },
-                  child: const ImageIcon(
-                    AssetImage('assets/images/Hide.png'),
-                    color: Colors.white,
-                  ),
-                ),
-                prefixIcon: const ImageIcon(
-                  AssetImage('assets/images/Lock.png'),
-                  color: Colors.white,
-                ),
-                border: InputBorder.none,
+        color: Color.fromRGBO(167, 167, 167, 0.5),
+      ),
+      child: StreamBuilder(
+        stream: isValidPassCubit.showPWStream,
+        builder: (context, AsyncSnapshot<dynamic> snapshot) {
+          return TextFormField(
+            obscureText: snapshot.data,
+            style: textNormal(
+              Colors.white,
+              16.sp,
+            ),
+            cursorColor: Colors.white,
+            controller: password,
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: textNormal(
+                Colors.grey,
+                14.sp,
               ),
-            );
-          },
-        ),
+              suffixIcon: InkWell(
+                onTap: () {
+                  if(indexPW == 1) {
+                    isValidPassCubit.isShowPW(1);
+                    indexPW = 2;
+                  } else {
+                    isValidPassCubit.isShowPW(0);
+                    indexPW = 1;
+                  }
+                },
+                child: const ImageIcon(
+                  AssetImage('assets/images/Hide.png'),
+                  color: Colors.grey,
+                ),
+              ),
+              prefixIcon: const ImageIcon(
+                AssetImage('assets/images/Lock.png'),
+                color: Colors.white,
+              ),
+              border: InputBorder.none,
+            ),
+          );
+        },
       ),
     );
   }
 
-  ConstrainedBox formSetupPassWordConfirm({required String hintText}) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minWidth: 323.w,
-        maxHeight: 200.h,
-        minHeight: 64.h,
+  Container formSetupPassWordConfirm({required String hintText}) {
+    return Container(
+      height: 64.h,
+      width: 323.w,
+      padding: EdgeInsets.only(
+        top: 12.h,
+        bottom: 12.h,
       ),
-      child: Container(
-        width: 323.w,
-        height: 64.h,
-        padding: EdgeInsets.only(
-          top: 14.h,
-          bottom: 14.h,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20),
         ),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
-          color: Color.fromRGBO(167, 167, 167, 0.5),
-        ),
-        child: TextFormField(
-          controller: confirmPassword,
-          maxLines: null,
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 4.h),
-            hintText: hintText,
-            hintStyle: textNormal(
-              Colors.grey,
-              14.sp,
+        color: Color.fromRGBO(167, 167, 167, 0.5),
+      ),
+      child: StreamBuilder(
+        stream: isValidPassCubit.showConfirmPWStream,
+        builder: (context, AsyncSnapshot<dynamic> snapshot) {
+          return TextFormField(
+            obscureText: snapshot.data,
+            style: textNormal(
+              Colors.white,
+              16.sp,
             ),
-            suffixIcon: const ImageIcon(
-              AssetImage('assets/images/Hide.png'),
-              color: Colors.white,
+            cursorColor: Colors.white,
+            controller: confirmPassword,
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: textNormal(
+                Colors.grey,
+                14.sp,
+              ),
+              suffixIcon: InkWell(
+                onTap: () {
+                  if(indexConfirmPW == 1) {
+                    isValidPassCubit.isShowConfirmPW(1);
+                    indexConfirmPW = 2;
+                  } else {
+                    isValidPassCubit.isShowConfirmPW(0);
+                    indexConfirmPW = 1;
+                  }
+                },
+                child: const ImageIcon(
+                  AssetImage('assets/images/Hide.png'),
+                  color: Colors.grey,
+                ),
+              ),
+              prefixIcon: const ImageIcon(
+                AssetImage('assets/images/Lock.png'),
+                color: Colors.white,
+              ),
+              border: InputBorder.none,
             ),
-            prefixIcon: const ImageIcon(
-              AssetImage('assets/images/Lock.png'),
-              color: Colors.white,
-            ),
-            border: InputBorder.none,
-          ),
-        ),
+          );
+        },
       ),
     );
   }
