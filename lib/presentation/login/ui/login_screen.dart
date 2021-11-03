@@ -135,27 +135,41 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () {
                     _cubit.checkPasswordWallet(controller.value.text);
                   },
-                  child: Container(
-                    height: 64.h,
-                    width: 298.w,
-                    decoration: BoxDecoration(
-                      gradient: const RadialGradient(
-                        center: Alignment(0.5, -0.5),
-                        radius: 4,
-                        colors: [
-                          Color(0xFFFFE284),
-                          Color(0xFFE4AC1A),
-                        ],
+                  child: BlocListener<LoginCubit, LoginState>(
+                    bloc: _cubit,
+                    listener: (context, state) {
+                      if (state is LoginSuccess) {
+                        Navigator.pushNamed(
+                          context,
+                          AppRouter.wallet,
+                        );
+                      } else if (state is LoginError) {
+                      } else {
+                        const CircularProgressIndicator();
+                      }
+                    },
+                    child: Container(
+                      height: 64.h,
+                      width: 298.w,
+                      decoration: BoxDecoration(
+                        gradient: const RadialGradient(
+                          center: Alignment(0.5, -0.5),
+                          radius: 4,
+                          colors: [
+                            Color(0xFFFFE284),
+                            Color(0xFFE4AC1A),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(22),
                       ),
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w700,
+                      child: Center(
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),

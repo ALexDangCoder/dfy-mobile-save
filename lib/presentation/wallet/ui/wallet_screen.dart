@@ -23,17 +23,7 @@ class _WalletState extends State<WalletScreen> {
     return Scaffold(
       body: Container(
         color: Colors.grey,
-        child: Center(
-          child: TextFormField(
-            cursorColor: Colors.white,
-            style: const TextStyle(fontSize: 18),
-            decoration: const InputDecoration(
-              hintText: 'Password',
-              border: InputBorder.none,
-            ),
-            // onFieldSubmitted: ,
-          ),
-        ),
+        child: const Center(),
       ),
     );
   }
