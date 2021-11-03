@@ -1,6 +1,4 @@
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/example_view/ui/example.dart';
-import 'package:Dfy/presentation/main/ui/main_screen.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/test_screen_init.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
@@ -33,17 +31,13 @@ class AppRouter {
         return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
       case setupPassWord:
         return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
-          case example:
-        return MaterialPageRoute(builder: (ctx) => const ExampleScreen());
       case main:
-        return MaterialPageRoute(
-          builder: (ctx) => MainScreen(
-            bLocCreateSeedPhrase: BLocCreateSeedPhrase(),
-          ),
-        );
-        return MaterialPageRoute(builder: (ctx) => MainScreen());
-      // case splash:
-      //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
+        return MaterialPageRoute(builder: (ctx) =>  MainScreen());
+      // case main:
+      //   return MaterialPageRoute(
+      //       builder: (ctx) => MainScreen(
+      //             bLocCreateSeedPhrase: BLocCreateSeedPhrase(),
+      //           ),);
       case login:
         return MaterialPageRoute(builder: (ctx) => const LoginScreen());
       case wallet:
@@ -82,10 +76,15 @@ class PageTransition<T> extends PageRouteBuilder<T> {
     this.reverseDuration = const Duration(milliseconds: 300),
     RouteSettings? settings,
   })  : assert(
-            inheritTheme, "'ctx' cannot be null when 'inheritTheme' is true",),
+          inheritTheme,
+          "'ctx' cannot be null when 'inheritTheme' is true",
+        ),
         super(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation,) {
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
             return inheritTheme
                 ? InheritedTheme.captureAll(
                     ctx!,
@@ -97,10 +96,12 @@ class PageTransition<T> extends PageRouteBuilder<T> {
           reverseTransitionDuration: reverseDuration,
           settings: settings,
           maintainState: true,
-          transitionsBuilder: (BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-              Widget child,) {
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
             switch (type) {
               case PageTransitionType.FADE:
                 return FadeTransition(opacity: animation, child: child);

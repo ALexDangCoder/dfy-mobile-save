@@ -1,15 +1,18 @@
 import 'package:Dfy/config/base/base_screen.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/home/ui/home_screen.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
 import 'package:Dfy/presentation/pawn/ui/pawn_screen.dart';
 import 'package:Dfy/presentation/staking/ui/staking_screen.dart';
-import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/widgets/bottom_appbar.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../../main.dart';
 
 const int tabWalletIndex = 0;
 const int tabPawnIndex = 1;
@@ -18,7 +21,10 @@ const int tabMarketingPlaceIndex = 3;
 const int tabStakingIndex = 4;
 
 class MainScreen extends BaseScreen {
-  MainScreen({Key? key}) : super(key: key);
+
+
+  const MainScreen({Key? key})
+      : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -57,7 +63,7 @@ class _MainScreenState extends BaseState<MainScreen> {
 
   @override
   void initState() {
-    _handleEventBus();
+     _handleEventBus();
     _cubit = MainCubit();
     _cubit.init();
     super.initState();
@@ -90,6 +96,7 @@ class _MainScreenState extends BaseState<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+
       resizeToAvoidBottomInset: false,
       body: StreamBuilder(
         stream: _cubit.indexStream,
