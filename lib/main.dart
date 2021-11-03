@@ -38,6 +38,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final token = PrefsService.getToken();
 
+  @override
+  void initState() {
+    trustWalletChannel.setMethodCallHandler(nativeMethodCallBackTrustWallet);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,3 +83,4 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+

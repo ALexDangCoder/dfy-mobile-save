@@ -6,7 +6,8 @@ import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-void configureDependencies() {}
+void configureDependencies() {
+}
 
 int _connectTimeOut = 60000;
 
