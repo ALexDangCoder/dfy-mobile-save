@@ -1,5 +1,6 @@
 import 'package:Dfy/config/base/base_screen.dart';
 import 'package:Dfy/presentation/home/ui/home_screen.dart';
+import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
 import 'package:Dfy/presentation/pawn/ui/pawn_screen.dart';
@@ -49,7 +50,7 @@ class _MainScreenState extends BaseState<MainScreen> {
   List<GlobalKey<NavigatorState>> navigatorKeys = <GlobalKey<NavigatorState>>[];
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int lastDuration = 0;
+  int lastDuration = 3;
 
   final CompositeSubscription compositeSubscription = CompositeSubscription();
   late MainCubit _cubit;
@@ -61,7 +62,7 @@ class _MainScreenState extends BaseState<MainScreen> {
     _cubit.init();
     super.initState();
     _pages = [
-      const WalletScreen(),
+      const LoginScreen(),
       const PawnScreen(),
       const HomeScreen(),
       const MarketPlaceScreen(),
@@ -89,6 +90,7 @@ class _MainScreenState extends BaseState<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      resizeToAvoidBottomInset: false,
       body: StreamBuilder(
         stream: _cubit.indexStream,
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {

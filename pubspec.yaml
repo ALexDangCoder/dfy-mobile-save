@@ -49,6 +49,7 @@ dependencies:
   lint: ^1.6.0
   table_calendar: ^3.0.2
   image_picker: ^0.8.4+3
+  image_res: ^0.3.0
 
   #Library helpful
   intl: ^0.17.0
@@ -65,7 +66,6 @@ dependencies:
   rxdart: ^0.27.1
   expandable: 5.0.1
   sliding_up_panel: ^2.0.0+1
-
   carousel_slider: ^4.0.0-nullsafety.0
   dots_indicator: ^2.0.0
   #svg
@@ -81,6 +81,7 @@ dependencies:
   #  flutter_slidable: ^0.6.0
 
   shimmer: ^2.0.0
+  local_auth:
 
   # GETX
   get: ^4.1.4

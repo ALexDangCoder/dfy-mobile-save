@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 class MainCubit extends BaseCubit<MainState> {
   MainCubit() : super(MainStateInitial());
 
-  BehaviorSubject<int> _index = new BehaviorSubject<int>.seeded(0);
+  final BehaviorSubject<int> _index = BehaviorSubject<int>.seeded(0);
 
   Stream<int> get indexStream => _index.stream;
 

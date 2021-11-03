@@ -23,6 +23,7 @@ class _WalletState extends State<WalletScreen> {
     return Scaffold(
       body: Container(
         color: Colors.grey,
+        child: const Center(),
       ),
     );
   }

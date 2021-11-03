@@ -3,6 +3,9 @@ import 'package:Dfy/presentation/example_view/ui/example.dart';
 import 'package:Dfy/presentation/main/ui/main_screen.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/test_screen_init.dart';
+import 'package:Dfy/presentation/login/ui/login_screen.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +20,8 @@ class AppRouter {
   static const main = '/main';
   static const setupPassWord = '/setupPassWord';
   static const testScreen = '/testScreen';
+  static const login = '/login';
+  static const wallet = '/wallet';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
@@ -36,6 +41,13 @@ class AppRouter {
             bLocCreateSeedPhrase: BLocCreateSeedPhrase(),
           ),
         );
+        return MaterialPageRoute(builder: (ctx) => MainScreen());
+      // case splash:
+      //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
+      case login:
+        return MaterialPageRoute(builder: (ctx) => const LoginScreen());
+      case wallet:
+        return MaterialPageRoute(builder: (ctx) => const WalletScreen());
     }
   }
 }
