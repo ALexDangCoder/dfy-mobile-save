@@ -1,10 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/di/module.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SetupPassWord extends StatefulWidget {
@@ -15,8 +11,7 @@ class SetupPassWord extends StatefulWidget {
 }
 
 class _SetupPassWordState extends State<SetupPassWord> {
-  final isValidPassCubit = getIt.get<CheckPassCubit>();
-  final isMatchPassCubit = getIt.get<CheckMatchPassCubit>();
+  late CheckPassCubit isValidPassCubit;
 
   bool showPass = false;
   bool showPassConfirm = false;
@@ -25,6 +20,18 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
+
+  @override
+  void initState() {
+    isValidPassCubit = CheckPassCubit();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    isValidPassCubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,10 +86,10 @@ class _SetupPassWordState extends State<SetupPassWord> {
             child: btnContinue(),
             onTap: () {
               isValidPassCubit.isValidate(password.text);
-              isMatchPassCubit.isMatchPassword(
-                password.text,
-                confirmPassword.text,
-              );
+              // isMatchPassCubit.isMatchPassword(
+              //   password.text,
+              //   confirmPassword.text,
+              // );
             },
           ),
           SizedBox(
@@ -93,61 +100,34 @@ class _SetupPassWordState extends State<SetupPassWord> {
     );
   }
 
-  BlocBuilder showTextValidatePassword() {
-    return BlocBuilder(
-      bloc: isValidPassCubit,
-      builder: (ctx, state) {
-        if (state) {
-          return Visibility(
-            visible: !state,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 4.h,
-                ),
-                SizedBox(
-                  width: 323.w,
-                  height: 30.h,
-                  child: Text(
-                    'Password must include at least a number, '
-                    'an upper case, a lower\n case and a special '
-                    'character',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color.fromRGBO(255, 108, 108, 1),
-                    ),
+  Widget showTextValidatePassword() {
+    return StreamBuilder(
+      stream: isValidPassCubit.validatePWStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 323.w,
+                height: 30.h,
+                child: Text(
+                  'Password must include at least a number, '
+                  'an upper case, a lower\n case and a special '
+                  'character',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color.fromRGBO(255, 108, 108, 1),
                   ),
                 ),
-              ],
-            ),
-          );
-        } else {
-          return Visibility(
-            visible: state,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 4.h,
-                ),
-                SizedBox(
-                  width: 323.w,
-                  height: 30.h,
-                  child: Text(
-                    'Password must include at least a number, '
-                    'an upper case, a lower\n case and a special '
-                    'character',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color.fromRGBO(255, 108, 108, 1),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
+              ),
+            ],
+          ),
+        );
       },
     );
   }

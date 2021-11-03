@@ -10,8 +10,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 GetIt getIt = GetIt.instance;
 void configureDependencies() {
-  getIt.registerFactory<CheckPassCubit>(() => CheckPassCubit());
-  getIt.registerFactory<CheckMatchPassCubit>(() => CheckMatchPassCubit());
+
 }
 
 int _connectTimeOut = 60000;
