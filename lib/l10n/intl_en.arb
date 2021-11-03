@@ -8,6 +8,10 @@
   "retry": "Retry",
   "unauthorized": "Your session has expired. Please sign in.",
   "search": "Search...",
+  "tab_wallet": "Wallet",
+  "tab_pawn": "Pawn",
+  "tab_market_place": "Marketplace",
+  "tab_staking": "Staking",
   "seed_phrase": "Seed phrase",
   "private_key": "Private key",
   "wallet_secret": "Wallet secret seed phrase"
