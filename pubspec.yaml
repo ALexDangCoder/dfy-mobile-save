@@ -48,7 +48,7 @@ dependencies:
   lint: ^1.6.0
   table_calendar: ^3.0.2
   image_picker: ^0.8.4+3
-  image_res: ^0.3.0
+
 
   #Library helpful
   intl: ^0.17.0

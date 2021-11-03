@@ -1,8 +1,6 @@
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
-import 'package:Dfy/presentation/example_view/ui/example.dart';
-import 'package:Dfy/presentation/restore_account/ui/test_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -64,10 +62,15 @@ class PageTransition<T> extends PageRouteBuilder<T> {
     this.reverseDuration = const Duration(milliseconds: 300),
     RouteSettings? settings,
   })  : assert(
-            inheritTheme, "'ctx' cannot be null when 'inheritTheme' is true",),
+          inheritTheme,
+          "'ctx' cannot be null when 'inheritTheme' is true",
+        ),
         super(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation,) {
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
             return inheritTheme
                 ? InheritedTheme.captureAll(
                     ctx!,
@@ -79,10 +82,12 @@ class PageTransition<T> extends PageRouteBuilder<T> {
           reverseTransitionDuration: reverseDuration,
           settings: settings,
           maintainState: true,
-          transitionsBuilder: (BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-              Widget child,), {
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
             switch (type) {
               case PageTransitionType.FADE:
                 return FadeTransition(opacity: animation, child: child);
