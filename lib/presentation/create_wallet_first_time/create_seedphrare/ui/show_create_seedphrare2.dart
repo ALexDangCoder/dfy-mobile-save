@@ -1,16 +1,15 @@
 import 'dart:ui';
 import 'package:Dfy/domain/model/item.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/checkbox/checkbox_custom.dart';
+import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
 import 'package:Dfy/widgets/header_create/header_create.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase.dart';
 import 'package:Dfy/widgets/list_passphrase/list_passphrase.dart';
-import 'package:Dfy/widgets/show_modal_bottomsheet/show_create_successfully.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'bloc/bloc_creare_seedphrase.dart';
 
 void showCreateSeedPhrase2(
     BuildContext context, BLocCreateSeedPhrase bLocCreateSeedPhrase) {
@@ -96,11 +95,12 @@ void showCreateSeedPhrase2(
                     SizedBox(
                       height: 41.h,
                     ),
-                    const CheckBoxCustom(
-                      title: 'I understand that if I lose my recovery private\n'
-                          'key or passphrase, I will not be able to access my\n'
-                          ' wallet',
-                    ),
+                    CheckBoxCustom2(
+                        title:
+                            'I understand that if I lose my recovery private\n'
+                            'key or passphrase, I will not be able to access my\n'
+                            ' wallet',
+                        bLocCreateSeedPhrase: bLocCreateSeedPhrase),
                     SizedBox(
                       height: 80.h,
                     ),
@@ -117,9 +117,6 @@ void showCreateSeedPhrase2(
                   title: 'Create',
                 ),
               ),
-            ),
-            SizedBox(
-              height: 38.h,
             ),
           ],
         ),

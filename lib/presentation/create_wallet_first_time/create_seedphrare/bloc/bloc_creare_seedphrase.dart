@@ -1,12 +1,14 @@
-
 import 'package:Dfy/domain/model/item.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BLocCreateSeedPhrase {
   BLocCreateSeedPhrase() {
-    getList();
+    getListTitle();
   }
 
+  BehaviorSubject<bool> isCheck = BehaviorSubject.seeded(false);
+
+  BehaviorSubject<bool> isCheck2 = BehaviorSubject.seeded(false);
   BehaviorSubject<List<Item>> listTitle = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
   List<String> listTitle1 = [
@@ -26,7 +28,7 @@ class BLocCreateSeedPhrase {
   final List<Item> listTitle2 = [];
   final List<Item> listTitle3 = [];
 
-  void getList4(String title) {
+  void reloadListTitleBox(String title) {
     for (final Item value in listTitle2) {
       if (value.title == title) {
         value.isCheck = false;
@@ -35,20 +37,20 @@ class BLocCreateSeedPhrase {
     listTitle.sink.add(listTitle2);
   }
 
-  void getList() {
+  void getListTitle() {
     for (final String title in listTitle1) {
       listTitle2.add(Item(title: title));
     }
     listTitle.sink.add(listTitle2);
-    getList3();
+    reloadListSeedPhrase();
   }
 
-  void getList3() {
+  void reloadListSeedPhrase() {
     listSeedPhrase.sink.add(listTitle3);
   }
 
-  void getList2() {
+  void reloadListTitle() {
     listTitle.sink.add(listTitle2);
-    getList3();
+    reloadListSeedPhrase();
   }
 }

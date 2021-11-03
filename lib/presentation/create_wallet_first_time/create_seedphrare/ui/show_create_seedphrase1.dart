@@ -1,15 +1,14 @@
 import 'dart:ui';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrare2.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom.dart';
 import 'package:Dfy/widgets/from/from_text.dart';
 import 'package:Dfy/widgets/header_create/header_create.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrasse_copy.dart';
-import 'package:Dfy/widgets/show_modal_bottomsheet/show_create_seedphrare2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'bloc/bloc_creare_seedphrase.dart';
 
 void showCreateSeedPhrase1(
     BuildContext context, BLocCreateSeedPhrase blocCreateSeedPhrase) {
@@ -55,23 +54,23 @@ void showCreateSeedPhrase1(
                     const FromText(
                       title: 'Wallet name',
                       urlSuffixIcon: '',
-                      urlPrefixIcon: 'assets/images/wallet.png',
+                      urlPrefixIcon: 'assets/images/ic_wallet.png',
                     ),
                     SizedBox(
                       height: 16.h,
                     ),
                     const FromText(
                       title: 'Wallet name',
-                      urlSuffixIcon: 'assets/images/copy.png',
-                      urlPrefixIcon: 'assets/images/address.png',
+                      urlSuffixIcon: 'assets/images/ic_copy.png',
+                      urlPrefixIcon: 'assets/images/ic_address.png',
                     ),
                     SizedBox(
                       height: 16.h,
                     ),
                     const FromText(
                       title: 'Private key',
-                      urlSuffixIcon: 'assets/images/copy.png',
-                      urlPrefixIcon: 'assets/images/key.png',
+                      urlSuffixIcon: 'assets/images/ic_copy.png',
+                      urlPrefixIcon: 'assets/images/ic_key.png',
                     ),
                     SizedBox(
                       height: 20.h,
@@ -79,13 +78,13 @@ void showCreateSeedPhrase1(
                     Column(
                       children: [
                         BoxListPassWordPhraseCopy(
-                          listTitle: blocCreateSeedPhrase.listTitle1,
-                        ),
+                            listTitle: blocCreateSeedPhrase.listTitle1),
                         SizedBox(
                           height: 17.h,
                         ),
-                        const CheckBoxCustom(
+                         CheckBoxCustom(
                           title: 'Do not provide your recovery key to anyone',
+                          bLocCreateSeedPhrase: blocCreateSeedPhrase,
                         ),
                         SizedBox(
                           height: 18.h,

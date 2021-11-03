@@ -2,11 +2,11 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CheckBoxCustom extends StatelessWidget {
+class CheckBoxCustom2 extends StatelessWidget {
   final String title;
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
-  const CheckBoxCustom(
+  const CheckBoxCustom2(
       {Key? key, required this.title, required this.bLocCreateSeedPhrase})
       : super(key: key);
 
@@ -17,7 +17,7 @@ class CheckBoxCustom extends StatelessWidget {
       child: Row(
         children: [
           StreamBuilder(
-              stream: bLocCreateSeedPhrase.isCheck,
+              stream: bLocCreateSeedPhrase.isCheck2,
               builder: (context, AsyncSnapshot<bool> snapshot) {
                 return Checkbox(
                   fillColor: MaterialStateProperty.all(const Color(0xffE4AC1A)),
@@ -26,9 +26,9 @@ class CheckBoxCustom extends StatelessWidget {
                   ),
                   value: snapshot.data ?? false,
                   onChanged: (value) {
-                    bLocCreateSeedPhrase.isCheck.sink.add(true);
+                    bLocCreateSeedPhrase.isCheck2.sink.add(true);
                     if(snapshot.data??false){
-                      bLocCreateSeedPhrase.isCheck.sink.add(false);
+                      bLocCreateSeedPhrase.isCheck2.sink.add(false);
                     }
                   },
                   activeColor: const Color(0xffE4AC1A),

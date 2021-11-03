@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:Dfy/domain/model/item.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
-import 'package:Dfy/widgets/show_modal_bottomsheet/bloc/bloc_creare_seedphrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -36,9 +36,10 @@ class BoxListPassWordPhrase extends StatelessWidget {
               (int index) {
                 return GestureDetector(
                   onTap: () {
-                    bLocCreateSeedPhrase.getList4(listTitle[index].title);
+                    bLocCreateSeedPhrase
+                        .reloadListTitleBox(listTitle[index].title);
                     bLocCreateSeedPhrase.listTitle3.removeAt(index);
-                    bLocCreateSeedPhrase.getList2();
+                    bLocCreateSeedPhrase.reloadListTitle();
                   },
                   child: ItemSeedPhrase(
                     title: '${index + 1}. ${listTitle[index].title}',

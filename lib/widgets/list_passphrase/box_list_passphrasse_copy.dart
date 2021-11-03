@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class BoxListPassWordPhraseCopy extends StatelessWidget {
   final List<String> listTitle;
 
-  const BoxListPassWordPhraseCopy({Key? key, required this.listTitle})
+  const BoxListPassWordPhraseCopy({Key? key, required this.listTitle,})
       : super(key: key);
 
   @override
@@ -39,9 +40,10 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
                   FlutterClipboard.copy(listTitle.toString());
                 },
                 child: Image.asset(
-                  'assets/images/copy.png',
+                  'assets/images/ic_copy.png',
                   height: 17.67.h,
                   width: 19.14.w,
+                  color: const Color(0xffE4AC1A),
                 ),
               ),
             ],

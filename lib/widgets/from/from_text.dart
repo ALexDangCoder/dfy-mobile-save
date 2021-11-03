@@ -45,8 +45,6 @@ class FromText extends StatelessWidget {
             ],
           ),
           InkWell(
-            hoverColor: Colors.amber,
-            focusColor: Colors.amber,
             onTap: () {
               FlutterClipboard.copy(title);
             },
@@ -59,9 +57,6 @@ class FromText extends StatelessWidget {
                     )
                   : null,
             ),
-          ),
-          SizedBox(
-            height: 38.h,
           ),
         ],
       ),

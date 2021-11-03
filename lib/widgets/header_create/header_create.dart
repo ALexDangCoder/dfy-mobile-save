@@ -11,7 +11,7 @@ class HeaderCreate extends StatelessWidget {
       children: [
         GestureDetector(
           child: Image.asset(
-            'assets/images/out.png',
+            'assets/images/ic_out.png',
           ),
           onTap: () {
             Navigator.pop(context);
@@ -32,7 +32,7 @@ class HeaderCreate extends StatelessWidget {
         ),
         GestureDetector(
           child: Image.asset(
-            'assets/images/close.png',
+            'assets/images/ic_close.png',
           ),
           onTap: () {
             Navigator.pop(context);

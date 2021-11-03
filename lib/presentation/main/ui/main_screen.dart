@@ -1,12 +1,11 @@
-import 'package:Dfy/widgets/show_modal_bottomsheet/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/widgets/show_modal_bottomsheet/show_create_seedphrase1.dart';
-import 'package:Dfy/widgets/show_modal_bottomsheet/show_create_successfully.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
-   const MainScreen({Key? key, required this.bLocCreateSeedPhrase})
+  const MainScreen({Key? key, required this.bLocCreateSeedPhrase})
       : super(key: key);
 
   @override
@@ -18,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-   // widget.bLocCreateSeedPhrase.getList();
+    // widget.bLocCreateSeedPhrase.getList();
   }
 
   @override
@@ -29,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                showCreateSeedPhrase1(context,BLocCreateSeedPhrase());
+                showCreateSeedPhrase1(context, BLocCreateSeedPhrase());
               },
               icon: const Icon(Icons.padding))
         ],
