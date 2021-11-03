@@ -5,28 +5,38 @@ import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../main.dart';
+
 part 'check_pass_state.dart';
+
 class CheckPassCubit extends Cubit<CheckPassState> {
-
-
   CheckPassCubit() : super(CheckPassInitial());
 
   final BehaviorSubject<bool> _validatePW = BehaviorSubject<bool>.seeded(false);
-  final BehaviorSubject<bool> _matchPW =  BehaviorSubject<bool>.seeded(false);
-  final BehaviorSubject<bool> _showPW =  BehaviorSubject<bool>.seeded(true);
-  final BehaviorSubject<bool> _showConfirmPW = BehaviorSubject<bool>.seeded(true);
+  final BehaviorSubject<bool> _matchPW = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _showPW = BehaviorSubject<bool>.seeded(true);
+  final BehaviorSubject<bool> _ckcBox = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _showConfirmPW =
+      BehaviorSubject<bool>.seeded(true);
 
   Stream<bool> get validatePWStream => _validatePW.stream;
+
   Stream<bool> get matchPWStream => _matchPW.stream;
+
   Stream<bool> get showPWStream => _showPW.stream;
+
   Stream<bool> get showConfirmPWStream => _showConfirmPW.stream;
 
+  Stream<bool> get ckcBoxStream => _ckcBox.stream;
+
   Sink<bool> get validatePWSink => _validatePW.sink;
+
   Sink<bool> get matchPWSink => _matchPW.sink;
+
   Sink<bool> get showPWSink => _showPW.sink;
+
+  Sink<bool> get ckcBoxSink => _ckcBox.sink;
+
   Sink<bool> get showConfirmPWSink => _showConfirmPW.sink;
-
-
 
   void isValidate(String value) {
     if (Validator.validateStructure(value)) {
@@ -37,8 +47,16 @@ class CheckPassCubit extends Cubit<CheckPassState> {
     }
   }
 
+  bool isValidFtMatchPW(String value, String confirmValue) {
+    if(Validator.validateStructure(value) && (value == confirmValue)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void isMatchPW({required String password, required String confirmPW}) {
-    if(password == confirmPW) {
+    if (password == confirmPW) {
       //if equal widget warning will not appear
       matchPWSink.add(false);
     } else {
@@ -47,7 +65,7 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   }
 
   void isShowPW(int index) {
-    if(index == 1) {
+    if (index == 1) {
       //if 1 show pass
       showPWSink.add(false);
     } else {
@@ -56,14 +74,13 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   }
 
   void isShowConfirmPW(int index) {
-    if(index == 1) {
+    if (index == 1) {
       //if 1 show pass
       showConfirmPWSink.add(false);
     } else {
       showConfirmPWSink.add(true);
     }
   }
-
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     String privateKey;
@@ -80,15 +97,6 @@ class CheckPassCubit extends Cubit<CheckPassState> {
     }
   }
 
-  // Future<void> checkPasswordWallet(String password) async {
-  //   try {
-  //     final data = {
-  //       'password': password,
-  //     };
-  //     await trustWalletChannel.invokeMethod('checkPassword', data);
-  //   } on PlatformException {}
-  // }
-
   Future<void> generateWallet({required String password}) async {
     try {
       final data = {
@@ -100,7 +108,6 @@ class CheckPassCubit extends Cubit<CheckPassState> {
     }
   }
 
-
   @override
   Future<void> close() {
     _validatePW.close();
@@ -109,7 +116,4 @@ class CheckPassCubit extends Cubit<CheckPassState> {
     _showPW.close();
     return super.close();
   }
-
-
 }
-

@@ -22,6 +22,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   int indexPW = 1;
   int indexConfirmPW = 1;
+  int checkBox = 1;
+  int isValidPass = 1;
+  int isMatchPass = 1;
 
   @override
   void initState() {
@@ -89,7 +92,16 @@ class _SetupPassWordState extends State<SetupPassWord> {
             onTap: () {
               isValidPassCubit.isValidate(password.text);
               isValidPassCubit.isMatchPW(
-                  password: password.text, confirmPW: confirmPassword.text);
+                password: password.text,
+                confirmPW: confirmPassword.text,
+              );
+              if (checkBox == 2 &&
+                  isValidPassCubit.isValidFtMatchPW(
+                    password.text,
+                    confirmPassword.text,
+                  )) {
+
+              }
             },
           ),
           SizedBox(
@@ -201,13 +213,25 @@ class _SetupPassWordState extends State<SetupPassWord> {
             child: SizedBox(
               width: 24.w,
               height: 24.h,
-              child: Checkbox(
-                activeColor: const Color.fromRGBO(228, 172, 26, 1),
-                // checkColor: const Colors,
-                onChanged: (bool? value) {
-                  null;
+              child: StreamBuilder(
+                stream: isValidPassCubit.ckcBoxStream,
+                builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                  return Checkbox(
+                    fillColor:
+                        MaterialStateProperty.all(const Color(0xffE4AC1A)),
+                    activeColor: const Color.fromRGBO(228, 172, 26, 1),
+                    // checkColor: const Colors,
+                    onChanged: (bool? value) {
+                      isValidPassCubit.ckcBoxSink.add(value ?? false);
+                      if (value == true) {
+                        checkBox = 2;
+                      } else {
+                        checkBox = 1;
+                      }
+                    },
+                    value: snapshot.data,
+                  );
                 },
-                value: true,
               ),
             ),
           ),
@@ -265,7 +289,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               ),
               suffixIcon: InkWell(
                 onTap: () {
-                  if(indexPW == 1) {
+                  if (indexPW == 1) {
                     isValidPassCubit.isShowPW(1);
                     indexPW = 2;
                   } else {
@@ -323,7 +347,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               ),
               suffixIcon: InkWell(
                 onTap: () {
-                  if(indexConfirmPW == 1) {
+                  if (indexConfirmPW == 1) {
                     isValidPassCubit.isShowConfirmPW(1);
                     indexConfirmPW = 2;
                   } else {
