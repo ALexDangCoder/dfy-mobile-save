@@ -10,7 +10,7 @@ class PrefsService {
   static Future<SharedPreferences> get _instance async =>
       _prefsInstance ??= await SharedPreferences.getInstance();
 
-  // call this method from iniState() function of mainApp().
+  // call this method form iniState() function of mainApp().
   static Future<SharedPreferences> init() async {
     _prefsInstance = await _instance;
     return _prefsInstance!;

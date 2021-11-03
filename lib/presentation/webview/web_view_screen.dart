@@ -79,7 +79,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
             onWillPop: () async {
               await backToPreScreen();
               return true;
-            }),
+            },),
       ),
     );
   }

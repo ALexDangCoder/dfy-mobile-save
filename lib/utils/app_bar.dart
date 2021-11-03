@@ -12,7 +12,7 @@ class AppBarNormal extends AppBar with PreferredSizeWidget {
       Widget? leading,
       dynamic action,
       onRightTap,
-      Color? backgroundColor})
+      Color? backgroundColor,})
       : super(
           key: key,
           // leadingWidth: 82,
@@ -34,7 +34,7 @@ class AppBarNormal extends AppBar with PreferredSizeWidget {
                     Center(
                       child: buildAppBarButton(action,
                           onPressed: onRightTap,
-                          margin: const EdgeInsets.only(right: 20)),
+                          margin: const EdgeInsets.only(right: 20),),
                     )
                   else
                     const SizedBox.shrink()
@@ -56,7 +56,7 @@ Widget _buildLeading(Widget? child, BuildContext context) {
 }
 
 Widget buildAppBarButton(Widget child,
-    {Function? onPressed, EdgeInsets? margin}) {
+    {Function? onPressed, EdgeInsets? margin,}) {
   final ButtonStyle outlineButtonStyle = OutlinedButton.styleFrom(
     primary: Colors.black87,
     padding: const EdgeInsets.all(4),

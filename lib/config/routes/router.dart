@@ -12,6 +12,8 @@ class AppRouter {
   ///Main App
   static const splash = '/splash';
   static const main = '/main';
+  static const setupPassWord = '/setupPassWord';
+  static const testScreen = '/testScreen';
   static const login = '/login';
   static const wallet = '/wallet';
 
@@ -19,10 +21,19 @@ class AppRouter {
     // final args = settings.arguments;
 
     switch (settings.name) {
-      case main:
-        return MaterialPageRoute(builder: (ctx) => MainScreen());
       // case splash:
       //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
+      case testScreen:
+        return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
+      case setupPassWord:
+        return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
+      case main:
+        return MaterialPageRoute(builder: (ctx) =>  MainScreen());
+      // case main:
+      //   return MaterialPageRoute(
+      //       builder: (ctx) => MainScreen(
+      //             bLocCreateSeedPhrase: BLocCreateSeedPhrase(),
+      //           ),);
 
       case login:
         return MaterialPageRoute(builder: (ctx) => const LoginScreen());

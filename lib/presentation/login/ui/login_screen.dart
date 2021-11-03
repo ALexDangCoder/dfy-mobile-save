@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
 import 'package:flutter/cupertino.dart';
@@ -209,7 +210,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) {
+                            return const SetupPassWord();
+                          },);
+                      },
                       child: Text(
                         'New wallet',
                         style: TextStyle(

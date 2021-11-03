@@ -85,7 +85,7 @@ class CalendarChoose extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             //normal day
-            defaultTextStyle: TextStyle(color: Color(0xFFFFFFFF))),
+            defaultTextStyle: TextStyle(color: Color(0xFFFFFFFF)),),
         onDaySelected: (selectedDay, focusedDay) {
           onDaySelected(selectedDay, focusedDay);
         },

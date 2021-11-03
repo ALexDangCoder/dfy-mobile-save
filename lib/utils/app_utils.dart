@@ -14,6 +14,7 @@ bool isEmail(String email) {
   return RegExp(EMAIL_REGEX).hasMatch(email);
 }
 
+
 /// validate vietnam phone number
 bool isVNPhone(String phone) {
   return RegExp(VN_PHONE).hasMatch(phone);
@@ -99,7 +100,7 @@ void showLoading(BuildContext context, {Function? close}) {
           ),
           onWillPop: () async => false,
         );
-      }).then(
+      },).then(
     (value) {
       if (close != null) close(value);
     },

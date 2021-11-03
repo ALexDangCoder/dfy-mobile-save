@@ -1,12 +1,10 @@
 import 'package:Dfy/data/di/flutter_transformer.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
-import 'package:Dfy/presentation/restore_account/bloc/pass_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
 
 void configureDependencies() {
 }
