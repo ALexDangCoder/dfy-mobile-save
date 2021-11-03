@@ -7,3 +7,9 @@ class UnAuthEvent {
 
   UnAuthEvent(this.message);
 }
+
+class OpenMainTabIndex {
+  final int tabIndex;
+
+  OpenMainTabIndex(this.tabIndex);
+}
