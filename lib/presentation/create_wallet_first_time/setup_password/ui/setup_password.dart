@@ -334,7 +334,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         stream: isValidPassCubit.showConfirmPWStream,
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           return TextFormField(
-            obscureText: snapshot.data,
+            obscureText: snapshot.data ?? false,
             style: textNormal(
               Colors.white,
               16.sp,

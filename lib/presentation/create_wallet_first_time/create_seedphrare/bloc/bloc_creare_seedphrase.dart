@@ -22,7 +22,8 @@ class BLocCreateSeedPhrase {
   BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
 
   var data =
-      "happy lovely eternity victory school trust careful success confident drama patient hold";
+      'happy lovely eternity victory school trust careful success confident'
+      ' drama patient hold';
 
   void getStringToList() {
     listTitle1 = data.split(' ');

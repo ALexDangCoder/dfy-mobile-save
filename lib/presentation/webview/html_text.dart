@@ -16,7 +16,7 @@ class HtmlText extends StatelessWidget {
       data: data,
       shrinkWrap: false,
       style: {
-        "p": Style(
+        'p': Style(
           // border: Border.all(color: Colors.grey),
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
@@ -27,7 +27,7 @@ class HtmlText extends StatelessWidget {
           textOverflow: overflow,
           alignment: Alignment.topLeft,
         ),
-        "div": Style(
+        'div': Style(
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
           lineHeight: LineHeight.em(1.2),

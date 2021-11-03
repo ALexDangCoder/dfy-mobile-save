@@ -22,7 +22,7 @@ class StateFullLayout extends StatelessWidget {
       required Widget child,
       required AppException error,
       required Function() retry,
-      required dynamic textEmpty})
+      required dynamic textEmpty,})
       : _stateLayout = stateLayout,
         _error = error,
         _child = child,

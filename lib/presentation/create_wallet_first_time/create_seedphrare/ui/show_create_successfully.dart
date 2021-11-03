@@ -34,7 +34,7 @@ void showCreateSuccessfully(BuildContext context) {
                 style: TextStyle(
                     fontSize: 20.sp,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.bold,),
               ),
             ),
             SizedBox(
@@ -60,7 +60,7 @@ void showCreateSuccessfully(BuildContext context) {
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 32.sp),
+                          fontSize: 32.sp,),
                     ),
                     SizedBox(
                       height: 111.h,

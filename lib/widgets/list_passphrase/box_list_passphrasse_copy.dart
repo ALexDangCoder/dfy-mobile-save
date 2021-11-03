@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';

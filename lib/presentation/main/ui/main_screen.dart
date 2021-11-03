@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     trustWalletChannel.setMethodCallHandler(
-        widget.bLocCreateSeedPhrase.nativeMethodCallBackTrustWallet);
+        widget.bLocCreateSeedPhrase.nativeMethodCallBackTrustWallet,);
     super.initState();
   }
 
@@ -37,9 +37,9 @@ class _MainScreenState extends State<MainScreen> {
                     backgroundColor: Colors.transparent,
                     builder: (context) {
                       return const SetupPassWord();
-                    });
+                    },);
               },
-              icon: const Icon(Icons.padding))
+              icon: const Icon(Icons.padding),)
         ],
       ),
     );

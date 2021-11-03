@@ -10,7 +10,7 @@ class ItemSeedPhrase extends StatelessWidget {
     return  Container(
       height: 30.h,
       padding: EdgeInsets.symmetric(
-          vertical: 5.h, horizontal: 12.w),
+          vertical: 5.h, horizontal: 12.w,),
       decoration: BoxDecoration(
         color: Colors.transparent,
         border:

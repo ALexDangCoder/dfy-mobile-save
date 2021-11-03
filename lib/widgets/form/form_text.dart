@@ -11,7 +11,7 @@ class FromText extends StatelessWidget {
       {Key? key,
       required this.urlPrefixIcon,
       required this.title,
-      required this.urlSuffixIcon})
+      required this.urlSuffixIcon,})
       : super(key: key);
 
   @override

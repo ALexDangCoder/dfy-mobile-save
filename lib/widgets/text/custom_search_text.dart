@@ -6,7 +6,7 @@ class CustomSearchText extends StatelessWidget {
   final Function(String) textChange;
 
   const CustomSearchText(
-      {Key? key, required this.hintText, required this.textChange})
+      {Key? key, required this.hintText, required this.textChange,})
       : super(key: key);
 
   @override

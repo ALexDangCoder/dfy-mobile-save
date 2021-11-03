@@ -10,7 +10,7 @@ void openScreenWithData(BuildContext context, String screenName, Object args) {
 }
 
 void openScreenWithDataForResult(
-    BuildContext context, String screenName, Object args, Function action) {
+    BuildContext context, String screenName, Object args, Function action,) {
   Navigator.of(context).pushNamed(screenName, arguments: args).then((result) {
     if (result != null) {
       action(result);
@@ -23,7 +23,7 @@ void replaceScreen(BuildContext context, String screenName) {
 }
 
 void openScreenAndRemoveUtil(BuildContext context, String screenName,
-    {dynamic args}) {
+    {dynamic args,}) {
   Navigator.of(context).pushNamedAndRemoveUntil(
     screenName,
     (Route<dynamic> route) => false,

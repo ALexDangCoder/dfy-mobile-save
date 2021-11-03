@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void showCreateSeedPhrase1(
-    BuildContext context, BLocCreateSeedPhrase blocCreateSeedPhrase) {
+    BuildContext context, BLocCreateSeedPhrase blocCreateSeedPhrase,) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -78,7 +78,7 @@ void showCreateSeedPhrase1(
                     Column(
                       children: [
                         BoxListPassWordPhraseCopy(
-                            listTitle: blocCreateSeedPhrase.listTitle1),
+                            listTitle: blocCreateSeedPhrase.listTitle1,),
                         SizedBox(
                           height: 17.h,
                         ),

@@ -11,7 +11,7 @@ class BoxListPassWordPhrase extends StatelessWidget {
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
   const BoxListPassWordPhrase(
-      {Key? key, required this.listTitle, required this.bLocCreateSeedPhrase})
+      {Key? key, required this.listTitle, required this.bLocCreateSeedPhrase,})
       : super(key: key);
 
   @override

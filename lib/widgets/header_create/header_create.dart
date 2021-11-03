@@ -25,7 +25,7 @@ class HeaderCreate extends StatelessWidget {
           style: TextStyle(
               fontSize: 20.sp,
               color: Colors.white,
-              fontWeight: FontWeight.bold),
+              fontWeight: FontWeight.bold,),
         ),
         SizedBox(
           width: 64.w,

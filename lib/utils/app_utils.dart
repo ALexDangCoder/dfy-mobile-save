@@ -100,7 +100,7 @@ void showLoading(BuildContext context, {Function? close}) {
           ),
           onWillPop: () async => false,
         );
-      }).then(
+      },).then(
     (value) {
       if (close != null) close(value);
     },

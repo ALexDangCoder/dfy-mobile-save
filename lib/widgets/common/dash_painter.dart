@@ -25,7 +25,7 @@ class _DashPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
+    final Paint paint = Paint()
       ..strokeWidth = strokeWidth
       ..color = color
       ..strokeCap = strokeCap
@@ -67,9 +67,9 @@ class _DashPainter extends CustomPainter {
 
   /// Returns a circular path of [size]
   Path _getCirclePath(Size size) {
-    double width = size.width;
-    double height = size.height;
-    double side = size.shortestSide;
+    final double width = size.width;
+    final double height = size.height;
+    final double side = size.shortestSide;
 
     return Path()
       ..addRRect(
@@ -129,9 +129,9 @@ class _DashPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_DashPainter oldDelegate) {
-    return oldDelegate.strokeWidth != this.strokeWidth ||
-        oldDelegate.color != this.color ||
-        oldDelegate.dashPattern != this.dashPattern ||
-        oldDelegate.borderType != this.borderType;
+    return oldDelegate.strokeWidth != strokeWidth ||
+        oldDelegate.color != color ||
+        oldDelegate.dashPattern != dashPattern ||
+        oldDelegate.borderType != borderType;
   }
 }

@@ -9,7 +9,7 @@ class ListPassPhrase extends StatelessWidget {
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
   const ListPassPhrase(
-      {Key? key, required this.listTitle, required this.bLocCreateSeedPhrase})
+      {Key? key, required this.listTitle, required this.bLocCreateSeedPhrase,})
       : super(key: key);
 
   @override
@@ -34,7 +34,7 @@ class ListPassPhrase extends StatelessWidget {
                   },
                   child: listTitle[index].isCheck
                       ? const SizedBox()
-                      : ItemSeedPhrase(title: listTitle[index].title));
+                      : ItemSeedPhrase(title: listTitle[index].title),);
             },
           ),
         ),

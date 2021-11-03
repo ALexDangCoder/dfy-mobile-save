@@ -89,7 +89,7 @@ class _ShapePainter extends CustomPainter {
           strokeWidth / 2, // radX
           strokeWidth / 2, // radY
         ),
-        _paint);
+        _paint,);
     canvas.restore();
   }
 

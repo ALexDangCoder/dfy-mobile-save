@@ -34,7 +34,7 @@ class _ButtonGoldState extends State<ButtonGold> {
           style: TextStyle(
               fontSize: 20.sp,
               color: Colors.white,
-              fontWeight: FontWeight.bold),
+              fontWeight: FontWeight.bold,),
         ),
       ),
     );

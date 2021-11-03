@@ -11,7 +11,7 @@ class FromSwitch extends StatefulWidget {
       {Key? key,
       required this.isCheck,
       required this.title,
-      required this.urlPrefixIcon})
+      required this.urlPrefixIcon,})
       : super(key: key);
 
   @override
@@ -48,7 +48,7 @@ class _FromSwitchState extends State<FromSwitch> {
               widget.title,
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16.sp
+                  fontSize: 16.sp,
 
             ),
           ),

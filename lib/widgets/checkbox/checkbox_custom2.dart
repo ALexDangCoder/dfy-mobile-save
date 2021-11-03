@@ -7,7 +7,7 @@ class CheckBoxCustom2 extends StatelessWidget {
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
   const CheckBoxCustom2(
-      {Key? key, required this.title, required this.bLocCreateSeedPhrase})
+      {Key? key, required this.title, required this.bLocCreateSeedPhrase,})
       : super(key: key);
 
   @override
@@ -33,7 +33,7 @@ class CheckBoxCustom2 extends StatelessWidget {
                   },
                   activeColor: const Color(0xffE4AC1A),
                 );
-              }),
+              },),
           Text(
             title,
             style: TextStyle(

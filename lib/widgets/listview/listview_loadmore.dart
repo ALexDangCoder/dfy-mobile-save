@@ -19,7 +19,7 @@ class ListViewLoadMore extends StatelessWidget {
 
   const ListViewLoadMore(
       this.cubit, this.callApi, this.callApiMore, this.viewItem,
-      {Key? key})
+      {Key? key,})
       : super(key: key);
 
   Future<void> refreshPosts() async {
@@ -54,7 +54,7 @@ class ListViewLoadMore extends StatelessWidget {
             _isLoading = true;
             showLoading(ctx, close: (value) {
               _isLoading = false;
-            });
+            },);
           }
         }
         if (_isLoading && state is! Loading) {
