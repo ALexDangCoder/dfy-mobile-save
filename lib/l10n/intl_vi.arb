@@ -7,5 +7,9 @@
   "error_network": "Vui lòng kiểm tra kết nối mạng!",
   "retry": "Thử lại",
   "unauthorized": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
-  "search": "Tìm kiếm..."
+  "search": "Tìm kiếm...",
+  "tab_wallet": "Wallet",
+  "tab_pawn": "Pawn",
+  "tab_market_place": "Marketplace",
+  "tab_staking": "Staking"
 }

@@ -1,3 +1,4 @@
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/example_view/ui/example.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -10,7 +11,6 @@ class AppRouter {
 
   ///Main App
   static const splash = '/splash';
-  static const example = '/example';
   static const main = '/main';
   static const login = '/login';
 
@@ -18,6 +18,8 @@ class AppRouter {
     // final args = settings.arguments;
 
     switch (settings.name) {
+      case main:
+        return MaterialPageRoute(builder: (ctx) => MainScreen());
       // case splash:
       //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
       case example:

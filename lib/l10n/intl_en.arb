@@ -7,5 +7,9 @@
   "error_network": "No internet!",
   "retry": "Retry",
   "unauthorized": "Your session has expired. Please sign in.",
-  "search": "Search..."
+  "search": "Search...",
+  "tab_wallet": "Wallet",
+  "tab_pawn": "Pawn",
+  "tab_market_place": "Marketplace",
+  "tab_staking": "Staking"
 }
