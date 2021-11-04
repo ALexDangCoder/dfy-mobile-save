@@ -1,6 +1,5 @@
 import 'package:Dfy/config/base/base_screen.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
+import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/presentation/home/ui/home_screen.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
@@ -12,7 +11,7 @@ import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../main.dart';
+
 
 const int tabWalletIndex = 0;
 const int tabPawnIndex = 1;
@@ -94,6 +93,9 @@ class _MainScreenState extends BaseState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage('$baseImg/symbol.png'), context);
+    precacheImage(const AssetImage('$baseImg/Centered.png'), context);
+    precacheImage(const AssetImage('$baseImg/Centered.png'), context);
     return Scaffold(
       key: scaffoldKey,
 

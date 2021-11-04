@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
 
 Future<void> mainApp() async {
