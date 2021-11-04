@@ -13,6 +13,11 @@ class ImageAssets {
   static const String key = '$baseImg/key.png';
   static const String show = '$baseImg/Show.png';
   static const String hide = '$baseImg/Hide.png';
+  static const String defiText = '$baseImg/defi_text.png';
+  static const String save = '$baseImg/save.png';
+  static const String set_amount = '$baseImg/set_amount.png';
+  static const String share = '$baseImg/share.png';
+
 
   static SvgPicture svgAssets(
     String name, {

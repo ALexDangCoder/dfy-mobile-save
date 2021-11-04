@@ -95,6 +95,7 @@ dependencies:
   image_res: ^0.3.0
   auto_size_text_field: ^1.0.1
   get_it: ^7.2.0
+  qr_flutter: ^4.0.0
   #flutter_appavailability: ^0.0.21
 
 dev_dependencies:

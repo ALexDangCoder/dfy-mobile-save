@@ -1,4 +1,4 @@
-import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
+import 'package:Dfy/presentation/bottom_sheet_receive_token/bts_receive_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,7 +24,9 @@ class _TestScreenState extends State<TestScreen> {
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
                 context: context,
-                builder: (context) => const RestoreAccount(),
+                builder: (context) => const ReceiveToken(
+                    walletAddress:
+                        '0xafwfakfaowofamcmacaocoacoacmacmacm'),
               );
             },
             child: const Text('Click'),
