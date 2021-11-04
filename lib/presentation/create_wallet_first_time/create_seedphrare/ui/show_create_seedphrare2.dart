@@ -45,7 +45,7 @@ void showCreateSeedPhrase2(
                       'assets/images/ic_out.png',
                     ),
                     onTap: () {
-                      //bLocCreateSeedPhrase.reloadListSeedPhrase1();
+                      bLocCreateSeedPhrase.reloadListSeedPhrase1();
                       Navigator.pop(context);
                     },
                   ),

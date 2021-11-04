@@ -96,6 +96,7 @@ void showCreateSeedPhrase1(
                                   child: Container(
                                     padding: const EdgeInsets.only(top: 5),
                                     child: TextFormField(
+
                                       onChanged: (value) {
                                         blocCreateSeedPhrase.nameWallet.sink
                                             .add(value);

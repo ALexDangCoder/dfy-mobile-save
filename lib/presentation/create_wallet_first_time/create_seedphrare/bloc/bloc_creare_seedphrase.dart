@@ -15,7 +15,7 @@ class BLocCreateSeedPhrase {
   BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
   final String passWord;
 
-  Future<void> generateWallet({required String password}) async {
+  Future<void> generateWallet({String password = ''}) async {
     try {
       final data = {
         'password': password,
@@ -88,9 +88,10 @@ class BLocCreateSeedPhrase {
 
   void reloadListSeedPhrase1() {
     listSeedPhrase.sink.add([]);
-    for (Item value in listTitle.value) {
+    for (final Item value in listTitle.value) {
       value.isCheck = false;
     }
+    listTitle3.clear();
   }
 
   void reloadListTitle() {
