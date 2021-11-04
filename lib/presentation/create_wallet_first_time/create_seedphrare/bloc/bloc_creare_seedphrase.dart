@@ -1,21 +1,51 @@
 import 'package:Dfy/domain/model/item.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../../main.dart';
 
 class BLocCreateSeedPhrase {
-  BLocCreateSeedPhrase(this.data) {
-    getStringToList();
-  }
+  BLocCreateSeedPhrase(this.passWord);
 
   BehaviorSubject<bool> isCheckBox1 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckBox2 = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckData = BehaviorSubject.seeded(false);
   BehaviorSubject<List<Item>> listTitle = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
+  final String passWord;
 
-  final String data;
+  Future<void> generateWallet({required String password}) async {
+    try {
+      final data = {
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('generateWallet', data);
+    } on PlatformException {
+      //todo
 
-  void getStringToList() {
-    listTitle1 = data.split(' ');
+    }
+  }
+
+  String passPhrase = '';
+   String walletAddress = '';
+   String privateKey = '';
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'generateWalletCallback':
+        privateKey = await methodCall.arguments['privateKey'];
+        walletAddress = await methodCall.arguments['walletAddress'];
+        passPhrase = await methodCall.arguments['passPhrase'];
+        getStringToList(passPhrase);
+        isCheckData.sink.add(true);
+        break;
+      default:
+        break;
+    }
+  }
+
+  void getStringToList(String passPhrase) {
+    listTitle1 = passPhrase.split(' ');
     getListTitle();
   }
 
@@ -24,7 +54,7 @@ class BLocCreateSeedPhrase {
     for (final Item value in listTitle3) {
       isData += value.title + ' ';
     }
-    if (data + ' ' == isData) {
+    if (passPhrase + ' ' == isData) {
       return true;
     }
     return false;

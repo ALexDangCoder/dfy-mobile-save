@@ -1,3 +1,4 @@
+import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -103,15 +104,10 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     password.text,
                     confirmPassword.text,
                   )) {
-                isValidPassCubit.generateWallet(password: password.text);
-                String data =
-                    'happy lovely eternity victory school trust careful success confident'
-                    ' drama patient hold';
-                // print(LoginCubit().isCheck);
-                showCreateSeedPhrase1(context, BLocCreateSeedPhrase(data));
-
-
-
+                showCreateSeedPhrase1(
+                  context,
+                  BLocCreateSeedPhrase(password.text),
+                );
               }
             },
           ),
