@@ -12,7 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void showCreateSeedPhrase2(
-    BuildContext context, BLocCreateSeedPhrase bLocCreateSeedPhrase,) {
+  BuildContext context,
+  BLocCreateSeedPhrase bLocCreateSeedPhrase,
+) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -81,8 +83,10 @@ void showCreateSeedPhrase2(
                         ),
                         StreamBuilder(
                           stream: bLocCreateSeedPhrase.listTitle,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<List<Item>> snapshot,) {
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<List<Item>> snapshot,
+                          ) {
                             final listTitle = snapshot.data;
                             return ListPassPhrase(
                               listTitle: listTitle ?? [],
@@ -96,12 +100,12 @@ void showCreateSeedPhrase2(
                       height: 41.h,
                     ),
                     CheckBoxCustom2(
-                        title:
-                            'I understand that if I lose my recovery private\n'
-                            'key or passphrase, I will not be able to'
-                                ' access my\n'
-                            ' wallet',
-                        bLocCreateSeedPhrase: bLocCreateSeedPhrase,),
+                      title: 'I understand that if I lose my recovery private'
+                          ' key or passphrase, I will not be able to '
+                          'access my'
+                          ' wallet',
+                      bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+                    ),
                     SizedBox(
                       height: 80.h,
                     ),

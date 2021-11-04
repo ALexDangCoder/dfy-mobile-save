@@ -51,7 +51,7 @@ void showCreateSuccessfully(BuildContext context) {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Image.asset('assets/images/ic_frame.png'),
+                    Image.asset('assets/images/Framegreen.png'),
                     SizedBox(
                       height: 22.h,
                     ),

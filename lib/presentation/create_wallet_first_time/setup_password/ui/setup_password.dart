@@ -4,7 +4,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
-import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -104,13 +103,10 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     password.text,
                     confirmPassword.text,
                   )) {
-                isValidPassCubit.generateWallet(password: password.text);
-                String data =
-                    'happy lovely eternity victory school trust careful success confident'
-                    ' drama patient hold';
-                // print(LoginCubit().passPhrase);
-                showCreateSeedPhrase1(context, BLocCreateSeedPhrase(data));
-
+                showCreateSeedPhrase1(
+                  context,
+                  BLocCreateSeedPhrase(password.text),
+                );
               }
             },
           ),
