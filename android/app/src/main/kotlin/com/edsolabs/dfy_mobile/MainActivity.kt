@@ -137,9 +137,9 @@ class MainActivity : FlutterFragmentActivity() {
     private fun generateWallet(password: String) {
         //todo
         val hasMap = HashMap<String, String>()
-        hasMap["walletAddress"] = "walletAddress"
-        hasMap["privateKey"] = "privateKey"
-        hasMap["passPhrase"] = "passPhrase"
+        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        hasMap["privateKey"] = "e507e499158b5b6e1a89ad1e65250f6c38a28d455c37cf23c41f4bdd82436e5a"
+        hasMap["passPhrase"] = "party response give dove tooth master flip video permit game expire token"
         channel?.invokeMethod("generateWalletCallback", hasMap)
     }
 
