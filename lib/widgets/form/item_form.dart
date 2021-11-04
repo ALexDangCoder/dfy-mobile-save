@@ -3,7 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum FormType { SEED_PHRASE, PASSWORD, PRIVATE_KEY }
+enum FormType { PASS_PHRASE, PASSWORD, PRIVATE_KEY }
 
 class ItemForm extends StatelessWidget {
   const ItemForm({
@@ -26,15 +26,16 @@ class ItemForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (formType == FormType.SEED_PHRASE) {
+    if (formType == FormType.PASS_PHRASE) {
       return ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: 323.w,
+          minHeight: 64.h,
         ),
         child: Container(
+          width: 323.w,
           padding: EdgeInsets.only(
-            top: 12.h,
-            bottom: 12.h,
+            top: 10.h,
+            bottom: 8.h,
           ),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
@@ -43,6 +44,7 @@ class ItemForm extends StatelessWidget {
             color: AppTheme.getInstance().itemBtsColor(),
           ),
           child: TextFormField(
+            controller: controller,
             style: textNormal(
               Colors.white,
               16.sp,
