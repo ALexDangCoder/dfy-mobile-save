@@ -30,10 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    controller.addListener(() {});
     trustWalletChannel
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
-
-
   }
 
   @override
@@ -43,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: () => Scaffold(
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
-          onTap: (){
+          onTap: () {
             FocusScope.of(context).unfocus();
           },
           child: Container(
@@ -74,7 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 68.h,
                   ),
-
                   Container(
                     width: 323.w,
                     height: 64.h,
@@ -167,29 +165,31 @@ class _LoginScreenState extends State<LoginScreen> {
                           const CircularProgressIndicator();
                         }
                       },
-                      child: (controller.text.isNotEmpty) ? ButtonRadial(
-                        child: Center(
-                          child: Text(
-                            'Login',
-                            style: textNormalCustom(
-                              Colors.white,
-                              20.sp,
-                              FontWeight.w700,
+                      child: controller.text.isNotEmpty
+                          ? ButtonRadial(
+                              child: Center(
+                                child: Text(
+                                  'Login',
+                                  style: textNormalCustom(
+                                    Colors.white,
+                                    20.sp,
+                                    FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : ErrorButton(
+                              child: Center(
+                                child: Text(
+                                  'Login',
+                                  style: textNormalCustom(
+                                    Colors.white,
+                                    20.sp,
+                                    FontWeight.w700,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ) : ErrorButton(
-                        child: Center(
-                          child: Text(
-                            'Login',
-                            style: textNormalCustom(
-                              Colors.white,
-                              20.sp,
-                              FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
                   ),
                   SizedBox(
