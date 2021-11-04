@@ -32,6 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     trustWalletChannel
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
+
+
   }
 
   @override
