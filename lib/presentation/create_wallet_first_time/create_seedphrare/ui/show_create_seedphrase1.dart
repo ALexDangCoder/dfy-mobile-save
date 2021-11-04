@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrare2.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -54,23 +55,23 @@ void showCreateSeedPhrase1(
                     const FromText(
                       title: 'Wallet name',
                       urlSuffixIcon: '',
-                      urlPrefixIcon: 'assets/images/ic_wallet.png',
+                      urlPrefixIcon: '$baseImg/ic_wallet.png',
                     ),
                     SizedBox(
                       height: 16.h,
                     ),
                     const FromText(
                       title: 'Wallet name',
-                      urlSuffixIcon: 'assets/images/ic_copy.png',
-                      urlPrefixIcon: 'assets/images/ic_address.png',
+                      urlSuffixIcon: '$baseImg/ic_copy.png',
+                      urlPrefixIcon: '$baseImg/ic_address.png',
                     ),
                     SizedBox(
                       height: 16.h,
                     ),
                     const FromText(
                       title: 'Private key',
-                      urlSuffixIcon: 'assets/images/ic_copy.png',
-                      urlPrefixIcon: 'assets/images/ic_key.png',
+                      urlSuffixIcon: '$baseImg/ic_copy.png',
+                      urlPrefixIcon: '$baseImg/ic_key.png',
                     ),
                     SizedBox(
                       height: 20.h,
