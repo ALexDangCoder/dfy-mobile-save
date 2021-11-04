@@ -26,11 +26,21 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController controller = TextEditingController();
   final LoginCubit _cubit = LoginCubit();
+  bool enableLogin = false;
 
   @override
   void initState() {
     super.initState();
-    controller.addListener(() {});
+    controller.addListener(() {
+      setState(() {
+        if(controller.text.isNotEmpty){
+          enableLogin = true;
+        }
+        else {
+          enableLogin = false;
+        }
+      });
+    });
     trustWalletChannel
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
   }
@@ -165,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const CircularProgressIndicator();
                         }
                       },
-                      child: controller.text.isNotEmpty
+                      child: enableLogin
                           ? ButtonRadial(
                               child: Center(
                                 child: Text(
