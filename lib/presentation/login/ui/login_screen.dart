@@ -8,6 +8,7 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
+import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 28.h,
                 ),
                 const Image(
-                  image: AssetImage('$baseImg/images/Centered.png'),
+                  image: AssetImage('$baseImg/Centered.png'),
                 ),
                 SizedBox(
                   height: 68.h,
@@ -70,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 323.w,
                   height: 64.h,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFA7A7A7),
+                    color: Color(0xFF242234),
                     borderRadius: BorderRadius.all(
                       Radius.circular(20),
                     ),
@@ -87,9 +88,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 12.h),
-                            child: const Icon(
+                            child: Icon(
                               Icons.lock_outline,
-                              color: Color(0xFFFFFFFF),
+                              color: const Color(0xFFFFFFFF),
+                              size: 24.sp,
                             ),
                           ),
                           SizedBox(
@@ -101,8 +103,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(fontSize: 18.sp),
                               controller: controller,
                               obscureText: _cubit.hidePass,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 hintText: 'Password',
+                                hintStyle: textNormal(
+                                  Colors.white54,
+                                  18.sp,
+                                ),
                                 border: InputBorder.none,
                               ),
                               // onFieldSubmitted: ,
@@ -150,17 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const CircularProgressIndicator();
                       }
                     },
-                    child: Container(
-                      height: 64.h,
-                      width: 298.w,
-                      decoration: BoxDecoration(
-                        gradient: const RadialGradient(
-                          center: Alignment(0.5, -0.5),
-                          radius: 4,
-                          colors: listButtonColor,
-                        ),
-                        borderRadius: BorderRadius.circular(22),
-                      ),
+                    child: ButtonRadial(
                       child: Center(
                         child: Text(
                           'Login',
@@ -214,7 +210,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           backgroundColor: Colors.transparent,
                           builder: (context) {
                             return const SetupPassWord();
-                          },);
+                          },
+                        );
                       },
                       child: Text(
                         'New wallet',
