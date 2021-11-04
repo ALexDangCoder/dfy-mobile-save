@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:Dfy/config/resources/color.dart';
+import 'package:Dfy/config/resources/images.dart';
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
@@ -40,10 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF3C3B54),
-                Color(0xFF171527),
-              ],
+              colors: listBackgroundColor,
             ),
           ),
           child: SingleChildScrollView(
@@ -53,13 +53,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 113.h,
                 ),
                 const Image(
-                  image: AssetImage('assets/images/symbol.png'),
+                  image: AssetImage('$baseImg/symbol.png'),
                 ),
                 SizedBox(
                   height: 28.h,
                 ),
                 const Image(
-                  image: AssetImage('assets/images/Centered.png'),
+                  image: AssetImage('$baseImg/images/Centered.png'),
                 ),
                 SizedBox(
                   height: 68.h,
@@ -155,20 +155,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         gradient: const RadialGradient(
                           center: Alignment(0.5, -0.5),
                           radius: 4,
-                          colors: [
-                            Color(0xFFFFE284),
-                            Color(0xFFE4AC1A),
-                          ],
+                          colors: listButtonColor,
                         ),
                         borderRadius: BorderRadius.circular(22),
                       ),
                       child: Center(
                         child: Text(
                           'Login',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w700,
+                          style: textNormalCustom(
+                            Colors.white,
+                            20.sp,
+                            FontWeight.w700,
                           ),
                         ),
                       ),
@@ -194,10 +191,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     child: Platform.isIOS
                         ? const Image(
-                            image: AssetImage('assets/images/face_id_icon.png'),
+                            image: AssetImage('$baseImg/face_id_icon.png'),
                           )
                         : const Image(
-                            image: AssetImage('assets/images/finger_icon.png'),
+                            image: AssetImage('$baseImg/finger_icon.png'),
                           ),
                   ),
                 ),
@@ -211,9 +208,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {},
                       child: Text(
                         'New wallet',
-                        style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 18.sp,
+                        style: textNormal(
+                          Colors.amber,
+                          18.sp,
                         ),
                       ),
                     ),
@@ -235,9 +232,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {},
                       child: Text(
                         'Import Seed phrase',
-                        style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 18.sp,
+                        style: textNormal(
+                          Colors.amber,
+                          18.sp,
                         ),
                       ),
                     ),
