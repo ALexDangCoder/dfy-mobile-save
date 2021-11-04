@@ -33,6 +33,7 @@ class StringCubit extends Cubit<StringState> {
       default:
         break;
     }
+    print(walletName);
   }
 
   Future<void> importWallet({
