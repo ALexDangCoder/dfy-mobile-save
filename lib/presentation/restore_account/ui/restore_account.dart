@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:Dfy/main.dart';
+
 class RestoreAccount extends StatefulWidget {
   const RestoreAccount({Key? key}) : super(key: key);
 
@@ -25,9 +27,11 @@ class _RestoreAccountState extends State<RestoreAccount> {
   late final NewPassCubit newCubit;
   late final ConPassCubit conCubit;
   late final StringCubit stringCubit;
+  late final PrivatePassCubit privatePassCubit;
   late final TextEditingController passwordController;
   late final TextEditingController confirmPasswordController;
   late final TextEditingController privateKeyController;
+  late final TextEditingController seedPhraseController;
   late final CheckPassCubit isValidPassCubit;
   bool visible = false;
   FormType formType = FormType.SEED_PHRASE;
@@ -38,10 +42,14 @@ class _RestoreAccountState extends State<RestoreAccount> {
     stringCubit = StringCubit();
     newCubit = NewPassCubit();
     conCubit = ConPassCubit();
+    privatePassCubit = PrivatePassCubit();
+    seedPhraseController = TextEditingController();
     passwordController = TextEditingController();
     privateKeyController = TextEditingController();
     confirmPasswordController = TextEditingController();
     isValidPassCubit = CheckPassCubit();
+    trustWalletChannel
+        .setMethodCallHandler(stringCubit.nativeMethodCallBackTrustWallet);
   }
 
   @override
@@ -50,6 +58,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
     stringCubit.close();
     newCubit.close();
     conCubit.close();
+    privatePassCubit.close();
+    seedPhraseController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
     privateKeyController.dispose();
@@ -234,16 +244,42 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                   SizedBox(
                                     height: 20.h,
                                   ),
-                                  ItemForm(
-                                    leadPath: ImageAssets.key,
-                                    trailingPath: ImageAssets.show,
-                                    hint: formType == FormType.SEED_PHRASE
-                                        ? S.current.wallet_secret
-                                        : S.current.private_key,
-                                    formType: formType,
-                                    isShow: true,
-                                    controller: privateKeyController,
-                                  ),
+                                  if (formType == FormType.SEED_PHRASE)
+                                    ItemForm(
+                                      leadPath: ImageAssets.key,
+                                      trailingPath: ImageAssets.show,
+                                      hint: S.current.wallet_secret,
+                                      formType: FormType.SEED_PHRASE,
+                                      isShow: true,
+                                      controller: seedPhraseController,
+                                    )
+                                  else
+                                    BlocBuilder<PrivatePassCubit, bool>(
+                                      bloc: privatePassCubit,
+                                      builder: (ctx, state) {
+                                        if (state) {
+                                          return ItemForm(
+                                            leadPath: ImageAssets.lock,
+                                            trailingPath: ImageAssets.hide,
+                                            hint: S.current.private_key,
+                                            formType: FormType.PASSWORD,
+                                            isShow: state,
+                                            callback: privatePassCubit.showPass,
+                                            controller: privateKeyController,
+                                          );
+                                        } else {
+                                          return ItemForm(
+                                            leadPath: ImageAssets.lock,
+                                            trailingPath: ImageAssets.show,
+                                            hint: S.current.private_key,
+                                            formType: FormType.PASSWORD,
+                                            isShow: state,
+                                            callback: privatePassCubit.hidePass,
+                                            controller: privateKeyController,
+                                          );
+                                        }
+                                      },
+                                    ),
                                 ],
                               );
                             },
@@ -261,7 +297,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                   hint: 'New password',
                                   formType: FormType.PASSWORD,
                                   isShow: state,
-                                  callback: newCubit.show,
+                                  callback: newCubit.showPass,
                                   controller: passwordController,
                                 );
                               } else {
@@ -271,7 +307,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                   hint: 'New password',
                                   formType: FormType.PASSWORD,
                                   isShow: state,
-                                  callback: newCubit.hide,
+                                  callback: newCubit.hidePass,
                                   controller: passwordController,
                                 );
                               }
@@ -291,7 +327,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                   hint: 'Confirm password',
                                   formType: FormType.PASSWORD,
                                   isShow: state,
-                                  callback: conCubit.show,
+                                  callback: conCubit.showPass,
                                   controller: confirmPasswordController,
                                 );
                               } else {
@@ -301,7 +337,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                   hint: 'Confirm password',
                                   formType: FormType.PASSWORD,
                                   isShow: state,
-                                  callback: conCubit.hide,
+                                  callback: conCubit.hidePass,
                                   controller: confirmPasswordController,
                                 );
                               }
@@ -357,6 +393,10 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   password: passwordController.text,
                   confirmPW: confirmPasswordController.text,
                 );
+                stringCubit.importWallet(
+                    type: 'PASS_PHRASE',
+                    content: 'acacacac',
+                    password: 'cacaca');
               },
               child: Text(
                 'Restore',
