@@ -51,7 +51,7 @@ class CupertinoLoading extends StatelessWidget {
         decorateData: DecorateData(
             indicator: Indicator.lineSpinFadeLoader,
             colors: getListColor(),
-            strokeWidth: 4),
+            strokeWidth: 4,),
         child: const AspectRatio(
           aspectRatio: 1,
           child: LineSpinFadeLoader(),

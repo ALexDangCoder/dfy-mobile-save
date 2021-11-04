@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ButtonGradient extends StatelessWidget {
   final Widget child;
   final Gradient gradient;
@@ -15,11 +15,11 @@ class ButtonGradient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      height: 52.0,
+      width: 298.w,
+      height: 64.h,
       decoration: BoxDecoration(
         gradient: gradient,
-        borderRadius: const BorderRadius.all(Radius.circular(26.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(22.0)),
       ),
       child: Material(
         color: Colors.transparent,

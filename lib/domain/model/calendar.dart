@@ -7,6 +7,6 @@ class CalendarModel {
 
 final currentDateTime = DateTime.now();
 final firstDay = DateTime(
-    currentDateTime.year, currentDateTime.month - 3, currentDateTime.day);
+    currentDateTime.year, currentDateTime.month - 3, currentDateTime.day,);
 final lastDay = DateTime(
-    currentDateTime.year, currentDateTime.month + 3, currentDateTime.day);
+    currentDateTime.year, currentDateTime.month + 3, currentDateTime.day,);

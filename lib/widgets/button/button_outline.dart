@@ -31,7 +31,7 @@ class ButtonUnicornOutline extends StatelessWidget {
           onTap: _callback,
           child: Container(
             constraints: const BoxConstraints(
-                minWidth: double.infinity, minHeight: 52.0),
+                minWidth: double.infinity, minHeight: 52.0,),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -63,9 +63,9 @@ class _GradientPainter extends CustomPainter {
 
 // create inner rectangle smaller by strokeWidth
     final Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,
-        size.width - strokeWidth * 2, size.height - strokeWidth * 2);
+        size.width - strokeWidth * 2, size.height - strokeWidth * 2,);
     final innerRRect = RRect.fromRectAndRadius(
-        innerRect, Radius.circular(radius - strokeWidth));
+        innerRect, Radius.circular(radius - strokeWidth),);
 
 // apply gradient shader
     _paint.shader = gradient.createShader(outerRect);

@@ -29,7 +29,7 @@ Result<T> runCatching<T>(T Function() block) {
 }
 
 Future<Result<E>> runCatchingAsync<T, E>(
-    Future<T> Function() block, E Function(T) map) async {
+    Future<T> Function() block, E Function(T) map,) async {
   final connected = await CheckerNetwork.checkNetwork();
   if (!connected) {
     return Result.error(NoNetworkException());

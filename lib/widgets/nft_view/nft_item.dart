@@ -83,7 +83,7 @@ class _NFTItemState extends State<NFTItem> {
                             decoration: BoxDecoration(
                               image: const DecorationImage(
                                 image: AssetImage(
-                                    'assets/images/img_defi_test.png'),
+                                    'assets/images/img_defi_test.png',),
                                 fit: BoxFit.fill,
                               ),
                               borderRadius: BorderRadius.circular(10),
