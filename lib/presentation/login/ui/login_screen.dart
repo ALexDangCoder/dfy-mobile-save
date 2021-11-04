@@ -6,7 +6,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
-import 'package:Dfy/presentation/import_token_nft/import_token.dart';
+import 'package:Dfy/presentation/import_token_nft/bloc/import_token_bloc.dart';
+import 'package:Dfy/presentation/import_token_nft/ui/import_token.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
@@ -32,8 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     trustWalletChannel
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
-
-
   }
 
   @override
@@ -210,15 +209,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        showImportToken(context);
-                     //    showModalBottomSheet(
-                     //      isScrollControlled: true,
-                     //      context: context,
-                     //      backgroundColor: Colors.transparent,
-                     //      builder: (context) {
-                     //        return const SetupPassWord();
-                     //      },
-                     //    );
+                        showImportToken(context, ImportTokenBloc());
+                        //    showModalBottomSheet(
+                        //      isScrollControlled: true,
+                        //      context: context,
+                        //      backgroundColor: Colors.transparent,
+                        //      builder: (context) {
+                        //        return const SetupPassWord();
+                        //      },
+                        //    );
                       },
                       child: Text(
                         'New wallet',
