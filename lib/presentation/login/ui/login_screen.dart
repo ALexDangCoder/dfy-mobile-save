@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 hintText: 'Password',
                                 hintStyle: textNormal(
                                   Colors.white54,
-                                  18.sp,â
+                                  18.sp,
                                 ),
                                 border: InputBorder.none,
                               ),

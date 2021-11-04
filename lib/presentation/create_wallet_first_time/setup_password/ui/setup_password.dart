@@ -1,12 +1,12 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/di/module.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
+import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
+import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SetupPassWord extends StatefulWidget {
@@ -90,8 +90,10 @@ class _SetupPassWordState extends State<SetupPassWord> {
             ),
           ),
           GestureDetector(
-            child: btnContinue(),
-            onTap: () {
+            child: const ButtonGold(
+              title: 'Continue',
+            ),
+            onTap: () async {
               isValidPassCubit.isValidate(password.text);
               isValidPassCubit.isMatchPW(
                 password: password.text,
@@ -102,13 +104,21 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     password.text,
                     confirmPassword.text,
                   )) {
-                showCreateSeedPhrase1(context, BLocCreateSeedPhrase());
+                isValidPassCubit.generateWallet(password: password.text);
+                String data =
+                    'happy lovely eternity victory school trust careful success confident'
+                    ' drama patient hold';
+                // print(LoginCubit().isCheck);
+                showCreateSeedPhrase1(context, BLocCreateSeedPhrase(data));
+
+
+
               }
             },
           ),
           SizedBox(
             height: 38.h,
-          )
+          ),
         ],
       ),
     );
@@ -176,34 +186,6 @@ class _SetupPassWordState extends State<SetupPassWord> {
     );
   }
 
-  Container btnContinue() {
-    return Container(
-      width: 298.w,
-      height: 64.h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(22.r)),
-        gradient: const LinearGradient(
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-          colors: [
-            Color.fromRGBO(228, 172, 26, 1),
-            Color.fromRGBO(255, 226, 132, 1),
-          ],
-        ),
-      ),
-      child: Center(
-        child: Text(
-          'Continue',
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w700,
-            color: const Color.fromRGBO(255, 255, 255, 1),
-          ),
-        ),
-      ),
-    );
-  }
-
   SizedBox ckcBoxAndTextSetupPass() {
     return SizedBox(
       height: 48.h,
@@ -219,6 +201,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 stream: isValidPassCubit.ckcBoxStream,
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   return Checkbox(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
                     fillColor:
                         MaterialStateProperty.all(const Color(0xffE4AC1A)),
                     activeColor: const Color.fromRGBO(228, 172, 26, 1),
@@ -402,7 +387,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
         children: [
           Expanded(
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: Image.asset('assets/images/back_arrow.png'),
             ),
           ),
@@ -422,7 +409,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
           ),
           Expanded(
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: Image.asset('assets/images/Group.png'),
             ),
           )

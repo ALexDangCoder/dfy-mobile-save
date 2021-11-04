@@ -29,12 +29,13 @@ class ItemForm extends StatelessWidget {
     if (formType == FormType.SEED_PHRASE) {
       return ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: 323.w,
+          minHeight: 64.h,
         ),
         child: Container(
+          width: 323.w,
           padding: EdgeInsets.only(
             top: 12.h,
-            bottom: 12.h,
+            bottom: 8.h,
           ),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
@@ -77,8 +78,8 @@ class ItemForm extends StatelessWidget {
         height: 64.h,
         width: 323.w,
         padding: EdgeInsets.only(
-          top: 12.h,
-          bottom: 12.h,
+          top: 22.h,
+          bottom: 20.h,
         ),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(
