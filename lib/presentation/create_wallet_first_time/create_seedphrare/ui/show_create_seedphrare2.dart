@@ -37,7 +37,44 @@ void showCreateSeedPhrase2(
               height: 28.h,
               width: 323.w,
               margin: EdgeInsets.only(right: 26.w, left: 26.w, top: 16.h),
-              child: const HeaderCreate(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    child: Image.asset(
+                      'assets/images/ic_out.png',
+                    ),
+                    onTap: () {
+                      //bLocCreateSeedPhrase.reloadListSeedPhrase1();
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 66.w,
+                  ),
+                  Text(
+                    'Create new wallet',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 64.w,
+                  ),
+                  GestureDetector(
+                    child: Image.asset(
+                      'assets/images/ic_close.png',
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 20.h,
@@ -121,8 +158,14 @@ void showCreateSeedPhrase2(
                     showCreateSuccessfully(context);
                   }
                 },
-                child: const ButtonGold(
-                  title: 'Create',
+                child:  StreamBuilder(
+                  stream: bLocCreateSeedPhrase.isCheckBox2,
+                  builder: (context, snapshot) {
+                    return ButtonGold(
+                      title: 'Continue',
+                      isEnable: bLocCreateSeedPhrase.isCheckBox2.value,
+                    );
+                  },
                 ),
               ),
             ),

@@ -6,7 +6,7 @@ class HeaderCreate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
+    return Row(
      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
@@ -35,6 +35,7 @@ class HeaderCreate extends StatelessWidget {
             'assets/images/ic_close.png',
           ),
           onTap: () {
+            Navigator.pop(context);
             Navigator.pop(context);
           },
         ),

@@ -38,6 +38,7 @@ const spaceW18 = SizedBox(width: 18);
 const spaceW20 = SizedBox(width: 20);
 const spaceW25 = SizedBox(width: 25);
 const spaceW30 = SizedBox(width: 30);
+const spaceW100 = SizedBox(width: 100);
 
 TextStyle textNormal(Color? color, double? fontSize) {
   return GoogleFonts.sen(

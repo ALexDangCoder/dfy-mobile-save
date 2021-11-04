@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:Dfy/config/resources/images.dart';
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrare2.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -22,13 +24,14 @@ void showCreateSeedPhrase1(
     context: context,
     backgroundColor: Colors.transparent,
     builder: (context) {
-      blocCreateSeedPhrase.generateWallet(
-        password: blocCreateSeedPhrase.passWord,
-      );
+      if (blocCreateSeedPhrase.passPhrase.isEmpty) {
+        blocCreateSeedPhrase.generateWallet(
+          password: blocCreateSeedPhrase.passWord,
+        );
+      }
       trustWalletChannel.setMethodCallHandler(
         blocCreateSeedPhrase.nativeMethodCallBackTrustWallet,
       );
-
       return StreamBuilder(
         stream: blocCreateSeedPhrase.isCheckData,
         builder: (context, snapshot) {
@@ -67,10 +70,55 @@ void showCreateSeedPhrase1(
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          const FromText(
-                            title: 'Account 1',
-                            urlSuffixIcon: '',
-                            urlPrefixIcon: 'assets/images/ic_wallet.png',
+                          Container(
+                            width: 323.w,
+                            height: 64.h,
+                            margin: EdgeInsets.symmetric(horizontal: 26.w),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15.5.w, vertical: 23.h),
+                            decoration: const BoxDecoration(
+                              color: Color(0xff32324c),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  url_ic_wallet,
+                                  height: 17.67.h,
+                                  width: 19.14.w,
+                                ),
+                                SizedBox(
+                                  width: 20.5.w,
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: TextFormField(
+                                      onChanged: (value) {
+                                        blocCreateSeedPhrase.nameWallet.sink
+                                            .add(value);
+                                      },
+                                      cursorColor: Colors.white,
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        color: Colors.white,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: 'Account 1',
+                                        hintStyle: textNormal(
+                                          Colors.white54,
+                                          18.sp,
+                                        ),
+                                        border: InputBorder.none,
+                                      ),
+                                      // onFieldSubmitted: ,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           SizedBox(
                             height: 16.h,
@@ -95,6 +143,7 @@ void showCreateSeedPhrase1(
                             children: [
                               BoxListPassWordPhraseCopy(
                                 listTitle: blocCreateSeedPhrase.listTitle1,
+                                bLocCreateSeedPhrase: blocCreateSeedPhrase,
                               ),
                               SizedBox(
                                 height: 17.h,
@@ -120,8 +169,14 @@ void showCreateSeedPhrase1(
                           showCreateSeedPhrase2(context, blocCreateSeedPhrase);
                         }
                       },
-                      child: const ButtonGold(
-                        title: 'Continue',
+                      child: StreamBuilder(
+                        stream: blocCreateSeedPhrase.isCheckBox1,
+                        builder: (context, snapshot) {
+                          return ButtonGold(
+                            title: 'Continue',
+                            isEnable: blocCreateSeedPhrase.isCheckBox1.value,
+                          );
+                        },
                       ),
                     ),
                   ),

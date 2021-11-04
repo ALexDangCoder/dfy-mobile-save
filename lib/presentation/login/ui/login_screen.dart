@@ -6,6 +6,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
+import 'package:Dfy/presentation/import_token_nft/import_token.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
@@ -127,11 +128,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               }),
                               child: _cubit.hidePass
                                   ? const Icon(
-                                      Icons.visibility_off_outlined,
+                                      Icons.visibility_outlined,
                                       color: Colors.white30,
                                     )
                                   : const Icon(
-                                      Icons.visibility_outlined,
+                                      Icons.visibility_off_outlined,
                                       color: Colors.white30,
                                     ),
                             ),
@@ -209,6 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     TextButton(
                       onPressed: () {
+                     //   showImportToken(context);
                         showModalBottomSheet(
                           isScrollControlled: true,
                           context: context,

@@ -49,7 +49,7 @@ dependencies:
   lint: ^1.6.0
   table_calendar: ^3.0.2
   image_picker: ^0.8.4+3
-
+  flutter_tab_indicator_styler: ^2.0.0
 
   #Library helpful
   intl: ^0.17.0
