@@ -100,14 +100,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           Expanded(
                             child: TextFormField(
                               cursorColor: Colors.white,
-                              style: TextStyle(fontSize: 18.sp),
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                color: Colors.white,
+                              ),
                               controller: controller,
                               obscureText: _cubit.hidePass,
                               decoration: InputDecoration(
                                 hintText: 'Password',
                                 hintStyle: textNormal(
                                   Colors.white54,
-                                  18.sp,
+                                  18.sp,â
                                 ),
                                 border: InputBorder.none,
                               ),
