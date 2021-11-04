@@ -82,20 +82,6 @@ class CheckPassCubit extends Cubit<CheckPassState> {
     }
   }
 
-  Future<bool> generateWallet({required String password}) async {
-    try {
-      final data = {
-        'password': password,
-      };
-      await trustWalletChannel.invokeMethod('generateWallet', data);
-      return true;
-    } on PlatformException {
-      //todo
-
-    }
-    return false;
-  }
-
   @override
   Future<void> close() {
     _validatePW.close();

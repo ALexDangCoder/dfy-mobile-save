@@ -7,12 +7,12 @@ class FromText extends StatelessWidget {
   final String title;
   final String urlSuffixIcon;
 
-  const FromText(
-      {Key? key,
-      required this.urlPrefixIcon,
-      required this.title,
-      required this.urlSuffixIcon,})
-      : super(key: key);
+  const FromText({
+    Key? key,
+    required this.urlPrefixIcon,
+    required this.title,
+    required this.urlSuffixIcon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +38,14 @@ class FromText extends StatelessWidget {
               SizedBox(
                 width: 17.5.w,
               ),
-              Text(
-                title,
-                style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+              Container(
+                width: MediaQuery.of(context).size.width / 2,
+                child: Text(
+                  title,
+                  style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
