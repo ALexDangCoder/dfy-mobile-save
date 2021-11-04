@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'login_state.dart';
 
@@ -38,7 +37,7 @@ class LoginCubit extends BaseCubit<LoginState> {
         print(privateKey);
         print(passPhrase);
         print(walletAddress);
-      break;
+        break;
       default:
         break;
     }

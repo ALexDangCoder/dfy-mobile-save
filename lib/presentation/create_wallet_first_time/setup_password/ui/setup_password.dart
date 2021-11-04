@@ -108,10 +108,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 String data =
                     'happy lovely eternity victory school trust careful success confident'
                     ' drama patient hold';
-                // print(LoginCubit().isCheck);
+                // print(LoginCubit().passPhrase);
                 showCreateSeedPhrase1(context, BLocCreateSeedPhrase(data));
-
-
 
               }
             },
