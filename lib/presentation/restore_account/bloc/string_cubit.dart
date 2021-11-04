@@ -7,10 +7,12 @@ class StringCubit extends Cubit<StringState> {
   StringCubit() : super(StringInitial('Seed phrase'));
   String select = 'Seed phrase';
   void selectSeed(String string) {
+    select = string;
     emit(StringSelectSeed(string));
   }
 
   void selectPrivate(String string) {
+    select = string;
     emit(StringSelectPrivate(string));
   }
 
