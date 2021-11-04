@@ -370,18 +370,23 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   password: passwordController.text,
                   confirmPW: confirmPasswordController.text,
                 );
-                if (stringCubit.select == 'Seed phrase') {
-                  stringCubit.importWallet(
-                    type: 'PASS_PHRASE',
-                    content: seedPhraseController.text,
-                    password: passwordController.text,
-                  );
-                } else {
-                  stringCubit.importWallet(
-                    type: 'PRIVATE_KEY',
-                    content: privateKeyController.text,
-                    password: passwordController.text,
-                  );
+                if (isValidPassCubit.isValidFtMatchPW(
+                  passwordController.text,
+                  confirmPasswordController.text,
+                )) {
+                  if (stringCubit.select == 'Seed phrase') {
+                    stringCubit.importWallet(
+                      type: 'PASS_PHRASE',
+                      content: seedPhraseController.text,
+                      password: passwordController.text,
+                    );
+                  } else {
+                    stringCubit.importWallet(
+                      type: 'PRIVATE_KEY',
+                      content: privateKeyController.text,
+                      password: passwordController.text,
+                    );
+                  }
                 }
               },
               child: Text(
