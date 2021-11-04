@@ -121,8 +121,9 @@ void showCreateSeedPhrase2(
                     showCreateSuccessfully(context);
                   }
                 },
-                child: const ButtonGold(
+                child: ButtonGold(
                   title: 'Create',
+                  isEnable: false,
                 ),
               ),
             ),

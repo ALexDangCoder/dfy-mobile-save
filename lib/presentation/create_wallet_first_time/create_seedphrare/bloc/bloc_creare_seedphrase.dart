@@ -27,8 +27,8 @@ class BLocCreateSeedPhrase {
   }
 
   String passPhrase = '';
-   String walletAddress = '';
-   String privateKey = '';
+  String walletAddress = '';
+  String privateKey = '';
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {

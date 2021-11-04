@@ -120,8 +120,9 @@ void showCreateSeedPhrase1(
                           showCreateSeedPhrase2(context, blocCreateSeedPhrase);
                         }
                       },
-                      child: const ButtonGold(
+                      child: ButtonGold(
                         title: 'Continue',
+                        isEnable: false,
                       ),
                     ),
                   ),

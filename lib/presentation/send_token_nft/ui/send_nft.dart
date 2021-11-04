@@ -69,8 +69,9 @@ class _SendNftState extends State<SendNft> {
             ),
           ),
           GestureDetector(
-            child: const ButtonGold(
-              title: 'Continue',
+            child: ButtonGold(
+              title: 'Continue', isEnable: false,
+
             ),
             onTap: () {},
           ),

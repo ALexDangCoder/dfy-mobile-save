@@ -94,8 +94,9 @@ void showCreateSuccessfully(BuildContext context) {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 },
-                child: const ButtonGold(
+                child: ButtonGold(
                   title: 'Complete',
+                  isEnable: false,
                 ),
               ),
             ),
