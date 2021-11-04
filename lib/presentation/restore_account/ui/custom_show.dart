@@ -5,8 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomDialog extends StatefulWidget {
-  const CustomDialog({Key? key, required this.cubit}) : super(key: key);
+  const CustomDialog({
+    Key? key,
+    required this.cubit,
+    required this.controller1,
+    required this.controller2,
+  }) : super(key: key);
   final StringCubit cubit;
+  final TextEditingController controller1;
+  final TextEditingController controller2;
 
   @override
   _CustomDialogState createState() => _CustomDialogState();
@@ -34,6 +41,7 @@ class _CustomDialogState extends State<CustomDialog> {
           GestureDetector(
             onTap: () {
               widget.cubit.selectSeed(text[0]);
+              widget.controller1.clear();
             },
             child: Container(
               margin: EdgeInsets.only(left: 24.w),
@@ -54,8 +62,7 @@ class _CustomDialogState extends State<CustomDialog> {
           GestureDetector(
             onTap: () {
               widget.cubit.selectPrivate(text[1]);
-
-              //widget.cubit.hide();
+              widget.controller2.clear();
             },
             child: Container(
               margin: EdgeInsets.only(left: 24.w),

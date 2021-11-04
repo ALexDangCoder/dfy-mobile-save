@@ -1,14 +1,39 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class NewPassCubit extends Cubit<bool> {
-  NewPassCubit() : super(true);
+abstract class PassCubit extends Cubit<bool> {
+  PassCubit() : super(true);
 
-  void hide() => emit(true);
-  void show() => emit(false);
+  void hidePass();
+
+  void showPass();
 }
-class ConPassCubit extends Cubit<bool> {
-  ConPassCubit() : super(true);
 
-  void hide() => emit(true);
-  void show() => emit(false);
+class NewPassCubit extends PassCubit {
+  NewPassCubit() : super();
+
+  @override
+  void hidePass() => emit(true);
+
+  @override
+  void showPass() => emit(false);
+}
+
+class ConPassCubit extends PassCubit {
+  ConPassCubit() : super();
+
+  @override
+  void hidePass() => emit(true);
+
+  @override
+  void showPass() => emit(false);
+}
+
+class PrivatePassCubit extends PassCubit {
+  PrivatePassCubit() : super();
+
+  @override
+  void hidePass() => emit(true);
+
+  @override
+  void showPass() => emit(false);
 }
