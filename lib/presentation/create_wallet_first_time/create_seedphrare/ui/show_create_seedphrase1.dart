@@ -68,7 +68,7 @@ void showCreateSeedPhrase1(
                       child: Column(
                         children: [
                           const FromText(
-                            title: 'Wallet name',
+                            title: 'Account 1',
                             urlSuffixIcon: '',
                             urlPrefixIcon: 'assets/images/ic_wallet.png',
                           ),

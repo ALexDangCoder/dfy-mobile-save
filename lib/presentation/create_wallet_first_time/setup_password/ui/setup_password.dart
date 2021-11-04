@@ -251,7 +251,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
-        color: Color.fromRGBO(167, 167, 167, 0.5),
+        color: Color(0xff32324c),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showPWStream,
