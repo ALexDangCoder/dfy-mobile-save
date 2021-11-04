@@ -67,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 68.h,
                 ),
+
                 Container(
                   width: 323.w,
                   height: 64.h,
@@ -110,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 hintText: 'Password',
                                 hintStyle: textNormal(
                                   Colors.white54,
-                                  18.sp,â
+                                  18.sp,
                                 ),
                                 border: InputBorder.none,
                               ),

@@ -25,5 +25,3 @@ class ShowPassState extends CheckPassState {
   List<Object?> get props => throw UnimplementedError();
 
 }
-
-

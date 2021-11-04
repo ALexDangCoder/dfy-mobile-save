@@ -29,7 +29,7 @@ class AppRouter {
       case setupPassWord:
         return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
       case main:
-        return MaterialPageRoute(builder: (ctx) =>  MainScreen());
+        return MaterialPageRoute(builder: (ctx) =>  const MainScreen());
       // case main:
       //   return MaterialPageRoute(
       //       builder: (ctx) => MainScreen(
