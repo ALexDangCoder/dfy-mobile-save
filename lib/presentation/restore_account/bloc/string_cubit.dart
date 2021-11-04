@@ -1,13 +1,11 @@
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/restore_account/bloc/string_state.dart';
-import 'package:Dfy/widgets/form/item_form.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../main.dart';
-
 class StringCubit extends Cubit<StringState> {
   StringCubit() : super(StringInitial('Seed phrase'));
-
+  String select = 'Seed phrase';
   void selectSeed(String string) {
     emit(StringSelectSeed(string));
   }
@@ -33,8 +31,6 @@ class StringCubit extends Cubit<StringState> {
       default:
         break;
     }
-    print(walletName);
-    print(walletAddress);
   }
 
   Future<void> importWallet({
