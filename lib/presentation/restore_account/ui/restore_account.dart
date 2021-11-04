@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/restore_account/bloc/pass_cubit.dart';
 import 'package:Dfy/presentation/restore_account/bloc/string_cubit.dart';
 import 'package:Dfy/presentation/restore_account/bloc/string_state.dart';
@@ -25,12 +26,14 @@ class _RestoreAccountState extends State<RestoreAccount> {
   late final NewPassCubit newCubit;
   late final ConPassCubit conCubit;
   late final StringCubit stringCubit;
+  late final PrivatePassCubit privatePassCubit;
   late final TextEditingController passwordController;
   late final TextEditingController confirmPasswordController;
   late final TextEditingController privateKeyController;
+  late final TextEditingController seedPhraseController;
   late final CheckPassCubit isValidPassCubit;
   bool visible = false;
-  FormType formType = FormType.SEED_PHRASE;
+  FormType formType = FormType.PASS_PHRASE;
 
   @override
   void initState() {
@@ -38,10 +41,14 @@ class _RestoreAccountState extends State<RestoreAccount> {
     stringCubit = StringCubit();
     newCubit = NewPassCubit();
     conCubit = ConPassCubit();
+    privatePassCubit = PrivatePassCubit();
+    seedPhraseController = TextEditingController();
     passwordController = TextEditingController();
     privateKeyController = TextEditingController();
     confirmPasswordController = TextEditingController();
     isValidPassCubit = CheckPassCubit();
+    trustWalletChannel
+        .setMethodCallHandler(stringCubit.nativeMethodCallBackTrustWallet);
   }
 
   @override
@@ -50,6 +57,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
     stringCubit.close();
     newCubit.close();
     conCubit.close();
+    privatePassCubit.close();
+    seedPhraseController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
     privateKeyController.dispose();
@@ -164,11 +173,11 @@ class _RestoreAccountState extends State<RestoreAccount> {
                             builder: (context, state) {
                               if (state is StringInitial) {
                                 dropdownValue = state.key;
-                                formType = FormType.SEED_PHRASE;
+                                formType = FormType.PASS_PHRASE;
                               }
                               if (state is StringSelectSeed) {
                                 dropdownValue = state.key;
-                                formType = FormType.SEED_PHRASE;
+                                formType = FormType.PASS_PHRASE;
                               }
 
                               if (state is StringSelectPrivate) {
@@ -177,36 +186,36 @@ class _RestoreAccountState extends State<RestoreAccount> {
                               }
                               return Column(
                                 children: [
-                                  Container(
-                                    height: 64.h,
-                                    width: 323.w,
-                                    padding: EdgeInsets.only(
-                                      top: 6.h,
-                                      bottom: 6.h,
-                                      right: 8.w,
-                                      left: 8.w,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(20),
+                                  GestureDetector(
+                                    onTap: () {
+                                      stringCubit.showPopMenu();
+                                    },
+                                    child: Container(
+                                      height: 64.h,
+                                      width: 323.w,
+                                      padding: EdgeInsets.only(
+                                        top: 6.h,
+                                        bottom: 6.h,
+                                        right: 8.w,
+                                        left: 8.w,
                                       ),
-                                      color:
-                                          AppTheme.getInstance().itemBtsColor(),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          ImageAssets.security,
-                                          color: Colors.white,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(20),
                                         ),
-                                        SizedBox(
-                                          width: 14.w,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            stringCubit.showPopMenu();
-                                          },
-                                          child: Container(
+                                        color: AppTheme.getInstance()
+                                            .itemBtsColor(),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                            ImageAssets.security,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(
+                                            width: 14.w,
+                                          ),
+                                          Container(
                                             margin: EdgeInsets.only(top: 8.h),
                                             height: 24.h,
                                             width: 215.w,
@@ -218,32 +227,50 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 27.15.w,
-                                        ),
-                                        const Expanded(
-                                          child: ImageIcon(
-                                            AssetImage(ImageAssets.expand),
-                                            color: Colors.white,
+                                          SizedBox(
+                                            width: 27.15.w,
                                           ),
-                                        ),
-                                      ],
+                                          const Expanded(
+                                            child: ImageIcon(
+                                              AssetImage(ImageAssets.expand),
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
                                     height: 20.h,
                                   ),
-                                  ItemForm(
-                                    leadPath: ImageAssets.key,
-                                    trailingPath: ImageAssets.show,
-                                    hint: formType == FormType.SEED_PHRASE
-                                        ? S.current.wallet_secret
-                                        : S.current.private_key,
-                                    formType: formType,
-                                    isShow: true,
-                                    controller: privateKeyController,
-                                  ),
+                                  if (formType == FormType.PASS_PHRASE)
+                                    ItemForm(
+                                      leadPath: ImageAssets.key,
+                                      trailingPath: ImageAssets.show,
+                                      hint: S.current.wallet_secret,
+                                      formType: FormType.PASS_PHRASE,
+                                      isShow: true,
+                                      controller: seedPhraseController,
+                                    )
+                                  else
+                                    BlocBuilder<PrivatePassCubit, bool>(
+                                      bloc: privatePassCubit,
+                                      builder: (ctx, state) {
+                                        return ItemForm(
+                                          leadPath: ImageAssets.lock,
+                                          trailingPath: state
+                                              ? ImageAssets.hide
+                                              : ImageAssets.show,
+                                          hint: S.current.private_key,
+                                          formType: FormType.PRIVATE_KEY,
+                                          isShow: state,
+                                          callback: state
+                                              ? privatePassCubit.showPass
+                                              : privatePassCubit.hidePass,
+                                          controller: privateKeyController,
+                                        );
+                                      },
+                                    ),
                                 ],
                               );
                             },
@@ -254,27 +281,18 @@ class _RestoreAccountState extends State<RestoreAccount> {
                           BlocBuilder<NewPassCubit, bool>(
                             bloc: newCubit,
                             builder: (ctx, state) {
-                              if (state) {
-                                return ItemForm(
-                                  leadPath: ImageAssets.lock,
-                                  trailingPath: ImageAssets.hide,
-                                  hint: 'New password',
-                                  formType: FormType.PASSWORD,
-                                  isShow: state,
-                                  callback: newCubit.show,
-                                  controller: passwordController,
-                                );
-                              } else {
-                                return ItemForm(
-                                  leadPath: ImageAssets.lock,
-                                  trailingPath: ImageAssets.show,
-                                  hint: 'New password',
-                                  formType: FormType.PASSWORD,
-                                  isShow: state,
-                                  callback: newCubit.hide,
-                                  controller: passwordController,
-                                );
-                              }
+                              return ItemForm(
+                                leadPath: ImageAssets.lock,
+                                trailingPath:
+                                    state ? ImageAssets.hide : ImageAssets.show,
+                                hint: 'New password',
+                                formType: FormType.PASSWORD,
+                                isShow: state,
+                                callback: state
+                                    ? newCubit.showPass
+                                    : newCubit.hidePass,
+                                controller: passwordController,
+                              );
                             },
                           ),
                           showTextValidatePassword(),
@@ -284,27 +302,18 @@ class _RestoreAccountState extends State<RestoreAccount> {
                           BlocBuilder<ConPassCubit, bool>(
                             bloc: conCubit,
                             builder: (ctx, state) {
-                              if (state) {
-                                return ItemForm(
-                                  leadPath: ImageAssets.lock,
-                                  trailingPath: ImageAssets.hide,
-                                  hint: 'Confirm password',
-                                  formType: FormType.PASSWORD,
-                                  isShow: state,
-                                  callback: conCubit.show,
-                                  controller: confirmPasswordController,
-                                );
-                              } else {
-                                return ItemForm(
-                                  leadPath: ImageAssets.lock,
-                                  trailingPath: ImageAssets.show,
-                                  hint: 'Confirm password',
-                                  formType: FormType.PASSWORD,
-                                  isShow: state,
-                                  callback: conCubit.hide,
-                                  controller: confirmPasswordController,
-                                );
-                              }
+                              return ItemForm(
+                                leadPath: ImageAssets.lock,
+                                trailingPath:
+                                    state ? ImageAssets.hide : ImageAssets.show,
+                                hint: 'Confirm password',
+                                formType: FormType.PASSWORD,
+                                isShow: state,
+                                callback: state
+                                    ? conCubit.showPass
+                                    : conCubit.hidePass,
+                                controller: confirmPasswordController,
+                              );
                             },
                           ),
                           showTextValidateMatchPassword(),
@@ -320,6 +329,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                 top: 72.h,
                                 child: CustomDialog(
                                   cubit: stringCubit,
+                                  controller1: seedPhraseController,
+                                  controller2: privateKeyController,
                                 ),
                               ),
                             );
@@ -330,6 +341,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                 top: 72.h,
                                 child: CustomDialog(
                                   cubit: stringCubit,
+                                  controller1: seedPhraseController,
+                                  controller2: privateKeyController,
                                 ),
                               ),
                             );
@@ -357,6 +370,19 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   password: passwordController.text,
                   confirmPW: confirmPasswordController.text,
                 );
+                if (stringCubit.select == 'Seed phrase') {
+                  stringCubit.importWallet(
+                    type: 'PASS_PHRASE',
+                    content: seedPhraseController.text,
+                    password: passwordController.text,
+                  );
+                } else {
+                  stringCubit.importWallet(
+                    type: 'PRIVATE_KEY',
+                    content: privateKeyController.text,
+                    password: passwordController.text,
+                  );
+                }
               },
               child: Text(
                 'Restore',

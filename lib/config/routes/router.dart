@@ -27,7 +27,7 @@ class AppRouter {
       // case testScreen:
       //   return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
       case main:
-        return MaterialPageRoute(builder: (ctx) =>  MainScreen());
+        return MaterialPageRoute(builder: (ctx) =>  const MainScreen());
       // case main:
       //   return MaterialPageRoute(
       //       builder: (ctx) => MainScreen(

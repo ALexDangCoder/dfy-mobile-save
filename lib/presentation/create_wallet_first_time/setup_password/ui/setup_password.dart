@@ -4,6 +4,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
+import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -278,8 +280,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     indexPW = 1;
                   }
                 },
-                child: const ImageIcon(
-                  AssetImage('assets/images/Hide.png'),
+                child: snapshot.data ?? false ? const ImageIcon(
+                  AssetImage(ImageAssets.hide),
+                  color: Colors.grey,
+                ) :
+                const ImageIcon(
+                  AssetImage(ImageAssets.show),
                   color: Colors.grey,
                 ),
               ),
@@ -307,7 +313,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
-        color: Color.fromRGBO(167, 167, 167, 0.5),
+        color: Color(0xff32324c),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showConfirmPWStream,
@@ -336,8 +342,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     indexConfirmPW = 1;
                   }
                 },
-                child: const ImageIcon(
-                  AssetImage('assets/images/Hide.png'),
+                child: snapshot.data ?? false ? const ImageIcon(
+                  AssetImage(ImageAssets.hide),
+                  color: Colors.grey,
+                ) :
+                const ImageIcon(
+                  AssetImage(ImageAssets.show),
                   color: Colors.grey,
                 ),
               ),
