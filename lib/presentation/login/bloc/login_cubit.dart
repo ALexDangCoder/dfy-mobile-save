@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'login_state.dart';
 
@@ -18,21 +19,33 @@ class LoginCubit extends BaseCubit<LoginState> {
     return hidePass = !hidePass;
   }
 
+  String privateKey = '';
+  String walletAddress = '';
+  late String passPhrase;
+
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     emit(LoginLoading());
     bool loginSuccess = false;
+
     switch (methodCall.method) {
       case 'checkPasswordCallback':
-         loginSuccess = methodCall.arguments['isCorrect'];
+        loginSuccess = methodCall.arguments['isCorrect'];
         break;
-
+      case 'generateWalletCallback':
+        privateKey = await methodCall.arguments['privateKey'];
+        walletAddress = await methodCall.arguments['walletAddress'];
+        passPhrase = await methodCall.arguments['passPhrase'];
+        print(privateKey);
+        print(passPhrase);
+        print(walletAddress);
+      break;
       default:
         break;
     }
-    if(loginSuccess == true) {
+
+    if (loginSuccess == true) {
       emit(LoginSuccess());
-    }
-    else {
+    } else {
       emit(LoginError('Password was wrong...'));
     }
   }

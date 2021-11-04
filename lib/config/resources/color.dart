@@ -14,6 +14,9 @@ const secondTxtColor = Color(0xFF808FA8);
 const highlightTxtColor = Color(0xff303742);
 const subTitleTxtColor = Color(0xff9097A3);
 
+const listBackgroundColor = [Color(0xFF3C3B54),Color(0xFF171527)];
+const listButtonColor = [Color(0xFFFFE284),Color(0xFFE4AC1A)];
+
 //bottom navigation color
 const bgBottomTab = Color(0xFF3A3956);
 const tabSelected = Color(0xff0ABAB5);

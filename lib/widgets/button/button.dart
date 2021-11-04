@@ -14,12 +14,14 @@ class _ButtonGoldState extends State<ButtonGold> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 26.w, left: 26.w,bottom: 6),
+      margin: EdgeInsets.only(right: 26.w, left: 26.w, bottom: 38),
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
+        gradient: RadialGradient(
+          radius: 4,
+          center: Alignment(0.5, -0.5),
           colors: [
-            Color(0xffE4AC1A),
             Color(0xffFFE284),
+            Color(0xffE4AC1A),
           ],
         ),
         borderRadius: BorderRadius.all(
@@ -32,9 +34,10 @@ class _ButtonGoldState extends State<ButtonGold> {
         child: Text(
           widget.title,
           style: TextStyle(
-              fontSize: 20.sp,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,),
+            fontSize: 20.sp,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
