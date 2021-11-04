@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ImageAssets {
   ///Svg path
+  ///Png path
   static const String icBack = '$baseImg/ic_back.svg';
   static const String icMenu = '$baseImg/ic_menu.svg';
   static const String back = '$baseImg/back.png';
@@ -13,6 +14,10 @@ class ImageAssets {
   static const String key = '$baseImg/key.png';
   static const String show = '$baseImg/Show.png';
   static const String hide = '$baseImg/Hide.png';
+  static const String to = '$baseImg/To.png';
+  static const String token = '$baseImg/Token.png';
+  static const String code = '$baseImg/Code.png';
+  static const String from = '$baseImg/From.png';
 
   static SvgPicture svgAssets(
     String name, {

@@ -1,6 +1,8 @@
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/test_screen_init.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/send_token_nft/ui/send_token.dart';
 import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class AppRouter {
   static const testScreen = '/testScreen';
   static const login = '/login';
   static const wallet = '/wallet';
+  static const sendToken = '/sendToken';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
@@ -24,12 +27,14 @@ class AppRouter {
     switch (settings.name) {
       // case splash:
       //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
-      // case testScreen:
-      //   return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
+      case testScreen:
+        return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
       case setupPassWord:
         return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
       case main:
-        return MaterialPageRoute(builder: (ctx) =>  const MainScreen());
+        return MaterialPageRoute(builder: (ctx) => const MainScreen());
+      case sendToken:
+        return MaterialPageRoute(builder: (ctx) => const SendTokenFtNft());
       // case main:
       //   return MaterialPageRoute(
       //       builder: (ctx) => MainScreen(
