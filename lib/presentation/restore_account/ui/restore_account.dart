@@ -317,6 +317,9 @@ class _RestoreAccountState extends State<RestoreAccount> {
                             },
                           ),
                           showTextValidateMatchPassword(),
+                          SizedBox(
+                            height: 150.h,
+                          ),
                         ],
                       ),
                       BlocBuilder<StringCubit, StringState>(
@@ -351,10 +354,16 @@ class _RestoreAccountState extends State<RestoreAccount> {
                           }
                         },
                       ),
+                      SizedBox(
+                        height: 100.h,
+                      ),
                     ],
                   ),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 50.h,
             ),
             ButtonGradient(
               gradient: const LinearGradient(
@@ -370,18 +379,26 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   password: passwordController.text,
                   confirmPW: confirmPasswordController.text,
                 );
-                if (stringCubit.select == 'Seed phrase') {
-                  stringCubit.importWallet(
-                    type: 'PASS_PHRASE',
-                    content: seedPhraseController.text,
-                    password: passwordController.text,
-                  );
-                } else {
-                  stringCubit.importWallet(
-                    type: 'PRIVATE_KEY',
-                    content: privateKeyController.text,
-                    password: passwordController.text,
-                  );
+                if (isValidPassCubit.isValidFtMatchPW(
+                  passwordController.text,
+                  confirmPasswordController.text,
+                )) {
+                  if (stringCubit.select == 'Seed phrase') {
+                    stringCubit.importWallet(
+                      type: 'PASS_PHRASE',
+                      content: seedPhraseController.text,
+                      password: passwordController.text,
+                    );
+                    Navigator.pop(context);
+                  } else {
+                    stringCubit.importWallet(
+                      type: 'PRIVATE_KEY',
+                      content: privateKeyController.text,
+                      password: passwordController.text,
+                    );
+                    Navigator.pop(context);
+                  }
+
                 }
               },
               child: Text(

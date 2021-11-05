@@ -5,28 +5,47 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../main.dart';
 
 class BLocCreateSeedPhrase {
-  BLocCreateSeedPhrase() {
-    getStringToList();
-  }
-
-  dispose() {
-    isCheckBox1.close();
-    isCheckBox2.close();
-    listTitle.close();
-    listSeedPhrase.close();
-  }
+  BLocCreateSeedPhrase(this.passWord);
 
   BehaviorSubject<bool> isCheckBox1 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckBox2 = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckData = BehaviorSubject.seeded(false);
   BehaviorSubject<List<Item>> listTitle = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
+  final String passWord;
 
-  var data =
-      'happy lovely eternity victory school trust careful success confident'
-      ' drama patient hold';
+  Future<void> generateWallet({required String password}) async {
+    try {
+      final data = {
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('generateWallet', data);
+    } on PlatformException {
+      //todo
 
-  void getStringToList() {
-    listTitle1 = data.split(' ');
+    }
+  }
+
+  String passPhrase = '';
+   String walletAddress = '';
+   String privateKey = '';
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'generateWalletCallback':
+        privateKey = await methodCall.arguments['privateKey'];
+        walletAddress = await methodCall.arguments['walletAddress'];
+        passPhrase = await methodCall.arguments['passPhrase'];
+        getStringToList(passPhrase);
+        isCheckData.sink.add(true);
+        break;
+      default:
+        break;
+    }
+  }
+
+  void getStringToList(String passPhrase) {
+    listTitle1 = passPhrase.split(' ');
     getListTitle();
   }
 
@@ -35,7 +54,7 @@ class BLocCreateSeedPhrase {
     for (final Item value in listTitle3) {
       isData += value.title + ' ';
     }
-    if (data + ' ' == isData) {
+    if (passPhrase + ' ' == isData) {
       return true;
     }
     return false;
@@ -71,30 +90,10 @@ class BLocCreateSeedPhrase {
     reloadListSeedPhrase();
   }
 
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    switch (methodCall.method) {
-      case 'checkPasswordCallback':
-        break;
-      case 'storeWalletCallback':
-        bool isSuccess = methodCall.arguments['isSuccess'];
-        break;
-      default:
-        break;
-    }
-  }
-
-  Future<void> storeWallet(
-    bool isAppLock,
-    bool isFaceID,
-    String password,
-  ) async {
-    try {
-      final data = {
-        'isAppLock': isAppLock,
-        'isFaceID': isFaceID,
-        'password': password,
-      };
-      await trustWalletChannel.invokeListMethod('storeWallet', data);
-    } on PlatformException {}
+  dispose() {
+    isCheckBox1.close();
+    isCheckBox2.close();
+    listTitle.close();
+    listSeedPhrase.close();
   }
 }
