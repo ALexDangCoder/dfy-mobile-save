@@ -10,10 +10,24 @@ class SendNftCubit extends Cubit<SendNftState> {
   SendNftCubit() : super(SendNftInitial());
 
   final BehaviorSubject<String> _fromField = BehaviorSubject<String>.seeded('');
+  final BehaviorSubject<bool> _isCustomizeFee =
+      BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _isSufficientToken =
+      BehaviorSubject<bool>.seeded(false);
 
+  //stream
   Stream<String> get fromFieldStream => _fromField.stream;
 
+  Stream<bool> get isCustomizeFeeStream => _isCustomizeFee.stream;
+
+  Stream<bool> get isSufficientTokenStream => _isSufficientToken.stream;
+
+  //sink
   Sink<String> get fromFieldSink => _fromField.sink;
+
+  Sink<bool> get isCustomizeFeeSink => _isCustomizeFee.sink;
+
+  Sink<bool> get isSufficientTokenSink => _isSufficientToken.sink;
 
   // "walletAddress*: String
   // receiveAddress*: String
@@ -54,5 +68,11 @@ class SendNftCubit extends Cubit<SendNftState> {
     } on PlatformException {
       //todo
     }
+  }
+
+  void dispose() {
+    _fromField.close();
+    _isCustomizeFee.close();
+    _isSufficientToken.close();
   }
 }

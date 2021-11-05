@@ -16,6 +16,7 @@ class SendToken extends StatefulWidget {
 class _SendTokenState extends State<SendToken> {
   late SendTokenCubit tokenCubit;
 
+  //todo truyen amount
   @override
   void initState() {
     tokenCubit = SendTokenCubit();
@@ -40,73 +41,80 @@ class _SendTokenState extends State<SendToken> {
     return StreamBuilder(
       stream: tokenCubit.fromFieldStream,
       builder: (context, AsyncSnapshot<String> snapshot) {
-        return Container(
-          width: 375.w,
-          height: 764.h,
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(62, 61, 92, 1),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.r),
-              topRight: Radius.circular(30.r),
-            ),
-          ),
-          child: Column(
-            children: [
-              header(nameToken: 'DFY'),
-              const Divider(
-                thickness: 1,
-                color: Color.fromRGBO(255, 255, 255, 0.1),
-              ),
-              SizedBox(
-                height: 24.h,
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      formShowFtAddress(
-                        hintText: snapshot.data ?? '',
-                        readOnly: true,
-                        prefixImg: ImageAssets.from,
-                        suffixImg: '',
-                      ),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      formShowFtAddress(
-                        hintText: 'To address',
-                        suffixImg: ImageAssets.code,
-                        prefixImg: ImageAssets.to,
-                      ),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      formAmountFtQuantity(
-                        hintText: 'Amount',
-                        isAmount: true,
-                        isQuantity: false,
-                        prefixImg: ImageAssets.token,
-                      ),
-                      SizedBox(
-                        height: 353.h,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              GestureDetector(
-                child: const ButtonGold(
-                  title: 'Continue',
-                  isEnable: false,
-                ),
-                onTap: () {},
-              ),
-              SizedBox(
-                height: 34.h,
-              ),
-            ],
-          ),
-        );
+        switch(snapshot.connectionState) {
+          case ConnectionState.active:
+            print(snapshot.data);
+            return Text(snapshot.data ?? 'k co data');
+          default:
+            return Text('loiu');
+        }
+        // return Container(
+        //   width: 375.w,
+        //   height: 764.h,
+        //   decoration: BoxDecoration(
+        //     color: const Color.fromRGBO(62, 61, 92, 1),
+        //     borderRadius: BorderRadius.only(
+        //       topLeft: Radius.circular(30.r),
+        //       topRight: Radius.circular(30.r),
+        //     ),
+        //   ),
+        //   child: Column(
+        //     children: [
+        //       header(nameToken: 'DFY'),
+        //       const Divider(
+        //         thickness: 1,
+        //         color: Color.fromRGBO(255, 255, 255, 0.1),
+        //       ),
+        //       SizedBox(
+        //         height: 24.h,
+        //       ),
+        //       Expanded(
+        //         child: SingleChildScrollView(
+        //           child: Column(
+        //             children: [
+        //               formShowFtAddress(
+        //                 hintText: snapshot.data ?? '',
+        //                 readOnly: true,
+        //                 prefixImg: ImageAssets.from,
+        //                 suffixImg: '',
+        //               ),
+        //               SizedBox(
+        //                 height: 16.h,
+        //               ),
+        //               formShowFtAddress(
+        //                 hintText: 'To address',
+        //                 suffixImg: ImageAssets.code,
+        //                 prefixImg: ImageAssets.to,
+        //               ),
+        //               SizedBox(
+        //                 height: 16.h,
+        //               ),
+        //               formAmountFtQuantity(
+        //                 hintText: 'Amount',
+        //                 isAmount: true,
+        //                 isQuantity: false,
+        //                 prefixImg: ImageAssets.token,
+        //               ),
+        //               SizedBox(
+        //                 height: 353.h,
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       ),
+        //       GestureDetector(
+        //         child: const ButtonGold(
+        //           title: 'Continue',
+        //           isEnable: false,
+        //         ),
+        //         onTap: () {},
+        //       ),
+        //       SizedBox(
+        //         height: 34.h,
+        //       ),
+        //     ],
+        //   ),
+        // );
       },
     );
   }

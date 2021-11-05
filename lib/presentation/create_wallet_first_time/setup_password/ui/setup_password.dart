@@ -44,7 +44,6 @@ class _SetupPassWordState extends State<SetupPassWord> {
     return GestureDetector(
       onTap: () {
         final FocusScopeNode currentFocus = FocusScope.of(context);
-
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.unfocus();
         }

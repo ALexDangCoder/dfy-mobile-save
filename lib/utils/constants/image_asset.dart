@@ -18,6 +18,7 @@ class ImageAssets {
   static const String token = '$baseImg/Token.png';
   static const String code = '$baseImg/Code.png';
   static const String from = '$baseImg/From.png';
+  static const String hardCoreImgWallet = '$baseImg/naruto.png';
 
   static SvgPicture svgAssets(
     String name, {
