@@ -8,6 +8,7 @@ class CheckPassCubit extends Cubit<CheckPassState> {
 
   final BehaviorSubject<bool> _validatePW = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _matchPW = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _ckcBox = BehaviorSubject<bool>.seeded(false);
 
   Stream<bool> get validatePWStream => _validatePW.stream;
 
@@ -16,6 +17,10 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   Sink<bool> get validatePWSink => _validatePW.sink;
 
   Sink<bool> get matchPWSink => _matchPW.sink;
+
+  Sink<bool> get ckcBoxSink => _ckcBox.sink;
+
+  Stream<bool> get ckcBoxStream => _ckcBox.stream;
 
   void isValidate(String value) {
     if (Validator.validateStructure(value)) {
@@ -34,13 +39,15 @@ class CheckPassCubit extends Cubit<CheckPassState> {
       matchPWSink.add(true);
     }
   }
+
   bool isValidFtMatchPW(String value, String confirmValue) {
-    if(Validator.validateStructure(value) && (value == confirmValue)) {
+    if (Validator.validateStructure(value) && (value == confirmValue)) {
       return true;
     } else {
       return false;
     }
   }
+
   @override
   Future<void> close() {
     _validatePW.close();

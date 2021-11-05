@@ -23,6 +23,7 @@ class RestoreAccount extends StatefulWidget {
 
 class _RestoreAccountState extends State<RestoreAccount> {
   String dropdownValue = S.current.seed_phrase;
+  int checkBox = 1;
   late final NewPassCubit newCubit;
   late final ConPassCubit conCubit;
   late final StringCubit stringCubit;
@@ -246,7 +247,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                   if (formType == FormType.PASS_PHRASE)
                                     ItemForm(
                                       leadPath: ImageAssets.key,
-                                      trailingPath: ImageAssets.show,
+                                      trailingPath: ImageAssets.paste,
                                       hint: S.current.wallet_secret,
                                       formType: FormType.PASS_PHRASE,
                                       isShow: true,
@@ -258,9 +259,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                       builder: (ctx, state) {
                                         return ItemForm(
                                           leadPath: ImageAssets.lock,
-                                          trailingPath: state
-                                              ? ImageAssets.hide
-                                              : ImageAssets.show,
+                                          trailingPath: ImageAssets.paste,
                                           hint: S.current.private_key,
                                           formType: FormType.PRIVATE_KEY,
                                           isShow: state,
@@ -362,8 +361,9 @@ class _RestoreAccountState extends State<RestoreAccount> {
                 ),
               ),
             ),
+            ckcBoxAndTextSetupPass(),
             SizedBox(
-              height: 50.h,
+              height: 36.h,
             ),
             ButtonGradient(
               gradient: const LinearGradient(
@@ -389,16 +389,13 @@ class _RestoreAccountState extends State<RestoreAccount> {
                       content: seedPhraseController.text,
                       password: passwordController.text,
                     );
-                    Navigator.pop(context);
                   } else {
                     stringCubit.importWallet(
                       type: 'PRIVATE_KEY',
                       content: privateKeyController.text,
                       password: passwordController.text,
                     );
-                    Navigator.pop(context);
                   }
-
                 }
               },
               child: Text(
@@ -418,7 +415,59 @@ class _RestoreAccountState extends State<RestoreAccount> {
     );
   }
 
-  //huy
+  SizedBox ckcBoxAndTextSetupPass() {
+    return SizedBox(
+      height: 36.h,
+      width: 323.w,
+      child: Row(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              width: 24.w,
+              height: 24.h,
+              child: StreamBuilder(
+                stream: isValidPassCubit.ckcBoxStream,
+                builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                  return Checkbox(
+                    fillColor:
+                        MaterialStateProperty.all(const Color(0xffE4AC1A)),
+                    activeColor: const Color.fromRGBO(228, 172, 26, 1),
+                    onChanged: (bool? value) {
+                      isValidPassCubit.ckcBoxSink.add(value ?? false);
+                      if (value == true) {
+                        checkBox = 2;
+                      } else {
+                        checkBox = 1;
+                      }
+                    },
+                    value: snapshot.data,
+                  );
+                },
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 12.w,
+          ),
+          SizedBox(
+            width: 287.w,
+            height: 48.h,
+            child: Text(
+              'I understand DeFi For You will not recover this\n'
+              ' password for me',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 14.sp,
+                color: const Color.fromRGBO(255, 255, 255, 1),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget showTextValidateMatchPassword() {
     return StreamBuilder(
       stream: isValidPassCubit.matchPWStream,

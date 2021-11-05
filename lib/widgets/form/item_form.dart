@@ -34,8 +34,9 @@ class ItemForm extends StatelessWidget {
         child: Container(
           width: 323.w,
           padding: EdgeInsets.only(
-            top: 10.h,
-            bottom: 8.h,
+            top: 8.h,
+            // bottom: 8.h,
+            right: 10.w,
           ),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
@@ -62,7 +63,7 @@ class ItemForm extends StatelessWidget {
                 onTap: () {},
                 child: ImageIcon(
                   AssetImage(trailingPath),
-                  color: Colors.grey,
+                    color: const Color(0xffE4AC1A),
                 ),
               ),
               prefixIcon: ImageIcon(
@@ -74,7 +75,53 @@ class ItemForm extends StatelessWidget {
           ),
         ),
       );
-    } else {
+    }
+    else if(formType == FormType.PRIVATE_KEY){
+      return Container(
+        height: 64.h,
+        width: 323.w,
+        padding: EdgeInsets.only(
+          top: 12.h,
+          bottom: 12.h,
+          right: 10.w,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(20),
+          ),
+          color: AppTheme.getInstance().itemBtsColor(),
+        ),
+        child: TextFormField(
+          controller: controller,
+          obscureText: isShow,
+          style: textNormal(
+            Colors.white,
+            16.sp,
+          ),
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: textNormal(
+              Colors.grey,
+              16.sp,
+            ),
+            suffixIcon: InkWell(
+              onTap: callback,
+              child: ImageIcon(
+                AssetImage(trailingPath),
+                color: const Color(0xffE4AC1A),
+              ),
+            ),
+            prefixIcon: ImageIcon(
+              AssetImage(leadPath),
+              color: Colors.white,
+            ),
+            border: InputBorder.none,
+          ),
+        ),
+      );
+    }
+    else {
       return Container(
         height: 64.h,
         width: 323.w,
