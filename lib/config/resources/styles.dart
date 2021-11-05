@@ -57,6 +57,3 @@ TextStyle textNormalCustom(Color? color, double? fontSize,
     fontSize: fontSize ?? 14,
   );
 }
-
-
-
