@@ -10,6 +10,7 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/s
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void showCreateSeedPhrase2(
   BuildContext context,
@@ -153,12 +154,19 @@ void showCreateSeedPhrase2(
             Center(
               child: GestureDetector(
                 onTap: () {
-                  if (bLocCreateSeedPhrase.isCheckBox2.value &&
-                      bLocCreateSeedPhrase.getCheck()) {
-                    showCreateSuccessfully(context);
+                  if (bLocCreateSeedPhrase.isCheckBox2.value) {
+                    if (bLocCreateSeedPhrase.getCheck()) {
+                      showCreateSuccessfully(context);
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: 'Failed.',
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                      );
+                    }
                   }
                 },
-                child:  StreamBuilder(
+                child: StreamBuilder(
                   stream: bLocCreateSeedPhrase.isCheckBox2,
                   builder: (context, snapshot) {
                     return ButtonGold(

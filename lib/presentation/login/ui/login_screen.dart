@@ -209,15 +209,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        showImportToken(context, ImportTokenBloc());
-                        //    showModalBottomSheet(
-                        //      isScrollControlled: true,
-                        //      context: context,
-                        //      backgroundColor: Colors.transparent,
-                        //      builder: (context) {
-                        //        return const SetupPassWord();
-                        //      },
-                        //    );
+                        //showImportToken(context, ImportTokenBloc());
+                           showModalBottomSheet(
+                             isScrollControlled: true,
+                             context: context,
+                             backgroundColor: Colors.transparent,
+                             builder: (context) {
+                               return const SetupPassWord();
+                             },
+                           );
                       },
                       child: Text(
                         'New wallet',

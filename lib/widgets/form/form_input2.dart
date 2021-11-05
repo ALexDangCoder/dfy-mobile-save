@@ -23,7 +23,7 @@ class FormInput2 extends StatelessWidget {
       margin:
       EdgeInsets.symmetric(horizontal: 26.w),
       padding: EdgeInsets.symmetric(
-          horizontal: 15.5.w, vertical: 20.h),
+          horizontal: 15.5.w, vertical: 18.h),
       decoration: const BoxDecoration(
         color: Color(0xff32324c),
         borderRadius:

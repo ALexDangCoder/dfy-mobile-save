@@ -21,7 +21,7 @@ class FormSearch extends StatelessWidget {
       width: 336.w,
       height: 46.h,
       margin: EdgeInsets.symmetric(horizontal: 19.w),
-      padding: EdgeInsets.symmetric(horizontal: 15.5.w, vertical: 13.h),
+      padding: const EdgeInsets.only(right: 15,left: 15,top: 10),
       decoration: const BoxDecoration(
         color: Color(0xff32324c),
         borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -37,7 +37,7 @@ class FormSearch extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(top: 7.h),
+              margin: EdgeInsets.only(bottom: 5.h),
               child: TextFormField(
                 onFieldSubmitted: (value) {},
                 cursorColor: Colors.white,

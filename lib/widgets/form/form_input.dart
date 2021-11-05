@@ -39,7 +39,7 @@ class FormInput extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(top: 10.h),
+              margin: EdgeInsets.only(top: 8.h),
               child: TextFormField(
                 onFieldSubmitted: (value) {},
                 cursorColor: Colors.white,

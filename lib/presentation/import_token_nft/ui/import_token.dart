@@ -53,7 +53,7 @@ void showImportToken(BuildContext context, ImportTokenBloc bloc) {
                       },
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 83.w, left: 100.w),
+                      margin: EdgeInsets.only(right: 80.w, left: 102.w),
                       child: Text(Strings.import_token,
                           style: textNormalCustom(null, 20, FontWeight.bold)),
                     ),

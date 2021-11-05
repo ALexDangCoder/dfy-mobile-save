@@ -50,6 +50,7 @@ dependencies:
   table_calendar: ^3.0.2
   image_picker: ^0.8.4+3
   flutter_tab_indicator_styler: ^2.0.0
+  # add this line to your dependencies
 
   #Library helpful
   intl: ^0.17.0
