@@ -70,7 +70,7 @@ class _MainScreenState extends BaseState<MainScreen> {
     _cubit.init();
     super.initState();
     _pages = [
-      const WalletScreen(),
+      const LoginScreen(),
       const PawnScreen(),
       const HomeScreen(),
       const MarketPlaceScreen(),

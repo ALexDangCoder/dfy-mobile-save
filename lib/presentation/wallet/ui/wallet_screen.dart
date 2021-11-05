@@ -6,6 +6,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/import.dart';
 import 'package:Dfy/presentation/wallet/ui/nft_item.dart';
+import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
 import 'package:Dfy/presentation/wallet/ui/token_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -309,7 +310,10 @@ class _WalletState extends State<WalletScreen>
                   Clipboard.setData(
                     ClipboardData(text: _cubit.addressWallet),
                   ).then((_) {
-                    _showToast();
+                    fToast.showToast(child: const Copied(),
+                      gravity: ToastGravity.CENTER,
+                      toastDuration: const Duration(seconds: 2,),
+                    );
                   });
                 },
                 child: Container(
@@ -345,34 +349,4 @@ class _WalletState extends State<WalletScreen>
     );
   }
 
-  Future<void> _showToast() async {
-    final Widget toast = Container(
-      height: 83.h,
-      width: 232.w,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0),
-        color: Colors.white.withOpacity(0.3),
-      ),
-      child: Center(
-        child: BackdropFilter(
-          blendMode: BlendMode.overlay,
-          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-          child: Text(
-            'Copied address!',
-            style: textNormalCustom(
-              Colors.white,
-              20.sp,
-              FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-    );
-
-    fToast.showToast(
-      child: toast,
-      gravity: ToastGravity.CENTER,
-      toastDuration: const Duration(seconds: 1),
-    );
-  }
 }
