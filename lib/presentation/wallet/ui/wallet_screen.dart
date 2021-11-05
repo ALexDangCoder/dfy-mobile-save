@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({Key? key}) : super(key: key);
@@ -21,12 +24,15 @@ class _WalletState extends State<WalletScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final WalletCubit _cubit = WalletCubit();
+  late FToast fToast;
 
   @override
   void initState() {
     super.initState();
     _cubit.formatAddress('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
     _tabController = TabController(length: 2, vsync: this);
+    fToast = FToast();
+    fToast.init(context);
   }
 
   @override
@@ -303,11 +309,7 @@ class _WalletState extends State<WalletScreen>
                   Clipboard.setData(
                     ClipboardData(text: _cubit.addressWallet),
                   ).then((_) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Copied to your clipboard !'),
-                      ),
-                    );
+                    _showToast();
                   });
                 },
                 child: Container(
@@ -340,6 +342,37 @@ class _WalletState extends State<WalletScreen>
           ),
         ),
       ],
+    );
+  }
+
+  Future<void> _showToast() async {
+    final Widget toast = Container(
+      height: 83.h,
+      width: 232.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.0),
+        color: Colors.white.withOpacity(0.3),
+      ),
+      child: Center(
+        child: BackdropFilter(
+          blendMode: BlendMode.overlay,
+          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+          child: Text(
+            'Copied address!',
+            style: textNormalCustom(
+              Colors.white,
+              20.sp,
+              FontWeight.w700,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.CENTER,
+      toastDuration: const Duration(seconds: 1),
     );
   }
 }
