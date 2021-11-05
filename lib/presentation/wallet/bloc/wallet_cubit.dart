@@ -12,7 +12,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getAddressWallet() async {}
 
   void formatAddress(String address) {
-    final splitAddress = addressWallet.split('');
+    final splitAddress = address.split('');
     formatAddressWallet = '${splitAddress[0]}'
         '${splitAddress[1]}${splitAddress[2]}'
         '${splitAddress[3]}${splitAddress[6]}'

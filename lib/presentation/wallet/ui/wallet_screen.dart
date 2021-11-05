@@ -302,7 +302,13 @@ class _WalletState extends State<WalletScreen>
                 onLongPress: () {
                   Clipboard.setData(
                     ClipboardData(text: _cubit.addressWallet),
-                  );
+                  ).then((_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Copied to your clipboard !'),
+                      ),
+                    );
+                  });
                 },
                 child: Container(
                   height: 36.h,
