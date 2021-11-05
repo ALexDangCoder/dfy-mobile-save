@@ -34,7 +34,13 @@ class CheckPassCubit extends Cubit<CheckPassState> {
       matchPWSink.add(true);
     }
   }
-
+  bool isValidFtMatchPW(String value, String confirmValue) {
+    if(Validator.validateStructure(value) && (value == confirmValue)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   @override
   Future<void> close() {
     _validatePW.close();
