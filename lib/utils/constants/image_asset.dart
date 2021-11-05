@@ -17,6 +17,8 @@ class ImageAssets {
   static const String save = '$baseImg/save.png';
   static const String set_amount = '$baseImg/set_amount.png';
   static const String share = '$baseImg/share.png';
+  static const String token = '$baseImg/token.png';
+  static const String max = '$baseImg/Note.png';
 
 
   static SvgPicture svgAssets(

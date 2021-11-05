@@ -1,4 +1,4 @@
-import 'package:Dfy/presentation/bottom_sheet_receive_token/bts_receive_token.dart';
+import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,9 +24,9 @@ class _TestScreenState extends State<TestScreen> {
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
                 context: context,
-                builder: (context) => const ReceiveToken(
-                    walletAddress:
-                        '0xafwfakfaowofamcmacaocoacoacmacmacm'),
+                builder: (context) => const ReceiveDFY(
+                  walletAddress: '0xafwfakfaowofamcmacaocoacoacmacmac',
+                ),
               );
             },
             child: const Text('Click'),

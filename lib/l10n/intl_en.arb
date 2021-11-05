@@ -14,5 +14,14 @@
   "tab_staking": "Staking",
   "seed_phrase": "Seed phrase",
   "private_key": "Private key",
-  "wallet_secret": "Wallet secret seed phrase"
+  "wallet_secret": "Wallet secret seed phrase",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "set_amount": "Set amount",
+  "save": "Save",
+  "saved": "Saved",
+  "share": "Share",
+  "receive_nft": "Receive NFT",
+  "receive_dfy": "Receive DFY",
+  "amount": "Amount"
 }

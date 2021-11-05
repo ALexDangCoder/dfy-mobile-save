@@ -245,8 +245,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                   ),
                                   if (formType == FormType.PASS_PHRASE)
                                     ItemForm(
-                                      leadPath: ImageAssets.key,
-                                      trailingPath: ImageAssets.show,
+                                      prefix: ImageAssets.key,
+                                      suffix: ImageAssets.show,
                                       hint: S.current.wallet_secret,
                                       formType: FormType.PASS_PHRASE,
                                       isShow: true,
@@ -257,8 +257,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                       bloc: privatePassCubit,
                                       builder: (ctx, state) {
                                         return ItemForm(
-                                          leadPath: ImageAssets.lock,
-                                          trailingPath: state
+                                          prefix: ImageAssets.lock,
+                                          suffix: state
                                               ? ImageAssets.hide
                                               : ImageAssets.show,
                                           hint: S.current.private_key,
@@ -282,8 +282,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                             bloc: newCubit,
                             builder: (ctx, state) {
                               return ItemForm(
-                                leadPath: ImageAssets.lock,
-                                trailingPath:
+                                prefix: ImageAssets.lock,
+                                suffix:
                                     state ? ImageAssets.hide : ImageAssets.show,
                                 hint: 'New password',
                                 formType: FormType.PASSWORD,
@@ -303,8 +303,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                             bloc: conCubit,
                             builder: (ctx, state) {
                               return ItemForm(
-                                leadPath: ImageAssets.lock,
-                                trailingPath:
+                                prefix: ImageAssets.lock,
+                                suffix:
                                     state ? ImageAssets.hide : ImageAssets.show,
                                 hint: 'Confirm password',
                                 formType: FormType.PASSWORD,

@@ -14,5 +14,14 @@
   "tab_wallet": "Wallet",
   "tab_pawn": "Pawn",
   "tab_market_place": "Marketplace",
-  "tab_staking": "Staking"
+  "tab_staking": "Staking",
+  "cancel": "Hủy",
+  "confirm": "Xác Nhận",
+  "set_amount": "Thiết lập Số lượng",
+  "save": "Lưu",
+  "saved": "Đã lưu",
+  "share": "Chia sẻ",
+  "receive_nft": "Nhận NFT",
+  "receive_dfy": "Nhận DFY",
+  "amount": "Số lượng"
 }

@@ -1,23 +1,20 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/pop_up.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import 'hero_dialog_route.dart';
-
-class ReceiveToken extends StatefulWidget {
-  const ReceiveToken({Key? key, required this.walletAddress}) : super(key: key);
+class ReceiveNFT extends StatefulWidget {
+  const ReceiveNFT({Key? key, required this.walletAddress}) : super(key: key);
   final String walletAddress;
 
   @override
-  _ReceiveTokenState createState() => _ReceiveTokenState();
+  _ReceiveNFTState createState() => _ReceiveNFTState();
 }
 
-class _ReceiveTokenState extends State<ReceiveToken> {
+class _ReceiveNFTState extends State<ReceiveNFT> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,13 +54,11 @@ class _ReceiveTokenState extends State<ReceiveToken> {
                 SizedBox(
                   width: 75.w,
                 ),
-                Center(
-                  child: Text(
-                    'Receive DFY',
-                    style: textNormal(null, 20.sp).copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal,
-                    ),
+                Text(
+                  S.current.receive_nft,
+                  style: textNormal(null, 20.sp).copyWith(
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal,
                   ),
                 ),
               ],
@@ -73,7 +68,8 @@ class _ReceiveTokenState extends State<ReceiveToken> {
             height: 20.h,
           ),
           Divider(
-            height: 1.h,
+            height: 1,
+            thickness: 1,
             color: AppTheme.getInstance().divideColor(),
           ),
           SizedBox(
@@ -85,6 +81,8 @@ class _ReceiveTokenState extends State<ReceiveToken> {
             padding: EdgeInsets.only(
               top: 16.h,
               bottom: 12.h,
+              right: 40.w,
+              left: 40.w,
             ),
             decoration: const BoxDecoration(
               color: Color(0xff585782),
@@ -93,7 +91,6 @@ class _ReceiveTokenState extends State<ReceiveToken> {
               ),
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   width: 125.w,
@@ -112,17 +109,16 @@ class _ReceiveTokenState extends State<ReceiveToken> {
                 SizedBox(
                   height: 12.h,
                 ),
-                Expanded(
-                  child: SizedBox(
-                    height: 54.h,
-                    width: 232.w,
-                    child: Text(
-                      widget.walletAddress,
-                      style: textNormalCustom(
-                        null,
-                        18.sp,
-                        FontWeight.w300,
-                      ),
+                SizedBox(
+                  height: 54.h,
+                  width: 232.w,
+                  child: Text(
+                    widget.walletAddress,
+                    textAlign: TextAlign.center,
+                    style: textNormalCustom(
+                      null,
+                      18.sp,
+                      FontWeight.w300,
                     ),
                   ),
                 ),
@@ -140,27 +136,18 @@ class _ReceiveTokenState extends State<ReceiveToken> {
             width: 311.w,
             height: 76.h,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildColumnButton(
                   path: ImageAssets.save,
-                  label: 'Save',
+                  label: S.current.save,
+                ),
+                SizedBox(
+                  width: 60.w,
                 ),
                 _buildColumnButton(
-                    path: ImageAssets.set_amount,
-                    label: 'Set amount',
-                    callback: () {
-                      Navigator.of(context).push(
-                        HeroDialogRoute(
-                          builder: (context) {
-                            return const PopUp();
-                          },
-                        ),
-                      );
-                    }),
-                _buildColumnButton(
                   path: ImageAssets.share,
-                  label: 'Share',
+                  label: S.current.share,
                 ),
               ],
             ),
@@ -190,9 +177,11 @@ class _ReceiveTokenState extends State<ReceiveToken> {
           SizedBox(
             height: 8.h,
           ),
-          Text(
-            label,
-            style: textNormalCustom(null, 16.sp, FontWeight.w400),
+          Expanded(
+            child: Text(
+              label,
+              style: textNormalCustom(null, 16.sp, FontWeight.w400),
+            ),
           ),
         ],
       ),
