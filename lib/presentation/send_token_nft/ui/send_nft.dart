@@ -69,9 +69,9 @@ class _SendNftState extends State<SendNft> {
             ),
           ),
           GestureDetector(
-            child: ButtonGold(
-              title: 'Continue', isEnable: false,
-
+            child: const ButtonGold(
+              title: 'Continue',
+              isEnable: false,
             ),
             onTap: () {},
           ),
@@ -210,7 +210,7 @@ class _SendNftState extends State<SendNft> {
   Padding header({required String nameSend}) {
     return Padding(
       padding:
-      EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
+          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
       child: Row(
         children: [
           SizedBox(

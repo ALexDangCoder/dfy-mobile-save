@@ -1,8 +1,25 @@
+import 'package:Dfy/main.dart';
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
+import 'package:rxdart/rxdart.dart';
 
-import '../../../main.dart';
+part 'send_nft_state.dart';
 
-class SendNftBloc {
+class SendNftCubit extends Cubit<SendNftState> {
+  SendNftCubit() : super(SendNftInitial());
+
+  final BehaviorSubject<String> _fromField = BehaviorSubject<String>.seeded('');
+
+  Stream<String> get fromFieldStream => _fromField.stream;
+
+  Sink<String> get fromFieldSink => _fromField.sink;
+
+  // "walletAddress*: String
+  // receiveAddress*: String
+  // nftID*: Int
+  // password: String"
+
   String walletAddress = '';
   String receiveAddress = '';
   int? nftID;
@@ -10,13 +27,13 @@ class SendNftBloc {
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
-      case "checkPasswordCallback":
+      case 'sendNftCallback':
         walletAddress = await methodCall.arguments['walletAddress'];
         receiveAddress = await methodCall.arguments['receiveAddress'];
         password = await methodCall.arguments['password'];
         nftID = await methodCall.arguments['nftID'];
+        fromFieldSink.add(walletAddress);
         break;
-
       default:
         break;
     }
@@ -31,6 +48,7 @@ class SendNftBloc {
     try {
       final data = {
         'password': password,
+        //todo wallet, receive, nft
       };
       await trustWalletChannel.invokeMethod('sendNft', data);
     } on PlatformException {

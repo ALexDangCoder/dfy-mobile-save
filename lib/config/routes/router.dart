@@ -34,7 +34,7 @@ class AppRouter {
       case main:
         return MaterialPageRoute(builder: (ctx) => const MainScreen());
       case sendToken:
-        return MaterialPageRoute(builder: (ctx) => const SendTokenFtNft());
+        return MaterialPageRoute(builder: (ctx) => const SendToken());
       // case main:
       //   return MaterialPageRoute(
       //       builder: (ctx) => MainScreen(

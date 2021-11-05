@@ -19,7 +19,7 @@ class TestScreenUtils extends StatelessWidget {
               onPressed: () => showModalBottomSheet(
                 backgroundColor: Colors.transparent,
                 isScrollControlled: true,
-                builder: (context) => const SetupPassWord(),
+                builder: (context) => const SendToken(),
                 // builder: (context) => const AddWalletFtSeedPharse(
                 // ),
                 context: context,

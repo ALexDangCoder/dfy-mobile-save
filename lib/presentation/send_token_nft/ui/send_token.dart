@@ -1,97 +1,113 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SendTokenFtNft extends StatefulWidget {
-  const SendTokenFtNft({Key? key}) : super(key: key);
+class SendToken extends StatefulWidget {
+  const SendToken({Key? key}) : super(key: key);
 
   @override
-  _SendTokenFtNftState createState() => _SendTokenFtNftState();
+  _SendTokenState createState() => _SendTokenState();
 }
 
-class _SendTokenFtNftState extends State<SendTokenFtNft> {
+class _SendTokenState extends State<SendToken> {
+  late SendTokenCubit tokenCubit;
+
   @override
   void initState() {
-    // TODO: implement initState
+    tokenCubit = SendTokenCubit();
+    tokenCubit.checkPasswordWallet(
+      walletAddress: tokenCubit.walletAddress,
+      receiveAddress: tokenCubit.receiveAddress,
+      tokenID: tokenCubit.tokenID ?? 0,
+      amount: tokenCubit.amount ?? 0,
+    );
+    trustWalletChannel.setMethodCallHandler(tokenCubit.sendTokenWallet);
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    tokenCubit.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 375.w,
-      height: 764.h,
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(62, 61, 92, 1),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.r),
-          topRight: Radius.circular(30.r),
-        ),
-      ),
-      child: Column(
-        children: [
-          header(nameToken: 'DFY'),
-          const Divider(
-            thickness: 1,
-            color: Color.fromRGBO(255, 255, 255, 0.1),
+    return StreamBuilder(
+      stream: tokenCubit.fromFieldStream,
+      builder: (context, AsyncSnapshot<String> snapshot) {
+        return Container(
+          width: 375.w,
+          height: 764.h,
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(62, 61, 92, 1),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.r),
+              topRight: Radius.circular(30.r),
+            ),
           ),
-          SizedBox(
-            height: 24.h,
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  formShowFtAddress(
-                    hintText: '0xf94138c9...43FE932eA',
-                    readOnly: true,
-                    prefixImg: ImageAssets.from,
-                    suffixImg: '',
-                  ),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  formShowFtAddress(
-                    hintText: 'To address',
-                    suffixImg: ImageAssets.code,
-                    prefixImg: ImageAssets.to,
-                  ),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  formAmountFtQuantity(
-                    hintText: 'Amount',
-                    isAmount: true,
-                    isQuantity: false,
-                    prefixImg: ImageAssets.token,
-                  ),
-                  SizedBox(
-                    height: 353.h,
-                  ),
-                ],
+          child: Column(
+            children: [
+              header(nameToken: 'DFY'),
+              const Divider(
+                thickness: 1,
+                color: Color.fromRGBO(255, 255, 255, 0.1),
               ),
-            ),
+              SizedBox(
+                height: 24.h,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      formShowFtAddress(
+                        hintText: snapshot.data ?? '',
+                        readOnly: true,
+                        prefixImg: ImageAssets.from,
+                        suffixImg: '',
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      formShowFtAddress(
+                        hintText: 'To address',
+                        suffixImg: ImageAssets.code,
+                        prefixImg: ImageAssets.to,
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      formAmountFtQuantity(
+                        hintText: 'Amount',
+                        isAmount: true,
+                        isQuantity: false,
+                        prefixImg: ImageAssets.token,
+                      ),
+                      SizedBox(
+                        height: 353.h,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                child: const ButtonGold(
+                  title: 'Continue',
+                  isEnable: false,
+                ),
+                onTap: () {},
+              ),
+              SizedBox(
+                height: 34.h,
+              ),
+            ],
           ),
-          GestureDetector(
-            child: ButtonGold(
-              title: 'Continue',
-              isEnable: false,
-            ),
-            onTap: () {},
-          ),
-          SizedBox(
-            height: 34.h,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
