@@ -1,10 +1,7 @@
-import 'dart:async';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
-import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +25,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
   int checkBox = 1;
   int isValidPass = 1;
   int isMatchPass = 1;
+  int isEnable = 1;
 
   @override
   void initState() {
@@ -43,79 +41,94 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 375.w,
-      height: 764.h,
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(62, 61, 92, 1),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.r),
-          topRight: Radius.circular(30.r),
-        ),
-      ),
-      child: Column(
-        children: [
-          header(),
-          const Divider(
-            thickness: 1,
-            color: Color.fromRGBO(255, 255, 255, 0.1),
+    return GestureDetector(
+      onTap: () {
+        final FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Container(
+        width: 375.w,
+        height: 764.h,
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(62, 61, 92, 1),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30.r),
+            topRight: Radius.circular(30.r),
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  textShowSetupPass(),
-                  SizedBox(
-                    height: 28.h,
-                  ),
-                  formSetupPassWord(
-                    hintText: 'New password',
-                  ),
-                  showTextValidatePassword(),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  formSetupPassWordConfirm(
-                    hintText: 'Confirm password',
-                  ),
-                  showTextValidateMatchPassword(),
-                  SizedBox(
-                    height: 25.h,
-                  ),
-                  ckcBoxAndTextSetupPass(),
-                  SizedBox(
-                    height: 256.h,
-                  ),
-                ],
+        ),
+        child: Column(
+          children: [
+            header(),
+            const Divider(
+              thickness: 1,
+              color: Color.fromRGBO(255, 255, 255, 0.1),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    textShowSetupPass(),
+                    SizedBox(
+                      height: 28.h,
+                    ),
+                    formSetupPassWord(
+                      hintText: 'New password',
+                    ),
+                    showTextValidatePassword(),
+                    SizedBox(
+                      height: 16.h,
+                    ),
+                    formSetupPassWordConfirm(
+                      hintText: 'Confirm password',
+                    ),
+                    showTextValidateMatchPassword(),
+                    SizedBox(
+                      height: 25.h,
+                    ),
+                    ckcBoxAndTextSetupPass(),
+                    SizedBox(
+                      height: 256.h,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          GestureDetector(
-            child: const ButtonGold(
-              title: 'Continue',isEnable: false,
-            ),
-            onTap: () async {
-              isValidPassCubit.isValidate(password.text);
-              isValidPassCubit.isMatchPW(
-                password: password.text,
-                confirmPW: confirmPassword.text,
-              );
-              if (checkBox == 2 &&
-                  isValidPassCubit.isValidFtMatchPW(
-                    password.text,
-                    confirmPassword.text,
-                  )) {
-                showCreateSeedPhrase1(
-                  context,
-                  BLocCreateSeedPhrase(password.text),
+            GestureDetector(
+              child: StreamBuilder(
+                stream: isValidPassCubit.isEnableBtnStream,
+                builder: (context, AsyncSnapshot<bool> snapshot) {
+                  return ButtonGold(
+                    title: 'Continue',
+                    isEnable: snapshot.data ?? false,
+                  );
+                },
+              ),
+              onTap: () async {
+                isValidPassCubit.isValidate(password.text);
+                isValidPassCubit.isMatchPW(
+                  password: password.text,
+                  confirmPW: confirmPassword.text,
                 );
-              }
-            },
-          ),
-          SizedBox(
-            height: 38.h,
-          ),
-        ],
+                if (checkBox == 2 &&
+                    isValidPassCubit.isValidFtMatchPW(
+                      password.text,
+                      confirmPassword.text,
+                    )) {
+                  showCreateSeedPhrase1(
+                    context,
+                    BLocCreateSeedPhrase(password.text),
+                  );
+                }
+              },
+            ),
+            SizedBox(
+              height: 38.h,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -193,7 +206,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
             child: SizedBox(
               width: 24.w,
               height: 24.h,
-              child: StreamBuilder(
+              child: StreamBuilder<bool>(
                 stream: isValidPassCubit.ckcBoxStream,
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   return Checkbox(
@@ -208,8 +221,10 @@ class _SetupPassWordState extends State<SetupPassWord> {
                       isValidPassCubit.ckcBoxSink.add(value ?? false);
                       if (value == true) {
                         checkBox = 2;
+                        isValidPassCubit.isEnable(2);
                       } else {
                         checkBox = 1;
+                        isValidPassCubit.isEnable(1);
                       }
                     },
                     value: snapshot.data,
@@ -280,14 +295,15 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     indexPW = 1;
                   }
                 },
-                child: snapshot.data ?? false ? const ImageIcon(
-                  AssetImage(ImageAssets.hide),
-                  color: Colors.grey,
-                ) :
-                const ImageIcon(
-                  AssetImage(ImageAssets.show),
-                  color: Colors.grey,
-                ),
+                child: snapshot.data ?? false
+                    ? const ImageIcon(
+                        AssetImage(ImageAssets.hide),
+                        color: Colors.grey,
+                      )
+                    : const ImageIcon(
+                        AssetImage(ImageAssets.show),
+                        color: Colors.grey,
+                      ),
               ),
               prefixIcon: const ImageIcon(
                 AssetImage('assets/images/Lock.png'),
@@ -342,14 +358,15 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     indexConfirmPW = 1;
                   }
                 },
-                child: snapshot.data ?? false ? const ImageIcon(
-                  AssetImage(ImageAssets.hide),
-                  color: Colors.grey,
-                ) :
-                const ImageIcon(
-                  AssetImage(ImageAssets.show),
-                  color: Colors.grey,
-                ),
+                child: snapshot.data ?? false
+                    ? const ImageIcon(
+                        AssetImage(ImageAssets.hide),
+                        color: Colors.grey,
+                      )
+                    : const ImageIcon(
+                        AssetImage(ImageAssets.show),
+                        color: Colors.grey,
+                      ),
               ),
               prefixIcon: const ImageIcon(
                 AssetImage('assets/images/Lock.png'),
