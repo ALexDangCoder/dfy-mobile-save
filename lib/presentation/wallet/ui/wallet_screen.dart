@@ -1,8 +1,13 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/presentation/wallet/ui/import.dart';
+import 'package:Dfy/presentation/wallet/ui/nft_item.dart';
+import 'package:Dfy/presentation/wallet/ui/token_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WalletScreen extends StatefulWidget {
@@ -15,10 +20,12 @@ class WalletScreen extends StatefulWidget {
 class _WalletState extends State<WalletScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final WalletCubit _cubit = WalletCubit();
 
   @override
   void initState() {
     super.initState();
+    _cubit.formatAddress('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -30,6 +37,7 @@ class _WalletState extends State<WalletScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: ScreenUtilInit(
         designSize: const Size(375, 812),
         builder: () => Scaffold(
@@ -146,14 +154,66 @@ class _WalletState extends State<WalletScreen>
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      Container(
-                        color: Colors.white,
+                      SizedBox(
+                        height: 409.h,
                         child: SingleChildScrollView(
+                          physics: const ScrollPhysics(),
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: 9,
+                                itemBuilder: (context, index) {
+                                  return TokenItem(
+                                    symbolUrl: '$baseImg/symbol.png',
+                                    amount: '1200000',
+                                    nameToken: 'DFY',
+                                    price: '$index',
+                                  );
+                                },
+                              ),
+                              const ImportToken(
+                                title: 'Import Token',
+                                icon: '$baseImg/ic_import.png',
+                              ),
+                              SizedBox(
+                                height: 102.h,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      Container(
-                        color: Colors.red,
-                        child: SingleChildScrollView(),
+                      SizedBox(
+                        height: 409.h,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: 5,
+                                itemBuilder: (context, index) {
+                                  return const NFTItemWallet(
+                                    symbolUrl: '$baseImg/symbol.png',
+                                    nameNFT: 'DeFi For You',
+                                  );
+                                },
+                              ),
+                              const ImportToken(
+                                title: 'Import NFT',
+                                icon: '$baseImg/ic_import.png',
+                              ),
+                              const ImportToken(
+                                title: 'Create NFT',
+                                icon: '$baseImg/ic_add.png',
+                              ),
+                              SizedBox(
+                                height: 102.h,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -205,10 +265,13 @@ class _WalletState extends State<WalletScreen>
                         FontWeight.w700,
                       ),
                     ),
-                    Icon(
-                      Icons.edit_outlined,
-                      size: 24.sp,
-                      color: Colors.white,
+                    GestureDetector(
+                      onTap: () {},
+                      child: ImageIcon(
+                        const AssetImage('$baseImg/ic_edit.png'),
+                        color: Colors.white,
+                        size: 24.sp,
+                      ),
                     ),
                   ],
                 ),
@@ -235,20 +298,27 @@ class _WalletState extends State<WalletScreen>
           ),
           child: Row(
             children: [
-              Container(
-                height: 36.h,
-                width: 116.w,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF585769),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Text(
-                    '0xD582...6C99',
-                    style: textNormalCustom(
-                      Colors.white,
-                      16.sp,
-                      FontWeight.w400,
+              GestureDetector(
+                onLongPress: () {
+                  Clipboard.setData(
+                    ClipboardData(text: _cubit.addressWallet),
+                  );
+                },
+                child: Container(
+                  height: 36.h,
+                  width: 116.w,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF585769),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      _cubit.formatAddressWallet,
+                      style: textNormalCustom(
+                        Colors.white,
+                        16.sp,
+                        FontWeight.w400,
+                      ),
                     ),
                   ),
                 ),

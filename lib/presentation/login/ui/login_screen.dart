@@ -141,11 +141,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }),
                                 child: _cubit.hidePass
                                     ? const Icon(
-                                        Icons.visibility_off_outlined,
+                                        Icons.visibility_outlined,
                                         color: Colors.white30,
                                       )
                                     : const Icon(
-                                        Icons.visibility_outlined,
+                                        Icons.visibility_off_outlined,
                                         color: Colors.white30,
                                       ),
                               ),
