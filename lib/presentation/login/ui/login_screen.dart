@@ -160,7 +160,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      _cubit.checkPasswordWallet(controller.value.text);
+                      if(enableLogin){
+                        _cubit.checkPasswordWallet(controller.value.text);
+                      }
                     },
                     child: BlocListener<LoginCubit, LoginState>(
                       bloc: _cubit,
