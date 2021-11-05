@@ -31,6 +31,11 @@ void showCreateSeedPhrase1(
       trustWalletChannel.setMethodCallHandler(
         blocCreateSeedPhrase.nativeMethodCallBackTrustWallet,
       );
+
+       final nameWallet = TextEditingController();
+      // if (nameWallet.text == '') {
+      //   nameWallet.text = 'Account 1';
+      // }
       return StreamBuilder(
         stream: blocCreateSeedPhrase.isCheckData,
         builder: (context, snapshot) {
@@ -104,6 +109,7 @@ void showCreateSeedPhrase1(
                                     child: Container(
                                       padding: EdgeInsets.only(bottom: 10.h),
                                       child: TextFormField(
+                                        controller: nameWallet,
                                         onChanged: (value) {
                                           blocCreateSeedPhrase.nameWallet.sink
                                               .add(value);
@@ -114,7 +120,7 @@ void showCreateSeedPhrase1(
                                           color: Colors.white,
                                         ),
                                         decoration: InputDecoration(
-                                          hintText: 'Account 1',
+                                          hintText: 'Name Wallet',
                                           hintStyle: textNormal(
                                             Colors.white54,
                                             18.sp,
@@ -123,6 +129,16 @@ void showCreateSeedPhrase1(
                                         ),
                                         // onFieldSubmitted: ,
                                       ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      nameWallet.text = ' ';
+                                    },
+                                    child: Image.asset(
+                                      url_ic_close,
+                                      width: 20.w,
+                                      height: 20.h,
                                     ),
                                   ),
                                 ],

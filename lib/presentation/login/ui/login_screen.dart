@@ -6,7 +6,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_bloc.dart';
+import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
+import 'package:Dfy/presentation/import_token_nft/ui/import_nft.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_token.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
@@ -209,15 +210,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     TextButton(
                       onPressed: () {
+                        showImportToken(context, ImportTokenNftBloc());
                         //showImportToken(context, ImportTokenBloc());
-                           showModalBottomSheet(
-                             isScrollControlled: true,
-                             context: context,
-                             backgroundColor: Colors.transparent,
-                             builder: (context) {
-                               return const SetupPassWord();
-                             },
-                           );
+                        // showModalBottomSheet(
+                        //   isScrollControlled: true,
+                        //   context: context,
+                        //   backgroundColor: Colors.transparent,
+                        //   builder: (context) {
+                        //     return const SetupPassWord();
+                        //   },
+                        // );
                       },
                       child: Text(
                         'New wallet',

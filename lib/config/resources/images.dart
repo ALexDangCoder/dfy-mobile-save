@@ -19,3 +19,6 @@ const String url_ic_qr = 'assets/images/scan-barcode.png';
 const String url_ic_search = 'assets/images/Search.png';
 
 const String url_ic_enter_id = 'assets/images/ID.png';
+
+
+const String url_ic_close = 'assets/images/ic_close.png';

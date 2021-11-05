@@ -4,18 +4,17 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_bloc.dart';
-import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/form/form_input.dart';
-import 'package:Dfy/widgets/form/form_input2.dart';
-import 'package:Dfy/widgets/form/form_search.dart';
+import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
-import 'package:list_tile_switch/list_tile_switch.dart';
 
-void showImportToken(BuildContext context, ImportTokenBloc bloc) {
+import 'choose_token.dart';
+import 'enter_address.dart';
+
+void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -53,7 +52,7 @@ void showImportToken(BuildContext context, ImportTokenBloc bloc) {
                       },
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 80.w, left: 102.w),
+                      margin: EdgeInsets.only(right: 90.w, left: 90.w),
                       child: Text(Strings.import_token,
                           style: textNormalCustom(null, 20, FontWeight.bold)),
                     ),
@@ -96,103 +95,22 @@ void showImportToken(BuildContext context, ImportTokenBloc bloc) {
               spaceH12,
               line,
               Expanded(
-                child: TabBarView(
-                  children: [
-                    SizedBox(
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  spaceH24,
-                                  FormInput(
-                                    urlIcon2: url_ic_qr,
-                                    bloc: bloc,
-                                    urlIcon1: url_ic_address,
-                                    hint: Strings.token_address,
-                                  ),
-                                  spaceH16,
-                                  FormInput2(
-                                    urlIcon1: url_ic_symbol,
-                                    bloc: bloc,
-                                    hint: Strings.token_symbol,
-                                  ),
-                                  spaceH16,
-                                  FormInput2(
-                                    urlIcon1: url_ic_decimal,
-                                    bloc: bloc,
-                                    hint: Strings.token_decimal,
-                                  ),
-                                  SizedBox(
-                                    height: 289.h,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Center(
-                            child: InkWell(
-                              onTap: () {},
-                              child: const ButtonGold(
-                                title: Strings.import,
-                                isEnable: true,
-                              ),
-                            ),
-                          ),
-                        ],
+                child: GestureDetector(
+                  onTap: () {
+                    final FocusScopeNode currentFocus = FocusScope.of(context);
+
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
+                  },
+                  child: TabBarView(
+                    children: [
+                      EnterAddress(
+                        bloc: bloc,
                       ),
-                    ),
-                    Container(
-                      color: const Color(0xff3e3d5c),
-                      child: Column(
-                        children: [
-                          spaceH12,
-                          FormSearch(
-                            hint: Strings.token_search,
-                            bloc: bloc,
-                            urlIcon1: url_ic_search,
-                          ),
-                          spaceH12,
-                          line,
-                          spaceH24,
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: 10,
-                              itemBuilder: (context, index) {
-                                return SizedBox(
-                                  height: 73,
-                                  width: 322,
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                          'assets/images/Ellipse 39.png'),
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("Bitcoin"),
-                                              Text("BTC"),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text("0.621,54"),
-                                              Text("BTC"),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                      ChooseToken(bloc: bloc),
+                    ],
+                  ),
                 ),
               )
             ],
