@@ -8,9 +8,11 @@ class ListPassPhrase extends StatelessWidget {
   final List<Item> listTitle;
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
-  const ListPassPhrase(
-      {Key? key, required this.listTitle, required this.bLocCreateSeedPhrase,})
-      : super(key: key);
+  const ListPassPhrase({
+    Key? key,
+    required this.listTitle,
+    required this.bLocCreateSeedPhrase,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +27,17 @@ class ListPassPhrase extends StatelessWidget {
             listTitle.length,
             (int index) {
               return GestureDetector(
-                  onTap: () {
-                    listTitle[index].isCheck = true;
-                    bLocCreateSeedPhrase.listTitle3.add(
-                      Item(title: listTitle[index].title, isCheck: true),
-                    );
-                    bLocCreateSeedPhrase.reloadListTitle();
-                  },
-                  child: listTitle[index].isCheck
-                      ? const SizedBox()
-                      : ItemSeedPhrase(title: listTitle[index].title),);
+                onTap: () {
+                  listTitle[index].isCheck = true;
+                  bLocCreateSeedPhrase.listTitle3.add(
+                    Item(title: listTitle[index].title, isCheck: true),
+                  );
+                  bLocCreateSeedPhrase.reloadListTitle();
+                },
+                child: listTitle[index].isCheck
+                    ? const SizedBox()
+                    : ItemSeedPhrase(title: listTitle[index].title),
+              );
             },
           ),
         ),

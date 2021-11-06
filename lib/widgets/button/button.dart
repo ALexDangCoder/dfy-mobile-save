@@ -1,3 +1,5 @@
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,16 +17,13 @@ class _ButtonGoldState extends State<ButtonGold> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(right: 26.w, left: 26.w, bottom: 38),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: RadialGradient(
           radius: 4,
-          center: Alignment(0.5, -0.5),
-          colors: [
-            Color(0xffFFE284),
-            Color(0xffE4AC1A),
-          ],
+          center: const Alignment(0.5, -0.5),
+          colors: AppTheme.getInstance().gradientButtonColor(),
         ),
-        borderRadius: BorderRadius.all(
+        borderRadius: const BorderRadius.all(
           Radius.circular(22),
         ),
       ),
@@ -33,11 +32,10 @@ class _ButtonGoldState extends State<ButtonGold> {
       child: Center(
         child: Text(
           widget.title,
-          style: TextStyle(
-            fontSize: 20.sp,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: textNormal(
+            AppTheme.getInstance().textThemeColor(),
+            20.sp,
+          ).copyWith(fontWeight: FontWeight.bold),
         ),
       ),
     );

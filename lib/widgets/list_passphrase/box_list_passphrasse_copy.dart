@@ -1,4 +1,7 @@
 import 'dart:ui';
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
@@ -7,16 +10,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class BoxListPassWordPhraseCopy extends StatelessWidget {
   final List<String> listTitle;
 
-  const BoxListPassWordPhraseCopy({Key? key, required this.listTitle,})
-      : super(key: key);
+  const BoxListPassWordPhraseCopy({
+    Key? key,
+    required this.listTitle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(right: 26.w, left: 26.w),
-      decoration: const BoxDecoration(
-        color: Color(0xff32324c),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppTheme.getInstance().itemBtsColors(),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       padding: EdgeInsets.only(top: 16.h, left: 13.w, right: 13.w),
       height: 222.h,
@@ -28,7 +33,7 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Your seed phrase',
+                S.current.your_seed,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16.sp,
@@ -39,10 +44,10 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
                   FlutterClipboard.copy(listTitle.toString());
                 },
                 child: Image.asset(
-                  'assets/images/ic_copy.png',
+                  ImageAssets.ic_copy,
                   height: 17.67.h,
                   width: 19.14.w,
-                  color: const Color(0xffE4AC1A),
+                  color: AppTheme.getInstance().fillColor(),
                 ),
               ),
             ],
