@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
 
 Future<void> mainApp() async {
@@ -21,8 +22,9 @@ Future<void> mainApp() async {
   await PrefsService.init();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,),
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ),
   );
   configureDependencies();
   runApp(const MyApp());
@@ -38,7 +40,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final token = PrefsService.getToken();
 
-
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,4 +84,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-

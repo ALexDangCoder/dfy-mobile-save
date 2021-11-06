@@ -42,7 +42,7 @@ class ItemForm extends StatelessWidget {
             borderRadius: const BorderRadius.all(
               Radius.circular(20),
             ),
-            color: AppTheme.getInstance().itemBtsColor(),
+            color: AppTheme.getInstance().itemBtsColors(),
           ),
           child: TextFormField(
             controller: controller,
@@ -133,7 +133,7 @@ class ItemForm extends StatelessWidget {
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
-          color: AppTheme.getInstance().itemBtsColor(),
+          color: AppTheme.getInstance().itemBtsColors(),
         ),
         child: TextFormField(
           controller: controller,

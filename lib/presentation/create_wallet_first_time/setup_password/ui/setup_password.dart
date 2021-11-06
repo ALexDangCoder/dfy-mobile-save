@@ -1,12 +1,12 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/di/module.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SetupPassWord extends StatefulWidget {
@@ -46,7 +46,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
       width: 375.w,
       height: 764.h,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(62, 61, 92, 1),
+        color: AppTheme.getInstance().bgBtsColor(),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.r),
           topRight: Radius.circular(30.r),
@@ -55,9 +55,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
       child: Column(
         children: [
           header(),
-          const Divider(
+          Divider(
             thickness: 1,
-            color: Color.fromRGBO(255, 255, 255, 0.1),
+            color: AppTheme.getInstance().divideColor(),
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -68,14 +68,14 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     height: 28.h,
                   ),
                   formSetupPassWord(
-                    hintText: 'New password',
+                    hintText: S.current.new_pass,
                   ),
                   showTextValidatePassword(),
                   SizedBox(
                     height: 16.h,
                   ),
                   formSetupPassWordConfirm(
-                    hintText: 'Confirm password',
+                    hintText: S.current.con_pass,
                   ),
                   showTextValidateMatchPassword(),
                   SizedBox(
@@ -90,8 +90,10 @@ class _SetupPassWordState extends State<SetupPassWord> {
             ),
           ),
           GestureDetector(
-            child: btnContinue(),
-            onTap: () {
+            child: ButtonGold(
+              title: S.current.continue_s,
+            ),
+            onTap: () async {
               isValidPassCubit.isValidate(password.text);
               isValidPassCubit.isMatchPW(
                 password: password.text,
@@ -102,13 +104,16 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     password.text,
                     confirmPassword.text,
                   )) {
-                showCreateSeedPhrase1(context, BLocCreateSeedPhrase());
+                showCreateSeedPhrase1(
+                  context,
+                  BLocCreateSeedPhrase(password.text),
+                );
               }
             },
           ),
           SizedBox(
             height: 38.h,
-          )
+          ),
         ],
       ),
     );
@@ -129,13 +134,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 width: 323.w,
                 height: 30.h,
                 child: Text(
-                  'Password must include at least a number, '
-                  'an upper case, a lower\n case and a special '
-                  'character',
-                  style: TextStyle(
-                    fontSize: 12.sp,
+                  S.current.pass_must,
+                  style: textNormal(
+                    AppTheme.getInstance().whiteWithOpacity(),
+                    12.sp,
+                  ).copyWith(
                     fontWeight: FontWeight.w400,
-                    color: const Color.fromRGBO(255, 108, 108, 1),
                   ),
                 ),
               ),
@@ -161,11 +165,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 width: 323.w,
                 height: 30.h,
                 child: Text(
-                  'Your password did not match',
-                  style: TextStyle(
-                    fontSize: 12.sp,
+                  S.current.not_match,
+                  style: textNormal(
+                    AppTheme.getInstance().whiteWithOpacity(),
+                    12.sp,
+                  ).copyWith(
                     fontWeight: FontWeight.w400,
-                    color: const Color.fromRGBO(255, 108, 108, 1),
                   ),
                 ),
               ),
@@ -173,34 +178,6 @@ class _SetupPassWordState extends State<SetupPassWord> {
           ),
         );
       },
-    );
-  }
-
-  Container btnContinue() {
-    return Container(
-      width: 298.w,
-      height: 64.h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(22.r)),
-        gradient: const LinearGradient(
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-          colors: [
-            Color.fromRGBO(228, 172, 26, 1),
-            Color.fromRGBO(255, 226, 132, 1),
-          ],
-        ),
-      ),
-      child: Center(
-        child: Text(
-          'Continue',
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w700,
-            color: const Color.fromRGBO(255, 255, 255, 1),
-          ),
-        ),
-      ),
     );
   }
 
@@ -219,9 +196,13 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 stream: isValidPassCubit.ckcBoxStream,
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   return Checkbox(
-                    fillColor:
-                        MaterialStateProperty.all(const Color(0xffE4AC1A)),
-                    activeColor: const Color.fromRGBO(228, 172, 26, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    fillColor: MaterialStateProperty.all(
+                      AppTheme.getInstance().fillColor(),
+                    ),
+                    activeColor: AppTheme.getInstance().activeColor(),
                     // checkColor: const Colors,
                     onChanged: (bool? value) {
                       isValidPassCubit.ckcBoxSink.add(value ?? false);
@@ -244,12 +225,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
             width: 287.w,
             height: 48.h,
             child: Text(
-              'I understand DeFi For You will not recover this\n'
-              ' password for me',
-              style: TextStyle(
+              S.current.understand_defi,
+              style: textNormal(
+                AppTheme.getInstance().whiteWithOpacity(),
+                14.sp,
+              ).copyWith(
                 fontWeight: FontWeight.w400,
-                fontSize: 14.sp,
-                color: const Color.fromRGBO(255, 255, 255, 1),
               ),
             ),
           ),
@@ -266,11 +247,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        color: Color.fromRGBO(167, 167, 167, 0.5),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showPWStream,
@@ -299,13 +280,18 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     indexPW = 1;
                   }
                 },
-                child: const ImageIcon(
-                  AssetImage('assets/images/Hide.png'),
-                  color: Colors.grey,
-                ),
+                child: snapshot.data ?? false
+                    ? const ImageIcon(
+                        AssetImage(ImageAssets.hide),
+                        color: Colors.grey,
+                      )
+                    : const ImageIcon(
+                        AssetImage(ImageAssets.show),
+                        color: Colors.grey,
+                      ),
               ),
               prefixIcon: const ImageIcon(
-                AssetImage('assets/images/Lock.png'),
+                AssetImage(ImageAssets.lock),
                 color: Colors.white,
               ),
               border: InputBorder.none,
@@ -324,11 +310,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        color: Color.fromRGBO(167, 167, 167, 0.5),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showConfirmPWStream,
@@ -357,13 +343,18 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     indexConfirmPW = 1;
                   }
                 },
-                child: const ImageIcon(
-                  AssetImage('assets/images/Hide.png'),
-                  color: Colors.grey,
-                ),
+                child: snapshot.data ?? false
+                    ? const ImageIcon(
+                        AssetImage(ImageAssets.hide),
+                        color: Colors.grey,
+                      )
+                    : const ImageIcon(
+                        AssetImage(ImageAssets.show),
+                        color: Colors.grey,
+                      ),
               ),
               prefixIcon: const ImageIcon(
-                AssetImage('assets/images/Lock.png'),
+                AssetImage(ImageAssets.lock),
                 color: Colors.white,
               ),
               border: InputBorder.none,
@@ -381,13 +372,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
         width: 323.w,
         height: 72.h,
         child: Text(
-          'Please setup your new password!\n'
-          'This password will unlock your DeFi For You\n wallet '
-          'only on this wallet',
-          style: TextStyle(
-            fontSize: 16.sp,
+          S.current.please,
+          style: textNormal(
+            AppTheme.getInstance().whiteWithOpacity(),
+            16.sp,
+          ).copyWith(
             fontWeight: FontWeight.w400,
-            color: const Color.fromRGBO(255, 255, 255, 1.0),
           ),
         ),
       ),
@@ -402,19 +392,22 @@ class _SetupPassWordState extends State<SetupPassWord> {
         children: [
           Expanded(
             child: IconButton(
-              onPressed: () {},
-              icon: Image.asset('assets/images/back_arrow.png'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Image.asset(ImageAssets.back),
             ),
           ),
           SizedBox(
             width: 66.w,
           ),
           Text(
-            'Create new wallet',
-            style: TextStyle(
-              fontSize: 20.sp,
+            S.current.create_wallet,
+            style: textNormal(
+              AppTheme.getInstance().whiteWithOpacity(),
+              20.sp,
+            ).copyWith(
               fontWeight: FontWeight.w700,
-              color: Colors.white,
             ),
           ),
           SizedBox(
@@ -422,8 +415,10 @@ class _SetupPassWordState extends State<SetupPassWord> {
           ),
           Expanded(
             child: IconButton(
-              onPressed: () {},
-              icon: Image.asset('assets/images/Group.png'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Image.asset(ImageAssets.ic_group),
             ),
           )
         ],

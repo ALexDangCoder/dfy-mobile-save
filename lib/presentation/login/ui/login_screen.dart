@@ -1,10 +1,17 @@
 import 'dart:io';
 
+import 'package:Dfy/config/resources/color.dart';
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/button/button_radial_gradient.dart';
+import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,10 +28,20 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController controller = TextEditingController();
   final LoginCubit _cubit = LoginCubit();
+  bool enableLogin = false;
 
   @override
   void initState() {
     super.initState();
+    controller.addListener(() {
+      setState(() {
+        if (controller.text.isNotEmpty) {
+          enableLogin = true;
+        } else {
+          enableLogin = false;
+        }
+      });
+    });
     trustWalletChannel
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
   }
@@ -35,109 +52,163 @@ class _LoginScreenState extends State<LoginScreen> {
       designSize: const Size(375, 812),
       builder: () => Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Container(
-          width: 375.sw,
-          height: 812.h,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF3C3B54),
-                Color(0xFF171527),
-              ],
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+            width: 375.sw,
+            height: 812.h,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: listBackgroundColor,
+              ),
             ),
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 113.h,
-                ),
-                const Image(
-                  image: AssetImage('assets/images/symbol.png'),
-                ),
-                SizedBox(
-                  height: 28.h,
-                ),
-                const Image(
-                  image: AssetImage('assets/images/Centered.png'),
-                ),
-                SizedBox(
-                  height: 68.h,
-                ),
-                Container(
-                  width: 323.w,
-                  height: 64.h,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFA7A7A7),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 113.h,
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: 19.w,
-                      right: 19.w,
+                  const Image(
+                    image: AssetImage(ImageAssets.symbol),
+                  ),
+                  SizedBox(
+                    height: 28.h,
+                  ),
+                  const Image(
+                    image: AssetImage(ImageAssets.center),
+                  ),
+                  SizedBox(
+                    height: 68.h,
+                  ),
+                  Container(
+                    width: 323.w,
+                    height: 64.h,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF242234),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(top: 8.h),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 12.h),
-                            child: const Icon(
-                              Icons.lock_outline,
-                              color: Color(0xFFFFFFFF),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 20.5.w,
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              cursorColor: Colors.white,
-                              style: TextStyle(fontSize: 18.sp),
-                              controller: controller,
-                              obscureText: _cubit.hidePass,
-                              decoration: const InputDecoration(
-                                hintText: 'Password',
-                                border: InputBorder.none,
+                      padding: EdgeInsets.only(
+                        left: 19.w,
+                        right: 19.w,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 8.h),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 12.h),
+                              child: Icon(
+                                Icons.lock_outline,
+                                color: const Color(0xFFFFFFFF),
+                                size: 24.sp,
                               ),
-                              // onFieldSubmitted: ,
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 12.h),
-                            child: GestureDetector(
-                              onTap: () => setState(() {
-                                _cubit.hidePassword();
-                              }),
-                              child: _cubit.hidePass
-                                  ? const Icon(
-                                      Icons.visibility_off_outlined,
-                                      color: Colors.white30,
-                                    )
-                                  : const Icon(
-                                      Icons.visibility_outlined,
-                                      color: Colors.white30,
-                                    ),
+                            SizedBox(
+                              width: 20.5.w,
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: TextFormField(
+                                cursorColor: Colors.white,
+                                style: textNormal(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  18.sp,
+                                ),
+                                controller: controller,
+                                obscureText: _cubit.hidePass,
+                                decoration: InputDecoration(
+                                  hintText: S.current.password,
+                                  hintStyle: textNormal(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    18.sp,
+                                  ),
+                                  border: InputBorder.none,
+                                ),
+                                // onFieldSubmitted: ,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 12.h),
+                              child: GestureDetector(
+                                onTap: () => setState(() {
+                                  _cubit.hidePassword();
+                                }),
+                                child: _cubit.hidePass
+                                    ? Icon(
+                                        Icons.visibility_off_outlined,
+                                        color: AppTheme.getInstance()
+                                            .suffixColor(),
+                                      )
+                                    : Icon(
+                                        Icons.visibility_outlined,
+                                        color: AppTheme.getInstance()
+                                            .suffixColor(),
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 36.h,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _cubit.checkPasswordWallet(controller.value.text);
-                  },
-                  child: BlocListener<LoginCubit, LoginState>(
+                  SizedBox(
+                    height: 36.h,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _cubit.checkPasswordWallet(controller.value.text);
+                    },
+                    child: BlocListener<LoginCubit, LoginState>(
+                      bloc: _cubit,
+                      listener: (context, state) {
+                        if (state is LoginSuccess) {
+                          Navigator.pushNamed(
+                            context,
+                            AppRouter.wallet,
+                          );
+                        } else if (state is LoginError) {
+                        } else {
+                          const CircularProgressIndicator();
+                        }
+                      },
+                      child: enableLogin
+                          ? ButtonRadial(
+                              child: Center(
+                                child: Text(
+                                  S.current.login,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    20.sp,
+                                    FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : ErrorButton(
+                              child: Center(
+                                child: Text(
+                                  S.current.login,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    20.sp,
+                                    FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  BlocListener<LoginCubit, LoginState>(
                     bloc: _cubit,
                     listener: (context, state) {
                       if (state is LoginSuccess) {
@@ -145,122 +216,81 @@ class _LoginScreenState extends State<LoginScreen> {
                           context,
                           AppRouter.wallet,
                         );
-                      } else if (state is LoginError) {
-                      } else {
-                        const CircularProgressIndicator();
                       }
                     },
-                    child: Container(
-                      height: 64.h,
-                      width: 298.w,
-                      decoration: BoxDecoration(
-                        gradient: const RadialGradient(
-                          center: Alignment(0.5, -0.5),
-                          radius: 4,
-                          colors: [
-                            Color(0xFFFFE284),
-                            Color(0xFFE4AC1A),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(22),
-                      ),
-                      child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        _cubit.authenticate();
+                      },
+                      child: Platform.isIOS
+                          ? const Image(
+                              image: AssetImage(ImageAssets.ic_face_id),
+                            )
+                          : const Image(
+                              image: AssetImage(ImageAssets.ic_touch),
+                            ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 44.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) {
+                              return const SetupPassWord();
+                            },
+                          );
+                        },
                         child: Text(
-                          'Login',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w700,
+                          S.current.new_wallet,
+                          style: textNormal(
+                            AppTheme.getInstance().fillColor(),
+                            18.sp,
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 40.h,
-                ),
-                BlocListener<LoginCubit, LoginState>(
-                  bloc: _cubit,
-                  listener: (context, state) {
-                    if (state is LoginSuccess) {
-                      Navigator.pushNamed(
-                        context,
-                        AppRouter.wallet,
-                      );
-                    }
-                  },
-                  child: GestureDetector(
-                    onTap: () {
-                      _cubit.authenticate();
-                    },
-                    child: Platform.isIOS
-                        ? const Image(
-                            image: AssetImage('assets/images/face_id_icon.png'),
-                          )
-                        : const Image(
-                            image: AssetImage('assets/images/finger_icon.png'),
+                      SizedBox(
+                        width: 16.h,
+                      ),
+                      Container(
+                        height: 4.h,
+                        width: 4.w,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFD4D4D4),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 16.h,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context) => const RestoreAccount(),
+                          );
+                        },
+                        child: Text(
+                          S.current.import_seed,
+                          style: textNormal(
+                            AppTheme.getInstance().fillColor(),
+                            18.sp,
                           ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(
-                  height: 44.h,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) {
-                            return const SetupPassWord();
-                          },);
-                      },
-                      child: Text(
-                        'New wallet',
-                        style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 18.sp,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16.h,
-                    ),
-                    Container(
-                      height: 4.h,
-                      width: 4.w,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFD4D4D4),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16.h,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          context: context,
-                          builder: (context) => const RestoreAccount(),
-                        );
-                      },
-                      child: Text(
-                        'Import Seed phrase',
-                        style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 18.sp,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

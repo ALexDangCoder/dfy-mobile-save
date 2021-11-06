@@ -1,4 +1,3 @@
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
@@ -26,10 +25,8 @@ class AppRouter {
       //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
       // case testScreen:
       //   return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
-      case setupPassWord:
-        return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
       case main:
-        return MaterialPageRoute(builder: (ctx) =>  MainScreen());
+        return MaterialPageRoute(builder: (ctx) => const MainScreen());
       // case main:
       //   return MaterialPageRoute(
       //       builder: (ctx) => MainScreen(

@@ -48,7 +48,7 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   }
 
   bool isValidFtMatchPW(String value, String confirmValue) {
-    if(Validator.validateStructure(value) && (value == confirmValue)) {
+    if (Validator.validateStructure(value) && (value == confirmValue)) {
       return true;
     } else {
       return false;
@@ -79,32 +79,6 @@ class CheckPassCubit extends Cubit<CheckPassState> {
       showConfirmPWSink.add(false);
     } else {
       showConfirmPWSink.add(true);
-    }
-  }
-
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    String privateKey;
-    String walletAddress;
-    String passPhrase;
-    switch (methodCall.method) {
-      case 'generateWalletCallBack':
-        privateKey = methodCall.arguments['privateKey'];
-        walletAddress = methodCall.arguments['walletAddress'];
-        passPhrase = methodCall.arguments['passPhrase'];
-        break;
-      default:
-        break;
-    }
-  }
-
-  Future<void> generateWallet({required String password}) async {
-    try {
-      final data = {
-        'password': password,
-      };
-      await trustWalletChannel.invokeMethod('generateWallet', data);
-    } on PlatformException {
-      //todo
     }
   }
 

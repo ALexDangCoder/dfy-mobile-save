@@ -85,34 +85,36 @@ class _RestoreAccountState extends State<RestoreAccount> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              margin: EdgeInsets.only(
-                top: 16.h,
-                left: 26.w,
-                right: 26.w,
+              padding: EdgeInsets.only(
+                left: 37.w,
+                right: 37.w,
               ),
+              height: 64.h,
+              width: 375.h,
               child: Row(
                 children: [
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: SizedBox(
-                      height: 16.8.h,
-                      width: 16.8.w,
-                      child: const ImageIcon(
-                        AssetImage(ImageAssets.back),
-                        color: Colors.white,
-                      ),
+                    child: const ImageIcon(
+                      AssetImage(ImageAssets.back),
+                      color: Colors.white,
                     ),
                   ),
                   SizedBox(
-                    width: 75.w,
+                    width: 77.w,
                   ),
-                  Text(
-                    'Restore Account',
-                    style: textNormal(null, 20.sp).copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal,
+                  Expanded(
+                    child: Text(
+                      S.current.restore_account,
+                      style: textNormal(
+                        AppTheme.getInstance().textThemeColor(),
+                        20.sp,
+                      ).copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                      ),
                     ),
                   ),
                 ],
@@ -136,22 +138,23 @@ class _RestoreAccountState extends State<RestoreAccount> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Restore your account with using secret seed phrase',
-                    style: textNormal(
-                      null,
-                      16.sp,
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      S.current.restore_with_seed,
+                      style: textNormal(
+                        AppTheme.getInstance().textThemeColor(),
+                        16.sp,
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 8.h,
                   ),
                   Text(
-                    'Only first account on this wallet will auto load. '
-                    'After completing this process, to add additional accounts,'
-                    ' you can create new account or import account',
+                    S.current.only_first,
                     style: textNormal(
-                      null,
+                      AppTheme.getInstance().textThemeColor(),
                       16.sp,
                     ),
                   ),
@@ -205,7 +208,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                           Radius.circular(20),
                                         ),
                                         color: AppTheme.getInstance()
-                                            .itemBtsColor(),
+                                            .itemBtsColors(),
                                       ),
                                       child: Row(
                                         children: [
@@ -223,7 +226,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                             child: Text(
                                               dropdownValue,
                                               style: textNormal(
-                                                null,
+                                                AppTheme.getInstance()
+                                                    .textThemeColor(),
                                                 16.sp,
                                               ),
                                             ),
@@ -284,7 +288,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                 leadPath: ImageAssets.lock,
                                 trailingPath:
                                     state ? ImageAssets.hide : ImageAssets.show,
-                                hint: 'New password',
+                                hint: S.current.new_pass,
                                 formType: FormType.PASSWORD,
                                 isShow: state,
                                 callback: state
@@ -305,7 +309,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                 leadPath: ImageAssets.lock,
                                 trailingPath:
                                     state ? ImageAssets.hide : ImageAssets.show,
-                                hint: 'Confirm password',
+                                hint: S.current.con_pass,
                                 formType: FormType.PASSWORD,
                                 isShow: state,
                                 callback: state
@@ -366,12 +370,10 @@ class _RestoreAccountState extends State<RestoreAccount> {
               height: 36.h,
             ),
             ButtonGradient(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                colors: <Color>[
-                  Color(0xffE4AC1A),
-                  Color(0xffFFE284),
-                ],
+              gradient: RadialGradient(
+                center: const Alignment(0.5, -0.5),
+                radius: 4,
+                colors: AppTheme.getInstance().gradientButtonColor(),
               ),
               onPressed: () {
                 isValidPassCubit.isValidate(passwordController.text);
@@ -383,15 +385,15 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   passwordController.text,
                   confirmPasswordController.text,
                 )) {
-                  if (stringCubit.select == 'Seed phrase') {
+                  if (stringCubit.select == seedPhrase) {
                     stringCubit.importWallet(
-                      type: 'PASS_PHRASE',
+                      type: FormType.PASS_PHRASE.toString(),
                       content: seedPhraseController.text,
                       password: passwordController.text,
                     );
                   } else {
                     stringCubit.importWallet(
-                      type: 'PRIVATE_KEY',
+                      type: FormType.PASS_PHRASE.toString(),
                       content: privateKeyController.text,
                       password: passwordController.text,
                     );
@@ -399,9 +401,9 @@ class _RestoreAccountState extends State<RestoreAccount> {
                 }
               },
               child: Text(
-                'Restore',
+                S.current.restore,
                 style: textNormal(
-                  null,
+                  AppTheme.getInstance().textThemeColor(),
                   20.sp,
                 ),
               ),
@@ -483,11 +485,12 @@ class _RestoreAccountState extends State<RestoreAccount> {
                 width: 323.w,
                 height: 30.h,
                 child: Text(
-                  'Your password did not match',
-                  style: TextStyle(
-                    fontSize: 12.sp,
+                  S.current.not_match,
+                  style: textNormal(
+                    AppTheme.getInstance().wrongColor(),
+                    12.sp,
+                  ).copyWith(
                     fontWeight: FontWeight.w400,
-                    color: const Color.fromRGBO(255, 108, 108, 1),
                   ),
                 ),
               ),
@@ -513,13 +516,12 @@ class _RestoreAccountState extends State<RestoreAccount> {
                 width: 323.w,
                 height: 30.h,
                 child: Text(
-                  'Password must include at least a number, '
-                  'an upper case, a lower\n case and a special '
-                  'character',
-                  style: TextStyle(
-                    fontSize: 12.sp,
+                  S.current.pass_must,
+                  style: textNormal(
+                    AppTheme.getInstance().wrongColor(),
+                    12.sp,
+                  ).copyWith(
                     fontWeight: FontWeight.w400,
-                    color: const Color.fromRGBO(255, 108, 108, 1),
                   ),
                 ),
               ),
