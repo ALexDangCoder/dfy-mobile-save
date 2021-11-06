@@ -34,6 +34,8 @@ void showCreateSeedPhrase1(
       );
 
       final nameWallet = TextEditingController();
+      nameWallet.text = blocCreateSeedPhrase.nameWallet.value ?? '';
+
       return StreamBuilder(
         stream: blocCreateSeedPhrase.isCheckData,
         builder: (context, snapshot) {
@@ -99,7 +101,6 @@ void showCreateSeedPhrase1(
                                       stream: blocCreateSeedPhrase.nameWallet,
                                       builder: (context,
                                           AsyncSnapshot<String> snapshot) {
-                                        nameWallet.text = snapshot.data ?? '';
                                         return Container(
                                           padding: EdgeInsets.only(right: 5.w),
                                           child: TextFormField(
@@ -132,6 +133,7 @@ void showCreateSeedPhrase1(
                                     onTap: () {
                                       blocCreateSeedPhrase.nameWallet.sink
                                           .add('');
+                                      nameWallet.text='';
                                     },
                                     child: Image.asset(
                                       url_ic_close,
