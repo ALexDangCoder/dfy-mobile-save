@@ -7,7 +7,7 @@ import '../../../../main.dart';
 class BLocCreateSeedPhrase {
   BLocCreateSeedPhrase(this.passWord);
 
-  BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('');
+  BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isCheckBox1 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckBox2 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckData = BehaviorSubject.seeded(false);

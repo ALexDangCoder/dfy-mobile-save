@@ -1,7 +1,10 @@
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
+import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
+import 'package:Dfy/presentation/import_token_nft/ui/import_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TestScreenUtils extends StatelessWidget {
@@ -16,14 +19,9 @@ class TestScreenUtils extends StatelessWidget {
           body: Center(
             child: ElevatedButton(
               child: const Text('CLICKME'),
-              onPressed: () => showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                isScrollControlled: true,
-                builder: (context) => const SetupPassWord(),
-                // builder: (context) => const AddWalletFtSeedPharse(
-                // ),
-                context: context,
-              ),
+              onPressed: () {
+              //  showImportToken(context, ImportTokenNftBloc());
+              },
             ),
           ),
         );

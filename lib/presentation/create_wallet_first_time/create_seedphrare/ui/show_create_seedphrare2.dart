@@ -1,9 +1,12 @@
 import 'dart:ui';
+import 'package:Dfy/config/resources/dimen.dart';
+import 'package:Dfy/config/resources/images.dart';
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/item.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
-import 'package:Dfy/widgets/header_create/header_create.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase.dart';
 import 'package:Dfy/widgets/list_passphrase/list_passphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
@@ -21,6 +24,30 @@ void showCreateSeedPhrase2(
     context: context,
     backgroundColor: Colors.transparent,
     builder: (context) {
+      final FToast fToast = FToast();
+      fToast.init(context);
+      void _showToast() {
+        final Widget toast = Container(
+          margin: EdgeInsets.only(bottom: 70.h),
+          height: 35.h,
+          width: 298.w,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.0),
+            color: Colors.black.withOpacity(0.5),
+          ),
+          padding: EdgeInsets.only(left: 10.w, top: 10.h),
+          child: Text(
+            S.current.failed,
+            style: TextStyle(color: Colors.red, fontSize: 14.sp),
+          ),
+        );
+        fToast.showToast(
+          child: toast,
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 2),
+        );
+      }
+
       return Container(
         height: 764.h,
         width: 375.w,
@@ -43,10 +70,9 @@ void showCreateSeedPhrase2(
                 children: [
                   GestureDetector(
                     child: Image.asset(
-                      'assets/images/ic_out.png',
+                      url_ic_out,
                     ),
                     onTap: () {
-                      bLocCreateSeedPhrase.reloadListSeedPhrase1();
                       Navigator.pop(context);
                     },
                   ),
@@ -54,7 +80,7 @@ void showCreateSeedPhrase2(
                     width: 66.w,
                   ),
                   Text(
-                    'Create new wallet',
+                    S.current.CreateNewWallet,
                     style: TextStyle(
                       fontSize: 20.sp,
                       color: Colors.white,
@@ -66,7 +92,7 @@ void showCreateSeedPhrase2(
                   ),
                   GestureDetector(
                     child: Image.asset(
-                      'assets/images/ic_close.png',
+                      url_ic_close,
                     ),
                     onTap: () {
                       Navigator.pop(context);
@@ -77,16 +103,9 @@ void showCreateSeedPhrase2(
                 ],
               ),
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Divider(
-              height: 1.h,
-              color: const Color.fromRGBO(255, 255, 255, 0.1),
-            ),
-            SizedBox(
-              height: 24.h,
-            ),
+            spaceH20,
+            line,
+            spaceH24,
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -100,9 +119,7 @@ void showCreateSeedPhrase2(
                         style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       ),
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
+                    spaceH20,
                     Column(
                       children: [
                         StreamBuilder(
@@ -116,9 +133,7 @@ void showCreateSeedPhrase2(
                             );
                           },
                         ),
-                        SizedBox(
-                          height: 24.h,
-                        ),
+                        spaceH24,
                         StreamBuilder(
                           stream: bLocCreateSeedPhrase.listTitle,
                           builder: (
@@ -158,11 +173,7 @@ void showCreateSeedPhrase2(
                     if (bLocCreateSeedPhrase.getCheck()) {
                       showCreateSuccessfully(context);
                     } else {
-                      Fluttertoast.showToast(
-                        msg: 'Failed.',
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                      );
+                      _showToast();
                     }
                   }
                 },
@@ -181,5 +192,7 @@ void showCreateSeedPhrase2(
         ),
       );
     },
+  ).whenComplete(
+    () => bLocCreateSeedPhrase.reloadListSeedPhrase1(),
   );
 }

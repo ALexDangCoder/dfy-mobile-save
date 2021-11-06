@@ -5,7 +5,6 @@ import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dar
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:clipboard/clipboard.dart';
 
 class QRViewExample extends StatefulWidget {
   final ImportTokenNftBloc bloc;
@@ -45,7 +44,7 @@ class _QRViewExampleState extends State<QRViewExample> {
 
   Widget _buildQrView(BuildContext context) {
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
+        MediaQuery.of(context).size.height < 400)
         ? 251.0
         : 300.0;
     return Stack(
@@ -108,7 +107,7 @@ class _QRViewExampleState extends State<QRViewExample> {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
-        controller?.pauseCamera();
+        controller.pauseCamera();
         result = scanData;
         if (result!.code!.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -118,7 +117,7 @@ class _QRViewExampleState extends State<QRViewExample> {
           );
         } else {
           widget.bloc.tokenAddressText.sink.add(result?.code ?? '');
-          widget.bloc.formatAddress();
+          widget.bloc.tokenAddressTextNft.sink.add(result?.code ?? '');
           Navigator.pop(context);
         }
       });

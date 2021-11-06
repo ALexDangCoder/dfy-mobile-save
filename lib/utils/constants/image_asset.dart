@@ -57,7 +57,7 @@ class ImageAssets {
   static const String symbol = '$baseImg/symbol.png';
   static const String to = '$baseImg/To.png';
   static const String token = '$baseImg/Token.png';
-  static const String code = '$baseImg/Code.png';
+  static const String codeS = '$baseImg/Code.png';
   static const String from = '$baseImg/From.png';
 
   static SvgPicture svgAssets(

@@ -22,7 +22,6 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
     builder: (context) {
       return DefaultTabController(
         length: 2,
-        initialIndex: 0,
         child: Container(
           height: 764.h,
           width: 375.w,

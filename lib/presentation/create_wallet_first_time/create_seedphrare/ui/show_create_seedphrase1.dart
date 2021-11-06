@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -32,10 +33,7 @@ void showCreateSeedPhrase1(
         blocCreateSeedPhrase.nativeMethodCallBackTrustWallet,
       );
 
-       final nameWallet = TextEditingController();
-      // if (nameWallet.text == '') {
-      //   nameWallet.text = 'Account 1';
-      // }
+      final nameWallet = TextEditingController();
       return StreamBuilder(
         stream: blocCreateSeedPhrase.isCheckData,
         builder: (context, snapshot) {
@@ -69,16 +67,9 @@ void showCreateSeedPhrase1(
                           EdgeInsets.only(right: 26.w, left: 26.w, top: 16.h),
                       child: const HeaderCreate(),
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Divider(
-                      height: 1.h,
-                      color: const Color.fromRGBO(255, 255, 255, 0.1),
-                    ),
-                    SizedBox(
-                      height: 24.h,
-                    ),
+                    spaceH20,
+                    line,
+                    spaceH24,
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
@@ -87,15 +78,13 @@ void showCreateSeedPhrase1(
                               width: 323.w,
                               height: 64.h,
                               margin: EdgeInsets.symmetric(horizontal: 26.w),
-                              padding: EdgeInsets.only(
-                                  left: 15.5.w, right: 15.5.w, top: 23.h),
+                              padding: EdgeInsets.only(right: 15.w, left: 15.w),
                               decoration: const BoxDecoration(
                                 color: Color(0xff32324c),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
                               ),
                               child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Image.asset(
                                     url_ic_wallet,
@@ -106,34 +95,43 @@ void showCreateSeedPhrase1(
                                     width: 20.5.w,
                                   ),
                                   Expanded(
-                                    child: Container(
-                                      padding: EdgeInsets.only(bottom: 10.h),
-                                      child: TextFormField(
-                                        controller: nameWallet,
-                                        onChanged: (value) {
-                                          blocCreateSeedPhrase.nameWallet.sink
-                                              .add(value);
-                                        },
-                                        cursorColor: Colors.white,
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          color: Colors.white,
-                                        ),
-                                        decoration: InputDecoration(
-                                          hintText: 'Name Wallet',
-                                          hintStyle: textNormal(
-                                            Colors.white54,
-                                            18.sp,
+                                    child: StreamBuilder(
+                                      stream: blocCreateSeedPhrase.nameWallet,
+                                      builder: (context,
+                                          AsyncSnapshot<String> snapshot) {
+                                        nameWallet.text = snapshot.data ?? '';
+                                        return Container(
+                                          padding: EdgeInsets.only(right: 5.w),
+                                          child: TextFormField(
+                                            controller: nameWallet,
+                                            onChanged: (value) {
+                                              blocCreateSeedPhrase
+                                                  .nameWallet.sink
+                                                  .add(value);
+                                            },
+                                            cursorColor: Colors.white,
+                                            style: textNormal(
+                                              Colors.white54,
+                                              16.sp,
+                                            ),
+                                            decoration: InputDecoration(
+                                              hintText: 'Name Wallet',
+                                              hintStyle: textNormal(
+                                                Colors.white54,
+                                                16.sp,
+                                              ),
+                                              border: InputBorder.none,
+                                            ),
+                                            // onFieldSubmitted: ,
                                           ),
-                                          border: InputBorder.none,
-                                        ),
-                                        // onFieldSubmitted: ,
-                                      ),
+                                        );
+                                      },
                                     ),
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      nameWallet.text = ' ';
+                                      blocCreateSeedPhrase.nameWallet.sink
+                                          .add('');
                                     },
                                     child: Image.asset(
                                       url_ic_close,

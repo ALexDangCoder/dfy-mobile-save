@@ -4,6 +4,9 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
+import 'package:Dfy/presentation/import_token_nft/ui/import_nft.dart';
+import 'package:Dfy/presentation/import_token_nft/ui/import_token.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/import.dart';
 import 'package:Dfy/presentation/wallet/ui/nft_item.dart';
@@ -181,9 +184,15 @@ class _WalletState extends State<WalletScreen>
                                   );
                                 },
                               ),
-                              ImportToken(
-                                title: S.current.import_token,
-                                icon: ImageAssets.icImport,
+                              GestureDetector(
+                                onTap: () {
+                                  showImportToken(
+                                      context, ImportTokenNftBloc());
+                                },
+                                child: ImportToken(
+                                  title: S.current.import_token,
+                                  icon: ImageAssets.icImport,
+                                ),
                               ),
                               SizedBox(
                                 height: 102.h,
@@ -208,9 +217,14 @@ class _WalletState extends State<WalletScreen>
                                   );
                                 },
                               ),
-                              ImportToken(
-                                title: S.current.import_NFT,
-                                icon: ImageAssets.icImport,
+                              GestureDetector(
+                                onTap: () {
+                                  showImportNft(context, ImportTokenNftBloc());
+                                },
+                                child: ImportToken(
+                                  title: S.current.import_NFT,
+                                  icon: ImageAssets.icImport,
+                                ),
                               ),
                               ImportToken(
                                 title: S.current.create_NFT,

@@ -56,8 +56,9 @@ class FromText extends StatelessWidget {
 
               Fluttertoast.showToast(
                 msg: ' Copy Successful.',
+
                 toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.CENTER,
+                gravity: ToastGravity.TOP,
               );
             },
             child: Container(

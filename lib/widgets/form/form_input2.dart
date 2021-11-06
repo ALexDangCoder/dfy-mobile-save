@@ -20,17 +20,13 @@ class FormInput2 extends StatelessWidget {
     return Container(
       width: 323.w,
       height: 64.h,
-      margin:
-      EdgeInsets.symmetric(horizontal: 26.w),
-      padding: EdgeInsets.symmetric(
-          horizontal: 15.5.w, vertical: 18.h),
+      margin: EdgeInsets.symmetric(horizontal: 26.w),
+      padding: EdgeInsets.only(right: 15.w, left: 15.w),
       decoration: const BoxDecoration(
         color: Color(0xff32324c),
-        borderRadius:
-        BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.asset(
             urlIcon1,
@@ -40,7 +36,7 @@ class FormInput2 extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(top: 10.h),
+              margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
                 onFieldSubmitted: (value) {},
                 cursorColor: Colors.white,

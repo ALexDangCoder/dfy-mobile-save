@@ -6,36 +6,22 @@ import '../../../main.dart';
 
 class ImportTokenNftBloc {
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenAddressText1 = BehaviorSubject.seeded('');
+  BehaviorSubject<String> tokenAddressTextNft = BehaviorSubject.seeded('');
+  BehaviorSubject<String> tokenSymbolText = BehaviorSubject.seeded('');
+  BehaviorSubject<String> tokenDecimalText = BehaviorSubject.seeded('');
 
-  ImportTokenNftBloc();
-
-  void formatAddress() {
-    tokenAddressText.stream.listen((event) {
-      final splitAddress = event.split('');
-      tokenAddressText1.sink.add('${splitAddress[0]}'
-          '${splitAddress[1]}${splitAddress[2]}'
-          '${splitAddress[3]}${splitAddress[6]}'
-          '${splitAddress[5]}...${splitAddress[37]}'
-          '${splitAddress[38]}${splitAddress[39]}'
-          '${splitAddress[40]}');
-    });
-  }
-
-  BehaviorSubject<String> tokenAddressNFTText = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenAddressNFTText2 = BehaviorSubject.seeded('');
-
-  void formatAddress2() {
-    tokenAddressNFTText.stream.listen((event) {
-      final splitAddress = event.split('');
-      tokenAddressNFTText2.sink.add('${splitAddress[0]}'
-          '${splitAddress[1]}${splitAddress[2]}'
-          '${splitAddress[3]}${splitAddress[6]}'
-          '${splitAddress[5]}...${splitAddress[37]}'
-          '${splitAddress[38]}${splitAddress[39]}'
-          '${splitAddress[40]}');
-    });
-  }
+  // void formatAddress() {
+  //   tokenAddressText.stream.listen((event) {
+  //     final splitAddress = event.split('');
+  //     tokenAddressText1.sink.add('${splitAddress[0]}'
+  //         '${splitAddress[1]}${splitAddress[2]}'
+  //         '${splitAddress[3]}${splitAddress[6]}'
+  //         '${splitAddress[5]}...${splitAddress[37]}'
+  //         '${splitAddress[38]}${splitAddress[39]}'
+  //         '${splitAddress[40]}');
+  //   });
+  // }
+  //
 
   Future<void> importToken({
     String password = '',
@@ -52,7 +38,7 @@ class ImportTokenNftBloc {
         'symbol': symbol,
         'decimal': decimal,
       };
-      await trustWalletChannel.invokeMethod('importTokenCallback', data);
+      await trustWalletChannel.invokeMethod('importToken', data);
     } on PlatformException {
       //todo
 
@@ -68,8 +54,7 @@ class ImportTokenNftBloc {
         'password': password,
         'walletAddress': walletAddress,
       };
-      await trustWalletChannel.invokeMethod(
-          'getListSupportedTokenCallback', data);
+      await trustWalletChannel.invokeMethod('getListSupportedToken', data);
     } on PlatformException {
       //todo
 
@@ -89,7 +74,7 @@ class ImportTokenNftBloc {
         'tokenID': tokenID,
         'isShow': isShow,
       };
-      await trustWalletChannel.invokeMethod('setShowedTokenCallback', data);
+      await trustWalletChannel.invokeMethod('setShowedToken', data);
     } on PlatformException {
       //todo
 
@@ -109,7 +94,7 @@ class ImportTokenNftBloc {
         'nftAddress': nftAddress,
         'nftID': nftID,
       };
-      await trustWalletChannel.invokeMethod('importNftCallback', data);
+      await trustWalletChannel.invokeMethod('importNft', data);
     } on PlatformException {
       //todo
 
@@ -129,7 +114,7 @@ class ImportTokenNftBloc {
         'isShow': isShow,
         'nftID': nftID,
       };
-      await trustWalletChannel.invokeMethod('setShowedNftCallback', data);
+      await trustWalletChannel.invokeMethod('setShowedNft', data);
     } on PlatformException {
       //todo
 
@@ -137,33 +122,42 @@ class ImportTokenNftBloc {
   }
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    bool isImportToken;
-    bool isGetListSupportedToken;
-    bool isSetShowedToken;
-    bool isImportNft;
-    bool isSetShowedNft;
+    final bool isImportToken;
+    final bool isSetShowedToken;
+    final bool isImportNft;
+    final bool isSetShowedNft;
 
     switch (methodCall.method) {
       case 'importTokenCallback':
-        isImportToken = methodCall.arguments['importToken'];
+        isImportToken = await methodCall.arguments['isSuccess'];
         print(isImportToken);
         break;
       case 'getListSupportedTokenCallback':
         //[TokenObject]
+        var a = await methodCall.arguments['TokenObject'];
+        print("a");
+
         break;
       case 'setShowedTokenCallback':
-        isImportToken = methodCall.arguments['setShowedToken'];
-        print(isImportToken);
+        isSetShowedToken = await methodCall.arguments['isSuccess'];
+        print(isSetShowedToken);
+        print("a2");
 
         break;
       case 'importNftCallback':
-        isImportToken = methodCall.arguments['importNft'];
-        print(isImportToken);
+        print("2a");
+
+        isImportNft = await methodCall.arguments['isSuccess'];
+        print(isImportNft);
+        print("a3");
 
         break;
       case 'setShowedNftCallback':
-        isImportToken = methodCall.arguments['setShowedNft'];
-        print(isImportToken);
+        print("2a");
+
+        isSetShowedNft = await methodCall.arguments['isSuccess'];
+        print(isSetShowedNft);
+        print("2a");
 
         break;
       default:

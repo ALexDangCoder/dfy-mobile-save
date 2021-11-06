@@ -31,40 +31,49 @@ class ChooseToken extends StatelessWidget {
             child: ListView.builder(
               itemCount: 10,
               itemBuilder: (context, index) {
-                return SizedBox(
-                  height: 73,
-                  width: 322,
-                  child: ListTileSwitch(
-                    switchScale: 1,
-                    value: true,
-                    leading: Image.asset('assets/images/Ellipse 39.png'),
-                    onChanged: (value) {},
-                    switchActiveColor: const Color(0xffE4AC1A),
-                    switchType: SwitchType.cupertino,
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Bitcoin',
-                          style: textNormalCustom(
-                              Colors.white, 16, FontWeight.w600),
-                        ),
-                        spaceW6,
-                        Text(
-                          'BTC',
-                          style: textNormalCustom(
-                              const Color.fromRGBO(255, 255, 255, 0.7),
-                              18,
-                              FontWeight.w400),
-                        ),
-                      ],
-                    ),
-                    subtitle: Text(
-                      '0.612,54 BTC',
-                      style: textNormalCustom(
-                          const Color.fromRGBO(255, 255, 255, 0.5),
-                          16,
-                          FontWeight.w400),
+                return GestureDetector(
+                  onTap: () {
+                    final FocusScopeNode currentFocus = FocusScope.of(context);
+
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
+                  },
+                  child: SizedBox(
+                    height: 73,
+                    width: 322,
+                    child: ListTileSwitch(
+                      switchScale: 1,
+                      value: true,
+                      leading: Image.asset('assets/images/Ellipse 39.png'),
+                      onChanged: (value) {},
+                      switchActiveColor: const Color(0xffE4AC1A),
+                      switchType: SwitchType.cupertino,
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Bitcoin',
+                            style: textNormalCustom(
+                                Colors.white, 16, FontWeight.w600),
+                          ),
+                          spaceW6,
+                          Text(
+                            'BTC',
+                            style: textNormalCustom(
+                                const Color.fromRGBO(255, 255, 255, 0.7),
+                                18,
+                                FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                      subtitle: Text(
+                        '0.612,54 BTC',
+                        style: textNormalCustom(
+                            const Color.fromRGBO(255, 255, 255, 0.5),
+                            16,
+                            FontWeight.w400),
+                      ),
                     ),
                   ),
                 );

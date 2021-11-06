@@ -5,13 +5,13 @@ import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FormInput extends StatelessWidget {
+class FormInput3 extends StatelessWidget {
   final String urlIcon1;
   final String urlIcon2;
   final ImportTokenNftBloc bloc;
   final String hint;
 
-  FormInput({
+  FormInput3({
     Key? key,
     required this.urlIcon1,
     required this.urlIcon2,
@@ -41,17 +41,18 @@ class FormInput extends StatelessWidget {
           ),
           Expanded(
             child: StreamBuilder(
-              stream: bloc.tokenAddressText,
+              stream: bloc.tokenAddressTextNft,
               builder: (context, AsyncSnapshot<String> snapshot) {
                 textAddress.text = snapshot.data ?? '';
                 return Container(
                   margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
                   child: Expanded(
                     child: TextFormField(
-                      onChanged: (value) {
-                        bloc.tokenAddressText.sink.add(value);
-                      },
+                      // maxLines: 5,
                       controller: textAddress,
+                      onChanged: (value) {
+                        bloc.tokenAddressTextNft.sink.add(value);
+                      },
                       cursorColor: Colors.white,
                       style: TextStyle(
                         fontSize: 16.sp,

@@ -8,6 +8,8 @@ import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dar
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_input.dart';
 import 'package:Dfy/widgets/form/form_input2.dart';
+import 'package:Dfy/widgets/form/form_input3.dart';
+import 'package:Dfy/widgets/form/form_input_number.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +17,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 void showImportNft(BuildContext context, ImportTokenNftBloc bloc) {
   showModalBottomSheet(
     isScrollControlled: true,
+    //isDismissible: false,
+    //enableDrag: false,
     context: context,
     backgroundColor: Colors.transparent,
     builder: (context) {
@@ -56,34 +60,41 @@ void showImportNft(BuildContext context, ImportTokenNftBloc bloc) {
             ),
             line,
             spaceH24,
-           Expanded(
-             child: SingleChildScrollView(
-               child: Column(
-                 children: [
-                   FormInput(
-                     urlIcon2: url_ic_qr,
-                     bloc: bloc,
-                     urlIcon1: url_ic_address,
-                     hint: Strings.contract_address,
-                   ),
-                   spaceH16,
-                   FormInput2(
-                     urlIcon1: url_ic_enter_id,
-                     bloc: bloc,
-                     hint: Strings.enter_id,
-                   ),
-                   const SizedBox(
-                     height: 429,
-                   ),
-                 ],
-               ),
-             ),
-           ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  final FocusScopeNode currentFocus = FocusScope.of(context);
+
+                  if (!currentFocus.hasPrimaryFocus) {
+                    currentFocus.unfocus();
+                  }
+                },
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      FormInput3(
+                        urlIcon2: url_ic_qr,
+                        bloc: bloc,
+                        urlIcon1: url_ic_address,
+                        hint: Strings.contract_address,
+                      ),
+                      spaceH16,
+                      FormInputNumber(
+                        urlIcon1: url_ic_enter_id,
+                        bloc: bloc,
+                        hint: Strings.enter_id,
+                      ),
+                      const SizedBox(
+                        height: 429,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             Center(
               child: InkWell(
-                onTap: () {
-
-                },
+                onTap: () {},
                 child: const ButtonGold(
                   title: Strings.import,
                   isEnable: true,
