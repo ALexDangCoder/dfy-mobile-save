@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/image_asset.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/import.dart';
 import 'package:Dfy/presentation/wallet/ui/nft_item.dart';
@@ -91,7 +91,7 @@ class _WalletState extends State<WalletScreen>
                           child: Column(
                             children: [
                               Text(
-                                'Wallet',
+                                S.current.wallet,
                                 style: textNormalCustom(
                                   Colors.white,
                                   20.sp,
@@ -99,7 +99,7 @@ class _WalletState extends State<WalletScreen>
                                 ),
                               ),
                               Text(
-                                'Smart chain',
+                                S.current.smart_chain,
                                 style: textNormalCustom(
                                   Colors.grey.shade400,
                                   14.sp,
@@ -147,12 +147,12 @@ class _WalletState extends State<WalletScreen>
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                     ),
-                    tabs: const [
+                    tabs: [
                       Tab(
-                        text: 'TOKEN',
+                        text: S.current.token,
                       ),
                       Tab(
-                        text: 'NFT',
+                        text: S.current.nft,
                       ),
                     ],
                     indicatorSize: TabBarIndicatorSize.tab,
@@ -181,8 +181,8 @@ class _WalletState extends State<WalletScreen>
                                   );
                                 },
                               ),
-                              const ImportToken(
-                                title: 'Import Token',
+                              ImportToken(
+                                title: S.current.import_token,
                                 icon: ImageAssets.icImport,
                               ),
                               SizedBox(
@@ -208,12 +208,12 @@ class _WalletState extends State<WalletScreen>
                                   );
                                 },
                               ),
-                              const ImportToken(
-                                title: 'Import NFT',
+                              ImportToken(
+                                title: S.current.import_NFT,
                                 icon: ImageAssets.icImport,
                               ),
-                              const ImportToken(
-                                title: 'Create NFT',
+                              ImportToken(
+                                title: S.current.create_NFT,
                                 icon: ImageAssets.icAdd,
                               ),
                               SizedBox(
@@ -255,7 +255,7 @@ class _WalletState extends State<WalletScreen>
                   child: CircleAvatar(
                     radius: 27.sp,
                     child: const Image(
-                      image: AssetImage('$baseImg/symbol.png'),
+                      image: AssetImage(ImageAssets.symbol),
                     ),
                   ),
                 ),
@@ -276,7 +276,7 @@ class _WalletState extends State<WalletScreen>
                     GestureDetector(
                       onTap: () {},
                       child: ImageIcon(
-                        const AssetImage('$baseImg/ic_edit.png'),
+                        const AssetImage(ImageAssets.icEdit),
                         color: Colors.white,
                         size: 24.sp,
                       ),
@@ -339,7 +339,7 @@ class _WalletState extends State<WalletScreen>
               IconButton(
                 onPressed: () {},
                 icon: const ImageIcon(
-                  AssetImage('$baseImg/Code.png'),
+                  AssetImage(ImageAssets.code),
                   color: Colors.white,
                 ),
               ),

@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/image_asset.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 controller: controller,
                                 obscureText: _cubit.hidePass,
                                 decoration: InputDecoration(
-                                  hintText: 'Password',
+                                  hintText: S.current.password,
                                   hintStyle: textNormal(
                                     Colors.white54,
                                     18.sp,
@@ -182,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? ButtonRadial(
                               child: Center(
                                 child: Text(
-                                  'Login',
+                                  S.current.login,
                                   style: textNormalCustom(
                                     Colors.white,
                                     20.sp,
@@ -194,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           : ErrorButton(
                               child: Center(
                                 child: Text(
-                                  'Login',
+                                  S.current.login,
                                   style: textNormalCustom(
                                     Colors.white,
                                     20.sp,
@@ -249,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         child: Text(
-                          'New wallet',
+                          S.current.new_wallet,
                           style: textNormal(
                             Colors.amber,
                             18.sp,
@@ -280,7 +280,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         child: Text(
-                          'Import Seed phrase',
+                          S.current.import_seed_phrase,
                           style: textNormal(
                             Colors.amber,
                             18.sp,
