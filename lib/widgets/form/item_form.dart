@@ -34,8 +34,7 @@ class ItemForm extends StatelessWidget {
         child: Container(
           width: 323.w,
           padding: EdgeInsets.only(
-            top: 8.h,
-            // bottom: 8.h,
+            top: 10.h,
             right: 10.w,
           ),
           decoration: BoxDecoration(
@@ -60,10 +59,10 @@ class ItemForm extends StatelessWidget {
                 16.sp,
               ),
               suffixIcon: InkWell(
-                onTap: () {},
+                onTap: callback,
                 child: ImageIcon(
                   AssetImage(trailingPath),
-                    color: const Color(0xffE4AC1A),
+                  color: const Color(0xffE4AC1A),
                 ),
               ),
               prefixIcon: ImageIcon(
@@ -75,8 +74,7 @@ class ItemForm extends StatelessWidget {
           ),
         ),
       );
-    }
-    else if(formType == FormType.PRIVATE_KEY){
+    } else if (formType == FormType.PRIVATE_KEY) {
       return Container(
         height: 64.h,
         width: 323.w,
@@ -89,7 +87,7 @@ class ItemForm extends StatelessWidget {
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
-          color: AppTheme.getInstance().itemBtsColor(),
+          color: AppTheme.getInstance().itemBtsColors(),
         ),
         child: TextFormField(
           controller: controller,
@@ -120,8 +118,7 @@ class ItemForm extends StatelessWidget {
           ),
         ),
       );
-    }
-    else {
+    } else {
       return Container(
         height: 64.h,
         width: 323.w,

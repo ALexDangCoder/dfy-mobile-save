@@ -72,7 +72,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
         stringCubit.hidePopMenu();
       },
       child: Container(
-        height: 764.h,
+        height: 803.h,
         width: 375.w,
         decoration: BoxDecoration(
           color: AppTheme.getInstance().bgBtsColor(),
@@ -88,6 +88,13 @@ class _RestoreAccountState extends State<RestoreAccount> {
               padding: EdgeInsets.only(
                 left: 37.w,
                 right: 37.w,
+              ),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: AppTheme.getInstance().divideColor(),
+                  ),
+                ),
               ),
               height: 64.h,
               width: 375.h,
@@ -121,16 +128,9 @@ class _RestoreAccountState extends State<RestoreAccount> {
               ),
             ),
             SizedBox(
-              height: 20.h,
-            ),
-            Divider(
-              height: 1.h,
-              color: AppTheme.getInstance().divideColor(),
-            ),
-            SizedBox(
               height: 24.h,
             ),
-            Padding(
+            Container(
               padding: EdgeInsets.only(
                 left: 26.w,
                 right: 26.w,
@@ -166,7 +166,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: Padding(
+                child: Container(
                   padding: EdgeInsets.only(left: 25.w, right: 26.w),
                   child: Stack(
                     children: [
@@ -358,16 +358,19 @@ class _RestoreAccountState extends State<RestoreAccount> {
                         },
                       ),
                       SizedBox(
-                        height: 100.h,
+                        height: 50.h,
                       ),
                     ],
                   ),
                 ),
               ),
             ),
+            SizedBox(
+              height: 24.h,
+            ),
             ckcBoxAndTextSetupPass(),
             SizedBox(
-              height: 36.h,
+              height: 40.h,
             ),
             ButtonGradient(
               gradient: RadialGradient(

@@ -99,10 +99,10 @@ abstract class AppColor {
   Color textThemeColor();
 
   Color suffixColor();
+
   Color errorColorButton();
 
   Color selectDialogColor();
-
 
   List<Color> listColorAddWalletSeedPhrase();
 
@@ -164,6 +164,7 @@ class LightApp extends AppColor {
   Color sideBtnColor() {
     return const Color(0xFFDCFFFE);
   }
+
   @override
   Color disableColor() {
     return const Color(0xFFA9B8BD);

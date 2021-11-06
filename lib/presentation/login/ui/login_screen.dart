@@ -9,6 +9,7 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
+import 'package:Dfy/presentation/restore_bts/ui/restore_bts.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -276,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
                             context: context,
-                            builder: (context) => const RestoreAccount(),
+                            builder: (context) => const RestoreBTS(),
                           );
                         },
                         child: Text(
