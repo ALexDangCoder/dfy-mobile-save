@@ -243,7 +243,7 @@ class _WalletState extends State<WalletScreen>
           ),
           child: SizedBox(
             height: 125.h,
-            width: 135.w,
+            width: 139.w,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -262,7 +262,7 @@ class _WalletState extends State<WalletScreen>
                   height: 8.h,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Account 1',
