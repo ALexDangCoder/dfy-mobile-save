@@ -19,18 +19,15 @@ class TokenItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-
-      },
-      child: SizedBox(
-        height: 81.h,
-        child: Column(
-          children: [
-            Divider(
-              height: 1.h,
-              color: const Color(0xFF4b4a60),
-            ),
-            Row(
+      onTap: () {},
+      child: Column(
+        children: [
+          Divider(
+            height: 1.h,
+            color: const Color(0xFF4b4a60),
+          ),
+          SizedBox(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
@@ -40,7 +37,7 @@ class TokenItem extends StatelessWidget {
                   ),
                   child: Image(
                     width: 28.w,
-                    height: 28.w,
+                    height: 28.h,
                     image: AssetImage(symbolUrl),
                   ),
                 ),
@@ -48,6 +45,7 @@ class TokenItem extends StatelessWidget {
                   padding: EdgeInsets.only(
                     top: 20.h,
                     left: 10.w,
+                    bottom: 20.h,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,13 +69,10 @@ class TokenItem extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 13.h,
-                ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

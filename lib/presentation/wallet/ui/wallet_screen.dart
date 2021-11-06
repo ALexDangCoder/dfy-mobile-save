@@ -171,7 +171,7 @@ class _WalletState extends State<WalletScreen>
                               ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: 9,
+                                itemCount: 2,
                                 itemBuilder: (context, index) {
                                   return TokenItem(
                                     symbolUrl: ImageAssets.symbol,
@@ -200,7 +200,7 @@ class _WalletState extends State<WalletScreen>
                               ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: 5,
+                                itemCount: 2,
                                 itemBuilder: (context, index) {
                                   return const NFTItemWallet(
                                     symbolUrl: ImageAssets.symbol,
@@ -238,67 +238,64 @@ class _WalletState extends State<WalletScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.only(
-            left: 136.w,
-          ),
-          child: SizedBox(
-            height: 125.h,
-            width: 139.w,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 25.w,
-                  ),
-                  child: CircleAvatar(
-                    radius: 27.sp,
-                    child: const Image(
-                      image: AssetImage(ImageAssets.symbol),
-                    ),
+        SizedBox(
+          height: 125.h,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: CircleAvatar(
+                  radius: 27.sp,
+                  child: const Image(
+                    image: AssetImage(ImageAssets.symbol),
                   ),
                 ),
-                SizedBox(
-                  height: 8.h,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Account 1',
-                      style: textNormalCustom(
-                        Colors.white,
-                        24.sp,
-                        FontWeight.w700,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: ImageIcon(
-                        const AssetImage(ImageAssets.icEdit),
-                        color: Colors.white,
-                        size: 24.sp,
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 21.w,
-                  ),
-                  child: Text(
-                    '\$ 3,8000',
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Nguyen Thao Nguyen',
                     style: textNormalCustom(
-                      const Color(0xFFE4AC1A),
-                      20.sp,
-                      FontWeight.w600,
+                      Colors.white,
+                      24.sp,
+                      FontWeight.w700,
                     ),
                   ),
+                  SizedBox(
+                    width: 13.w,
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: ImageIcon(
+                      const AssetImage(ImageAssets.icEdit),
+                      color: Colors.white,
+                      size: 24.sp,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              Center(
+                child: Text(
+                  '\$ 3,800',
+                  style: textNormalCustom(
+                    const Color(0xFFE4AC1A),
+                    20.sp,
+                    FontWeight.w600,
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
+        SizedBox(
+          height: 12.h,
         ),
         Padding(
           padding: EdgeInsets.only(
@@ -311,9 +308,12 @@ class _WalletState extends State<WalletScreen>
                   Clipboard.setData(
                     ClipboardData(text: _cubit.addressWallet),
                   ).then((_) {
-                    fToast.showToast(child: const Copied(),
+                    fToast.showToast(
+                      child: const Copied(),
                       gravity: ToastGravity.CENTER,
-                      toastDuration: const Duration(seconds: 2,),
+                      toastDuration: const Duration(
+                        seconds: 2,
+                      ),
                     );
                   });
                 },
@@ -349,5 +349,4 @@ class _WalletState extends State<WalletScreen>
       ],
     );
   }
-
 }
