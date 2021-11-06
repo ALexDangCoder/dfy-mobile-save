@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
+import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -173,7 +174,7 @@ class _WalletState extends State<WalletScreen>
                                 itemCount: 9,
                                 itemBuilder: (context, index) {
                                   return TokenItem(
-                                    symbolUrl: '$baseImg/symbol.png',
+                                    symbolUrl: ImageAssets.symbol,
                                     amount: '1200000',
                                     nameToken: 'DFY',
                                     price: '$index',
@@ -182,7 +183,7 @@ class _WalletState extends State<WalletScreen>
                               ),
                               const ImportToken(
                                 title: 'Import Token',
-                                icon: '$baseImg/ic_import.png',
+                                icon: ImageAssets.icImport,
                               ),
                               SizedBox(
                                 height: 102.h,
@@ -202,18 +203,18 @@ class _WalletState extends State<WalletScreen>
                                 itemCount: 5,
                                 itemBuilder: (context, index) {
                                   return const NFTItemWallet(
-                                    symbolUrl: '$baseImg/symbol.png',
+                                    symbolUrl: ImageAssets.symbol,
                                     nameNFT: 'DeFi For You',
                                   );
                                 },
                               ),
                               const ImportToken(
                                 title: 'Import NFT',
-                                icon: '$baseImg/ic_import.png',
+                                icon: ImageAssets.icImport,
                               ),
                               const ImportToken(
                                 title: 'Create NFT',
-                                icon: '$baseImg/ic_add.png',
+                                icon: ImageAssets.icAdd,
                               ),
                               SizedBox(
                                 height: 102.h,
