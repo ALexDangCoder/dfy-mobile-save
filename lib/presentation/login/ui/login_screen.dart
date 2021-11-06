@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
@@ -34,10 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     controller.addListener(() {
       setState(() {
-        if(controller.text.isNotEmpty){
+        if (controller.text.isNotEmpty) {
           enableLogin = true;
-        }
-        else {
+        } else {
           enableLogin = false;
         }
       });
@@ -87,9 +87,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     width: 323.w,
                     height: 64.h,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF242234),
-                      borderRadius: BorderRadius.all(
+                    decoration: BoxDecoration(
+                      color: AppTheme.getInstance().backgroundLoginTextField(),
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(20),
                       ),
                     ),
@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               padding: EdgeInsets.only(top: 12.h),
                               child: Icon(
                                 Icons.lock_outline,
-                                color: const Color(0xFFFFFFFF),
+                                color: AppTheme.getInstance().whiteColor(),
                                 size: 24.sp,
                               ),
                             ),
@@ -116,10 +116,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Expanded(
                               child: TextFormField(
-                                cursorColor: Colors.white,
+                                cursorColor:
+                                    AppTheme.getInstance().whiteColor(),
                                 style: TextStyle(
                                   fontSize: 18.sp,
-                                  color: Colors.white,
+                                  color: AppTheme.getInstance().whiteColor(),
                                 ),
                                 controller: controller,
                                 obscureText: _cubit.hidePass,
@@ -161,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      if(enableLogin){
+                      if (enableLogin) {
                         _cubit.checkPasswordWallet(controller.value.text);
                       }
                     },
@@ -184,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Text(
                                   S.current.login,
                                   style: textNormalCustom(
-                                    Colors.white,
+                                    AppTheme.getInstance().whiteColor(),
                                     20.sp,
                                     FontWeight.w700,
                                   ),
@@ -196,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Text(
                                   S.current.login,
                                   style: textNormalCustom(
-                                    Colors.white,
+                                    AppTheme.getInstance().whiteColor(),
                                     20.sp,
                                     FontWeight.w700,
                                   ),
