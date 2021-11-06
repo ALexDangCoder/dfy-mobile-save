@@ -202,7 +202,7 @@ class _WalletState extends State<WalletScreen>
                                 shrinkWrap: true,
                                 itemCount: 2,
                                 itemBuilder: (context, index) {
-                                  return const NFTItemWallet(
+                                  return const NFTItem(
                                     symbolUrl: ImageAssets.symbol,
                                     nameNFT: 'DeFi For You',
                                   );
