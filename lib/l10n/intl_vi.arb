@@ -14,5 +14,16 @@
   "tab_wallet": "Wallet",
   "tab_pawn": "Pawn",
   "tab_market_place": "Marketplace",
-  "tab_staking": "Staking"
+  "tab_staking": "Staking",
+  "password": "Mật khẩu",
+    "login": "Đăng nhập",
+    "new_wallet": "Ví mới",
+    "import_seed_phrase": "Nhập Seed phrase",
+    "wallet": "Ví",
+    "smart_chain": "Smart chain",
+    "token": "TOKEN",
+    "nft": "NFT",
+    "import_token": "Nhập Token",
+    "import_NFT": "Nhập NFT",
+    "create_NFT": "Tạo NFT"
 }

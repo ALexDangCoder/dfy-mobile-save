@@ -78,6 +78,10 @@ abstract class AppColor {
   Color itemBtsColor();
 
   Color divideColor();
+
+  Color whiteColor();
+
+  Color backgroundLoginTextField();
 }
 
 class LightApp extends AppColor {
@@ -155,6 +159,18 @@ class LightApp extends AppColor {
   Color divideColor() {
     return const Color.fromRGBO(255, 255, 255, 0.1);
   }
+
+  @override
+  Color whiteColor() {
+    return const Color(0xFFFFFFFF);
+  }
+
+  @override
+  Color backgroundLoginTextField() {
+
+    return const Color(0xFF242234);
+  }
+
 }
 
 class DarkApp extends AppColor {
@@ -235,6 +251,19 @@ class DarkApp extends AppColor {
     // TODO: implement divideColor
     throw UnimplementedError();
   }
+
+  @override
+  Color whiteColor() {
+    // TODO: implement whiteColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color backgroundLoginTextField() {
+    // TODO: implement backgroundLoginTextField
+    throw UnimplementedError();
+  }
+
 }
 
 ///============ End setup app theme ======================================

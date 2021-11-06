@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_switch.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,7 +52,7 @@ void showCreateSuccessfully(BuildContext context) {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Image.asset('assets/images/Framegreen.png'),
+                    Image.asset(ImageAssets.icFrame),
                     SizedBox(
                       height: 22.h,
                     ),
@@ -68,7 +69,7 @@ void showCreateSuccessfully(BuildContext context) {
                     const FromSwitch(
                       title: 'Use face/touch ID',
                       isCheck: true,
-                      urlPrefixIcon: 'assets/images/ic_faceid.png',
+                      urlPrefixIcon: ImageAssets.icFace,
                     ),
                     SizedBox(
                       height: 20.h,
@@ -76,7 +77,7 @@ void showCreateSuccessfully(BuildContext context) {
                     const FromSwitch(
                       title: 'Wallet app lock',
                       isCheck: false,
-                      urlPrefixIcon: 'assets/images/ic_password.png',
+                      urlPrefixIcon: ImageAssets.icPassword,
                     ),
                     SizedBox(
                       height: 56.h,

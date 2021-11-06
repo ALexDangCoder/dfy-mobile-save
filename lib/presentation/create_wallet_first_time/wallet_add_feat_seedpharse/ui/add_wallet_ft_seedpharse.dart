@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -96,7 +97,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
           child: Center(
             child: Row(
               children: [
-                Image.asset('assets/images/addstwallet.png'),
+                Image.asset(ImageAssets.addsWallet),
                 SizedBox(
                   width: 8.w,
                 ),
@@ -134,7 +135,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
           children: [
             IconButton(
               onPressed: () {},
-              icon: Image.asset('assets/images/Menu.png'),
+              icon: Image.asset(ImageAssets.menu),
             ),
             Column(
               children: [
@@ -161,7 +162,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
             ),
             IconButton(
               onPressed: () {},
-              icon: Image.asset('assets/images/Notification.png'),
+              icon: Image.asset(ImageAssets.notification),
             )
           ],
         ),

@@ -59,5 +59,3 @@ TextStyle textNormalCustom(Color? color, double? fontSize,
   );
 }
 
-
-
