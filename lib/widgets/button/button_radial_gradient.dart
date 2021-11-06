@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/color.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ButtonRadial extends StatelessWidget {
@@ -15,10 +16,10 @@ class ButtonRadial extends StatelessWidget {
       height: 64.h,
       width: 298.w,
       decoration: BoxDecoration(
-        gradient: const RadialGradient(
-          center: Alignment(0.5, -0.5),
+        gradient:  RadialGradient(
+          center: const Alignment(0.5, -0.5),
           radius: 4,
-          colors: listButtonColor,
+          colors: AppTheme.getInstance().gradientButtonColor(),
         ),
         borderRadius: BorderRadius.circular(22),
       ),

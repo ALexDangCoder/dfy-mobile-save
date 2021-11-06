@@ -1,6 +1,11 @@
 import 'dart:ui';
+
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrare2.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom.dart';
 import 'package:Dfy/widgets/form/form_text.dart';
@@ -8,10 +13,7 @@ import 'package:Dfy/widgets/header_create/header_create.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrasse_copy.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../main.dart';
 
 void showCreateSeedPhrase1(
   BuildContext context,
@@ -38,7 +40,7 @@ void showCreateSeedPhrase1(
               width: 375.w,
               decoration: BoxDecoration(
                 // shape: BoxShape.circle,
-                color: const Color(0xff3e3d5c),
+                color: AppTheme.getInstance().bgBtsColor(),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30.h),
                   topRight: Radius.circular(30.h),
@@ -67,26 +69,26 @@ void showCreateSeedPhrase1(
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          const FromText(
-                            title: 'Account 1',
+                          FromText(
+                            title: '${S.current.account} 1',
                             urlSuffixIcon: '',
-                            urlPrefixIcon: 'assets/images/ic_wallet.png',
+                            urlPrefixIcon: ImageAssets.ic_wallet,
                           ),
                           SizedBox(
                             height: 16.h,
                           ),
                           FromText(
                             title: blocCreateSeedPhrase.walletAddress,
-                            urlSuffixIcon: 'assets/images/ic_copy.png',
-                            urlPrefixIcon: 'assets/images/ic_address.png',
+                            urlSuffixIcon: ImageAssets.ic_copy,
+                            urlPrefixIcon: ImageAssets.ic_address,
                           ),
                           SizedBox(
                             height: 16.h,
                           ),
                           FromText(
                             title: blocCreateSeedPhrase.privateKey,
-                            urlSuffixIcon: 'assets/images/ic_copy.png',
-                            urlPrefixIcon: 'assets/images/ic_key.png',
+                            urlSuffixIcon: ImageAssets.ic_copy,
+                            urlPrefixIcon: ImageAssets.key,
                           ),
                           SizedBox(
                             height: 20.h,
@@ -100,8 +102,7 @@ void showCreateSeedPhrase1(
                                 height: 17.h,
                               ),
                               CheckBoxCustom(
-                                title:
-                                    'Do not provide your recovery key to anyone',
+                                title: S.current.do_not,
                                 bLocCreateSeedPhrase: blocCreateSeedPhrase,
                               ),
                               SizedBox(
@@ -120,8 +121,8 @@ void showCreateSeedPhrase1(
                           showCreateSeedPhrase2(context, blocCreateSeedPhrase);
                         }
                       },
-                      child: const ButtonGold(
-                        title: 'Continue',
+                      child: ButtonGold(
+                        title: S.current.continue_s,
                       ),
                     ),
                   ),

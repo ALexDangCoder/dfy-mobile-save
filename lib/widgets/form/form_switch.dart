@@ -1,3 +1,5 @@
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
@@ -7,12 +9,12 @@ class FromSwitch extends StatefulWidget {
   final String title;
   final String urlPrefixIcon;
 
-  const FromSwitch(
-      {Key? key,
-      required this.isCheck,
-      required this.title,
-      required this.urlPrefixIcon,})
-      : super(key: key);
+  const FromSwitch({
+    Key? key,
+    required this.isCheck,
+    required this.title,
+    required this.urlPrefixIcon,
+  }) : super(key: key);
 
   @override
   State<FromSwitch> createState() => _FromSwitchState();
@@ -28,9 +30,11 @@ class _FromSwitchState extends State<FromSwitch> {
       height: 64.h,
       margin: EdgeInsets.symmetric(horizontal: 26.w),
       //padding: EdgeInsets.symmetric(horizontal: 15.5.w),
-      decoration: const BoxDecoration(
-        color: Color(0xff32324c),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppTheme.getInstance().itemBtsColors(),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(20),
+        ),
       ),
       child: Center(
         child: ListTileSwitch(
@@ -42,16 +46,13 @@ class _FromSwitchState extends State<FromSwitch> {
               isCheck1 = value;
             });
           },
-          switchActiveColor: const Color(0xffE4AC1A),
+          switchActiveColor: AppTheme.getInstance().fillColor(),
           switchType: SwitchType.cupertino,
-          title:  Text(
-              widget.title,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.sp,
-
-            ),
-          ),
+          title: Text(widget.title,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16.sp,
+              )),
         ),
       ),
     );
