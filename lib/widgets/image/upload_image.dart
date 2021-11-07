@@ -1,4 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
 import 'package:flutter/material.dart';
 
@@ -40,24 +42,24 @@ class _AddAssetState extends State<AddAsset> {
                   height: 0.16 * widget.height,
                 ),
                 const Image(
-                  image: AssetImage('assets/images/img_empty.png'),
+                  image: AssetImage(ImageAssets.img_empty),
                 ),
                 SizedBox(
                   height: 0.1 * widget.height,
                 ),
                 Text(
-                  'Upload or drag file here',
+                  S.current.up_load,
                   style: textNormal(Colors.black, 14),
                 ),
                 Text(
-                  '(max ${widget.maxSizeFile})',
+                  '(${S.current.max} ${widget.maxSizeFile})',
                   style: textNormal(Colors.black, 14),
                 ),
                 SizedBox(
                   height: 0.1 * widget.height,
                 ),
                 Text(
-                  'Support file type: ${widget.supportFile}',
+                  '${S.current.support_type} ${widget.supportFile}',
                   style: textNormal(Colors.black, 12),
                 ),
               ],

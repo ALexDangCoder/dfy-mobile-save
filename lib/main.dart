@@ -22,8 +22,9 @@ Future<void> mainApp() async {
   await PrefsService.init();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,),
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ),
   );
   configureDependencies();
   runApp(const MyApp());
@@ -39,7 +40,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final token = PrefsService.getToken();
 
-
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,4 +84,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
