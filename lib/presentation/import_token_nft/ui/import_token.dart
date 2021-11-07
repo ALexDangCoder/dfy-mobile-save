@@ -104,10 +104,12 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                   },
                   child: TabBarView(
                     children: [
+                      //Container(color: Colors.black,),
+                      //Container(color: Colors.black,),
                       EnterAddress(
                         bloc: bloc,
                       ),
-                      ChooseToken(bloc: bloc),
+                       ChooseToken(bloc: bloc),
                     ],
                   ),
                 ),

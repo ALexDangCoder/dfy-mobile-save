@@ -22,6 +22,9 @@ class FormInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // textAddress.addListener(() {
+    //   bloc.tokenAddressText.sink.add(textAddress.text);
+    // });
     return Container(
       width: 323.w,
       height: 64.h,
@@ -40,36 +43,25 @@ class FormInput extends StatelessWidget {
             width: 20.5.w,
           ),
           Expanded(
-            child: StreamBuilder(
-              stream: bloc.tokenAddressText,
-              builder: (context, AsyncSnapshot<String> snapshot) {
-                textAddress.text = snapshot.data ?? '';
-                return Container(
-                  margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
-                  child: Expanded(
-                    child: TextFormField(
-                      onChanged: (value) {
-                        bloc.tokenAddressText.sink.add(value);
-                      },
-                      controller: textAddress,
-                      cursorColor: Colors.white,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        color: Colors.white,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: hint,
-                        hintStyle: textNormal(
-                          Colors.white54,
-                          16.sp,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                      // onFieldSubmitted: ,
-                    ),
+            child: Container(
+              margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
+              child: TextFormField(
+                controller: textAddress,
+                cursorColor: Colors.white,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  hintText: hint,
+                  hintStyle: textNormal(
+                    Colors.white54,
+                    16.sp,
                   ),
-                );
-              },
+                  border: InputBorder.none,
+                ),
+                // onFieldSubmitted: ,
+              ),
             ),
           ),
           GestureDetector(
@@ -82,6 +74,10 @@ class FormInput extends StatelessWidget {
                     );
                   },
                 ),
+              ).whenComplete(
+                () => {
+                  //   textAddress.text = bloc?.tokenAddressText?.value ?? ''
+                },
               );
             },
             child: Image.asset(

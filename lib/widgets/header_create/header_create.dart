@@ -1,3 +1,4 @@
+import 'package:Dfy/config/routes/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,7 +8,7 @@ class HeaderCreate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
           child: Image.asset(
@@ -23,9 +24,10 @@ class HeaderCreate extends StatelessWidget {
         Text(
           'Create new wallet',
           style: TextStyle(
-              fontSize: 20.sp,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,),
+            fontSize: 20.sp,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         SizedBox(
           width: 64.w,
@@ -35,8 +37,11 @@ class HeaderCreate extends StatelessWidget {
             'assets/images/ic_close.png',
           ),
           onTap: () {
-            Navigator.pop(context);
-            Navigator.pop(context);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              AppRouter.main,
+              (route) => route.isFirst,
+            );
           },
         ),
       ],

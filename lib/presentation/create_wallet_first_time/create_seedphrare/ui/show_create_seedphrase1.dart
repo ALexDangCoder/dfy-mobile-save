@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrare2.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -34,7 +35,7 @@ void showCreateSeedPhrase1(
       );
 
       final nameWallet = TextEditingController();
-      nameWallet.text = blocCreateSeedPhrase.nameWallet.value ?? '';
+      nameWallet.text = blocCreateSeedPhrase.nameWallet.value;
 
       return StreamBuilder(
         stream: blocCreateSeedPhrase.isCheckData,
@@ -116,7 +117,7 @@ void showCreateSeedPhrase1(
                                               16.sp,
                                             ),
                                             decoration: InputDecoration(
-                                              hintText: 'Name Wallet',
+                                              hintText: S.current.name_wallet,
                                               hintStyle: textNormal(
                                                 Colors.white54,
                                                 16.sp,
@@ -133,7 +134,7 @@ void showCreateSeedPhrase1(
                                     onTap: () {
                                       blocCreateSeedPhrase.nameWallet.sink
                                           .add('');
-                                      nameWallet.text='';
+                                      nameWallet.text = '';
                                     },
                                     child: Image.asset(
                                       url_ic_close,
@@ -191,7 +192,9 @@ void showCreateSeedPhrase1(
                         onTap: () {
                           if (blocCreateSeedPhrase.isCheckBox1.value) {
                             showCreateSeedPhrase2(
-                                context, blocCreateSeedPhrase);
+                              context,
+                              blocCreateSeedPhrase,
+                            );
                           }
                         },
                         child: StreamBuilder(
@@ -217,5 +220,7 @@ void showCreateSeedPhrase1(
         },
       );
     },
+  ).whenComplete(
+    () => blocCreateSeedPhrase.isCheckBox1.sink.add(false),
   );
 }

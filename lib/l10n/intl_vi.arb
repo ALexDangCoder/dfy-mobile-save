@@ -27,5 +27,7 @@
   "import_NFT": "Nhập NFT",
   "create_NFT": "Tạo NFT",
   "failed": "thất bại",
-  "CreateNewWallet": "Tạo ví mới"
+  "create_new_wallet": "Tạo ví mới",
+  "name_wallet": "Tên ví"
+
 }

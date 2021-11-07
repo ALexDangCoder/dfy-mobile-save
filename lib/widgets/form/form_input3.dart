@@ -46,28 +46,26 @@ class FormInput3 extends StatelessWidget {
                 textAddress.text = snapshot.data ?? '';
                 return Container(
                   margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
-                  child: Expanded(
-                    child: TextFormField(
-                      // maxLines: 5,
-                      controller: textAddress,
-                      onChanged: (value) {
-                        bloc.tokenAddressTextNft.sink.add(value);
-                      },
-                      cursorColor: Colors.white,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        color: Colors.white,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: hint,
-                        hintStyle: textNormal(
-                          Colors.white54,
-                          16.sp,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                      // onFieldSubmitted: ,
+                  child: TextFormField(
+                    // maxLines: 5,
+                    controller: textAddress,
+                    onChanged: (value) {
+                      bloc.tokenAddressTextNft.sink.add(value);
+                    },
+                    cursorColor: Colors.white,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.white,
                     ),
+                    decoration: InputDecoration(
+                      hintText: hint,
+                      hintStyle: textNormal(
+                        Colors.white54,
+                        16.sp,
+                      ),
+                      border: InputBorder.none,
+                    ),
+                    // onFieldSubmitted: ,
                   ),
                 );
               },

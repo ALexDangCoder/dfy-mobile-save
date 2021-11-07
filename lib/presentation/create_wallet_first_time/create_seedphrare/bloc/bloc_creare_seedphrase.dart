@@ -13,6 +13,9 @@ class BLocCreateSeedPhrase {
   BehaviorSubject<bool> isCheckData = BehaviorSubject.seeded(false);
   BehaviorSubject<List<Item>> listTitle = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
+  BehaviorSubject<bool> isCheckTouchID = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckAppLock = BehaviorSubject.seeded(false);
+
   final String passWord;
 
   Future<void> generateWallet({String password = ''}) async {
@@ -21,6 +24,42 @@ class BLocCreateSeedPhrase {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('generateWallet', data);
+    } on PlatformException {
+      //todo
+
+    }
+  }
+
+  Future<void> storeWallet({
+    String password = '',
+    required String seedPhrase,
+    required String walletName,
+  }) async {
+    try {
+      final data = {
+        'seedPhrase': seedPhrase,
+        'walletName': walletName,
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('storeWallet', data);
+    } on PlatformException {
+      //todo
+
+    }
+  }
+
+  Future<void> setConfig({
+    String password = '',
+    bool isAppLock = false,
+    bool isFaceID = false,
+  }) async {
+    try {
+      final data = {
+        'isAppLock': isAppLock,
+        'isFaceID': isFaceID,
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {
       //todo
 
@@ -40,6 +79,15 @@ class BLocCreateSeedPhrase {
         getStringToList(passPhrase);
         isCheckData.sink.add(true);
         break;
+      case 'storeWalletCallback':
+        bool isSuccess = await methodCall.arguments['isSuccess'];
+        break;
+      case 'setConfigCallback':
+        print('store ');
+
+        bool isSuccess = await methodCall.arguments['isSuccess'];
+        print('callback $isSuccess');
+        break;
       default:
         break;
     }
@@ -53,9 +101,9 @@ class BLocCreateSeedPhrase {
   bool getCheck() {
     String isData = '';
     for (final Item value in listTitle3) {
-      isData += value.title + ' ';
+      isData += '${value.title} ';
     }
-    if (passPhrase + ' ' == isData) {
+    if ('$passPhrase ' == isData) {
       return true;
     }
     return false;
@@ -92,6 +140,7 @@ class BLocCreateSeedPhrase {
       value.isCheck = false;
     }
     listTitle3.clear();
+    isCheckBox2.sink.add(false);
   }
 
   void reloadListTitle() {

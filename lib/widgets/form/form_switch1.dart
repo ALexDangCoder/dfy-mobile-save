@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
 
-class FromSwitch extends StatelessWidget {
+class FromSwitch1 extends StatelessWidget {
   final bool isCheck;
   final String title;
   final String urlPrefixIcon;
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
-  const FromSwitch({
+  const FromSwitch1({
     Key? key,
     required this.isCheck,
     required this.title,
@@ -34,7 +34,7 @@ class FromSwitch extends StatelessWidget {
           value: isCheck,
           leading: Image.asset(urlPrefixIcon),
           onChanged: (value) {
-            bLocCreateSeedPhrase.isCheckTouchID.sink.add(value);
+            bLocCreateSeedPhrase.isCheckAppLock.sink.add(value);
           },
           switchActiveColor: const Color(0xffE4AC1A),
           switchType: SwitchType.cupertino,

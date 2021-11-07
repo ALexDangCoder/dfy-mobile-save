@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -14,6 +15,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../../../main.dart';
 
 void showCreateSeedPhrase2(
   BuildContext context,
@@ -80,7 +83,7 @@ void showCreateSeedPhrase2(
                     width: 66.w,
                   ),
                   Text(
-                    S.current.CreateNewWallet,
+                    S.current.create_new_wallet,
                     style: TextStyle(
                       fontSize: 20.sp,
                       color: Colors.white,
@@ -95,9 +98,11 @@ void showCreateSeedPhrase2(
                       url_ic_close,
                     ),
                     onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      Navigator.pop(context);
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        AppRouter.main,
+                        (route) => route.isFirst,
+                      );
                     },
                   ),
                 ],
@@ -171,7 +176,16 @@ void showCreateSeedPhrase2(
                 onTap: () {
                   if (bLocCreateSeedPhrase.isCheckBox2.value) {
                     if (bLocCreateSeedPhrase.getCheck()) {
-                      showCreateSuccessfully(context);
+                      bLocCreateSeedPhrase.storeWallet(
+                        seedPhrase: bLocCreateSeedPhrase.passPhrase,
+                        walletName: bLocCreateSeedPhrase.nameWallet.value,
+                        password: bLocCreateSeedPhrase.passWord,
+                      );
+                      trustWalletChannel.setMethodCallHandler(
+                        bLocCreateSeedPhrase.nativeMethodCallBackTrustWallet,
+                      );
+
+                      showCreateSuccessfully(context, bLocCreateSeedPhrase);
                     } else {
                       _showToast();
                     }

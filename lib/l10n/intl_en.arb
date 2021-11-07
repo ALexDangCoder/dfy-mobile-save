@@ -27,5 +27,6 @@
   "import_NFT": "Import NFT",
   "create_NFT": "Create NFT",
   "failed": "Failed",
-  "CreateNewWallet": "Create new wallet"
+  "create_new_wallet": "Create new wallet",
+  "name_wallet": "Name Wallet"
 }
