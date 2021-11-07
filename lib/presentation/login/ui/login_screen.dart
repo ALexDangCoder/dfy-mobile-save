@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:Dfy/config/resources/color.dart';
-import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -226,10 +225,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Platform.isIOS
                           ? const Image(
-                              image: AssetImage('$baseImg/face_id_icon.png'),
+                              image: AssetImage(ImageAssets.faceID),
                             )
                           : const Image(
-                              image: AssetImage('$baseImg/finger_icon.png'),
+                              image: AssetImage(ImageAssets.ic_finger),
                             ),
                     ),
                   ),

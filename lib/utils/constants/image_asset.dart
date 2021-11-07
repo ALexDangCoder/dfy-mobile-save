@@ -4,6 +4,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ImageAssets {
   ///Svg path
+  ///
+    static const String icTabWalletSelected =
+        '$baseImg/ic_wallet_tab_selected.svg';
+    static const String icTabWalletUnSelected =
+        '$baseImg/ic_wallet_tab_unselect.svg';
+
+    static const String icTabPawnSelected = '$baseImg/ic_tab_pawn_selected.svg';
+    static const String icTabPawnUnselected =
+        '$baseImg/ic_tab_pawn_unselected.svg';
+
+    static const String icTabMarketPlaceSelected =
+        '$baseImg/ic_tab_market_place_select.svg';
+    static const String icTabMarketPlaceUnselected =
+        '$baseImg/ic_tab_market_place_unselect.svg';
+
+    static const String icTabStakingSelected =
+        '$baseImg/ic_tab_staking_selected.svg';
+    static const String icTabStakingUnselected =
+        '$baseImg/ic_tab_staking_unselected.svg';
   static const String icBack = '$baseImg/ic_back.svg';
   static const String icMenu = '$baseImg/ic_menu.svg';
   static const String back = '$baseImg/back.png';
@@ -69,7 +88,7 @@ class ImageAssets {
   static const String menu = '$baseImg/Menu.png';
   static const String notification = '$baseImg/Notification.png';
   static const String stroke = '$baseImg/Stroke.png';
-  static const String symbol = '$baseImg/symbol.png';
+
 
   static SvgPicture svgAssets(
     String name, {

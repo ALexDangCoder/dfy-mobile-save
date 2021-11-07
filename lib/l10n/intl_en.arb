@@ -48,7 +48,7 @@
   "your_seed": "Your seed phrase",
   "max": "Max",
   "up_load": "Upload or drag file here",
-  "support_type": "Support file type:"
+  "support_type": "Support file type:",
   "wallet_secret": "Wallet secret seed phrase",
   "password": "Password",
   "login": "Login",

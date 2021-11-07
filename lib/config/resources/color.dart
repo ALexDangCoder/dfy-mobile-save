@@ -238,6 +238,18 @@ class LightApp extends AppColor {
   Color errorColorButton() {
     return errorColor;
   }
+
+  @override
+  Color backgroundLoginTextField() {
+    // TODO: implement backgroundLoginTextField
+    throw UnimplementedError();
+  }
+
+  @override
+  Color whiteColor() {
+    // TODO: implement whiteColor
+    throw UnimplementedError();
+  }
 }
 
 class DarkApp extends AppColor {

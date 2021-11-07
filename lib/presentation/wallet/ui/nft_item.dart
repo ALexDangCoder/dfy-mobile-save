@@ -1,6 +1,7 @@
-import 'package:Dfy/config/resources/image_asset.dart';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
