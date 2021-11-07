@@ -15,6 +15,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../../main.dart';
+
 class WalletScreen extends StatefulWidget {
   const WalletScreen({Key? key}) : super(key: key);
 
@@ -35,6 +37,9 @@ class _WalletState extends State<WalletScreen>
     _tabController = TabController(length: 2, vsync: this);
     fToast = FToast();
     fToast.init(context);
+    trustWalletChannel
+        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
+    _cubit.getListNFT('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf', 'aaa');
   }
 
   @override

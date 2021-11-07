@@ -1,5 +1,12 @@
+
+
+import 'dart:math';
+
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
+
+import '../../../main.dart';
 
 part 'wallet_state.dart';
 
@@ -20,4 +27,48 @@ class WalletCubit extends BaseCubit<WalletState> {
         '${splitAddress[38]}${splitAddress[39]}'
         '${splitAddress[40]}';
   }
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    Object objToken = {};
+    Object objNFT = {};
+
+    switch (methodCall.method) {
+      case 'getListShowedTokenCallback':
+        objToken = methodCall.arguments;
+        break;
+      case 'getListShowedNftCallback':
+        objNFT = methodCall.arguments;
+        break;
+      default:
+        break;
+    }
+    print(objNFT);
+
+  }
+
+
+  Future<void> getListToken(String walletAddress, String password) async {
+    try {
+      final data = {
+        'walletAddress':walletAddress,
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('getListShowedToken', data);
+    } on PlatformException {
+      log(e);
+    }
+  }
+  Future<void> getListNFT(String walletAddress, String password) async {
+    try {
+      final data = {
+        'walletAddress':walletAddress,
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('getListShowedNft', data);
+    } on PlatformException {
+      log(e);
+    }
+  }
+
+
 }
