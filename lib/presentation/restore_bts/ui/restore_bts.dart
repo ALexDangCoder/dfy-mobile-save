@@ -1,10 +1,13 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
 import 'package:Dfy/presentation/restore_bts/ui/choice_dialog.dart';
+import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
+import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:Dfy/widgets/form/item_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +27,8 @@ class _RestoreBTSState extends State<RestoreBTS> {
   bool isVisible = false;
   bool isShowNewPass = true;
   bool isShowConPass = true;
+  int checkBox = 1;
+  bool tickCheckBox = false;
   FormType type = FormType.PASS_PHRASE;
   late final TextEditingController passwordController;
   late final TextEditingController confirmPasswordController;
@@ -57,7 +62,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
         restoreCubit.boolSink.add(false);
       },
       child: Container(
-        height: 803.h,
+        height: 764.h,
         width: 375.w,
         decoration: BoxDecoration(
           color: AppTheme.getInstance().bgBtsColor(),
@@ -301,6 +306,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                   );
                                 },
                               ),
+                              warningInvalidPass(),
                               SizedBox(
                                 height: 20.h,
                               ),
@@ -322,6 +328,51 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     },
                                     controller: confirmPasswordController,
                                   );
+                                },
+                              ),
+                              warningNotMatchPass(),
+                              SizedBox(
+                                height: 24.h,
+                              ),
+                              StreamBuilder<List<String>>(
+                                stream: restoreCubit.listStringStream,
+                                initialData: listString,
+                                builder: (ctx, snapshot) {
+                                  listString = snapshot.data!;
+                                  if (listString.length == 1) {
+                                    return Column(
+                                      children: [
+                                        Text(
+                                          S.current.or_scan,
+                                          style: textNormal(
+                                            AppTheme.getInstance()
+                                                .textThemeColor(),
+                                            16.sp,
+                                          ).copyWith(
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 12.h,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (ctx) =>
+                                                    const MyQRView(),
+                                              ),
+                                            );
+                                          },
+                                          child:
+                                              Image.asset(ImageAssets.scan_qr),
+                                        )
+                                      ],
+                                    );
+                                  } else {
+                                    return const SizedBox();
+                                  }
                                 },
                               ),
                               SizedBox(
@@ -354,42 +405,59 @@ class _RestoreBTSState extends State<RestoreBTS> {
                 ),
               ),
             ),
-            StreamBuilder<List<String>>(
-              stream: restoreCubit.listStringStream,
-              initialData: listString,
-              builder: (ctx, snapshot) {
-                listString = snapshot.data!;
-                if (listString.length == 1) {
-                  return Container(
-                    //color: Colors.red,
-                    height: 32.h,
-                    width: 32.w,
-                    padding: EdgeInsets.only(
-                      left: 133.w,
-                      right: 133.w,
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          S.current.or_scan,
-                          style: textNormal(
-                            AppTheme.getInstance().textThemeColor(),
-                            16.sp,
-                          ),
+            SizedBox(
+              height: 24.h,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 26.w, right: 26.w),
+              child: StreamBuilder<bool>(
+                initialData: tickCheckBox,
+                stream: restoreCubit.ckcStream,
+                builder: (ctx, snapshot) {
+                  tickCheckBox = snapshot.data!;
+                  return Row(
+                    children: [
+                      Checkbox(
+                        fillColor: MaterialStateProperty.all(
+                          AppTheme.getInstance().fillColor(),
                         ),
-                        Expanded(
-                          child: Image.asset(
-                            ImageAssets.ic_copy,
-                            color: Colors.white,
-                          ),
+                        activeColor: AppTheme.getInstance().activeColor(),
+                        onChanged: (bool? value) {
+                          restoreCubit.ckcSink.add(value ?? false);
+                          if (value == true) {
+                            checkBox = 2;
+                          } else {
+                            checkBox = 1;
+                          }
+                        },
+                        value: tickCheckBox,
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            Text(
+                              S.current.understand_defi,
+                              textAlign: TextAlign.start,
+                              style: textNormal(
+                                const Color.fromRGBO(255, 255, 255, 1),
+                                14.sp,
+                              ).copyWith(
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   );
-                } else {
-                  return const SizedBox();
-                }
-              },
+                },
+              ),
             ),
             SizedBox(
               height: 40.h,
@@ -399,20 +467,75 @@ class _RestoreBTSState extends State<RestoreBTS> {
                 left: 39.w,
                 right: 39.w,
               ),
-              child: ButtonGradient(
-                onPressed: () {},
-                gradient: RadialGradient(
-                  center: const Alignment(0.5, -0.5),
-                  radius: 4,
-                  colors: AppTheme.getInstance().gradientButtonColor(),
-                ),
-                child: Text(
-                  S.current.restore,
-                  style: textNormal(
-                    AppTheme.getInstance().textThemeColor(),
-                    20.sp,
-                  ),
-                ),
+              child: StreamBuilder<bool>(
+                initialData: tickCheckBox,
+                stream: restoreCubit.ckcStream,
+                builder: (ctx, snapshot) {
+                  tickCheckBox = snapshot.data!;
+                  return tickCheckBox
+                      ? ButtonGradient(
+                          onPressed: () {
+                            restoreCubit.isValidate(passwordController.text);
+                            restoreCubit.isMatchPW(
+                              password: passwordController.text,
+                              confirmPW: confirmPasswordController.text,
+                            );
+                            if (restoreCubit.isMatch(
+                              passwordController.text,
+                              confirmPasswordController.text,
+                            )) {
+                              if (restoreCubit.strValue ==
+                                  S.current.seed_phrase) {
+                                restoreCubit
+                                    .importWallet(
+                                      type: FormType.PASS_PHRASE.toString(),
+                                      content: seedPhraseController.text,
+                                      password: passwordController.text,
+                                    )
+                                    .then(
+                                      (_) => showCreateSuccessfully(context),
+                                    );
+                                showCreateSuccessfully(context);
+                              } else {
+                                restoreCubit
+                                    .importWallet(
+                                      type: FormType.PASS_PHRASE.toString(),
+                                      content: privateKeyController.text,
+                                      password: passwordController.text,
+                                    )
+                                    .then(
+                                      (_) => showCreateSuccessfully(context),
+                                    );
+                                showCreateSuccessfully(context);
+                              }
+                            }
+                          },
+                          gradient: RadialGradient(
+                            center: const Alignment(0.5, -0.5),
+                            radius: 4,
+                            colors:
+                                AppTheme.getInstance().gradientButtonColor(),
+                          ),
+                          child: Text(
+                            S.current.restore,
+                            style: textNormal(
+                              AppTheme.getInstance().textThemeColor(),
+                              20.sp,
+                            ),
+                          ),
+                        )
+                      : ErrorButton(
+                          child: Center(
+                            child: Text(
+                              S.current.restore,
+                              style: textNormal(
+                                AppTheme.getInstance().textThemeColor(),
+                                20.sp,
+                              ),
+                            ),
+                          ),
+                        );
+                },
               ),
             ),
             SizedBox(
@@ -421,6 +544,68 @@ class _RestoreBTSState extends State<RestoreBTS> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget warningNotMatchPass() {
+    return StreamBuilder(
+      stream: restoreCubit.matchStream,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 323.w,
+                height: 30.h,
+                child: Text(
+                  S.current.not_match,
+                  style: textNormal(
+                    AppTheme.getInstance().wrongColor(),
+                    12.sp,
+                  ).copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget warningInvalidPass() {
+    return StreamBuilder(
+      stream: restoreCubit.validateStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 323.w,
+                height: 30.h,
+                child: Text(
+                  S.current.pass_must,
+                  style: textNormal(
+                    AppTheme.getInstance().wrongColor(),
+                    12.sp,
+                  ).copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
