@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
+import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/confirm_blockchain.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,15 @@ class SendToken extends StatefulWidget {
 
 class _SendTokenState extends State<SendToken> {
   late SendTokenCubit tokenCubit;
+  final String fakeFromAddress = '0xFE5788e2...EB7144fd0';
+  late TextEditingController txtToAddress;
+  late TextEditingController txtAmount;
 
   //todo truyen amount
   @override
   void initState() {
+    txtToAddress = TextEditingController();
+    txtAmount = TextEditingController();
     tokenCubit = SendTokenCubit();
     tokenCubit.checkPasswordWallet(
       walletAddress: tokenCubit.walletAddress,
@@ -38,84 +44,113 @@ class _SendTokenState extends State<SendToken> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: tokenCubit.fromFieldStream,
-      builder: (context, AsyncSnapshot<String> snapshot) {
-        switch(snapshot.connectionState) {
-          case ConnectionState.active:
-            print(snapshot.data);
-            return Text(snapshot.data ?? 'k co data');
-          default:
-            return Text('loiu');
+    // return StreamBuilder(
+    //   stream: tokenCubit.fromFieldStream,
+    //   builder: (context, AsyncSnapshot<String> snapshot) {
+    //     switch(snapshot.connectionState) {
+    //       case ConnectionState.active:
+    //         print(snapshot.data);
+    //         return Text(snapshot.data ?? 'k co data');
+    //       default:
+    //         return Text('loiu');
+    //     }
+    //   },
+    // );
+    return GestureDetector(
+      onTap: () {
+        final FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
         }
-        // return Container(
-        //   width: 375.w,
-        //   height: 764.h,
-        //   decoration: BoxDecoration(
-        //     color: const Color.fromRGBO(62, 61, 92, 1),
-        //     borderRadius: BorderRadius.only(
-        //       topLeft: Radius.circular(30.r),
-        //       topRight: Radius.circular(30.r),
-        //     ),
-        //   ),
-        //   child: Column(
-        //     children: [
-        //       header(nameToken: 'DFY'),
-        //       const Divider(
-        //         thickness: 1,
-        //         color: Color.fromRGBO(255, 255, 255, 0.1),
-        //       ),
-        //       SizedBox(
-        //         height: 24.h,
-        //       ),
-        //       Expanded(
-        //         child: SingleChildScrollView(
-        //           child: Column(
-        //             children: [
-        //               formShowFtAddress(
-        //                 hintText: snapshot.data ?? '',
-        //                 readOnly: true,
-        //                 prefixImg: ImageAssets.from,
-        //                 suffixImg: '',
-        //               ),
-        //               SizedBox(
-        //                 height: 16.h,
-        //               ),
-        //               formShowFtAddress(
-        //                 hintText: 'To address',
-        //                 suffixImg: ImageAssets.code,
-        //                 prefixImg: ImageAssets.to,
-        //               ),
-        //               SizedBox(
-        //                 height: 16.h,
-        //               ),
-        //               formAmountFtQuantity(
-        //                 hintText: 'Amount',
-        //                 isAmount: true,
-        //                 isQuantity: false,
-        //                 prefixImg: ImageAssets.token,
-        //               ),
-        //               SizedBox(
-        //                 height: 353.h,
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //       GestureDetector(
-        //         child: const ButtonGold(
-        //           title: 'Continue',
-        //           isEnable: false,
-        //         ),
-        //         onTap: () {},
-        //       ),
-        //       SizedBox(
-        //         height: 34.h,
-        //       ),
-        //     ],
-        //   ),
-        // );
       },
+      child: Container(
+        width: 375.w,
+        height: 764.h,
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(62, 61, 92, 1),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30.r),
+            topRight: Radius.circular(30.r),
+          ),
+        ),
+        child: Column(
+          children: [
+            header(nameToken: 'DFY'),
+            const Divider(
+              thickness: 1,
+              color: Color.fromRGBO(255, 255, 255, 0.1),
+            ),
+            SizedBox(
+              height: 24.h,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    formShowFtAddress(
+                      // hintText: snapshot.data ?? '',
+                      hintText: '0xFE5788e2...EB7144fd0',
+                      readOnly: true,
+                      prefixImg: ImageAssets.from,
+                      suffixImg: '',
+                    ),
+                    SizedBox(
+                      height: 16.h,
+                    ),
+                    formShowFtAddress(
+                      hintText: 'To address',
+                      suffixImg: ImageAssets.code,
+                      prefixImg: ImageAssets.to,
+                    ),
+                    SizedBox(
+                      height: 16.h,
+                    ),
+                    formAmountFtQuantity(
+                      hintText: 'Amount',
+                      isAmount: true,
+                      isQuantity: false,
+                      prefixImg: ImageAssets.token,
+                    ),
+                    SizedBox(
+                      height: 353.h,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              child: StreamBuilder(
+                stream: tokenCubit.isShowCFBlockChainStream,
+                builder: (context, AsyncSnapshot<bool> snapshot) {
+                  return ButtonGold(
+                    title: 'Continue',
+                    isEnable: snapshot.data ?? false,
+                  );
+                },
+              ),
+              onTap: () {
+                if (txtAmount.text.isNotEmpty && txtToAddress.text.isNotEmpty) {
+                  showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    isScrollControlled: true,
+                    builder: (context) => ConfirmBlockchain(
+                      toAddress: txtToAddress.text,
+                      fromAddress: fakeFromAddress,
+                      amount: txtAmount.text,
+                    ),
+                    context: context,
+                  );
+                } else {
+                  //nothing
+                }
+              },
+            ),
+            SizedBox(
+              height: 34.h,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -143,7 +178,7 @@ class _SendTokenState extends State<SendToken> {
           Expanded(
             child: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                // Navigator.pop(context);
               },
               icon: Image.asset('assets/images/Group.png'),
             ),
@@ -174,6 +209,20 @@ class _SendTokenState extends State<SendToken> {
         color: Color(0xff32324c),
       ),
       child: TextFormField(
+        onChanged: (value) {
+          if (txtAmount.text.isNotEmpty && value.isNotEmpty) {
+            tokenCubit.isShowConfirmBlockChain(
+              isHaveFrAddress: true,
+              isHaveAmount: true,
+            );
+          } else {
+            tokenCubit.isShowConfirmBlockChain(
+              isHaveFrAddress: false,
+              isHaveAmount: false,
+            );
+          }
+        },
+        controller: readOnly ? null : txtToAddress,
         readOnly: readOnly,
         style: textNormal(
           Colors.white,
@@ -234,6 +283,20 @@ class _SendTokenState extends State<SendToken> {
         color: Color(0xff32324c),
       ),
       child: TextFormField(
+        onChanged: (value) {
+          if (txtToAddress.text.isNotEmpty && value.isNotEmpty) {
+            tokenCubit.isShowConfirmBlockChain(
+              isHaveFrAddress: true,
+              isHaveAmount: true,
+            );
+          } else {
+            tokenCubit.isShowConfirmBlockChain(
+              isHaveFrAddress: false,
+              isHaveAmount: false,
+            );
+          }
+        },
+        controller: txtAmount,
         keyboardType: TextInputType.number,
         textAlignVertical: TextAlignVertical.center,
         style: textNormal(

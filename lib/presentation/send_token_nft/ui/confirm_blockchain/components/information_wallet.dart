@@ -29,10 +29,10 @@ class InformationWallet extends StatelessWidget {
         width: 323.w,
         height: 74.h,
         decoration: BoxDecoration(
-            // color: const Color.fromRGBO(255, 255, 255, 0.1),
-            borderRadius: BorderRadius.all(Radius.circular(16.r)),
-            border:
-                Border.all(color: const Color.fromRGBO(255, 255, 255, 0.1)),),
+          // color: const Color.fromRGBO(255, 255, 255, 0.1),
+          borderRadius: BorderRadius.all(Radius.circular(16.r)),
+          border: Border.all(color: const Color.fromRGBO(255, 255, 255, 0.1)),
+        ),
         child: Row(
           children: [
             Padding(
@@ -68,9 +68,10 @@ class InformationWallet extends StatelessWidget {
                         Text(
                           nameWallet,
                           style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16.sp,
-                              color: const Color.fromRGBO(255, 255, 255, 1)),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16.sp,
+                            color: const Color.fromRGBO(255, 255, 255, 1),
+                          ),
                         ),
                         SizedBox(
                           width: 8.w,
