@@ -297,11 +297,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 },
                 child: snapshot.data ?? false
                     ? const ImageIcon(
-                        AssetImage(ImageAssets.hide),
+                        AssetImage(ImageAssets.show),
                         color: Colors.grey,
                       )
                     : const ImageIcon(
-                        AssetImage(ImageAssets.show),
+                        AssetImage(ImageAssets.hide),
                         color: Colors.grey,
                       ),
               ),
