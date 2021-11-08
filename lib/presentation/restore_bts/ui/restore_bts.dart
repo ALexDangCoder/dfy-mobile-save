@@ -168,7 +168,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                 );
               },
             ),
-            Expanded(
+            Flexible(
               child: SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.only(left: 25.w, right: 26.w),
@@ -308,7 +308,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                               ),
                               warningInvalidPass(),
                               SizedBox(
-                                height: 20.h,
+                                height: 16.h,
                               ),
                               StreamBuilder<bool>(
                                 initialData: isShowConPass,
@@ -360,8 +360,10 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (ctx) =>
-                                                    const MyQRView(),
+                                                builder: (ctx) => QRViewExample(
+                                                  controller:
+                                                      privateKeyController,
+                                                ),
                                               ),
                                             );
                                           },
@@ -376,7 +378,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                 },
                               ),
                               SizedBox(
-                                height: 100.h,
+                                height: 50.h,
                               ),
                             ],
                           ),
@@ -548,9 +550,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
   }
 
   Widget warningNotMatchPass() {
-    return StreamBuilder(
+    return StreamBuilder<bool>(
       stream: restoreCubit.matchStream,
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+      builder: (BuildContext context, snapshot) {
         return Visibility(
           visible: snapshot.data ?? false,
           child: Column(
@@ -579,9 +581,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
   }
 
   Widget warningInvalidPass() {
-    return StreamBuilder(
+    return StreamBuilder<bool>(
       stream: restoreCubit.validateStream,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+      builder: (BuildContext context, snapshot) {
         return Visibility(
           visible: snapshot.data ?? false,
           child: Column(
@@ -589,17 +591,13 @@ class _RestoreBTSState extends State<RestoreBTS> {
               SizedBox(
                 height: 4.h,
               ),
-              SizedBox(
-                width: 323.w,
-                height: 30.h,
-                child: Text(
-                  S.current.pass_must,
-                  style: textNormal(
-                    AppTheme.getInstance().wrongColor(),
-                    12.sp,
-                  ).copyWith(
-                    fontWeight: FontWeight.w400,
-                  ),
+              Text(
+                S.current.pass_must,
+                style: textNormal(
+                  AppTheme.getInstance().wrongColor(),
+                  12.sp,
+                ).copyWith(
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ],

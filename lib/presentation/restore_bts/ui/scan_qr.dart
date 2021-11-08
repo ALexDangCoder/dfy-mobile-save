@@ -1,24 +1,25 @@
 import 'dart:io';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-class MyQRView extends StatefulWidget {
-  const MyQRView({Key? key}) : super(key: key);
+class QRViewExample extends StatefulWidget {
+  const QRViewExample({Key? key, required this.controller}) : super(key: key);
+  final TextEditingController controller;
 
   @override
-  State<StatefulWidget> createState() => _MyQRViewState();
+  State<StatefulWidget> createState() => _QRViewExampleState();
 }
 
-class _MyQRViewState extends State<MyQRView> {
+class _QRViewExampleState extends State<QRViewExample> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  // In order to get hot reload to work we need to pause the camera if the platform
-  // is android, or resume the camera if the platform is iOS.
   @override
   void reassemble() {
     super.reassemble();
@@ -50,11 +51,12 @@ class _MyQRViewState extends State<MyQRView> {
           key: qrKey,
           onQRViewCreated: _onQRViewCreated,
           overlay: QrScannerOverlayShape(
-              borderColor: const Color(0xff6f6fc5),
-              borderRadius: 49,
-              borderLength: 80,
-              borderWidth: 5,
-              cutOutSize: scanArea),
+            borderColor: AppTheme.getInstance().bgBtsColor(),
+            borderRadius: 49,
+            borderLength: 80,
+            borderWidth: 5,
+            cutOutSize: scanArea,
+          ),
         ),
         Column(
           children: [
@@ -116,6 +118,7 @@ class _MyQRViewState extends State<MyQRView> {
             ),
           );
         } else {
+          widget.controller.text = result?.code ?? '';
           Navigator.pop(context);
         }
       });
