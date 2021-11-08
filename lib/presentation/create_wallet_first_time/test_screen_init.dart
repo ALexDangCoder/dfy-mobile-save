@@ -15,14 +15,16 @@ class TestScreenUtils extends StatelessWidget {
             body: Center(
               child: ElevatedButton(
                 child: const Text('CLICKME'),
-                onPressed: () => showModalBottomSheet(
-                  backgroundColor: Colors.transparent,
-                  isScrollControlled: true,
-                  builder: (context) => const SendToken(),
-                  // builder: (context) => const AddWalletFtSeedPharse(
-                  // ),
-                  context: context,
-                ),
+                onPressed: () {
+                  showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    isScrollControlled: true,
+                    builder: (context) => const SendToken(),
+                    // builder: (context) => const AddWalletFtSeedPharse(
+                    // ),
+                    context: context,
+                  );
+                },
               ),
             ),
           ),

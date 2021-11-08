@@ -48,7 +48,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
 
   @override
   void dispose() {
-    sendTokenCubit.dispose();
+
     super.dispose();
   }
 

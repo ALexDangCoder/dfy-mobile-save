@@ -114,6 +114,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   // amount*: Int
   // password: String"
   //input and nameCallback
+
   Future<void> sendToken({
     required String walletAddress,
     required String receiveAddress,
@@ -137,9 +138,4 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-  void dispose() {
-  //   _formField.close();
-  //   _isCustomizeFee.close();
-  //   _isSufficientToken.close();
-  }
 }

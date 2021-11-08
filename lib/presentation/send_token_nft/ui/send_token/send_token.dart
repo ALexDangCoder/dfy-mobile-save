@@ -36,14 +36,10 @@ class _SendTokenState extends State<SendToken> {
       receiveAddress: tokenCubit.receiveAddress,
       tokenID: tokenCubit.tokenID ?? 0,
       amount: tokenCubit.amount ?? 0,
+      password: '',
     );
   }
 
-  @override
-  void dispose() {
-    // tokenCubit.close();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
