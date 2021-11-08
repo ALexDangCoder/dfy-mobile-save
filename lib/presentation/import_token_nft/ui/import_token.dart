@@ -107,7 +107,6 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                     children: [
                       EnterAddress(
                         bloc: bloc,
-                        textTokenAddress: textController,
                       ),
                       ChooseToken(bloc: bloc),
                     ],

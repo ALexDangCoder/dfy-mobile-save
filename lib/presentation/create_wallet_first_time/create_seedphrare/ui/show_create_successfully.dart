@@ -4,8 +4,7 @@ import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/login/ui/login_screen.dart';
-import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_switch.dart';
 import 'package:Dfy/widgets/form/form_switch1.dart';

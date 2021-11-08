@@ -125,8 +125,7 @@ class ImportTokenNftBloc {
     }
   }
 
-  bool
-  isImportToken() {
+  bool isImportToken() {
     print(tokenSymbolText.value);
 
     print(tokenDecimal.value);
