@@ -10,14 +10,15 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   SendTokenCubit() : super(SendTokenInitial());
 
   final BehaviorSubject<String> _formField = BehaviorSubject<String>.seeded('');
+  final BehaviorSubject<String> _formEstimateGasFee =
+      BehaviorSubject<String>();
 
   //both stream below is manage confirm fee token screen
   final BehaviorSubject<bool> _isCustomizeFee =
-  BehaviorSubject<bool>.seeded(false);
-  final BehaviorSubject<bool> _isSufficientToken =
-  BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _isSufficientToken = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isShowCFBlockChain =
-  BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(false);
 
   //stream
   Stream<String> get fromFieldStream => _formField.stream;
@@ -28,6 +29,8 @@ class SendTokenCubit extends Cubit<SendTokenState> {
 
   Stream<bool> get isShowCFBlockChainStream => _isShowCFBlockChain.stream;
 
+  Stream<String> get formEstimateGasFeeStream => _formEstimateGasFee.stream;
+
   //sink
   Sink<String> get fromFieldSink => _formField.sink;
 
@@ -36,6 +39,8 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   Sink<bool> get isSufficientTokenSink => _isSufficientToken.sink;
 
   Sink<bool> get isShowCFBlockChainSink => _isShowCFBlockChain.sink;
+
+  Sink<String> get formEstimateGasFeeSink => _formEstimateGasFee.sink;
 
   String walletAddress = '';
   String receiveAddress = '';
@@ -47,12 +52,38 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     isCustomizeFeeSink.add(isShow);
   }
 
-  void isShowConfirmBlockChain(
-      {required bool isHaveFrAddress, required bool isHaveAmount,}) {
-    if(isHaveAmount && isHaveFrAddress) {
+  void isShowConfirmBlockChain({
+    required bool isHaveFrAddress,
+    required bool isHaveAmount,
+  }) {
+    if (isHaveAmount && isHaveFrAddress) {
       isShowCFBlockChainSink.add(true);
     } else {
       isShowCFBlockChainSink.add(false);
+    }
+  }
+
+  void isEstimatingGasFee(double value) {
+    formEstimateGasFeeSink.add(value.toString());
+  }
+
+  void isSufficientGasFee({required double gasFee, required double balance}) {
+    if(gasFee < balance) {
+      isSufficientTokenSink.add(false);
+    } else {
+      isSufficientTokenSink.add(true);
+    }
+  }
+
+  bool isFirstFetchDataToCompare({
+    required double balance,
+    required double gasFeeFirstFetch,
+  }) {
+    if (balance < gasFeeFirstFetch) {
+      //=> insufficient=> false
+      return false;
+    } else {
+      return true;
     }
   }
 

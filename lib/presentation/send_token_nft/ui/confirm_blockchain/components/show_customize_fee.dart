@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:math';
 
 class ShowCustomizeFee extends StatelessWidget {
   //todo show warning text
@@ -11,6 +12,7 @@ class ShowCustomizeFee extends StatelessWidget {
     required this.sendTokenCubit,
     required this.txtGasLimit,
     required this.txtGasPrice,
+    required this.gasFee,
     required this.balance,
     Key? key,
   }) : super(key: key);
@@ -18,6 +20,7 @@ class ShowCustomizeFee extends StatelessWidget {
   final SendTokenCubit sendTokenCubit;
   final TextEditingController txtGasLimit;
   final TextEditingController txtGasPrice;
+  final double gasFee;
   final double balance;
 
   @override
@@ -56,10 +59,10 @@ class ShowCustomizeFee extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      StreamBuilder(
+                      StreamBuilder<bool>(
                         stream: sendTokenCubit.isSufficientTokenStream,
-                        builder: (context, AsyncSnapshot<bool> snapshot) {
-                          return snapshot.data ?? false
+                        builder: (context, snapshot) {
+                          return snapshot.data ?? gasFee < balance
                               //if sufficient will not show warning red text
                               ? Expanded(
                                   child: Column(
@@ -67,13 +70,22 @@ class ShowCustomizeFee extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       //todo handle amount ??
-                                      Text(
-                                        '0.00036 $nameToken',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16.sp,
-                                          color: Colors.white,
-                                        ),
+                                      StreamBuilder<String>(
+                                        initialData: gasFee.toString(),
+                                        stream: sendTokenCubit
+                                            .formEstimateGasFeeStream,
+                                        builder: (context, snapshot) {
+                                          return Text(
+                                            '${snapshot.data
+                                                ?? balance.toString()}'
+                                            ' $nameToken',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16.sp,
+                                              color: Colors.white,
+                                            ),
+                                          );
+                                        },
                                       ),
                                       SizedBox(
                                         height: 15.h,
@@ -86,14 +98,20 @@ class ShowCustomizeFee extends StatelessWidget {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text(
-                                        '0.00036 $nameToken',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16.sp,
-                                          color: Colors.red,
-                                        ),
-                                      ),
+                                      StreamBuilder<String>(
+                                          initialData: gasFee.toString(),
+                                          stream: sendTokenCubit
+                                              .formEstimateGasFeeStream,
+                                          builder: (context, snapshot) {
+                                            return Text(
+                                              '${snapshot.data} $nameToken',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16.sp,
+                                                color: Colors.red,
+                                              ),
+                                            );
+                                          }),
                                       SizedBox(
                                         height: 2.h,
                                       ),
@@ -150,11 +168,15 @@ class ShowCustomizeFee extends StatelessWidget {
                                 Text(
                                   'Gas limit',
                                   style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                                formType(txtController: txtGasLimit),
+                                formType(
+                                  txtController: txtGasLimit,
+                                  numHandle: txtGasPrice.text,
+                                ),
                               ],
                             ),
                           ),
@@ -177,11 +199,15 @@ class ShowCustomizeFee extends StatelessWidget {
                                 Text(
                                   'Gas price (GWEI)',
                                   style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                                formType(txtController: txtGasPrice),
+                                formType(
+                                  txtController: txtGasPrice,
+                                  numHandle: txtGasLimit.text,
+                                ),
                               ],
                             ),
                           ),
@@ -232,7 +258,12 @@ class ShowCustomizeFee extends StatelessWidget {
     );
   }
 
-  Container formType({required TextEditingController txtController}) {
+  Container formType({
+    required TextEditingController txtController,
+    required String numHandle,
+  }) {
+    //indexForm = 1 => result = value * numHandle / 10^9 (BNB)
+    //indexForm = 2 => result = numHandle * value / 10^9 (BNB)
     return Container(
       height: 64.h,
       width: 178.w,
@@ -244,10 +275,17 @@ class ShowCustomizeFee extends StatelessWidget {
         borderRadius: BorderRadius.all(
           Radius.circular(20.r),
         ),
-        color: AppTheme.getInstance().itemBtsColor(),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: TextFormField(
         controller: txtController,
+        onChanged: (value) {
+          final double valueHandle = double.parse(value);
+          late double result;
+          result = (valueHandle * double.parse(numHandle)) / pow(10, 9);
+          sendTokenCubit.isEstimatingGasFee(result);
+          sendTokenCubit.isSufficientGasFee(gasFee: result, balance: balance);
+        },
         style: textNormal(
           Colors.white,
           16.sp,

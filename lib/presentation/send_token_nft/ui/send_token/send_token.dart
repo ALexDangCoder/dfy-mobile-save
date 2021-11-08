@@ -1,9 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/confirm_blockchain.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -100,6 +102,16 @@ class _SendTokenState extends State<SendToken> {
                     formShowFtAddress(
                       hintText: 'To address',
                       suffixImg: ImageAssets.code,
+                      // callBack: () {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => QRViewExample(
+                      //         bloc: ImportTokenNftBloc(),
+                      //       ),
+                      //     ),
+                      //   );
+                      // },
                       prefixImg: ImageAssets.to,
                     ),
                     SizedBox(
@@ -252,9 +264,12 @@ class _SendTokenState extends State<SendToken> {
                     color: Colors.white,
                   ),
           ),
-          prefixIcon: ImageIcon(
-            AssetImage(prefixImg),
-            color: Colors.white,
+          prefixIcon: GestureDetector(
+            onTap: callBack,
+            child: ImageIcon(
+              AssetImage(prefixImg),
+              color: Colors.white,
+            ),
           ),
           border: InputBorder.none,
         ),

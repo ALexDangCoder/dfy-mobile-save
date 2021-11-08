@@ -22,6 +22,7 @@ class ImageAssets {
   static const String faceID = '$baseImg/face_id_icon.png';
   static const String ic_finger = '$baseImg/finger_con.png';
   static const String frameGreen = '$baseImg/Framegreen.png';
+  static const String img_empty = '$baseImg/img_empty.png';
   static const String group = '$baseImg/Group.png';
   static const String icAdd = '$baseImg/ic_add.png';
   static const String icAddress = '$baseImg/ic_address.png';

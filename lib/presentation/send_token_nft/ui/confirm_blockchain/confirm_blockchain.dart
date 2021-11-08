@@ -28,9 +28,11 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
   late TextEditingController txtGasLimit;
   late TextEditingController txtGasPrice;
   late InformationWallet informationWallet;
+  late double gasFeeFirstFetch;
 
   @override
   void initState() {
+    gasFeeFirstFetch = 0.6;
     informationWallet = const InformationWallet(
       nameWallet: 'Test wallet',
       fromAddress: '0xFE5...4fd0',
@@ -108,12 +110,14 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                                 sendTokenCubit: sendTokenCubit,
                                 txtGasPrice: txtGasPrice,
                                 txtGasLimit: txtGasLimit,
-                                balance : informationWallet.amount,
+                                balance: informationWallet.amount,
+                                gasFee: 0.6,
                               )
                             : HideCustomizeFee(
                                 nameToken: 'BNB',
                                 sendTokenCubit: sendTokenCubit,
                                 balance: informationWallet.amount,
+                                gasFee: 0.6,
                               );
                       },
                     )

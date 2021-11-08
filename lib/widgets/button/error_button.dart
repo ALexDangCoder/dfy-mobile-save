@@ -1,6 +1,7 @@
-import 'package:Dfy/config/resources/color.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class ErrorButton extends StatelessWidget {
   final Widget child;
 
@@ -15,7 +16,7 @@ class ErrorButton extends StatelessWidget {
       height: 64.h,
       width: 298.w,
       decoration: BoxDecoration(
-        color: const Color(0xFFCDCDCD),
+        color: AppTheme.getInstance().errorColorButton(),
         borderRadius: BorderRadius.circular(22),
       ),
       child: child,

@@ -9,6 +9,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 class QRViewExample extends StatefulWidget {
   final ImportTokenNftBloc bloc;
 
+
   const QRViewExample({Key? key, required this.bloc}) : super(key: key);
 
   @override

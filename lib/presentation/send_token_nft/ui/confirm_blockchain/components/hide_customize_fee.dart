@@ -8,11 +8,13 @@ class HideCustomizeFee extends StatelessWidget {
     required this.nameToken,
     required this.sendTokenCubit,
     required this.balance,
+    required this.gasFee,
     Key? key,
   }) : super(key: key);
   final String nameToken;
   final SendTokenCubit sendTokenCubit;
   final double balance;
+  final double gasFee;
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +51,10 @@ class HideCustomizeFee extends StatelessWidget {
                         ),
                       ),
                       StreamBuilder(
+                        // initialData: gasFee < balance,
                         stream: sendTokenCubit.isSufficientTokenStream,
                         builder: (context, AsyncSnapshot<bool> snapshot) {
-                          return snapshot.data ?? false
+                          return snapshot.data ?? gasFee < balance
                               //if sufficient will not show warning red text
                               ? Expanded(
                                   child: Column(
@@ -59,13 +62,20 @@ class HideCustomizeFee extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       //todo handle amount ??
-                                      Text(
-                                        '0.00036 $nameToken',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16.sp,
-                                          color: Colors.white,
-                                        ),
+                                      StreamBuilder<String>(
+                                        initialData: gasFee.toString(),
+                                        stream: sendTokenCubit
+                                            .formEstimateGasFeeStream,
+                                        builder: (context, snapshot) {
+                                          return Text(
+                                            '${snapshot.data} $nameToken',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16.sp,
+                                              color: Colors.white,
+                                            ),
+                                          );
+                                        },
                                       ),
                                       SizedBox(
                                         height: 15.h,
@@ -78,13 +88,20 @@ class HideCustomizeFee extends StatelessWidget {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text(
-                                        '0.00036 $nameToken',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16.sp,
-                                          color: Colors.red,
-                                        ),
+                                      StreamBuilder<String>(
+                                        initialData: gasFee.toString(),
+                                        stream: sendTokenCubit
+                                            .formEstimateGasFeeStream,
+                                        builder: (context, snapshot) {
+                                          return Text(
+                                            '${snapshot.data} $nameToken',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16.sp,
+                                              color: Colors.red,
+                                            ),
+                                          );
+                                        },
                                       ),
                                       SizedBox(
                                         height: 2.h,
