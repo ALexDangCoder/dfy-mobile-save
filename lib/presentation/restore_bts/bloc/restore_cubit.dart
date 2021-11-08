@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_state.dart';
@@ -10,7 +7,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+class Wallet {
+  final String name;
+  final String address;
+
+  Wallet(this.name, this.address);
+}
+
 class RestoreCubit extends Cubit<RestoreState> {
+  late Wallet wallet;
+
   RestoreCubit() : super(RestoreInitial());
   final BehaviorSubject<List<String>> _behaviorSubject =
       BehaviorSubject<List<String>>();
@@ -64,20 +70,15 @@ class RestoreCubit extends Cubit<RestoreState> {
   Sink<bool> get ckcSink => _ckcBoxSubject.sink;
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    String walletName = '';
-    String walletAddress = '';
-
     switch (methodCall.method) {
       case 'importWalletCallback':
-        walletName = methodCall.arguments['walletName'];
-        walletAddress = methodCall.arguments['walletAddress'];
+        final walletName = methodCall.arguments['walletName'];
+        final walletAddress = methodCall.arguments['walletAddress'];
+        wallet = Wallet(walletName, walletAddress);
         break;
-
       default:
         break;
     }
-    log(walletName);
-    log(walletAddress);
   }
 
   Future<void> importWallet({
@@ -92,9 +93,7 @@ class RestoreCubit extends Cubit<RestoreState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
-    } on PlatformException {
-      throw AppException('title', 'message');
-    }
+    } on PlatformException {}
   }
 
   void isValidate(String value) {

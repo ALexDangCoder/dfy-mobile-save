@@ -1,8 +1,8 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
+
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
 import 'package:Dfy/presentation/restore_bts/ui/choice_dialog.dart';
@@ -17,6 +17,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const String PASS_PHRASE = 'PASS_PHRASE';
 const String PRIVATE_KEY = 'PRIVATE_KEY';
+
 class RestoreBTS extends StatefulWidget {
   const RestoreBTS({Key? key}) : super(key: key);
 
@@ -43,6 +44,8 @@ class _RestoreBTSState extends State<RestoreBTS> {
   void initState() {
     super.initState();
     restoreCubit = RestoreCubit();
+    trustWalletChannel
+        .setMethodCallHandler(restoreCubit.nativeMethodCallBackTrustWallet);
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
     privateKeyController = TextEditingController();
@@ -494,30 +497,17 @@ class _RestoreBTSState extends State<RestoreBTS> {
                               passwordController.text,
                               confirmPasswordController.text,
                             )) {
-                              if (restoreCubit.strValue ==
-                                  S.current.seed_phrase) {
-                                restoreCubit
-                                    .importWallet(
-                                      type: PASS_PHRASE,
-                                      content: seedPhraseController.text,
-                                      password: passwordController.text,
-                                    )
-                                    .then(
-                                      (_) => showCreateSuccessfully(context),
-                                    );
-                                //showCreateSuccessfully(context);
-                              } else {
-                                restoreCubit
-                                    .importWallet(
-                                      type: PRIVATE_KEY,
-                                      content: privateKeyController.text,
-                                      password: passwordController.text,
-                                    )
-                                    .then(
-                                      (_) => showCreateSuccessfully(context),
-                                    );
-                                //showCreateSuccessfully(context);
-                              }
+                              final flag = restoreCubit.strValue ==
+                                  S.current.seed_phrase;
+                              restoreCubit
+                                  .importWallet(
+                                    type: !flag ? PRIVATE_KEY : PASS_PHRASE,
+                                    content: privateKeyController.text,
+                                    password: passwordController.text,
+                                  )
+                                  .then(
+                                    (_) => showCreateSuccessfully(context),
+                                  );
                             }
                           },
                           gradient: RadialGradient(
