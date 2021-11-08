@@ -60,9 +60,9 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("seedPhrase") ?: return@setMethodCallHandler
                     val walletName =
                         call.argument<String>("walletName") ?: return@setMethodCallHandler
-                    val storeWallet =
-                        call.argument<String>("storeWallet") ?: return@setMethodCallHandler
-                    storeWallet(seedPhrase, walletName, storeWallet)
+                    val password =
+                        call.argument<String>("password") ?: return@setMethodCallHandler
+                    storeWallet(seedPhrase, walletName, password)
                 }
                 "setConfig" -> {
                     val isAppLock =
@@ -220,27 +220,28 @@ class MainActivity : FlutterFragmentActivity() {
 
     private fun importWallet(type: String, content: String, password: String) {
         val hasMap = HashMap<String, String>()
-        //todo validate content
-        if (type == TYPE_WALLET_SEED_PHRASE) {
-            //todo content is seed phrase
-            val wallet = HDWallet(content, "")
-            val coinType: CoinType = CoinType.SMARTCHAIN
-            val address = wallet.getAddressForCoin(coinType)
-            hasMap["walletAddress"] = address
-        } else if (type == TYPE_WALLET_PRIVATE_KEY) {
-            //todo content is private key
-            val wallet = HDWallet(content, "")
-            val privateKey = wallet.getKeyForCoin(CoinType.SMARTCHAIN)
-            val publicKeyFalse = privateKey.getPublicKeySecp256k1(false)
-            val anyAddress = AnyAddress(publicKeyFalse, CoinType.SMARTCHAIN)
-            val address = anyAddress.data().toHexString()
-            hasMap["walletAddress"] = address
-// address = 0xa3dcd899c0f3832dfdfed9479a9d828c6a4eb2a7    it does not has EIP55 address
-        } else {
-            return
-        }
+//        //todo validate content
+//        if (type == TYPE_WALLET_SEED_PHRASE) {
+//            //todo content is seed phrase
+//            val wallet = HDWallet(content, "")
+//            val coinType: CoinType = CoinType.SMARTCHAIN
+//            val address = wallet.getAddressForCoin(coinType)
+//            hasMap["walletAddress"] = address
+//        } else if (type == TYPE_WALLET_PRIVATE_KEY) {
+//            //todo content is private key
+//            val wallet = HDWallet(content, "")
+//            val privateKey = wallet.getKeyForCoin(CoinType.SMARTCHAIN)
+//            val publicKeyFalse = privateKey.getPublicKeySecp256k1(false)
+//            val anyAddress = AnyAddress(publicKeyFalse, CoinType.SMARTCHAIN)
+//            val address = anyAddress.data().toHexString()
+//            hasMap["walletAddress"] = address
+//// address = 0xa3dcd899c0f3832dfdfed9479a9d828c6a4eb2a7    it does not has EIP55 address
+//        } else {
+//            return
+//        }
         //todo check count wallet -> walletName = wallet count + 1
         hasMap["walletName"] = "walletName"
+        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
         channel?.invokeMethod("importWalletCallback", hasMap)
     }
 
