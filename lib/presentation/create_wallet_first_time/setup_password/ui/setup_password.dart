@@ -305,7 +305,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                       ),
               ),
               prefixIcon: const ImageIcon(
-                AssetImage('assets/images/Lock.png'),
+                AssetImage(ImageAssets.lock),
                 color: Colors.white,
               ),
               border: InputBorder.none,
@@ -368,7 +368,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                       ),
               ),
               prefixIcon: const ImageIcon(
-                AssetImage('assets/images/Lock.png'),
+                AssetImage(ImageAssets.lock),
                 color: Colors.white,
               ),
               border: InputBorder.none,
@@ -410,7 +410,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Image.asset('assets/images/back_arrow.png'),
+              icon: Image.asset(ImageAssets.backArrow),
             ),
           ),
           SizedBox(
@@ -432,7 +432,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Image.asset('assets/images/Group.png'),
+              icon: Image.asset(ImageAssets.group),
             ),
           )
         ],
