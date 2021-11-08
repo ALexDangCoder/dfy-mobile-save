@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/strings.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -6,6 +7,9 @@ import '../../../main.dart';
 
 class ImportTokenNftBloc {
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
+
+  BehaviorSubject<String> tokenDecimal = BehaviorSubject.seeded('');
+  BehaviorSubject<String> tokenSymbol = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenAddressTextNft = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenSymbolText = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenDecimalText = BehaviorSubject.seeded('');
@@ -119,6 +123,20 @@ class ImportTokenNftBloc {
       //todo
 
     }
+  }
+
+  bool
+  isImportToken() {
+    print(tokenSymbolText.value);
+
+    print(tokenDecimal.value);
+    print(tokenSymbol.value);
+    if (Validator.validateNotNull(tokenAddressText.value) &&
+        Validator.validateNotNull(tokenDecimal.value) &&
+        Validator.validateNotNull(tokenSymbol.value)) {
+      return true;
+    }
+    return false;
   }
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {

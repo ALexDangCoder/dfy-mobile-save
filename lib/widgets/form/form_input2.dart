@@ -34,25 +34,30 @@ class FormInput2 extends StatelessWidget {
           SizedBox(
             width: 20.5.w,
           ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
-              child: TextFormField(
-                onFieldSubmitted: (value) {},
-                cursorColor: Colors.white,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.white,
-                ),
-                decoration: InputDecoration(
-                  hintText: hint,
-                  hintStyle: textNormal(
-                    Colors.white54,
-                    16.sp,
+          StreamBuilder(
+            stream: bloc.tokenSymbol,
+            builder: (context, snapshot) => Expanded(
+              child: Container(
+                margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
+                child: TextFormField(
+                  onChanged: (value) {
+                    bloc.tokenSymbolText.sink.add(value);
+                  },
+                  cursorColor: Colors.white,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: Colors.white,
                   ),
-                  border: InputBorder.none,
+                  decoration: InputDecoration(
+                    hintText: hint,
+                    hintStyle: textNormal(
+                      Colors.white54,
+                      16.sp,
+                    ),
+                    border: InputBorder.none,
+                  ),
+                  // onFieldSubmitted: ,
                 ),
-                // onFieldSubmitted: ,
               ),
             ),
           ),

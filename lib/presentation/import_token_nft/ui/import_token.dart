@@ -20,6 +20,7 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
     context: context,
     backgroundColor: Colors.transparent,
     builder: (context) {
+      final textController = TextEditingController();
       return DefaultTabController(
         length: 2,
         child: Container(
@@ -104,12 +105,11 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                   },
                   child: TabBarView(
                     children: [
-                      //Container(color: Colors.black,),
-                      //Container(color: Colors.black,),
                       EnterAddress(
                         bloc: bloc,
+                        textTokenAddress: textController,
                       ),
-                       ChooseToken(bloc: bloc),
+                      ChooseToken(bloc: bloc),
                     ],
                   ),
                 ),
