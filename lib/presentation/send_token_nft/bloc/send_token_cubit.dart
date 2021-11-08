@@ -93,14 +93,14 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   // amount*: Int
   // password: String"
 
-  Future<dynamic> sendTokenWallet(MethodCall methodCall) async {
+
+  Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
+    print('result api: ' );
+
     switch (methodCall.method) {
       case 'sendTokenCallback':
-        walletAddress = await methodCall.arguments['walletAddress'];
-        receiveAddress = await methodCall.arguments['receiveAddress'];
-        password = await methodCall.arguments['password'];
-        tokenID = await methodCall.arguments['tokenID'];
-        amount = await methodCall.arguments['amount'];
+        bool isSuccess = await methodCall.arguments['isSuccess'];
+        print(isSuccess);
         fromFieldSink.add(walletAddress);
         break;
       default:
@@ -108,8 +108,13 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
+  // "walletAddress*: String
+  // receiveAddress*: String
+  // tokenID*: Int
+  // amount*: Int
+  // password: String"
   //input and nameCallback
-  Future<void> checkPasswordWallet({
+  Future<void> sendToken({
     required String walletAddress,
     required String receiveAddress,
     required int tokenID,
@@ -118,19 +123,23 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   }) async {
     try {
       final data = {
+        'walletAddress' : walletAddress,
+        'receiveAddress' : receiveAddress,
+        'amount' : amount,
+        'tokenID' : tokenID,
         'password': password,
         //todo wallet
       };
       //param invokeMethod is api
-      await trustWalletChannel.invokeMethod('sendNft', data);
+      await trustWalletChannel.invokeMethod('sendToken', data);
     } on PlatformException {
       //todo
     }
   }
 
   void dispose() {
-    _formField.close();
-    _isCustomizeFee.close();
-    _isSufficientToken.close();
+  //   _formField.close();
+  //   _isCustomizeFee.close();
+  //   _isSufficientToken.close();
   }
 }

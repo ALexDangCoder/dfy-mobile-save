@@ -190,7 +190,7 @@ class ShowCustomizeFee extends StatelessWidget {
                             left: 12.w,
                             right: 12.w,
                           ),
-                          child: Container(
+                          child: SizedBox(
                             height: 64.h,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -278,6 +278,7 @@ class ShowCustomizeFee extends StatelessWidget {
         color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         controller: txtController,
         onChanged: (value) {
           final double valueHandle = double.parse(value);

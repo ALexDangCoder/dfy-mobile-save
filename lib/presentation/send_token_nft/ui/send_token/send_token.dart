@@ -25,22 +25,23 @@ class _SendTokenState extends State<SendToken> {
   //todo truyen amount
   @override
   void initState() {
+    super.initState();
     txtToAddress = TextEditingController();
     txtAmount = TextEditingController();
     tokenCubit = SendTokenCubit();
-    tokenCubit.checkPasswordWallet(
+
+    trustWalletChannel.setMethodCallHandler(tokenCubit.nativeMethodCallHandler);
+    tokenCubit.sendToken(
       walletAddress: tokenCubit.walletAddress,
       receiveAddress: tokenCubit.receiveAddress,
       tokenID: tokenCubit.tokenID ?? 0,
       amount: tokenCubit.amount ?? 0,
     );
-    trustWalletChannel.setMethodCallHandler(tokenCubit.sendTokenWallet);
-    super.initState();
   }
 
   @override
   void dispose() {
-    tokenCubit.close();
+    // tokenCubit.close();
     super.dispose();
   }
 

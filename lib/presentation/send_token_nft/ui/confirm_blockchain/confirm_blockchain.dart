@@ -102,6 +102,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                       height: 16.h,
                     ),
                     StreamBuilder(
+                      initialData: gasFeeFirstFetch < informationWallet.amount,
                       stream: sendTokenCubit.isCustomizeFeeStream,
                       builder: (context, AsyncSnapshot<bool> snapshot) {
                         return snapshot.data ?? false
@@ -125,11 +126,17 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                 ),
               ),
             ),
-            GestureDetector(
-              child: const ButtonGold(
-                title: 'Approve',
-                isEnable: true,
-              ),
+            StreamBuilder<bool>(
+              initialData: gasFeeFirstFetch < informationWallet.amount,
+              stream: sendTokenCubit.isSufficientTokenStream,
+              builder: (context, snapshot) {
+                return GestureDetector(
+                  child: ButtonGold(
+                    title: 'Approve',
+                    isEnable: snapshot.data ?? false,
+                  ),
+                );
+              },
             ),
             SizedBox(
               height: 38.h,
