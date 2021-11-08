@@ -101,6 +101,7 @@ abstract class AppColor {
   Color textThemeColor();
 
   Color suffixColor();
+
   Color errorColorButton();
 
   Color selectDialogColor();
@@ -109,6 +110,10 @@ abstract class AppColor {
   List<Color> listColorAddWalletSeedPhrase();
 
   List<Color> gradientButtonColor();
+
+  Color whiteColor();
+
+  Color backgroundLoginTextField();
 }
 
 class LightApp extends AppColor {
@@ -166,6 +171,7 @@ class LightApp extends AppColor {
   Color sideBtnColor() {
     return const Color(0xFFDCFFFE);
   }
+
   @override
   Color disableColor() {
     return const Color(0xFFA9B8BD);
@@ -234,6 +240,18 @@ class LightApp extends AppColor {
   @override
   Color errorColorButton() {
     return errorColor;
+  }
+
+  @override
+  Color backgroundLoginTextField() {
+    // TODO: implement backgroundLoginTextField
+    throw UnimplementedError();
+  }
+
+  @override
+  Color whiteColor() {
+    // TODO: implement whiteColor
+    throw UnimplementedError();
   }
 }
 
@@ -375,6 +393,19 @@ class DarkApp extends AppColor {
     // TODO: implement errorColorButton
     throw UnimplementedError();
   }
+
+  @override
+  Color whiteColor() {
+    // TODO: implement whiteColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color backgroundLoginTextField() {
+    // TODO: implement backgroundLoginTextField
+    throw UnimplementedError();
+  }
+
 }
 
 ///============ End setup app theme ======================================

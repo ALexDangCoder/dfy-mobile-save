@@ -4,6 +4,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ImageAssets {
   ///Svg path
+  ///
+    static const String icTabWalletSelected =
+        '$baseImg/ic_wallet_tab_selected.svg';
+    static const String icTabWalletUnSelected =
+        '$baseImg/ic_wallet_tab_unselect.svg';
+
+    static const String icTabPawnSelected = '$baseImg/ic_tab_pawn_selected.svg';
+    static const String icTabPawnUnselected =
+        '$baseImg/ic_tab_pawn_unselected.svg';
+
+    static const String icTabMarketPlaceSelected =
+        '$baseImg/ic_tab_market_place_select.svg';
+    static const String icTabMarketPlaceUnselected =
+        '$baseImg/ic_tab_market_place_unselect.svg';
+
+    static const String icTabStakingSelected =
+        '$baseImg/ic_tab_staking_selected.svg';
+    static const String icTabStakingUnselected =
+        '$baseImg/ic_tab_staking_unselected.svg';
   static const String icBack = '$baseImg/ic_back.svg';
   static const String icMenu = '$baseImg/ic_menu.svg';
   static const String back = '$baseImg/back.png';
@@ -13,6 +32,24 @@ class ImageAssets {
   static const String key = '$baseImg/key.png';
   static const String show = '$baseImg/Show.png';
   static const String hide = '$baseImg/Hide.png';
+  static const String ic_wallet = '$baseImg/ic_wallet.png';
+  static const String ic_copy = '$baseImg/ic_copy.png';
+  static const String ic_address = '$baseImg/ic_address.png';
+  static const String ic_frame = '$baseImg/ic_frame.png';
+  static const String ic_face_id = '$baseImg/ic_faceid.png';
+  static const String ic_password = '$baseImg/ic_password.png';
+  static const String ic_group = '$baseImg/Group.png';
+  static const String add_wallet = '$baseImg/addstwallet.png';
+  static const String ic_menu = '$baseImg/Menu.png.png';
+  static const String ic_notify = '$baseImg/Notification.png';
+  static const String symbol = '$baseImg/symbol.png';
+  static const String center = '$baseImg/Centered.png';
+  static const String ic_touch = '$baseImg/finger_icon.png';
+  static const String ic_out = '$baseImg/ic_out.png';
+  static const String ic_close = '$baseImg/ic_close.png';
+  static const String img_empty = '$baseImg/img_empty.png';
+  static const String paste = '$baseImg/Paste.png';
+  static const String scan_qr = '$baseImg/scan-barcode.png';
   static const String addsWallet = '$baseImg/addsWallet.png';
   static const String backArrow = '$baseImg/back_arrow.png';
   static const String centered = '$baseImg/Centered.png';
@@ -53,6 +90,7 @@ class ImageAssets {
   static const String menu = '$baseImg/Menu.png';
   static const String notification = '$baseImg/Notification.png';
   static const String stroke = '$baseImg/Stroke.png';
+
   static const String symbol = '$baseImg/symbol.png';
   static const String to = '$baseImg/To.png';
   static const String token = '$baseImg/Token.png';

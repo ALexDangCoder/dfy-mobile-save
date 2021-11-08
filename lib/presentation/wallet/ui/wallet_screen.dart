@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
-import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
@@ -12,11 +11,14 @@ import 'package:Dfy/presentation/wallet/ui/import.dart';
 import 'package:Dfy/presentation/wallet/ui/nft_item.dart';
 import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
 import 'package:Dfy/presentation/wallet/ui/token_item.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../../main.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({Key? key}) : super(key: key);
@@ -34,10 +36,16 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    _cubit.formatAddress('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
+    _cubit.formatAddress(_cubit.addressWallet);
     _tabController = TabController(length: 2, vsync: this);
     fToast = FToast();
     fToast.init(context);
+    trustWalletChannel
+        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
+    _cubit.getListNFT(
+      _cubit.addressWallet,
+      password: 'aaa',
+    );
   }
 
   @override
@@ -271,8 +279,11 @@ class _WalletState extends State<WalletScreen>
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    width: 37.w,
+                  ),
                   Text(
-                    'Nguyen Thao Nguyen',
+                    'Nguyen Van Hung',
                     style: textNormalCustom(
                       Colors.white,
                       24.sp,
