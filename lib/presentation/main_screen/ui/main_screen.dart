@@ -6,7 +6,7 @@ import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
 import 'package:Dfy/presentation/pawn/ui/pawn_screen.dart';
 import 'package:Dfy/presentation/staking/ui/staking_screen.dart';
-import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/bottom_appbar.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
@@ -58,8 +58,6 @@ class _MainScreenState extends BaseState<MainScreen> {
 
   int lastDuration = 3;
 
-
-
   final CompositeSubscription compositeSubscription = CompositeSubscription();
   late MainCubit _cubit;
 
@@ -70,8 +68,8 @@ class _MainScreenState extends BaseState<MainScreen> {
     _cubit.init();
     super.initState();
     _pages = [
-      const WalletScreen(),
       const LoginScreen(),
+      const PawnScreen(),
       const HomeScreen(),
       const MarketPlaceScreen(),
       const StakingScreen(),
@@ -96,6 +94,9 @@ class _MainScreenState extends BaseState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage(ImageAssets.symbol), context);
+    precacheImage(const AssetImage(ImageAssets.center), context);
+    precacheImage(const AssetImage(ImageAssets.center), context);
     return Scaffold(
       key: scaffoldKey,
 

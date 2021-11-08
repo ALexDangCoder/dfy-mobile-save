@@ -1,3 +1,4 @@
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,9 +23,11 @@ class FromText extends StatelessWidget {
       height: 64.h,
       margin: EdgeInsets.symmetric(horizontal: 26.w),
       padding: EdgeInsets.symmetric(horizontal: 15.5.w, vertical: 23.h),
-      decoration: const BoxDecoration(
-        color: Color(0xff32324c),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppTheme.getInstance().itemBtsColors(),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(20),
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ImageAssets {
   ///Svg path
-  ///Png path
   static const String icBack = '$baseImg/ic_back.svg';
   static const String icMenu = '$baseImg/ic_menu.svg';
   static const String back = '$baseImg/back.png';
@@ -59,6 +58,22 @@ class ImageAssets {
   static const String token = '$baseImg/Token.png';
   static const String codeS = '$baseImg/Code.png';
   static const String from = '$baseImg/From.png';
+  static const String ic_wallet = '$baseImg/ic_wallet.png';
+  static const String ic_copy = '$baseImg/ic_copy.png';
+  static const String ic_address = '$baseImg/ic_address.png';
+  static const String ic_frame = '$baseImg/ic_frame.png';
+  static const String ic_face_id = '$baseImg/ic_faceid.png';
+  static const String ic_password = '$baseImg/ic_password.png';
+  static const String ic_group = '$baseImg/Group.png';
+  static const String add_wallet = '$baseImg/addstwallet.png';
+  static const String ic_menu = '$baseImg/Menu.png.png';
+  static const String ic_notify = '$baseImg/Notification.png';
+  static const String symbol = '$baseImg/symbol.png';
+  static const String center = '$baseImg/Centered.png';
+  static const String ic_touch = '$baseImg/finger_icon.png';
+  static const String ic_out = '$baseImg/ic_out.png';
+  static const String ic_close = '$baseImg/ic_close.png';
+  static const String img_empty = '$baseImg/img_empty.png';
 
   static SvgPicture svgAssets(
     String name, {

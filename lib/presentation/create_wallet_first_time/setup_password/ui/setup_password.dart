@@ -1,4 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
@@ -25,7 +27,6 @@ class _SetupPassWordState extends State<SetupPassWord> {
   int checkBox = 1;
   int isValidPass = 1;
   int isMatchPass = 1;
-  int isEnable = 1;
 
   @override
   void initState() {
@@ -41,94 +42,79 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        final FocusScopeNode currentFocus = FocusScope.of(context);
-
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
-      child: Container(
-        width: 375.w,
-        height: 764.h,
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(62, 61, 92, 1),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.r),
-            topRight: Radius.circular(30.r),
+    return Container(
+      width: 375.w,
+      height: 764.h,
+      decoration: BoxDecoration(
+        color: AppTheme.getInstance().bgBtsColor(),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.r),
+          topRight: Radius.circular(30.r),
+        ),
+      ),
+      child: Column(
+        children: [
+          header(),
+          Divider(
+            thickness: 1,
+            color: AppTheme.getInstance().divideColor(),
           ),
-        ),
-        child: Column(
-          children: [
-            header(),
-            const Divider(
-              thickness: 1,
-              color: Color.fromRGBO(255, 255, 255, 0.1),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    textShowSetupPass(),
-                    SizedBox(
-                      height: 28.h,
-                    ),
-                    formSetupPassWord(
-                      hintText: 'New password',
-                    ),
-                    showTextValidatePassword(),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    formSetupPassWordConfirm(
-                      hintText: 'Confirm password',
-                    ),
-                    showTextValidateMatchPassword(),
-                    SizedBox(
-                      height: 25.h,
-                    ),
-                    ckcBoxAndTextSetupPass(),
-                    SizedBox(
-                      height: 256.h,
-                    ),
-                  ],
-                ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  textShowSetupPass(),
+                  SizedBox(
+                    height: 28.h,
+                  ),
+                  formSetupPassWord(
+                    hintText: S.current.new_pass,
+                  ),
+                  showTextValidatePassword(),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  formSetupPassWordConfirm(
+                    hintText: S.current.con_pass,
+                  ),
+                  showTextValidateMatchPassword(),
+                  SizedBox(
+                    height: 25.h,
+                  ),
+                  ckcBoxAndTextSetupPass(),
+                  SizedBox(
+                    height: 256.h,
+                  ),
+                ],
               ),
             ),
-            GestureDetector(
-              child: StreamBuilder(
-                stream: isValidPassCubit.isEnableBtnStream,
-                builder: (context, AsyncSnapshot<bool> snapshot) {
-                  return ButtonGold(
-                    title: 'Continue',
-                    isEnable: snapshot.data ?? false,
-                  );
-                },
-              ),
-              onTap: () async {
-                isValidPassCubit.isValidate(password.text);
-                isValidPassCubit.isMatchPW(
-                  password: password.text,
-                  confirmPW: confirmPassword.text,
+          ),
+          GestureDetector(
+            child: ButtonGold(
+              title: S.current.continue_s,
+            ),
+            onTap: () async {
+              isValidPassCubit.isValidate(password.text);
+              isValidPassCubit.isMatchPW(
+                password: password.text,
+                confirmPW: confirmPassword.text,
+              );
+              if (checkBox == 2 &&
+                  isValidPassCubit.isValidFtMatchPW(
+                    password.text,
+                    confirmPassword.text,
+                  )) {
+                showCreateSeedPhrase1(
+                  context,
+                  BLocCreateSeedPhrase(password.text),
                 );
-                if (checkBox == 2 &&
-                    isValidPassCubit.isValidFtMatchPW(
-                      password.text,
-                      confirmPassword.text,
-                    )) {
-                  showCreateSeedPhrase1(
-                    context,
-                    BLocCreateSeedPhrase(password.text),
-                  );
-                }
-              },
-            ),
-            SizedBox(
-              height: 38.h,
-            ),
-          ],
-        ),
+              }
+            },
+          ),
+          SizedBox(
+            height: 38.h,
+          ),
+        ],
       ),
     );
   }
@@ -148,13 +134,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 width: 323.w,
                 height: 30.h,
                 child: Text(
-                  'Password must include at least a number, '
-                  'an upper case, a lower\n case and a special '
-                  'character',
-                  style: TextStyle(
-                    fontSize: 12.sp,
+                  S.current.pass_must,
+                  style: textNormal(
+                    AppTheme.getInstance().whiteWithOpacity(),
+                    12.sp,
+                  ).copyWith(
                     fontWeight: FontWeight.w400,
-                    color: const Color.fromRGBO(255, 108, 108, 1),
                   ),
                 ),
               ),
@@ -180,11 +165,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 width: 323.w,
                 height: 30.h,
                 child: Text(
-                  'Your password did not match',
-                  style: TextStyle(
-                    fontSize: 12.sp,
+                  S.current.not_match,
+                  style: textNormal(
+                    AppTheme.getInstance().whiteWithOpacity(),
+                    12.sp,
+                  ).copyWith(
                     fontWeight: FontWeight.w400,
-                    color: const Color.fromRGBO(255, 108, 108, 1),
                   ),
                 ),
               ),
@@ -206,25 +192,24 @@ class _SetupPassWordState extends State<SetupPassWord> {
             child: SizedBox(
               width: 24.w,
               height: 24.h,
-              child: StreamBuilder<bool>(
+              child: StreamBuilder(
                 stream: isValidPassCubit.ckcBoxStream,
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   return Checkbox(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    fillColor:
-                        MaterialStateProperty.all(const Color(0xffE4AC1A)),
-                    activeColor: const Color.fromRGBO(228, 172, 26, 1),
+                    fillColor: MaterialStateProperty.all(
+                      AppTheme.getInstance().fillColor(),
+                    ),
+                    activeColor: AppTheme.getInstance().activeColor(),
                     // checkColor: const Colors,
                     onChanged: (bool? value) {
                       isValidPassCubit.ckcBoxSink.add(value ?? false);
                       if (value == true) {
                         checkBox = 2;
-                        isValidPassCubit.isEnable(2);
                       } else {
                         checkBox = 1;
-                        isValidPassCubit.isEnable(1);
                       }
                     },
                     value: snapshot.data,
@@ -240,12 +225,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
             width: 287.w,
             height: 48.h,
             child: Text(
-              'I understand DeFi For You will not recover this\n'
-              ' password for me',
-              style: TextStyle(
+              S.current.understand_defi,
+              style: textNormal(
+                AppTheme.getInstance().whiteWithOpacity(),
+                14.sp,
+              ).copyWith(
                 fontWeight: FontWeight.w400,
-                fontSize: 14.sp,
-                color: const Color.fromRGBO(255, 255, 255, 1),
               ),
             ),
           ),
@@ -262,11 +247,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showPWStream,
@@ -325,11 +310,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showConfirmPWStream,
@@ -387,13 +372,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
         width: 323.w,
         height: 72.h,
         child: Text(
-          'Please setup your new password!\n'
-          'This password will unlock your DeFi For You\n wallet '
-          'only on this wallet',
-          style: TextStyle(
-            fontSize: 16.sp,
+          S.current.please,
+          style: textNormal(
+            AppTheme.getInstance().whiteWithOpacity(),
+            16.sp,
+          ).copyWith(
             fontWeight: FontWeight.w400,
-            color: const Color.fromRGBO(255, 255, 255, 1.0),
           ),
         ),
       ),
@@ -411,18 +395,19 @@ class _SetupPassWordState extends State<SetupPassWord> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Image.asset(ImageAssets.backArrow),
+              icon: Image.asset(ImageAssets.back),
             ),
           ),
           SizedBox(
             width: 66.w,
           ),
           Text(
-            'Create new wallet',
-            style: TextStyle(
-              fontSize: 20.sp,
+            S.current.create_wallet,
+            style: textNormal(
+              AppTheme.getInstance().whiteWithOpacity(),
+              20.sp,
+            ).copyWith(
               fontWeight: FontWeight.w700,
-              color: Colors.white,
             ),
           ),
           SizedBox(
@@ -433,7 +418,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Image.asset(ImageAssets.group),
+              icon: Image.asset(ImageAssets.ic_group),
             ),
           )
         ],

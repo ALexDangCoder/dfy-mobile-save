@@ -5,7 +5,6 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/di/module.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -42,9 +41,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    trustWalletChannel.setMethodCallHandler(nativeMethodCallHandler);
     super.initState();
-    }
+    callAllApi();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,5 +83,159 @@ class _MyAppState extends State<MyApp> {
         initialRoute: AppRouter.main,
       ),
     );
+  }
+
+  Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'checkPasswordCallback':
+        print('1: ' + methodCall.arguments.toString());
+        break;
+      case 'getConfigCallback':
+        print('2: ' + methodCall.arguments.toString());
+        break;
+      case 'importWalletCallback':
+        print('3: ' + methodCall.arguments.toString());
+        break;
+      case 'getListWalletsCallback':
+        print('4: ' + methodCall.arguments.toString());
+        break;
+      case 'generateWalletCallback':
+        print('5: ' + methodCall.arguments.toString());
+        break;
+      case 'storeWalletCallback':
+        print('6: ' + methodCall.arguments.toString());
+        break;
+      case 'setConfigCallback':
+        print('7: ' + methodCall.arguments.toString());
+        break;
+      case 'getListShowedTokenCallback':
+        print('8: ' + methodCall.arguments.toString());
+        break;
+      case 'getListShowedNftCallback':
+        print('9: ' + methodCall.arguments.toString());
+        break;
+      case 'importTokenCallback':
+        print('10: ' + methodCall.arguments.toString());
+        break;
+      case 'getListSupportedTokenCallback':
+        print('11: ' + methodCall.arguments.toString());
+        break;
+      default:
+        break;
+    }
+  }
+
+  void callAllApi() {
+    importWallet();
+  }
+
+  Future<void> createWallet() async {
+    try {
+      final data = {
+        'password': 'password',
+      };
+      await trustWalletChannel.invokeMethod('checkPassword', data);
+    } on PlatformException {}
+  }
+
+  Future<void> getConfig() async {
+    try {
+      await trustWalletChannel.invokeMethod('getConfig');
+    } on PlatformException {}
+  }
+
+  Future<void> importWallet() async {
+    try {
+      final data = {
+        'type': 'PASS_PHRASE',
+        'content':
+            'party response give dove tooth master flip video permit game expire token',
+        'password': '123456',
+      };
+      await trustWalletChannel.invokeMethod('importWallet', data);
+    } on PlatformException {}
+  }
+
+  Future<void> getListWallets() async {
+    try {
+      final data = {
+        'password': 'password',
+      };
+      await trustWalletChannel.invokeMethod('getListWallets', data);
+    } on PlatformException {}
+  }
+
+  Future<void> generateWallet() async {
+    try {
+      final data = {
+        'password': 'password',
+      };
+      await trustWalletChannel.invokeMethod('generateWallet', data);
+    } on PlatformException {}
+  }
+
+  Future<void> storeWallet() async {
+    try {
+      final data = {
+        'seedPhrase': 'seedPhrase',
+        'walletName': 'walletName',
+        'storeWallet': 'storeWallet',
+      };
+      await trustWalletChannel.invokeMethod('storeWallet', data);
+    } on PlatformException {}
+  }
+
+  Future<void> setConfig() async {
+    try {
+      final data = {
+        'isAppLock': true,
+        'isFaceID': true,
+        'password': 'password',
+      };
+      await trustWalletChannel.invokeMethod('setConfig', data);
+    } on PlatformException {}
+  }
+
+  Future<void> getListShowedToken() async {
+    try {
+      final data = {
+        'walletAddress': 'walletAddress',
+        'password': 'password',
+      };
+      await trustWalletChannel.invokeMethod('getListShowedToken', data);
+    } on PlatformException {}
+  }
+
+  Future<void> getListShowedNft() async {
+    try {
+      final data = {
+        'walletAddress': 'walletAddress',
+        'password': 'password',
+      };
+      await trustWalletChannel.invokeMethod('getListShowedNft', data);
+    } on PlatformException {}
+  }
+
+  Future<void> importToken() async {
+    try {
+      final data = {
+        'walletAddress': 'walletAddress',
+        'tokenAddress': 'tokenAddress',
+        'symbol': 'symbol',
+        'decimal': 1,
+        'password': 'password',
+      };
+      await trustWalletChannel.invokeMethod('importToken', data);
+    } on PlatformException {}
+  }
+
+  Future<void> getListSupportedToken() async {
+    try {
+      final data = {
+        'walletAddress': 'walletAddress',
+        'password': 'password',
+      };
+      await trustWalletChannel.invokeMethod('getListSupportedToken', data);
+    } on PlatformException {}
   }
 }

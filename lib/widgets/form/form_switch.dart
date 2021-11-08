@@ -1,3 +1,5 @@
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,9 +26,11 @@ class FromSwitch extends StatelessWidget {
       height: 64.h,
       margin: EdgeInsets.symmetric(horizontal: 26.w),
       //padding: EdgeInsets.symmetric(horizontal: 15.5.w),
-      decoration: const BoxDecoration(
-        color: Color(0xff32324c),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppTheme.getInstance().itemBtsColors(),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(20),
+        ),
       ),
       child: Center(
         child: ListTileSwitch(
@@ -36,15 +40,13 @@ class FromSwitch extends StatelessWidget {
           onChanged: (value) {
             bLocCreateSeedPhrase.isCheckTouchID.sink.add(value);
           },
-          switchActiveColor: const Color(0xffE4AC1A),
+          switchActiveColor: AppTheme.getInstance().fillColor(),
           switchType: SwitchType.cupertino,
-          title: Text(
-            title,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.sp,
-            ),
-          ),
+          title: Text(widget.title,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16.sp,
+              )),
         ),
       ),
     );

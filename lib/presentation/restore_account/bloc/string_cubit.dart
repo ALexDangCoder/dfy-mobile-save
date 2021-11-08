@@ -2,10 +2,11 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/restore_account/bloc/string_state.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+const seedPhrase = 'Seed phrase';
+const privateKey = 'Private key';
 class StringCubit extends Cubit<StringState> {
   StringCubit() : super(StringInitial('Seed phrase'));
-  String select = 'Seed phrase';
+  String select = seedPhrase;
   void selectSeed(String string) {
     select = string;
     emit(StringSelectSeed(string));

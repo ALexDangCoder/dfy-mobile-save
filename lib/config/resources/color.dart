@@ -16,6 +16,10 @@ const backGroubBottomSheetColor = Color(0xff32324c);
 const formColor = Color(0xff6F6FC5);
 const subTitleTxtColor = Color(0xff9097A3);
 const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
+const listAddWalletColor = [
+  Color.fromRGBO(60, 59, 84, 1),
+  Color.fromRGBO(23, 21, 39, 1)
+];
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
 
 //bottom navigation color
@@ -24,8 +28,15 @@ const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
 
 //custom color
-const itemBtsColor = Color(0xffA7A7A7);
+const fillYellowColor = Color(0xffE4AC1A);
+const errorColor = Color(0xFFCDCDCD);
+const dialogColor = Color(0xff585782);
+const suffixFieldColor = Colors.white30;
+const whiteRGBO = Color.fromRGBO(255, 255, 255, 1);
+const activeYellowColor = Color.fromRGBO(228, 172, 26, 1);
+const wrongRedColor = Color.fromRGBO(255, 108, 108, 1);
 const backgroundBottomSheet = Color(0xff3E3D5C);
+const colorTextField = Color(0xff32324c);
 const signInRowColor = Color(0xFFA9B8BD);
 const signInTextColor = Color(0xff0ABAB5);
 const sideTextInactiveColor = Color(0xFFB9C4D0);
@@ -75,13 +86,29 @@ abstract class AppColor {
 
   Color bgBtsColor();
 
-  Color itemBtsColor();
+  Color itemBtsColors();
 
   Color divideColor();
 
-  Color whiteColor();
+  Color wrongColor();
 
-  Color backgroundLoginTextField();
+  Color fillColor();
+
+  Color activeColor();
+
+  Color whiteWithOpacity();
+
+  Color textThemeColor();
+
+  Color suffixColor();
+  Color errorColorButton();
+
+  Color selectDialogColor();
+
+
+  List<Color> listColorAddWalletSeedPhrase();
+
+  List<Color> gradientButtonColor();
 }
 
 class LightApp extends AppColor {
@@ -139,7 +166,6 @@ class LightApp extends AppColor {
   Color sideBtnColor() {
     return const Color(0xFFDCFFFE);
   }
-
   @override
   Color disableColor() {
     return const Color(0xFFA9B8BD);
@@ -151,26 +177,64 @@ class LightApp extends AppColor {
   }
 
   @override
-  Color itemBtsColor() {
-    return const Color.fromRGBO(167, 167, 167, 0.5);
+  Color itemBtsColors() {
+    return colorTextField;
   }
 
   @override
   Color divideColor() {
-    return const Color.fromRGBO(255, 255, 255, 0.1);
+   return const Color.fromRGBO(255, 255, 255, 0.1);
   }
 
   @override
-  Color whiteColor() {
-    return const Color(0xFFFFFFFF);
+  Color wrongColor() {
+    return wrongRedColor;
   }
 
   @override
-  Color backgroundLoginTextField() {
-
-    return const Color(0xFF242234);
+  Color activeColor() {
+    return activeYellowColor;
   }
 
+  @override
+  Color fillColor() {
+    return fillYellowColor;
+  }
+
+  @override
+  Color whiteWithOpacity() {
+    return whiteRGBO;
+  }
+
+  @override
+  List<Color> listColorAddWalletSeedPhrase() {
+    return listAddWalletColor;
+  }
+
+  @override
+  Color suffixColor() {
+    return suffixFieldColor;
+  }
+
+  @override
+  List<Color> gradientButtonColor() {
+    return listButtonColor;
+  }
+
+  @override
+  Color textThemeColor() {
+    return Colors.white;
+  }
+
+  @override
+  Color selectDialogColor() {
+    return dialogColor;
+  }
+
+  @override
+  Color errorColorButton() {
+    return errorColor;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -241,7 +305,7 @@ class DarkApp extends AppColor {
   }
 
   @override
-  Color itemBtsColor() {
+  Color itemBtsColors() {
     // TODO: implement itemBtsColor
     throw UnimplementedError();
   }
@@ -253,17 +317,64 @@ class DarkApp extends AppColor {
   }
 
   @override
-  Color whiteColor() {
-    // TODO: implement whiteColor
+  Color wrongColor() {
+    // TODO: implement wrongColor
     throw UnimplementedError();
   }
 
   @override
-  Color backgroundLoginTextField() {
-    // TODO: implement backgroundLoginTextField
+  Color activeColor() {
+    // TODO: implement activeColor
     throw UnimplementedError();
   }
 
+  @override
+  Color fillColor() {
+    // TODO: implement fillColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color whiteWithOpacity() {
+    // TODO: implement whiteWithOpacity
+    throw UnimplementedError();
+  }
+
+  @override
+  List<Color> listColorAddWalletSeedPhrase() {
+    // TODO: implement listColorAddWalletSeedPhrase
+    throw UnimplementedError();
+  }
+
+  @override
+  Color suffixColor() {
+    // TODO: implement suffixColor
+    throw UnimplementedError();
+  }
+
+  @override
+  List<Color> gradientButtonColor() {
+    // TODO: implement listButtonColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color textThemeColor() {
+    // TODO: implement textThemeColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color selectDialogColor() {
+    // TODO: implement selectDialogColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color errorColorButton() {
+    // TODO: implement errorColorButton
+    throw UnimplementedError();
+  }
 }
 
 ///============ End setup app theme ======================================

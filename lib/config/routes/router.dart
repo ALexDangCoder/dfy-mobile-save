@@ -41,7 +41,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
       case main:
         return MaterialPageRoute(builder: (ctx) => const MainScreen());
-      case sendToken:
+        case sendToken:
         return MaterialPageRoute(builder: (ctx) => const SendTokenFtNft());
       // case main:
       //   return MaterialPageRoute(
