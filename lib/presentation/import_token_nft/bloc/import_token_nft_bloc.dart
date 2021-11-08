@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/strings.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -6,6 +7,9 @@ import '../../../main.dart';
 
 class ImportTokenNftBloc {
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
+
+  BehaviorSubject<String> tokenDecimal = BehaviorSubject.seeded('');
+  BehaviorSubject<String> tokenSymbol = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenAddressTextNft = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenSymbolText = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenDecimalText = BehaviorSubject.seeded('');
@@ -121,6 +125,19 @@ class ImportTokenNftBloc {
     }
   }
 
+  bool isImportToken() {
+    print(tokenSymbolText.value);
+
+    print(tokenDecimal.value);
+    print(tokenSymbol.value);
+    if (Validator.validateNotNull(tokenAddressText.value) &&
+        Validator.validateNotNull(tokenDecimal.value) &&
+        Validator.validateNotNull(tokenSymbol.value)) {
+      return true;
+    }
+    return false;
+  }
+
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     final bool isImportToken;
     final bool isSetShowedToken;
@@ -130,12 +147,12 @@ class ImportTokenNftBloc {
     switch (methodCall.method) {
       case 'importTokenCallback':
         isImportToken = await methodCall.arguments['isSuccess'];
-        print(isImportToken);
+        print(isImportToken); // thieu 1 dau api
         break;
       case 'getListSupportedTokenCallback':
         //[TokenObject]
         var a = await methodCall.arguments['TokenObject'];
-        print("a");
+        print(a.runtimeType);
 
         break;
       case 'setShowedTokenCallback':

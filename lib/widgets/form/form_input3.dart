@@ -10,15 +10,16 @@ class FormInput3 extends StatelessWidget {
   final String urlIcon2;
   final ImportTokenNftBloc bloc;
   final String hint;
+  final TextEditingController controller;
 
-  FormInput3({
+  const FormInput3({
     Key? key,
     required this.urlIcon1,
     required this.urlIcon2,
     required this.bloc,
     required this.hint,
+    required this.controller,
   }) : super(key: key);
-  final textAddress = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,35 +41,25 @@ class FormInput3 extends StatelessWidget {
             width: 20.5.w,
           ),
           Expanded(
-            child: StreamBuilder(
-              stream: bloc.tokenAddressTextNft,
-              builder: (context, AsyncSnapshot<String> snapshot) {
-                textAddress.text = snapshot.data ?? '';
-                return Container(
-                  margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
-                  child: TextFormField(
-                    // maxLines: 5,
-                    controller: textAddress,
-                    onChanged: (value) {
-                      bloc.tokenAddressTextNft.sink.add(value);
-                    },
-                    cursorColor: Colors.white,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      color: Colors.white,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: hint,
-                      hintStyle: textNormal(
-                        Colors.white54,
-                        16.sp,
-                      ),
-                      border: InputBorder.none,
-                    ),
-                    // onFieldSubmitted: ,
+            child: Container(
+              margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
+              child: TextFormField(
+                controller: controller,
+                cursorColor: Colors.white,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  hintText: hint,
+                  hintStyle: textNormal(
+                    Colors.white54,
+                    16.sp,
                   ),
-                );
-              },
+                  border: InputBorder.none,
+                ),
+                // onFieldSubmitted: ,
+              ),
             ),
           ),
           GestureDetector(
@@ -78,9 +69,12 @@ class FormInput3 extends StatelessWidget {
                   builder: (context) {
                     return QRViewExample(
                       bloc: bloc,
+                      controller: controller,
                     );
                   },
                 ),
+              ).whenComplete(
+                    () => controller.text = bloc.tokenAddressTextNft.value,
               );
             },
             child: Image.asset(

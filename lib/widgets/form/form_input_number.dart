@@ -38,7 +38,9 @@ class FormInputNumber extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
-                onFieldSubmitted: (value) {},
+                onChanged: (value) {
+                   bloc.tokenDecimal.sink.add(value);
+                },
                 cursorColor: Colors.white,
                 style: TextStyle(
                   fontSize: 16.sp,

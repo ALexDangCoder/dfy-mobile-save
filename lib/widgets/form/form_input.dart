@@ -10,21 +10,19 @@ class FormInput extends StatelessWidget {
   final String urlIcon2;
   final ImportTokenNftBloc bloc;
   final String hint;
+  final TextEditingController controller;
 
-  FormInput({
+  const FormInput({
     Key? key,
     required this.urlIcon1,
     required this.urlIcon2,
     required this.bloc,
     required this.hint,
+    required this.controller,
   }) : super(key: key);
-  final textAddress = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    // textAddress.addListener(() {
-    //   bloc.tokenAddressText.sink.add(textAddress.text);
-    // });
     return Container(
       width: 323.w,
       height: 64.h,
@@ -46,7 +44,11 @@ class FormInput extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
-                controller: textAddress,
+                controller: controller,
+                // onChanged: (value) {
+                //   bloc.tokenAddressText.sink.add(value);
+                //   print(bloc.tokenAddressText.value);
+                // },
                 cursorColor: Colors.white,
                 style: TextStyle(
                   fontSize: 16.sp,
@@ -71,13 +73,12 @@ class FormInput extends StatelessWidget {
                   builder: (context) {
                     return QRViewExample(
                       bloc: bloc,
+                      controller: controller,
                     );
                   },
                 ),
               ).whenComplete(
-                () => {
-                  //   textAddress.text = bloc?.tokenAddressText?.value ?? ''
-                },
+                () => controller.text = bloc.tokenAddressText.value,
               );
             },
             child: Image.asset(

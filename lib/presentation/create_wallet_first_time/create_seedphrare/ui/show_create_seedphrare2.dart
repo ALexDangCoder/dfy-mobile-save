@@ -3,9 +3,13 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
+
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase.dart';
@@ -56,7 +60,7 @@ void showCreateSeedPhrase2(
         width: 375.w,
         decoration: BoxDecoration(
           // shape: BoxShape.circle,
-          color: const Color(0xff3e3d5c),
+          color: AppTheme.getInstance().bgBtsColor(),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.h),
             topRight: Radius.circular(30.h),
@@ -119,9 +123,11 @@ void showCreateSeedPhrase2(
                     Container(
                       margin: EdgeInsets.only(right: 26.w, left: 26.w),
                       child: Text(
-                        'Tap the words to put them next to each other in '
-                        'the correct order',
-                        style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                        S.current.tap_the_word,
+                        style: textNormal(
+                          AppTheme.getInstance().textThemeColor(),
+                          16.sp,
+                        ),
                       ),
                     ),
                     spaceH20,
@@ -158,10 +164,7 @@ void showCreateSeedPhrase2(
                       height: 41.h,
                     ),
                     CheckBoxCustom2(
-                      title: 'I understand that if I lose my recovery private'
-                          ' key or passphrase, I will not be able to '
-                          'access my'
-                          ' wallet',
+                      title: S.current.i_understand,
                       bLocCreateSeedPhrase: bLocCreateSeedPhrase,
                     ),
                     SizedBox(
@@ -181,9 +184,8 @@ void showCreateSeedPhrase2(
                         walletName: bLocCreateSeedPhrase.nameWallet.value,
                         password: bLocCreateSeedPhrase.passWord,
                       );
-                      trustWalletChannel.setMethodCallHandler(
-                        bLocCreateSeedPhrase.nativeMethodCallBackTrustWallet,
-                      );
+                     // bLocCreateSeedPhrase.generateWallet();
+
 
                       showCreateSuccessfully(context, bLocCreateSeedPhrase);
                     } else {

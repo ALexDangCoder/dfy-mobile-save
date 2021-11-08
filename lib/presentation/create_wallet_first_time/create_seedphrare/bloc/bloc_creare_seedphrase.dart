@@ -71,6 +71,7 @@ class BLocCreateSeedPhrase {
   String privateKey = '';
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    print('callback ');
     switch (methodCall.method) {
       case 'generateWalletCallback':
         privateKey = await methodCall.arguments['privateKey'];
@@ -81,12 +82,11 @@ class BLocCreateSeedPhrase {
         break;
       case 'storeWalletCallback':
         bool isSuccess = await methodCall.arguments['isSuccess'];
+        print(isSuccess);
         break;
       case 'setConfigCallback':
-        print('store ');
-
         bool isSuccess = await methodCall.arguments['isSuccess'];
-        print('callback $isSuccess');
+        print(isSuccess);
         break;
       default:
         break;

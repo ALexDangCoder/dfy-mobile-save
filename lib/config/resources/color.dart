@@ -189,7 +189,7 @@ class LightApp extends AppColor {
 
   @override
   Color divideColor() {
-    return const Color.fromRGBO(255, 255, 255, 0.1);
+   return const Color.fromRGBO(255, 255, 255, 0.1);
   }
 
   @override

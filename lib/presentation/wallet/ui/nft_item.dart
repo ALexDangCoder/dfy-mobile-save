@@ -1,5 +1,7 @@
-import 'package:Dfy/config/resources/image_asset.dart';
+
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -35,7 +37,7 @@ class _NFTItemState extends State<NFTItem> {
             leading: Container(
               padding: EdgeInsets.only(
                 left: 10.w,
-                top: 10.w,
+                top: 10.h,
               ),
               child: ImageIcon(
                 _customTileExpanded
@@ -72,18 +74,22 @@ class _NFTItemState extends State<NFTItem> {
             ),
             onExpansionChanged: (bool expanded) {
               setState(
-                () => _customTileExpanded = expanded,
+                    () => _customTileExpanded = expanded,
               );
             },
             controlAffinity: ListTileControlAffinity.leading,
             children: <Widget>[
-              ListTile(
-                title: Text(
-                  'This is tile number 3',
-                  style: textNormalCustom(
-                    Colors.white,
-                    24.sp,
-                    FontWeight.w700,
+              Padding(
+                padding: EdgeInsets.only(left: 52.w,right: 26.w,bottom: 16.h,),
+                child: SizedBox(
+                  height: 140,
+                  child: ListView.builder(
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 6,
+                    itemBuilder: (BuildContext context, int index) =>
+                    const CardNFT(),
                   ),
                 ),
               ),

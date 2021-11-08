@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:Dfy/config/resources/color.dart';
-import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -9,7 +8,8 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
-import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
+import 'package:Dfy/presentation/restore_bts/ui/restore_bts.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 28.h,
                   ),
                   const Image(
-                    image: AssetImage(ImageAssets.centered),
+                    image: AssetImage(ImageAssets.center),
                   ),
                   SizedBox(
                     height: 68.h,
@@ -127,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 decoration: InputDecoration(
                                   hintText: S.current.password,
                                   hintStyle: textNormal(
-                                    Colors.white54,
+                                    AppTheme.getInstance().textThemeColor(),
                                     18.sp,
                                   ),
                                   border: InputBorder.none,
@@ -142,13 +142,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _cubit.hidePassword();
                                 }),
                                 child: _cubit.hidePass
-                                    ? const Icon(
-                                        Icons.visibility_outlined,
-                                        color: Colors.white30,
-                                      )
-                                    : const Icon(
+                                    ? Icon(
                                         Icons.visibility_off_outlined,
-                                        color: Colors.white30,
+                                        color: AppTheme.getInstance()
+                                            .suffixColor(),
+                                      )
+                                    : Icon(
+                                        Icons.visibility_outlined,
+                                        color: AppTheme.getInstance()
+                                            .suffixColor(),
                                       ),
                               ),
                             ),
@@ -162,9 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      if (enableLogin) {
-                        _cubit.checkPasswordWallet(controller.value.text);
-                      }
+                      _cubit.checkPasswordWallet(controller.value.text);
                     },
                     child: BlocListener<LoginCubit, LoginState>(
                       bloc: _cubit,
@@ -183,9 +183,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? ButtonRadial(
                               child: Center(
                                 child: Text(
-                                  S.current.login,
+                                  'Login',
                                   style: textNormalCustom(
-                                    AppTheme.getInstance().whiteColor(),
+                                    Colors.white,
                                     20.sp,
                                     FontWeight.w700,
                                   ),
@@ -195,9 +195,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           : ErrorButton(
                               child: Center(
                                 child: Text(
-                                  S.current.login,
+                                  'Login',
                                   style: textNormalCustom(
-                                    AppTheme.getInstance().whiteColor(),
+                                    Colors.white,
                                     20.sp,
                                     FontWeight.w700,
                                   ),
@@ -228,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               image: AssetImage(ImageAssets.faceID),
                             )
                           : const Image(
-                              image: AssetImage(ImageAssets.icFinger),
+                              image: AssetImage(ImageAssets.ic_finger),
                             ),
                     ),
                   ),
@@ -250,7 +250,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         child: Text(
-                          S.current.new_wallet,
+                          'New wallet',
                           style: textNormal(
                             Colors.amber,
                             18.sp,
@@ -277,11 +277,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
                             context: context,
-                            builder: (context) => const RestoreAccount(),
+                            builder: (context) => const RestoreBTS(),
                           );
                         },
                         child: Text(
-                          S.current.import_seed_phrase,
+                          'Import Seed phrase',
                           style: textNormal(
                             Colors.amber,
                             18.sp,
