@@ -48,6 +48,8 @@ class ImageAssets {
   static const String ic_out = '$baseImg/ic_out.png';
   static const String ic_close = '$baseImg/ic_close.png';
   static const String img_empty = '$baseImg/img_empty.png';
+  static const String paste = '$baseImg/Paste.png';
+  static const String scan_qr = '$baseImg/scan-barcode.png';
   static const String addsWallet = '$baseImg/addsWallet.png';
   static const String backArrow = '$baseImg/back_arrow.png';
   static const String centered = '$baseImg/Centered.png';

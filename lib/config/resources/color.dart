@@ -99,10 +99,10 @@ abstract class AppColor {
   Color textThemeColor();
 
   Color suffixColor();
+
   Color errorColorButton();
 
   Color selectDialogColor();
-
 
   List<Color> listColorAddWalletSeedPhrase();
 
