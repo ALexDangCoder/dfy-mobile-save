@@ -136,7 +136,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 child: Text(
                   S.current.pass_must,
                   style: textNormal(
-                    AppTheme.getInstance().whiteWithOpacity(),
+                    AppTheme.getInstance().wrongColor(),
                     12.sp,
                   ).copyWith(
                     fontWeight: FontWeight.w400,
@@ -167,7 +167,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 child: Text(
                   S.current.not_match,
                   style: textNormal(
-                    AppTheme.getInstance().whiteWithOpacity(),
+                    AppTheme.getInstance().wrongColor(),
                     12.sp,
                   ).copyWith(
                     fontWeight: FontWeight.w400,

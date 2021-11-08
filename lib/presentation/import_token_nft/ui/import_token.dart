@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 
+import '../../../main.dart';
 import 'choose_token.dart';
 import 'enter_address.dart';
 
@@ -20,7 +21,15 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
     context: context,
     backgroundColor: Colors.transparent,
     builder: (context) {
-      final textController = TextEditingController();
+      // bloc.importToken(
+      //     walletAddress: "walletAddress",
+      //     tokenAddress: "tokenAddress",
+      //     symbol: "dsfsadf",
+      //     decimal: 1);
+      bloc.getListSupportedToken(walletAddress: "walletAddress");
+      trustWalletChannel.setMethodCallHandler(
+        bloc.nativeMethodCallBackTrustWallet,
+      ); //final textController = TextEditingController();
       return DefaultTabController(
         length: 2,
         child: Container(
