@@ -488,27 +488,25 @@ class _RestoreBTSState extends State<RestoreBTS> {
                             )) {
                               if (restoreCubit.strValue ==
                                   S.current.seed_phrase) {
-                                restoreCubit
-                                    .importWallet(
-                                      type: FormType.PASS_PHRASE.toString(),
-                                      content: seedPhraseController.text,
-                                      password: passwordController.text,
-                                    )
-                                    .then(
-                                      (_) => showCreateSuccessfully(context),
-                                    );
-                                showCreateSuccessfully(context);
+                                restoreCubit.importWallet(
+                                  type: FormType.PASS_PHRASE.toString(),
+                                  content: seedPhraseController.text,
+                                  password: passwordController.text,
+                                );
+                                // .then(
+                                //   (_) => showCreateSuccessfully(context),
+                                // );
+                                //showCreateSuccessfully(context);
                               } else {
-                                restoreCubit
-                                    .importWallet(
-                                      type: FormType.PASS_PHRASE.toString(),
-                                      content: privateKeyController.text,
-                                      password: passwordController.text,
-                                    )
-                                    .then(
-                                      (_) => showCreateSuccessfully(context),
-                                    );
-                                showCreateSuccessfully(context);
+                                restoreCubit.importWallet(
+                                  type: FormType.PASS_PHRASE.toString(),
+                                  content: privateKeyController.text,
+                                  password: passwordController.text,
+                                );
+                                //     .then(
+                                //       (_) => showCreateSuccessfully(context),
+                                //     );
+                                // showCreateSuccessfully(context);
                               }
                             }
                           },

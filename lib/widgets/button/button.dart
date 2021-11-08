@@ -14,11 +14,6 @@ class ButtonGold extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  _ButtonGoldState createState() => _ButtonGoldState();
-}
-
-class _ButtonGoldState extends State<ButtonGold> {
-  @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(right: 26.w, left: 26.w, bottom: 38),
@@ -26,7 +21,9 @@ class _ButtonGoldState extends State<ButtonGold> {
         gradient: RadialGradient(
           radius: 4,
           center: const Alignment(0.5, -0.5),
-          colors: AppTheme.getInstance().gradientButtonColor(),
+          colors: isEnable
+              ? AppTheme.getInstance().gradientButtonColor()
+              : [AppTheme.getInstance().disableColor(),AppTheme.getInstance().disableColor()],
         ),
         borderRadius: const BorderRadius.all(
           Radius.circular(22),
@@ -36,7 +33,7 @@ class _ButtonGoldState extends State<ButtonGold> {
       width: 298.w,
       child: Center(
         child: Text(
-          widget.title,
+          title,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
             20.sp,

@@ -81,14 +81,12 @@ class BLocCreateSeedPhrase {
         isCheckData.sink.add(true);
         break;
       case 'storeWalletCallback':
-        print('callback ');
         bool isSuccess = await methodCall.arguments['isSuccess'];
+        print(isSuccess);
         break;
       case 'setConfigCallback':
-        print('store ');
-
         bool isSuccess = await methodCall.arguments['isSuccess'];
-        print('callback $isSuccess');
+        print(isSuccess);
         break;
       default:
         break;

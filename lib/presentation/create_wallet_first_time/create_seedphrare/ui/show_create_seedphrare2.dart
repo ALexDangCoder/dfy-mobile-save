@@ -184,10 +184,8 @@ void showCreateSeedPhrase2(
                         walletName: bLocCreateSeedPhrase.nameWallet.value,
                         password: bLocCreateSeedPhrase.passWord,
                       );
-                      //bLocCreateSeedPhrase.generateWallet();
-                      trustWalletChannel.setMethodCallHandler(
-                        bLocCreateSeedPhrase.nativeMethodCallBackTrustWallet,
-                      );
+                     // bLocCreateSeedPhrase.generateWallet();
+
 
                       showCreateSuccessfully(context, bLocCreateSeedPhrase);
                     } else {

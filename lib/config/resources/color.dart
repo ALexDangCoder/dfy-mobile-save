@@ -244,14 +244,12 @@ class LightApp extends AppColor {
 
   @override
   Color backgroundLoginTextField() {
-    // TODO: implement backgroundLoginTextField
-    throw UnimplementedError();
+    return Colors.white;
   }
 
   @override
   Color whiteColor() {
-    // TODO: implement whiteColor
-    throw UnimplementedError();
+    return Colors.white;
   }
 }
 

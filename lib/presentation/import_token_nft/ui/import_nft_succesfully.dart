@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

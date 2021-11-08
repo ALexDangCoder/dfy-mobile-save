@@ -72,7 +72,7 @@ class _MainScreenState extends BaseState<MainScreen> {
     super.initState();
     _pages = [
       const LoginScreen(),
-      const PawnScreen(),
+      const WalletScreen(),
       const HomeScreen(),
       const MarketPlaceScreen(),
       const StakingScreen(),

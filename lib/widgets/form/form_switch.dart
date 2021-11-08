@@ -42,7 +42,7 @@ class FromSwitch extends StatelessWidget {
           },
           switchActiveColor: AppTheme.getInstance().fillColor(),
           switchType: SwitchType.cupertino,
-          title: Text(widget.title,
+          title: Text(title,
               style: textNormal(
                 AppTheme.getInstance().textThemeColor(),
                 16.sp,
