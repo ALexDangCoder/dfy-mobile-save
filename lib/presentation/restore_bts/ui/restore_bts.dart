@@ -60,6 +60,10 @@ class _RestoreBTSState extends State<RestoreBTS> {
     return GestureDetector(
       onTap: () {
         restoreCubit.boolSink.add(false);
+        final FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
       },
       child: Container(
         height: 764.h,
