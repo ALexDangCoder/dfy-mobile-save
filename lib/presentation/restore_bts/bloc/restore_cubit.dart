@@ -30,6 +30,7 @@ class RestoreCubit extends Cubit<RestoreState> {
   final BehaviorSubject<bool> _ckcBoxSubject = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _validate = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _match = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _walletSubject = BehaviorSubject.seeded(true);
 
   Stream<bool> get validateStream => _validate.stream;
 
@@ -38,6 +39,10 @@ class RestoreCubit extends Cubit<RestoreState> {
   Sink<bool> get validateSink => _validate.sink;
 
   Sink<bool> get matchSink => _match.sink;
+
+  bool get flag => _walletSubject.value;
+
+  Sink<bool> get flagSink => _walletSubject.sink;
 
   Stream<List<String>> get listStringStream => _behaviorSubject.stream;
 
@@ -69,9 +74,11 @@ class RestoreCubit extends Cubit<RestoreState> {
 
   Sink<bool> get ckcSink => _ckcBoxSubject.sink;
 
+
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'importWalletCallback':
+        flagSink.add(true);
         final walletName = methodCall.arguments['walletName'];
         final walletAddress = methodCall.arguments['walletAddress'];
         wallet = Wallet(walletName, walletAddress);
@@ -81,7 +88,7 @@ class RestoreCubit extends Cubit<RestoreState> {
     }
   }
 
-  Future<void> importWallet({
+  Future<void> importWalletKey({
     required String type,
     required String content,
     String? password,
@@ -93,7 +100,9 @@ class RestoreCubit extends Cubit<RestoreState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
-    } on PlatformException {}
+    } on PlatformException {
+      flagSink.add(false);
+    }
   }
 
   void isValidate(String value) {

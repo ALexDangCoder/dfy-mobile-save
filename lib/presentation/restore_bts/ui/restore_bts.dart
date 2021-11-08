@@ -54,7 +54,8 @@ class _RestoreBTSState extends State<RestoreBTS> {
 
   @override
   void dispose() {
-    restoreCubit.dispose();
+    // restoreCubit.dispose();
+    restoreCubit.close();
     seedPhraseController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
@@ -500,14 +501,14 @@ class _RestoreBTSState extends State<RestoreBTS> {
                               final flag = restoreCubit.strValue ==
                                   S.current.seed_phrase;
                               restoreCubit
-                                  .importWallet(
-                                    type: !flag ? PRIVATE_KEY : PASS_PHRASE,
+                                  .importWalletKey(
+                                    type: flag ? PASS_PHRASE : PRIVATE_KEY,
                                     content: privateKeyController.text,
                                     password: passwordController.text,
-                                  )
-                                  .then(
-                                    (_) => showCreateSuccessfully(context),
                                   );
+                              if (restoreCubit.flag) {
+                                showCreateSuccessfully(context);
+                              }
                             }
                           },
                           gradient: RadialGradient(
