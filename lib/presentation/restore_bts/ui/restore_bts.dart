@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -13,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+const String PASS_PHRASE = 'PASS_PHRASE';
+const String PRIVATE_KEY = 'PRIVATE_KEY';
 class RestoreBTS extends StatefulWidget {
   const RestoreBTS({Key? key}) : super(key: key);
 
@@ -494,25 +498,25 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                   S.current.seed_phrase) {
                                 restoreCubit
                                     .importWallet(
-                                      type: FormType.PASS_PHRASE.toString(),
+                                      type: PASS_PHRASE,
                                       content: seedPhraseController.text,
                                       password: passwordController.text,
                                     )
                                     .then(
                                       (_) => showCreateSuccessfully(context),
                                     );
-                                showCreateSuccessfully(context);
+                                //showCreateSuccessfully(context);
                               } else {
                                 restoreCubit
                                     .importWallet(
-                                      type: FormType.PASS_PHRASE.toString(),
+                                      type: PRIVATE_KEY,
                                       content: privateKeyController.text,
                                       password: passwordController.text,
                                     )
                                     .then(
                                       (_) => showCreateSuccessfully(context),
                                     );
-                                showCreateSuccessfully(context);
+                                //showCreateSuccessfully(context);
                               }
                             }
                           },

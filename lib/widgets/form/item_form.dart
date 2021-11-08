@@ -35,7 +35,8 @@ class ItemForm extends StatelessWidget {
           width: 323.w,
           padding: EdgeInsets.only(
             top: 10.h,
-            bottom: 10.w,
+            bottom: 10.h,
+            right: 10.w,
           ),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
