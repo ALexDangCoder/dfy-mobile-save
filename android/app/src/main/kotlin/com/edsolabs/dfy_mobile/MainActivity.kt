@@ -1,12 +1,15 @@
 package com.edsolabs.dfy_mobile
 
+import com.google.protobuf.ByteString
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
+import wallet.core.java.AnySigner
 import wallet.core.jni.AnyAddress
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
+import wallet.core.jni.proto.Binance
 import kotlin.experimental.and
 
 class MainActivity : FlutterFragmentActivity() {
@@ -108,6 +111,48 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("password") ?: return@setMethodCallHandler
                     getListSupportedToken(walletAddress, password)
                 }
+                "setShowedToken" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    val tokenID =
+                        call.argument<Int>("tokenID")
+                            ?: return@setMethodCallHandler
+                    val isShow =
+                        call.argument<Boolean>("isShow")
+                            ?: return@setMethodCallHandler
+                    val password =
+                        call.argument<String>("password") ?: return@setMethodCallHandler
+                    setShowedToken(walletAddress, tokenID, isShow, password)
+                }
+                "importNft" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    val nftAddress =
+                        call.argument<String>("nftAddress")
+                            ?: return@setMethodCallHandler
+                    val nftID =
+                        call.argument<Int>("nftID")
+                            ?: return@setMethodCallHandler
+                    val password =
+                        call.argument<String>("password") ?: return@setMethodCallHandler
+                    importNft(walletAddress, nftAddress, nftID, password)
+                }
+                "setShowedNft" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    val nftID =
+                        call.argument<Int>("nftID")
+                            ?: return@setMethodCallHandler
+                    val isShow =
+                        call.argument<Boolean>("isShow")
+                            ?: return@setMethodCallHandler
+                    val password =
+                        call.argument<String>("password") ?: return@setMethodCallHandler
+                    setShowedNft(walletAddress, nftID, isShow, password)
+                }
                 "sendToken" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
@@ -122,7 +167,6 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("password") ?: return@setMethodCallHandler
                     sendToken(walletAddress, receiveAddress, tokenID, amount, password)
                 }
-
                 "sendNft" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
@@ -134,6 +178,26 @@ class MainActivity : FlutterFragmentActivity() {
                     val password =
                         call.argument<String>("password") ?: return@setMethodCallHandler
                     sendNft(walletAddress, receiveAddress, nftID, password)
+                }
+                "getTokenDetail" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    val tokenID =
+                        call.argument<Int>("tokenID") ?: return@setMethodCallHandler
+                    val password =
+                        call.argument<String>("password") ?: return@setMethodCallHandler
+                    getTokenDetail(walletAddress, tokenID, password)
+                }
+                "getNftDetail" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    val nftID =
+                        call.argument<Int>("nftID") ?: return@setMethodCallHandler
+                    val password =
+                        call.argument<String>("password") ?: return@setMethodCallHandler
+                    getNftDetail(walletAddress, nftID, password)
                 }
             }
         }
@@ -213,12 +277,14 @@ class MainActivity : FlutterFragmentActivity() {
     private fun getListShowedToken(walletAddress: String, password: String) {
         //todo
         val hasMap = HashMap<String, Any>()
+        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
         channel?.invokeMethod("getListShowedTokenCallback", hasMap)
     }
 
     private fun getListShowedNft(walletAddress: String, password: String) {
         //todo
         val hasMap = HashMap<String, Any>()
+        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
         channel?.invokeMethod("getListShowedNftCallback", hasMap)
     }
 
@@ -239,6 +305,39 @@ class MainActivity : FlutterFragmentActivity() {
         //todo
         val hasMap = HashMap<String, Any>()
         channel?.invokeMethod("getListSupportedTokenCallback", hasMap)
+    }
+
+    private fun setShowedToken(
+        walletAddress: String,
+        tokenID: Int,
+        show: Boolean,
+        password: String
+    ) {
+        val hasMap = HashMap<String, Any>()
+        hasMap["isSuccess"] = true
+        channel?.invokeMethod("sendTokenCallback", hasMap)
+    }
+
+    private fun importNft(walletAddress: String, nftAddress: String, nftID: Int, password: String) {
+        val hasMap = HashMap<String, Any>()
+        hasMap["isSuccess"] = true
+        channel?.invokeMethod("importNftCallback", hasMap)
+    }
+
+    private fun setShowedNft(walletAddress: String, nftID: Int, show: Boolean, password: String) {
+        val hasMap = HashMap<String, Any>()
+        hasMap["isSuccess"] = true
+        channel?.invokeMethod("setShowedNftCallback", hasMap)
+    }
+
+    private fun getTokenDetail(walletAddress: String, tokenID: Int, password: String) {
+        val hasMap = HashMap<String, Any>()
+        channel?.invokeMethod("getTokenDetailCallback", hasMap)
+    }
+
+    private fun getNftDetail(walletAddress: String, nftID: Int, password: String) {
+        val hasMap = HashMap<String, Any>()
+        channel?.invokeMethod("getTokenDetailCallback", hasMap)
     }
 
     private fun sendToken(
@@ -270,8 +369,25 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun genAddressByPrivateKey(privateKey: String, coinType: CoinType): String {
+        val signerInput = Binance.SigningInput.newBuilder().apply {
+            this.privateKey = ByteString.copyFrom(privateKey.hexStringToByteArray())
+        }.build()
+        val signerOutput =
+            AnySigner.sign(signerInput, CoinType.SMARTCHAIN, Binance.SigningOutput.parser())
         return ""
     }
+}
+
+private fun String.hexStringToByteArray(): ByteArray {
+    val HEX_CHARS = "0123456789ABCDEF"
+    val result = ByteArray(length / 2)
+    for (i in 0 until length step 2) {
+        val firstIndex = HEX_CHARS.indexOf(this[i].toUpperCase());
+        val secondIndex = HEX_CHARS.indexOf(this[i + 1].toUpperCase());
+        val octet = firstIndex.shl(4).or(secondIndex)
+        result.set(i.shr(1), octet.toByte())
+    }
+    return result
 }
 
 fun ByteArray.toHexString(withPrefix: Boolean = true): String {
