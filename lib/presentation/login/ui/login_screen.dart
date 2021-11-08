@@ -281,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         child: Text(
-                          'Import Seed phrase',
+                          S.current.import_seed_phrase,
                           style: textNormal(
                             Colors.amber,
                             18.sp,

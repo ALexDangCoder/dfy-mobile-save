@@ -11,8 +11,8 @@ part 'wallet_state.dart';
 class WalletCubit extends BaseCubit<WalletState> {
   WalletCubit() : super(WalletInitial());
 
-  final String addressWallet = '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
-  String formatAddressWallet = '';
+  String addressWallet = '0x753EE7D5FdBD248fED37add0C951211E03a7DA15';
+  late String formatAddressWallet = '';
 
   Future<void> getAddressWallet() async {}
 
@@ -20,10 +20,10 @@ class WalletCubit extends BaseCubit<WalletState> {
     final splitAddress = address.split('');
     formatAddressWallet = '${splitAddress[0]}'
         '${splitAddress[1]}${splitAddress[2]}'
-        '${splitAddress[3]}${splitAddress[6]}'
-        '${splitAddress[5]}...${splitAddress[37]}'
-        '${splitAddress[38]}${splitAddress[39]}'
-        '${splitAddress[40]}';
+        '${splitAddress[3]}${splitAddress[4]}'
+        '${splitAddress[5]}...${splitAddress[38]}'
+        '${splitAddress[39]}${splitAddress[40]}'
+        '${splitAddress[41]}';
   }
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
@@ -36,10 +36,16 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'getListShowedNftCallback':
         objNFT = methodCall.arguments;
         break;
+      case 'importWalletCallback':
+        print('3: ' + methodCall.arguments.toString());
+        print('3: ' + methodCall.arguments['walletAddress'].toString());
+        final address = methodCall.arguments['walletAddress'];
+        addressWallet = address;
+        formatAddress('0x753EE7D5FdBD248fED37add0C951211E03a7DA15');
+        break;
       default:
         break;
     }
-    print(objToken);
   }
 
   Future<void> getListToken(String walletAddress, String password) async {
@@ -65,5 +71,17 @@ class WalletCubit extends BaseCubit<WalletState> {
     } on PlatformException {
       log(e);
     }
+  }
+
+  Future<void> importWallet() async {
+    try {
+      final data = {
+        'type': 'PASS_PHRASE',
+        'content':
+        'party response give dove tooth master flip video permit game expire token',
+        'password': '123456',
+      };
+      await trustWalletChannel.invokeMethod('importWallet', data);
+    } on PlatformException {}
   }
 }

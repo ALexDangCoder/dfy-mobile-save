@@ -33,12 +33,13 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    _cubit.formatAddress(_cubit.addressWallet);
+    trustWalletChannel
+        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
+    _cubit.importWallet();
+    _cubit.formatAddress('0x753EE7D5FdBD248fED37add0C951211E03a7DA15');
     _tabController = TabController(length: 2, vsync: this);
     fToast = FToast();
     fToast.init(context);
-    trustWalletChannel
-        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
     _cubit.getListNFT(
       _cubit.addressWallet,
       password: 'aaa',
