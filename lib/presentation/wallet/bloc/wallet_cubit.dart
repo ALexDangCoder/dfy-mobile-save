@@ -1,5 +1,3 @@
-
-
 import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
@@ -31,10 +29,9 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     Object objToken = {};
     Object objNFT = {};
-
     switch (methodCall.method) {
       case 'getListShowedTokenCallback':
-        objToken = methodCall.arguments;
+        objToken = methodCall.arguments['TokenObject'];
         break;
       case 'getListShowedNftCallback':
         objNFT = methodCall.arguments;
@@ -42,15 +39,13 @@ class WalletCubit extends BaseCubit<WalletState> {
       default:
         break;
     }
-    print(objNFT);
-
+    print(objToken);
   }
-
 
   Future<void> getListToken(String walletAddress, String password) async {
     try {
       final data = {
-        'walletAddress':walletAddress,
+        'walletAddress': walletAddress,
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListShowedToken', data);
@@ -58,10 +53,12 @@ class WalletCubit extends BaseCubit<WalletState> {
       log(e);
     }
   }
-  Future<void> getListNFT(String walletAddress, String password) async {
+
+  Future<void> getListNFT(String walletAddress,
+      {required String password,}) async {
     try {
       final data = {
-        'walletAddress':walletAddress,
+        'walletAddress': walletAddress,
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListShowedNft', data);
@@ -69,6 +66,4 @@ class WalletCubit extends BaseCubit<WalletState> {
       log(e);
     }
   }
-
-
 }

@@ -1,12 +1,9 @@
 import 'package:Dfy/config/base/base_screen.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/presentation/home/ui/home_screen.dart';
-import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
 import 'package:Dfy/presentation/pawn/ui/pawn_screen.dart';
 import 'package:Dfy/presentation/staking/ui/staking_screen.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/widgets/bottom_appbar.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
@@ -107,7 +104,7 @@ class _MainScreenState extends BaseState<MainScreen> {
           return Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              _pages.elementAt(snapshot.data ?? tabWalletIndex),
+              _pages.elementAt(snapshot.data ?? tabHomeIndex),
               CustomBottomHomeAppbar(
                 mainCubit: _cubit,
               )

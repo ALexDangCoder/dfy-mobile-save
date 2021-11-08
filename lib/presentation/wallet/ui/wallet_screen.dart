@@ -33,13 +33,16 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    _cubit.formatAddress('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
+    _cubit.formatAddress(_cubit.addressWallet);
     _tabController = TabController(length: 2, vsync: this);
     fToast = FToast();
     fToast.init(context);
     trustWalletChannel
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
-    _cubit.getListNFT('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf', 'aaa');
+    _cubit.getListNFT(
+      _cubit.addressWallet,
+      password: 'aaa',
+    );
   }
 
   @override
@@ -262,8 +265,11 @@ class _WalletState extends State<WalletScreen>
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    width: 37.w,
+                  ),
                   Text(
-                    'Nguyen Thao Nguyen',
+                    'Nguyen Van Hung',
                     style: textNormalCustom(
                       Colors.white,
                       24.sp,
