@@ -430,6 +430,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                   return Row(
                     children: [
                       Checkbox(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
                         fillColor: MaterialStateProperty.all(
                           AppTheme.getInstance().fillColor(),
                         ),

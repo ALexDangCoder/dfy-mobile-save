@@ -196,9 +196,10 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   SizedBox ckcBoxAndTextSetupPass() {
     return SizedBox(
-      height: 48.h,
+      // height: 48.h,
       width: 323.w,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Align(
             alignment: Alignment.topLeft,
@@ -237,7 +238,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
           ),
           SizedBox(
             width: 287.w,
-            height: 48.h,
+            // height: 48.h,
             child: Text(
               'I understand DeFi For You will not recover this\n'
               ' password for me',
@@ -384,7 +385,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
       padding: EdgeInsets.only(top: 24.h),
       child: SizedBox(
         width: 323.w,
-        height: 72.h,
+        // height: 72.h,
         child: Text(
           'Please setup your new password!\n'
           'This password will unlock your DeFi For You\n wallet '
@@ -402,9 +403,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
   Padding header() {
     return Padding(
       padding:
-          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
+          EdgeInsets.only( top: 16.h, bottom: 20.h),
+          // EdgeInsets.only(left: 0),
       child: Row(
         children: [
+          // SizedBox(width: 26.w,),
           Expanded(
             child: IconButton(
               onPressed: () {

@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 323.w,
                     height: 64.h,
                     decoration: BoxDecoration(
-                      color: AppTheme.getInstance().backgroundLoginTextField(),
+                      color: AppTheme.getInstance().itemBtsColors(),
                       borderRadius: const BorderRadius.all(
                         Radius.circular(20),
                       ),

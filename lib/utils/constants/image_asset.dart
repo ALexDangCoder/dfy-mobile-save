@@ -73,6 +73,7 @@ class ImageAssets {
   static const String icLineRight = '$baseImg/ic_line_right.png';
   static const String icOut = '$baseImg/ic_out.png';
   static const String icPassword = '$baseImg/ic_password.png';
+  static const String hardCoreImgWallet = '$baseImg/naruto.png';
   static const String icTabMarketSelect =
       '$baseImg/ic_tab_market_place_select.svg.svg';
   static const String icTabMarketUnselect =

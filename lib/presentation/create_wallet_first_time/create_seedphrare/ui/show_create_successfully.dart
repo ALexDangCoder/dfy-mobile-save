@@ -71,6 +71,8 @@ void showCreateSuccessfully(
                       height: 111.h,
                     ),
                     StreamBuilder(
+                      stream: bLocCreateSeedPhrase.isCheckTouchID,
+
                       builder: (context, AsyncSnapshot<bool> snapshot) {
                         return FromSwitch1(
                           bLocCreateSeedPhrase: bLocCreateSeedPhrase,
@@ -84,7 +86,7 @@ void showCreateSuccessfully(
                       height: 20.h,
                     ),
                     StreamBuilder(
-                      stream: bLocCreateSeedPhrase.isCheckTouchID,
+                      stream: bLocCreateSeedPhrase.isCheckAppLock,
                       builder: (context, AsyncSnapshot<bool> snapshot) {
                         return FromSwitch(
                           bLocCreateSeedPhrase: bLocCreateSeedPhrase,

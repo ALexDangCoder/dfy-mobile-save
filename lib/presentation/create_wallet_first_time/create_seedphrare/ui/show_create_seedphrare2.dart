@@ -4,7 +4,6 @@ import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 
-import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -14,13 +13,10 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase.dart';
 import 'package:Dfy/widgets/list_passphrase/list_passphrase.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import '../../../../main.dart';
 
 void showCreateSeedPhrase2(
   BuildContext context,

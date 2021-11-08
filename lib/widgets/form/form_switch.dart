@@ -38,7 +38,7 @@ class FromSwitch extends StatelessWidget {
           value: isCheck,
           leading: Image.asset(urlPrefixIcon),
           onChanged: (value) {
-            bLocCreateSeedPhrase.isCheckTouchID.sink.add(value);
+            bLocCreateSeedPhrase.isCheckAppLock.sink.add(value);
           },
           switchActiveColor: AppTheme.getInstance().fillColor(),
           switchType: SwitchType.cupertino,

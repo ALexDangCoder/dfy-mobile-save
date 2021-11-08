@@ -33,7 +33,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
   @override
   void initState() {
     gasFeeFirstFetch = 0.6;
-    informationWallet = const InformationWallet(
+    informationWallet = InformationWallet(
       nameWallet: 'Test wallet',
       fromAddress: '0xFE5...4fd0',
       amount: 0.551,

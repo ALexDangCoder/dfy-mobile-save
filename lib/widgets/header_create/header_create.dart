@@ -13,25 +13,18 @@ class HeaderCreate extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          child: Image.asset(
-            ImageAssets.ic_out
-          ),
+          child: Image.asset(ImageAssets.ic_out),
           onTap: () {
             Navigator.pop(context);
           },
         ),
-        SizedBox(
-          width: 66.w,
-        ),
         Text(
           S.current.create_wallet,
           style: TextStyle(
-              fontSize: 20.sp,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,),
-        ),
-        SizedBox(
-          width: 64.w,
+            fontSize: 20.sp,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         GestureDetector(
           child: Image.asset(

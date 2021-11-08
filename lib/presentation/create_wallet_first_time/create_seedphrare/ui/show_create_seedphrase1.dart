@@ -175,7 +175,7 @@ void showCreateSeedPhrase1(
                                 ),
                                 CheckBoxCustom(
                                   title:
-                                      'Do not provide your recovery key to anyone',
+                                  'Do not provide your recovery key to anyone',
                                   bLocCreateSeedPhrase: blocCreateSeedPhrase,
                                 ),
                                 SizedBox(

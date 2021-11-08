@@ -50,6 +50,7 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                 margin: EdgeInsets.only(
                     left: 26.w, top: 16.h, right: 26.w, bottom: 20.h),
                 child: Row(
+                  
                   children: [
                     spaceW5,
                     GestureDetector(
@@ -61,7 +62,7 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                       },
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 90.w, left: 90.w),
+                      margin: EdgeInsets.only( left: 90.w),
                       child: Text(Strings.import_token,
                           style: textNormalCustom(null, 20, FontWeight.bold)),
                     ),
