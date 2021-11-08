@@ -1,21 +1,23 @@
+import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bottom_sheet_receive_token/bloc/receive_cubit.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/save_pop_up.dart';
+import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/custom_rect_tween.dart';
+import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/hero_dialog_route.dart';
 import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/set_amount_pop_up.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/hero_dialog_route.dart';
-import 'package:share/share.dart';
-
-import 'custom_rect_tween.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ReceiveDFY extends StatefulWidget {
   const ReceiveDFY({Key? key, required this.walletAddress}) : super(key: key);
@@ -29,6 +31,7 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
   late final TextEditingController amountController;
   late final ReceiveCubit receiveCubit;
   late final FToast toast;
+  final globalKey = GlobalKey();
   String? prize;
   late final GlobalKey key;
 
@@ -128,14 +131,14 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
               children: [
                 SizedBox(
                   width: 125.w,
-                  height: 29.83.h,
+                  height: 29.h,
                   child: Image.asset(ImageAssets.defiText),
                 ),
                 SizedBox(
                   height: 13.17.h,
                 ),
                 RepaintBoundary(
-                  key: key,
+                  key: globalKey,
                   child: QrImage(
                     data: widget.walletAddress,
                     size: 230.w,
@@ -203,11 +206,11 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
                 _buildColumnButton(
                   path: ImageAssets.save,
                   label: S.current.save,
-                  callback: () {
-                   toast.showToast(
+                  callback: () async {
+                    toast.showToast(
                       child: popMenu(),
                       toastDuration: const Duration(seconds: 1),
-                     gravity: ToastGravity.CENTER,
+                      gravity: ToastGravity.CENTER,
                     );
                   },
                 ),
@@ -232,7 +235,23 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
                 _buildColumnButton(
                   path: ImageAssets.share,
                   label: S.current.share,
-                  callback: () async {},
+                  callback: () async {
+                    final RenderRepaintBoundary? boundary =
+                        globalKey.currentContext!.findRenderObject()
+                            as RenderRepaintBoundary?;
+                    final image = await boundary!.toImage();
+                    final ByteData? byteData =
+                        await image.toByteData(format: ImageByteFormat.png);
+                    final Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+                    final tempDir = await getTemporaryDirectory();
+                    final file =
+                        await File('${tempDir.path}/image.png').create();
+                    await file.writeAsBytes(pngBytes);
+                    await Share.shareFiles(
+                      ['${tempDir.path}/image.png'],
+                    );
+                  },
                 ),
               ],
             ),
@@ -255,9 +274,10 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
             height: 48.h,
             width: 48.h,
             decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color.fromRGBO(255, 255, 255, 0.2),
-                image: DecorationImage(image: AssetImage(path))),
+              shape: BoxShape.circle,
+              color: const Color.fromRGBO(255, 255, 255, 0.2),
+              image: DecorationImage(image: AssetImage(path)),
+            ),
           ),
           SizedBox(
             height: 8.h,
@@ -288,7 +308,8 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
               color: Colors.white.withOpacity(0.6),
               elevation: 2,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: SizedBox(
                 width: 232.w,
                 height: 83.h,

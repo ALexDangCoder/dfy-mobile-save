@@ -10,9 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SetAmountPopUp extends StatelessWidget {
-  const SetAmountPopUp(
-      {Key? key, required this.controller, required this.cubit, required this.focusNode})
-      : super(key: key);
+  const SetAmountPopUp({
+    Key? key,
+    required this.controller,
+    required this.cubit,
+    required this.focusNode,
+  }) : super(key: key);
   final TextEditingController controller;
   final ReceiveCubit cubit;
   final FocusNode focusNode;
@@ -107,8 +110,7 @@ class SetAmountPopUp extends StatelessWidget {
                           Expanded(
                             child: InkWell(
                               onTap: () {
-                                cubit.amountSink.add(controller.text);
-                                Navigator.pop(context);
+                                handleNumber(context);
                               },
                               child: SizedBox(
                                 width: 156.w,
@@ -138,5 +140,21 @@ class SetAmountPopUp extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void handleNumber(BuildContext context) {
+    if (controller.text.isNotEmpty) {
+      final number = double.parse(controller.text);
+      if (number == 0) {
+        cubit.amountSink.add('');
+        controller.clear();
+      } else {
+        cubit.amountSink.add(number.toString());
+      }
+      Navigator.pop(context);
+    } else {
+      cubit.amountSink.add(controller.text);
+      Navigator.pop(context);
+    }
   }
 }

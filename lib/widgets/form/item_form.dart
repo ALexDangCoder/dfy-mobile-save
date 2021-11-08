@@ -90,7 +90,7 @@ class ItemForm extends StatelessWidget {
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
-          color: AppTheme.getInstance().itemBtsColor(),
+          color: AppTheme.getInstance().itemBtsColors(),
         ),
         child: Row(
           children: [
@@ -99,6 +99,9 @@ class ItemForm extends StatelessWidget {
                 controller: controller,
                 keyboardType: TextInputType.number,
                 focusNode: focusNode,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'(^\-?\d*\.?\d*)'))
+                ],
                 style: textNormal(
                   Colors.white,
                   16.sp,
