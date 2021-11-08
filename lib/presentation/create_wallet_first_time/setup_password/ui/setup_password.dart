@@ -91,7 +91,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
           ),
           GestureDetector(
             child: ButtonGold(
-              title: S.current.continue_s,
+              title: S.current.continue_s, isEnable: true,
             ),
             onTap: () async {
               isValidPassCubit.isValidate(password.text);

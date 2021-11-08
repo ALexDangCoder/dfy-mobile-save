@@ -44,8 +44,6 @@ class _RestoreBTSState extends State<RestoreBTS> {
   void initState() {
     super.initState();
     restoreCubit = RestoreCubit();
-    trustWalletChannel
-        .setMethodCallHandler(restoreCubit.nativeMethodCallBackTrustWallet);
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
     privateKeyController = TextEditingController();

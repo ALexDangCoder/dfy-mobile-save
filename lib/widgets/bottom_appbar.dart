@@ -1,12 +1,13 @@
 import 'package:Dfy/config/resources/color.dart';
-import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomBottomHomeAppbar extends StatefulWidget {
   MainCubit mainCubit;
@@ -33,7 +34,7 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
         ),
       ),
       width: MediaQuery.of(context).size.width,
-      height: 96,
+      height: 96.h,
       child: StreamBuilder(
         stream: widget.mainCubit.indexStream,
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
@@ -81,7 +82,7 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
                     children: [
                       Image.asset(
                         icHomeTab,
-                        height: 93,
+                        height: 93.h,
                         fit: BoxFit.cover,
                       )
                     ],

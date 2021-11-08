@@ -87,9 +87,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     width: 323.w,
                     height: 64.h,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF242234),
-                      borderRadius: BorderRadius.all(
+                    decoration: BoxDecoration(
+                      color: AppTheme.getInstance().backgroundLoginTextField(),
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(20),
                       ),
                     ),
@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               padding: EdgeInsets.only(top: 12.h),
                               child: Icon(
                                 Icons.lock_outline,
-                                color: const Color(0xFFFFFFFF),
+                                color: AppTheme.getInstance().whiteColor(),
                                 size: 24.sp,
                               ),
                             ),
@@ -116,10 +116,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Expanded(
                               child: TextFormField(
-                                cursorColor: Colors.white,
-                                style: textNormal(
-                                  AppTheme.getInstance().textThemeColor(),
-                                  18.sp,
+                                cursorColor:
+                                    AppTheme.getInstance().whiteColor(),
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  color: AppTheme.getInstance().whiteColor(),
                                 ),
                                 controller: controller,
                                 obscureText: _cubit.hidePass,
@@ -182,9 +183,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? ButtonRadial(
                               child: Center(
                                 child: Text(
-                                  S.current.login,
+                                  'Login',
                                   style: textNormalCustom(
-                                    AppTheme.getInstance().textThemeColor(),
+                                    Colors.white,
                                     20.sp,
                                     FontWeight.w700,
                                   ),
@@ -194,9 +195,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           : ErrorButton(
                               child: Center(
                                 child: Text(
-                                  S.current.login,
+                                  'Login',
                                   style: textNormalCustom(
-                                    AppTheme.getInstance().textThemeColor(),
+                                    Colors.white,
                                     20.sp,
                                     FontWeight.w700,
                                   ),
@@ -224,10 +225,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Platform.isIOS
                           ? const Image(
-                              image: AssetImage(ImageAssets.ic_face_id),
+                              image: AssetImage(ImageAssets.faceID),
                             )
                           : const Image(
-                              image: AssetImage(ImageAssets.ic_touch),
+                              image: AssetImage(ImageAssets.ic_finger),
                             ),
                     ),
                   ),
@@ -249,9 +250,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         child: Text(
-                          S.current.new_wallet,
+                          'New wallet',
                           style: textNormal(
-                            AppTheme.getInstance().fillColor(),
+                            Colors.amber,
                             18.sp,
                           ),
                         ),
@@ -280,9 +281,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         child: Text(
-                          S.current.import_seed,
+                          'Import Seed phrase',
                           style: textNormal(
-                            AppTheme.getInstance().fillColor(),
+                            Colors.amber,
                             18.sp,
                           ),
                         ),

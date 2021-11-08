@@ -1,4 +1,8 @@
 import 'dart:ui';
+import 'package:Dfy/config/resources/dimen.dart';
+import 'package:Dfy/config/resources/images.dart';
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -8,12 +12,15 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
-import 'package:Dfy/widgets/header_create/header_create.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase.dart';
 import 'package:Dfy/widgets/list_passphrase/list_passphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../../../main.dart';
 
 void showCreateSeedPhrase2(
   BuildContext context,
@@ -24,6 +31,30 @@ void showCreateSeedPhrase2(
     context: context,
     backgroundColor: Colors.transparent,
     builder: (context) {
+      final FToast fToast = FToast();
+      fToast.init(context);
+      void _showToast() {
+        final Widget toast = Container(
+          margin: EdgeInsets.only(bottom: 70.h),
+          height: 35.h,
+          width: 298.w,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.0),
+            color: Colors.black.withOpacity(0.5),
+          ),
+          padding: EdgeInsets.only(left: 10.w, top: 10.h),
+          child: Text(
+            S.current.failed,
+            style: TextStyle(color: Colors.red, fontSize: 14.sp),
+          ),
+        );
+        fToast.showToast(
+          child: toast,
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 2),
+        );
+      }
+
       return Container(
         height: 764.h,
         width: 375.w,
@@ -41,18 +72,49 @@ void showCreateSeedPhrase2(
               height: 28.h,
               width: 323.w,
               margin: EdgeInsets.only(right: 26.w, left: 26.w, top: 16.h),
-              child: const HeaderCreate(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    child: Image.asset(
+                      url_ic_out,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 66.w,
+                  ),
+                  Text(
+                    S.current.create_new_wallet,
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 64.w,
+                  ),
+                  GestureDetector(
+                    child: Image.asset(
+                      url_ic_close,
+                    ),
+                    onTap: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        AppRouter.main,
+                        (route) => route.isFirst,
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Divider(
-              height: 1.h,
-              color: const Color.fromRGBO(255, 255, 255, 0.1),
-            ),
-            SizedBox(
-              height: 24.h,
-            ),
+            spaceH20,
+            line,
+            spaceH24,
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -68,9 +130,7 @@ void showCreateSeedPhrase2(
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
+                    spaceH20,
                     Column(
                       children: [
                         StreamBuilder(
@@ -84,9 +144,7 @@ void showCreateSeedPhrase2(
                             );
                           },
                         ),
-                        SizedBox(
-                          height: 24.h,
-                        ),
+                        spaceH24,
                         StreamBuilder(
                           stream: bLocCreateSeedPhrase.listTitle,
                           builder: (
@@ -119,13 +177,30 @@ void showCreateSeedPhrase2(
             Center(
               child: GestureDetector(
                 onTap: () {
-                  if (bLocCreateSeedPhrase.isCheckBox2.value &&
-                      bLocCreateSeedPhrase.getCheck()) {
-                    showCreateSuccessfully(context);
+                  if (bLocCreateSeedPhrase.isCheckBox2.value) {
+                    if (bLocCreateSeedPhrase.getCheck()) {
+                      bLocCreateSeedPhrase.storeWallet(
+                        seedPhrase: bLocCreateSeedPhrase.passPhrase,
+                        walletName: bLocCreateSeedPhrase.nameWallet.value,
+                        password: bLocCreateSeedPhrase.passWord,
+                      );
+                     // bLocCreateSeedPhrase.generateWallet();
+
+
+                      showCreateSuccessfully(context, bLocCreateSeedPhrase);
+                    } else {
+                      _showToast();
+                    }
                   }
                 },
-                child: ButtonGold(
-                  title: S.current.create,
+                child: StreamBuilder(
+                  stream: bLocCreateSeedPhrase.isCheckBox2,
+                  builder: (context, snapshot) {
+                    return ButtonGold(
+                      title: 'Continue',
+                      isEnable: bLocCreateSeedPhrase.isCheckBox2.value,
+                    );
+                  },
                 ),
               ),
             ),
@@ -133,5 +208,7 @@ void showCreateSeedPhrase2(
         ),
       );
     },
+  ).whenComplete(
+    () => bLocCreateSeedPhrase.reloadListSeedPhrase1(),
   );
 }

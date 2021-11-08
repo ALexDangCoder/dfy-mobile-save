@@ -17,6 +17,10 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   final BehaviorSubject<bool> _ckcBox = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _showConfirmPW =
       BehaviorSubject<bool>.seeded(true);
+  final BehaviorSubject<bool> _isEnableBtn =
+      BehaviorSubject<bool>.seeded(false);
+
+  Stream<bool> get isEnableBtnStream => _isEnableBtn.stream;
 
   Stream<bool> get validatePWStream => _validatePW.stream;
 
@@ -27,6 +31,8 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   Stream<bool> get showConfirmPWStream => _showConfirmPW.stream;
 
   Stream<bool> get ckcBoxStream => _ckcBox.stream;
+
+  Sink<bool> get isEnableBtnSink => _isEnableBtn.sink;
 
   Sink<bool> get validatePWSink => _validatePW.sink;
 
@@ -44,6 +50,15 @@ class CheckPassCubit extends Cubit<CheckPassState> {
       validatePWSink.add(false);
     } else {
       validatePWSink.add(true);
+    }
+  }
+
+  void isEnable(int index) {
+    if(index == 1) {
+      // index == 1 disEnableBtn
+      isEnableBtnSink.add(false);
+    } else {
+      isEnableBtnSink.add(true);
     }
   }
 

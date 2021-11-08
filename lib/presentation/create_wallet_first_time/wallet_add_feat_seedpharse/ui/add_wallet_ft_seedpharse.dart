@@ -108,6 +108,8 @@ class _AddWalletFtSeedPhraseState extends State<AddWalletFtSeedPhrase> {
                       20.sp,
                     ).copyWith(
                       fontWeight: FontWeight.w700,
+                      fontSize: 20.sp,
+                      color: const Color.fromRGBO(228, 172, 26, 1),
                     ),
                   ),
                 )
