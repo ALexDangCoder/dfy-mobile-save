@@ -56,7 +56,7 @@ class ImageAssets {
   static const String code = '$baseImg/Code.png';
   static const String expanded = '$baseImg/expanded.png';
   static const String faceID = '$baseImg/face_id_icon.png';
-  static const String ic_finger = '$baseImg/finger_con.png';
+  static const String ic_finger = '$baseImg/finger_icon.png';
   static const String frameGreen = '$baseImg/Framegreen.png';
   static const String group = '$baseImg/Group.png';
   static const String icAdd = '$baseImg/ic_add.png';

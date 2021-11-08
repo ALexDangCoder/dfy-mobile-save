@@ -1,7 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
@@ -498,14 +498,16 @@ class _RestoreBTSState extends State<RestoreBTS> {
                             )) {
                               final flag = restoreCubit.strValue ==
                                   S.current.seed_phrase;
-                              restoreCubit
-                                  .importWalletKey(
-                                    type: flag ? PASS_PHRASE : PRIVATE_KEY,
-                                    content: privateKeyController.text,
-                                    password: passwordController.text,
-                                  );
+                              restoreCubit.importWalletKey(
+                                type: flag ? PASS_PHRASE : PRIVATE_KEY,
+                                content: privateKeyController.text,
+                                password: passwordController.text,
+                              );
                               if (restoreCubit.flag) {
-                                showCreateSuccessfully(context);
+                                showCreateSuccessfully(
+                                  context,
+                                  BLocCreateSeedPhrase(passwordController.text),
+                                );
                               }
                             }
                           },

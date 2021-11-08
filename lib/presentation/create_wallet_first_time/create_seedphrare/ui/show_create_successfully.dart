@@ -1,8 +1,6 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -15,7 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void showCreateSuccessfully(
-    BuildContext context, BLocCreateSeedPhrase bLocCreateSeedPhrase) {
+  BuildContext context,
+  BLocCreateSeedPhrase bLocCreateSeedPhrase,
+) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -71,7 +71,6 @@ void showCreateSuccessfully(
                       height: 111.h,
                     ),
                     StreamBuilder(
-                      stream: bLocCreateSeedPhrase.isCheckAppLock,
                       builder: (context, AsyncSnapshot<bool> snapshot) {
                         return FromSwitch1(
                           bLocCreateSeedPhrase: bLocCreateSeedPhrase,
@@ -106,10 +105,12 @@ void showCreateSuccessfully(
               child: GestureDetector(
                 onTap: () {
                   //Navigator.popAndPushNamed(context,AppRouter.login);
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //  MaterialPageRoute(builder: (context) =>  MainScreen(String wallet),),
-                  //   (route) => route.isFirst,
-                  // );
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(),
+                    ),
+                    (route) => route.isFirst,
+                  );
                   bLocCreateSeedPhrase.setConfig(
                     password: bLocCreateSeedPhrase.passWord,
                     isAppLock: bLocCreateSeedPhrase.isCheckAppLock.value,
