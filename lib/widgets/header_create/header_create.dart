@@ -1,3 +1,5 @@
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -11,7 +13,7 @@ class HeaderCreate extends StatelessWidget {
       children: [
         GestureDetector(
           child: Image.asset(
-            'assets/images/ic_out.png',
+            ImageAssets.ic_out
           ),
           onTap: () {
             Navigator.pop(context);
@@ -21,7 +23,7 @@ class HeaderCreate extends StatelessWidget {
           width: 66.w,
         ),
         Text(
-          'Create new wallet',
+          S.current.create_wallet,
           style: TextStyle(
               fontSize: 20.sp,
               color: Colors.white,
@@ -32,7 +34,7 @@ class HeaderCreate extends StatelessWidget {
         ),
         GestureDetector(
           child: Image.asset(
-            'assets/images/ic_close.png',
+            ImageAssets.ic_close,
           ),
           onTap: () {
             Navigator.pop(context);

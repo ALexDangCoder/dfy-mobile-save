@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/restore_account/bloc/string_cubit.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +28,9 @@ class _CustomDialogState extends State<CustomDialog> {
     return Container(
       height: 124.h,
       width: 323.w,
-      decoration: const BoxDecoration(
-        color: Color(0xff585782),
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        color: AppTheme.getInstance().selectDialogColor(),
+        borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
       ),
@@ -51,7 +52,10 @@ class _CustomDialogState extends State<CustomDialog> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   text[0],
-                  style: textNormal(null, 16.sp),
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ),
                 ),
               ),
             ),
@@ -72,7 +76,10 @@ class _CustomDialogState extends State<CustomDialog> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   text[1],
-                  style: textNormal(null, 16.sp),
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ),
                 ),
               ),
             ),

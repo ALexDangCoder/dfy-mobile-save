@@ -1,13 +1,15 @@
 import 'dart:io';
 
 import 'package:Dfy/config/resources/color.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,10 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     controller.addListener(() {
       setState(() {
-        if(controller.text.isNotEmpty){
+        if (controller.text.isNotEmpty) {
           enableLogin = true;
-        }
-        else {
+        } else {
           enableLogin = false;
         }
       });
@@ -72,13 +73,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 113.h,
                   ),
                   const Image(
-                    image: AssetImage('$baseImg/symbol.png'),
+                    image: AssetImage(ImageAssets.symbol),
                   ),
                   SizedBox(
                     height: 28.h,
                   ),
                   const Image(
-                    image: AssetImage('$baseImg/Centered.png'),
+                    image: AssetImage(ImageAssets.center),
                   ),
                   SizedBox(
                     height: 68.h,
@@ -116,16 +117,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             Expanded(
                               child: TextFormField(
                                 cursorColor: Colors.white,
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  color: Colors.white,
+                                style: textNormal(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  18.sp,
                                 ),
                                 controller: controller,
                                 obscureText: _cubit.hidePass,
                                 decoration: InputDecoration(
-                                  hintText: 'Password',
+                                  hintText: S.current.password,
                                   hintStyle: textNormal(
-                                    Colors.white54,
+                                    AppTheme.getInstance().textThemeColor(),
                                     18.sp,
                                   ),
                                   border: InputBorder.none,
@@ -140,13 +141,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _cubit.hidePassword();
                                 }),
                                 child: _cubit.hidePass
-                                    ? const Icon(
+                                    ? Icon(
                                         Icons.visibility_off_outlined,
-                                        color: Colors.white30,
+                                        color: AppTheme.getInstance()
+                                            .suffixColor(),
                                       )
-                                    : const Icon(
+                                    : Icon(
                                         Icons.visibility_outlined,
-                                        color: Colors.white30,
+                                        color: AppTheme.getInstance()
+                                            .suffixColor(),
                                       ),
                               ),
                             ),
@@ -179,9 +182,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? ButtonRadial(
                               child: Center(
                                 child: Text(
-                                  'Login',
+                                  S.current.login,
                                   style: textNormalCustom(
-                                    Colors.white,
+                                    AppTheme.getInstance().textThemeColor(),
                                     20.sp,
                                     FontWeight.w700,
                                   ),
@@ -191,9 +194,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           : ErrorButton(
                               child: Center(
                                 child: Text(
-                                  'Login',
+                                  S.current.login,
                                   style: textNormalCustom(
-                                    Colors.white,
+                                    AppTheme.getInstance().textThemeColor(),
                                     20.sp,
                                     FontWeight.w700,
                                   ),
@@ -221,10 +224,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Platform.isIOS
                           ? const Image(
-                              image: AssetImage('$baseImg/face_id_icon.png'),
+                              image: AssetImage(ImageAssets.ic_face_id),
                             )
                           : const Image(
-                              image: AssetImage('$baseImg/finger_icon.png'),
+                              image: AssetImage(ImageAssets.ic_touch),
                             ),
                     ),
                   ),
@@ -246,9 +249,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         child: Text(
-                          'New wallet',
+                          S.current.new_wallet,
                           style: textNormal(
-                            Colors.amber,
+                            AppTheme.getInstance().fillColor(),
                             18.sp,
                           ),
                         ),
@@ -277,9 +280,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         child: Text(
-                          'Import Seed phrase',
+                          S.current.import_seed,
                           style: textNormal(
-                            Colors.amber,
+                            AppTheme.getInstance().fillColor(),
                             18.sp,
                           ),
                         ),
