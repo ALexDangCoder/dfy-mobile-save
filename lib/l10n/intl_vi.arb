@@ -61,5 +61,6 @@
   "restore_with_private": "Khôi phục tài khoản của bạn bằng private key. Sau khi quá trình này hoàn tất, với các tài khoản bổ sung bạn có thể tạo mới hoặc nhập tài khoản",
   "or_scan": "hoặc quét mã QR",
   "scan_qr_code": "Quét mã QR",
-  "no_data": "Không có dữ liệu"
+  "no_data": "Không có dữ liệu",
+  "paste": "Dán"
 }

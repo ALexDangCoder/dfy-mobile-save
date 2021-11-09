@@ -61,6 +61,7 @@
   "restore_with_private": "Restore your Account with private key. After completing this process, to additional accounts, you can create new account or import account",
   "or_scan": "Or scan QR",
   "scan_qr_code": "Scan QR code",
-  "no_data": "No data"
+  "no_data": "No data",
+  "paste": "Paste"
 
 }

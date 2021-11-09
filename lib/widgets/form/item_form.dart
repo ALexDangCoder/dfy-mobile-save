@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -36,7 +37,6 @@ class ItemForm extends StatelessWidget {
           padding: EdgeInsets.only(
             top: 10.h,
             bottom: 10.h,
-            right: 10.w,
           ),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
@@ -61,9 +61,15 @@ class ItemForm extends StatelessWidget {
               ),
               suffixIcon: InkWell(
                 onTap: callback,
-                child: ImageIcon(
-                  AssetImage(trailingPath),
-                  color: const Color(0xffE4AC1A),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 12.h),
+                  child: Text(
+                    S.current.paste,
+                    style: textNormal(AppTheme.getInstance().fillColor(), 16.sp)
+                        .copyWith(
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                 ),
               ),
               prefixIcon: ImageIcon(
@@ -106,9 +112,15 @@ class ItemForm extends StatelessWidget {
             ),
             suffixIcon: InkWell(
               onTap: callback,
-              child: ImageIcon(
-                AssetImage(trailingPath),
-                color: const Color(0xffE4AC1A),
+              child: Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: Text(
+                  trailingPath,
+                  style: textNormal(AppTheme.getInstance().fillColor(), 16.sp)
+                      .copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
               ),
             ),
             prefixIcon: ImageIcon(

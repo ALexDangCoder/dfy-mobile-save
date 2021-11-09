@@ -296,7 +296,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                           : ItemForm(
                                               leadPath: ImageAssets.key,
                                               hint: S.current.private_key,
-                                              trailingPath: ImageAssets.paste,
+                                              trailingPath: S.current.paste,
                                               formType: FormType.PRIVATE_KEY,
                                               isShow: false,
                                               controller: privateKeyController,
@@ -452,6 +452,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                       return Row(
                         children: [
                           Checkbox(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
                             fillColor: MaterialStateProperty.all(
                               AppTheme.getInstance().fillColor(),
                             ),
