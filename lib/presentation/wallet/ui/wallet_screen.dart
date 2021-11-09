@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/presentation/wallet/ui/createNFT.dart';
 import 'package:Dfy/presentation/wallet/ui/import.dart';
 import 'package:Dfy/presentation/wallet/ui/nft_item.dart';
 import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
@@ -191,7 +192,7 @@ class _WalletState extends State<WalletScreen>
                               ),
                               ImportToken(
                                 title: S.current.import_token,
-                                icon: ImageAssets.icImport,
+                                icon: ImageAssets.icImport,keyRouter: 1,
                               ),
                               SizedBox(
                                 height: 102.h,
@@ -219,8 +220,9 @@ class _WalletState extends State<WalletScreen>
                               ImportToken(
                                 title: S.current.import_NFT,
                                 icon: ImageAssets.icImport,
+                                keyRouter: 2,
                               ),
-                              ImportToken(
+                              CreateNFT(
                                 title: S.current.create_NFT,
                                 icon: ImageAssets.icAdd,
                               ),
