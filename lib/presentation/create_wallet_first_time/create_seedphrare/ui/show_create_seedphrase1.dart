@@ -208,7 +208,7 @@ class _BodyState extends State<Body> {
                               ),
                               CheckBoxCustom(
                                 title:
-                                    'Do not provide your recovery key to anyone',
+                                'Do not provide your recovery key to anyone',
                                 bLocCreateSeedPhrase:
                                     widget.blocCreateSeedPhrase,
                               ),

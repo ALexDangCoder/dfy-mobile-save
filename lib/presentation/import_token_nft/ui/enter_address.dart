@@ -6,16 +6,12 @@ import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dar
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_input.dart';
 
-import 'package:Dfy/widgets/form/form_input2.dart';
-import 'package:Dfy/widgets/form/form_input_number.dart';
-import 'package:Dfy/widgets/form/form_text.dart';
 import 'package:Dfy/widgets/form/form_text2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../main.dart';
-import 'import_nft_succesfully.dart';
 import 'import_token_succesfully.dart';
 
 class EnterAddress extends StatefulWidget {
@@ -84,13 +80,13 @@ class _EnterAddressState extends State<EnterAddress> {
                     bloc: widget.bloc,
                   ),
                   spaceH16,
-                  FromText2(
+                  const FromText2(
                     title:'Token symbol',
                     urlPrefixIcon:  url_ic_symbol,
                     urlSuffixIcon: '',
                   ),
                   spaceH16,
-                  FromText2(
+                  const FromText2(
                     title:'Token decimal',
                     urlPrefixIcon:  url_ic_decimal,
                     urlSuffixIcon: '',

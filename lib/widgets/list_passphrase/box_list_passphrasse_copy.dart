@@ -1,7 +1,7 @@
 import 'dart:ui';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
 import 'package:clipboard/clipboard.dart';
@@ -53,7 +53,7 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
                   );
                 },
                 child: Image.asset(
-                  ImageAssets.ic_copy,
+                  ImageAssets.icCopy,
                   height: 17.67.h,
                   width: 19.14.w,
                   color: AppTheme.getInstance().fillColor(),

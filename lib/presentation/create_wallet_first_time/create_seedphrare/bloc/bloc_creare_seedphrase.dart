@@ -1,12 +1,14 @@
 import 'package:Dfy/domain/model/item.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../main.dart';
 
-class BLocCreateSeedPhrase {
-  BLocCreateSeedPhrase(this.passWord);
+class BLocCreateSeedPhrase extends Cubit<SeedState> {
+  BLocCreateSeedPhrase(this.passWord) : super(SeedInitialState());
 
   BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isCheckBox1 = BehaviorSubject.seeded(false);
@@ -22,7 +24,6 @@ class BLocCreateSeedPhrase {
   BehaviorSubject<bool> isSeedPhraseImportFailed =
       BehaviorSubject.seeded(false);
 
-  BehaviorSubject<bool> isStoreWalletCallback = BehaviorSubject.seeded(false);
   final String passWord;
 
   Future<void> generateWallet({String password = ''}) async {
@@ -106,7 +107,7 @@ class BLocCreateSeedPhrase {
         break;
       case 'storeWalletCallback':
         bool isSuccess = await methodCall.arguments['isSuccess'];
-        isStoreWalletCallback.sink.add(isSuccess);
+        emit(SeedNavState());
         break;
       case 'setConfigCallback':
         bool isSuccess = await methodCall.arguments['isSuccess'];

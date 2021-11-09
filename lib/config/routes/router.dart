@@ -1,12 +1,10 @@
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/test_screen_init.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
 
 typedef AppWidgetBuilder = Widget Function(BuildContext, RouteSettings);

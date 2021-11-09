@@ -126,10 +126,6 @@ class ImportTokenNftBloc {
   }
 
   bool isImportToken() {
-    print(tokenSymbolText.value);
-
-    print(tokenDecimal.value);
-    print(tokenSymbol.value);
     if (Validator.validateNotNull(tokenAddressText.value) &&
         Validator.validateNotNull(tokenDecimal.value) &&
         Validator.validateNotNull(tokenSymbol.value)) {
@@ -147,34 +143,29 @@ class ImportTokenNftBloc {
     switch (methodCall.method) {
       case 'importTokenCallback':
         isImportToken = await methodCall.arguments['isSuccess'];
-        print(isImportToken); // thieu 1 dau api
+
         break;
       case 'getListSupportedTokenCallback':
         //[TokenObject]
         var a = await methodCall.arguments['TokenObject'];
-        print(a.runtimeType);
 
         break;
       case 'setShowedTokenCallback':
         isSetShowedToken = await methodCall.arguments['isSuccess'];
-        print(isSetShowedToken);
-        print("a2");
+
 
         break;
       case 'importNftCallback':
-        print("2a");
+
 
         isImportNft = await methodCall.arguments['isSuccess'];
-        print(isImportNft);
-        print("a3");
+
 
         break;
       case 'setShowedNftCallback':
-        print("2a");
 
         isSetShowedNft = await methodCall.arguments['isSuccess'];
-        print(isSetShowedNft);
-        print("2a");
+
 
         break;
       default:

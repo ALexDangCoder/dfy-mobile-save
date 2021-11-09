@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../main.dart';
 
 part 'check_pass_state.dart';
 
