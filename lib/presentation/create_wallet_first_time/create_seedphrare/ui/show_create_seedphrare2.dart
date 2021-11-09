@@ -6,10 +6,12 @@ import 'package:Dfy/config/routes/router.dart';
 
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/item.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase.dart';
@@ -58,8 +60,13 @@ class _BodyState extends State<Body> {
         listener: (ctx, state) {
           if (state is SeedNavState) {
             showCreateSuccessfully(
-              context,
-              widget.bLocCreateSeedPhrase,
+              type: KeyType.CREATE,
+              context: context,
+              bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
+              wallet: Wallet(
+                name: bLocCreateSeedPhrase.nameWallet.value,
+                address: bLocCreateSeedPhrase.walletAddress,
+              ),
             );
           }
         },
@@ -84,30 +91,32 @@ class _BodyState extends State<Body> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        child: Image.asset(
-                          url_ic_out,
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 10, right: 10),
+                          child: Image.asset(
+                            ImageAssets.ic_out,
+                            width: 20.w,
+                            height: 20,
+                          ),
                         ),
                         onTap: () {
                           Navigator.pop(context);
                         },
                       ),
-                      SizedBox(
-                        width: 66.w,
-                      ),
                       Text(
                         S.current.create_new_wallet,
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                        style: textNormalCustom(
+                          Colors.white,
+                          20.sp,
+                          FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
-                        width: 64.w,
-                      ),
                       GestureDetector(
-                        child: Image.asset(
-                          url_ic_close,
+                        child:  Container(
+                          margin: const EdgeInsets.only(left: 10, right: 10),
+                          child: Image.asset(
+                            ImageAssets.ic_close,
+                          ),
                         ),
                         onTap: () {
                           Navigator.pushNamedAndRemoveUntil(
@@ -143,8 +152,10 @@ class _BodyState extends State<Body> {
                           children: [
                             StreamBuilder(
                               stream: bLocCreateSeedPhrase.listSeedPhrase,
-                              builder: (context,
-                                  AsyncSnapshot<List<Item>> snapshot,) {
+                              builder: (
+                                context,
+                                AsyncSnapshot<List<Item>> snapshot,
+                              ) {
                                 final listSeedPhrase = snapshot.data;
                                 return BoxListPassWordPhrase(
                                   listTitle: listSeedPhrase ?? [],
@@ -161,7 +172,7 @@ class _BodyState extends State<Body> {
                                   width: 323.w,
                                   child: snapshot.data ?? false
                                       ? Text(
-                                          'Failed',
+                                          S.current.failed,
                                           style: textNormal(Colors.red, 14),
                                         )
                                       : null,
@@ -219,7 +230,7 @@ class _BodyState extends State<Body> {
                       stream: bLocCreateSeedPhrase.isCheckButton,
                       builder: (context, AsyncSnapshot<bool> snapshot) {
                         return ButtonGold(
-                          title: 'Continue',
+                          title: S.current.continue_s,
                           isEnable: bLocCreateSeedPhrase.isCheckButton.value,
                         );
                       },

@@ -10,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RestoreCubit extends Cubit<RestoreState> {
+  Wallet? wallet = Wallet();
+
   RestoreCubit() : super(RestoreInitial());
   final BehaviorSubject<List<String>> _behaviorSubject =
       BehaviorSubject<List<String>>();
@@ -67,10 +69,11 @@ class RestoreCubit extends Cubit<RestoreState> {
       case 'importWalletCallback':
         final walletName = methodCall.arguments['walletName'];
         final walletAddress = methodCall.arguments['walletAddress'];
+        wallet = Wallet(name: walletName, address: walletAddress);
         if (walletName == null || walletAddress == null) {
           emit(ErrorState());
         } else {
-          emit(NavState(Wallet(walletName, walletAddress)));
+          emit(NavState(wallet ?? Wallet()));
         }
         break;
       default:

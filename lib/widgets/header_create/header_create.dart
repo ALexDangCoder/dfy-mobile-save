@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/config/routes/router.dart';
@@ -15,7 +16,11 @@ class HeaderCreate extends StatelessWidget {
         GestureDetector(
           child: Container(
             margin: const EdgeInsets.only(left: 10, right: 10),
-            child: Image.asset(ImageAssets.ic_out,width: 20.w,height: 20,),
+            child: Image.asset(
+              ImageAssets.ic_out,
+              width: 20.w,
+              height: 20,
+            ),
           ),
           onTap: () {
             Navigator.pop(context);
@@ -23,10 +28,10 @@ class HeaderCreate extends StatelessWidget {
         ),
         Text(
           S.current.create_wallet,
-          style: TextStyle(
-            fontSize: 20.sp,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+          style: textNormalCustom(
+            Colors.white,
+            20.sp,
+            FontWeight.bold,
           ),
         ),
         GestureDetector(

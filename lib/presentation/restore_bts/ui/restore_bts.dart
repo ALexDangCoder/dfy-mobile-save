@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -72,8 +73,10 @@ class _RestoreBTSState extends State<RestoreBTS> {
       listener: (ctx, state) {
         if (state is NavState) {
           showCreateSuccessfully(
-            context,
-            BLocCreateSeedPhrase(passwordController.text),
+            type: KeyType.IMPORT,
+            context: context,
+            bLocCreateSeedPhrase: BLocCreateSeedPhrase(passwordController.text),
+            wallet: restoreCubit.wallet ?? Wallet(),
           );
         }
         if (state is ErrorState) {

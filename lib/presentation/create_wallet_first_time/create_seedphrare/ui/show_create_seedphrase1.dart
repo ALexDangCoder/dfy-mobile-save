@@ -168,7 +168,7 @@ class _BodyState extends State<Body> {
                             child: widget.blocCreateSeedPhrase.isWalletName()
                                 ? null
                                 : Text(
-                                    'Wallet name not null',
+                                    S.current.name_not_null,
                                     style: textNormal(
                                       Colors.red,
                                       14.sp,
@@ -181,16 +181,16 @@ class _BodyState extends State<Body> {
                           ),
                           FromText(
                             title: widget.blocCreateSeedPhrase.walletAddress,
-                            urlSuffixIcon: 'assets/images/ic_copy.png',
-                            urlPrefixIcon: 'assets/images/ic_address.png',
+                            urlSuffixIcon: url_ic_copy,
+                            urlPrefixIcon: url_ic_addresss,
                           ),
                           SizedBox(
                             height: 16.h,
                           ),
                           FromText(
                             title: widget.blocCreateSeedPhrase.privateKey,
-                            urlSuffixIcon: 'assets/images/ic_copy.png',
-                            urlPrefixIcon: 'assets/images/ic_key.png',
+                            urlSuffixIcon: url_ic_copy,
+                            urlPrefixIcon: url_ic_key,
                           ),
                           SizedBox(
                             height: 20.h,
@@ -207,8 +207,7 @@ class _BodyState extends State<Body> {
                                 height: 17.h,
                               ),
                               CheckBoxCustom(
-                                title:
-                                'Do not provide your recovery key to anyone',
+                                title: S.current.do_not,
                                 bLocCreateSeedPhrase:
                                     widget.blocCreateSeedPhrase,
                               ),
@@ -236,7 +235,7 @@ class _BodyState extends State<Body> {
                         stream: widget.blocCreateSeedPhrase.isCheckBox1,
                         builder: (context, snapshot) {
                           return ButtonGold(
-                            title: 'Continue',
+                            title: S.current.continue_s,
                             isEnable:
                                 widget.blocCreateSeedPhrase.isCheckBox1.value,
                           );

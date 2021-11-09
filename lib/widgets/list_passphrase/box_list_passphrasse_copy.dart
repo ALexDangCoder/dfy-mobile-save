@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -38,9 +39,9 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
             children: [
               Text(
                 S.current.your_seed,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.sp,
+                style: textNormal(
+               Colors.white,
+                  16.sp,
                 ),
               ),
               GestureDetector(

@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -12,10 +14,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showCreateSuccessfully(
-  BuildContext context,
-  BLocCreateSeedPhrase bLocCreateSeedPhrase,
-) {
+enum KeyType { IMPORT, CREATE }
+
+void showCreateSuccessfully({
+  required BuildContext context,
+  required BLocCreateSeedPhrase bLocCreateSeedPhrase,
+  required Wallet wallet,
+  required KeyType type,
+}) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -40,7 +46,9 @@ void showCreateSuccessfully(
             ),
             Center(
               child: Text(
-                'Create new wallet successfully',
+                type == KeyType.CREATE
+                    ? S.current.success
+                    : S.current.success_import,
                 style: TextStyle(
                   fontSize: 20.sp,
                   color: Colors.white,
@@ -60,7 +68,7 @@ void showCreateSuccessfully(
                       height: 22.h,
                     ),
                     Text(
-                      'Congratulation!',
+                      S.current.congratulation,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -72,11 +80,10 @@ void showCreateSuccessfully(
                     ),
                     StreamBuilder(
                       stream: bLocCreateSeedPhrase.isCheckTouchID,
-
                       builder: (context, AsyncSnapshot<bool> snapshot) {
                         return FromSwitch1(
                           bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-                          title: 'Use face/touch ID',
+                          title: S.current.use_face,
                           isCheck: snapshot.data ?? false,
                           urlPrefixIcon: ImageAssets.icFace,
                         );
@@ -90,7 +97,7 @@ void showCreateSuccessfully(
                       builder: (context, AsyncSnapshot<bool> snapshot) {
                         return FromSwitch(
                           bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-                          title: 'Wallet app lock',
+                          title: S.current.wallet_app_lock,
                           isCheck: snapshot.data ?? false,
                           urlPrefixIcon: ImageAssets.icPassword,
                         );
@@ -119,8 +126,8 @@ void showCreateSuccessfully(
                     isFaceID: bLocCreateSeedPhrase.isCheckTouchID.value,
                   );
                 },
-                child: const ButtonGold(
-                  title: 'Complete',
+                child: ButtonGold(
+                  title: S.current.complete,
                   isEnable: true,
                 ),
               ),
