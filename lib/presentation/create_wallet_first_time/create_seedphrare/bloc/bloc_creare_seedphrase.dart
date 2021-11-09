@@ -14,6 +14,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BehaviorSubject<bool> isCheckBox1 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckBox2 = BehaviorSubject.seeded(false);
 
+  BehaviorSubject<bool> isCheckButton1 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckButton = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckData = BehaviorSubject.seeded(false);
   BehaviorSubject<List<Item>> listTitle = BehaviorSubject.seeded([]);
@@ -123,6 +124,14 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
       return true;
     }
     return false;
+  }
+
+  void isButton() {
+    if (Validator.validateNotNull(nameWallet.value) && isCheckBox1.value) {
+      isCheckButton1.sink.add(true);
+    } else {
+      isCheckButton1.sink.add(false);
+    }
   }
 
   void getStringToList(String passPhrase) {

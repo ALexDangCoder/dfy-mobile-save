@@ -57,7 +57,7 @@
   "or_scan": "hoặc quét mã QR",
   "scan_qr_code": "Quét mã QR",
   "paste": "Dán",
-  "name_not_null": "Tên ví không được để trống",
+  "name_not_null": "Tên ví là bắt buộc",
   "failed": "Thất bại",
   "copy": "Copy thành công",
   "token_successfully": "Nhập Token thành công ",

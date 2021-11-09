@@ -129,18 +129,23 @@ class _BodyState extends State<Body> {
                                   child: Container(
                                     padding: EdgeInsets.only(right: 5.w),
                                     child: TextFormField(
+                                      maxLength: 20,
                                       controller: nameWallet,
                                       cursorColor: Colors.white,
                                       style: textNormal(
                                         Colors.white54,
                                         16.sp,
                                       ),
+                                      onChanged: (value) {
+                                        widget.blocCreateSeedPhrase.isButton();
+                                      },
                                       decoration: InputDecoration(
                                         hintText: S.current.name_wallet,
                                         hintStyle: textNormal(
                                           Colors.white54,
                                           16.sp,
                                         ),
+                                        counterText: '',
                                         border: InputBorder.none,
                                       ),
                                       // onFieldSubmitted: ,
@@ -152,6 +157,7 @@ class _BodyState extends State<Body> {
                                     widget.blocCreateSeedPhrase.nameWallet.sink
                                         .add('');
                                     nameWallet.text = '';
+                                    widget.blocCreateSeedPhrase.isButton();
                                     setState(() {});
                                   },
                                   child: Image.asset(
@@ -232,12 +238,12 @@ class _BodyState extends State<Body> {
                         }
                       },
                       child: StreamBuilder(
-                        stream: widget.blocCreateSeedPhrase.isCheckBox1,
+                        stream: widget.blocCreateSeedPhrase.isCheckButton1,
                         builder: (context, snapshot) {
                           return ButtonGold(
                             title: S.current.continue_s,
-                            isEnable:
-                                widget.blocCreateSeedPhrase.isCheckBox1.value,
+                            isEnable: widget
+                                .blocCreateSeedPhrase.isCheckButton1.value,
                           );
                         },
                       ),
