@@ -51,7 +51,6 @@
   "import_token": "Nhập Token",
   "import_NFT": "Nhập NFT",
   "create_NFT": "Tạo NFT",
-  "failed": "thất bại",
   "create_new_wallet": "Tạo ví mới",
   "name_wallet": "Tên ví",
   "restore_with_private": "Khôi phục tài khoản của bạn bằng private key. Sau khi quá trình này hoàn tất, với các tài khoản bổ sung bạn có thể tạo mới hoặc nhập tài khoản",
@@ -60,5 +59,11 @@
   "paste": "Dán",
   "name_not_null": "Tên ví không được để trống",
   "failed": "Thất bại",
-  "copy": "Copy thành công"
+  "copy": "Copy thành công",
+  "token_successfully": "Nhập Token thành công ",
+  "Nft_successfully": "Nhập  thành công NFT",
+  "Token_address": "Token địa chỉ",
+  "Invalid_address": "Trống địa chỉ ",
+  "Token_symbol": " Biểu tượng token",
+  "Token_decimal": "Giá trị token "
 }

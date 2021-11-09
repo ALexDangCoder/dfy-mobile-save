@@ -38,6 +38,7 @@ class FormInputNumber extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
+                maxLength: 100,
                 onChanged: (value) {
                   bloc.tokenDecimal.sink.add(value);
                 },
@@ -48,6 +49,7 @@ class FormInputNumber extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
+                  counterText: '',
                   hintText: hint,
                   hintStyle: textNormal(
                     Colors.white54,

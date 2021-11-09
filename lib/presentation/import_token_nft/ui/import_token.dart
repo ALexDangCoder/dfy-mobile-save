@@ -26,7 +26,9 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
       //     tokenAddress: "tokenAddress",
       //     symbol: "dsfsadf",
       //     decimal: 1);
-      bloc.getListSupportedToken(walletAddress: "walletAddress",);
+      bloc.getListSupportedToken(
+        walletAddress: "walletAddress",
+      );
       trustWalletChannel.setMethodCallHandler(
         bloc.nativeMethodCallBackTrustWallet,
       );
@@ -48,23 +50,32 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                 width: 323.w,
                 height: 28.h,
                 margin: EdgeInsets.only(
-                    left: 26.w, top: 16.h, right: 26.w, bottom: 20.h,),
+                  left: 26.w,
+                  top: 16.h,
+                  right: 26.w,
+                  bottom: 20.h,
+                ),
                 child: Row(
-                  
                   children: [
-                    spaceW5,
                     GestureDetector(
-                      child: Image.asset(
-                        url_ic_out,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10.w, left: 10.w),
+                        child: Image.asset(
+                          url_ic_out,
+                          width: 20.w,
+                          height: 20.h,
+                        ),
                       ),
                       onTap: () {
                         Navigator.pop(context);
                       },
                     ),
                     Container(
-                      margin: EdgeInsets.only( left: 90.w),
-                      child: Text(Strings.import_token,
-                          style: textNormalCustom(null, 20, FontWeight.bold),),
+                      margin: EdgeInsets.only(left: 90.w),
+                      child: Text(
+                        Strings.import_token,
+                        style: textNormalCustom(null, 20, FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),

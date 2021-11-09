@@ -1,31 +1,111 @@
 import 'package:Dfy/config/resources/strings.dart';
+import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../main.dart';
 
 class ImportTokenNftBloc {
-  BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
+  ImportTokenNftBloc() {
+    getList.sink.add(listToken);
+  }
 
+  BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenDecimal = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenSymbol = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenAddressTextNft = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenSymbolText = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenDecimalText = BehaviorSubject.seeded('');
+  BehaviorSubject<bool> isTokenAddressText = BehaviorSubject.seeded(true);
 
-  // void formatAddress() {
-  //   tokenAddressText.stream.listen((event) {
-  //     final splitAddress = event.split('');
-  //     tokenAddressText1.sink.add('${splitAddress[0]}'
-  //         '${splitAddress[1]}${splitAddress[2]}'
-  //         '${splitAddress[3]}${splitAddress[6]}'
-  //         '${splitAddress[5]}...${splitAddress[37]}'
-  //         '${splitAddress[38]}${splitAddress[39]}'
-  //         '${splitAddress[40]}');
-  //   });
-  // }
-  //
+  BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
+
+  BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject.seeded(false);
+
+  BehaviorSubject<bool> isNFT = BehaviorSubject.seeded(false);
+
+  BehaviorSubject<List<TokenModel>> getList = BehaviorSubject.seeded([]);
+
+  void getShare() {
+    List<TokenModel> list = [];
+    for (TokenModel value in listToken) {
+      if (value.nameToken!.toLowerCase().contains(
+            textSearch.value.toLowerCase(),
+          )) {
+        list.add(value);
+      }
+    }
+    getList.sink.add(list);
+  }
+
+  List<TokenModel> listToken = [
+    TokenModel(
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'Bitcoin',
+      nameTokenSymbol: 'BTC',
+      amountToken: 0.2134,
+    ),
+    TokenModel(
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'ABitcoin',
+      nameTokenSymbol: 'BTC',
+      amountToken: 0.324,
+    ),
+    TokenModel(
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'CBitcoin',
+      nameTokenSymbol: 'BTC',
+      amountToken: 0.21321434,
+    ),
+    TokenModel(
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'DBitcoin',
+      nameTokenSymbol: 'BTC',
+      amountToken: 0.21213434,
+    ),
+    TokenModel(
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'WBitcoin',
+      nameTokenSymbol: 'BTC3',
+      amountToken: 0.21312344,
+    ),
+    TokenModel(
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'QBitcoin',
+      nameTokenSymbol: 'BT3C',
+      amountToken: 0.32143214,
+    ),
+    TokenModel(
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'UBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 0.213434,
+    ),
+    TokenModel(
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'TBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 0.423213423,
+    ),
+  ];
+
+  void checkAddressNull() {
+    if (tokenAddressText.value == '') {
+      isTokenAddressText.sink.add(false);
+    } else {
+      isTokenAddressText.sink.add(true);
+    }
+  }
 
   Future<void> importToken({
     String password = '',
@@ -125,15 +205,6 @@ class ImportTokenNftBloc {
     }
   }
 
-  bool isImportToken() {
-    if (Validator.validateNotNull(tokenAddressText.value) &&
-        Validator.validateNotNull(tokenDecimal.value) &&
-        Validator.validateNotNull(tokenSymbol.value)) {
-      return true;
-    }
-    return false;
-  }
-
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     final bool isImportToken;
     final bool isSetShowedToken;
@@ -153,19 +224,13 @@ class ImportTokenNftBloc {
       case 'setShowedTokenCallback':
         isSetShowedToken = await methodCall.arguments['isSuccess'];
 
-
         break;
       case 'importNftCallback':
-
-
         isImportNft = await methodCall.arguments['isSuccess'];
-
 
         break;
       case 'setShowedNftCallback':
-
         isSetShowedNft = await methodCall.arguments['isSuccess'];
-
 
         break;
       default:

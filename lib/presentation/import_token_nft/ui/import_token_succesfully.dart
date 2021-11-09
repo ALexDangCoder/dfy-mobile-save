@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,11 +35,11 @@ void showTokenSuccessfully(BuildContext context) {
             ),
             Center(
               child: Text(
-                'Import Token successfully',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                S.current.token_successfully,
+                style: textNormalCustom(
+                  Colors.white,
+                  20.sp,
+                  FontWeight.bold,
                 ),
               ),
             ),
@@ -49,23 +50,29 @@ void showTokenSuccessfully(BuildContext context) {
               height: 56.h,
             ),
             Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(ImageAssets.icFrame),
-                  SizedBox(
-                    height: 22.h,
+              child: Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(ImageAssets.icFrame),
+                      SizedBox(
+                        height: 22.h,
+                      ),
+                      Text(
+                        S.current.congratulation,
+                        style: textNormalCustom(
+                          Colors.white,
+                          32.sp,
+                          FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 213.h,
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Congratulation!',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32.sp,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
             Center(
@@ -73,11 +80,11 @@ void showTokenSuccessfully(BuildContext context) {
                 onTap: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     AppRouter.main,
-                        (route) => route.isFirst,
+                    (route) => route.isFirst,
                   );
                 },
-                child: const ButtonGold(
-                  title: 'Complete',
+                child: ButtonGold(
+                  title: S.current.complete,
                   isEnable: true,
                 ),
               ),

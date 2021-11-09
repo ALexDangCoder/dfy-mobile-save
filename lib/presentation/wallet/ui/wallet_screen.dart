@@ -225,7 +225,7 @@ class _WalletState extends State<WalletScreen>
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  showImportNft(context, ImportTokenNftBloc());
+                                 // showImportToken(context, ImportTokenNftBloc());
                                 },
                                 child: ImportToken(
                                   title: S.current.import_NFT,

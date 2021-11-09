@@ -63,6 +63,11 @@
   "wallet": "Wallet",
   "wallet_secret": "Wallet secret seed phrase",
   "name_not_null": "Wallet name not null",
-  "failed": "Failed",
-  "copy": "Copy Successfully"
+  "copy": "Copy Successfully",
+  "token_successfully": "Import Token successfully",
+  "Nft_successfully": "Import NFT successfully",
+  "Token_address": "Token address",
+  "Invalid_address": "Invalid address",
+  "Token_symbol": "Token symbol",
+  "Token_decimal": "Token decimal"
 }

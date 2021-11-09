@@ -39,13 +39,19 @@ class FormSearch extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(right: 5.w),
               child: TextFormField(
-                onFieldSubmitted: (value) {},
+                maxLength: 20,
+                onChanged: (value) {
+                  bloc.textSearch.sink.add(value);
+                  print(bloc.textSearch.value);
+                  bloc.getShare();
+                },
                 cursorColor: Colors.white,
                 style: textNormal(
                   Colors.white54,
                   16.sp,
                 ),
                 decoration: InputDecoration(
+                  counterText: '',
                   hintText: hint,
                   hintStyle: textNormal(
                     Colors.white54,

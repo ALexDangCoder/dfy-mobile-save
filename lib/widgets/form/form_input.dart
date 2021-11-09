@@ -44,6 +44,7 @@ class FormInput extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
+                maxLength: 100,
                 controller: controller,
                 cursorColor: Colors.white,
                 style: textNormal(
@@ -51,6 +52,7 @@ class FormInput extends StatelessWidget {
                   16.sp,
                 ),
                 decoration: InputDecoration(
+                  counterText: '',
                   hintText: hint,
                   hintStyle: textNormal(
                     Colors.white54,
