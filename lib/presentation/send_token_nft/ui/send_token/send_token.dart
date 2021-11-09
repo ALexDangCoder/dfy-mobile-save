@@ -1,11 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
+import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/confirm_blockchain.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -32,14 +31,14 @@ class _SendTokenState extends State<SendToken> {
 
     trustWalletChannel.setMethodCallHandler(tokenCubit.nativeMethodCallHandler);
     tokenCubit.sendToken(
-      walletAddress: tokenCubit.walletAddress,
-      receiveAddress: tokenCubit.receiveAddress,
-      tokenID: tokenCubit.tokenID ?? 0,
-      amount: tokenCubit.amount ?? 0,
+      walletAddress: tokenCubit.walletAddressToken,
+      receiveAddress: tokenCubit.receiveAddressToken,
+      tokenID: tokenCubit.tokenIDToken ?? 0,
+      amount: tokenCubit.amountToken ?? 0,
       password: '',
+      gasFee: 0,
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -99,16 +98,16 @@ class _SendTokenState extends State<SendToken> {
                     formShowFtAddress(
                       hintText: 'To address',
                       suffixImg: ImageAssets.code,
-                      // callBack: () {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => QRViewExample(
-                      //         bloc: ImportTokenNftBloc(),
-                      //       ),
-                      //     ),
-                      //   );
-                      // },
+                      callBack: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => QRViewExample(
+                              controller: txtToAddress,
+                            ),
+                          ),
+                        );
+                      },
                       prefixImg: ImageAssets.to,
                     ),
                     SizedBox(
@@ -197,156 +196,174 @@ class _SendTokenState extends State<SendToken> {
     );
   }
 
-  Container formShowFtAddress({
+  ConstrainedBox formShowFtAddress({
     required String hintText,
     bool readOnly = false,
     Function()? callBack,
     required String suffixImg,
     required String prefixImg,
   }) {
-    return Container(
-      height: 64.h,
-      width: 323.w,
-      padding: EdgeInsets.only(
-        top: 12.h,
-        bottom: 12.h,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 64.h,
       ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
+      child: Container(
+        width: 323.w,
+        padding: EdgeInsets.only(
+          top: 12.h,
+          bottom: 12.h,
         ),
-        color: Color(0xff32324c),
-      ),
-      child: TextFormField(
-        onChanged: (value) {
-          if (txtAmount.text.isNotEmpty && value.isNotEmpty) {
-            tokenCubit.isShowConfirmBlockChain(
-              isHaveFrAddress: true,
-              isHaveAmount: true,
-            );
-          } else {
-            tokenCubit.isShowConfirmBlockChain(
-              isHaveFrAddress: false,
-              isHaveAmount: false,
-            );
-          }
-        },
-        controller: readOnly ? null : txtToAddress,
-        readOnly: readOnly,
-        style: textNormal(
-          Colors.white,
-          16.sp,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20),
+          ),
+          color: Color(0xff32324c),
         ),
-        cursorColor: Colors.white,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: readOnly
-              ? TextStyle(
-                  color: const Color.fromRGBO(255, 255, 255, 1),
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                )
-              : textNormal(
-                  Colors.grey,
-                  14.sp,
-                ),
-          suffixIcon: InkWell(
-            onTap: callBack,
-            child: suffixImg == ''
-                ? const SizedBox(
-                    width: 0,
+        child: TextFormField(
+          onChanged: (value) {
+            if (txtAmount.text.isNotEmpty && value.isNotEmpty) {
+              tokenCubit.isShowConfirmBlockChain(
+                isHaveFrAddress: true,
+                isHaveAmount: true,
+              );
+            } else {
+              tokenCubit.isShowConfirmBlockChain(
+                isHaveFrAddress: false,
+                isHaveAmount: false,
+              );
+            }
+          },
+          controller: readOnly ? null : txtToAddress,
+          readOnly: readOnly,
+          style: textNormal(
+            Colors.white,
+            16.sp,
+          ),
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+            hintText: hintText,
+            hintStyle: readOnly
+                ? TextStyle(
+                    color: const Color.fromRGBO(255, 255, 255, 1),
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w400,
                   )
-                : ImageIcon(
-                    AssetImage(suffixImg),
-                    color: Colors.white,
+                : textNormal(
+                    Colors.grey,
+                    14.sp,
                   ),
-          ),
-          prefixIcon: GestureDetector(
-            onTap: callBack,
-            child: ImageIcon(
-              AssetImage(prefixImg),
-              color: Colors.white,
+            suffixIcon: InkWell(
+              onTap: callBack,
+              child: suffixImg == ''
+                  ? const SizedBox(
+                      width: 0,
+                    )
+                  : ImageIcon(
+                      AssetImage(suffixImg),
+                      color: Colors.white,
+                    ),
             ),
+            prefixIcon: GestureDetector(
+              onTap: callBack,
+              child: ImageIcon(
+                AssetImage(prefixImg),
+                color: Colors.white,
+              ),
+            ),
+            border: InputBorder.none,
           ),
-          border: InputBorder.none,
         ),
       ),
     );
   }
 
-  Container formAmountFtQuantity({
+  ConstrainedBox formAmountFtQuantity({
     required String hintText,
     required bool isAmount,
     required bool isQuantity,
     required String prefixImg,
     Function()? callBack,
   }) {
-    return Container(
-      height: 64.h,
-      width: 323.w,
-      padding: EdgeInsets.only(
-        top: 12.h,
-        bottom: 12.h,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 64.h,
       ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
+      child: Container(
+        width: 323.w,
+        padding: EdgeInsets.only(
+          top: 12.h,
+          bottom: 12.h,
         ),
-        color: Color(0xff32324c),
-      ),
-      child: TextFormField(
-        onChanged: (value) {
-          if (txtToAddress.text.isNotEmpty && value.isNotEmpty) {
-            tokenCubit.isShowConfirmBlockChain(
-              isHaveFrAddress: true,
-              isHaveAmount: true,
-            );
-          } else {
-            tokenCubit.isShowConfirmBlockChain(
-              isHaveFrAddress: false,
-              isHaveAmount: false,
-            );
-          }
-        },
-        controller: txtAmount,
-        keyboardType: TextInputType.number,
-        textAlignVertical: TextAlignVertical.center,
-        style: textNormal(
-          Colors.white,
-          16.sp,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20),
+          ),
+          color: Color(0xff32324c),
         ),
-        cursorColor: Colors.white,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: textNormal(
-            Colors.grey,
-            14.sp,
+        child: TextFormField(
+          onChanged: (value) {
+            if (txtToAddress.text.isNotEmpty && value.isNotEmpty) {
+              tokenCubit.isShowConfirmBlockChain(
+                isHaveFrAddress: true,
+                isHaveAmount: true,
+              );
+            } else {
+              tokenCubit.isShowConfirmBlockChain(
+                isHaveFrAddress: false,
+                isHaveAmount: false,
+              );
+            }
+          },
+          controller: txtAmount,
+          keyboardType: TextInputType.number,
+          textAlignVertical: TextAlignVertical.center,
+          style: textNormal(
+            Colors.white,
+            16.sp,
           ),
-          suffixIcon: InkWell(
-            onTap: callBack,
-            child: (isAmount && !isQuantity)
-                ? Text(
-                    'Max',
-                    style: TextStyle(
-                      color: const Color.fromRGBO(228, 172, 26, 1),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16.sp,
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+            hintText: hintText,
+            hintStyle: textNormal(
+              Colors.grey,
+              14.sp,
+            ),
+            suffixIcon: InkWell(
+              onTap: callBack,
+              child: (isAmount && !isQuantity)
+                  ? Padding(
+                      padding: EdgeInsets.only(
+                        top: 18.h,
+                      ),
+                      child: Text(
+                        'Max',
+                        style: TextStyle(
+                          color: const Color.fromRGBO(228, 172, 26, 1),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.sp,
+                        ),
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(
+                        top: 20.h,
+                      ),
+                      child: Text(
+                        'of 10',
+                        style: TextStyle(
+                          color: const Color.fromRGBO(255, 255, 255, 1),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
-                  )
-                : Text(
-                    'of 10',
-                    style: TextStyle(
-                      color: const Color.fromRGBO(255, 255, 255, 1),
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+            ),
+            prefixIcon: ImageIcon(
+              AssetImage(prefixImg),
+              color: Colors.white,
+            ),
+            border: InputBorder.none,
           ),
-          prefixIcon: ImageIcon(
-            AssetImage(prefixImg),
-            color: Colors.white,
-          ),
-          border: InputBorder.none,
         ),
       ),
     );

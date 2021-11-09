@@ -13,7 +13,9 @@ class ShowCustomizeFee extends StatelessWidget {
     required this.txtGasLimit,
     required this.txtGasPrice,
     required this.gasFee,
-    required this.balance,
+    required this.balanceFirstFetch,
+    required this.gasLimitFirstFetch,
+    required this.gasPriceFirstFetch,
     Key? key,
   }) : super(key: key);
   final String nameToken;
@@ -21,7 +23,9 @@ class ShowCustomizeFee extends StatelessWidget {
   final TextEditingController txtGasLimit;
   final TextEditingController txtGasPrice;
   final double gasFee;
-  final double balance;
+  final double balanceFirstFetch;
+  final double gasLimitFirstFetch;
+  final double gasPriceFirstFetch;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +54,7 @@ class ShowCustomizeFee extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         'Estimate gas fee:',
@@ -62,12 +67,13 @@ class ShowCustomizeFee extends StatelessWidget {
                       StreamBuilder<bool>(
                         stream: sendTokenCubit.isSufficientTokenStream,
                         builder: (context, snapshot) {
-                          return snapshot.data ?? gasFee < balance
+                          return snapshot.data ?? gasFee < balanceFirstFetch
                               //if sufficient will not show warning red text
                               ? Expanded(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       //todo handle amount ??
                                       StreamBuilder<String>(
@@ -76,8 +82,7 @@ class ShowCustomizeFee extends StatelessWidget {
                                             .formEstimateGasFeeStream,
                                         builder: (context, snapshot) {
                                           return Text(
-                                            '${snapshot.data
-                                                ?? balance.toString()}'
+                                            '${snapshot.data ?? balanceFirstFetch.toString()}'
                                             ' $nameToken',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
@@ -88,7 +93,7 @@ class ShowCustomizeFee extends StatelessWidget {
                                         },
                                       ),
                                       SizedBox(
-                                        height: 15.h,
+                                        height: 17.h,
                                       ),
                                     ],
                                   ),
@@ -97,6 +102,7 @@ class ShowCustomizeFee extends StatelessWidget {
                               : Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       StreamBuilder<String>(
                                           initialData: gasFee.toString(),
@@ -218,10 +224,16 @@ class ShowCustomizeFee extends StatelessWidget {
                         GestureDetector(
                           child: btnReset(),
                           onTap: () {
-                            txtGasPrice.clear();
-                            txtGasLimit.clear();
+                            txtGasPrice.text = gasPriceFirstFetch.toString();
+                            txtGasLimit.text = gasLimitFirstFetch.toString();
+                            sendTokenCubit.isSufficientTokenSink
+                                .add(gasFee < balanceFirstFetch);
+                            sendTokenCubit.formEstimateGasFeeSink.add(
+                              gasFee.toString(),
+                            );
                           },
                         ),
+
 
                         SizedBox(
                           height: 24.h,
@@ -270,6 +282,8 @@ class ShowCustomizeFee extends StatelessWidget {
       padding: EdgeInsets.only(
         top: 20.h,
         bottom: 20.h,
+        left: 20.w,
+        right: 20.w,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
@@ -278,14 +292,29 @@ class ShowCustomizeFee extends StatelessWidget {
         color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: TextFormField(
+        textAlign: TextAlign.right,
         keyboardType: TextInputType.number,
         controller: txtController,
         onChanged: (value) {
-          final double valueHandle = double.parse(value);
           late double result;
+          late double valueHandle;
+          if (value.isEmpty) {
+            valueHandle = 0;
+          } else {
+            valueHandle = double.parse(value);
+          }
           result = (valueHandle * double.parse(numHandle)) / pow(10, 9);
-          sendTokenCubit.isEstimatingGasFee(result);
-          sendTokenCubit.isSufficientGasFee(gasFee: result, balance: balance);
+          print(result.toString());
+          // final String numFormatted = sendTokenCubit.toExact(result);
+          // if(sendTokenCubit.toExact(result).length > 10) {
+          //
+          // }
+          sendTokenCubit.isEstimatingGasFee(sendTokenCubit.toExact(result));
+          sendTokenCubit.isSufficientGasFee(
+            gasFee: result,
+            balance: balanceFirstFetch,
+          );
+
         },
         style: textNormal(
           Colors.white,
@@ -307,8 +336,9 @@ class ShowCustomizeFee extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
       decoration: BoxDecoration(
-          color: const Color.fromRGBO(88, 87, 130, 1),
-          borderRadius: BorderRadius.circular(6.r)),
+        color: const Color.fromRGBO(88, 87, 130, 1),
+        borderRadius: BorderRadius.circular(6.r),
+      ),
       child: Text(
         'Reset',
         style: TextStyle(

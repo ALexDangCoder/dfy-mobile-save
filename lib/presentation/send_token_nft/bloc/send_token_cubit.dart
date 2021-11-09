@@ -10,8 +10,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   SendTokenCubit() : super(SendTokenInitial());
 
   final BehaviorSubject<String> _formField = BehaviorSubject<String>.seeded('');
-  final BehaviorSubject<String> _formEstimateGasFee =
-      BehaviorSubject<String>();
+  final BehaviorSubject<String> _formEstimateGasFee = BehaviorSubject<String>();
 
   //both stream below is manage confirm fee token screen
   final BehaviorSubject<bool> _isCustomizeFee =
@@ -42,11 +41,17 @@ class SendTokenCubit extends Cubit<SendTokenState> {
 
   Sink<String> get formEstimateGasFeeSink => _formEstimateGasFee.sink;
 
-  String walletAddress = '';
-  String receiveAddress = '';
-  int? tokenID;
-  int? amount;
-  String password = '';
+  String walletAddressToken = '';
+  String walletAddressNft = '';
+  String receiveAddressToken = '';
+  String receiveAddressNft = '';
+  int? tokenIDToken;
+  int? gasFeeToken;
+  int? gasFeeNft;
+  int? tokenIDNft;
+  int? amountToken;
+  String passwordToken = '';
+  String passwordNft = '';
 
   void isShowCustomizeFee({required bool isShow}) {
     isCustomizeFeeSink.add(isShow);
@@ -63,12 +68,21 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-  void isEstimatingGasFee(double value) {
-    formEstimateGasFeeSink.add(value.toString());
+  void isEstimatingGasFee(String value) {
+    if(value.length > 15) {
+      value = '$value...';
+      value = '${value.substring(1, 15)}...';
+    }
+
+    formEstimateGasFeeSink.add(value);
   }
 
+  // void isValidGasLimitFtPrice(String value) {
+  //   if(value.contains(other))
+  // }
+
   void isSufficientGasFee({required double gasFee, required double balance}) {
-    if(gasFee < balance) {
+    if (gasFee < balance) {
       isSufficientTokenSink.add(false);
     } else {
       isSufficientTokenSink.add(true);
@@ -93,15 +107,12 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   // amount*: Int
   // password: String"
 
-
   Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
-    print('result api: ' );
-
     switch (methodCall.method) {
       case 'sendTokenCallback':
         bool isSuccess = await methodCall.arguments['isSuccess'];
         print(isSuccess);
-        fromFieldSink.add(walletAddress);
+        // fromFieldSink.add(walletAddressToken);
         break;
       default:
         break;
@@ -114,21 +125,44 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   // amount*: Int
   // password: String"
   //input and nameCallback
+  Future<void> sendNft({
+    required String walletAddress,
+    required String receiveAddress,
+    required int nftID,
+    required int gasFee,
+    String? password,
+  }) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+        'receiveAddress': receiveAddress,
+        'nftID': nftID,
+        'gasFee': gasFee,
+        'password': password,
+        //
+      };
+      await trustWalletChannel.invokeMethod('sendToken', data);
+    } on PlatformException {
+      //todo
+    }
+  }
 
   Future<void> sendToken({
     required String walletAddress,
     required String receiveAddress,
     required int tokenID,
     required int amount,
+    required int gasFee,
     String? password,
   }) async {
     try {
       final data = {
-        'walletAddress' : walletAddress,
-        'receiveAddress' : receiveAddress,
-        'amount' : amount,
-        'tokenID' : tokenID,
+        'walletAddress': walletAddress,
+        'receiveAddress': receiveAddress,
+        'amount': amount,
+        'tokenID': tokenID,
         'password': password,
+        'gasFee': gasFee,
         //todo wallet
       };
       //param invokeMethod is api
@@ -138,4 +172,31 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
+  //handle number with e
+  String toExact(double input) {
+    double value = double.parse(input.toStringAsFixed(5));
+    var sign = '';
+    if (value < 0) {
+      value = -value;
+      sign = '-';
+    }
+    var string = value.toString();
+    var e = string.lastIndexOf('e');
+    if (e < 0) return '$sign$string';
+    assert(string.indexOf('.') == 1);
+    final offset = int.parse(
+        string.substring(e + (string.startsWith('-', e + 1) ? 1 : 2)));
+    final digits = string.substring(0, 1) + string.substring(2, e);
+    if (offset < 0) {
+      return "${sign}0.${"0" * ~offset}$digits";
+    }
+    if (offset > 0) {
+      if (offset >= digits.length) {
+        return sign + digits.padRight(offset + 1, '0');
+      }
+      return '$sign${digits.substring(0, offset + 1)}'
+          '.${digits.substring(offset + 1)}';
+    }
+    return digits;
+  }
 }
