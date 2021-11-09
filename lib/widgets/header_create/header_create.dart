@@ -13,7 +13,10 @@ class HeaderCreate extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          child: Image.asset(ImageAssets.ic_out),
+          child: Container(
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            child: Image.asset(ImageAssets.ic_out,width: 20.w,height: 20,),
+          ),
           onTap: () {
             Navigator.pop(context);
           },
@@ -27,8 +30,11 @@ class HeaderCreate extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          child: Image.asset(
-            ImageAssets.ic_close,
+          child: Container(
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            child: Image.asset(
+              ImageAssets.ic_close,
+            ),
           ),
           onTap: () {
             Navigator.pushNamedAndRemoveUntil(

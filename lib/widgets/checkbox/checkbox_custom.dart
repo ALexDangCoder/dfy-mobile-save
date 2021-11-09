@@ -19,7 +19,6 @@ class CheckBoxCustom extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(right: 26.w, left: 26.w),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           StreamBuilder(
             stream: bLocCreateSeedPhrase.isCheckBox1,

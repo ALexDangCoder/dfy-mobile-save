@@ -25,6 +25,7 @@ class CheckBoxCustom2 extends StatelessWidget {
           StreamBuilder(
             stream: bLocCreateSeedPhrase.isCheckBox2,
             builder: (context, AsyncSnapshot<bool> snapshot) {
+              bLocCreateSeedPhrase.getIsSeedPhraseImport2();
               return Checkbox(
                 fillColor: MaterialStateProperty.all(
                   AppTheme.getInstance().fillColor(),
