@@ -1,43 +1,27 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ImportToken extends StatelessWidget {
+class CreateNFT extends StatelessWidget {
 
 
 
-  const ImportToken({Key? key, required this.title, required this.icon,
-    required this.keyRouter,})
+  const CreateNFT({Key? key, required this.title, required this.icon,})
       : super(key: key);
 
 
-  final int keyRouter;
+
   final String title;
   final String icon;
 
-  void _checkKey() {
-    switch(keyRouter){
-      case 1:
-        //TODO : Show Import Token
-        break;
-      case 2:
-      //TODO : Show Import NFT
-        break;
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        _checkKey();
+        //TODO : Show Create NFT
       },
       child: Column(
         children: [
-          Divider(
-            height: 1.h,
-            color: const Color(0xFF4b4a60),
-          ),
           SizedBox(
             height: 60.h,
             child: Center(

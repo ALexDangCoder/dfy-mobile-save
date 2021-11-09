@@ -57,7 +57,7 @@ class _MainScreenState extends BaseState<MainScreen> {
   List<GlobalKey<NavigatorState>> navigatorKeys = <GlobalKey<NavigatorState>>[];
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int lastDuration = 3;
+  int lastDuration = 2;
 
 
 
@@ -75,7 +75,7 @@ class _MainScreenState extends BaseState<MainScreen> {
       const WalletScreen(),
       const WalletScreen(),
       const MarketPlaceScreen(),
-      const StakingScreen(),
+      const LoginScreen(),
     ];
     navigatorKeys = List.generate(
       _pages.length,
@@ -110,7 +110,7 @@ class _MainScreenState extends BaseState<MainScreen> {
           return Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              _pages.elementAt(snapshot.data ?? tabHomeIndex),
+              _pages.elementAt(snapshot.data ?? tabWalletIndex),
               CustomBottomHomeAppbar(
                 mainCubit: _cubit,
               )

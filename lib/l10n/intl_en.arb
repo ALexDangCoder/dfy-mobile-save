@@ -63,6 +63,9 @@
   "wallet": "Wallet",
   "wallet_secret": "Wallet secret seed phrase",
   "name_not_null": "Wallet name not null",
-  "failed": "Failed",
-  "copy": "Copy Successfully"
+  "copy": "Copy Successfully",
+  "password_is_not_correct": "Password is not correct",
+  "please_try_agian" : "Please try agian",
+  "OK": "OK",
+  "password_is_required" : "Password is required"
 }

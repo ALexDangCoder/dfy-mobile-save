@@ -59,6 +59,10 @@
   "scan_qr_code": "Quét mã QR",
   "paste": "Dán",
   "name_not_null": "Tên ví không được để trống",
-  "failed": "Thất bại",
-  "copy": "Copy thành công"
+  "copy": "Sao chép thành công",
+  "no_data": "Không có dữ liệu",
+  "password_is_not_correct": "Mật khẩu không chính xác",
+  "please_try_agian" : "Vui lòng thử lại",
+  "OK": "OK",
+  "password_is_required" : "Vui lòng điền mật khẩu"
 }
