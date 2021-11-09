@@ -1,10 +1,8 @@
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../main.dart';
 
 part 'check_pass_state.dart';
 
