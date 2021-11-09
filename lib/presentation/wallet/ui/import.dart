@@ -19,8 +19,10 @@ class ImportToken extends StatelessWidget {
   void _checkKey() {
     switch(keyRouter){
       case 1:
+        //TODO : Show Import Token
         break;
       case 2:
+      //TODO : Show Import NFT
         break;
     }
   }

@@ -89,4 +89,5 @@ class LoginCubit extends BaseCubit<LoginState> {
       emit(LoginSuccess());
     }
   }
+
 }

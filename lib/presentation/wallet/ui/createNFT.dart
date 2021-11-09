@@ -18,6 +18,7 @@ class CreateNFT extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
+        //TODO : Show Create NFT
       },
       child: Column(
         children: [

@@ -27,13 +27,14 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController controller;
-  final LoginCubit _cubit = LoginCubit();
+  late LoginCubit _cubit;
   bool enableLogin = false;
   bool errorText = false;
   @override
   void initState() {
     super.initState();
     controller = TextEditingController();
+    _cubit = LoginCubit();
     controller.addListener(() {
       if (mounted) {
         setState(() {
@@ -187,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Visibility(
                       visible: errorText,
                       child: Text(
-                        'Password is required',
+                        S.current.password_is_required,
                         style: textNormal(
                           Colors.red,
                           12.sp,
@@ -204,9 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     bloc: _cubit,
                     listener: (context, state) {
                       if (state is LoginSuccess) {
-                        Navigator.pushNamed(
+                        Navigator.pushReplacementNamed(
                           context,
-                          AppRouter.wallet,
+                          AppRouter.main,
                         );
                       } else if (state is LoginError) {
                         _showDialog();
@@ -242,7 +243,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                         onTap: () {
-                          if (controller.value.text.isNotEmpty) {
+                          if (controller.value.text.isNotEmpty && !errorText) {
                             _cubit.checkPasswordWallet(controller.value.text);
                           }
                         },
@@ -258,9 +259,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       bloc: _cubit,
                       listener: (context, state) {
                         if (state is LoginSuccess) {
-                          Navigator.pushNamed(
+                          Navigator.pushReplacementNamed(
                             context,
-                            AppRouter.wallet,
+                            AppRouter.main,
                           );
                         }
                       },
@@ -345,7 +346,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  _showDialog() {
+  void _showDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -406,5 +407,13 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
     );
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
+    _cubit.close();
+
   }
 }
