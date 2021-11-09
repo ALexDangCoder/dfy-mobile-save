@@ -8,7 +8,9 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
+import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/restore_bts/ui/restore_bts.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -19,7 +21,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key, required this.walletCubit}) : super(key: key);
+
+  final WalletCubit walletCubit;
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -30,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late LoginCubit _cubit;
   bool enableLogin = false;
   bool errorText = false;
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 113.h,
                   ),
-                   Image(
+                  const Image(
                     image: AssetImage(ImageAssets.symbol),
                   ),
                   SizedBox(
@@ -121,13 +126,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Expanded(
                               child: TextFormField(
-                                onChanged: (value){
-                                  if(value.isEmpty || controller.text.isEmpty){
+                                onChanged: (value) {
+                                  if (value.isEmpty ||
+                                      controller.text.isEmpty) {
                                     setState(() {
                                       errorText = true;
                                     });
-                                  }
-                                  else {
+                                  } else {
                                     errorText = false;
                                   }
                                 },
@@ -201,20 +206,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 36.h,
                   ),
-                  BlocConsumer<LoginCubit, LoginState>(
+                  BlocBuilder<LoginCubit, LoginState>(
                     bloc: _cubit,
-                    listener: (context, state) {
-                      if (state is LoginSuccess) {
-                        Navigator.pushReplacementNamed(
-                          context,
-                          AppRouter.main,
-                        );
-                      } else if (state is LoginError) {
-                        _showDialog();
-                      } else {
-                        const CircularProgressIndicator();
-                      }
-                    },
+
                     builder: (context, state) {
                       return GestureDetector(
                         child: enableLogin
@@ -245,6 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           if (controller.value.text.isNotEmpty && !errorText) {
                             _cubit.checkPasswordWallet(controller.value.text);
+                            context.read<MainCubit>().walletSink.add(1);
                           }
                         },
                       );
@@ -259,10 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       bloc: _cubit,
                       listener: (context, state) {
                         if (state is LoginSuccess) {
-                          Navigator.pushReplacementNamed(
-                            context,
-                            AppRouter.main,
-                          );
+                          widget.walletCubit.emit(WalletScreenState());
                         }
                       },
                       child: GestureDetector(
@@ -407,13 +399,5 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
     );
-  }
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    controller.dispose();
-    _cubit.close();
-
   }
 }

@@ -1,5 +1,8 @@
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
+import 'package:Dfy/presentation/import_token_nft/ui/import_nft.dart';
+import 'package:Dfy/presentation/import_token_nft/ui/import_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -16,18 +19,19 @@ class ImportToken extends StatelessWidget {
   final String title;
   final String icon;
 
-  void _checkKey() {
-    switch(keyRouter){
-      case 1:
-        //TODO : Show Import Token
-        break;
-      case 2:
-      //TODO : Show Import NFT
-        break;
-    }
-  }
+
   @override
   Widget build(BuildContext context) {
+    void _checkKey() {
+      switch(keyRouter){
+        case 1:
+          showImportToken(context, ImportTokenNftBloc());
+          break;
+        case 2:
+        showImportNft(context, ImportTokenNftBloc());
+          break;
+      }
+    }
     return GestureDetector(
       onTap: (){
         _checkKey();

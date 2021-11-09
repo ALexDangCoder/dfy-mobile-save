@@ -6,10 +6,14 @@ class MainCubit extends BaseCubit<MainState> {
   MainCubit() : super(MainStateInitial());
 
   final BehaviorSubject<int> _index = BehaviorSubject<int>.seeded(0);
+  final BehaviorSubject<int> _walletIndex = BehaviorSubject<int>();
 
   Stream<int> get indexStream => _index.stream;
 
   Sink<int> get indexSink => _index.sink;
+  Stream<int> get walletStream  => _walletIndex.stream;
+
+  Sink<int> get walletSink => _walletIndex.sink;
 
   Future<void> init({dynamic args}) async {}
 

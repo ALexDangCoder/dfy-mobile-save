@@ -106,7 +106,6 @@ class _RestoreBTSState extends State<RestoreBTS> {
               children: [
                 Container(
                   padding: EdgeInsets.only(
-                    left: 37.w,
                     right: 37.w,
                   ),
                   decoration: BoxDecoration(
@@ -120,17 +119,20 @@ class _RestoreBTSState extends State<RestoreBTS> {
                   width: 375.h,
                   child: Row(
                     children: [
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const ImageIcon(
-                          AssetImage(ImageAssets.back),
-                          color: Colors.white,
+                        child: Container(
+                          margin: EdgeInsets.only(right: 28.w, left: 37.w),
+                          child: const ImageIcon(
+                            AssetImage(ImageAssets.back),
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                       SizedBox(
-                        width: 77.w,
+                        width: 49.w,
                       ),
                       Expanded(
                         child: Text(

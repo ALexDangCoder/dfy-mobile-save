@@ -22,7 +22,7 @@
   "continue_s": "Tiếp tục",
   "success": "Tạo ví mới thành công",
   "success_import": "Nhập ví mới thành công",
-  "congratulation": "Chúc mừng",
+  "congratulation": "Chúc mừng!",
   "use_face": "Sử dụng khuôn mặt/ vân tay",
   "wallet_app_lock": "Khoá ứng dụng ví",
   "complete": "Hoàn thành",
@@ -64,5 +64,7 @@
   "password_is_not_correct": "Mật khẩu không chính xác",
   "please_try_agian" : "Vui lòng thử lại",
   "OK": "OK",
+  "login": "Đăng nhập",
+  "new_wallet": "Ví mới",
   "password_is_required" : "Vui lòng điền mật khẩu"
 }

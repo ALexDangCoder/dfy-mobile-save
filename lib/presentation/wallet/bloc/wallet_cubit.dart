@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 
@@ -13,6 +15,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   final String addressWallet = '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
   String formatAddressWallet = '';
+  bool checkLogin = false;
 
   Future<void> getAddressWallet() async {}
 
@@ -64,6 +67,21 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('getListShowedNft', data);
     } on PlatformException {
       log(e);
+    }
+  }
+  bool checkIndex(){
+    if(PrefsService.getAppLockConfig() == 'true'){
+      return true;
+    }
+    return false;
+
+  }
+  void checkScreen() {
+    if(PrefsService.getAppLockConfig() == 'true' && checkLogin == false) {
+      checkLogin = true;
+    }
+    else {
+      emit(WalletInitial());
     }
   }
 }
