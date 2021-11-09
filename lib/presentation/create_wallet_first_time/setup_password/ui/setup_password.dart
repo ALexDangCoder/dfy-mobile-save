@@ -1,6 +1,4 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
@@ -27,6 +25,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
   int checkBox = 1;
   int isValidPass = 1;
   int isMatchPass = 1;
+  int isEnable = 1;
 
   @override
   void initState() {
@@ -42,79 +41,93 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 375.w,
-      height: 764.h,
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.r),
-          topRight: Radius.circular(30.r),
-        ),
-      ),
-      child: Column(
-        children: [
-          header(),
-          Divider(
-            thickness: 1,
-            color: AppTheme.getInstance().divideColor(),
+    return GestureDetector(
+      onTap: () {
+        final FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Container(
+        width: 375.w,
+        height: 764.h,
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(62, 61, 92, 1),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30.r),
+            topRight: Radius.circular(30.r),
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  textShowSetupPass(),
-                  SizedBox(
-                    height: 28.h,
-                  ),
-                  formSetupPassWord(
-                    hintText: S.current.new_pass,
-                  ),
-                  showTextValidatePassword(),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  formSetupPassWordConfirm(
-                    hintText: S.current.con_pass,
-                  ),
-                  showTextValidateMatchPassword(),
-                  SizedBox(
-                    height: 25.h,
-                  ),
-                  ckcBoxAndTextSetupPass(),
-                  SizedBox(
-                    height: 256.h,
-                  ),
-                ],
+        ),
+        child: Column(
+          children: [
+            header(),
+            const Divider(
+              thickness: 1,
+              color: Color.fromRGBO(255, 255, 255, 0.1),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    textShowSetupPass(),
+                    SizedBox(
+                      height: 28.h,
+                    ),
+                    formSetupPassWord(
+                      hintText: 'New password',
+                    ),
+                    showTextValidatePassword(),
+                    SizedBox(
+                      height: 16.h,
+                    ),
+                    formSetupPassWordConfirm(
+                      hintText: 'Confirm password',
+                    ),
+                    showTextValidateMatchPassword(),
+                    SizedBox(
+                      height: 25.h,
+                    ),
+                    ckcBoxAndTextSetupPass(),
+                    SizedBox(
+                      height: 256.h,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          GestureDetector(
-            child: ButtonGold(
-              title: S.current.continue_s, isEnable: true,
-            ),
-            onTap: () async {
-              isValidPassCubit.isValidate(password.text);
-              isValidPassCubit.isMatchPW(
-                password: password.text,
-                confirmPW: confirmPassword.text,
-              );
-              if (checkBox == 2 &&
-                  isValidPassCubit.isValidFtMatchPW(
-                    password.text,
-                    confirmPassword.text,
-                  )) {
-                showCreateSeedPhrase1(
-                  context,
-                  BLocCreateSeedPhrase(password.text),
+            GestureDetector(
+              child: StreamBuilder(
+                stream: isValidPassCubit.isEnableBtnStream,
+                builder: (context, AsyncSnapshot<bool> snapshot) {
+                  return ButtonGold(
+                    title: 'Continue',
+                    isEnable: snapshot.data ?? false,
+                  );
+                },
+              ),
+              onTap: () async {
+                isValidPassCubit.isValidate(password.text);
+                isValidPassCubit.isMatchPW(
+                  password: password.text,
+                  confirmPW: confirmPassword.text,
                 );
-              }
-            },
-          ),
-          SizedBox(
-            height: 38.h,
-          ),
-        ],
+                if (checkBox == 2 &&
+                    isValidPassCubit.isValidFtMatchPW(
+                      password.text,
+                      confirmPassword.text,
+                    )) {
+                  showCreateSeedPhrase1(
+                    context,
+                    BLocCreateSeedPhrase(password.text),
+                  );
+                }
+              },
+            ),
+            SizedBox(
+              height: 38.h,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -134,12 +147,13 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 width: 323.w,
                 height: 30.h,
                 child: Text(
-                  S.current.pass_must,
-                  style: textNormal(
-                    AppTheme.getInstance().wrongColor(),
-                    12.sp,
-                  ).copyWith(
+                  'Password must include at least a number, '
+                  'an upper case, a lower\n case and a special '
+                  'character',
+                  style: TextStyle(
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
+                    color: const Color.fromRGBO(255, 108, 108, 1),
                   ),
                 ),
               ),
@@ -165,12 +179,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 width: 323.w,
                 height: 30.h,
                 child: Text(
-                  S.current.not_match,
-                  style: textNormal(
-                    AppTheme.getInstance().wrongColor(),
-                    12.sp,
-                  ).copyWith(
+                  'Your password did not match',
+                  style: TextStyle(
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
+                    color: const Color.fromRGBO(255, 108, 108, 1),
                   ),
                 ),
               ),
@@ -183,33 +196,35 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   SizedBox ckcBoxAndTextSetupPass() {
     return SizedBox(
-      height: 48.h,
+      // height: 48.h,
       width: 323.w,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Align(
             alignment: Alignment.topLeft,
             child: SizedBox(
               width: 24.w,
               height: 24.h,
-              child: StreamBuilder(
+              child: StreamBuilder<bool>(
                 stream: isValidPassCubit.ckcBoxStream,
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   return Checkbox(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    fillColor: MaterialStateProperty.all(
-                      AppTheme.getInstance().fillColor(),
-                    ),
-                    activeColor: AppTheme.getInstance().activeColor(),
+                    fillColor:
+                        MaterialStateProperty.all(const Color(0xffE4AC1A)),
+                    activeColor: const Color.fromRGBO(228, 172, 26, 1),
                     // checkColor: const Colors,
                     onChanged: (bool? value) {
                       isValidPassCubit.ckcBoxSink.add(value ?? false);
                       if (value == true) {
                         checkBox = 2;
+                        isValidPassCubit.isEnable(2);
                       } else {
                         checkBox = 1;
+                        isValidPassCubit.isEnable(1);
                       }
                     },
                     value: snapshot.data,
@@ -223,14 +238,14 @@ class _SetupPassWordState extends State<SetupPassWord> {
           ),
           SizedBox(
             width: 287.w,
-            height: 48.h,
+            // height: 48.h,
             child: Text(
-              S.current.understand_defi,
-              style: textNormal(
-                AppTheme.getInstance().whiteWithOpacity(),
-                14.sp,
-              ).copyWith(
+              'I understand DeFi For You will not recover this\n'
+              ' password for me',
+              style: TextStyle(
                 fontWeight: FontWeight.w400,
+                fontSize: 14.sp,
+                color: const Color.fromRGBO(255, 255, 255, 1),
               ),
             ),
           ),
@@ -247,11 +262,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
-        color: AppTheme.getInstance().itemBtsColors(),
+        color: Color(0xff32324c),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showPWStream,
@@ -282,11 +297,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 },
                 child: snapshot.data ?? false
                     ? const ImageIcon(
-                        AssetImage(ImageAssets.hide),
+                        AssetImage(ImageAssets.show),
                         color: Colors.grey,
                       )
                     : const ImageIcon(
-                        AssetImage(ImageAssets.show),
+                        AssetImage(ImageAssets.hide),
                         color: Colors.grey,
                       ),
               ),
@@ -310,11 +325,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
-        color: AppTheme.getInstance().itemBtsColors(),
+        color: Color(0xff32324c),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showConfirmPWStream,
@@ -370,14 +385,15 @@ class _SetupPassWordState extends State<SetupPassWord> {
       padding: EdgeInsets.only(top: 24.h),
       child: SizedBox(
         width: 323.w,
-        height: 72.h,
+        // height: 72.h,
         child: Text(
-          S.current.please,
-          style: textNormal(
-            AppTheme.getInstance().whiteWithOpacity(),
-            16.sp,
-          ).copyWith(
+          'Please setup your new password!\n'
+          'This password will unlock your DeFi For You\n wallet '
+          'only on this wallet',
+          style: TextStyle(
+            fontSize: 16.sp,
             fontWeight: FontWeight.w400,
+            color: const Color.fromRGBO(255, 255, 255, 1.0),
           ),
         ),
       ),
@@ -387,27 +403,28 @@ class _SetupPassWordState extends State<SetupPassWord> {
   Padding header() {
     return Padding(
       padding:
-          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
+          EdgeInsets.only( top: 16.h, bottom: 20.h),
+          // EdgeInsets.only(left: 0),
       child: Row(
         children: [
+          // SizedBox(width: 26.w,),
           Expanded(
             child: IconButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Image.asset(ImageAssets.back),
+              icon: Image.asset(ImageAssets.backArrow),
             ),
           ),
           SizedBox(
             width: 66.w,
           ),
           Text(
-            S.current.create_wallet,
-            style: textNormal(
-              AppTheme.getInstance().whiteWithOpacity(),
-              20.sp,
-            ).copyWith(
+            'Create new wallet',
+            style: TextStyle(
+              fontSize: 20.sp,
               fontWeight: FontWeight.w700,
+              color: Colors.white,
             ),
           ),
           SizedBox(
@@ -418,7 +435,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Image.asset(ImageAssets.ic_group),
+              icon: Image.asset(ImageAssets.group),
             ),
           )
         ],

@@ -41,9 +41,9 @@ class FormSearch extends StatelessWidget {
               child: TextFormField(
                 onFieldSubmitted: (value) {},
                 cursorColor: Colors.white,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.white,
+                style: textNormal(
+                  Colors.white54,
+                  16.sp,
                 ),
                 decoration: InputDecoration(
                   hintText: hint,

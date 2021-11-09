@@ -65,12 +65,6 @@ void showTokenSuccessfully(BuildContext context) {
                       fontSize: 32.sp,
                     ),
                   ),
-                  SizedBox(
-                    height: 170.h,
-                  ),
-                  SizedBox(
-                    height: 56.h,
-                  ),
                 ],
               ),
             ),

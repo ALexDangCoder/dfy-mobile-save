@@ -42,7 +42,6 @@ class ImageAssets {
   static const String add_wallet = '$baseImg/addstwallet.png';
   static const String ic_menu = '$baseImg/Menu.png.png';
   static const String ic_notify = '$baseImg/Notification.png';
-  static const String symbol = '$baseImg/symbol.png';
   static const String center = '$baseImg/Centered.png';
   static const String ic_touch = '$baseImg/finger_icon.png';
   static const String ic_out = '$baseImg/ic_out.png';
@@ -73,6 +72,7 @@ class ImageAssets {
   static const String icLineRight = '$baseImg/ic_line_right.png';
   static const String icOut = '$baseImg/ic_out.png';
   static const String icPassword = '$baseImg/ic_password.png';
+  static const String hardCoreImgWallet = '$baseImg/naruto.png';
   static const String icTabMarketSelect =
       '$baseImg/ic_tab_market_place_select.svg.svg';
   static const String icTabMarketUnselect =
@@ -96,8 +96,8 @@ class ImageAssets {
   static const String codeS = '$baseImg/Code.png';
   static const String from = '$baseImg/From.png';
 
-  // static const String symbol = '$baseImg/symbol.png';
 
+  static const String symbol = 'assets/images/symbol.png';
   static SvgPicture svgAssets(
     String name, {
     Color? color,

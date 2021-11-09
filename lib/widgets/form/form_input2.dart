@@ -44,9 +44,9 @@ class FormInput2 extends StatelessWidget {
                     bloc.tokenSymbolText.sink.add(value);
                   },
                   cursorColor: Colors.white,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.white,
+                  style: textNormal(
+                    Colors.white54,
+                    16.sp,
                   ),
                   decoration: InputDecoration(
                     hintText: hint,

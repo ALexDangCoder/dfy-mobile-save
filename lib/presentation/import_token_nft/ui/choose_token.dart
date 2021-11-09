@@ -55,7 +55,7 @@ class ChooseToken extends StatelessWidget {
                           Text(
                             'Bitcoin',
                             style: textNormalCustom(
-                                Colors.white, 16, FontWeight.w600),
+                                Colors.white, 16, FontWeight.w600,),
                           ),
                           spaceW6,
                           Text(
@@ -63,7 +63,7 @@ class ChooseToken extends StatelessWidget {
                             style: textNormalCustom(
                                 const Color.fromRGBO(255, 255, 255, 0.7),
                                 18,
-                                FontWeight.w400),
+                                FontWeight.w400,),
                           ),
                         ],
                       ),
@@ -72,7 +72,7 @@ class ChooseToken extends StatelessWidget {
                         style: textNormalCustom(
                             const Color.fromRGBO(255, 255, 255, 0.5),
                             16,
-                            FontWeight.w400),
+                            FontWeight.w400,),
                       ),
                     ),
                   ),

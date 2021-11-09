@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,15 +35,15 @@ class FromSwitch1 extends StatelessWidget {
           value: isCheck,
           leading: Image.asset(urlPrefixIcon),
           onChanged: (value) {
-            bLocCreateSeedPhrase.isCheckAppLock.sink.add(value);
+            bLocCreateSeedPhrase.isCheckTouchID.sink.add(value);
           },
           switchActiveColor: const Color(0xffE4AC1A),
           switchType: SwitchType.cupertino,
           title: Text(
             title,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.sp,
+            style: textNormal(
+              Colors.white54,
+              16.sp,
             ),
           ),
         ),

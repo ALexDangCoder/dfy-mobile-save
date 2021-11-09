@@ -1,3 +1,5 @@
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +43,7 @@ class FromText2 extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 2,
                 child: Text(
                   title,
-                  style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+                  style: textNormal(Colors.grey, 16.sp),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -53,7 +55,7 @@ class FromText2 extends StatelessWidget {
               FlutterClipboard.copy(title);
 
               Fluttertoast.showToast(
-                msg: ' Copy Successful.',
+                msg: S.current.copy,
                 toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.TOP,
               );

@@ -20,5 +20,8 @@ const String url_ic_search = 'assets/images/Search.png';
 
 const String url_ic_enter_id = 'assets/images/ID.png';
 
-
+const String url_ic_copy = 'assets/images/ic_copy.png';
 const String url_ic_close = 'assets/images/ic_close.png';
+
+const String url_ic_addresss = 'assets/images/ic_address.png';
+const String url_ic_key = 'assets/images/ic_key.png';

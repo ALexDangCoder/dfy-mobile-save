@@ -4,26 +4,14 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SendTokenFtNft extends StatefulWidget {
-  const SendTokenFtNft({Key? key}) : super(key: key);
+class SendNft extends StatefulWidget {
+  const SendNft({Key? key}) : super(key: key);
 
   @override
-  _SendTokenFtNftState createState() => _SendTokenFtNftState();
+  _SendNftState createState() => _SendNftState();
 }
 
-class _SendTokenFtNftState extends State<SendTokenFtNft> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
+class _SendNftState extends State<SendNft> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,7 +26,7 @@ class _SendTokenFtNftState extends State<SendTokenFtNft> {
       ),
       child: Column(
         children: [
-          header(nameToken: 'DFY'),
+          header(nameSend: 'NFT'),
           const Divider(
             thickness: 1,
             color: Color.fromRGBO(255, 255, 255, 0.1),
@@ -68,9 +56,9 @@ class _SendTokenFtNftState extends State<SendTokenFtNft> {
                     height: 16.h,
                   ),
                   formAmountFtQuantity(
-                    hintText: 'Amount',
+                    hintText: 'Quantity',
                     isAmount: true,
-                    isQuantity: false,
+                    isQuantity: true,
                     prefixImg: ImageAssets.token,
                   ),
                   SizedBox(
@@ -81,7 +69,7 @@ class _SendTokenFtNftState extends State<SendTokenFtNft> {
             ),
           ),
           GestureDetector(
-            child: ButtonGold(
+            child: const ButtonGold(
               title: 'Continue',
               isEnable: false,
             ),
@@ -90,40 +78,6 @@ class _SendTokenFtNftState extends State<SendTokenFtNft> {
           SizedBox(
             height: 34.h,
           ),
-        ],
-      ),
-    );
-  }
-
-  //header
-  Padding header({required String nameToken}) {
-    return Padding(
-      padding:
-          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 121.w,
-          ),
-          Text(
-            'Send $nameToken',
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(
-            width: 94.w,
-          ),
-          Expanded(
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Image.asset('assets/images/Group.png'),
-            ),
-          )
         ],
       ),
     );
@@ -253,6 +207,36 @@ class _SendTokenFtNftState extends State<SendTokenFtNft> {
     );
   }
 
-//sau la suffix
-//truoc la prefix
+  Padding header({required String nameSend}) {
+    return Padding(
+      padding:
+          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 121.w,
+          ),
+          Text(
+            'Send $nameSend',
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(
+            width: 94.w,
+          ),
+          Expanded(
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Image.asset('assets/images/Group.png'),
+            ),
+          )
+        ],
+      ),
+    );
+  }
 }
