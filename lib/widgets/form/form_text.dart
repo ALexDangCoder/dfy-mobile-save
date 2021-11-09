@@ -2,6 +2,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FromText extends StatelessWidget {
   final String urlPrefixIcon;
@@ -55,6 +56,13 @@ class FromText extends StatelessWidget {
           InkWell(
             onTap: () {
               FlutterClipboard.copy(title);
+
+              Fluttertoast.showToast(
+                msg: ' Copy Successful.',
+
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.TOP,
+              );
             },
             child: Container(
               child: urlSuffixIcon.isNotEmpty

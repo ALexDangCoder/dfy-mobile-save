@@ -1,5 +1,6 @@
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,8 +9,8 @@ class HeaderCreate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
-     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
           child: Image.asset(
@@ -37,7 +38,11 @@ class HeaderCreate extends StatelessWidget {
             ImageAssets.ic_close,
           ),
           onTap: () {
-            Navigator.pop(context);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              AppRouter.main,
+              (route) => route.isFirst,
+            );
           },
         ),
       ],

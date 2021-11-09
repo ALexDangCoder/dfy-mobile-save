@@ -48,5 +48,19 @@
   "your_seed": "Seed phrase của bạn",
   "max": "Tối đa",
   "up_load": "Tải lên hoặc kéo thả tệp ở đây ",
-  "support_type": "Hỗ trợ kiểu tệp:"
+  "support_type": "Hỗ trợ kiểu tệp:",
+  "import_seed_phrase": "Nhập Seed phrase",
+  "token": "TOKEN",
+  "nft": "NFT",
+  "import_token": "Nhập Token",
+  "import_NFT": "Nhập NFT",
+  "create_NFT": "Tạo NFT",
+  "failed": "thất bại",
+  "create_new_wallet": "Tạo ví mới",
+  "name_wallet": "Tên ví",
+  "restore_with_private": "Khôi phục tài khoản của bạn bằng private key. Sau khi quá trình này hoàn tất, với các tài khoản bổ sung bạn có thể tạo mới hoặc nhập tài khoản",
+  "or_scan": "hoặc quét mã QR",
+  "scan_qr_code": "Quét mã QR",
+  "no_data": "Không có dữ liệu",
+  "paste": "Dán"
 }

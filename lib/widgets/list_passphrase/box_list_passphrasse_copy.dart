@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -6,13 +7,16 @@ import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class BoxListPassWordPhraseCopy extends StatelessWidget {
   final List<String> listTitle;
+  final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
   const BoxListPassWordPhraseCopy({
     Key? key,
     required this.listTitle,
+    required this.bLocCreateSeedPhrase,
   }) : super(key: key);
 
   @override
@@ -41,7 +45,12 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  FlutterClipboard.copy(listTitle.toString());
+                  FlutterClipboard.copy(bLocCreateSeedPhrase.passPhrase);
+                  Fluttertoast.showToast(
+                    msg: ' Copy Successful.',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                  );
                 },
                 child: Image.asset(
                   ImageAssets.ic_copy,
