@@ -1,5 +1,5 @@
-
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_token.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +14,7 @@ class ImportToken extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        showImportToken(
-            context, ImportTokenNftBloc());
-      },
+      onTap: () {},
       child: Column(
         children: [
           Divider(

@@ -7,8 +7,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft_succesfully.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/form/form_input.dart';
-import 'package:Dfy/widgets/form/form_input2.dart';
 import 'package:Dfy/widgets/form/form_input3.dart';
 import 'package:Dfy/widgets/form/form_input_number.dart';
 import 'package:flutter/cupertino.dart';
