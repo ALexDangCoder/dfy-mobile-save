@@ -125,8 +125,7 @@ class ImportTokenNftBloc {
     }
   }
 
-  bool
-  isImportToken() {
+  bool isImportToken() {
     print(tokenSymbolText.value);
 
     print(tokenDecimal.value);
@@ -148,12 +147,12 @@ class ImportTokenNftBloc {
     switch (methodCall.method) {
       case 'importTokenCallback':
         isImportToken = await methodCall.arguments['isSuccess'];
-        print(isImportToken);
+        print(isImportToken); // thieu 1 dau api
         break;
       case 'getListSupportedTokenCallback':
         //[TokenObject]
         var a = await methodCall.arguments['TokenObject'];
-        print("a");
+        print(a.runtimeType);
 
         break;
       case 'setShowedTokenCallback':

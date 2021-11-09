@@ -1,29 +1,31 @@
-import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AddWalletFtSeedPhrase extends StatefulWidget {
-  const AddWalletFtSeedPhrase({Key? key}) : super(key: key);
+class AddWalletFtSeedPharse extends StatefulWidget {
+  const AddWalletFtSeedPharse({Key? key}) : super(key: key);
 
   @override
-  _AddWalletFtSeedPhraseState createState() => _AddWalletFtSeedPhraseState();
+  _AddWalletFtSeedPharseState createState() => _AddWalletFtSeedPharseState();
 }
 
-class _AddWalletFtSeedPhraseState extends State<AddWalletFtSeedPhrase> {
+class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: 375.w,
         height: 812.h,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: AppTheme.getInstance().listColorAddWalletSeedPhrase(),
+            colors: [
+              Color.fromRGBO(60, 59, 84, 1),
+              Color.fromRGBO(23, 21, 39, 1),
+            ],
           ),
         ),
         child: Column(
@@ -32,9 +34,9 @@ class _AddWalletFtSeedPhraseState extends State<AddWalletFtSeedPhrase> {
             SizedBox(
               height: 14.h,
             ),
-            Divider(
+            const Divider(
               thickness: 1,
-              color: AppTheme.getInstance().divideColor(),
+              color: Color.fromRGBO(255, 255, 255, 0.1),
             ),
             SizedBox(
               height: 40.h,
@@ -49,6 +51,7 @@ class _AddWalletFtSeedPhraseState extends State<AddWalletFtSeedPhrase> {
                       onTap: () {},
                       child: btnImportSeedPharse(),
                     ),
+
                   ],
                 ),
               ),
@@ -61,20 +64,19 @@ class _AddWalletFtSeedPhraseState extends State<AddWalletFtSeedPhrase> {
 
   SizedBox btnImportSeedPharse() {
     return SizedBox(
-      width: 323.w,
-      height: 25.h,
-      child: Center(
-        child: Text(
-          S.current.import_seed,
-          style: textNormal(
-            AppTheme.getInstance().activeColor(),
-            20.sp,
-          ).copyWith(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-    );
+                      width: 323.w,
+                      height: 25.h,
+                      child: Center(
+                        child: Text(
+                          'Import secret seedphrase',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w600,
+                            color: const Color.fromRGBO(228, 172, 26, 1),
+                          ),
+                        ),
+                      ),
+                    );
   }
 
   Container btnAddWallet() {
@@ -86,7 +88,7 @@ class _AddWalletFtSeedPhraseState extends State<AddWalletFtSeedPhrase> {
           Radius.circular(22.r),
         ),
         border: Border.all(
-          color: AppTheme.getInstance().activeColor(),
+          color: const Color.fromRGBO(228, 172, 26, 1),
         ),
       ),
       child: Center(
@@ -96,18 +98,17 @@ class _AddWalletFtSeedPhraseState extends State<AddWalletFtSeedPhrase> {
           child: Center(
             child: Row(
               children: [
-                Image.asset(ImageAssets.add_wallet),
+                Image.asset(ImageAssets.addsWallet),
                 SizedBox(
                   width: 8.w,
                 ),
                 Expanded(
                   child: Text(
-                    S.current.add_wallet,
-                    style: textNormal(
-                      AppTheme.getInstance().activeColor(),
-                      20.sp,
-                    ).copyWith(
+                    'Add Wallet',
+                    style: TextStyle(
                       fontWeight: FontWeight.w700,
+                      fontSize: 20.sp,
+                      color: const Color.fromRGBO(228, 172, 26, 1),
                     ),
                   ),
                 )
@@ -135,34 +136,34 @@ class _AddWalletFtSeedPhraseState extends State<AddWalletFtSeedPhrase> {
           children: [
             IconButton(
               onPressed: () {},
-              icon: Image.asset(ImageAssets.ic_menu),
+              icon: Image.asset(ImageAssets.menu),
             ),
             Column(
               children: [
                 Text(
-                  S.current.wallet,
-                  style: textNormal(
-                    AppTheme.getInstance().whiteWithOpacity(),
-                    20.sp,
-                  ).copyWith(fontWeight: FontWeight.w700),
+                  'Wallet',
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w700,
+                    color: const Color.fromRGBO(255, 255, 255, 1),
+                  ),
                 ),
                 SizedBox(
                   height: 4.h,
                 ),
                 Text(
-                  S.current.smart_chain,
-                  style: textNormal(
-                    AppTheme.getInstance().whiteWithOpacity(),
-                    14.sp,
-                  ).copyWith(
+                  'Smart chain',
+                  style: TextStyle(
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
+                    color: const Color.fromRGBO(189, 189, 189, 1),
                   ),
                 )
               ],
             ),
             IconButton(
               onPressed: () {},
-              icon: Image.asset(ImageAssets.ic_notify),
+              icon: Image.asset(ImageAssets.notification),
             )
           ],
         ),

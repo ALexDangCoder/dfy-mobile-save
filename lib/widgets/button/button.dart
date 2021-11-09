@@ -22,14 +22,8 @@ class ButtonGold extends StatelessWidget {
           radius: 4,
           center: const Alignment(0.5, -0.5),
           colors: isEnable
-              ? [
-                  const Color(0xffFFE284),
-                  const Color(0xffE4AC1A),
-                ]
-              : [
-                  const Color(0xffCDCDCD),
-                  const Color(0xffCDCDCD),
-                ],
+              ? AppTheme.getInstance().gradientButtonColor()
+              : [AppTheme.getInstance().disableColor(),AppTheme.getInstance().disableColor()],
         ),
         borderRadius: const BorderRadius.all(
           Radius.circular(22),
@@ -39,7 +33,7 @@ class ButtonGold extends StatelessWidget {
       width: 298.w,
       child: Center(
         child: Text(
-          widget.title,
+          title,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
             20.sp,

@@ -73,6 +73,7 @@ class FormInput extends StatelessWidget {
                   builder: (context) {
                     return QRViewExample(
                       bloc: bloc,
+                      controller: controller,
                     );
                   },
                 ),

@@ -8,8 +8,9 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRViewExample extends StatefulWidget {
   final ImportTokenNftBloc bloc;
+  final TextEditingController? controller;
 
-  const QRViewExample({Key? key, required this.bloc}) : super(key: key);
+  const QRViewExample({Key? key, required this.bloc, this.controller}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _QRViewExampleState();
@@ -118,6 +119,7 @@ class _QRViewExampleState extends State<QRViewExample> {
         } else {
           widget.bloc.tokenAddressText.sink.add(result?.code ?? '');
           widget.bloc.tokenAddressTextNft.sink.add(result?.code ?? '');
+          widget.controller?.text = result?.code ?? '';
           Navigator.pop(context);
         }
       });

@@ -1,15 +1,10 @@
 import 'dart:ui';
-import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
+
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_switch.dart';
 import 'package:Dfy/widgets/form/form_switch1.dart';
@@ -18,7 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void showCreateSuccessfully(
-    BuildContext context, BLocCreateSeedPhrase bLocCreateSeedPhrase) {
+  BuildContext context,
+  BLocCreateSeedPhrase bLocCreateSeedPhrase,
+) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -29,7 +26,7 @@ void showCreateSuccessfully(
         width: 375.w,
         decoration: BoxDecoration(
           // shape: BoxShape.circle,
-          color: AppTheme.getInstance().bgBtsColor(),
+          color: const Color(0xff3e3d5c),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.h),
             topRight: Radius.circular(30.h),
@@ -43,17 +40,13 @@ void showCreateSuccessfully(
             ),
             Center(
               child: Text(
-                S.current.success,
-                style: textNormal(
-                  AppTheme.getInstance().whiteWithOpacity(),
-                  20.sp,
-                ).copyWith(
+                'Create new wallet successfully',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            SizedBox(
-              height: 20.h,
             ),
             spaceH20,
             line,
@@ -67,23 +60,23 @@ void showCreateSuccessfully(
                       height: 22.h,
                     ),
                     Text(
-                      S.current.congratulation,
-                      style: textNormal(
-                        AppTheme.getInstance().whiteWithOpacity(),
-                        32.sp,
-                      ).copyWith(
+                      'Congratulation!',
+                      style: TextStyle(
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
+                        fontSize: 32.sp,
                       ),
                     ),
                     SizedBox(
                       height: 111.h,
                     ),
                     StreamBuilder(
-                      stream: bLocCreateSeedPhrase.isCheckAppLock,
+                      stream: bLocCreateSeedPhrase.isCheckTouchID,
+
                       builder: (context, AsyncSnapshot<bool> snapshot) {
                         return FromSwitch1(
                           bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-                          title:  S.current.use_face,
+                          title: 'Use face/touch ID',
                           isCheck: snapshot.data ?? false,
                           urlPrefixIcon: ImageAssets.icFace,
                         );
@@ -93,11 +86,11 @@ void showCreateSuccessfully(
                       height: 20.h,
                     ),
                     StreamBuilder(
-                      stream: bLocCreateSeedPhrase.isCheckTouchID,
+                      stream: bLocCreateSeedPhrase.isCheckAppLock,
                       builder: (context, AsyncSnapshot<bool> snapshot) {
                         return FromSwitch(
                           bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-                          title:  S.current.wallet_app_lock,
+                          title: 'Wallet app lock',
                           isCheck: snapshot.data ?? false,
                           urlPrefixIcon: ImageAssets.icPassword,
                         );
@@ -114,19 +107,23 @@ void showCreateSuccessfully(
               child: GestureDetector(
                 onTap: () {
                   //Navigator.popAndPushNamed(context,AppRouter.login);
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    AppRouter.main,
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(),
+                    ),
                     (route) => route.isFirst,
+                  );
+                  bLocCreateSeedPhrase.setConfig(
+                    password: bLocCreateSeedPhrase.passWord,
+                    isAppLock: bLocCreateSeedPhrase.isCheckAppLock.value,
+                    isFaceID: bLocCreateSeedPhrase.isCheckTouchID.value,
                   );
                 },
                 child: const ButtonGold(
-                  S.current.wallet_app_lock,
+                  title: 'Complete',
                   isEnable: true,
                 ),
               ),
-            ),
-            SizedBox(
-              height: 38.h,
             ),
           ],
         ),

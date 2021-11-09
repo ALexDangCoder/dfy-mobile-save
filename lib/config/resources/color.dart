@@ -16,8 +16,6 @@ const backGroubBottomSheetColor = Color(0xff32324c);
 const formColor = Color(0xff6F6FC5);
 const subTitleTxtColor = Color(0xff9097A3);
 const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
-const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
-const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
 const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
@@ -103,6 +101,7 @@ abstract class AppColor {
   Color textThemeColor();
 
   Color suffixColor();
+
   Color errorColorButton();
 
   Color selectDialogColor();
@@ -190,20 +189,8 @@ class LightApp extends AppColor {
 
   @override
   Color divideColor() {
-    return const Color.fromRGBO(255, 255, 255, 0.1);
+   return const Color.fromRGBO(255, 255, 255, 0.1);
   }
-
-  @override
-  Color whiteColor() {
-    return const Color(0xFFFFFFFF);
-  }
-
-  @override
-  Color backgroundLoginTextField() {
-
-    return const Color(0xFF242234);
-  }
-
 
   @override
   Color wrongColor() {
@@ -253,6 +240,16 @@ class LightApp extends AppColor {
   @override
   Color errorColorButton() {
     return errorColor;
+  }
+
+  @override
+  Color backgroundLoginTextField() {
+    return Colors.white;
+  }
+
+  @override
+  Color whiteColor() {
+    return Colors.white;
   }
 }
 

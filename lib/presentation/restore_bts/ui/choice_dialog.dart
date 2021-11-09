@@ -1,18 +1,17 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/restore_account/bloc/string_cubit.dart';
+import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
+import 'package:Dfy/widgets/form/item_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomDialog extends StatefulWidget {
-  const CustomDialog({
+class ChoiceDialog extends StatefulWidget {
+  const ChoiceDialog({
     Key? key,
-    required this.cubit,
-    required this.controller1,
-    required this.controller2,
+    required this.cubit, required this.controller1, required this.controller2,
   }) : super(key: key);
-  final StringCubit cubit;
+  final RestoreCubit cubit;
   final TextEditingController controller1;
   final TextEditingController controller2;
 
@@ -20,9 +19,7 @@ class CustomDialog extends StatefulWidget {
   _CustomDialogState createState() => _CustomDialogState();
 }
 
-class _CustomDialogState extends State<CustomDialog> {
-  final List<String> text = [S.current.seed_phrase, S.current.private_key];
-
+class _CustomDialogState extends State<ChoiceDialog> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,10 +36,15 @@ class _CustomDialogState extends State<CustomDialog> {
           SizedBox(
             height: 12.h,
           ),
-          GestureDetector(
+          InkWell(
             onTap: () {
-              widget.cubit.selectSeed(text[0]);
+              widget.cubit.stringSink.add(S.current.seed_phrase);
+              widget.cubit.typeSink.add(FormType.PASS_PHRASE);
+              widget.cubit.listStringSink.add(
+                [S.current.restore_with_seed, S.current.only_first],
+              );
               widget.controller1.clear();
+              widget.cubit.boolSink.add(false);
             },
             child: Container(
               margin: EdgeInsets.only(left: 24.w),
@@ -51,7 +53,7 @@ class _CustomDialogState extends State<CustomDialog> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  text[0],
+                  S.current.seed_phrase,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
                     16.sp,
@@ -63,10 +65,15 @@ class _CustomDialogState extends State<CustomDialog> {
           SizedBox(
             height: 12.h,
           ),
-          GestureDetector(
+          InkWell(
             onTap: () {
-              widget.cubit.selectPrivate(text[1]);
+              widget.cubit.stringSink.add(S.current.private_key);
+              widget.cubit.typeSink.add(FormType.PRIVATE_KEY);
+              widget.cubit.listStringSink.add(
+                [S.current.restore_with_private],
+              );
               widget.controller2.clear();
+              widget.cubit.boolSink.add(false);
             },
             child: Container(
               margin: EdgeInsets.only(left: 24.w),
@@ -75,7 +82,7 @@ class _CustomDialogState extends State<CustomDialog> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  text[1],
+                  S.current.private_key,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
                     16.sp,
