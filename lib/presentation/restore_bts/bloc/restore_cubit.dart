@@ -1,3 +1,5 @@
+import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_state.dart';
@@ -7,16 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-class Wallet {
-  final String name;
-  final String address;
-
-  Wallet(this.name, this.address);
-}
-
 class RestoreCubit extends Cubit<RestoreState> {
-  late Wallet wallet;
-
   RestoreCubit() : super(RestoreInitial());
   final BehaviorSubject<List<String>> _behaviorSubject =
       BehaviorSubject<List<String>>();
@@ -30,7 +23,6 @@ class RestoreCubit extends Cubit<RestoreState> {
   final BehaviorSubject<bool> _ckcBoxSubject = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _validate = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _match = BehaviorSubject<bool>.seeded(false);
-  final BehaviorSubject<bool> _walletSubject = BehaviorSubject.seeded(true);
 
   Stream<bool> get validateStream => _validate.stream;
 
@@ -39,10 +31,6 @@ class RestoreCubit extends Cubit<RestoreState> {
   Sink<bool> get validateSink => _validate.sink;
 
   Sink<bool> get matchSink => _match.sink;
-
-  bool get flag => _walletSubject.value;
-
-  Sink<bool> get flagSink => _walletSubject.sink;
 
   Stream<List<String>> get listStringStream => _behaviorSubject.stream;
 
@@ -74,21 +62,23 @@ class RestoreCubit extends Cubit<RestoreState> {
 
   Sink<bool> get ckcSink => _ckcBoxSubject.sink;
 
-
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'importWalletCallback':
-        flagSink.add(true);
         final walletName = methodCall.arguments['walletName'];
         final walletAddress = methodCall.arguments['walletAddress'];
-        wallet = Wallet(walletName, walletAddress);
+        if (walletName == null || walletAddress == null) {
+          emit(ErrorState());
+        } else {
+          emit(NavState(Wallet(walletName, walletAddress)));
+        }
         break;
       default:
         break;
     }
   }
 
-  Future<void> importWalletKey({
+  Future<void> importWallet({
     required String type,
     required String content,
     String? password,
@@ -101,7 +91,7 @@ class RestoreCubit extends Cubit<RestoreState> {
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
-      flagSink.add(false);
+      throw CommonException();
     }
   }
 
@@ -137,6 +127,7 @@ class RestoreCubit extends Cubit<RestoreState> {
     _formTypeSubject.close();
     _newPassSubject.close();
     _conPassSubject.close();
+
     super.close();
   }
 }
