@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
@@ -31,16 +31,15 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
   late final TextEditingController amountController;
   late final ReceiveCubit receiveCubit;
   late final FToast toast;
-  final globalKey = GlobalKey();
   String? prize;
-  late final GlobalKey key;
+  late final GlobalKey globalKey;
 
   @override
   void initState() {
     super.initState();
     amountController = TextEditingController();
     receiveCubit = ReceiveCubit();
-    key = GlobalKey();
+    globalKey = GlobalKey();
     toast = FToast();
     toast.init(context);
   }
@@ -121,9 +120,9 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
               right: 40.w,
               left: 40.w,
             ),
-            decoration: const BoxDecoration(
-              color: Color(0xff585782),
-              borderRadius: BorderRadius.all(
+            decoration: BoxDecoration(
+              color: AppTheme.getInstance().selectDialogColor(),
+              borderRadius: const BorderRadius.all(
                 Radius.circular(36),
               ),
             ),
@@ -185,7 +184,10 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
                   ),
                   child: Text(
                     '${receiveCubit.value} BNB',
-                    style: textNormal(const Color(0xffE4AC1A), 24.sp).copyWith(
+                    style: textNormal(
+                      AppTheme.getInstance().fillColor(),
+                      24.sp,
+                    ).copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -207,11 +209,22 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
                   path: ImageAssets.save,
                   label: S.current.save,
                   callback: () async {
-                    toast.showToast(
-                      child: popMenu(),
-                      toastDuration: const Duration(seconds: 1),
-                      gravity: ToastGravity.CENTER,
-                    );
+                    final RenderRepaintBoundary? boundary =
+                        globalKey.currentContext!.findRenderObject()
+                            as RenderRepaintBoundary?;
+                    final image = await boundary!.toImage();
+                    final ByteData? byteData =
+                        await image.toByteData(format: ImageByteFormat.png);
+                    if (byteData != null) {
+                      await ImageGallerySaver.saveImage(
+                        byteData.buffer.asUint8List(),
+                      );
+                      toast.showToast(
+                        child: popMenu(),
+                        toastDuration: const Duration(seconds: 1),
+                        gravity: ToastGravity.CENTER,
+                      );
+                    }
                   },
                 ),
                 _buildColumnButton(

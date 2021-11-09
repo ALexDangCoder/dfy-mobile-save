@@ -97,7 +97,8 @@ dependencies:
   get_it: ^7.2.0
   qr_flutter: ^4.0.0
   share_plus: ^3.0.4
-  gallery_saver: ^2.3.2
+  image_gallery_saver: ^1.7.1
+  #gallery_saver: ^2.3.2
   #flutter_appavailability: ^0.0.21
 
 dev_dependencies:
