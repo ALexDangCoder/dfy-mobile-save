@@ -1,3 +1,5 @@
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -37,12 +39,11 @@ class ButtonGold extends StatelessWidget {
       width: 298.w,
       child: Center(
         child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 20.sp,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          widget.title,
+          style: textNormal(
+            AppTheme.getInstance().textThemeColor(),
+            20.sp,
+          ).copyWith(fontWeight: FontWeight.bold),
         ),
       ),
     );

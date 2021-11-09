@@ -1,4 +1,8 @@
 import 'dart:ui';
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
@@ -25,7 +29,7 @@ void showCreateSuccessfully(
         width: 375.w,
         decoration: BoxDecoration(
           // shape: BoxShape.circle,
-          color: const Color(0xff3e3d5c),
+          color: AppTheme.getInstance().bgBtsColor(),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.h),
             topRight: Radius.circular(30.h),
@@ -39,13 +43,17 @@ void showCreateSuccessfully(
             ),
             Center(
               child: Text(
-                'Create new wallet successfully',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  color: Colors.white,
+                S.current.success,
+                style: textNormal(
+                  AppTheme.getInstance().whiteWithOpacity(),
+                  20.sp,
+                ).copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
+            ),
+            SizedBox(
+              height: 20.h,
             ),
             spaceH20,
             line,
@@ -59,11 +67,12 @@ void showCreateSuccessfully(
                       height: 22.h,
                     ),
                     Text(
-                      'Congratulation!',
-                      style: TextStyle(
-                        color: Colors.white,
+                      S.current.congratulation,
+                      style: textNormal(
+                        AppTheme.getInstance().whiteWithOpacity(),
+                        32.sp,
+                      ).copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 32.sp,
                       ),
                     ),
                     SizedBox(
@@ -74,7 +83,7 @@ void showCreateSuccessfully(
                       builder: (context, AsyncSnapshot<bool> snapshot) {
                         return FromSwitch1(
                           bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-                          title: 'Use face/touch ID',
+                          title:  S.current.use_face,
                           isCheck: snapshot.data ?? false,
                           urlPrefixIcon: ImageAssets.icFace,
                         );
@@ -88,7 +97,7 @@ void showCreateSuccessfully(
                       builder: (context, AsyncSnapshot<bool> snapshot) {
                         return FromSwitch(
                           bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-                          title: 'Wallet app lock',
+                          title:  S.current.wallet_app_lock,
                           isCheck: snapshot.data ?? false,
                           urlPrefixIcon: ImageAssets.icPassword,
                         );
@@ -111,10 +120,13 @@ void showCreateSuccessfully(
                   );
                 },
                 child: const ButtonGold(
-                  title: 'Complete',
+                  S.current.wallet_app_lock,
                   isEnable: true,
                 ),
               ),
+            ),
+            SizedBox(
+              height: 38.h,
             ),
           ],
         ),

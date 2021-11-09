@@ -20,9 +20,9 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(right: 26.w, left: 26.w),
-      decoration: const BoxDecoration(
-        color: Color(0xff32324c),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppTheme.getInstance().itemBtsColors(),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       padding: EdgeInsets.only(top: 16.h, left: 13.w, right: 13.w),
       height: 222.h,
@@ -34,7 +34,7 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Your seed phrase',
+                S.current.your_seed,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16.sp,
@@ -50,10 +50,10 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
                   );
                 },
                 child: Image.asset(
-                  'assets/images/ic_copy.png',
+                  ImageAssets.ic_copy,
                   height: 17.67.h,
                   width: 19.14.w,
-                  color: const Color(0xffE4AC1A),
+                  color: AppTheme.getInstance().fillColor(),
                 ),
               ),
             ],

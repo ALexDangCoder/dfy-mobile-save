@@ -1,3 +1,5 @@
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +24,9 @@ class CheckBoxCustom2 extends StatelessWidget {
             stream: bLocCreateSeedPhrase.isCheckBox2,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Checkbox(
-                fillColor: MaterialStateProperty.all(const Color(0xffE4AC1A)),
+                fillColor: MaterialStateProperty.all(
+                  AppTheme.getInstance().fillColor(),
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6),
                 ),
@@ -33,16 +37,16 @@ class CheckBoxCustom2 extends StatelessWidget {
                     bLocCreateSeedPhrase.isCheckBox2.sink.add(false);
                   }
                 },
-                activeColor: const Color(0xffE4AC1A),
+                activeColor: AppTheme.getInstance().fillColor(),
               );
             },
           ),
           Expanded(
             child: Text(
               title,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14.sp,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                14.sp,
               ),
               maxLines: 3,
             ),
