@@ -1,3 +1,4 @@
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class TestScreenUtils extends StatelessWidget {
                   showModalBottomSheet(
                     backgroundColor: Colors.transparent,
                     isScrollControlled: true,
-                    builder: (context) => const SendNft(),
+                    builder: (context) => const SetupPassWord(),
                     // builder: (context) => const AddWalletFtSeedPharse(
                     // ),
                     context: context,

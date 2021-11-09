@@ -61,5 +61,24 @@
   "restore_with_private": "Khôi phục tài khoản của bạn bằng private key. Sau khi quá trình này hoàn tất, với các tài khoản bổ sung bạn có thể tạo mới hoặc nhập tài khoản",
   "or_scan": "hoặc quét mã QR",
   "scan_qr_code": "Quét mã QR",
-  "no_data": "Không có dữ liệu"
+  "no_data": "Không có dữ liệu",
+  "approve": "Chấp thuận",
+  "send": "Gửi",
+  "estimate_gas_fee" : "Ước tính phí gas",
+  "insufficient_balance" : "Số dư không đủ",
+  "customize_fee" : "Điều chỉnh phí",
+  "gas_limit" : "Giới hạn gas",
+  "gas_price" : "Giá gas",
+  "reset": "Khôi phục",
+  "balance": "Số dư",
+  "hide_customize_fee": "Ẩn chỉnh phí",
+  "from": "Từ",
+  "to": "Đến",
+  "amount": "Giá Trị",
+  "to_address": "Địa chỉ nhận",
+  "of_all": "trên",
+  "quantity": "số lượng",
+  "pls_import_seed": "Nhập seedpharse của bạn",
+  "smart_chain": "Chuỗi thông minh"
+
 }

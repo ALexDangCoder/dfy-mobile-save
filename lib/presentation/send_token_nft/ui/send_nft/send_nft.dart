@@ -2,7 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/confirm_blockchain.dart';
-import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class _SendNftState extends State<SendNft> {
                     height: 16.h,
                   ),
                   formShowFtAddress(
-                    hintText: 'To address',
+                    hintText: S.current.to_address,
                     callBack: () {
                       Navigator.push(
                         context,
@@ -83,7 +83,7 @@ class _SendNftState extends State<SendNft> {
                     height: 16.h,
                   ),
                   formAmountFtQuantity(
-                    hintText: 'Quantity',
+                    hintText: S.current.quantity,
                     isAmount: true,
                     isQuantity: true,
                     prefixImg: ImageAssets.quantity,
@@ -100,7 +100,7 @@ class _SendNftState extends State<SendNft> {
                 stream: sendNftCubit.isShowCFBlockChainStream,
                 builder: (context, snapshot) {
                   return ButtonGold(
-                    title: 'Continue',
+                    title: S.current.continue_s,
                     isEnable: snapshot.data ?? false,
                   );
                 }
@@ -113,7 +113,7 @@ class _SendNftState extends State<SendNft> {
                   builder: (context) =>
                       ConfirmBlockchain(
                         toAddress: txtToAddress.text,
-                        fromAddress: '0xxxxasdasdasd',
+                        fromAddress: '0xFE5788e2...EB7144fd0',
                         amount: txtQuantity.text,
                       ),
                   context: context,
@@ -264,7 +264,7 @@ class _SendNftState extends State<SendNft> {
                   top: 18.h,
                 ),
                 child: Text(
-                  'Max',
+                  S.current.max,
                   style: TextStyle(
                     color: const Color.fromRGBO(228, 172, 26, 1),
                     fontWeight: FontWeight.w600,
@@ -277,7 +277,7 @@ class _SendNftState extends State<SendNft> {
                   top: 18.h,
                 ),
                 child: Text(
-                  'of 10',
+                  '${S.current.of_all} 10',
                   style: TextStyle(
                     color: const Color.fromRGBO(255, 255, 255, 1),
                     fontSize: 16.sp,

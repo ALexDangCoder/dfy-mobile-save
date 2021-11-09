@@ -61,6 +61,23 @@
   "restore_with_private": "Restore your Account with private key. After completing this process, to additional accounts, you can create new account or import account",
   "or_scan": "Or scan QR",
   "scan_qr_code": "Scan QR code",
-  "no_data": "No data"
-
+  "no_data": "No data",
+  "approve": "Approve",
+  "send": "Send",
+  "estimate_gas_fee": "Estimate gas fee",
+  "insufficient_balance": "Insufficient balance",
+  "customize_fee": "Customize fee",
+  "gas_limit": "Gas limit",
+  "gas_price": "Gas price",
+  "reset": "Reset",
+  "balance": "Balance",
+  "hide_customize_fee": "Hide customize fee",
+  "from": "From",
+  "to": "To",
+  "amount": "Amount",
+  "to_address": "To Address",
+  "of_all": "of",
+  "quantity": "quantity",
+  "pls_import_seed": "Import secret seedphrase",
+  "smart_chain": "Smart chain"
 }

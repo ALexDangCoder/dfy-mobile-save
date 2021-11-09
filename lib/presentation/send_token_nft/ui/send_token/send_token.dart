@@ -7,6 +7,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Dfy/generated/l10n.dart';
 
 class SendToken extends StatefulWidget {
   const SendToken({Key? key}) : super(key: key);
@@ -96,7 +97,7 @@ class _SendTokenState extends State<SendToken> {
                       height: 16.h,
                     ),
                     formShowFtAddress(
-                      hintText: 'To address',
+                      hintText: S.current.to_address,
                       suffixImg: ImageAssets.code,
                       callBack: () {
                         Navigator.push(
@@ -114,7 +115,7 @@ class _SendTokenState extends State<SendToken> {
                       height: 16.h,
                     ),
                     formAmountFtQuantity(
-                      hintText: 'Amount',
+                      hintText: S.current.amount,
                       isAmount: true,
                       isQuantity: false,
                       prefixImg: ImageAssets.token,
@@ -131,7 +132,7 @@ class _SendTokenState extends State<SendToken> {
                 stream: tokenCubit.isShowCFBlockChainStream,
                 builder: (context, AsyncSnapshot<bool> snapshot) {
                   return ButtonGold(
-                    title: 'Continue',
+                    title: S.current.continue_s,
                     isEnable: snapshot.data ?? false,
                   );
                 },
@@ -173,7 +174,7 @@ class _SendTokenState extends State<SendToken> {
             width: 121.w,
           ),
           Text(
-            'Send $nameToken',
+            '${S.current.send} $nameToken',
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w700,
@@ -336,7 +337,7 @@ class _SendTokenState extends State<SendToken> {
                         top: 18.h,
                       ),
                       child: Text(
-                        'Max',
+                        S.current.max,
                         style: TextStyle(
                           color: const Color.fromRGBO(228, 172, 26, 1),
                           fontWeight: FontWeight.w600,
@@ -349,7 +350,7 @@ class _SendTokenState extends State<SendToken> {
                         top: 20.h,
                       ),
                       child: Text(
-                        'of 10',
+                        '${S.current.of_all} 10',
                         style: TextStyle(
                           color: const Color.fromRGBO(255, 255, 255, 1),
                           fontSize: 16.sp,

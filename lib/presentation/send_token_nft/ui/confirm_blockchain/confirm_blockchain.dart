@@ -7,6 +7,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Dfy/generated/l10n.dart';
 
 class ConfirmBlockchain extends StatefulWidget {
   const ConfirmBlockchain({
@@ -137,7 +138,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
               builder: (context, snapshot) {
                 return GestureDetector(
                   child: ButtonGold(
-                    title: 'Approve',
+                    title: S.current.wallet_app_lock,
                     isEnable: snapshot.data ?? false,
                   ),
                 );
@@ -168,7 +169,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
             width: 95.w,
           ),
           Text(
-            'Send $nameToken',
+            '${S.current.send} $nameToken',
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w700,

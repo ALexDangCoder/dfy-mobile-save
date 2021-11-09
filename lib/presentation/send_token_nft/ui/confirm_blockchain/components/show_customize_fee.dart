@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'dart:math';
 
 class ShowCustomizeFee extends StatelessWidget {
@@ -54,10 +55,9 @@ class ShowCustomizeFee extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'Estimate gas fee:',
+                        '${S.current.estimate_gas_fee} :',
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
@@ -73,7 +73,7 @@ class ShowCustomizeFee extends StatelessWidget {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                        CrossAxisAlignment.end,
                                     children: [
                                       //todo handle amount ??
                                       StreamBuilder<String>(
@@ -122,7 +122,7 @@ class ShowCustomizeFee extends StatelessWidget {
                                         height: 2.h,
                                       ),
                                       Text(
-                                        'Insufficent balance',
+                                        S.current.insufficient_balance,
                                         style: TextStyle(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w400,
@@ -172,7 +172,7 @@ class ShowCustomizeFee extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Gas limit',
+                                  S.current.gas_limit,
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w400,
@@ -203,7 +203,7 @@ class ShowCustomizeFee extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Gas price (GWEI)',
+                                  '${S.current.gas_price} (GWEI)',
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w400,
@@ -260,7 +260,7 @@ class ShowCustomizeFee extends StatelessWidget {
         right: 12.h,
       ),
       child: Text(
-        'Hide customize',
+        S.current.hide_customize_fee,
         style: TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 14.sp,
@@ -340,7 +340,7 @@ class ShowCustomizeFee extends StatelessWidget {
         borderRadius: BorderRadius.circular(6.r),
       ),
       child: Text(
-        'Reset',
+        S.current.reset,
         style: TextStyle(
           fontSize: 14.sp,
           fontWeight: FontWeight.w400,
