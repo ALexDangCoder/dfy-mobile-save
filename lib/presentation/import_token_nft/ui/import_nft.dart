@@ -97,7 +97,7 @@ class _BodyState extends State<Body> {
                     FormInput3(
                       controller: controller,
                       urlIcon1: url_ic_address,
-                      hint:   S.current.Token_address,
+                      hint: S.current.Token_address,
                       urlIcon2: url_ic_qr,
                       bloc: widget.bloc,
                     ),
@@ -151,6 +151,12 @@ class _BodyState extends State<Body> {
                     if (widget.bloc.isTokenAddressText.value) {
                       showNFTSuccessfully(context);
                     }
+                    widget.bloc.setShowedNft(
+                      isShow: true,
+                      walletAddress: "walletAddress",
+                      nftID: 1,
+                      password: '',
+                    );
                   },
                   child: ButtonGold(
                     title: Strings.import,

@@ -71,7 +71,7 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                       },
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 90.w),
+                      margin: EdgeInsets.only(left: 70.w),
                       child: Text(
                         Strings.import_token,
                         style: textNormalCustom(null, 20, FontWeight.bold),

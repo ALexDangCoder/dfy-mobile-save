@@ -59,6 +59,12 @@ class _ChooseTokenState extends State<ChooseToken> {
                               widget.bloc.getList.value[index].iconToken ?? ''),
                           onChanged: (value) {
                             widget.bloc.getList.value[index].isShow = value;
+                            widget.bloc.setShowedToken(
+                                walletAddress: "walletAddress",
+                                tokenID:
+                                    widget.bloc.getList.value[index].tokenId ??
+                                        0,
+                                isShow: value);
                             setState(() {});
                           },
                           switchActiveColor: const Color(0xffE4AC1A),

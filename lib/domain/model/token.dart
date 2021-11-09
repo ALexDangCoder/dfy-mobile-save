@@ -1,4 +1,5 @@
 class TokenModel {
+  int? tokenId;
   String? iconToken;
   double? amountToken;
   String? nameToken;
@@ -7,6 +8,7 @@ class TokenModel {
   bool? isShow;
 
   TokenModel({
+    this.tokenId,
     this.iconToken,
     this.amountToken,
     this.nameToken,

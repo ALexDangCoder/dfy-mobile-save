@@ -42,6 +42,7 @@ class ImportTokenNftBloc {
 
   List<TokenModel> listToken = [
     TokenModel(
+      tokenId:21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'Bitcoin',
@@ -49,6 +50,7 @@ class ImportTokenNftBloc {
       amountToken: 0.2134,
     ),
     TokenModel(
+      tokenId:21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'ABitcoin',
@@ -56,6 +58,7 @@ class ImportTokenNftBloc {
       amountToken: 0.324,
     ),
     TokenModel(
+      tokenId:21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'CBitcoin',
@@ -63,6 +66,7 @@ class ImportTokenNftBloc {
       amountToken: 0.21321434,
     ),
     TokenModel(
+      tokenId:21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'DBitcoin',
@@ -70,6 +74,7 @@ class ImportTokenNftBloc {
       amountToken: 0.21213434,
     ),
     TokenModel(
+      tokenId:21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'WBitcoin',
@@ -77,6 +82,7 @@ class ImportTokenNftBloc {
       amountToken: 0.21312344,
     ),
     TokenModel(
+      tokenId:21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'QBitcoin',
@@ -84,6 +90,7 @@ class ImportTokenNftBloc {
       amountToken: 0.32143214,
     ),
     TokenModel(
+      tokenId:21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'UBitcoin',
@@ -91,6 +98,7 @@ class ImportTokenNftBloc {
       amountToken: 0.213434,
     ),
     TokenModel(
+      tokenId:21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'TBitcoin',
