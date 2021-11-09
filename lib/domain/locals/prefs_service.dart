@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PrefsService {
   static const _PREF_TOKEN_KEY = 'pref_token_key';
   static const _PREF_LANGUAGE = 'pref_language';
+  static const _PREF_APPLOCK = 'pref_appLock';
+  static const _PREF_FACEID = 'pref_face_id';
 
   static SharedPreferences? _prefsInstance;
 
@@ -27,6 +29,21 @@ class PrefsService {
   static Future<bool> saveToken(String value) async {
     final prefs = await _instance;
     return prefs.setString(_PREF_TOKEN_KEY, value);
+  }
+  static Future<bool> saveAppLockConfig(String value) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_APPLOCK, value);
+  }
+  static String getAppLockConfig() {
+    return _prefsInstance?.getString(_PREF_APPLOCK) ?? 'true';
+  }
+  static Future<bool> saveFaceIDConfig(String value) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_APPLOCK, value);
+
+  }
+  static String getFaceIDConfig() {
+    return _prefsInstance?.getString(_PREF_APPLOCK) ?? 'false';
   }
 
   static String getToken() {

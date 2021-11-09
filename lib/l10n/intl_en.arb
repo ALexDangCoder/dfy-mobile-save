@@ -58,5 +58,9 @@
   "nft": "NFT",
   "import_token": "Import Token",
   "import_NFT": "Import NFT",
-  "create_NFT": "Create NFT"
+  "create_NFT": "Create NFT",
+  "password_is_not_correct": "Password is not correct",
+  "please_try_agian" : "Please try agian",
+  "OK": "OK",
+  "password_is_required" : "Password is required"
 }

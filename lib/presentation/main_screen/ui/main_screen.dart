@@ -1,5 +1,6 @@
 import 'package:Dfy/config/base/base_screen.dart';
 import 'package:Dfy/presentation/home/ui/home_screen.dart';
+import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
 import 'package:Dfy/presentation/pawn/ui/pawn_screen.dart';
@@ -72,7 +73,7 @@ class _MainScreenState extends BaseState<MainScreen> {
       const PawnScreen(),
       const HomeScreen(),
       const MarketPlaceScreen(),
-      const StakingScreen(),
+      const LoginScreen(),
     ];
     navigatorKeys = List.generate(
       _pages.length,
