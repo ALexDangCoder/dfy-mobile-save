@@ -96,7 +96,6 @@ class ImageAssets {
   static const String codeS = '$baseImg/Code.png';
   static const String from = '$baseImg/From.png';
 
-
   static const String symbol = 'assets/images/symbol.png';
   static SvgPicture svgAssets(
     String name, {
@@ -122,7 +121,6 @@ class ImageAssets {
       fit: fit ?? BoxFit.none,
     );
   }
-
   static const Map<String, List<double>> _svgImageSize = {
     icMenu: [18, 16],
     icBack: [6, 12.25],

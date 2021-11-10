@@ -19,3 +19,4 @@ String formatCurrency(dynamic amount, String symbol) {
   final String mAmount = formatter.format(price);
   return mAmount + symbol;
 }
+final detailCurrencyFormat = NumberFormat('#,###.########');

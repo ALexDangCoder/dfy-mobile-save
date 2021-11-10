@@ -49,6 +49,24 @@ TextStyle textNormal(Color? color, double? fontSize) {
   );
 }
 
+TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
+  return GoogleFonts.sen(
+    color: color,
+    fontWeight: FontWeight.w700,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize,
+  );
+}
+
+TextStyle tokenDetailAmount({Color color = Colors.white, double fontSize = 24}) {
+  return GoogleFonts.sen(
+    color: color,
+    fontWeight: FontWeight.w600,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize,
+  );
+}
+
 TextStyle textNormalCustom(Color? color, double? fontSize,
     FontWeight? fontWeight,) {
   return GoogleFonts.sen(
