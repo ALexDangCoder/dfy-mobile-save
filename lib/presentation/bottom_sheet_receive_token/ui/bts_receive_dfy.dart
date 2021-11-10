@@ -20,8 +20,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
-final formatCoin = NumberFormat('#,##0.#####'
-    '', 'en_US');
+final formatCoin = NumberFormat('#,##0.#####', 'en_US');
 final formatUSD = NumberFormat('#,##0.#####\$', 'en_US');
 enum TokenType {
   DFY,

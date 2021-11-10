@@ -152,6 +152,7 @@ class SetAmountPopUp extends StatelessWidget {
         controller.clear();
       } else {
         cubit.amountSink.add(formatCoin.format(number));
+        cubit.amountSink.add(formatCoin.format(number));
       }
     } else {
       cubit.amountSink.add(formatCoin.format(controller.text));
