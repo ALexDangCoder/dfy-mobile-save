@@ -96,6 +96,11 @@ class ImageAssets {
   static const String codeS = '$baseImg/Code.png';
   static const String from = '$baseImg/From.png';
   static const String quantity = '$baseImg/Quantity.png';
+  static const String global = '$baseImg/Global.png';
+  static const String slc_acc = '$baseImg/Wallet.png';
+  static const String plus = '$baseImg/Plus.png';
+  static const String import = '$baseImg/Import.png';
+  static const String face_id = '$baseImg/face_id.png';
 
 
   static const String symbol = 'assets/images/symbol.png';

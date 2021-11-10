@@ -92,5 +92,18 @@
   "wallet_secret": "Wallet secret seed phrase",
   "name_not_null": "Wallet name not null",
   "failed": "Failed",
-  "copy": "Copy Successfully"
+  "copy": "Copy Successfully",
+  "setting": "Setting",
+  "change_password": "Change password",
+  "lock": "Lock",
+  "select_acc": "Select Account",
+  "create_new_acc": "Create New Account",
+  "import_acc": "Import Account",
+  "show_key_seed": "Show private key & seed pharse",
+  "change_password": "Change password",
+  "face_touch_id": "Face/touch ID",
+  "app_wallet_lock": "App wallet lock",
+  "old_password": "Old password",
+  "new_password": "New password",
+  "confirm_new_password": "Confirm new password"
 }

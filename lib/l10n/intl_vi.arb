@@ -82,5 +82,18 @@
   "paste": "Dán",
   "name_not_null": "Tên ví không được để trống",
   "failed": "Thất bại",
-  "copy": "Copy thành công"
+  "copy": "Copy thành công",
+  "setting": "Cài đặt",
+  "change_password": "Đổi mật khẩu",
+  "lock": "Khoá",
+  "select_acc": "Chọn tài khoản",
+  "create_new_acc": "Tạo mới tài khoản",
+  "import_acc": "Dùng account đã có",
+  "show_key_seed": "Hiển thị private key & seed pharse",
+  "change_password": "Đổi mật khẩu",
+  "face_touch_id": "Face/touch ID",
+  "app_wallet_lock": "Khoá ứng dụng",
+  "old_password": "Mật khẩu cũ",
+  "new_password": "Mật khẩu mới",
+  "confirm_new_password": "Xác nhận mật khẩu mới"
 }
