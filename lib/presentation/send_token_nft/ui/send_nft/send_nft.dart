@@ -225,7 +225,7 @@ class _SendNftState extends State<SendNft> {
         child: TextFormField(
           onChanged: (value) {
             //todo
-            sendNftCubit.checkValidAmount(value);
+            sendNftCubit.checkValidQuantity(value);
           },
           keyboardType: TextInputType.number,
           textAlignVertical: TextAlignVertical.center,

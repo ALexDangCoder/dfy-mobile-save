@@ -96,10 +96,8 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   int flagQuantity = 0;
 
   void checkValidAddress(String value) {
-    print('value in func' + value);
     if (value.isEmpty) {
       flagAddress = 0;
-      print('here1');
       txtInvalidAddressFormSink.add(S.current.address_required);
       isValidAddressFormSink.add(true);
       isShowCFBlockChainSink.add(false);
@@ -112,7 +110,6 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     //   flagAddress = 0;
     // }
     else {
-      print('here3');
       // txtInvalidAddressFormSink.add('');
       flagAddress = 1;
       isValidAddressFormSink.add(false);
@@ -134,6 +131,23 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       flagAmount = 1;
       isValidAmountFormSink.add(false);
       if (flagAddress == 1 && flagAmount == 1) {
+        isShowCFBlockChainSink.add(true);
+      } else {
+        //nothing
+      }
+    }
+  }
+
+  void checkValidQuantity(String value) {
+    if(value.isEmpty) {
+      flagQuantity = 0;
+      txtInvalidAmountSink.add(S.current.amount_required);
+      isValidQuantityFormSink.add(true);
+      isShowCFBlockChainSink.add(false);
+    } else {
+      flagQuantity = 1;
+      isValidQuantityFormSink.add(false);
+      if(flagAddress == 1 && flagQuantity == 1) {
         isShowCFBlockChainSink.add(true);
       } else {
         //nothing
