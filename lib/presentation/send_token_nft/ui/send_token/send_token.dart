@@ -129,33 +129,32 @@ class _SendTokenState extends State<SendToken> {
                 ),
               ),
             ),
-            GestureDetector(
-              child: StreamBuilder(
+            StreamBuilder<bool>(
                 stream: tokenCubit.isShowCFBlockChainStream,
-                builder: (context, AsyncSnapshot<bool> snapshot) {
-                  return ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: snapshot.data ?? false,
-                  );
-                },
-              ),
-              onTap: () {
-                if (txtAmount.text.isNotEmpty && txtToAddress.text.isNotEmpty) {
-                  showModalBottomSheet(
-                    backgroundColor: Colors.transparent,
-                    isScrollControlled: true,
-                    builder: (context) => ConfirmBlockchain(
-                      toAddress: txtToAddress.text,
-                      fromAddress: fakeFromAddress,
-                      amount: txtAmount.text,
+                builder: (context, snapshot) {
+                  return GestureDetector(
+                    child: ButtonGold(
+                      title: S.current.continue_s,
+                      isEnable: snapshot.data ?? false,
                     ),
-                    context: context,
+                    onTap: () {
+                      if (snapshot.data ?? false) {
+                        showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          isScrollControlled: true,
+                          builder: (context) => ConfirmBlockchain(
+                            toAddress: txtToAddress.text,
+                            fromAddress: fakeFromAddress,
+                            amount: txtAmount.text,
+                          ),
+                          context: context,
+                        );
+                      } else {
+                        //nothing
+                      }
+                    },
                   );
-                } else {
-                  //nothing
-                }
-              },
-            ),
+                },),
             SizedBox(
               height: 34.h,
             ),
@@ -391,19 +390,18 @@ class _SendTokenState extends State<SendToken> {
                 width: 323.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
-                  initialData: '',
-                  stream: tokenCubit.txtInvalidAddressFormStream,
-                  builder: (context, snapshot) {
-                    return Text(
-                      snapshot.data ?? '',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w400,
-                        color: const Color.fromRGBO(255, 108, 108, 1),
-                      ),
-                    );
-                  }
-                ),
+                    initialData: '',
+                    stream: tokenCubit.txtInvalidAddressFormStream,
+                    builder: (context, snapshot) {
+                      return Text(
+                        snapshot.data ?? '',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: const Color.fromRGBO(255, 108, 108, 1),
+                        ),
+                      );
+                    }),
               ),
             ],
           ),
@@ -440,8 +438,7 @@ class _SendTokenState extends State<SendToken> {
                           color: const Color.fromRGBO(255, 108, 108, 1),
                         ),
                       );
-                    }
-                ),
+                    }),
               ),
             ],
           ),

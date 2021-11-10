@@ -19,6 +19,7 @@ class _SendNftState extends State<SendNft> {
   late TextEditingController txtToAddress;
   late TextEditingController txtQuantity;
   late SendTokenCubit sendNftCubit;
+  final String fakeFromAddress = '0xFE5788e2...EB7144fd0';
 
   @override
   void initState() {
@@ -79,6 +80,7 @@ class _SendNftState extends State<SendNft> {
                     suffixImg: ImageAssets.code,
                     prefixImg: ImageAssets.to,
                   ),
+                  txtWaringAddress(),
                   SizedBox(
                     height: 16.h,
                   ),
@@ -88,6 +90,7 @@ class _SendNftState extends State<SendNft> {
                     isQuantity: true,
                     prefixImg: ImageAssets.quantity,
                   ),
+                  txtWaringQuantity(),
                   SizedBox(
                     height: 353.h,
                   ),
@@ -95,34 +98,32 @@ class _SendNftState extends State<SendNft> {
               ),
             ),
           ),
-          GestureDetector(
-            child: StreamBuilder<bool>(
-                stream: sendNftCubit.isShowCFBlockChainStream,
-                builder: (context, snapshot) {
-                  return ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: snapshot.data ?? false,
-                  );
-                }
-            ),
-            onTap: () {
-              if (txtToAddress.text.isNotEmpty && txtQuantity.text.isNotEmpty) {
-                showModalBottomSheet(
-                  backgroundColor: Colors.transparent,
-                  isScrollControlled: true,
-                  builder: (context) =>
-                      ConfirmBlockchain(
+          StreamBuilder<bool>(
+            stream: sendNftCubit.isShowCFBlockChainStream,
+            builder: (context, snapshot) {
+              return GestureDetector(
+                child: ButtonGold(
+                  title: S.current.continue_s,
+                  isEnable: snapshot.data ?? false,
+                ),
+                onTap: () {
+                  if (snapshot.data ?? false) {
+                    showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      builder: (context) => ConfirmBlockchain(
                         toAddress: txtToAddress.text,
-                        fromAddress: '0xFE5788e2...EB7144fd0',
+                        fromAddress: fakeFromAddress,
                         amount: txtQuantity.text,
                       ),
-                  context: context,
-                );
-              } else {
-                //nothing
-              }
-            },
-          ),
+                      context: context,
+                    );
+                  } else {
+                    //nothing
+                  }
+                },
+              );
+            },),
           SizedBox(
             height: 34.h,
           ),
@@ -155,17 +156,8 @@ class _SendNftState extends State<SendNft> {
         child: TextFormField(
           controller: readOnly ? null : txtToAddress,
           onChanged: (value) {
-            if (txtQuantity.text.isNotEmpty && value.isNotEmpty ) {
-              sendNftCubit.isShowConfirmBlockChain(
-                isHaveFrAddress: true,
-                isHaveAmount: true,
-              );
-            } else {
-              sendNftCubit.isShowConfirmBlockChain(
-                isHaveFrAddress: false,
-                isHaveAmount: false,
-              );
-            }
+            print(value);
+            sendNftCubit.checkValidAddress(value);
           },
           readOnly: readOnly,
           style: textNormal(
@@ -232,15 +224,8 @@ class _SendNftState extends State<SendNft> {
         ),
         child: TextFormField(
           onChanged: (value) {
-            if (txtToAddress.text.isNotEmpty && value.isNotEmpty) {
-              sendNftCubit.isShowConfirmBlockChain(
-                isHaveAmount: true,
-                isHaveFrAddress: true,
-              );
-            } else {
-              sendNftCubit.isShowConfirmBlockChain(
-                isHaveFrAddress: false, isHaveAmount: false,);
-            }
+            //todo
+            sendNftCubit.checkValidAmount(value);
           },
           keyboardType: TextInputType.number,
           textAlignVertical: TextAlignVertical.center,
@@ -327,6 +312,79 @@ class _SendNftState extends State<SendNft> {
           )
         ],
       ),
+    );
+  }
+
+  Widget txtWaringAddress() {
+    return StreamBuilder(
+      initialData: false,
+      stream: sendNftCubit.isValidAddressFormStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 323.w,
+                // height: 30.h,
+                child: StreamBuilder<String>(
+                    initialData: '',
+                    stream: sendNftCubit.txtInvalidAddressFormStream,
+                    builder: (context, snapshot) {
+                      return Text(
+                        snapshot.data ?? '',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: const Color.fromRGBO(255, 108, 108, 1),
+                        ),
+                      );
+                    }),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget txtWaringQuantity() {
+    return StreamBuilder(
+      initialData: false,
+      stream: sendNftCubit.isValidQuantityFormStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 323.w,
+                // height: 30.h,
+                child: StreamBuilder<String>(
+                    initialData: '',
+                    stream: sendNftCubit.txtInvalidQuantityFormStream,
+                    builder: (context, snapshot) {
+                      print(snapshot.data);
+                      return Text(
+                        snapshot.data ?? '',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: const Color.fromRGBO(255, 108, 108, 1),
+                        ),
+                      );
+                    }),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:Dfy/generated/l10n.dart';
+
 part 'send_token_state.dart';
 
 class SendTokenCubit extends Cubit<SendTokenState> {
@@ -27,6 +28,9 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtInvalidAmount =
       BehaviorSubject<String>.seeded('');
+  final BehaviorSubject<bool> _isValidQuantityForm = BehaviorSubject<bool>();
+  final BehaviorSubject<String> _txtInvalidQuantityForm =
+      BehaviorSubject<String>.seeded('');
 
   //stream
   Stream<String> get fromFieldStream => _formField.stream;
@@ -43,10 +47,15 @@ class SendTokenCubit extends Cubit<SendTokenState> {
 
   Stream<bool> get isValidAmountFormStream => _isValidAmountForm.stream;
 
+  Stream<bool> get isValidQuantityFormStream => _isValidQuantityForm.stream;
+
   Stream<String> get txtInvalidAddressFormStream =>
       _txtInvalidAddressForm.stream;
 
   Stream<String> get txtInvalidAmountStream => _txtInvalidAmount.stream;
+
+  Stream<String> get txtInvalidQuantityFormStream =>
+      _txtInvalidQuantityForm.stream;
 
   //sink
   Sink<String> get fromFieldSink => _formField.sink;
@@ -63,9 +72,13 @@ class SendTokenCubit extends Cubit<SendTokenState> {
 
   Sink<bool> get isValidAmountFormSink => _isValidAmountForm.sink;
 
+  Sink<bool> get isValidQuantityFormSink => _isValidQuantityForm.sink;
+
   Sink<String> get txtInvalidAddressFormSink => _txtInvalidAddressForm.sink;
 
   Sink<String> get txtInvalidAmountSink => _txtInvalidAmount.sink;
+
+  Sink<String> get txtInvalidQuantityFormSink => _txtInvalidQuantityForm.sink;
 
   String walletAddressToken = '';
   String walletAddressNft = '';
@@ -80,16 +93,16 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   String passwordNft = '';
   int flagAddress = 0;
   int flagAmount = 0;
+  int flagQuantity = 0;
 
-  // void isValidAddress
   void checkValidAddress(String value) {
     print('value in func' + value);
-    if(value.isEmpty) {
+    if (value.isEmpty) {
       flagAddress = 0;
       print('here1');
       txtInvalidAddressFormSink.add(S.current.address_required);
       isValidAddressFormSink.add(true);
-      // isShowCFBlockChainSink.add(false);
+      isShowCFBlockChainSink.add(false);
     }
     // else if(Validator.validateAddress(value)) {
     //   print('here2');
@@ -103,8 +116,8 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       // txtInvalidAddressFormSink.add('');
       flagAddress = 1;
       isValidAddressFormSink.add(false);
-      if(flagAddress == 1 && flagAmount == 1) {
-        // isShowCFBlockChainSink.add(true);
+      if (flagAddress == 1 && flagAmount == 1) {
+        isShowCFBlockChainSink.add(true);
       } else {
         //nothing
       }
@@ -112,18 +125,16 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   }
 
   void checkValidAmount(String value) {
-    if(value.isEmpty) {
-      print('here11');
+    if (value.isEmpty) {
       flagAmount = 0;
       txtInvalidAmountSink.add(S.current.amount_required);
       isValidAmountFormSink.add(true);
-      // isShowCFBlockChainSink.add(false);
+      isShowCFBlockChainSink.add(false);
     } else {
-      print('here22');
       flagAmount = 1;
       isValidAmountFormSink.add(false);
-      if(flagAddress == 1 && flagAmount == 1) {
-        // isShowCFBlockChainSink.add(true);
+      if (flagAddress == 1 && flagAmount == 1) {
+        isShowCFBlockChainSink.add(true);
       } else {
         //nothing
       }
