@@ -79,5 +79,8 @@
   "of_all": "of",
   "quantity": "quantity",
   "pls_import_seed": "Import secret seedphrase",
-  "smart_chain": "Smart chain"
+  "smart_chain": "Smart chain",
+  "address_required" : "Address is required",
+  "invalid_address" : "Invalid Address",
+  "amount_required" : "Amount is required"
 }

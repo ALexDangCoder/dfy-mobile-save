@@ -27,7 +27,7 @@
   "complete": "Hoàn thành",
   "new_pass": "Mật khẩu mới",
   "con_pass": "Xác nhận mật khẩu",
-  "pass_must": "Mật khẩu phải bao gồm ít nhất một số, một chữ thường, một chữ hoa và một kí tự đặc biệt",
+  "pass_must": "Mật khẩu phải bao gồm ít nhất một số, một chữ thường, một chữ hoa và một kí tự đặc biệt, và ít nhất 8 kí tự",
   "not_match": "Mật khẩu của bạn không khớp",
   "understand_defi": "Tôi hiểu DeFi For You sẽ không khôi phục mật khẩu này",
   "create_wall": "Tạo ví mới",
@@ -79,6 +79,9 @@
   "of_all": "trên",
   "quantity": "số lượng",
   "pls_import_seed": "Nhập seedpharse của bạn",
-  "smart_chain": "Chuỗi thông minh"
+  "smart_chain": "Chuỗi thông minh",
+  "address_required" : "Địa chỉ là bắt buộc",
+  "invalid_address" : "Địa chỉ không hợp lệ",
+  "amount_required" : "Gía trị là bắt buộc"
 
 }

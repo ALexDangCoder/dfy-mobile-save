@@ -1,9 +1,10 @@
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:Dfy/generated/l10n.dart';
 part 'send_token_state.dart';
 
 class SendTokenCubit extends Cubit<SendTokenState> {
@@ -19,6 +20,14 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   final BehaviorSubject<bool> _isShowCFBlockChain =
       BehaviorSubject<bool>.seeded(false);
 
+  //stream below regrex amount form and address
+  final BehaviorSubject<bool> _isValidAddressForm = BehaviorSubject<bool>();
+  final BehaviorSubject<bool> _isValidAmountForm = BehaviorSubject<bool>();
+  final BehaviorSubject<String> _txtInvalidAddressForm =
+      BehaviorSubject<String>.seeded('');
+  final BehaviorSubject<String> _txtInvalidAmount =
+      BehaviorSubject<String>.seeded('');
+
   //stream
   Stream<String> get fromFieldStream => _formField.stream;
 
@@ -29,6 +38,15 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   Stream<bool> get isShowCFBlockChainStream => _isShowCFBlockChain.stream;
 
   Stream<String> get formEstimateGasFeeStream => _formEstimateGasFee.stream;
+
+  Stream<bool> get isValidAddressFormStream => _isValidAddressForm.stream;
+
+  Stream<bool> get isValidAmountFormStream => _isValidAmountForm.stream;
+
+  Stream<String> get txtInvalidAddressFormStream =>
+      _txtInvalidAddressForm.stream;
+
+  Stream<String> get txtInvalidAmountStream => _txtInvalidAmount.stream;
 
   //sink
   Sink<String> get fromFieldSink => _formField.sink;
@@ -41,6 +59,14 @@ class SendTokenCubit extends Cubit<SendTokenState> {
 
   Sink<String> get formEstimateGasFeeSink => _formEstimateGasFee.sink;
 
+  Sink<bool> get isValidAddressFormSink => _isValidAddressForm.sink;
+
+  Sink<bool> get isValidAmountFormSink => _isValidAmountForm.sink;
+
+  Sink<String> get txtInvalidAddressFormSink => _txtInvalidAddressForm.sink;
+
+  Sink<String> get txtInvalidAmountSink => _txtInvalidAmount.sink;
+
   String walletAddressToken = '';
   String walletAddressNft = '';
   String receiveAddressToken = '';
@@ -52,6 +78,57 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   int? amountToken;
   String passwordToken = '';
   String passwordNft = '';
+  int flagAddress = 0;
+  int flagAmount = 0;
+
+  // void isValidAddress
+  void checkValidAddress(String value) {
+    print('value in func' + value);
+    if(value.isEmpty) {
+      flagAddress = 0;
+      print('here1');
+      txtInvalidAddressFormSink.add(S.current.address_required);
+      isValidAddressFormSink.add(true);
+      // isShowCFBlockChainSink.add(false);
+    }
+    // else if(Validator.validateAddress(value)) {
+    //   print('here2');
+    //   txtInvalidAddressFormSink.add(S.current.invalid_address);
+    //   isValidAddressFormSink.add(true);
+    //   isShowCFBlockChainSink.add(false);
+    //   flagAddress = 0;
+    // }
+    else {
+      print('here3');
+      // txtInvalidAddressFormSink.add('');
+      flagAddress = 1;
+      isValidAddressFormSink.add(false);
+      if(flagAddress == 1 && flagAmount == 1) {
+        // isShowCFBlockChainSink.add(true);
+      } else {
+        //nothing
+      }
+    }
+  }
+
+  void checkValidAmount(String value) {
+    if(value.isEmpty) {
+      print('here11');
+      flagAmount = 0;
+      txtInvalidAmountSink.add(S.current.amount_required);
+      isValidAmountFormSink.add(true);
+      // isShowCFBlockChainSink.add(false);
+    } else {
+      print('here22');
+      flagAmount = 1;
+      isValidAmountFormSink.add(false);
+      if(flagAddress == 1 && flagAmount == 1) {
+        // isShowCFBlockChainSink.add(true);
+      } else {
+        //nothing
+      }
+    }
+  }
 
   void isShowCustomizeFee({required bool isShow}) {
     isCustomizeFeeSink.add(isShow);
@@ -69,7 +146,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   }
 
   void isEstimatingGasFee(String value) {
-    if(value.length > 15) {
+    if (value.length > 15) {
       value = '$value...';
       value = '${value.substring(1, 15)}...';
     }

@@ -155,7 +155,7 @@ class _SendNftState extends State<SendNft> {
         child: TextFormField(
           controller: readOnly ? null : txtToAddress,
           onChanged: (value) {
-            if (txtQuantity.text.isNotEmpty && value.isNotEmpty) {
+            if (txtQuantity.text.isNotEmpty && value.isNotEmpty ) {
               sendNftCubit.isShowConfirmBlockChain(
                 isHaveFrAddress: true,
                 isHaveAmount: true,

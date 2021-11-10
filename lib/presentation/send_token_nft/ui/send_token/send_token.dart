@@ -111,6 +111,7 @@ class _SendTokenState extends State<SendToken> {
                       },
                       prefixImg: ImageAssets.to,
                     ),
+                    txtWaringAddress(),
                     SizedBox(
                       height: 16.h,
                     ),
@@ -120,6 +121,7 @@ class _SendTokenState extends State<SendToken> {
                       isQuantity: false,
                       prefixImg: ImageAssets.token,
                     ),
+                    txtWaringAmount(),
                     SizedBox(
                       height: 353.h,
                     ),
@@ -222,17 +224,19 @@ class _SendTokenState extends State<SendToken> {
         ),
         child: TextFormField(
           onChanged: (value) {
-            if (txtAmount.text.isNotEmpty && value.isNotEmpty) {
-              tokenCubit.isShowConfirmBlockChain(
-                isHaveFrAddress: true,
-                isHaveAmount: true,
-              );
-            } else {
-              tokenCubit.isShowConfirmBlockChain(
-                isHaveFrAddress: false,
-                isHaveAmount: false,
-              );
-            }
+            print(value);
+            tokenCubit.checkValidAddress(value);
+            // if (txtAmount.text.isNotEmpty && value.isNotEmpty) {
+            //   tokenCubit.isShowConfirmBlockChain(
+            //     isHaveFrAddress: true,
+            //     isHaveAmount: true,
+            //   );
+            // } else {
+            //   tokenCubit.isShowConfirmBlockChain(
+            //     isHaveFrAddress: false,
+            //     isHaveAmount: false,
+            //   );
+            // }
           },
           controller: readOnly ? null : txtToAddress,
           readOnly: readOnly,
@@ -303,17 +307,18 @@ class _SendTokenState extends State<SendToken> {
         ),
         child: TextFormField(
           onChanged: (value) {
-            if (txtToAddress.text.isNotEmpty && value.isNotEmpty) {
-              tokenCubit.isShowConfirmBlockChain(
-                isHaveFrAddress: true,
-                isHaveAmount: true,
-              );
-            } else {
-              tokenCubit.isShowConfirmBlockChain(
-                isHaveFrAddress: false,
-                isHaveAmount: false,
-              );
-            }
+            tokenCubit.checkValidAmount(value);
+            // if (txtToAddress.text.isNotEmpty && value.isNotEmpty) {
+            //   tokenCubit.isShowConfirmBlockChain(
+            //     isHaveFrAddress: true,
+            //     isHaveAmount: true,
+            //   );
+            // } else {
+            //   tokenCubit.isShowConfirmBlockChain(
+            //     isHaveFrAddress: false,
+            //     isHaveAmount: false,
+            //   );
+            // }
           },
           controller: txtAmount,
           keyboardType: TextInputType.number,
@@ -367,6 +372,81 @@ class _SendTokenState extends State<SendToken> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget txtWaringAddress() {
+    return StreamBuilder(
+      initialData: false,
+      stream: tokenCubit.isValidAddressFormStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 323.w,
+                // height: 30.h,
+                child: StreamBuilder<String>(
+                  initialData: '',
+                  stream: tokenCubit.txtInvalidAddressFormStream,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: const Color.fromRGBO(255, 108, 108, 1),
+                      ),
+                    );
+                  }
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget txtWaringAmount() {
+    return StreamBuilder(
+      initialData: false,
+      stream: tokenCubit.isValidAmountFormStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 323.w,
+                // height: 30.h,
+                child: StreamBuilder<String>(
+                    initialData: '',
+                    stream: tokenCubit.txtInvalidAmountStream,
+                    builder: (context, snapshot) {
+                      print(snapshot.data);
+                      return Text(
+                        snapshot.data ?? '',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: const Color.fromRGBO(255, 108, 108, 1),
+                        ),
+                      );
+                    }
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
