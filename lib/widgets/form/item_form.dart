@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 enum FormType { PASS_PHRASE, PASSWORD, PRIVATE_KEY, AMOUNT }
 
@@ -115,9 +116,15 @@ class ItemForm extends StatelessWidget {
                   ),
                   suffixIcon: InkWell(
                     onTap: callback,
-                    child: ImageIcon(
-                      AssetImage(suffix),
-                      color: const Color(0xffE4AC1A),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: Text(
+                        suffix,
+                        style: textNormal(
+                          AppTheme.getInstance().fillColor(),
+                          16.sp,
+                        ),
+                      ),
                     ),
                   ),
                   prefixIcon: ImageIcon(
@@ -128,7 +135,16 @@ class ItemForm extends StatelessWidget {
                 ),
               ),
             ),
-            const Text('BNB'),
+            SizedBox(
+              width: 11.w,
+            ),
+            Text(
+              'BNB',
+              style: textNormal(
+                Colors.grey,
+                16.sp,
+              ),
+            ),
           ],
         ),
       );

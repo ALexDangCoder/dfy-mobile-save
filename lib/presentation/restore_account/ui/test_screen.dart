@@ -24,8 +24,9 @@ class _TestScreenState extends State<TestScreen> {
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
                 context: context,
-                builder: (context) => const ReceiveDFY(
+                builder: (context) => const Receive(
                   walletAddress: '0xafwfakfaowofamcmacaocoacoacmacmac',
+                  type: TokenType.DFY,
                 ),
               );
             },

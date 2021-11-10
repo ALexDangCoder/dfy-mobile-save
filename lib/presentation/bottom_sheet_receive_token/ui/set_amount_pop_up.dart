@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bottom_sheet_receive_token/bloc/receive_cubit.dart';
+import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/custom_rect_tween.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/form/item_form.dart';
@@ -29,7 +30,7 @@ class SetAmountPopUp extends StatelessWidget {
           return CustomRectTween(begin: begin!, end: end!);
         },
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaY: 1.0, sigmaX: 1.0),
+          filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
           child: Material(
             color: const Color(0xff585782),
             elevation: 2,
@@ -69,7 +70,7 @@ class SetAmountPopUp extends StatelessWidget {
                           focusNode: focusNode,
                           prefix: ImageAssets.token,
                           hint: S.current.amount,
-                          suffix: ImageAssets.max,
+                          suffix: S.current.max,
                           formType: FormType.AMOUNT,
                           isShow: true,
                           controller: controller,
@@ -110,7 +111,8 @@ class SetAmountPopUp extends StatelessWidget {
                           Expanded(
                             child: InkWell(
                               onTap: () {
-                                handleNumber(context);
+                                handleNumber();
+                                Navigator.pop(context);
                               },
                               child: SizedBox(
                                 width: 156.w,
@@ -142,19 +144,17 @@ class SetAmountPopUp extends StatelessWidget {
     );
   }
 
-  void handleNumber(BuildContext context) {
+  void handleNumber() {
     if (controller.text.isNotEmpty) {
       final number = double.parse(controller.text);
       if (number == 0) {
         cubit.amountSink.add('');
         controller.clear();
       } else {
-        cubit.amountSink.add(number.toString());
+        cubit.amountSink.add(formatCoin.format(number));
       }
-      Navigator.pop(context);
     } else {
-      cubit.amountSink.add(controller.text);
-      Navigator.pop(context);
+      cubit.amountSink.add(formatCoin.format(controller.text));
     }
   }
 }

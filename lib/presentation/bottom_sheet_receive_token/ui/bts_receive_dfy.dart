@@ -15,19 +15,30 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ReceiveDFY extends StatefulWidget {
-  const ReceiveDFY({Key? key, required this.walletAddress}) : super(key: key);
-  final String walletAddress;
-
-  @override
-  _ReceiveDFYState createState() => _ReceiveDFYState();
+final formatCoin = NumberFormat('#,##0.#####'
+    '', 'en_US');
+final formatUSD = NumberFormat('#,##0.#####\$', 'en_US');
+enum TokenType {
+  DFY,
+  NFT,
 }
 
-class _ReceiveDFYState extends State<ReceiveDFY> {
+class Receive extends StatefulWidget {
+  const Receive({Key? key, required this.walletAddress, required this.type})
+      : super(key: key);
+  final String walletAddress;
+  final TokenType type;
+
+  @override
+  _ReceiveState createState() => _ReceiveState();
+}
+
+class _ReceiveState extends State<Receive> {
   late final TextEditingController amountController;
   late final ReceiveCubit receiveCubit;
   late final FToast toast;
@@ -91,8 +102,13 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
                   width: 93.w,
                 ),
                 Text(
-                  S.current.receive_dfy,
-                  style: textNormal(null, 20.sp).copyWith(
+                  widget.type == TokenType.DFY
+                      ? S.current.receive_dfy
+                      : S.current.receive_nft,
+                  style: textNormal(
+                    null,
+                    20.sp,
+                  ).copyWith(
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.normal,
                   ),
@@ -139,7 +155,7 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
                 RepaintBoundary(
                   key: globalKey,
                   child: QrImage(
-                    data: widget.walletAddress,
+                    data: '%${widget.walletAddress}%',
                     size: 230.w,
                     gapless: false,
                     backgroundColor: Colors.white,
@@ -180,20 +196,34 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
                 child: Container(
                   margin: EdgeInsets.only(
                     top: 12.h,
-                    bottom: 24.h,
                   ),
-                  child: Text(
-                    '${receiveCubit.value} BNB',
-                    style: textNormal(
-                      AppTheme.getInstance().fillColor(),
-                      24.sp,
-                    ).copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                  child: Column(
+                    children: [
+                      Text(
+                        '${receiveCubit.value} BNB',
+                        style: textNormal(
+                          AppTheme.getInstance().fillColor(),
+                          24.sp,
+                        ).copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(formatUSD.format(19990.3932212),
+                        style: textNormal(
+                          Colors.grey.withOpacity(0.5),
+                          16.sp,
+                        ).copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );
             },
+          ),
+          SizedBox(
+            height: 24.h,
           ),
           Container(
             padding: EdgeInsets.only(
@@ -203,7 +233,9 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
             width: 311.w,
             height: 76.h,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: widget.type == TokenType.DFY
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.center,
               children: [
                 _buildColumnButton(
                   path: ImageAssets.save,
@@ -221,30 +253,35 @@ class _ReceiveDFYState extends State<ReceiveDFY> {
                       );
                       toast.showToast(
                         child: popMenu(),
-                        toastDuration: const Duration(seconds: 1),
+                        toastDuration: const Duration(seconds: 2),
                         gravity: ToastGravity.CENTER,
                       );
                     }
                   },
                 ),
-                _buildColumnButton(
-                  path: ImageAssets.set_amount,
-                  label: S.current.set_amount,
-                  callback: () {
-                    Navigator.of(context).push(
-                      HeroDialogRoute(
-                        builder: (context) {
-                          return SetAmountPopUp(
-                            controller: amountController,
-                            cubit: receiveCubit,
-                            focusNode: FocusNode(),
-                          );
-                        },
-                        isNonBackground: false,
-                      ),
-                    );
-                  },
-                ),
+                if (widget.type == TokenType.DFY)
+                  _buildColumnButton(
+                    path: ImageAssets.set_amount,
+                    label: S.current.set_amount,
+                    callback: () {
+                      Navigator.of(context).push(
+                        HeroDialogRoute(
+                          builder: (context) {
+                            return SetAmountPopUp(
+                              controller: amountController,
+                              cubit: receiveCubit,
+                              focusNode: FocusNode(),
+                            );
+                          },
+                          isNonBackground: false,
+                        ),
+                      );
+                    },
+                  )
+                else
+                  SizedBox(
+                    width: 60.w,
+                  ),
                 _buildColumnButton(
                   path: ImageAssets.share,
                   label: S.current.share,
