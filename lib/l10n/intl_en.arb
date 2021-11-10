@@ -69,5 +69,7 @@
   "OK": "OK",
   "login": "Login",
   "new_wallet": "New wallet",
-  "password_is_required" : "Password is required"
+  "password_is_required" : "Password is required",
+  "name_of_nft": "Name of NFT",
+  "description": "Description"
 }
