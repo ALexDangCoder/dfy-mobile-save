@@ -27,7 +27,7 @@ class HeaderCreate extends StatelessWidget {
           },
         ),
         Text(
-          S.current.create_wallet,
+          S.current.create_new_wallet,
           style: textNormalCustom(
             Colors.white,
             20.sp,

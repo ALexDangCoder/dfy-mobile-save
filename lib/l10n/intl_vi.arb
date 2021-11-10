@@ -65,5 +65,12 @@
   "Token_address": "Token địa chỉ",
   "Invalid_address": "Trống địa chỉ ",
   "Token_symbol": " Biểu tượng token",
-  "Token_decimal": "Giá trị token "
+  "Token_decimal": "Giá trị token ",
+  "Invalid_order": "Giao dịch không hợp lệ",
+  "import_token": "Nhập token",
+  "enter_token": "Điền token",
+  "choose_token": "Chọn token",
+  "search_token": "Tìm kiếm token",
+  "import": "Nhập",
+  "enter_id": "Nhập ID"
 }

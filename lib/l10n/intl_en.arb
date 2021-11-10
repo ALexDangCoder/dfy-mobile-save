@@ -69,5 +69,12 @@
   "Token_address": "Token address",
   "Invalid_address": "Invalid address",
   "Token_symbol": "Token symbol",
-  "Token_decimal": "Token decimal"
+  "Token_decimal": "Token decimal",
+  "Invalid_order": "Invalid order",
+  "import_token": "Import token",
+  "enter_token": "Enter token",
+  "choose_token": "Choose token",
+  "search_token": "Search token",
+  "import": "Import",
+  "enter_id": "Enter ID"
 }

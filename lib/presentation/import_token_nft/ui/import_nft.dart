@@ -123,7 +123,7 @@ class _BodyState extends State<Body> {
                     FormInputNumber(
                       urlIcon1: url_ic_enter_id,
                       bloc: widget.bloc,
-                      hint: Strings.enter_id,
+                      hint: S.current.enter_id,
                     ),
                     const SizedBox(
                       height: 429,
@@ -147,8 +147,8 @@ class _BodyState extends State<Body> {
                     trustWalletChannel.setMethodCallHandler(
                       widget.bloc.nativeMethodCallBackTrustWallet,
                     );
-                    widget.bloc.checkAddressNull();
-                    if (widget.bloc.isTokenAddressText.value) {
+                    widget.bloc.checkAddressNull2();
+                    if (widget.bloc.isNFT.value) {
                       showNFTSuccessfully(context);
                     }
                     widget.bloc.setShowedNft(
@@ -159,7 +159,7 @@ class _BodyState extends State<Body> {
                     );
                   },
                   child: ButtonGold(
-                    title: Strings.import,
+                    title: S.current.import,
                     isEnable: widget.bloc.isNFT.value,
                   ),
                 );

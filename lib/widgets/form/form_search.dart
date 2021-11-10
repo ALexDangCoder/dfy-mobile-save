@@ -43,7 +43,7 @@ class FormSearch extends StatelessWidget {
                 onChanged: (value) {
                   bloc.textSearch.sink.add(value);
                   print(bloc.textSearch.value);
-                  bloc.getShare();
+                  bloc.search();
                 },
                 cursorColor: Colors.white,
                 style: textNormal(

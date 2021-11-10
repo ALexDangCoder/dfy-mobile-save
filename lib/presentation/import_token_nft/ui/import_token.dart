@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -73,7 +74,7 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                     Container(
                       margin: EdgeInsets.only(left: 70.w),
                       child: Text(
-                        Strings.import_token,
+                        S.current.import_token,
                         style: textNormalCustom(null, 20, FontWeight.bold),
                       ),
                     ),
@@ -91,12 +92,12 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                   height: 35.h,
                   width: 253.w,
                   child: TabBar(
-                    tabs: const [
+                    tabs: [
                       Tab(
-                        text: Strings.enter_token,
+                        text: S.current.enter_token,
                       ),
                       Tab(
-                        text: Strings.choose_token,
+                        text: S.current.choose_token,
                       ),
                     ],
                     labelColor: Colors.white,

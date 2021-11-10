@@ -51,6 +51,11 @@ class FormInput extends StatelessWidget {
                   Colors.white,
                   16.sp,
                 ),
+
+                onChanged: (value) {
+                  bloc.checkAddressNull();
+                  bloc.tokenAddressText.sink.add(value);
+                },
                 decoration: InputDecoration(
                   counterText: '',
                   hintText: hint,

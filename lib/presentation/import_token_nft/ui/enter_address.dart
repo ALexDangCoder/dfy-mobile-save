@@ -115,7 +115,7 @@ class _EnterAddressState extends State<EnterAddress> {
                     }
                   },
                   child: ButtonGold(
-                    title: Strings.import,
+                    title: S.current.import,
                     isEnable: widget.bloc.isTokenEnterAddress.value,
                   ),
                 );

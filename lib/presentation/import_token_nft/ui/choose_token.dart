@@ -2,9 +2,11 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/widgets/form/form_search.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
 
 class ChooseToken extends StatefulWidget {
@@ -25,7 +27,7 @@ class _ChooseTokenState extends State<ChooseToken> {
         children: [
           spaceH12,
           FormSearch(
-            hint: Strings.token_search,
+            hint: S.current.search_token,
             bloc: widget.bloc,
             urlIcon1: url_ic_search,
           ),
@@ -94,8 +96,8 @@ class _ChooseTokenState extends State<ChooseToken> {
                             ],
                           ),
                           subtitle: Text(
-                            '${widget.bloc.getList.value[index].amountToken?.toStringAsFixed(5) ?? ''} '
-                            '${widget.bloc.getList.value[index].nameTokenSymbol ?? ''} ',
+                            '${widget.bloc.getList.value[index].amountToken?.toStringAsFixed(5)}' +
+                                ' ${widget.bloc.getList.value[index].nameTokenSymbol ?? ''} ',
                             style: textNormalCustom(
                               const Color.fromRGBO(255, 255, 255, 0.5),
                               16,

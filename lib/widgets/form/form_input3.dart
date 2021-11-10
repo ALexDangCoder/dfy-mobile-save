@@ -44,6 +44,10 @@ class FormInput3 extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
                 maxLength: 100,
+                onChanged: (value) {
+                  bloc.checkAddressNull2();
+                  bloc.tokenAddressTextNft.sink.add(value);
+                },
                 controller: controller,
                 cursorColor: Colors.white,
                 style: textNormal(

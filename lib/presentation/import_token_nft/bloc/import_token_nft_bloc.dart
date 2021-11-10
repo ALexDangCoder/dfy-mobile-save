@@ -3,13 +3,14 @@ import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../main.dart';
 
 class ImportTokenNftBloc {
   ImportTokenNftBloc() {
-    getList.sink.add(listToken);
+    getListSort();
   }
 
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
@@ -24,11 +25,57 @@ class ImportTokenNftBloc {
 
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject.seeded(false);
 
-  BehaviorSubject<bool> isNFT = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isNFT = BehaviorSubject.seeded(true);
 
   BehaviorSubject<List<TokenModel>> getList = BehaviorSubject.seeded([]);
 
-  void getShare() {
+  String formatNumber(double amount) {
+    return '${amount.toStringAsExponential(5).toString().substring(0, 5)}'
+        ',${amount.toStringAsExponential(5).toString().substring(5, 7)}';
+  }
+
+  void checkAddressNull2() {
+    if (tokenAddressTextNft.value == '') {
+      isNFT.sink.add(false);
+    } else {
+      isNFT.sink.add(true);
+    }
+  }
+
+  void getListSort() {
+    final List<TokenModel> list = [];
+    for (final TokenModel value in listToken) {
+      if (value.isShow ?? false) {
+        list.add(value);
+      }
+    }
+    final Comparator<TokenModel> amountTokenComparator =
+        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
+    list.sort(amountTokenComparator);
+    final List<TokenModel> list1 = [];
+    for (final TokenModel value in listToken) {
+      if (value.isShow ?? false) {
+      } else {
+        if ((value.amountToken ?? 0) > 0) {
+          list1.add(value);
+        }
+      }
+    }
+    list1.sort(amountTokenComparator);
+    list.addAll(list1);
+    for (final TokenModel value in listToken) {
+      if (value.isShow ?? false) {
+      } else {
+        if ((value.amountToken ?? 0) > 0) {
+        } else {
+          list.add(value);
+        }
+      }
+    }
+    getList.sink.add(list);
+  }
+
+  void search() {
     List<TokenModel> list = [];
     for (TokenModel value in listToken) {
       if (value.nameToken!.toLowerCase().contains(
@@ -37,12 +84,40 @@ class ImportTokenNftBloc {
         list.add(value);
       }
     }
-    getList.sink.add(list);
+    if (textSearch.value == '') {
+      getListSort();
+    } else {
+      getList.sink.add(list);
+    }
   }
 
   List<TokenModel> listToken = [
     TokenModel(
-      tokenId:21,
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'TBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 0,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'TBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 0,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'TBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 1,
+    ),
+    TokenModel(
+      tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'Bitcoin',
@@ -50,60 +125,68 @@ class ImportTokenNftBloc {
       amountToken: 0.2134,
     ),
     TokenModel(
-      tokenId:21,
+      tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
+      isShow: true,
       nameToken: 'ABitcoin',
       nameTokenSymbol: 'BTC',
       amountToken: 0.324,
     ),
     TokenModel(
-      tokenId:21,
+      tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'CBitcoin',
       nameTokenSymbol: 'BTC',
-      amountToken: 0.21321434,
+      amountToken: 2.21321434,
     ),
     TokenModel(
-      tokenId:21,
+      tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
+      isShow: true,
       nameToken: 'DBitcoin',
       nameTokenSymbol: 'BTC',
-      amountToken: 0.21213434,
+      amountToken: 0,
     ),
     TokenModel(
-      tokenId:21,
+      tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
+      isShow: true,
       nameToken: 'WBitcoin',
       nameTokenSymbol: 'BTC3',
-      amountToken: 0.21312344,
+      amountToken: 021342342134.21312344,
     ),
     TokenModel(
-      tokenId:21,
+      tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'QBitcoin',
       nameTokenSymbol: 'BT3C',
-      amountToken: 0.32143214,
+      amountToken: 0,
     ),
     TokenModel(
-      tokenId:21,
+      tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
+      isShow: true,
       nameToken: 'UBitcoin',
       nameTokenSymbol: 'B3TC',
       amountToken: 0.213434,
     ),
     TokenModel(
-      tokenId:21,
+      tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
       nameToken: 'TBitcoin',
       nameTokenSymbol: 'B3TC',
       amountToken: 0.423213423,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'TBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 0,
     ),
   ];
 

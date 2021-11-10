@@ -21,8 +21,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showCreateSeedPhrase2(BuildContext context,
-    BLocCreateSeedPhrase bLocCreateSeedPhrase,) {
+void showCreateSeedPhrase2(
+  BuildContext context,
+  BLocCreateSeedPhrase bLocCreateSeedPhrase,
+) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -33,11 +35,10 @@ void showCreateSeedPhrase2(BuildContext context,
       );
     },
   ).whenComplete(
-        () => {
-    bLocCreateSeedPhrase.reloadListSeedPhrase1(),
-    bLocCreateSeedPhrase.isSeedPhraseImportFailed.sink.add(false),
-
-  },
+    () => {
+      bLocCreateSeedPhrase.reloadListSeedPhrase1(),
+      bLocCreateSeedPhrase.isSeedPhraseImportFailed.sink.add(false),
+    },
   );
 }
 
@@ -61,7 +62,7 @@ class _BodyState extends State<Body> {
           Navigator.pushNamedAndRemoveUntil(
             context,
             AppRouter.main,
-                (route) => route.isFirst,
+            (route) => route.isFirst,
           );
           showCreateSuccessfully(
             type: KeyType.CREATE,
@@ -126,7 +127,7 @@ class _BodyState extends State<Body> {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           AppRouter.main,
-                              (route) => route.isFirst,
+                          (route) => route.isFirst,
                         );
                       },
                     ),
@@ -156,8 +157,10 @@ class _BodyState extends State<Body> {
                         children: [
                           StreamBuilder(
                             stream: bLocCreateSeedPhrase.listSeedPhrase,
-                            builder: (context,
-                                AsyncSnapshot<List<Item>> snapshot,) {
+                            builder: (
+                              context,
+                              AsyncSnapshot<List<Item>> snapshot,
+                            ) {
                               final listSeedPhrase = snapshot.data;
                               return BoxListPassWordPhrase(
                                 listTitle: listSeedPhrase ?? [],
@@ -167,16 +170,16 @@ class _BodyState extends State<Body> {
                           ),
                           StreamBuilder(
                             stream:
-                            bLocCreateSeedPhrase.isSeedPhraseImportFailed,
+                                bLocCreateSeedPhrase.isSeedPhraseImportFailed,
                             builder: (context, AsyncSnapshot<bool> snapshot) {
                               bLocCreateSeedPhrase.getIsSeedPhraseImport2();
                               return SizedBox(
                                 width: 323.w,
                                 child: snapshot.data ?? false
                                     ? Text(
-                                  S.current.failed,
-                                  style: textNormal(Colors.red, 14),
-                                )
+                                        S.current.Invalid_order,
+                                        style: textNormal(Colors.red, 14),
+                                      )
                                     : null,
                               );
                             },
@@ -184,8 +187,10 @@ class _BodyState extends State<Body> {
                           spaceH24,
                           StreamBuilder(
                             stream: bLocCreateSeedPhrase.listTitle,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<List<Item>> snapshot,) {
+                            builder: (
+                              BuildContext context,
+                              AsyncSnapshot<List<Item>> snapshot,
+                            ) {
                               bLocCreateSeedPhrase.getIsSeedPhraseImport2();
                               final listTitle = snapshot.data;
                               return ListPassPhrase(
