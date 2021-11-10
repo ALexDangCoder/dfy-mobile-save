@@ -35,7 +35,8 @@
   "do_not": "Do not provide your recovery key to anyone",
   "continue_s": "Continue",
   "success": "Create new wallet successfully",
-  "congratulation": "Congratulation",
+  "success_import": "Import wallet successfully",
+  "congratulation": "Congratulation!",
   "use_face": "Use face/touch ID",
   "wallet_app_lock": "Wallet app lock",
   "complete": "Complete",
@@ -82,5 +83,14 @@
   "smart_chain": "Smart chain",
   "address_required" : "Address is required",
   "invalid_address" : "Invalid Address",
-  "amount_required" : "Amount is required"
+  "amount_required" : "Amount is required",
+  "no_data": "No data",
+  "paste": "Paste",
+  "password": "Password",
+  "smart_chain": "Smart chain",
+  "wallet": "Wallet",
+  "wallet_secret": "Wallet secret seed phrase",
+  "name_not_null": "Wallet name not null",
+  "failed": "Failed",
+  "copy": "Copy Successfully"
 }

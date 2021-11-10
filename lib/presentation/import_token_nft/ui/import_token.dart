@@ -26,10 +26,10 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
       //     tokenAddress: "tokenAddress",
       //     symbol: "dsfsadf",
       //     decimal: 1);
-      bloc.getListSupportedToken(walletAddress: "walletAddress");
+      bloc.getListSupportedToken(walletAddress: "walletAddress",);
       trustWalletChannel.setMethodCallHandler(
         bloc.nativeMethodCallBackTrustWallet,
-      ); //final textController = TextEditingController();
+      );
       return DefaultTabController(
         length: 2,
         child: Container(
@@ -48,7 +48,7 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                 width: 323.w,
                 height: 28.h,
                 margin: EdgeInsets.only(
-                    left: 26.w, top: 16.h, right: 26.w, bottom: 20.h),
+                    left: 26.w, top: 16.h, right: 26.w, bottom: 20.h,),
                 child: Row(
                   
                   children: [
@@ -64,7 +64,7 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                     Container(
                       margin: EdgeInsets.only( left: 90.w),
                       child: Text(Strings.import_token,
-                          style: textNormalCustom(null, 20, FontWeight.bold)),
+                          style: textNormalCustom(null, 20, FontWeight.bold),),
                     ),
                   ],
                 ),

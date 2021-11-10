@@ -45,14 +45,10 @@ class FormInput extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
                 controller: controller,
-                // onChanged: (value) {
-                //   bloc.tokenAddressText.sink.add(value);
-                //   print(bloc.tokenAddressText.value);
-                // },
                 cursorColor: Colors.white,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.white,
+                style: textNormal(
+                  Colors.white,
+                  16.sp,
                 ),
                 decoration: InputDecoration(
                   hintText: hint,

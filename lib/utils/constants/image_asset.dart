@@ -42,7 +42,6 @@ class ImageAssets {
   static const String add_wallet = '$baseImg/addstwallet.png';
   static const String ic_menu = '$baseImg/Menu.png.png';
   static const String ic_notify = '$baseImg/Notification.png';
-  static const String symbol = '$baseImg/symbol.png';
   static const String center = '$baseImg/Centered.png';
   static const String ic_touch = '$baseImg/finger_icon.png';
   static const String ic_out = '$baseImg/ic_out.png';
@@ -99,6 +98,7 @@ class ImageAssets {
   static const String quantity = '$baseImg/Quantity.png';
 
 
+  static const String symbol = 'assets/images/symbol.png';
   static SvgPicture svgAssets(
     String name, {
     Color? color,
