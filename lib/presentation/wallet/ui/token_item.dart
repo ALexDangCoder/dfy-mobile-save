@@ -1,6 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'hero.dart';
 
 class TokenItem extends StatelessWidget {
   const TokenItem({
@@ -20,6 +23,17 @@ class TokenItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {},
+      onLongPress: () {
+        Navigator.of(context).push(
+          HeroDialogRoute(
+            builder: (context) {
+              return const RemoveToken();
+            },
+            isNonBackground: false,
+          ),
+        );
+      },
+
       child: Column(
         children: [
           Divider(

@@ -71,7 +71,7 @@ class _SelectAccState extends State<SelectAcc> {
                 Container(
                   margin: EdgeInsets.only(left: 70.w),
                   child: Text(
-                    S.current.Select_account,
+                    S.current.choose_acc,
                     style: textNormalCustom(
                       Colors.white,
                       20.sp,

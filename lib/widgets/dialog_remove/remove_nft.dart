@@ -8,8 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'custom_rect_tween.dart';
 
-class RemoveAcc extends StatelessWidget {
-  const RemoveAcc({
+class RemoveNft extends StatelessWidget {
+  const RemoveNft({
     Key? key,
   }) : super(key: key);
 
@@ -51,7 +51,7 @@ class RemoveAcc extends StatelessWidget {
                                 ),
                                 Container(
                                   child: Text(
-                                    S.current.Are_you_sure_acc,
+                                    S.current.Are_you_sure_collectible,
                                     style: textNormal(
                                       null,
                                       20.sp,
@@ -64,7 +64,7 @@ class RemoveAcc extends StatelessWidget {
                                 spaceH12,
                                 Container(
                                   padding:
-                                      EdgeInsets.symmetric(horizontal: 34.w),
+                                  EdgeInsets.symmetric(horizontal: 34.w),
                                   child: Text(
                                     S.current.This_will_also,
                                     style: textNormal(
@@ -99,7 +99,7 @@ class RemoveAcc extends StatelessWidget {
                                         child: Text(
                                           S.current.cancel,
                                           style:
-                                              textNormal(null, 20.sp).copyWith(
+                                          textNormal(null, 20.sp).copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,
                                           ),

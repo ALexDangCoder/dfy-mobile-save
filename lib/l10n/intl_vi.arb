@@ -80,5 +80,8 @@
   "Are_you_sure_token": "Bạn có chắc chắn muốn xóa mã thông báo này không?",
   "Select_account": "Chọn tài khoản",
   "IMPORTED": "ĐÃ NHẬP KHẨU",
-  "Are_you_sure_acc": "Bạn có chắc chắn muốn xóa tài khoản này không?"
+  "Are_you_sure_acc": "Bạn có chắc chắn muốn xóa tài khoản này không?",
+  "Confirm": "Xác nhận",
+  "Enter_name": "Điền tên",
+  "choose_acc": "Chọn tài khoản"
 }

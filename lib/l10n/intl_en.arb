@@ -84,5 +84,8 @@
   "Are_you_sure_token": "Are you sure you want to remove this token?",
   "Select_account": "Select account",
   "IMPORTED": "IMPORTED",
-  "Are_you_sure_acc": "Are you sure you want to remove this account?"
+  "Are_you_sure_acc": "Are you sure you want to remove this account?",
+  "Confirm": "Confirm",
+  "Enter_name": "Enter name",
+  "choose_acc": "Choose account"
 }

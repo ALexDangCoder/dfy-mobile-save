@@ -8,8 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'custom_rect_tween.dart';
 
-class RemoveAcc extends StatelessWidget {
-  const RemoveAcc({
+class RemoveToken extends StatelessWidget {
+  const RemoveToken({
     Key? key,
   }) : super(key: key);
 
@@ -51,7 +51,7 @@ class RemoveAcc extends StatelessWidget {
                                 ),
                                 Container(
                                   child: Text(
-                                    S.current.Are_you_sure_acc,
+                                    S.current.Are_you_sure_token,
                                     style: textNormal(
                                       null,
                                       20.sp,

@@ -15,6 +15,8 @@ import 'package:Dfy/presentation/wallet/ui/nft_item.dart';
 import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
 import 'package:Dfy/presentation/wallet/ui/token_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/dialog_remove/change_wallet_name.dart';
+import 'package:Dfy/widgets/dialog_remove/choose_acc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +24,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../main.dart';
+import 'hero.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({Key? key}) : super(key: key);
@@ -287,19 +290,40 @@ class _WalletState extends State<WalletScreen>
                   SizedBox(
                     width: 37.w,
                   ),
-                  Text(
-                    'Nguyen Van Hung',
-                    style: textNormalCustom(
-                      Colors.white,
-                      24.sp,
-                      FontWeight.w700,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        HeroDialogRoute(
+                          builder: (context) {
+                            return const ChooseAcc();
+                          },
+                          isNonBackground: false,
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Nguyen Van Hung',
+                      style: textNormalCustom(
+                        Colors.white,
+                        24.sp,
+                        FontWeight.w700,
+                      ),
                     ),
                   ),
                   SizedBox(
                     width: 13.w,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        HeroDialogRoute(
+                          builder: (context) {
+                            return const ChangeWalletName();
+                          },
+                          isNonBackground: false,
+                        ),
+                      );
+                    },
                     child: ImageIcon(
                       const AssetImage(ImageAssets.icEdit),
                       color: Colors.white,
@@ -367,7 +391,9 @@ class _WalletState extends State<WalletScreen>
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+
+                },
                 icon: const ImageIcon(
                   AssetImage(ImageAssets.code),
                   color: Colors.white,
