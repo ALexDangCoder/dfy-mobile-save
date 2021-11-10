@@ -52,7 +52,10 @@ class CardNFT extends StatelessWidget {
                         child: SingleChildScrollView(
                           controller: scrollController,
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            padding: EdgeInsets.only(
+                              left: 16.w,
+                              right: 16.w,
+                            ),
                             child: Column(
                               children: [
                                 Align(
@@ -106,6 +109,38 @@ class CardNFT extends StatelessWidget {
                                       'nec sollicitudin nullam',
                                   type: TextType.NORM,
                                 ),
+                                SizedBox(
+                                  height: 12.h,
+                                ),
+                                _buildRow(
+                                  title: 'NFT standard',
+                                  detail: 'ERC-1155',
+                                  type: TextType.NORM,
+                                ),
+                                SizedBox(
+                                  height: 12.h,
+                                ),
+                                _buildRow(
+                                  title: 'Link',
+                                  detail: 'https://opensea.io/0c...30/7576',
+                                  type: TextType.RICH,
+                                ),
+                                SizedBox(
+                                  height: 12.h,
+                                ),
+                                _buildRow(
+                                  title: 'Contract',
+                                  detail: '0xd07dc4262...261d2461d2430',
+                                  type: TextType.RICH,
+                                ),
+                                SizedBox(
+                                  height: 12.h,
+                                ),
+                                _buildRow(
+                                  title: 'Blockchain',
+                                  detail: 'Binance smart chain',
+                                  type: TextType.NORM,
+                                ),
                               ],
                             ),
                           ),
@@ -148,34 +183,63 @@ class CardNFT extends StatelessWidget {
     required TextType type,
   }) =>
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16.sp,
-            ).copyWith(
-              fontWeight: FontWeight.w700,
+          Flexible(
+            child: SizedBox(
+              width: 126.w,
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  title,
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ).copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
             ),
           ),
-          SizedBox(
-            width: 21.w,
-          ),
           if (type == TextType.NORM)
-            Flexible(
-              child: Text(
-                detail,
-                style: textNormal(
-                  AppTheme.getInstance().textThemeColor(),
-                  16.sp,
-                ).copyWith(
-                  fontWeight: FontWeight.w400,
+            SizedBox(
+              width: 225.w,
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  detail,
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ).copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
+                  maxLines: 2,
                 ),
               ),
             )
           else
-            const SizedBox()
+            SizedBox(
+              width: 225.w,
+              child: RichText(
+                maxLines: 1,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: detail,
+                      style: textNormal(const Color(0xff46BCFF), 16.sp)
+                        ..copyWith(
+                          fontWeight: FontWeight.w400,
+                        ),
+                    ),
+                  ],
+                ),
+              ),
+            )
         ],
       );
+  Card cardTransition(String label)=> Card(
+    child: Text(label),
+  );
 }
