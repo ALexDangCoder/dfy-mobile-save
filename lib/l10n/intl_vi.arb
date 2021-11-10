@@ -72,5 +72,13 @@
   "choose_token": "Chọn token",
   "search_token": "Tìm kiếm token",
   "import": "Nhập",
-  "enter_id": "Nhập ID"
+  "enter_id": "Nhập ID",
+  "Are_you_sure_collectible": "Bạn có chắc chắn muốn xóa bộ sưu tập này không?",
+  "This_will_also": "Thao tác này cũng sẽ xóa tất cả các giao dịch trong ví này và không thể khôi phục được.",
+  "Cancel": "Huỷ",
+  "Remove": "Xóa",
+  "Are_you_sure_token": "Bạn có chắc chắn muốn xóa mã thông báo này không?",
+  "Select_account": "Chọn tài khoản",
+  "IMPORTED": "ĐÃ NHẬP KHẨU",
+  "Are_you_sure_acc": "Bạn có chắc chắn muốn xóa tài khoản này không?"
 }

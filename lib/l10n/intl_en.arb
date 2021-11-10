@@ -76,5 +76,13 @@
   "choose_token": "Choose token",
   "search_token": "Search token",
   "import": "Import",
-  "enter_id": "Enter ID"
+  "enter_id": "Enter ID",
+  "Are_you_sure_collectible": "Are you sure you want to remove this collectible?",
+  "This_will_also": "This will also delete all transactions under this wallet and cannot be recovered.",
+  "Cancel": "Cancel",
+  "Remove": "Remove",
+  "Are_you_sure_token": "Are you sure you want to remove this token?",
+  "Select_account": "Select account",
+  "IMPORTED": "IMPORTED",
+  "Are_you_sure_acc": "Are you sure you want to remove this account?"
 }

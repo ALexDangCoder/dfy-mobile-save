@@ -97,7 +97,8 @@ class _ChooseTokenState extends State<ChooseToken> {
                           ),
                           subtitle: Text(
                             '${widget.bloc.getList.value[index].amountToken?.toStringAsFixed(5)}' +
-                                ' ${widget.bloc.getList.value[index].nameTokenSymbol ?? ''} ',
+                                ' ${widget.bloc.getList.value[index]
+                                    .nameTokenSymbol ?? ''} ',
                             style: textNormalCustom(
                               const Color.fromRGBO(255, 255, 255, 0.5),
                               16,

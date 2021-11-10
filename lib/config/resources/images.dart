@@ -25,3 +25,7 @@ const String url_ic_close = 'assets/images/ic_close.png';
 
 const String url_ic_addresss = 'assets/images/ic_address.png';
 const String url_ic_key = 'assets/images/ic_key.png';
+
+const String url_ic_select = 'assets/images/Selected.png';
+
+const String url_ic_delete = 'assets/images/Delete.png';
