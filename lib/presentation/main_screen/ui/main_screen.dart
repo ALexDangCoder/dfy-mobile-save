@@ -9,7 +9,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/bottom_appbar.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 const int tabWalletIndex = 0;
@@ -18,10 +17,9 @@ const int tabHomeIndex = 2;
 const int tabMarketingPlaceIndex = 3;
 const int tabStakingIndex = 4;
 
-enum WalletType { ONE, TWO, THREE }
-
 class MainScreen extends BaseScreen {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key? key, this.index}) : super(key: key);
+  final int? index;
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -57,7 +55,6 @@ class _MainScreenState extends BaseState<MainScreen> {
 
   final CompositeSubscription compositeSubscription = CompositeSubscription();
   late MainCubit _cubit;
-  late WalletType type;
 
   @override
   void initState() {
@@ -65,9 +62,10 @@ class _MainScreenState extends BaseState<MainScreen> {
     _handleEventBus();
     _cubit = MainCubit();
     _cubit.init();
-    type = WalletType.THREE;
     _pages = [
-      const WalletScreen(),
+      WalletScreen(
+        index: widget.index ?? 2,
+      ),
       const PawnScreen(),
       const HomeScreen(),
       const MarketPlaceScreen(),
@@ -85,30 +83,28 @@ class _MainScreenState extends BaseState<MainScreen> {
       selectPage(event.tabIndex);
     }).addTo(compositeSubscription);
   }
+
   @override
   Widget build(BuildContext context) {
     precacheImage(const AssetImage(ImageAssets.symbol), context);
     precacheImage(const AssetImage(ImageAssets.center), context);
     precacheImage(const AssetImage(ImageAssets.center), context);
-    return BlocProvider<MainCubit>(
-      create: (_) => _cubit,
-      child: Scaffold(
-        key: scaffoldKey,
-        resizeToAvoidBottomInset: false,
-        body: StreamBuilder(
-          stream: _cubit.indexStream,
-          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-            return Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                _pages.elementAt(snapshot.data ?? tabWalletIndex),
-                CustomBottomHomeAppbar(
-                  mainCubit: _cubit,
-                ),
-              ],
-            );
-          },
-        ),
+    return Scaffold(
+      key: scaffoldKey,
+      resizeToAvoidBottomInset: false,
+      body: StreamBuilder(
+        stream: _cubit.indexStream,
+        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+          return Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              _pages.elementAt(snapshot.data ?? tabWalletIndex),
+              CustomBottomHomeAppbar(
+                mainCubit: _cubit,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

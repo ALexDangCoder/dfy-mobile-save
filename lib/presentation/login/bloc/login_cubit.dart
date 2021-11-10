@@ -22,11 +22,6 @@ class LoginCubit extends BaseCubit<LoginState> {
     return hidePass = !hidePass;
   }
 
-  //
-  // String privateKey = '';
-  // String walletAddress = '';
-  // String passPhrase = '';
-
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     emit(LoginLoading());
     bool loginSuccess = false;
@@ -45,22 +40,19 @@ class LoginCubit extends BaseCubit<LoginState> {
       emit(LoginError('Password was wrong...'));
     }
   }
+
   void getConfig() {
-    if(PrefsService.getAppLockConfig() == 'true'){
+    if (PrefsService.getAppLockConfig() == 'true') {
       isAppLock = true;
-    }
-    else{
+    } else {
       isAppLock = false;
     }
-    if(PrefsService.getFaceIDConfig() == 'true'){
+    if (PrefsService.getFaceIDConfig() == 'true') {
       isFaceID = true;
-    }
-    else {
+    } else {
       isFaceID = false;
     }
   }
-
-
 
   Future<void> checkPasswordWallet(String password) async {
     emit(LoginLoading());
@@ -69,8 +61,7 @@ class LoginCubit extends BaseCubit<LoginState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('checkPassword', data);
-    } on PlatformException {
-    }
+    } on PlatformException {}
   }
 
   String authorized = 'Not Authorized';
@@ -89,5 +80,4 @@ class LoginCubit extends BaseCubit<LoginState> {
       emit(LoginSuccess());
     }
   }
-
 }

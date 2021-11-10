@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_state.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,7 +17,10 @@ class MainCubit extends BaseCubit<MainState> {
   Sink<int> get walletSink => _walletIndex.sink;
 
   Future<void> init({dynamic args}) async {}
-
+  bool checkAppLock() {
+    if(PrefsService.getAppLockConfig() == 'true') return true;
+    return false;
+  }
   @override
   Future<void> close() {
     _index.close();

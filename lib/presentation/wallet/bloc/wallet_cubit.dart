@@ -2,11 +2,10 @@ import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/main.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
-
-import '../../../main.dart';
 
 part 'wallet_state.dart';
 
@@ -42,7 +41,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       default:
         break;
     }
-    print(objToken);
   }
 
   Future<void> getListToken(String walletAddress, String password) async {
@@ -68,13 +66,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     } on PlatformException {
       log(e);
     }
-  }
-  bool checkIndex(){
-    if(PrefsService.getAppLockConfig() == 'true'){
-      return true;
-    }
-    return false;
-
   }
   void checkScreen() {
     if(PrefsService.getAppLockConfig() == 'true' && checkLogin == false) {

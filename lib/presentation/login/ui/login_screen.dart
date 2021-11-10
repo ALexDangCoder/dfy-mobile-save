@@ -2,13 +2,12 @@ import 'dart:io';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
-import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/restore_bts/ui/restore_bts.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -208,7 +207,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   BlocBuilder<LoginCubit, LoginState>(
                     bloc: _cubit,
-
                     builder: (context, state) {
                       return GestureDetector(
                         child: enableLogin
@@ -239,7 +237,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           if (controller.value.text.isNotEmpty && !errorText) {
                             _cubit.checkPasswordWallet(controller.value.text);
-                            context.read<MainCubit>().walletSink.add(1);
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => MainScreen(
+                                  index: 1,
+                                ),
+                              ),
+                              (route) => route.isFirst,
+                            );
                           }
                         },
                       );

@@ -5,6 +5,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
+import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_state.dart';
 import 'package:Dfy/presentation/restore_bts/ui/choice_dialog.dart';
@@ -44,6 +45,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
   late final TextEditingController privateKeyController;
   late final TextEditingController seedPhraseController;
 
+
   @override
   void initState() {
     super.initState();
@@ -72,11 +74,16 @@ class _RestoreBTSState extends State<RestoreBTS> {
       bloc: restoreCubit,
       listener: (ctx, state) {
         if (state is NavState) {
-          showCreateSuccessfully(
-            type: KeyType.IMPORT,
+          showModalBottomSheet(
+            isScrollControlled: true,
             context: context,
-            bLocCreateSeedPhrase: BLocCreateSeedPhrase(passwordController.text),
-            wallet: restoreCubit.wallet ?? Wallet(),
+            backgroundColor: Colors.transparent,
+            builder: (context) => Body(
+              bLocCreateSeedPhrase:
+                  BLocCreateSeedPhrase(passwordController.text),
+              wallet: restoreCubit.wallet ?? Wallet(),
+              type: KeyType.IMPORT,
+            ),
           );
         }
         if (state is ErrorState) {
