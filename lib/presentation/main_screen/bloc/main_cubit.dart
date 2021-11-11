@@ -17,9 +17,13 @@ class MainCubit extends BaseCubit<MainState> {
   Sink<int> get walletSink => _walletIndex.sink;
 
   Future<void> init({dynamic args}) async {}
-  bool checkAppLock() {
-    if(PrefsService.getAppLockConfig() == 'true') return true;
-    return false;
+  int checkAppLock() {
+    if(PrefsService.getAppLockConfig() == 'true') {
+      return 2;
+    }
+    else {
+      return 1;
+    }
   }
   @override
   Future<void> close() {

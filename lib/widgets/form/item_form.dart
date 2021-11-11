@@ -2,24 +2,25 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum FormType { PASS_PHRASE, PASSWORD, PRIVATE_KEY }
+enum FormType { PASS_PHRASE, PASSWORD, PRIVATE_KEY, AMOUNT }
 
 class ItemForm extends StatelessWidget {
   const ItemForm({
     Key? key,
-    required this.leadPath,
+    required this.prefix,
     required this.hint,
-    required this.trailingPath,
+    required this.suffix,
     required this.formType,
     this.callback,
     required this.isShow,
     required this.controller,
   }) : super(key: key);
-  final String leadPath;
+  final String prefix;
   final String hint;
-  final String trailingPath;
+  final String suffix;
   final FormType formType;
   final Function()? callback;
   final bool isShow;
@@ -73,7 +74,7 @@ class ItemForm extends StatelessWidget {
                 ),
               ),
               prefixIcon: ImageIcon(
-                AssetImage(leadPath),
+                AssetImage(prefix),
                 color: Colors.white,
               ),
               border: InputBorder.none,
@@ -81,7 +82,7 @@ class ItemForm extends StatelessWidget {
           ),
         ),
       );
-    } else if (formType == FormType.PRIVATE_KEY) {
+    }else if (formType == FormType.PRIVATE_KEY) {
       return Container(
         height: 64.h,
         width: 323.w,
@@ -115,7 +116,7 @@ class ItemForm extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(top: 10.h),
                 child: Text(
-                  trailingPath,
+                  suffix,
                   style: textNormal(AppTheme.getInstance().fillColor(), 16.sp)
                       .copyWith(
                     fontWeight: FontWeight.w400,
@@ -124,11 +125,80 @@ class ItemForm extends StatelessWidget {
               ),
             ),
             prefixIcon: ImageIcon(
-              AssetImage(leadPath),
+              AssetImage(prefix),
               color: Colors.white,
             ),
             border: InputBorder.none,
           ),
+        ),
+      );
+    } else if (formType == FormType.AMOUNT) {
+      return Container(
+        height: 64.h,
+        width: 323.w,
+        padding: EdgeInsets.only(
+          top: 12.h,
+          bottom: 12.h,
+          right: 12.w,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(20),
+          ),
+          color: AppTheme.getInstance().itemBtsColors(),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: controller,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'(^\-?\d*\.?\d*)'))
+                ],
+                style: textNormal(
+                  Colors.white,
+                  16.sp,
+                ),
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  hintText: hint,
+                  hintStyle: textNormal(
+                    Colors.grey,
+                    16.sp,
+                  ),
+                  suffixIcon: InkWell(
+                    onTap: callback,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: Text(
+                        suffix,
+                        style: textNormal(
+                          AppTheme.getInstance().fillColor(),
+                          16.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+                  prefixIcon: ImageIcon(
+                    AssetImage(prefix),
+                    color: Colors.white,
+                  ),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 11.w,
+            ),
+            Text(
+              'BNB',
+              style: textNormal(
+                Colors.grey,
+                16.sp,
+              ),
+            ),
+          ],
         ),
       );
     } else {
@@ -162,12 +232,12 @@ class ItemForm extends StatelessWidget {
             suffixIcon: InkWell(
               onTap: callback,
               child: ImageIcon(
-                AssetImage(trailingPath),
+                AssetImage(suffix),
                 color: Colors.grey,
               ),
             ),
             prefixIcon: ImageIcon(
-              AssetImage(leadPath),
+              AssetImage(prefix),
               color: Colors.white,
             ),
             border: InputBorder.none,

@@ -155,6 +155,7 @@ class _BodyState extends State<Body> {
                   MaterialPageRoute(
                     builder: (context) => MainScreen(
                       index: 1,
+                      wallet: widget.wallet,
                     ),
                   ),
                   (route) => false,

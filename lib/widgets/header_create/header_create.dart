@@ -42,11 +42,7 @@ class HeaderCreate extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRouter.main,
-              (route) => route.isFirst,
-            );
+            Navigator.pop(context);
           },
         ),
       ],

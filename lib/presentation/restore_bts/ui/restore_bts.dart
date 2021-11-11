@@ -5,7 +5,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
-import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_state.dart';
 import 'package:Dfy/presentation/restore_bts/ui/choice_dialog.dart';
@@ -290,9 +289,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                       type = snapshot.data!;
                                       return type == FormType.PASS_PHRASE
                                           ? ItemForm(
-                                              leadPath: ImageAssets.key,
+                                              prefix: ImageAssets.key,
                                               hint: S.current.wallet_secret,
-                                              trailingPath: ImageAssets.paste,
+                                              suffix: ImageAssets.paste,
                                               formType: FormType.PASS_PHRASE,
                                               isShow: false,
                                               controller: seedPhraseController,
@@ -306,9 +305,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                               },
                                             )
                                           : ItemForm(
-                                              leadPath: ImageAssets.key,
+                                              prefix: ImageAssets.key,
                                               hint: S.current.private_key,
-                                              trailingPath: S.current.paste,
+                                              suffix: S.current.paste,
                                               formType: FormType.PRIVATE_KEY,
                                               isShow: false,
                                               controller: privateKeyController,
@@ -332,9 +331,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     builder: (ctx, snapshot) {
                                       isShowNewPass = snapshot.data!;
                                       return ItemForm(
-                                        leadPath: ImageAssets.lock,
+                                        prefix: ImageAssets.lock,
                                         hint: S.current.new_pass,
-                                        trailingPath: isShowNewPass
+                                        suffix: isShowNewPass
                                             ? ImageAssets.show
                                             : ImageAssets.hide,
                                         formType: FormType.PASSWORD,
@@ -357,9 +356,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     builder: (ctx, snapshot) {
                                       isShowConPass = snapshot.data!;
                                       return ItemForm(
-                                        leadPath: ImageAssets.lock,
+                                        prefix: ImageAssets.lock,
                                         hint: S.current.con_pass,
-                                        trailingPath: isShowConPass
+                                        suffix: isShowConPass
                                             ? ImageAssets.show
                                             : ImageAssets.hide,
                                         formType: FormType.PASSWORD,

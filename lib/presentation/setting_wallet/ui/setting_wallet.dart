@@ -1,11 +1,11 @@
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/header_setting.dart';
-import 'package:Dfy/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 class SettingWallet extends StatelessWidget {
   const SettingWallet({Key? key}) : super(key: key);
@@ -72,7 +72,7 @@ class SettingWallet extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
-                        builder: (context) => ConfirmPWShowPRVSeedPhr(),
+                        builder: (context) => const ConfirmPWShowPRVSeedPhr(),
                         context: context,
                       );
                     },
@@ -93,7 +93,7 @@ class SettingWallet extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
-                        builder: (context) => ChangePassword(),
+                        builder: (context) => const ChangePassword(),
                         context: context,
                       );
                     },
