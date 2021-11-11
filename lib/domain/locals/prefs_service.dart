@@ -5,7 +5,8 @@ class PrefsService {
   static const _PREF_TOKEN_KEY = 'pref_token_key';
   static const _PREF_LANGUAGE = 'pref_language';
   static const _PREF_APPLOCK = 'pref_appLock';
-  static const _PREF_FACEID = 'pref_face_id';
+  static const _PREF_FACE_ID = 'pref_face_id';
+  static const _PREF_FIRST_APP = 'pref_first_app';
 
   static SharedPreferences? _prefsInstance;
 
@@ -39,16 +40,26 @@ class PrefsService {
   }
   static Future<bool> saveFaceIDConfig(String value) async {
     final prefs = await _instance;
-    return prefs.setString(_PREF_APPLOCK, value);
+    return prefs.setString(_PREF_FACE_ID, value);
 
   }
   static String getFaceIDConfig() {
-    return _prefsInstance?.getString(_PREF_APPLOCK) ?? 'false';
+    return _prefsInstance?.getString(_PREF_FACE_ID) ?? 'false';
+  }
+  static String getFirstAppConfig() {
+    return _prefsInstance?.getString(_PREF_FIRST_APP) ?? 'true';
+  }
+
+  static Future<bool> saveFirstAppConfig(String value) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_FIRST_APP, value);
+
   }
 
   static String getToken() {
     return _prefsInstance?.getString(_PREF_TOKEN_KEY) ?? '';
   }
+
 
   static Future<bool> saveLanguage(String code) async {
     final prefs = await _instance;

@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_screen.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/presentation/home/ui/home_screen.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
@@ -18,8 +19,9 @@ const int tabMarketingPlaceIndex = 3;
 const int tabStakingIndex = 4;
 
 class MainScreen extends BaseScreen {
-  const MainScreen({Key? key, this.index}) : super(key: key);
+  const MainScreen({Key? key, this.index, this.wallet}) : super(key: key);
   final int? index;
+  final Wallet? wallet;
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -61,10 +63,10 @@ class _MainScreenState extends BaseState<MainScreen> {
     super.initState();
     _handleEventBus();
     _cubit = MainCubit();
-    _cubit.init();
     _pages = [
       WalletScreen(
-        index: widget.index ?? 2,
+        index: widget.index ?? 1,
+        wallet: widget.wallet,
       ),
       const PawnScreen(),
       const HomeScreen(),

@@ -5,7 +5,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
-import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_state.dart';
 import 'package:Dfy/presentation/restore_bts/ui/choice_dialog.dart';
