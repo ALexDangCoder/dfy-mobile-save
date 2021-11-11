@@ -1,3 +1,5 @@
+
+
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -61,10 +63,10 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   }
 
   bool isValidFtMatchPW(String value, String confirmValue) {
-    if (Validator.validateStructure(value) && (value == confirmValue)) {
-      return true;
-    } else {
+    if (Validator.validateStructure(value)) {
       return false;
+    } else {
+      return true;
     }
   }
 

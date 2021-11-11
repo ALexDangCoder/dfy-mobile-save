@@ -7,6 +7,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Dfy/generated/l10n.dart';
 
 class ConfirmBlockchain extends StatefulWidget {
   const ConfirmBlockchain({
@@ -29,9 +30,13 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
   late TextEditingController txtGasPrice;
   late InformationWallet informationWallet;
   late double gasFeeFirstFetch;
+  late double gasLimitFirstFetch;
+  late double gasPriceFirstFetch;
 
   @override
   void initState() {
+    gasPriceFirstFetch = 1.1;
+    gasLimitFirstFetch = 0.624;
     gasFeeFirstFetch = 0.6;
     informationWallet = InformationWallet(
       nameWallet: 'Test wallet',
@@ -41,14 +46,13 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
       imgWallet: ImageAssets.hardCoreImgWallet,
     );
     sendTokenCubit = SendTokenCubit();
-    txtGasLimit = TextEditingController();
-    txtGasPrice = TextEditingController();
+    txtGasLimit = TextEditingController(text: gasLimitFirstFetch.toString());
+    txtGasPrice = TextEditingController(text: gasPriceFirstFetch.toString());
     super.initState();
   }
 
   @override
   void dispose() {
-
     super.dispose();
   }
 
@@ -111,8 +115,10 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                                 sendTokenCubit: sendTokenCubit,
                                 txtGasPrice: txtGasPrice,
                                 txtGasLimit: txtGasLimit,
-                                balance: informationWallet.amount,
+                                balanceFirstFetch: informationWallet.amount,
                                 gasFee: 0.6,
+                                gasLimitFirstFetch: gasLimitFirstFetch,
+                                gasPriceFirstFetch: gasPriceFirstFetch,
                               )
                             : HideCustomizeFee(
                                 nameToken: 'BNB',
@@ -132,7 +138,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
               builder: (context, snapshot) {
                 return GestureDetector(
                   child: ButtonGold(
-                    title: 'Approve',
+                    title: S.current.wallet_app_lock,
                     isEnable: snapshot.data ?? false,
                   ),
                 );
@@ -163,7 +169,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
             width: 95.w,
           ),
           Text(
-            'Send $nameToken',
+            '${S.current.send} $nameToken',
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w700,

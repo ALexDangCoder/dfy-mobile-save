@@ -1,4 +1,4 @@
-import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -92,7 +92,7 @@ class InformationWallet extends StatelessWidget {
                   ),
                   //hang 2
                   Text(
-                    'Balance: $amount $nameToken',
+                    '${S.current.balance}: $amount $nameToken',
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16.sp,
