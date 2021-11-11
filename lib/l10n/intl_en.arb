@@ -79,6 +79,7 @@
   "address_required": "Address is required",
   "invalid_address": "Invalid Address",
   "amount_required": "Amount is required",
+  "amount": "Amount",
   "paste": "Paste",
   "name_not_null": "Wallet name is required",
   "copy": "Copy Successfully",

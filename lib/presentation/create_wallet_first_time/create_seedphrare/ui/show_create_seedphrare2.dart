@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 
@@ -10,6 +9,7 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -24,6 +24,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 void showCreateSeedPhrase2(
   BuildContext context,
   BLocCreateSeedPhrase bLocCreateSeedPhrase,
+  TypeScreen typeScreen,
 ) {
   showModalBottomSheet(
     isScrollControlled: true,
@@ -31,6 +32,7 @@ void showCreateSeedPhrase2(
     backgroundColor: Colors.transparent,
     builder: (context) {
       return Body(
+        typeScreen: typeScreen,
         bLocCreateSeedPhrase: bLocCreateSeedPhrase,
       );
     },
@@ -43,9 +45,12 @@ void showCreateSeedPhrase2(
 }
 
 class Body extends StatefulWidget {
-  const Body({Key? key, required this.bLocCreateSeedPhrase}) : super(key: key);
+  const Body(
+      {Key? key, required this.bLocCreateSeedPhrase, required this.typeScreen})
+      : super(key: key);
 
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
+  final TypeScreen typeScreen;
 
   @override
   _BodyState createState() => _BodyState();
@@ -59,11 +64,6 @@ class _BodyState extends State<Body> {
       bloc: widget.bLocCreateSeedPhrase,
       listener: (ctx, state) {
         if (state is SeedNavState) {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            AppRouter.main,
-            (route) => route.isFirst,
-          );
           showCreateSuccessfully(
             type: KeyType.CREATE,
             context: context,
@@ -124,11 +124,14 @@ class _BodyState extends State<Body> {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRouter.main,
-                          (route) => route.isFirst,
-                        );
+                        if (widget.typeScreen == TypeScreen.one) {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        } else {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        }
                       },
                     ),
                   ],

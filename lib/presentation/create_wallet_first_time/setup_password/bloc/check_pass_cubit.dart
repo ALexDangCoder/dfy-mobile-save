@@ -70,6 +70,16 @@ class CheckPassCubit extends Cubit<CheckPassState> {
     }
   }
 
+
+  bool checkMatchPW({required String password, required String confirmPW}) {
+    if (password == confirmPW) {
+      //if equal widget warning will not appear
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void isMatchPW({required String password, required String confirmPW}) {
     if (password == confirmPW) {
       //if equal widget warning will not appear

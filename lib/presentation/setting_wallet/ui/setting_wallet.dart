@@ -1,5 +1,9 @@
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
+import 'package:Dfy/presentation/select_acc/bloc/select_acc_bloc.dart';
+import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/header_setting.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
@@ -25,6 +29,7 @@ class SettingWallet extends StatelessWidget {
       child: Column(
         children: [
           headerSetting(
+            context: context,
             leftFunction: () {},
             rightFunction: () {},
           ),
@@ -46,16 +51,27 @@ class SettingWallet extends StatelessWidget {
                   SizedBox(
                     height: 16.h,
                   ),
-                  buttonForm(
-                    hintText: S.current.select_acc,
-                    prefixIcon: ImageAssets.slc_acc,
+                  GestureDetector(
+                    onTap: () {
+                      showSelectAcc(context, SelectAccBloc());
+                    },
+                    child: buttonForm(
+                      hintText: S.current.select_acc,
+                      prefixIcon: ImageAssets.slc_acc,
+                    ),
                   ),
                   SizedBox(
                     height: 16.h,
                   ),
-                  buttonForm(
-                    hintText: S.current.create_new_acc,
-                    prefixIcon: ImageAssets.plus,
+                  GestureDetector(
+                    onTap: () {
+                      showCreateSeedPhrase1(context, BLocCreateSeedPhrase('')
+                      ,TypeScreen.one);
+                    },
+                    child: buttonForm(
+                      hintText: S.current.create_new_acc,
+                      prefixIcon: ImageAssets.plus,
+                    ),
                   ),
                   SizedBox(
                     height: 16.h,

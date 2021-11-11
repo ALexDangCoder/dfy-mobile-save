@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
@@ -106,20 +107,20 @@ class _SetupPassWordState extends State<SetupPassWord> {
                   );
                 },
               ),
-              onTap: () async {
+              onTap: () {
                 isValidPassCubit.isValidate(password.text);
                 isValidPassCubit.isMatchPW(
                   password: password.text,
                   confirmPW: confirmPassword.text,
                 );
                 if (checkBox == 2 &&
-                    isValidPassCubit.isValidFtMatchPW(
-                      password.text,
-                      confirmPassword.text,
-                    )) {
+                    isValidPassCubit.checkMatchPW(
+                      confirmPW: confirmPassword.text, password: password.text,
+                    ) && Validator.isValidPassword(password.text)) {
                   showCreateSeedPhrase1(
                     context,
                     BLocCreateSeedPhrase(password.text),
+                    TypeScreen.tow
                   );
                 }
               },

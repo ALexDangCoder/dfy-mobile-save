@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Container headerSetting({
+  required BuildContext context,
   required Function()? leftFunction,
   required Function()? rightFunction,
 }) {
@@ -24,7 +25,9 @@ Container headerSetting({
         GestureDetector(
           child: IconButton(
             icon: Image.asset(ImageAssets.back),
-            onPressed: leftFunction,
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
         Text(

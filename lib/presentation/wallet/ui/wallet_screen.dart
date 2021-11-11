@@ -4,13 +4,12 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
-import 'package:Dfy/presentation/private_key_seed_phrase/ui/private_key_seed_phrase.dart';
 import 'package:Dfy/presentation/select_acc/bloc/select_acc_bloc.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
+import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/createNFT.dart';
 import 'package:Dfy/presentation/wallet/ui/import.dart';
@@ -133,7 +132,16 @@ class _WalletState extends State<WalletScreen>
                             ),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) {
+                                  return const SettingWallet();
+                                },
+                              );
+                            },
                             icon: Icon(
                               Icons.settings_outlined,
                               size: 24.sp,
@@ -259,7 +267,7 @@ class _WalletState extends State<WalletScreen>
       );
     } else if (widget.index == 2) {
       return LoginScreen(
-        walletCubit: _cubit,
+        walletCubit: cubit,
       );
     } else {
       return const AddWalletFtSeedPharse();
@@ -298,7 +306,7 @@ class _WalletState extends State<WalletScreen>
                     width: 37.w,
                   ),
                   Text(
-                    widget.wallet?.name ??'Nguyen Van Hung',
+                    widget.wallet?.name ?? 'Nguyen Van Hung',
                     style: textNormalCustom(
                       Colors.white,
                       24.sp,

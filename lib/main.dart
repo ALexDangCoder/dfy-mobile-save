@@ -68,8 +68,9 @@ class _MyAppState extends State<MyApp> {
             selectionColor: AppTheme.getInstance().primaryColor(),
             selectionHandleColor: AppTheme.getInstance().primaryColor(),
           ),
-          colorScheme: ColorScheme.fromSwatch()
-              .copyWith(secondary: AppTheme.getInstance().accentColor()),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            secondary: AppTheme.getInstance().accentColor(),
+          ),
         ),
         supportedLocales: S.delegate.supportedLocales,
         localizationsDelegates: const [
@@ -92,9 +93,11 @@ class _MyAppState extends State<MyApp> {
         break;
       case 'getConfigCallback':
         await PrefsService.saveAppLockConfig(
-            methodCall.arguments['isAppLock'].toString(),);
+          methodCall.arguments['isAppLock'].toString(),
+        );
         await PrefsService.saveFaceIDConfig(
-          methodCall.arguments['isFaceID'].toString(),);
+          methodCall.arguments['isFaceID'].toString(),
+        );
         break;
       case 'importWalletCallback':
         print('3: ' + methodCall.arguments.toString());

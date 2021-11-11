@@ -16,7 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum KeyType { IMPORT, CREATE }
 
-void showCreateSuccessfully({
+void  showCreateSuccessfully({
   required BuildContext context,
   required BLocCreateSeedPhrase bLocCreateSeedPhrase,
   required Wallet wallet,
@@ -151,10 +151,20 @@ class _BodyState extends State<Body> {
               onTap: () {
                 //Navigator.popAndPushNamed(context,AppRouter.login);
                 //cubit.walletSink.add(2);
+                // if (widget.type == KeyType.IMPORT) {
+                //                   Navigator.pop(context);
+                //                   Navigator.pop(context);
+                //                   Navigator.pop(context);
+                //                 } else {
+                //                   Navigator.pop(context);
+                //                   Navigator.pop(context);
+                //                   Navigator.pop(context);
+                //                   Navigator.pop(context);
+                //                 }
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => MainScreen(
-                      index: 1,
+                      index: 2,
                       wallet: widget.wallet,
                     ),
                   ),

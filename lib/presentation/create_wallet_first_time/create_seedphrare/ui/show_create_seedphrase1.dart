@@ -5,6 +5,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrare2.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom.dart';
 import 'package:Dfy/widgets/form/form_text.dart';
@@ -17,10 +18,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../main.dart';
 
-void showCreateSeedPhrase1(
-  BuildContext context,
-  BLocCreateSeedPhrase blocCreateSeedPhrase,
-) {
+enum TypeScreen { one, tow }
+
+void showCreateSeedPhrase1(BuildContext context,
+    BLocCreateSeedPhrase blocCreateSeedPhrase, TypeScreen type) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -37,6 +38,7 @@ void showCreateSeedPhrase1(
 
       return Body(
         blocCreateSeedPhrase: blocCreateSeedPhrase,
+        typeScreen: type,
       );
     },
   ).whenComplete(
@@ -45,8 +47,11 @@ void showCreateSeedPhrase1(
 }
 
 class Body extends StatefulWidget {
-  const Body({Key? key, required this.blocCreateSeedPhrase}) : super(key: key);
+  const Body(
+      {Key? key, required this.blocCreateSeedPhrase, required this.typeScreen})
+      : super(key: key);
   final BLocCreateSeedPhrase blocCreateSeedPhrase;
+  final TypeScreen typeScreen;
 
   @override
   _BodyState createState() => _BodyState();
@@ -96,7 +101,48 @@ class _BodyState extends State<Body> {
                     height: 28.h,
                     width: 323.w,
                     margin: EdgeInsets.only(right: 26.w, left: 26.w, top: 16.h),
-                    child: const HeaderCreate(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10, right: 10),
+                            child: Image.asset(
+                              ImageAssets.ic_out,
+                              width: 20.w,
+                              height: 20,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        Text(
+                          S.current.create_new_wallet,
+                          style: textNormalCustom(
+                            Colors.white,
+                            20.sp,
+                            FontWeight.bold,
+                          ),
+                        ),
+                        GestureDetector(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10, right: 10),
+                            child: Image.asset(
+                              ImageAssets.ic_close,
+                            ),
+                          ),
+                          onTap: () {
+                            if (widget.typeScreen == TypeScreen.one) {
+                              Navigator.pop(context);
+                            } else {
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   spaceH20,
                   line,
@@ -234,6 +280,7 @@ class _BodyState extends State<Body> {
                           showCreateSeedPhrase2(
                             context,
                             widget.blocCreateSeedPhrase,
+                            widget.typeScreen,
                           );
                         }
                       },
