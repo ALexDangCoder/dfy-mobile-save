@@ -28,6 +28,7 @@ class TokenItem extends StatelessWidget {
               return TokenDetail(
                 tokenData: nameToken.isNotEmpty? 159753 : 12345,
                 bloc: TokenDetailBloc(),
+                title: 'DFY',
               );
             },
           ),

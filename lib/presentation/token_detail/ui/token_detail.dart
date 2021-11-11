@@ -9,50 +9,26 @@ import 'package:Dfy/presentation/token_detail/ui/transaction_detail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/views/default_sub_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TokenDetail extends StatelessWidget {
   final int tokenData;
   final TokenDetailBloc bloc;
+  final String title;
 
-  const TokenDetail({Key? key, required this.tokenData, required this.bloc})
+  const TokenDetail(
+      {Key? key,
+      required this.tokenData,
+      required this.bloc,
+      required this.title})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final List<String> mockData = [
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-      S.current.contract_interaction,
-    ];
-
-    final List<int> mockType =
-        List.generate(mockData.length, (index) => Random().nextInt(2));
-    final List<DateTime> mockDate =
-        List.generate(mockData.length, (index) => DateTime.now());
-    final List<int> mockAmount =
-        List.generate(mockData.length, (index) => Random().nextInt(5000));
-
     return DefaultSubScreen(
-      title: 'DFY',
+      title: title,
       mainWidget: Column(
         children: [
           SizedBox(
@@ -163,17 +139,91 @@ class TokenDetail extends StatelessWidget {
             stream: bloc.transactionListStream,
             builder: (context, snapshot) {
               if (snapshot.data?.isNotEmpty ?? false) {
-                return ListView.builder(
-                  itemCount: mockData.length,
-                  itemBuilder: (context, index) {
-                    return transactionRow(
-                      context: context,
-                      title: mockData[index],
-                      time: mockDate[index],
-                      type: mockType[index],
-                      amount: mockAmount[index],
-                    );
-                  },
+                final dataLen = snapshot.data?.length ?? 0;
+                return Expanded(
+                  child: Scrollbar(
+                    child: SingleChildScrollView(
+                      physics: const ScrollPhysics(),
+                      child: Column(
+                        children: [
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxHeight: dataLen * 66.h,
+                            ),
+                            child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: dataLen,
+                              itemBuilder: (context, index) {
+                                return transactionRow(
+                                  context: context,
+                                  transactionTitle: bloc.mockData[index],
+                                  time: bloc.mockDate[index],
+                                  type: bloc.mockType[index],
+                                  amount: bloc.mockAmount[index],
+                                );
+                              },
+                            ),
+                          ),
+                          StreamBuilder<bool>(
+                            initialData: false,
+                            stream: bloc.showMoreStream,
+                            builder: (ctx, snapshot) {
+                              final isShow = snapshot.data!;
+                              return Visibility(
+                                visible: isShow,
+                                child: InkWell(
+                                  onTap: () {
+                                    bloc.showMore();
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                      right: 16.w,
+                                      left: 16.w,
+                                    ),
+                                    height: 60.h,
+                                    decoration: BoxDecoration(
+                                      // color: AppTheme.getInstance().bgBtsColor(),
+                                      border: Border(
+                                        top: BorderSide(
+                                          color: AppTheme.getInstance()
+                                              .divideColor(),
+                                        ),
+                                        bottom: BorderSide(
+                                          color: AppTheme.getInstance()
+                                              .divideColor(),
+                                        ),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          ImageAssets.expand,
+                                          color:
+                                          AppTheme.getInstance().fillColor(),
+                                        ),
+                                        SizedBox(
+                                          width: 13.15.w,
+                                        ),
+                                        Text(
+                                          S.current.view_more,
+                                          style: textNormalCustom(
+                                            AppTheme.getInstance().fillColor(),
+                                            16.sp,
+                                            FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 );
               } else {
                 return Expanded(
@@ -196,7 +246,7 @@ class TokenDetail extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            bloc.test();
+                            bloc.checkData();
                           },
                           child: const Text('Click'),
                         ),
@@ -214,12 +264,12 @@ class TokenDetail extends StatelessWidget {
 
   Widget transactionRow({
     required BuildContext context,
-    required String title,
+    required String transactionTitle,
     required DateTime time,
     required int type,
     required int amount,
   }) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -231,45 +281,97 @@ class TokenDetail extends StatelessWidget {
           ),
         );
       },
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text(
-                title,
-                style: tokenDetailAmount(
-                  color: AppTheme.getInstance().whiteColor(),
-                  fontSize: 16.h,
+      child: Container(
+        height: 66.h,
+        padding: EdgeInsets.only(
+          top: 14.h,
+          left: 16.h,
+          right: 16.h,
+          bottom: 12.h,
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    transactionTitle,
+                    style: tokenDetailAmount(
+                      color: AppTheme.getInstance().whiteColor(),
+                      fontSize: 16.h,
+                    ),
+                  ),
                 ),
-              ),
-              if (type == 0)
-                sizedPngImage(
-                  w: 20,
-                  h: 20,
-                  image: ImageAssets.tick_circle,
+                if (type == 0)
+                  sizedPngImage(
+                    w: 20,
+                    h: 20,
+                    image: ImageAssets.tick_circle,
+                  ),
+                if (type == 1)
+                  sizedPngImage(
+                    w: 20,
+                    h: 20,
+                    image: ImageAssets.close,
+                  ),
+                if (type == 2)
+                  sizedPngImage(
+                    w: 20,
+                    h: 20,
+                    image: ImageAssets.clock,
+                  ),
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.topRight,
+                    child: type == 0
+                        ? Text(
+                      '+ $amount $title',
+                      style: tokenDetailAmount(
+                        color: AppTheme.getInstance()
+                            .successTransactionColors(),
+                        fontSize: 16.h,
+                        weight: FontWeight.w400,
+                      ),
+                    )
+                        : type == 1
+                        ? Text(
+                      '- $amount $title',
+                      style: tokenDetailAmount(
+                        color: AppTheme.getInstance()
+                            .currencyDetailTokenColor(),
+                        fontSize: 16.h,
+                        weight: FontWeight.w400,
+                      ),
+                    )
+                        : Text(
+                      '$amount $title',
+                      style: tokenDetailAmount(
+                        color: AppTheme.getInstance()
+                            .currencyDetailTokenColor(),
+                        fontSize: 16.h,
+                        weight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
                 ),
-              if (type == 1)
-                sizedPngImage(
-                  w: 20,
-                  h: 20,
-                  image: ImageAssets.close,
-                ),
-              if (type == 2)
-                sizedPngImage(
-                  w: 20,
-                  h: 20,
-                  image: ImageAssets.clock,
-                ),
-            ],
-          ),
-          Text(
-            time.stringFromDateTime,
-            style: tokenDetailAmount(
-              color: AppTheme.getInstance().currencyDetailTokenColor(),
-              fontSize: 14.h,
+              ],
             ),
-          ),
-        ],
+            SizedBox(
+              height: 2.h,
+            ),
+            Row(
+              children: [
+                Text(
+                  time.stringFromDateTime,
+                  style: tokenDetailAmount(
+                    color: AppTheme.getInstance().currencyDetailTokenColor(),
+                    fontSize: 14.h,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
