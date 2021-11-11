@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/presentation/token_detail/ui/token_detail_screen.dart';
+import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
+import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,8 +25,9 @@ class TokenItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return TokenDetailScreen(
+              return TokenDetail(
                 tokenData: nameToken.isNotEmpty? 159753 : 12345,
+                bloc: TokenDetailBloc(),
               );
             },
           ),

@@ -96,7 +96,12 @@ class ImageAssets {
   static const String codeS = '$baseImg/Code.png';
   static const String from = '$baseImg/From.png';
 
-  static const String symbol = 'assets/images/symbol.png';
+  static const String symbol = '$baseImg/symbol.png';
+
+  static const String btnSendToken = '$baseImg/btn_send_token.png';
+  static const String btnReceiveToken = '$baseImg/btn_receive_token.png';
+  static const String icNoTransaction = '$baseImg/ic_no_transactions.png';
+
   static SvgPicture svgAssets(
     String name, {
     Color? color,

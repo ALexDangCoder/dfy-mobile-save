@@ -58,10 +58,11 @@ TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
   );
 }
 
-TextStyle tokenDetailAmount({Color color = Colors.white, double fontSize = 24}) {
+TextStyle tokenDetailAmount({Color color = Colors.white, double fontSize = 24,
+FontWeight weight = FontWeight.w600,}) {
   return GoogleFonts.sen(
     color: color,
-    fontWeight: FontWeight.w600,
+    fontWeight: weight,
     fontStyle: FontStyle.normal,
     fontSize: fontSize,
   );

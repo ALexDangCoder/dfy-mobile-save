@@ -69,5 +69,19 @@
   "OK": "OK",
   "login": "Login",
   "new_wallet": "New wallet",
-  "password_is_required" : "Password is required"
+  "password_is_required" : "Password is required",
+  "create_collateral" : "Create Collateral",
+  "no_transaction" : "No transaction",
+  "amount": "Amount",
+  "status" : "Status",
+  "gas_fee": "Gas fee",
+  "time" : "Time",
+  "txh_id": "Txh ID",
+  "from" : "From",
+  "to" : "To",
+  "nonce" : "Nonce",
+  "transaction_success" : "Success",
+  "transaction_fail" : "Fail",
+  "view_on_bscscan" : "View on Bscscan",
+  "detail_transaction" : "Detail"
 }

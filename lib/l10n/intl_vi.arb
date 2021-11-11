@@ -66,5 +66,19 @@
   "OK": "OK",
   "login": "Đăng nhập",
   "new_wallet": "Ví mới",
-  "password_is_required" : "Vui lòng điền mật khẩu"
+  "password_is_required" : "Vui lòng điền mật khẩu",
+  "create_collateral" : "Tạo tài sản thế chấp",
+  "no_transaction" : "Không có giao dịch",
+  "amount": "Số lượng",
+  "status" : "Trạng thái",
+  "gas_fee": "Phí Gas",
+  "time" : "Thời gian",
+  "txh_id": "Txh ID",
+  "from" : "Từ",
+  "to" : "Đến",
+  "nonce" : "Nonce",
+  "transaction_success" : "Thành công",
+  "transaction_fail" : "Thất bại",
+  "view_on_bscscan" : "Xem trên Bscscan",
+  "detail_transaction" : "Chi tiết giao dịch"
 }

@@ -68,7 +68,7 @@ class DefaultSubScreen extends StatelessWidget {
                 Divider(
                   color: AppTheme.getInstance().divideColor(),
                 ),
-                mainWidget
+                Expanded(child: mainWidget),
               ],
             ),
           ),
