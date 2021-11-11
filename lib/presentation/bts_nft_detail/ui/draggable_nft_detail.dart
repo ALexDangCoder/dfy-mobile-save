@@ -2,7 +2,9 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
+import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
@@ -130,7 +132,7 @@ class _NFTDetailState extends State<NFTDetail> {
                               ),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     nft.identity,
@@ -261,7 +263,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                       Image.asset(
                                         ImageAssets.expand,
                                         color:
-                                        AppTheme.getInstance().fillColor(),
+                                            AppTheme.getInstance().fillColor(),
                                       ),
                                       SizedBox(
                                         width: 13.15.w,
@@ -289,7 +291,7 @@ class _NFTDetailState extends State<NFTDetail> {
                             center: const Alignment(0.5, -0.5),
                             radius: 4,
                             colors:
-                            AppTheme.getInstance().gradientButtonColor(),
+                                AppTheme.getInstance().gradientButtonColor(),
                           ),
                           onPressed: () {},
                           child: Text(
@@ -372,19 +374,33 @@ class _NFTDetailState extends State<NFTDetail> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         buildColumnButton(
-            path: first,
-            callback: () {
-              showModalBottomSheet(backgroundColor: Colors.transparent,
-                  context: context,
-                  builder: (context) => );
-            }
+          path: first,
+          callback: () {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              context: context,
+              builder: (context) => const Receive(
+                walletAddress: 'aaaaaaaaaaa',
+                type: TokenType.NFT,
+              ),
+            );
+          },
         ),
         SizedBox(
           width: 46.w,
         ),
         buildColumnButton(
           path: second,
-        )
+          callback: () {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              context: context,
+              builder: (context) => const SendNft(),
+            );
+          },
+        ),
       ],
     );
   }
