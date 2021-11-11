@@ -72,7 +72,7 @@ class SettingWallet extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
-                        builder: (context) => ConfirmPWShowPRVSeedPhr(),
+                        builder: (context) => const ConfirmPWShowPRVSeedPhr(),
                         context: context,
                       );
                     },
@@ -93,7 +93,7 @@ class SettingWallet extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
-                        builder: (context) => ChangePassword(),
+                        builder: (context) => const ChangePassword(),
                         context: context,
                       );
                     },

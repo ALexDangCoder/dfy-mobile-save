@@ -99,7 +99,6 @@ class ImageAssets {
   static const String stroke = '$baseImg/Stroke.png';
 
   static const String to = '$baseImg/To.png';
-  static const String token = '$baseImg/Token.png';
   static const String codeS = '$baseImg/Code.png';
   static const String from = '$baseImg/From.png';
   static const String background_splash = '$baseImg/background_splash.png';

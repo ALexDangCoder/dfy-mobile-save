@@ -16,11 +16,9 @@ class SetAmountPopUp extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.cubit,
-    required this.focusNode,
   }) : super(key: key);
   final TextEditingController controller;
   final ReceiveCubit cubit;
-  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +66,6 @@ class SetAmountPopUp extends StatelessWidget {
                           height: 24.h,
                         ),
                         ItemForm(
-                          focusNode: focusNode,
                           prefix: ImageAssets.token,
                           hint: S.current.amount,
                           suffix: S.current.max,

@@ -269,7 +269,6 @@ class _ReceiveState extends State<Receive> {
                             return SetAmountPopUp(
                               controller: amountController,
                               cubit: receiveCubit,
-                              focusNode: FocusNode(),
                             );
                           },
                           isNonBackground: false,
