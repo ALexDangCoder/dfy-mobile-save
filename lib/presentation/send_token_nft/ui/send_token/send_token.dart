@@ -165,15 +165,14 @@ class _SendTokenState extends State<SendToken> {
   }
 
   //header
-  Padding header({required String nameToken}) {
-    return Padding(
-      padding:
-          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
+  Container header({required String nameToken}) {
+    return Container(
+      width: 343.w,
+      margin:
+          EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 20.h),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          SizedBox(
-            width: 121.w,
-          ),
           Text(
             '${S.current.send} $nameToken',
             style: TextStyle(
@@ -183,7 +182,7 @@ class _SendTokenState extends State<SendToken> {
             ),
           ),
           SizedBox(
-            width: 94.w,
+            width: 120.48.w,
           ),
           Expanded(
             child: IconButton(

@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/show_pw_prvkey_seedpharse/ui/components/face_id_button.dart';
-import 'package:Dfy/show_pw_prvkey_seedpharse/ui/components/header.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/components/face_id_button.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/components/header.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
@@ -58,11 +59,11 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().bgBtsColor(),
       ),
       child: TextFormField(
         style: textNormal(

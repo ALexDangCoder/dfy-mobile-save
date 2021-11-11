@@ -1,7 +1,8 @@
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/header_setting.dart';
-import 'package:Dfy/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +17,7 @@ class SettingWallet extends StatelessWidget {
       width: 375.w,
       height: 764.h,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(62, 61, 92, 1),
+        color: AppTheme.getInstance().bgBtsColor(),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.r),
           topRight: Radius.circular(30.r),
@@ -72,7 +73,7 @@ class SettingWallet extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
-                        builder: (context) => ConfirmPWShowPRVSeedPhr(),
+                        builder: (context) => const ConfirmPWShowPRVSeedPhr(),
                         context: context,
                       );
                     },
@@ -93,7 +94,7 @@ class SettingWallet extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
-                        builder: (context) => ChangePassword(),
+                        builder: (context) => const ChangePassword(),
                         context: context,
                       );
                     },

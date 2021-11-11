@@ -6,6 +6,9 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+//declare enum base on type form : old pass, new pass, confirm pass
+enum typeForm { OLD, NEW, CONFIRM }
+
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
 
@@ -68,6 +71,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                       controller: _txtOldPW,
                       hintText: S.current.old_password,
                       oldPassWordFetch: oldPWFetchFromApi,
+                      cubit: _passwordCubit,
+                      type: typeForm.OLD,
                     ),
                     showTextValidateOldPassword(),
                     SizedBox(
@@ -76,6 +81,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     formSetupPassWord(
                       controller: _txtNewPW,
                       hintText: S.current.new_pass,
+                      cubit: _passwordCubit,
+                      type: typeForm.NEW,
                     ),
                     showTextValidateNewPassword(),
                     SizedBox(
@@ -84,6 +91,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     formSetupPassWord(
                       controller: _txtConfirmPW,
                       hintText: S.current.confirm_new_password,
+                      cubit: _passwordCubit,
+                      type: typeForm.CONFIRM,
                     ),
                     showTextValidateConfirmPassword(),
                     SizedBox(
@@ -109,7 +118,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                     );
                     _passwordCubit.showTxtWarningNewPW(_txtNewPW.text);
                     _passwordCubit.showTxtWarningConfirmPW(
-                      _txtConfirmPW.text, newPassword: _txtNewPW.text,);
+                      _txtConfirmPW.text,
+                      newPassword: _txtNewPW.text,
+                    );
                   },
                 );
               },

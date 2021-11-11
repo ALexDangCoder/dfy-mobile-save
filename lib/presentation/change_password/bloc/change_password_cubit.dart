@@ -1,5 +1,3 @@
-
-
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -18,6 +16,9 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   final BehaviorSubject<bool> _validatePW = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _matchPW = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _matchOldPW = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _showOldPW = BehaviorSubject<bool>.seeded(true);
+  final BehaviorSubject<bool> _showNewPW = BehaviorSubject<bool>.seeded(true);
+  final BehaviorSubject<bool> _showCfPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _isEnableButton =
       BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<String> _txtWarnOldPW =
@@ -36,6 +37,12 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
 
   Stream<bool> get isEnableButtonStream => _isEnableButton.stream;
 
+  Stream<bool> get showOldStream => _showOldPW.stream;
+
+  Stream<bool> get showNewPWStream => _showNewPW.stream;
+
+  Stream<bool> get showCfPWStream => _showCfPW.stream;
+
   Stream<String> get txtWarnOldPWStream => _txtWarnOldPW.stream;
 
   Stream<String> get txtWarnNewPWStream => _txtWarnNewPW.stream;
@@ -50,6 +57,12 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   Sink<bool> get matchOldPWSink => _matchOldPW.sink;
 
   Sink<bool> get isEnableButtonSink => _isEnableButton.sink;
+
+  Sink<bool> get showOldSink => _showOldPW.sink;
+
+  Sink<bool> get showNewPWSink => _showNewPW.sink;
+
+  Sink<bool> get showCfPWSink => _showCfPW.sink;
 
   Sink<String> get txtWarnOldPWSink => _txtWarnOldPW.sink;
 
@@ -83,11 +96,35 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchOldPWSink.add(true);
     }
   }
+  //function handle will show or hide password
+  //index = 0 -> icon is show, index = 1 -> icon is hide
+  void showOldPW(int index) {
+    if(index == 0) {
+      showOldSink.add(true);
+    } else {
+      showOldSink.add(false);
+    }
+  }
+
+  void showNewPW(int index) {
+    if(index == 0) {
+      showNewPWSink.add(true);
+    } else {
+      showNewPWSink.add(false);
+    }
+  }
+
+  void showConfirmPW(int index) {
+    if(index == 0) {
+      showCfPWSink.add(true);
+    } else {
+      showCfPWSink.add(false);
+    }
+  }
 
   //function will show text warning base on type error value
 
   void showTxtWarningOldPW(String value, {String? passwordOld}) {
-
     if ((value.isNotEmpty && value.length < 8) ||
         (value.isNotEmpty && value.length > 15)) {
       matchOldPWSink.add(true);
@@ -101,12 +138,11 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchOldPWSink.add(true);
       txtWarnOldPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else if(value != passwordOld) {
+    } else if (value != passwordOld) {
       matchOldPWSink.add(true);
       txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
       isEnableButtonSink.add(false);
-    }
-    else {
+    } else {
       matchOldPWSink.add(false);
       _flagOldPW = 1;
       if (_flagCfPW == 1 && _flagNewPW == 1 && _flagOldPW == 1) {
@@ -156,12 +192,12 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else if(!(value == newPassword)) {
+    } else if (!(value == newPassword)) {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_cf_pw);
       isEnableButtonSink.add(false);
-    }
-    else {
+    } else {
+      matchPWSink.add(false);
       _flagCfPW = 1;
       if (_flagCfPW == 1 && _flagNewPW == 1 && _flagOldPW == 1) {
         isEnableButtonSink.add(true);
@@ -170,11 +206,4 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       }
     }
   }
-
-//todo handle when password not match old password
-// if(value != passwordOld) {
-// matchOldPWSink.add(true);
-// txtWarnOldPWSink.add(S.current.warn_old_pw_not_match );
-// isEnableButtonSink.add(false);
-// }
 }
