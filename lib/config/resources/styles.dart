@@ -70,6 +70,19 @@ FontWeight weight = FontWeight.w600,}) {
   );
 }
 
+TextStyle textNormalCustom(
+  Color? color,
+  double? fontSize,
+  FontWeight? fontWeight,
+) {
+  return GoogleFonts.sen(
+    color: color ?? Colors.white,
+    fontWeight: fontWeight ?? FontWeight.w500,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize ?? 14,
+  );
+}
+
 TextStyle textFieldNFT = GoogleFonts.sen(
   color: AppTheme.getInstance().textThemeColor(),
   fontWeight: FontWeight.w700,

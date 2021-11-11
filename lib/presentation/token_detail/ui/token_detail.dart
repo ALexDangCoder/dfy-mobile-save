@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' hide log;
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -20,6 +21,36 @@ class TokenDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> mockData = [
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+      S.current.contract_interaction,
+    ];
+
+    final List<int> mockType =
+        List.generate(mockData.length, (index) => Random().nextInt(2));
+    final List<DateTime> mockDate =
+        List.generate(mockData.length, (index) => DateTime.now());
+    final List<int> mockAmount =
+        List.generate(mockData.length, (index) => Random().nextInt(5000));
+
     return DefaultSubScreen(
       title: 'DFY',
       mainWidget: Column(
@@ -44,14 +75,20 @@ class TokenDetail extends StatelessWidget {
                 ),
                 Text(
                   customCurrency(
-                      amount: '5157.415478951', type: 'DFY', digit: 8,),
+                    amount: '5157.415478951',
+                    type: 'DFY',
+                    digit: 8,
+                  ),
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().textThemeColor(),
                   ),
                 ),
                 Text(
                   customCurrency(
-                      amount: '5157.415478951', type: '\$', digit: 2,),
+                    amount: '5157.415478951',
+                    type: '\$',
+                    digit: 2,
+                  ),
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().currencyDetailTokenColor(),
                     weight: FontWeight.w400,
@@ -126,7 +163,18 @@ class TokenDetail extends StatelessWidget {
             stream: bloc.transactionListStream,
             builder: (context, snapshot) {
               if (snapshot.data?.isNotEmpty ?? false) {
-                return Container();
+                return ListView.builder(
+                  itemCount: mockData.length,
+                  itemBuilder: (context, index) {
+                    return transactionRow(
+                      context: context,
+                      title: mockData[index],
+                      time: mockDate[index],
+                      type: mockType[index],
+                      amount: mockAmount[index],
+                    );
+                  },
+                );
               } else {
                 return Expanded(
                   child: Center(
@@ -136,7 +184,8 @@ class TokenDetail extends StatelessWidget {
                         sizedPngImage(
                           w: 94,
                           h: 94,
-                          image: ImageAssets.icNoTransaction,),
+                          image: ImageAssets.icNoTransaction,
+                        ),
                         Text(
                           S.current.no_transaction,
                           style: tokenDetailAmount(
@@ -147,16 +196,7 @@ class TokenDetail extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return TransactionDetail(
-                                    detailTransaction:
-                                    tokenData == 1 ? '158.2578' : '13.25',
-                                  );
-                                },
-                              ),
-                            );
+                            bloc.test();
                           },
                           child: const Text('Click'),
                         ),
@@ -166,6 +206,68 @@ class TokenDetail extends StatelessWidget {
                 );
               }
             },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget transactionRow({
+    required BuildContext context,
+    required String title,
+    required DateTime time,
+    required int type,
+    required int amount,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return TransactionDetail(
+                detailTransaction: tokenData == 1 ? '158.2578' : '13.25',
+              );
+            },
+          ),
+        );
+      },
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: tokenDetailAmount(
+                  color: AppTheme.getInstance().whiteColor(),
+                  fontSize: 16.h,
+                ),
+              ),
+              if (type == 0)
+                sizedPngImage(
+                  w: 20,
+                  h: 20,
+                  image: ImageAssets.tick_circle,
+                ),
+              if (type == 1)
+                sizedPngImage(
+                  w: 20,
+                  h: 20,
+                  image: ImageAssets.close,
+                ),
+              if (type == 2)
+                sizedPngImage(
+                  w: 20,
+                  h: 20,
+                  image: ImageAssets.clock,
+                ),
+            ],
+          ),
+          Text(
+            time.stringFromDateTime,
+            style: tokenDetailAmount(
+              color: AppTheme.getInstance().currencyDetailTokenColor(),
+              fontSize: 14.h,
+            ),
           ),
         ],
       ),
