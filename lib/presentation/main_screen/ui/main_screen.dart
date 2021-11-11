@@ -100,7 +100,7 @@ class _MainScreenState extends BaseState<MainScreen> {
           return Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              _pages.elementAt(snapshot.data ?? tabWalletIndex),
+              _pages.elementAt(snapshot.data ?? tabHomeIndex),
               CustomBottomHomeAppbar(
                 mainCubit: _cubit,
               ),

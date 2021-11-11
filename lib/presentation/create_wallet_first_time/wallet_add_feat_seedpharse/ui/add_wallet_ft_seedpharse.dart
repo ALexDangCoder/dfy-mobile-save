@@ -2,6 +2,7 @@ import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setu
 import 'package:Dfy/presentation/restore_bts/ui/restore_bts.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddWalletFtSeedPharse extends StatefulWidget {
@@ -78,7 +79,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
         height: 25.h,
         child: Center(
           child: Text(
-            'Import secret seedphrase',
+            S.current.pls_import_seed,
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w600,
@@ -126,7 +127,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                   ),
                   Expanded(
                     child: Text(
-                      'Add Wallet',
+                      S.current.add_wallet,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 20.sp,
@@ -164,7 +165,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
             Column(
               children: [
                 Text(
-                  'Wallet',
+                  S.current.wallet,
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w700,
@@ -175,7 +176,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                   height: 4.h,
                 ),
                 Text(
-                  'Smart chain',
+                  S.current.smart_chain,
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
