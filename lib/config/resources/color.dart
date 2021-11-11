@@ -57,7 +57,7 @@ const colorLineSearch = Color(0x80CACFD7);
 const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
-
+const divideColor = Color(0xFF8f8fad);
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color primaryColor();
@@ -105,7 +105,6 @@ abstract class AppColor {
   Color errorColorButton();
 
   Color selectDialogColor();
-
 
   List<Color> listColorAddWalletSeedPhrase();
 
@@ -249,6 +248,7 @@ class LightApp extends AppColor {
 
   @override
   Color whiteColor() {
+    // TODO: implement whiteColor
     return Colors.white;
   }
 }

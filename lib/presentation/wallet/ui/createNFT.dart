@@ -1,47 +1,29 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft.dart';
-import 'package:Dfy/presentation/import_token_nft/ui/import_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ImportToken extends StatelessWidget {
+class CreateNFT extends StatelessWidget {
 
 
 
-  const ImportToken({Key? key, required this.title, required this.icon,
-    required this.keyRouter,})
+  const CreateNFT({Key? key, required this.title, required this.icon,})
       : super(key: key);
 
 
-  final int keyRouter;
+
   final String title;
   final String icon;
 
-
   @override
   Widget build(BuildContext context) {
-    void _checkKey() {
-      switch(keyRouter){
-        case 1:
-          showImportToken(context, ImportTokenNftBloc());
-          break;
-        case 2:
-        showImportNft(context, ImportTokenNftBloc());
-          break;
-      }
-    }
     return GestureDetector(
       onTap: (){
-        _checkKey();
+        showImportNft(context, ImportTokenNftBloc());
       },
       child: Column(
         children: [
-          Divider(
-            height: 1.h,
-            color: const Color(0xFF4b4a60),
-          ),
           SizedBox(
             height: 60.h,
             child: Center(

@@ -2,11 +2,13 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
-import 'package:Dfy/presentation/import_token_nft/ui/import_nft.dart';
-import 'package:Dfy/presentation/import_token_nft/ui/import_token.dart';
+import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
+import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/presentation/wallet/ui/createNFT.dart';
 import 'package:Dfy/presentation/wallet/ui/import.dart';
 import 'package:Dfy/presentation/wallet/ui/nft_item.dart';
 import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
@@ -18,10 +20,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../../main.dart';
-
 class WalletScreen extends StatefulWidget {
-  const WalletScreen({Key? key}) : super(key: key);
+  const WalletScreen({
+    Key? key,
+    required this.index,
+    this.wallet,
+  }) : super(key: key);
+  final int index;
+  final Wallet? wallet;
 
   @override
   _WalletState createState() => _WalletState();
@@ -36,7 +42,7 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    _cubit.formatAddress(_cubit.addressWallet);
+    _cubit.formatAddress(widget.wallet?.address ?? _cubit.addressWallet);
     _tabController = TabController(length: 2, vsync: this);
     fToast = FToast();
     fToast.init(context);
@@ -46,212 +52,209 @@ class _WalletState extends State<WalletScreen>
       _cubit.addressWallet,
       password: 'aaa',
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    _cubit.checkScreen();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: ScreenUtilInit(
-        designSize: const Size(375, 812),
-        builder: () => Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Container(
-            width: 375.w,
-            height: 812.h,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: listBackgroundColor,
-              ),
-            ),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 44.h,
+    if (widget.index == 1) {
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: ScreenUtilInit(
+          designSize: const Size(375, 812),
+          builder: () => Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Container(
+              width: 375.w,
+              height: 812.h,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: listBackgroundColor,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 10.w,
-                    right: 10.w,
+              ),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 44.h,
                   ),
-                  child: SizedBox(
-                    height: 54.h,
-                    width: 323.sw,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    child: SizedBox(
+                      height: 54.h,
+                      width: 323.sw,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.menu,
+                              size: 24.sp,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 10.h,
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  S.current.wallet,
+                                  style: textNormalCustom(
+                                    Colors.white,
+                                    20.sp,
+                                    FontWeight.w700,
+                                  ),
+                                ),
+                                Text(
+                                  S.current.smart_chain,
+                                  style: textNormalCustom(
+                                    Colors.grey.shade400,
+                                    14.sp,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.settings_outlined,
+                              size: 24.sp,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 14.h,
+                  ),
+                  Divider(
+                    height: 1.h,
+                    color: const Color(0xFF4b4a60),
+                  ),
+                  SizedBox(
+                    height: 24.h,
+                  ),
+                  header(),
+                  SizedBox(
+                    height: 24.h,
+                  ),
+                  SizedBox(
+                    height: 44.h,
+                    width: 230.w,
+                    child: TabBar(
+                      controller: _tabController,
+                      labelColor: Colors.white,
+                      unselectedLabelColor: const Color(0xFF9997FF),
+                      indicatorColor: const Color(0xFF6F6FC5),
+                      labelStyle: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      tabs: [
+                        Tab(
+                          text: S.current.token,
+                        ),
+                        Tab(
+                          text: S.current.nft,
+                        ),
+                      ],
+                      indicatorSize: TabBarIndicatorSize.tab,
+                    ),
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
                       children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.menu,
-                            size: 24.sp,
-                            color: Colors.white,
+                        SizedBox(
+                          height: 409.h,
+                          child: SingleChildScrollView(
+                            physics: const ScrollPhysics(),
+                            child: Column(
+                              children: [
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: 2,
+                                  itemBuilder: (context, index) {
+                                    return TokenItem(
+                                      symbolUrl: ImageAssets.symbol,
+                                      amount: '1200000',
+                                      nameToken: 'DFY',
+                                      price: '$widget.index',
+                                    );
+                                  },
+                                ),
+                                ImportToken(
+                                  title: S.current.import_token,
+                                  icon: ImageAssets.icImport,
+                                  keyRouter: 1,
+                                ),
+                                SizedBox(
+                                  height: 102.h,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: 10.h,
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                S.current.wallet,
-                                style: textNormalCustom(
-                                  Colors.white,
-                                  20.sp,
-                                  FontWeight.w700,
+                        SizedBox(
+                          height: 409.h,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: 2,
+                                  itemBuilder: (context, index) {
+                                    return const NFTItem(
+                                      symbolUrl: ImageAssets.symbol,
+                                      nameNFT: 'DeFi For You',
+                                    );
+                                  },
                                 ),
-                              ),
-                              Text(
-                                S.current.smart_chain,
-                                style: textNormalCustom(
-                                  Colors.grey.shade400,
-                                  14.sp,
-                                  FontWeight.w400,
+                                ImportToken(
+                                  title: S.current.import_NFT,
+                                  icon: ImageAssets.icImport,
+                                  keyRouter: 2,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.settings_outlined,
-                            size: 24.sp,
-                            color: Colors.white,
+                                CreateNFT(
+                                  title: S.current.create_NFT,
+                                  icon: ImageAssets.icAdd,
+                                ),
+                                SizedBox(
+                                  height: 102.h,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 14.h,
-                ),
-                Divider(
-                  height: 1.h,
-                  color: const Color(0xFF4b4a60),
-                ),
-                SizedBox(
-                  height: 24.h,
-                ),
-                header(),
-                SizedBox(
-                  height: 24.h,
-                ),
-                SizedBox(
-                  height: 44.h,
-                  width: 230.w,
-                  child: TabBar(
-                    controller: _tabController,
-                    labelColor: Colors.white,
-                    unselectedLabelColor: const Color(0xFF9997FF),
-                    indicatorColor: const Color(0xFF6F6FC5),
-                    labelStyle: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    tabs: [
-                      Tab(
-                        text: S.current.token,
-                      ),
-                      Tab(
-                        text: S.current.nft,
-                      ),
-                    ],
-                    indicatorSize: TabBarIndicatorSize.tab,
-                  ),
-                ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      SizedBox(
-                        height: 409.h,
-                        child: SingleChildScrollView(
-                          physics: const ScrollPhysics(),
-                          child: Column(
-                            children: [
-                              ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: 2,
-                                itemBuilder: (context, index) {
-                                  return TokenItem(
-                                    symbolUrl: ImageAssets.symbol,
-                                    amount: '1200000',
-                                    nameToken: 'DFY',
-                                    price: '$index',
-                                  );
-                                },
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                },
-                                child: ImportToken(
-                                  title: S.current.import_token,
-                                  icon: ImageAssets.icImport,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 102.h,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 409.h,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: 2,
-                                itemBuilder: (context, index) {
-                                  return const NFTItem(
-                                    symbolUrl: ImageAssets.symbol,
-                                    nameNFT: 'DeFi For You',
-                                  );
-                                },
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  showImportNft(context, ImportTokenNftBloc());
-                                },
-                                child: ImportToken(
-                                  title: S.current.import_NFT,
-                                  icon: ImageAssets.icImport,
-                                ),
-                              ),
-                              ImportToken(
-                                title: S.current.create_NFT,
-                                icon: ImageAssets.icAdd,
-                              ),
-                              SizedBox(
-                                height: 102.h,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    } else if (widget.index == 2) {
+      return LoginScreen(
+        walletCubit: _cubit,
+      );
+    } else {
+      return const AddWalletFtSeedPharse();
+    }
   }
 
   Widget header() {
@@ -281,7 +284,7 @@ class _WalletState extends State<WalletScreen>
                     width: 37.w,
                   ),
                   Text(
-                    'Nguyen Van Hung',
+                    widget.wallet?.name ??'Nguyen Van Hung',
                     style: textNormalCustom(
                       Colors.white,
                       24.sp,

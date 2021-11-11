@@ -1,5 +1,5 @@
-import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
+import 'package:Dfy/presentation/restore_bts/ui/restore_bts.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -50,7 +50,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                     SizedBox(height: 39.h),
                     GestureDetector(
                       onTap: () {},
-                      child: btnImportSeedPharse(),
+                      child: btnImportSeedPhrase(),
                     ),
                   ],
                 ),
@@ -62,17 +62,29 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
     );
   }
 
-  SizedBox btnImportSeedPharse() {
-    return SizedBox(
-      width: 323.w,
-      height: 25.h,
-      child: Center(
-        child: Text(
-          S.current.pls_import_seed,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w600,
-            color: const Color.fromRGBO(228, 172, 26, 1),
+  Widget btnImportSeedPhrase() {
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          backgroundColor: Colors.transparent,
+          context: context,
+          builder: (context) {
+            return const RestoreBTS();
+          },
+          isScrollControlled: true,
+        );
+      },
+      child: SizedBox(
+        width: 323.w,
+        height: 25.h,
+        child: Center(
+          child: Text(
+            S.current.pls_import_seed,
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color.fromRGBO(228, 172, 26, 1),
+            ),
           ),
         ),
       ),
@@ -96,22 +108,24 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
           width: 131.w,
           height: 28.h,
           child: Center(
-            child: Row(
-              children: [
-                Image.asset(ImageAssets.addsWallet),
-                SizedBox(
-                  width: 8.w,
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        builder: (context) => const SetupPassWord(),
-                        context: context,
-                      );
-                    },
+            child: GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) {
+                    return const SetupPassWord();
+                  },
+                  isScrollControlled: true,
+                );
+              },
+              child: Row(
+                children: [
+                  Image.asset(ImageAssets.addsWallet),
+                  SizedBox(
+                    width: 8.w,
+                  ),
+                  Expanded(
                     child: Text(
                       S.current.add_wallet,
                       style: TextStyle(
@@ -121,8 +135,8 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                       ),
                     ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
           ),
         ),

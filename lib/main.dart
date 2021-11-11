@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
         ],
         locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
         onGenerateRoute: AppRouter.generateRoute,
-        initialRoute: AppRouter.testScreen,
+        initialRoute: AppRouter.splash,
       ),
     );
   }
@@ -91,7 +91,10 @@ class _MyAppState extends State<MyApp> {
         print('1: ' + methodCall.arguments.toString());
         break;
       case 'getConfigCallback':
-        print('2: ' + methodCall.arguments.toString());
+        await PrefsService.saveAppLockConfig(
+            methodCall.arguments['isAppLock'].toString(),);
+        await PrefsService.saveFaceIDConfig(
+          methodCall.arguments['isFaceID'].toString(),);
         break;
       case 'importWalletCallback':
         print('3: ' + methodCall.arguments.toString());
@@ -127,6 +130,14 @@ class _MyAppState extends State<MyApp> {
 
   void callAllApi() {
     importWallet();
+    getConfig();
+  }
+
+  Future<void> getConfig() async {
+    try {
+      final data = {};
+      await trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException {}
   }
 
   Future<void> createWallet() async {
@@ -135,12 +146,6 @@ class _MyAppState extends State<MyApp> {
         'password': 'password',
       };
       await trustWalletChannel.invokeMethod('checkPassword', data);
-    } on PlatformException {}
-  }
-
-  Future<void> getConfig() async {
-    try {
-      await trustWalletChannel.invokeMethod('getConfig');
     } on PlatformException {}
   }
 
