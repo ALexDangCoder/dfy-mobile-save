@@ -130,7 +130,7 @@ class _NFTDetailState extends State<NFTDetail> {
                               ),
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     nft.identity,
@@ -232,6 +232,9 @@ class _NFTDetailState extends State<NFTDetail> {
                                   } else {
                                     bloc.lenSink.add(mockData.length);
                                   }
+                                  if (bloc.curLen == mockData.length) {
+                                    bloc.showSink.add(false);
+                                  }
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(
@@ -258,7 +261,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                       Image.asset(
                                         ImageAssets.expand,
                                         color:
-                                            AppTheme.getInstance().fillColor(),
+                                        AppTheme.getInstance().fillColor(),
                                       ),
                                       SizedBox(
                                         width: 13.15.w,
@@ -286,7 +289,7 @@ class _NFTDetailState extends State<NFTDetail> {
                             center: const Alignment(0.5, -0.5),
                             radius: 4,
                             colors:
-                                AppTheme.getInstance().gradientButtonColor(),
+                            AppTheme.getInstance().gradientButtonColor(),
                           ),
                           onPressed: () {},
                           child: Text(
@@ -369,7 +372,12 @@ class _NFTDetailState extends State<NFTDetail> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         buildColumnButton(
-          path: first,
+            path: first,
+            callback: () {
+              showModalBottomSheet(backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) => );
+            }
         ),
         SizedBox(
           width: 46.w,
