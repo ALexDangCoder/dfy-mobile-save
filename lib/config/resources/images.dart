@@ -29,3 +29,5 @@ const String url_ic_key = 'assets/images/ic_key.png';
 const String url_ic_select = 'assets/images/Selected.png';
 
 const String url_ic_delete = 'assets/images/Delete.png';
+
+const String url_ic_outline = 'assets/images/ic_line_down.png';

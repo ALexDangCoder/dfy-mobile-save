@@ -70,6 +70,7 @@ class FormSearch extends StatelessWidget {
             onTap: () {
               bloc.textSearch.sink.add('');
               textSearch.text = '';
+              bloc.search();
             },
             child: Image.asset(
               url_ic_close,

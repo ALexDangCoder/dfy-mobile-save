@@ -119,26 +119,28 @@ class SelectAccBloc {
         nameWallet: 'Account 1',
         url: 'assets/images/Ellipse 39.png'),
     AccountModel(
-        isCheck: false,
-        addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-        amountWallet: 21342314,
-        imported: true,
-        nameWallet: 'Account 1',
-        url: 'assets/images/Ellipse 39.png'),
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
   ];
 
   String formatAddress(String address) {
-    final String a =
-        '${address.substring(0,5)}...${address.substring(address.length - 4,
-        address.length,)}';
+    final String a = '${address.substring(0, 5)}...${address.substring(
+      address.length - 4,
+      address.length,
+    )}';
     return a;
   }
 
-  void click(int index){
-    for(final AccountModel value in listSelectAccBloc){
-      value.isCheck=false;
+  void click(int index) {
+    for (final AccountModel value in listSelectAccBloc) {
+      value.isCheck = false;
     }
-    listSelectAccBloc[index].isCheck=true;
+    listSelectAccBloc[index].isCheck = true;
     list.sink.add(listSelectAccBloc);
   }
 }

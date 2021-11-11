@@ -6,16 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class FromText extends StatelessWidget {
+class FromText3 extends StatelessWidget {
   final String urlPrefixIcon;
   final String title;
   final String urlSuffixIcon;
+  final String titleCopy;
 
-  const FromText({
+  const FromText3({
     Key? key,
     required this.urlPrefixIcon,
     required this.title,
     required this.urlSuffixIcon,
+    required this.titleCopy,
   }) : super(key: key);
 
   @override
@@ -58,7 +60,7 @@ class FromText extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              FlutterClipboard.copy(title);
+              FlutterClipboard.copy(titleCopy);
 
               Fluttertoast.showToast(
                 msg: S.current.copy,

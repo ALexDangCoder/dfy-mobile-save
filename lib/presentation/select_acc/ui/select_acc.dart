@@ -99,7 +99,10 @@ class _SelectAccState extends State<SelectAcc> {
                         Navigator.of(context).push(
                           HeroDialogRoute(
                             builder: (context) {
-                              return const RemoveAcc();
+                              return RemoveAcc(
+                                bloc: widget.bloc,
+                                index: index,
+                              );
                             },
                             isNonBackground: false,
                           ),

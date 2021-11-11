@@ -2,11 +2,9 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
-import 'package:Dfy/presentation/import_token_nft/ui/import_nft.dart';
-import 'package:Dfy/presentation/import_token_nft/ui/import_token.dart';
+import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
+import 'package:Dfy/presentation/private_key_seed_phrase/ui/private_key_seed_phrase.dart';
 import 'package:Dfy/presentation/select_acc/bloc/select_acc_bloc.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -16,7 +14,6 @@ import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
 import 'package:Dfy/presentation/wallet/ui/token_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/change_wallet_name.dart';
-import 'package:Dfy/widgets/dialog_remove/choose_acc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,20 +33,20 @@ class WalletScreen extends StatefulWidget {
 class _WalletState extends State<WalletScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final WalletCubit _cubit = WalletCubit();
+  final WalletCubit cubit = WalletCubit();
   late FToast fToast;
 
   @override
   void initState() {
     super.initState();
-    _cubit.formatAddress(_cubit.addressWallet);
+    cubit.formatAddress(cubit.addressWallet);
     _tabController = TabController(length: 2, vsync: this);
     fToast = FToast();
     fToast.init(context);
     trustWalletChannel
-        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
-    _cubit.getListNFT(
-      _cubit.addressWallet,
+        .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
+    cubit.getListNFT(
+      cubit.addressWallet,
       password: 'aaa',
     );
   }
@@ -292,13 +289,9 @@ class _WalletState extends State<WalletScreen>
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        HeroDialogRoute(
-                          builder: (context) {
-                            return const ChooseAcc();
-                          },
-                          isNonBackground: false,
-                        ),
+                      showPrivateKeySeedPhrase(
+                        context,
+                        PrivateKeySeedPhraseBloc(),
                       );
                     },
                     child: Text(
@@ -318,7 +311,9 @@ class _WalletState extends State<WalletScreen>
                       Navigator.of(context).push(
                         HeroDialogRoute(
                           builder: (context) {
-                            return const ChangeWalletName();
+                            return ChangeWalletName(
+                              bloc: cubit,
+                            );
                           },
                           isNonBackground: false,
                         ),
@@ -360,7 +355,7 @@ class _WalletState extends State<WalletScreen>
               GestureDetector(
                 onLongPress: () {
                   Clipboard.setData(
-                    ClipboardData(text: _cubit.addressWallet),
+                    ClipboardData(text: cubit.addressWallet),
                   ).then((_) {
                     fToast.showToast(
                       child: const Copied(),
@@ -380,7 +375,7 @@ class _WalletState extends State<WalletScreen>
                   ),
                   child: Center(
                     child: Text(
-                      _cubit.formatAddressWallet,
+                      cubit.formatAddressWallet,
                       style: textNormalCustom(
                         Colors.white,
                         16.sp,
@@ -391,9 +386,7 @@ class _WalletState extends State<WalletScreen>
                 ),
               ),
               IconButton(
-                onPressed: () {
-
-                },
+                onPressed: () {},
                 icon: const ImageIcon(
                   AssetImage(ImageAssets.code),
                   color: Colors.white,
