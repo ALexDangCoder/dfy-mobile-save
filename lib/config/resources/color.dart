@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 
 ///=========== Colors for default when didn't setup app theme ===============
