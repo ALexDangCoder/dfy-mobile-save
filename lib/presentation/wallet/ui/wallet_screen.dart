@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
@@ -23,8 +24,10 @@ class WalletScreen extends StatefulWidget {
   const WalletScreen({
     Key? key,
     required this.index,
+    this.wallet,
   }) : super(key: key);
   final int index;
+  final Wallet? wallet;
 
   @override
   _WalletState createState() => _WalletState();
@@ -39,7 +42,7 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    _cubit.formatAddress(_cubit.addressWallet);
+    _cubit.formatAddress(widget.wallet?.address ?? _cubit.addressWallet);
     _tabController = TabController(length: 2, vsync: this);
     fToast = FToast();
     fToast.init(context);
@@ -281,7 +284,7 @@ class _WalletState extends State<WalletScreen>
                     width: 37.w,
                   ),
                   Text(
-                    'Nguyen Van Hung',
+                    widget.wallet?.name ??'Nguyen Van Hung',
                     style: textNormalCustom(
                       Colors.white,
                       24.sp,

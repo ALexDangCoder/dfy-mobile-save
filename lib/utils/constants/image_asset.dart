@@ -49,7 +49,7 @@ class ImageAssets {
   static const String img_empty = '$baseImg/img_empty.png';
   static const String paste = '$baseImg/Paste.png';
   static const String scan_qr = '$baseImg/scan-barcode.png';
-  static const String addsWallet = '$baseImg/addsWallet.png';
+  static const String addsWallet = '$baseImg/addstwallet.png';
   static const String backArrow = '$baseImg/back_arrow.png';
   static const String centered = '$baseImg/Centered.png';
   static const String code = '$baseImg/Code.png';
@@ -95,6 +95,14 @@ class ImageAssets {
   static const String token = '$baseImg/Token.png';
   static const String codeS = '$baseImg/Code.png';
   static const String from = '$baseImg/From.png';
+  static const String background_splash = '$baseImg/background_splash.png';
+  static const String image_splash = '$baseImg/image_splash.png';
+  static const String quantity = '$baseImg/Quantity.png';
+  static const String global = '$baseImg/Global.png';
+  static const String slc_acc = '$baseImg/Wallet.png';
+  static const String plus = '$baseImg/Plus.png';
+  static const String import = '$baseImg/Import.png';
+  static const String face_id = '$baseImg/face_id.png';
 
   static const String symbol = '$baseImg/symbol.png';
 

@@ -6,6 +6,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Dfy/generated/l10n.dart';
 
 class SetupPassWord extends StatefulWidget {
   const SetupPassWord({Key? key}) : super(key: key);
@@ -74,14 +75,14 @@ class _SetupPassWordState extends State<SetupPassWord> {
                       height: 28.h,
                     ),
                     formSetupPassWord(
-                      hintText: 'New password',
+                      hintText: S.current.new_pass,
                     ),
                     showTextValidatePassword(),
                     SizedBox(
                       height: 16.h,
                     ),
                     formSetupPassWordConfirm(
-                      hintText: 'Confirm password',
+                      hintText: S.current.con_pass,
                     ),
                     showTextValidateMatchPassword(),
                     SizedBox(
@@ -100,7 +101,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 stream: isValidPassCubit.isEnableBtnStream,
                 builder: (context, AsyncSnapshot<bool> snapshot) {
                   return ButtonGold(
-                    title: 'Continue',
+                    title: S.current.continue_s,
                     isEnable: snapshot.data ?? false,
                   );
                 },
@@ -145,11 +146,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
               ),
               SizedBox(
                 width: 323.w,
-                height: 30.h,
+                // height: 30.h,
                 child: Text(
-                  'Password must include at least a number, '
-                  'an upper case, a lower\n case and a special '
-                  'character',
+                  S.current.pass_must,
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
@@ -177,9 +176,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
               ),
               SizedBox(
                 width: 323.w,
-                height: 30.h,
+                // height: 30.h,
                 child: Text(
-                  'Your password did not match',
+                  S.current.not_match,
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
@@ -207,8 +206,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
               width: 24.w,
               height: 24.h,
               child: StreamBuilder<bool>(
+                initialData: false,
                 stream: isValidPassCubit.ckcBoxStream,
-                builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                builder: (context, snapshot) {
                   return Checkbox(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
@@ -227,7 +227,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                         isValidPassCubit.isEnable(1);
                       }
                     },
-                    value: snapshot.data,
+                    value: snapshot.data ?? false,
                   );
                 },
               ),
@@ -240,8 +240,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
             width: 287.w,
             // height: 48.h,
             child: Text(
-              'I understand DeFi For You will not recover this\n'
-              ' password for me',
+              S.current.understand_defi,
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 14.sp,
@@ -360,11 +359,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 },
                 child: snapshot.data ?? false
                     ? const ImageIcon(
-                        AssetImage(ImageAssets.hide),
+                        AssetImage(ImageAssets.show),
                         color: Colors.grey,
                       )
                     : const ImageIcon(
-                        AssetImage(ImageAssets.show),
+                        AssetImage(ImageAssets.hide),
                         color: Colors.grey,
                       ),
               ),
@@ -387,9 +386,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         width: 323.w,
         // height: 72.h,
         child: Text(
-          'Please setup your new password!\n'
-          'This password will unlock your DeFi For You\n wallet '
-          'only on this wallet',
+          S.current.please,
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w400,
@@ -420,7 +417,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
             width: 66.w,
           ),
           Text(
-            'Create new wallet',
+            S.current.create_new_wallet,
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w700,

@@ -30,6 +30,9 @@ class LoginCubit extends BaseCubit<LoginState> {
       case 'checkPasswordCallback':
         loginSuccess = methodCall.arguments['isCorrect'];
         break;
+      case 'importWalletCallback':
+        print('3: ' + methodCall.arguments.toString());
+        break;
       default:
         break;
     }

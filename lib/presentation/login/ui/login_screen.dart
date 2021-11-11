@@ -239,12 +239,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             _cubit.checkPasswordWallet(controller.value.text);
                             Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                builder: (context) => MainScreen(
+                                builder: (context) => const MainScreen(
                                   index: 1,
                                 ),
                               ),
                               (route) => route.isFirst,
                             );
+                          }
+                          else {
+                            _showDialog();
                           }
                         },
                       );
@@ -259,7 +262,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       bloc: _cubit,
                       listener: (context, state) {
                         if (state is LoginSuccess) {
-                          widget.walletCubit.emit(WalletScreenState());
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => const MainScreen(
+                                index: 1,
+                              ),
+                            ),
+                                (route) => route.isFirst,
+                          );
                         }
                       },
                       child: GestureDetector(
