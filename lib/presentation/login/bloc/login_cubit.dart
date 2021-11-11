@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/main.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
@@ -13,15 +15,12 @@ class LoginCubit extends BaseCubit<LoginState> {
   LoginCubit() : super(LoginInitial());
 
   bool hidePass = true;
+  bool isAppLock = true;
+  bool isFaceID = false;
 
   bool hidePassword() {
     return hidePass = !hidePass;
   }
-
-  //
-  // String privateKey = '';
-  // String walletAddress = '';
-  // String passPhrase = '';
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     emit(LoginLoading());
@@ -31,14 +30,9 @@ class LoginCubit extends BaseCubit<LoginState> {
       case 'checkPasswordCallback':
         loginSuccess = methodCall.arguments['isCorrect'];
         break;
-      // case 'generateWalletCallback':
-      //   privateKey = await methodCall.arguments['privateKey'];
-      //   walletAddress = await methodCall.arguments['walletAddress'];
-      //   passPhrase = await methodCall.arguments['passPhrase'];
-      //   print(privateKey);
-      //   print(passPhrase);
-      //   print(walletAddress);
-      //   break;
+      case 'importWalletCallback':
+        print('3: ' + methodCall.arguments.toString());
+        break;
       default:
         break;
     }
@@ -50,6 +44,19 @@ class LoginCubit extends BaseCubit<LoginState> {
     }
   }
 
+  void getConfig() {
+    if (PrefsService.getAppLockConfig() == 'true') {
+      isAppLock = true;
+    } else {
+      isAppLock = false;
+    }
+    if (PrefsService.getFaceIDConfig() == 'true') {
+      isFaceID = true;
+    } else {
+      isFaceID = false;
+    }
+  }
+
   Future<void> checkPasswordWallet(String password) async {
     emit(LoginLoading());
     try {
@@ -57,9 +64,7 @@ class LoginCubit extends BaseCubit<LoginState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('checkPassword', data);
-    } on PlatformException {
-      log(e);
-    }
+    } on PlatformException {}
   }
 
   String authorized = 'Not Authorized';

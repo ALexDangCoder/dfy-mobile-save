@@ -1,3 +1,4 @@
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
@@ -75,9 +76,9 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   }
 
   Future<void> setConfig({
-    String password = '',
-    bool isAppLock = false,
-    bool isFaceID = false,
+    required String password,
+    required bool isAppLock,
+    required bool isFaceID,
   }) async {
     try {
       final data = {
@@ -85,6 +86,9 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         'isFaceID': isFaceID,
         'password': password,
       };
+      await PrefsService.saveFirstAppConfig('false');
+      await PrefsService.saveAppLockConfig(isAppLock.toString());
+      await PrefsService.saveFaceIDConfig(isFaceID.toString());
       await trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {
       //todo

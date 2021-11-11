@@ -16,8 +16,6 @@
   "private_key": "Private key",
   "wallet_secret": "Wallet secret seed phrase",
   "password": "Password",
-  "login": "Login",
-  "new_wallet": "New wallet",
   "import_seed_phrase": "Import Seed phrase",
   "wallet": "Wallet",
   "smart_chain": "Smart chain",
@@ -80,13 +78,10 @@
   "of_all": "of",
   "quantity": "quantity",
   "pls_import_seed": "Import secret seedphrase",
-
-  "address_required" : "Address is required",
-  "invalid_address" : "Invalid Address",
-  "amount_required" : "Amount is required",
-
+  "address_required": "Address is required",
+  "invalid_address": "Invalid Address",
+  "amount_required": "Amount is required",
   "paste": "Paste",
-
   "name_not_null": "Wallet name is required",
   "copy": "Copy Successfully",
   "token_successfully": "Import Token successfully",
@@ -96,7 +91,6 @@
   "Token_symbol": "Token symbol",
   "Token_decimal": "Token decimal",
   "Invalid_order": "Invalid order",
-
   "enter_token": "Enter token",
   "choose_token": "Choose token",
   "search_token": "Search token",
@@ -112,8 +106,7 @@
   "Are_you_sure_acc": "Are you sure you want to remove this account?",
   "Confirm": "Confirm",
   "Enter_name": "Enter name",
-  "choose_acc": "Choose account"
-
+  "choose_acc": "Choose account",
   "setting": "Setting",
   "change_password": "Change password",
   "lock": "Lock",
@@ -121,7 +114,6 @@
   "create_new_acc": "Create New Account",
   "import_acc": "Import Account",
   "show_key_seed": "Show private key & seed pharse",
-
   "face_touch_id": "Face/touch ID",
   "app_wallet_lock": "App wallet lock",
   "old_password": "Old password",
@@ -129,9 +121,15 @@
   "confirm_new_password": "Confirm new password",
   "prv_key_ft_seed_phr": "Private key & seed phrase",
   "enter_password": "Enter password",
-  "warn_pw_8_15" : "Password must be 8-15 character",
-  "warn_pw_required" : "Password is required",
-  "warn_pw_validate" : "Password must include at least a number, an upper case, a lower case and a special character",
-  "warn_cf_pw" : "Confirm password did not match",
-  "warn_old_pw_not_match" : "Old password is incorrect"
+  "warn_pw_8_15": "Password must be 8-15 character",
+  "warn_pw_required": "Password is required",
+  "warn_pw_validate": "Password must include at least a number, an upper case, a lower case and a special character",
+  "warn_cf_pw": "Confirm password did not match",
+  "warn_old_pw_not_match": "Old password is incorrect",
+  "password_is_not_correct": "Password is not correct",
+  "please_try_agian": "Please try agian",
+  "OK": "OK",
+  "login": "Login",
+  "new_wallet": "New wallet",
+  "password_is_required": "Password is required"
 }

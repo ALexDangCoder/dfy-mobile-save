@@ -1,7 +1,6 @@
 import 'package:Dfy/config/base/base_screen.dart';
-import 'package:Dfy/config/resources/images.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/presentation/home/ui/home_screen.dart';
-import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
 import 'package:Dfy/presentation/pawn/ui/pawn_screen.dart';
@@ -20,7 +19,9 @@ const int tabMarketingPlaceIndex = 3;
 const int tabStakingIndex = 4;
 
 class MainScreen extends BaseScreen {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key? key, this.index, this.wallet}) : super(key: key);
+  final int? index;
+  final Wallet? wallet;
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -51,24 +52,28 @@ class _MainScreenState extends BaseState<MainScreen> {
   int pageIndex = 0;
   List<GlobalKey<NavigatorState>> navigatorKeys = <GlobalKey<NavigatorState>>[];
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  int lastDuration = 3;
+
+  int lastDuration = 2;
 
   final CompositeSubscription compositeSubscription = CompositeSubscription();
   late MainCubit _cubit;
 
   @override
   void initState() {
+    super.initState();
     _handleEventBus();
     _cubit = MainCubit();
-    _cubit.init();
-    super.initState();
     _pages = [
-      const LoginScreen(),
-      const WalletScreen(),
-      const WalletScreen(),
+      WalletScreen(
+        index: widget.index ?? 1,
+        wallet: widget.wallet,
+      ),
+      const PawnScreen(),
+      const HomeScreen(),
       const MarketPlaceScreen(),
       const StakingScreen(),
     ];
+
     navigatorKeys = List.generate(
       _pages.length,
       (_) => GlobalKey<NavigatorState>(),
@@ -79,12 +84,6 @@ class _MainScreenState extends BaseState<MainScreen> {
     eventBus.on<OpenMainTabIndex>().listen((event) {
       selectPage(event.tabIndex);
     }).addTo(compositeSubscription);
-  }
-
-  @override
-  void dispose() {
-    compositeSubscription.clear();
-    super.dispose();
   }
 
   @override
@@ -104,7 +103,7 @@ class _MainScreenState extends BaseState<MainScreen> {
               _pages.elementAt(snapshot.data ?? tabHomeIndex),
               CustomBottomHomeAppbar(
                 mainCubit: _cubit,
-              )
+              ),
             ],
           );
         },
