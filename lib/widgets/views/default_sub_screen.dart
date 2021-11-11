@@ -33,10 +33,11 @@ class DefaultSubScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Padding(
+                Container(
                   padding: EdgeInsets.only(
-                      top: 16.h, left: 16.h, right: 16.h, bottom: 20.h),
+                      top: 16.h, left: 16.h, right: 16.h, bottom: 20.h,),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
                         height: 28.h,

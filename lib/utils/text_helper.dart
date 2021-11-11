@@ -56,8 +56,9 @@ extension FormatString on String {
 extension FormatDateToString on DateTime{
   String get stringFromDateTime{
     String result = '';
+
     try{
-      result = '$hour:$minute $day/$month/$year';
+      result = DateFormat('HH:mm dd/MM/yyyy').format(this);
     }catch(e){
       result = toString();
     }

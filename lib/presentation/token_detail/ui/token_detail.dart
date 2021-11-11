@@ -31,6 +31,7 @@ class TokenDetail extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(
                     top: 24.h,
+                    bottom: 8.h,
                   ),
                   child: SizedBox(
                     height: 54.h,
@@ -43,14 +44,14 @@ class TokenDetail extends StatelessWidget {
                 ),
                 Text(
                   customCurrency(
-                      amount: '5157.415478951', type: 'DFY', digit: 8),
+                      amount: '5157.415478951', type: 'DFY', digit: 8,),
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().textThemeColor(),
                   ),
                 ),
                 Text(
                   customCurrency(
-                      amount: '5157.415478951', type: '\$', digit: 2),
+                      amount: '5157.415478951', type: '\$', digit: 2,),
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().currencyDetailTokenColor(),
                     weight: FontWeight.w400,
