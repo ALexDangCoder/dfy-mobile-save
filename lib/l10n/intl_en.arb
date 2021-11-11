@@ -56,7 +56,6 @@
   "your_seed": "Your seed phrase",
   "max": "Max",
   "up_load": "Upload or drag file here",
-  "support_type": "Support file type:",
   "restore_with_private": "Restore your Account with private key. After completing this process, to additional accounts, you can create new account or import account",
   "or_scan": "Or scan QR",
   "scan_qr_code": "Scan QR code",
@@ -73,7 +72,6 @@
   "hide_customize_fee": "Hide customize fee",
   "from": "From",
   "to": "To",
-  "amount": "Amount",
   "to_address": "To Address",
   "of_all": "of",
   "quantity": "quantity",
@@ -131,5 +129,13 @@
   "OK": "OK",
   "login": "Login",
   "new_wallet": "New wallet",
-  "password_is_required": "Password is required"
+  "password_is_required" : "Password is required",
+  "support_type": "Support file type:",
+  "confirm": "Confirm",
+  "set_amount": "Set amount",
+  "save": "Save",
+  "saved": "Saved",
+  "share": "Share",
+  "receive_nft": "Receive NFT",
+  "receive_dfy": "Receive DFY"
 }
