@@ -53,15 +53,27 @@ extension FormatString on String {
   }
 }
 
-extension FormatDateToString on DateTime{
-  String get stringFromDateTime{
+extension FormatDateToString on DateTime {
+  String get stringFromDateTime {
     String result = '';
 
-    try{
+    try {
       result = DateFormat('HH:mm dd/MM/yyyy').format(this);
-    }catch(e){
+    } catch (e) {
       result = toString();
     }
     return result;
+  }
 }
+
+extension FomatNumber on int {
+  String get stringIntFormat {
+    String result = '';
+    try {
+      result = NumberFormat('#,###').format(this);
+    } catch (e) {
+      result = toString();
+    }
+    return result;
+  }
 }

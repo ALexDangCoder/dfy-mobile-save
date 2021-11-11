@@ -44,7 +44,7 @@ class TransactionDetail extends StatelessWidget {
                         flex: 2,
                         child: textRow(
                           name: S.current.amount,
-                          value: amount.toString(),
+                          value: amount.stringIntFormat,
                         ),
                       ),
                       Expanded(
