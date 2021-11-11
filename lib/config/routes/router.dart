@@ -1,9 +1,8 @@
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/test_screen_init.dart';
-import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
-import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
+import 'package:Dfy/presentation/splash/splash_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -28,8 +27,13 @@ class AppRouter {
     switch (settings.name) {
       // case splash:
       //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
+
+      case setupPassWord:
+        return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
       case testScreen:
         return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
+      case splash:
+        return MaterialPageRoute(builder: (ctx) => const SplashScreen());
       case scanQR:
       // return MaterialPageRoute(
       //     builder: (ctx) => QRViewExample(
@@ -38,7 +42,12 @@ class AppRouter {
       case setupPassWord:
         return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
       case main:
-        return MaterialPageRoute(builder: (ctx) => const MainScreen());
+        return MaterialPageRoute(builder: (ctx) {
+          final  arg = ModalRoute.of(ctx)!.settings.arguments as int?;
+          return MainScreen(
+            index: arg,
+          );
+        });
       case sendToken:
         return MaterialPageRoute(builder: (ctx) => const SendToken());
       // case main:
@@ -47,10 +56,12 @@ class AppRouter {
       //             bLocCreateSeedPhrase: BLocCreateSeedPhrase(),
       //           ),);
 
-      case login:
-        return MaterialPageRoute(builder: (ctx) => const LoginScreen());
-      case wallet:
-        return MaterialPageRoute(builder: (ctx) => const WalletScreen());
+      // case login:
+      //   return MaterialPageRoute(
+      //     builder: (ctx) =>  LoginScreen(),
+      //   );
+      // case wallet:
+      //   return MaterialPageRoute(builder: (ctx) => const WalletScreen());
     }
   }
 }

@@ -32,6 +32,13 @@ class ImageAssets {
   static const String key = '$baseImg/key.png';
   static const String show = '$baseImg/Show.png';
   static const String hide = '$baseImg/Hide.png';
+  static const String defiText = '$baseImg/defi_text.png';
+  static const String save = '$baseImg/save.png';
+  static const String set_amount = '$baseImg/set_amount.png';
+  static const String share = '$baseImg/share.png';
+  static const String token = '$baseImg/token.png';
+  static const String max = '$baseImg/Note.png';
+
   static const String ic_wallet = '$baseImg/ic_wallet.png';
   static const String ic_copy = '$baseImg/ic_copy.png';
   static const String ic_address = '$baseImg/ic_address.png';
@@ -49,7 +56,7 @@ class ImageAssets {
   static const String img_empty = '$baseImg/img_empty.png';
   static const String paste = '$baseImg/Paste.png';
   static const String scan_qr = '$baseImg/scan-barcode.png';
-  static const String addsWallet = '$baseImg/addsWallet.png';
+  static const String addsWallet = '$baseImg/addstwallet.png';
   static const String backArrow = '$baseImg/back_arrow.png';
   static const String centered = '$baseImg/Centered.png';
   static const String code = '$baseImg/Code.png';
@@ -92,9 +99,10 @@ class ImageAssets {
   static const String stroke = '$baseImg/Stroke.png';
 
   static const String to = '$baseImg/To.png';
-  static const String token = '$baseImg/Token.png';
   static const String codeS = '$baseImg/Code.png';
   static const String from = '$baseImg/From.png';
+  static const String background_splash = '$baseImg/background_splash.png';
+  static const String image_splash = '$baseImg/image_splash.png';
   static const String quantity = '$baseImg/Quantity.png';
   static const String global = '$baseImg/Global.png';
   static const String slc_acc = '$baseImg/Wallet.png';

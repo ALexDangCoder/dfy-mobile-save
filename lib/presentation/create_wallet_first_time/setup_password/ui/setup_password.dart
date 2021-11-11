@@ -204,8 +204,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
               width: 24.w,
               height: 24.h,
               child: StreamBuilder<bool>(
+                initialData: false,
                 stream: isValidPassCubit.ckcBoxStream,
-                builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                builder: (context, snapshot) {
                   return Checkbox(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
@@ -224,7 +225,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                         isValidPassCubit.isEnable(1);
                       }
                     },
-                    value: snapshot.data,
+                    value: snapshot.data ?? false,
                   );
                 },
               ),
