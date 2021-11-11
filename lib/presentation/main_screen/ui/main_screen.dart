@@ -13,8 +13,6 @@ import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-
-
 const int tabWalletIndex = 0;
 const int tabPawnIndex = 1;
 const int tabHomeIndex = 2;
@@ -22,10 +20,7 @@ const int tabMarketingPlaceIndex = 3;
 const int tabStakingIndex = 4;
 
 class MainScreen extends BaseScreen {
-
-
-  const MainScreen({Key? key})
-      : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -56,17 +51,14 @@ class _MainScreenState extends BaseState<MainScreen> {
   int pageIndex = 0;
   List<GlobalKey<NavigatorState>> navigatorKeys = <GlobalKey<NavigatorState>>[];
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
-  int lastDuration = 2;
-
-
+  int lastDuration = 3;
 
   final CompositeSubscription compositeSubscription = CompositeSubscription();
   late MainCubit _cubit;
 
   @override
   void initState() {
-     _handleEventBus();
+    _handleEventBus();
     _cubit = MainCubit();
     _cubit.init();
     super.initState();
@@ -75,7 +67,7 @@ class _MainScreenState extends BaseState<MainScreen> {
       const WalletScreen(),
       const WalletScreen(),
       const MarketPlaceScreen(),
-      const LoginScreen(),
+      const StakingScreen(),
     ];
     navigatorKeys = List.generate(
       _pages.length,
@@ -102,7 +94,6 @@ class _MainScreenState extends BaseState<MainScreen> {
     precacheImage(const AssetImage(ImageAssets.center), context);
     return Scaffold(
       key: scaffoldKey,
-
       resizeToAvoidBottomInset: false,
       body: StreamBuilder(
         stream: _cubit.indexStream,
@@ -110,7 +101,7 @@ class _MainScreenState extends BaseState<MainScreen> {
           return Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              _pages.elementAt(snapshot.data ?? tabWalletIndex),
+              _pages.elementAt(snapshot.data ?? tabHomeIndex),
               CustomBottomHomeAppbar(
                 mainCubit: _cubit,
               )
