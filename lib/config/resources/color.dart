@@ -27,6 +27,7 @@ const tabUnselected = Color(0xFFA9B8BD);
 
 //custom color
 const fillYellowColor = Color(0xffE4AC1A);
+const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
 const errorColor = Color(0xFFCDCDCD);
 const dialogColor = Color(0xff585782);
 const suffixFieldColor = Colors.white30;
@@ -103,7 +104,7 @@ abstract class AppColor {
 
   Color selectDialogColor();
 
-
+  Color columnButtonColor();
   List<Color> listColorAddWalletSeedPhrase();
 
   List<Color> gradientButtonColor();
@@ -232,6 +233,11 @@ class LightApp extends AppColor {
   @override
   Color errorColorButton() {
     return errorColor;
+  }
+
+  @override
+  Color columnButtonColor() {
+   return buttonGrey;
   }
 }
 
@@ -371,6 +377,12 @@ class DarkApp extends AppColor {
   @override
   Color errorColorButton() {
     // TODO: implement errorColorButton
+    throw UnimplementedError();
+  }
+
+  @override
+  Color columnButtonColor() {
+    // TODO: implement columnButtonColor
     throw UnimplementedError();
   }
 }

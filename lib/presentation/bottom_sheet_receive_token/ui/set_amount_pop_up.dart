@@ -1,10 +1,11 @@
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bottom_sheet_receive_token/bloc/receive_cubit.dart';
 import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/custom_rect_tween.dart';
+import 'package:Dfy/utils/animate/custom_rect_tween.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/form/item_form.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class SetAmountPopUp extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
           child: Material(
-            color: const Color(0xff585782),
+            color: AppTheme.getInstance().selectDialogColor(),
             elevation: 2,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(36)),
@@ -90,24 +91,33 @@ class SetAmountPopUp extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: SizedBox(
-                              width: 156.w,
-                              child: Center(
-                                child: Text(
-                                  S.current.cancel,
-                                  style: textNormal(null, 20.sp).copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    right: BorderSide(
+                                      color:
+                                          AppTheme.getInstance().divideColor(),
+                                    ),
+                                  ),
+                                ),
+                                width: 156.w,
+                                child: Center(
+                                  child: Text(
+                                    S.current.cancel,
+                                    style: textNormal(null, 20.sp).copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          const VerticalDivider(),
                           Expanded(
                             child: InkWell(
                               onTap: () {
@@ -120,7 +130,7 @@ class SetAmountPopUp extends StatelessWidget {
                                   child: Text(
                                     S.current.confirm,
                                     style: textNormal(
-                                      const Color(0xffE4AC1A),
+                                      AppTheme.getInstance().fillColor(),
                                       20.sp,
                                     ).copyWith(
                                       fontWeight: FontWeight.w700,
@@ -155,7 +165,7 @@ class SetAmountPopUp extends StatelessWidget {
         cubit.amountSink.add(formatCoin.format(number));
       }
     } else {
-      cubit.amountSink.add(formatCoin.format(controller.text));
+      cubit.amountSink.add(controller.text);
     }
   }
 }

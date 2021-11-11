@@ -6,8 +6,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bottom_sheet_receive_token/bloc/receive_cubit.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/custom_rect_tween.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/hero_dialog_route.dart';
+import 'package:Dfy/utils/animate/custom_rect_tween.dart';
+import 'package:Dfy/utils/animate/hero_dialog_route.dart';
 import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/set_amount_pop_up.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -324,7 +324,7 @@ class _ReceiveState extends State<Receive> {
             width: 48.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: const Color.fromRGBO(255, 255, 255, 0.2),
+              color: AppTheme.getInstance().columnButtonColor(),
               image: DecorationImage(image: AssetImage(path)),
             ),
           ),

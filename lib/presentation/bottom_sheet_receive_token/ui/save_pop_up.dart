@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/custom_rect_tween.dart';
+import 'package:Dfy/utils/animate/custom_rect_tween.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
