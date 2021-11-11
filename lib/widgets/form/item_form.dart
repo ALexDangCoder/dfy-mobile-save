@@ -1,9 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
 enum FormType { PASS_PHRASE, PASSWORD, PRIVATE_KEY, AMOUNT }
 
@@ -15,7 +15,6 @@ class ItemForm extends StatelessWidget {
     required this.suffix,
     required this.formType,
     this.callback,
-    this.focusNode,
     required this.isShow,
     required this.controller,
   }) : super(key: key);
@@ -25,7 +24,6 @@ class ItemForm extends StatelessWidget {
   final FormType formType;
   final Function()? callback;
   final bool isShow;
-  final FocusNode? focusNode;
   final TextEditingController controller;
 
   @override
@@ -39,7 +37,7 @@ class ItemForm extends StatelessWidget {
           width: 323.w,
           padding: EdgeInsets.only(
             top: 10.h,
-            bottom: 8.h,
+            bottom: 10.h,
           ),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
@@ -63,10 +61,16 @@ class ItemForm extends StatelessWidget {
                 16.sp,
               ),
               suffixIcon: InkWell(
-                onTap: () {},
-                child: ImageIcon(
-                  AssetImage(suffix),
-                  color: Colors.grey,
+                onTap: callback,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 12.h),
+                  child: Text(
+                    S.current.paste,
+                    style: textNormal(AppTheme.getInstance().fillColor(), 16.sp)
+                        .copyWith(
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                 ),
               ),
               prefixIcon: ImageIcon(
@@ -75,6 +79,56 @@ class ItemForm extends StatelessWidget {
               ),
               border: InputBorder.none,
             ),
+          ),
+        ),
+      );
+    }else if (formType == FormType.PRIVATE_KEY) {
+      return Container(
+        height: 64.h,
+        width: 323.w,
+        padding: EdgeInsets.only(
+          top: 12.h,
+          bottom: 12.h,
+          right: 10.w,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(20),
+          ),
+          color: AppTheme.getInstance().itemBtsColors(),
+        ),
+        child: TextFormField(
+          controller: controller,
+          obscureText: isShow,
+          style: textNormal(
+            Colors.white,
+            16.sp,
+          ),
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: textNormal(
+              Colors.grey,
+              16.sp,
+            ),
+            suffixIcon: InkWell(
+              onTap: callback,
+              child: Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: Text(
+                  suffix,
+                  style: textNormal(AppTheme.getInstance().fillColor(), 16.sp)
+                      .copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+            prefixIcon: ImageIcon(
+              AssetImage(prefix),
+              color: Colors.white,
+            ),
+            border: InputBorder.none,
           ),
         ),
       );
@@ -99,7 +153,6 @@ class ItemForm extends StatelessWidget {
               child: TextFormField(
                 controller: controller,
                 keyboardType: TextInputType.number,
-                focusNode: focusNode,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'(^\-?\d*\.?\d*)'))
                 ],

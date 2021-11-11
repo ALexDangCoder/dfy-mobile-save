@@ -41,11 +41,13 @@ class CheckBoxCustom extends StatelessWidget {
               );
             },
           ),
-          Text(
-            title,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              14.sp,
+          Expanded(
+            child: Text(
+              title,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                14.sp,
+              ),
             ),
           )
         ],

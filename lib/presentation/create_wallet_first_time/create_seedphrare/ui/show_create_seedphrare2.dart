@@ -1,18 +1,23 @@
 import 'dart:ui';
-
+import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
+
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/item.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
-import 'package:Dfy/widgets/header_create/header_create.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase.dart';
 import 'package:Dfy/widgets/list_passphrase/list_passphrase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void showCreateSeedPhrase2(
@@ -24,114 +29,217 @@ void showCreateSeedPhrase2(
     context: context,
     backgroundColor: Colors.transparent,
     builder: (context) {
-      return Container(
-        height: 764.h,
-        width: 375.w,
-        decoration: BoxDecoration(
-          // shape: BoxShape.circle,
-          color: AppTheme.getInstance().bgBtsColor(),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.h),
-            topRight: Radius.circular(30.h),
+      return Body(
+        bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+      );
+    },
+  ).whenComplete(
+    () => {
+      bLocCreateSeedPhrase.reloadListSeedPhrase1(),
+      bLocCreateSeedPhrase.isSeedPhraseImportFailed.sink.add(false),
+    },
+  );
+}
+
+class Body extends StatefulWidget {
+  const Body({Key? key, required this.bLocCreateSeedPhrase}) : super(key: key);
+
+  final BLocCreateSeedPhrase bLocCreateSeedPhrase;
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  @override
+  Widget build(BuildContext context) {
+    final bLocCreateSeedPhrase = widget.bLocCreateSeedPhrase;
+    return BlocConsumer<BLocCreateSeedPhrase, SeedState>(
+      bloc: widget.bLocCreateSeedPhrase,
+      listener: (ctx, state) {
+        if (state is SeedNavState) {
+          showCreateSuccessfully(
+            type: KeyType.CREATE,
+            context: context,
+            bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
+            wallet: Wallet(
+              name: bLocCreateSeedPhrase.nameWallet.value,
+              address: bLocCreateSeedPhrase.walletAddress,
+            ),
+          );
+        }
+      },
+      builder: (ctx, _) {
+        return Container(
+          height: 764.h,
+          width: 375.w,
+          decoration: BoxDecoration(
+            color: AppTheme.getInstance().bgBtsColor(),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.h),
+              topRight: Radius.circular(30.h),
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Container(
-              height: 28.h,
-              width: 323.w,
-              margin: EdgeInsets.only(right: 26.w, left: 26.w, top: 16.h),
-              child: const HeaderCreate(),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Divider(
-              height: 1.h,
-              color: const Color.fromRGBO(255, 255, 255, 0.1),
-            ),
-            SizedBox(
-              height: 24.h,
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            children: [
+              Container(
+                height: 28.h,
+                width: 323.w,
+                margin: EdgeInsets.only(right: 26.w, left: 26.w, top: 16.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 26.w, left: 26.w),
-                      child: Text(
-                        S.current.tap_the_word,
-                        style: textNormal(
-                          AppTheme.getInstance().textThemeColor(),
-                          16.sp,
+                    GestureDetector(
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        child: Image.asset(
+                          ImageAssets.ic_out,
+                          width: 20.w,
+                          height: 20,
                         ),
                       ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                    SizedBox(
-                      height: 20.h,
+                    Text(
+                      S.current.create_new_wallet,
+                      style: textNormalCustom(
+                        Colors.white,
+                        20.sp,
+                        FontWeight.bold,
+                      ),
                     ),
-                    Column(
-                      children: [
-                        StreamBuilder(
-                          stream: bLocCreateSeedPhrase.listSeedPhrase,
-                          builder:
-                              (context, AsyncSnapshot<List<Item>> snapshot) {
-                            final listSeedPhrase = snapshot.data;
-                            return BoxListPassWordPhrase(
-                              listTitle: listSeedPhrase ?? [],
-                              bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-                            );
-                          },
+                    GestureDetector(
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        child: Image.asset(
+                          ImageAssets.ic_close,
                         ),
-                        SizedBox(
-                          height: 24.h,
-                        ),
-                        StreamBuilder(
-                          stream: bLocCreateSeedPhrase.listTitle,
-                          builder: (
-                            BuildContext context,
-                            AsyncSnapshot<List<Item>> snapshot,
-                          ) {
-                            final listTitle = snapshot.data;
-                            return ListPassPhrase(
-                              listTitle: listTitle ?? [],
-                              bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 41.h,
-                    ),
-                    CheckBoxCustom2(
-                      title: S.current.i_understand,
-                      bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-                    ),
-                    SizedBox(
-                      height: 80.h,
+                      ),
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRouter.main,
+                          (route) => false,
+                        );
+                      },
                     ),
                   ],
                 ),
               ),
-            ),
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  if (bLocCreateSeedPhrase.isCheckBox2.value &&
-                      bLocCreateSeedPhrase.getCheck()) {
-                    showCreateSuccessfully(context);
-                  }
-                },
-                child: ButtonGold(
-                  title: S.current.create,
+              spaceH20,
+              line,
+              spaceH24,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 26.w, left: 26.w),
+                        child: Text(
+                          S.current.tap_the_word,
+                          style: textNormal(
+                            AppTheme.getInstance().textThemeColor(),
+                            16.sp,
+                          ),
+                        ),
+                      ),
+                      spaceH20,
+                      Column(
+                        children: [
+                          StreamBuilder(
+                            stream: bLocCreateSeedPhrase.listSeedPhrase,
+                            builder: (
+                              context,
+                              AsyncSnapshot<List<Item>> snapshot,
+                            ) {
+                              final listSeedPhrase = snapshot.data;
+                              return BoxListPassWordPhrase(
+                                listTitle: listSeedPhrase ?? [],
+                                bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+                              );
+                            },
+                          ),
+                          StreamBuilder(
+                            stream:
+                                bLocCreateSeedPhrase.isSeedPhraseImportFailed,
+                            builder: (context, AsyncSnapshot<bool> snapshot) {
+                              bLocCreateSeedPhrase.getIsSeedPhraseImport2();
+                              return SizedBox(
+                                width: 323.w,
+                                child: snapshot.data ?? false
+                                    ? Text(
+                                        S.current.failed,
+                                        style: textNormal(Colors.red, 14),
+                                      )
+                                    : null,
+                              );
+                            },
+                          ),
+                          spaceH24,
+                          StreamBuilder(
+                            stream: bLocCreateSeedPhrase.listTitle,
+                            builder: (
+                              BuildContext context,
+                              AsyncSnapshot<List<Item>> snapshot,
+                            ) {
+                              bLocCreateSeedPhrase.getIsSeedPhraseImport2();
+                              final listTitle = snapshot.data;
+                              return ListPassPhrase(
+                                listTitle: listTitle ?? [],
+                                bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 41.h,
+                      ),
+                      CheckBoxCustom2(
+                        title: S.current.i_understand,
+                        bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+                      ),
+                      SizedBox(
+                        height: 80.h,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      );
-    },
-  );
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    if (bLocCreateSeedPhrase.isCheckBox2.value &&
+                        bLocCreateSeedPhrase.getIsSeedPhraseImport()) {
+                      bLocCreateSeedPhrase.getCheck();
+                      if (!bLocCreateSeedPhrase
+                          .isSeedPhraseImportFailed.value) {
+                        bLocCreateSeedPhrase.storeWallet(
+                          seedPhrase: bLocCreateSeedPhrase.passPhrase,
+                          walletName: bLocCreateSeedPhrase.nameWallet.value,
+                          password: bLocCreateSeedPhrase.passWord,
+                        );
+                      }
+                    }
+                  },
+                  child: StreamBuilder(
+                    stream: bLocCreateSeedPhrase.isCheckButton,
+                    builder: (context, AsyncSnapshot<bool> snapshot) {
+                      return ButtonGold(
+                        title: S.current.continue_s,
+                        isEnable: bLocCreateSeedPhrase.isCheckButton.value,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }

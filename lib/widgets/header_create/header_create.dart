@@ -1,5 +1,7 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,33 +10,36 @@ class HeaderCreate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
-     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          child: Image.asset(
-            ImageAssets.ic_out
+          child: Container(
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            child: Image.asset(
+              ImageAssets.ic_out,
+              width: 20.w,
+              height: 20,
+            ),
           ),
           onTap: () {
             Navigator.pop(context);
           },
         ),
-        SizedBox(
-          width: 66.w,
-        ),
         Text(
           S.current.create_wallet,
-          style: TextStyle(
-              fontSize: 20.sp,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,),
-        ),
-        SizedBox(
-          width: 64.w,
+          style: textNormalCustom(
+            Colors.white,
+            20.sp,
+            FontWeight.bold,
+          ),
         ),
         GestureDetector(
-          child: Image.asset(
-            ImageAssets.ic_close,
+          child: Container(
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            child: Image.asset(
+              ImageAssets.ic_close,
+            ),
           ),
           onTap: () {
             Navigator.pop(context);

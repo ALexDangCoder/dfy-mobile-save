@@ -12,6 +12,8 @@ const mainTxtColor = Color(0xFF30536F);
 const dfTxtColor = Color(0xFF303742);
 const secondTxtColor = Color(0xFF808FA8);
 const highlightTxtColor = Color(0xff303742);
+const backGroubBottomSheetColor = Color(0xff32324c);
+const formColor = Color(0xff6F6FC5);
 const subTitleTxtColor = Color(0xff9097A3);
 const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
 const listAddWalletColor = [
@@ -56,7 +58,7 @@ const colorLineSearch = Color(0x80CACFD7);
 const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
-
+const divideColor = Color(0xFF8f8fad);
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color primaryColor();
@@ -100,6 +102,7 @@ abstract class AppColor {
   Color textThemeColor();
 
   Color suffixColor();
+
   Color errorColorButton();
 
   Color selectDialogColor();
@@ -108,6 +111,10 @@ abstract class AppColor {
   List<Color> listColorAddWalletSeedPhrase();
 
   List<Color> gradientButtonColor();
+
+  Color whiteColor();
+
+  Color backgroundLoginTextField();
 }
 
 class LightApp extends AppColor {
@@ -165,6 +172,7 @@ class LightApp extends AppColor {
   Color sideBtnColor() {
     return const Color(0xFFDCFFFE);
   }
+
   @override
   Color disableColor() {
     return const Color(0xFFA9B8BD);
@@ -182,7 +190,7 @@ class LightApp extends AppColor {
 
   @override
   Color divideColor() {
-    return const Color.fromRGBO(255, 255, 255, 0.1);
+   return const Color.fromRGBO(255, 255, 255, 0.1);
   }
 
   @override
@@ -238,6 +246,17 @@ class LightApp extends AppColor {
   @override
   Color columnButtonColor() {
    return buttonGrey;
+  }
+
+  @override
+  Color backgroundLoginTextField() {
+    return Colors.white;
+  }
+
+  @override
+  Color whiteColor() {
+    // TODO: implement whiteColor
+    return Colors.white;
   }
 }
 
@@ -385,6 +404,19 @@ class DarkApp extends AppColor {
     // TODO: implement columnButtonColor
     throw UnimplementedError();
   }
+
+  @override
+  Color whiteColor() {
+    // TODO: implement whiteColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color backgroundLoginTextField() {
+    // TODO: implement backgroundLoginTextField
+    throw UnimplementedError();
+  }
+
 }
 
 ///============ End setup app theme ======================================

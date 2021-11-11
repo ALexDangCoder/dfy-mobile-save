@@ -3,16 +3,16 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ButtonGold extends StatefulWidget {
+class ButtonGold extends StatelessWidget {
   final String title;
+  final bool isEnable;
 
-  const ButtonGold({Key? key, required this.title}) : super(key: key);
+  const ButtonGold({
+    Key? key,
+    required this.title,
+    required this.isEnable,
+  }) : super(key: key);
 
-  @override
-  _ButtonGoldState createState() => _ButtonGoldState();
-}
-
-class _ButtonGoldState extends State<ButtonGold> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +21,9 @@ class _ButtonGoldState extends State<ButtonGold> {
         gradient: RadialGradient(
           radius: 4,
           center: const Alignment(0.5, -0.5),
-          colors: AppTheme.getInstance().gradientButtonColor(),
+          colors: isEnable
+              ? AppTheme.getInstance().gradientButtonColor()
+              : [AppTheme.getInstance().disableColor(),AppTheme.getInstance().disableColor()],
         ),
         borderRadius: const BorderRadius.all(
           Radius.circular(22),
@@ -31,7 +33,7 @@ class _ButtonGoldState extends State<ButtonGold> {
       width: 298.w,
       child: Center(
         child: Text(
-          widget.title,
+          title,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
             20.sp,
