@@ -20,7 +20,7 @@ import '../../../../main.dart';
 
 enum TypeScreen { one, tow }
 
-void showCreateSeedPhrase1(BuildContext context,
+void showCreateSeedPhrase1(BuildContext context, bool isCheckApp,
     BLocCreateSeedPhrase blocCreateSeedPhrase, TypeScreen type) {
   showModalBottomSheet(
     isScrollControlled: true,
@@ -39,6 +39,7 @@ void showCreateSeedPhrase1(BuildContext context,
       return Body(
         blocCreateSeedPhrase: blocCreateSeedPhrase,
         typeScreen: type,
+        isCheckApp: isCheckApp,
       );
     },
   ).whenComplete(
@@ -48,10 +49,14 @@ void showCreateSeedPhrase1(BuildContext context,
 
 class Body extends StatefulWidget {
   const Body(
-      {Key? key, required this.blocCreateSeedPhrase, required this.typeScreen})
+      {Key? key,
+      required this.blocCreateSeedPhrase,
+      required this.typeScreen,
+      required this.isCheckApp})
       : super(key: key);
   final BLocCreateSeedPhrase blocCreateSeedPhrase;
   final TypeScreen typeScreen;
+  final bool isCheckApp;
 
   @override
   _BodyState createState() => _BodyState();
@@ -278,6 +283,7 @@ class _BodyState extends State<Body> {
                         if (widget.blocCreateSeedPhrase.isCheckBox1.value &&
                             widget.blocCreateSeedPhrase.isWalletName()) {
                           showCreateSeedPhrase2(
+                            widget.isCheckApp,
                             context,
                             widget.blocCreateSeedPhrase,
                             widget.typeScreen,

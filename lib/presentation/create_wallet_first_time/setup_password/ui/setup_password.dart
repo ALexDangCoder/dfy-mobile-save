@@ -115,13 +115,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 );
                 if (checkBox == 2 &&
                     isValidPassCubit.checkMatchPW(
-                      confirmPW: confirmPassword.text, password: password.text,
-                    ) && Validator.isValidPassword(password.text)) {
-                  showCreateSeedPhrase1(
-                    context,
-                    BLocCreateSeedPhrase(password.text),
-                    TypeScreen.tow
-                  );
+                      confirmPW: confirmPassword.text,
+                      password: password.text,
+                    ) &&
+                    Validator.isValidPassword(password.text)) {
+                  showCreateSeedPhrase1(context, false,
+                      BLocCreateSeedPhrase(password.text), TypeScreen.tow);
                 }
               },
             ),
@@ -400,9 +399,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   Padding header() {
     return Padding(
-      padding:
-          EdgeInsets.only( top: 16.h, bottom: 20.h),
-          // EdgeInsets.only(left: 0),
+      padding: EdgeInsets.only(top: 16.h, bottom: 20.h),
+      // EdgeInsets.only(left: 0),
       child: Row(
         children: [
           // SizedBox(width: 26.w,),

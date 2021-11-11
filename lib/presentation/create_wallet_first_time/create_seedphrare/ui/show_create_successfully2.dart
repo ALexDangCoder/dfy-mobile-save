@@ -3,20 +3,17 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/form/form_switch.dart';
-import 'package:Dfy/widgets/form/form_switch1.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum KeyType { IMPORT, CREATE }
 
-void showCreateSuccessfully({
+void showCreateSuccessfully2({
   required BuildContext context,
   required Wallet wallet,
   required KeyType type,
@@ -58,26 +55,29 @@ void showCreateSuccessfully({
             spaceH20,
             line,
             spaceH24,
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Image.asset(ImageAssets.icFrame),
-                    SizedBox(
-                      height: 22.h,
-                    ),
-                    Text(
-                      S.current.congratulation,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32.sp,
+            Center(
+              child: Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 80.h,
                       ),
-                    ),
-                    SizedBox(
-                      height: 213.h,
-                    ),
-                  ],
+                      Image.asset(ImageAssets.icFrame),
+                      spaceH20,
+                      Text(
+                        S.current.congratulation,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 32.sp,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 213.h,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

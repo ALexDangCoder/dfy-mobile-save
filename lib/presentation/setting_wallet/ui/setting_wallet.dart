@@ -65,7 +65,7 @@ class SettingWallet extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showCreateSeedPhrase1(context, BLocCreateSeedPhrase('')
+                      showCreateSeedPhrase1(context, true, BLocCreateSeedPhrase('')
                       ,TypeScreen.one);
                     },
                     child: buttonForm(

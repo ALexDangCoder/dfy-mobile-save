@@ -81,7 +81,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
               bLocCreateSeedPhrase:
                   BLocCreateSeedPhrase(passwordController.text),
               wallet: restoreCubit.wallet ?? Wallet(),
-              type: KeyType.IMPORT,
+              type: KeyType1.IMPORT,
             ),
           );
         }
