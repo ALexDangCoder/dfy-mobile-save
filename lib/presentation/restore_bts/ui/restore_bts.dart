@@ -289,9 +289,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                       type = snapshot.data!;
                                       return type == FormType.PASS_PHRASE
                                           ? ItemForm(
-                                              leadPath: ImageAssets.key,
+                                              prefix: ImageAssets.key,
                                               hint: S.current.wallet_secret,
-                                              trailingPath: ImageAssets.paste,
+                                              suffix: ImageAssets.paste,
                                               formType: FormType.PASS_PHRASE,
                                               isShow: false,
                                               controller: seedPhraseController,
@@ -305,9 +305,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                               },
                                             )
                                           : ItemForm(
-                                              leadPath: ImageAssets.key,
+                                              prefix: ImageAssets.key,
                                               hint: S.current.private_key,
-                                              trailingPath: S.current.paste,
+                                              suffix: S.current.paste,
                                               formType: FormType.PRIVATE_KEY,
                                               isShow: false,
                                               controller: privateKeyController,
@@ -331,9 +331,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     builder: (ctx, snapshot) {
                                       isShowNewPass = snapshot.data!;
                                       return ItemForm(
-                                        leadPath: ImageAssets.lock,
+                                        prefix: ImageAssets.lock,
                                         hint: S.current.new_pass,
-                                        trailingPath: isShowNewPass
+                                        suffix: isShowNewPass
                                             ? ImageAssets.show
                                             : ImageAssets.hide,
                                         formType: FormType.PASSWORD,
@@ -356,9 +356,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     builder: (ctx, snapshot) {
                                       isShowConPass = snapshot.data!;
                                       return ItemForm(
-                                        leadPath: ImageAssets.lock,
+                                        prefix: ImageAssets.lock,
                                         hint: S.current.con_pass,
-                                        trailingPath: isShowConPass
+                                        suffix: isShowConPass
                                             ? ImageAssets.show
                                             : ImageAssets.hide,
                                         formType: FormType.PASSWORD,

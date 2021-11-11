@@ -27,6 +27,9 @@ class AppRouter {
     switch (settings.name) {
       // case splash:
       //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
+
+      case setupPassWord:
+        return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
       case testScreen:
         return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
       case splash:
