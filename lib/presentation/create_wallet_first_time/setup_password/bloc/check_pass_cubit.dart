@@ -63,10 +63,10 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   }
 
   bool isValidFtMatchPW(String value, String confirmValue) {
-    if (Validator.validateStructure(value) && (value == confirmValue)) {
-      return true;
-    } else {
+    if (Validator.validateStructure(value)) {
       return false;
+    } else {
+      return true;
     }
   }
 

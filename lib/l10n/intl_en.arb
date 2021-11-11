@@ -105,5 +105,12 @@
   "app_wallet_lock": "App wallet lock",
   "old_password": "Old password",
   "new_password": "New password",
-  "confirm_new_password": "Confirm new password"
+  "confirm_new_password": "Confirm new password",
+  "prv_key_ft_seed_phr": "Private key & seed phrase",
+  "enter_password": "Enter password",
+  "warn_pw_8_15" : "Password must be 8-15 character",
+  "warn_pw_required" : "Password is required",
+  "warn_pw_validate" : "Password must include at least a number, an upper case, a lower case and a special character",
+  "warn_cf_pw" : "Confirm password did not match",
+  "warn_old_pw_not_match" : "Old password is incorrect"
 }

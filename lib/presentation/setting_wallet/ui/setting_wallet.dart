@@ -1,6 +1,7 @@
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/header_setting.dart';
+import 'package:Dfy/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,9 +67,19 @@ class SettingWallet extends StatelessWidget {
                   SizedBox(
                     height: 16.h,
                   ),
-                  buttonForm(
-                    hintText: S.current.show_key_seed,
-                    prefixIcon: ImageAssets.key,
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        builder: (context) => ConfirmPWShowPRVSeedPhr(),
+                        context: context,
+                      );
+                    },
+                    child: buttonForm(
+                      hintText: S.current.show_key_seed,
+                      prefixIcon: ImageAssets.key,
+                    ),
                   ),
                   SizedBox(
                     height: 16.h,
@@ -82,9 +93,7 @@ class SettingWallet extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
-                        builder: (context) => ChangePassword(
-
-                        ),
+                        builder: (context) => ChangePassword(),
                         context: context,
                       );
                     },
@@ -106,7 +115,8 @@ class SettingWallet extends StatelessWidget {
                     isCheck: false,
                     callBack: () {},
                     hintText: S.current.app_wallet_lock,
-                  ),SizedBox(
+                  ),
+                  SizedBox(
                     height: 51.h,
                   ),
                 ],
