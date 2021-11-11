@@ -71,5 +71,13 @@
   "new_wallet": "New wallet",
   "password_is_required" : "Password is required",
   "name_of_nft": "Name of NFT",
-  "description": "Description"
+  "description": "Description",
+  "nft_standard": "NFT standard",
+  "link": "Link",
+  "contract": "Contract",
+  "block_chain": "Blockchain",
+  "put_on_market": "Put on market",
+  "contract_interaction": "Contract interaction",
+  "create_collateral": "Create collateral",
+  "view_more": "View more"
 }

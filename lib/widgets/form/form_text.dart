@@ -61,7 +61,6 @@ class FromText extends StatelessWidget {
           InkWell(
             onTap: () {
               FlutterClipboard.copy(title);
-
               Fluttertoast.showToast(
                 msg: S.current.copy,
                 toastLength: Toast.LENGTH_LONG,

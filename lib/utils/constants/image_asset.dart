@@ -97,10 +97,13 @@ class ImageAssets {
   static const String from = '$baseImg/From.png';
   static const String card_defi = '$baseImg/card_defi.png';
   static const String receive = '$baseImg/receive-square.png';
-  static const String send =  '$baseImg/send-square.png';
-
+  static const String send = '$baseImg/send-square.png';
+  static const String clock = '$baseImg/clock.png';
+  static const String close = '$baseImg/close-circle.png';
+  static const String tick_circle = '$baseImg/tick-circle.png';
 
   static const String symbol = 'assets/images/symbol.png';
+
   static SvgPicture svgAssets(
     String name, {
     Color? color,

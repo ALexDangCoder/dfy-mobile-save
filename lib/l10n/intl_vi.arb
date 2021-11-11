@@ -68,5 +68,14 @@
   "new_wallet": "Ví mới",
   "password_is_required" : "Vui lòng điền mật khẩu",
   "name_of_nft": "Tên của NFT",
-  "description": "Mô tả"
+  "description": "Mô tả",
+  "nft_standard": "Chuẩn NFT",
+  "link": "Đường dẫn",
+  "contract": "Hợp đồng",
+  "block_chain": "Blockchain",
+  "put_on_market": "Đưa lên chợ",
+  "contract_interaction": "Hơp đồng tương tác",
+  "create_collateral": "Tạo tài sản thế chấp",
+  "view_more": "Xem thêm"
+
 }
