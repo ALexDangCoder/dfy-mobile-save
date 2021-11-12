@@ -23,7 +23,7 @@ Container headerSetting({
       children: [
         GestureDetector(
           child: IconButton(
-            icon: Image.asset(ImageAssets.back),
+            icon: Image.asset(ImageAssets.ic_back),
             onPressed: leftFunction,
           ),
         ),

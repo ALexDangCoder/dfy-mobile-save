@@ -42,7 +42,7 @@ class SettingWallet extends StatelessWidget {
                   ),
                   buttonForm(
                     hintText: 'Dapp',
-                    prefixIcon: ImageAssets.global,
+                    prefixIcon: ImageAssets.ic_global,
                   ),
                   SizedBox(
                     height: 16.h,
@@ -56,14 +56,14 @@ class SettingWallet extends StatelessWidget {
                   ),
                   buttonForm(
                     hintText: S.current.create_new_acc,
-                    prefixIcon: ImageAssets.plus,
+                    prefixIcon: ImageAssets.ic_add,
                   ),
                   SizedBox(
                     height: 16.h,
                   ),
                   buttonForm(
                     hintText: S.current.import_acc,
-                    prefixIcon: ImageAssets.import,
+                    prefixIcon: ImageAssets.ic_import,
                   ),
                   SizedBox(
                     height: 16.h,
@@ -79,7 +79,7 @@ class SettingWallet extends StatelessWidget {
                     },
                     child: buttonForm(
                       hintText: S.current.show_key_seed,
-                      prefixIcon: ImageAssets.key,
+                      prefixIcon: ImageAssets.ic_key,
                     ),
                   ),
                   SizedBox(
@@ -88,7 +88,7 @@ class SettingWallet extends StatelessWidget {
                   GestureDetector(
                     child: buttonForm(
                       hintText: S.current.change_password,
-                      prefixIcon: ImageAssets.security,
+                      prefixIcon: ImageAssets.ic_security,
                     ),
                     onTap: () {
                       showModalBottomSheet(
@@ -103,7 +103,7 @@ class SettingWallet extends StatelessWidget {
                     height: 16.h,
                   ),
                   switchForm(
-                    prefixImg: ImageAssets.key,
+                    prefixImg: ImageAssets.ic_key,
                     isCheck: true,
                     callBack: () {},
                     hintText: S.current.face_touch_id,
@@ -112,7 +112,7 @@ class SettingWallet extends StatelessWidget {
                     height: 16.h,
                   ),
                   switchForm(
-                    prefixImg: ImageAssets.lock,
+                    prefixImg: ImageAssets.ic_lock,
                     isCheck: false,
                     callBack: () {},
                     hintText: S.current.app_wallet_lock,

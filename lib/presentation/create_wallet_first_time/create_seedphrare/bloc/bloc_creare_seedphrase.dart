@@ -98,6 +98,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   String passPhrase = '';
   String walletAddress = '';
   String privateKey = '';
+  bool configSuccess = false;
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     print('callback ');
@@ -114,8 +115,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         emit(SeedNavState());
         break;
       case 'setConfigCallback':
-        bool isSuccess = await methodCall.arguments['isSuccess'];
-        print(isSuccess);
+        configSuccess = await methodCall.arguments['isSuccess'];
         break;
       default:
         break;

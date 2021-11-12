@@ -66,12 +66,4 @@ class WalletCubit extends BaseCubit<WalletState> {
       log(e);
     }
   }
-
-  void checkScreen() {
-    if (PrefsService.getAppLockConfig() == 'true' && checkLogin == false) {
-      checkLogin = true;
-    } else {
-      emit(WalletInitial());
-    }
-  }
 }

@@ -88,9 +88,6 @@ class _MainScreenState extends BaseState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    precacheImage(const AssetImage(ImageAssets.symbol), context);
-    precacheImage(const AssetImage(ImageAssets.center), context);
-    precacheImage(const AssetImage(ImageAssets.center), context);
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomInset: false,
