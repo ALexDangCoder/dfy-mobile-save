@@ -88,7 +88,7 @@ class _SendNftState extends State<SendNft> {
                     hintText: S.current.quantity,
                     isAmount: true,
                     isQuantity: true,
-                    prefixImg: ImageAssets.quantity,
+                    prefixImg: ImageAssets.ic_quantity,
                   ),
                   txtWaringQuantity(),
                   SizedBox(

@@ -1,9 +1,19 @@
-
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/nft.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+final NFT nft = NFT(
+  'Name of NFT',
+  'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
+  Standard.ERC_1155,
+  'https://medium.com/flutter-community/make-text-styling-more-effective-with-richtext-widget-b0e0cb4771ef',
+  'Binance smart chain',
+  '0xd07dc426200000415242343423424261d2461d2430',
+  '#357594',
+);
 
 class NFTItem extends StatefulWidget {
   const NFTItem({Key? key, required this.symbolUrl, required this.nameNFT})
@@ -55,7 +65,7 @@ class _NFTItemState extends State<NFTItem> {
                     width: 28.w,
                     height: 28.h,
                     image: const AssetImage(
-                      ImageAssets.symbol,
+                      ImageAssets.ic_symbol,
                     ),
                   ),
                   SizedBox(
@@ -74,13 +84,17 @@ class _NFTItemState extends State<NFTItem> {
             ),
             onExpansionChanged: (bool expanded) {
               setState(
-                    () => _customTileExpanded = expanded,
+                () => _customTileExpanded = expanded,
               );
             },
             controlAffinity: ListTileControlAffinity.leading,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: 52.w,right: 26.w,bottom: 16.h,),
+                padding: EdgeInsets.only(
+                  left: 52.w,
+                  right: 26.w,
+                  bottom: 16.h,
+                ),
                 child: SizedBox(
                   height: 140,
                   child: ListView.builder(
@@ -88,8 +102,9 @@ class _NFTItemState extends State<NFTItem> {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: 6,
-                    itemBuilder: (BuildContext context, int index) =>
-                    const CardNFT(),
+                    itemBuilder: (BuildContext context, int index) => CardNFT(
+                      objNFT: nft,
+                    ),
                   ),
                 ),
               ),
