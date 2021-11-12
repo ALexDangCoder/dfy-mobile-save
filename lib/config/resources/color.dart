@@ -21,6 +21,8 @@ const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
 ];
+const successTransactionColor = Color(0xFF61C777);
+const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
 
 //bottom navigation color
@@ -60,6 +62,7 @@ const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
+
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color primaryColor();
@@ -109,6 +112,7 @@ abstract class AppColor {
   Color selectDialogColor();
 
   Color columnButtonColor();
+
   List<Color> listColorAddWalletSeedPhrase();
 
   List<Color> gradientButtonColor();
@@ -116,6 +120,14 @@ abstract class AppColor {
   Color whiteColor();
 
   Color backgroundLoginTextField();
+
+  Color successTransactionColors();
+
+  Color blueColor();
+
+  Color failTransactionColors();
+
+  Color currencyDetailTokenColor();
 }
 
 class LightApp extends AppColor {
@@ -191,7 +203,7 @@ class LightApp extends AppColor {
 
   @override
   Color divideColor() {
-   return const Color.fromRGBO(255, 255, 255, 0.1);
+    return const Color.fromRGBO(255, 255, 255, 0.1);
   }
 
   @override
@@ -246,7 +258,7 @@ class LightApp extends AppColor {
 
   @override
   Color columnButtonColor() {
-   return buttonGrey;
+    return buttonGrey;
   }
 
   @override
@@ -256,8 +268,28 @@ class LightApp extends AppColor {
 
   @override
   Color whiteColor() {
-    // TODO: implement whiteColor
     return Colors.white;
+  }
+
+  @override
+  Color blueColor() {
+    // TODO: implement blueColor
+    return const Color(0xFF46BCFF);
+  }
+
+  @override
+  Color currencyDetailTokenColor() {
+    return Colors.white.withOpacity(0.7);
+  }
+
+  @override
+  Color failTransactionColors() {
+   return failTransactionColor;
+  }
+
+  @override
+  Color successTransactionColors() {
+    return successTransactionColor;
   }
 }
 
@@ -418,6 +450,29 @@ class DarkApp extends AppColor {
     throw UnimplementedError();
   }
 
+  @override
+  Color blueColor() {
+    // TODO: implement blueColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color currencyDetailTokenColor() {
+    // TODO: implement currencyDetailTokenColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color failTransactionColors() {
+    // TODO: implement failTransactionColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color successTransactionColors() {
+    // TODO: implement successTransactionColors
+    throw UnimplementedError();
+  }
 }
 
 ///============ End setup app theme ======================================

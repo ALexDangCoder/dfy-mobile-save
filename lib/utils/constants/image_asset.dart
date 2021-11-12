@@ -115,9 +115,8 @@ class ImageAssets {
   static const String plus = '$baseImg/Plus.png';
   static const String import = '$baseImg/Import.png';
   static const String face_id = '$baseImg/face_id.png';
-
-
   static const String symbol = 'assets/images/symbol.png';
+  static const String image_example_pop_up = '$baseImg/pop_image.png';
 
   static SvgPicture svgAssets(
     String name, {

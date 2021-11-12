@@ -75,7 +75,6 @@
   "hide_customize_fee": "Ẩn chỉnh phí",
   "from": "Từ",
   "to": "Đến",
-  "amount": "Giá Trị",
   "to_address": "Địa chỉ nhận",
   "of_all": "trên",
   "failed": "Thất bại",
@@ -123,5 +122,16 @@
   "warn_pw_8_15" : "Mật khẩu có chứa 8 đến 15 kí tự",
   "warn_pw_required" : "Mật khẩu là bắt buộc",
   "warn_pw_validate" : "Mật khẩu phải chứa ít nhất 1 chữ số, 1 chữ thường, 1 chữ hoa và kí tự đặc biệt",
-  "warn_cf_pw" : "Mật khẩu xác nhận không khớp"
+  "warn_cf_pw" : "Mật khẩu xác nhận không khớp",
+  "no_transaction" : "Không có giao dịch",
+  "amount": "Số lượng",
+  "status" : "Trạng thái",
+  "gas_fee": "Phí Gas",
+  "time" : "Thời gian",
+  "txh_id": "Txh ID",
+  "nonce" : "Nonce",
+  "transaction_success" : "Thành công",
+  "transaction_fail" : "Thất bại",
+  "view_on_bscscan" : "Xem trên Bscscan",
+  "detail_transaction" : "Chi tiết giao dịch"
 }

@@ -57,6 +57,7 @@
   "no_data": "No data",
   "approve": "Approve",
   "send": "Send",
+  "txh_id": "Txh ID",
   "estimate_gas_fee": "Estimate gas fee",
   "insufficient_balance": "Insufficient balance",
   "customize_fee": "Customize fee",
@@ -125,6 +126,17 @@
   "share": "Share",
   "receive_nft": "Receive NFT",
   "receive_dfy": "Receive DFY",
-  "amount": "Amount"
+  "amount": "Amount",
+  "no_transaction" : "No transaction",
+  "status" : "Status",
+  "gas_fee": "Gas fee",
+  "time" : "Time",
+  "nonce" : "Nonce",
+  "transaction_success" : "Success",
+  "transaction_fail" : "Fail",
+  "view_on_bscscan" : "View on Bscscan",
+  "detail_transaction" : "Detail"
+
+
 
 }
