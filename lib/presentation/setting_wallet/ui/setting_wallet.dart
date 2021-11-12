@@ -1,6 +1,7 @@
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
+import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/header_setting.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
@@ -9,8 +10,11 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+enum typeSwitchForm { FINGER_FT_FACEID, APPLOCK }
+
 class SettingWallet extends StatelessWidget {
-  const SettingWallet({Key? key}) : super(key: key);
+  SettingWallet({required this.cubit, Key? key}) : super(key: key);
+  SettingWalletCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -107,21 +111,32 @@ class SettingWallet extends StatelessWidget {
                   SizedBox(
                     height: 16.h,
                   ),
-                  switchForm(
-                    prefixImg: ImageAssets.ic_key24,
-                    isCheck: true,
-                    callBack: () {},
-                    hintText: S.current.face_touch_id,
+                  StreamBuilder<bool>(
+                    stream: cubit.isSwitchFingerFtFaceIdOnStream,
+                    builder: (context, snapshot) {
+                      return switchForm(
+                        prefixImg: ImageAssets.ic_key24,
+                        isCheck: snapshot.data ?? false,
+                        hintText: S.current.face_touch_id,
+                        cubit: cubit,
+                        type: typeSwitchForm.FINGER_FT_FACEID,
+                      );
+                    },
                   ),
                   SizedBox(
                     height: 16.h,
                   ),
-                  switchForm(
-                    prefixImg: ImageAssets.ic_lock,
-                    isCheck: false,
-                    callBack: () {},
-                    hintText: S.current.app_wallet_lock,
-                  ),
+                  StreamBuilder<bool>(
+                      stream: cubit.isSwitchAppLockOnStream,
+                      builder: (context, snapshot) {
+                        return switchForm(
+                          prefixImg: ImageAssets.ic_lock,
+                          isCheck: snapshot.data ?? false,
+                          hintText: S.current.app_wallet_lock,
+                          type: typeSwitchForm.APPLOCK,
+                          cubit: cubit,
+                        );
+                      }),
                   SizedBox(
                     height: 51.h,
                   ),

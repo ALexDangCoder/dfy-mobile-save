@@ -222,7 +222,6 @@ class _SendTokenState extends State<SendToken> {
         ),
         child: TextFormField(
           onChanged: (value) {
-            print(value);
             tokenCubit.checkValidAddress(value);
             // if (txtAmount.text.isNotEmpty && value.isNotEmpty) {
             //   tokenCubit.isShowConfirmBlockChain(
@@ -428,7 +427,6 @@ class _SendTokenState extends State<SendToken> {
                     initialData: '',
                     stream: tokenCubit.txtInvalidAmountStream,
                     builder: (context, snapshot) {
-                      print(snapshot.data);
                       return Text(
                         snapshot.data ?? '',
                         style: TextStyle(

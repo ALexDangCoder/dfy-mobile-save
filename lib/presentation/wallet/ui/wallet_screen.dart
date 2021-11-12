@@ -7,6 +7,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
+import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/createNFT.dart';
@@ -128,7 +129,9 @@ class _WalletState extends State<WalletScreen>
                               showModalBottomSheet(
                                 context: context,
                                 builder: (_) {
-                                  return SettingWallet();
+                                  return SettingWallet(
+                                    cubit: SettingWalletCubit(),
+                                  );
                                 },
                                 isScrollControlled: true,
                               );
