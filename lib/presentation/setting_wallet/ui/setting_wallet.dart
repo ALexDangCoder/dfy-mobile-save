@@ -82,7 +82,7 @@ class SettingWallet extends StatelessWidget {
                   buttonForm(
                     hintText: S.current.create_new_acc,
                     prefixIcon: ImageAssets.ic_add,
-                  ),
+                  ), ),
                   SizedBox(
                     height: 16.h,
                   ),
@@ -99,7 +99,7 @@ class SettingWallet extends StatelessWidget {
                   buttonForm(
                     hintText: S.current.import_acc,
                     prefixIcon: ImageAssets.ic_import,
-                  ),
+                  ), ),
                   SizedBox(
                     height: 16.h,
                   ),

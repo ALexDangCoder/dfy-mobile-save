@@ -55,28 +55,30 @@ void showCreateSuccessfully2({
             spaceH20,
             line,
             spaceH24,
-            SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 80.h,
-                    ),
-                    Image.asset(ImageAssets.icFrame),
-                    spaceH20,
-                    Text(
-                      S.current.congratulation,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32.sp,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 80.h,
                       ),
-                    ),
-                    SizedBox(
-                      height: 213.h,
-                    ),
-                  ],
+                      Image.asset(ImageAssets.frameGreen),
+                      spaceH20,
+                      Text(
+                        S.current.congratulation,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 32.sp,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 213.h,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

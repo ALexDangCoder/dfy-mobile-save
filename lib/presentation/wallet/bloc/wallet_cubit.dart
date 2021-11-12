@@ -4,7 +4,6 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/main.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';

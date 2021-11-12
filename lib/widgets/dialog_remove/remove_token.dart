@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
@@ -113,6 +114,8 @@ class RemoveToken extends StatelessWidget {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
+                                          cubit.listToken.removeAt(index);
+                                          cubit.getListTokenItem();
                                           Navigator.pop(context);
                                         },
                                         child: Text(

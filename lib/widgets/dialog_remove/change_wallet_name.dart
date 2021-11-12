@@ -159,7 +159,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                 : Container(
                                     padding: EdgeInsets.only(
                                       right: 15.w,
-                                      left: 15.w,
+                                      left: 28.w,
                                     ),
                                     height: 24.h,
                                     child: Text(
