@@ -196,7 +196,7 @@ class _WalletState extends State<WalletScreen>
                                   itemCount: 2,
                                   itemBuilder: (context, index) {
                                     return TokenItem(
-                                      symbolUrl: ImageAssets.symbol,
+                                      symbolUrl: ImageAssets.ic_symbol,
                                       amount: '1200000',
                                       nameToken: 'DFY',
                                       price: '$widget.index',
@@ -226,7 +226,7 @@ class _WalletState extends State<WalletScreen>
                                   itemCount: 2,
                                   itemBuilder: (context, index) {
                                     return const NFTItem(
-                                      symbolUrl: ImageAssets.symbol,
+                                      symbolUrl: ImageAssets.ic_symbol,
                                       nameNFT: 'DeFi For You',
                                     );
                                   },
@@ -278,7 +278,7 @@ class _WalletState extends State<WalletScreen>
                 child: CircleAvatar(
                   radius: 27.sp,
                   child: const Image(
-                    image: AssetImage(ImageAssets.symbol),
+                    image: AssetImage(ImageAssets.ic_symbol),
                   ),
                 ),
               ),
