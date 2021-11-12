@@ -1,5 +1,4 @@
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/test_screen_init.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:Dfy/presentation/splash/splash_screen.dart';

@@ -11,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SendNft extends StatefulWidget {
   const SendNft({Key? key}) : super(key: key);
 
-
   @override
   _SendNftState createState() => _SendNftState();
 }
@@ -157,7 +156,6 @@ class _SendNftState extends State<SendNft> {
         child: TextFormField(
           controller: readOnly ? null : txtToAddress,
           onChanged: (value) {
-            print(value);
             sendNftCubit.checkValidAddress(value);
           },
           readOnly: readOnly,
@@ -279,8 +277,7 @@ class _SendNftState extends State<SendNft> {
   Container header({required String nameSend}) {
     return Container(
       width: 343.w,
-      margin:
-          EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 20.h),
+      margin: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 20.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -355,19 +352,19 @@ class _SendNftState extends State<SendNft> {
                 width: 323.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
-                    initialData: '',
-                    stream: sendNftCubit.txtInvalidQuantityFormStream,
-                    builder: (context, snapshot) {
-                      print(snapshot.data);
-                      return Text(
-                        snapshot.data ?? '',
-                        style: textNormalCustom(
-                          const Color.fromRGBO(255, 108, 108, 1),
-                          12.sp,
-                          FontWeight.w400,
-                        ),
-                      );
-                    }),
+                  initialData: '',
+                  stream: sendNftCubit.txtInvalidQuantityFormStream,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: textNormalCustom(
+                        const Color.fromRGBO(255, 108, 108, 1),
+                        12.sp,
+                        FontWeight.w400,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
