@@ -26,12 +26,12 @@
 //   static const String addsWallet = '$baseImg/addsWallet.png';
 //   static const String backArrow = '$baseImg/back_arrow.png';
 //   static const String centered = '$baseImg/Centered.png';
-//   static const String code = '$baseImg/Code.png';
-//   static const String expanded = '$baseImg/expanded.png';
+//   static const String code = '$baseImg/ic_qr_code.png';
+//   static const String expanded = '$baseImg/ic_expanded.png';
 //   static const String faceID = '$baseImg/face_id_icon.png';
 //   static const String icFinger = '$baseImg/finger_con.png';
 //   static const String frameGreen = '$baseImg/Framegreen.png';
-//   static const String group = '$baseImg/Group.png';
+//   static const String group = '$baseImg/ic_group.png';
 //   static const String icAdd = '$baseImg/ic_add.png';
 //   static const String icAddress = '$baseImg/ic_address.png';
 //   static const String icCircle = '$baseImg/ic_circle.png';
@@ -60,9 +60,8 @@
 //   static const String icWalletTabU = '$baseImg/ic_wallet_tab_unselected.svg';
 //   static const String imgEmpty = '$baseImg/img_empty.png';
 //   static const String imgTabHome = '$baseImg/img_tab_home.png';
-//   static const String menu = '$baseImg/Menu.png';
-//   static const String notification = '$baseImg/Notification.png';
-//   static const String stroke = '$baseImg/Stroke.png';
+//   static const String menu = '$baseImg/ic_menu.png';
+//   static const String notification = '$baseImg/ic_notification.png';
 //   static const String symbol = '$baseImg/symbol.png';
 //
 //   static SvgPicture svgAssets(

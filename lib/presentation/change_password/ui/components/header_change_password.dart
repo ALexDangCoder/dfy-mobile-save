@@ -14,7 +14,7 @@ Container headerChangePW({
       children: [
         IconButton(
           onPressed: callBack,
-          icon: Image.asset(ImageAssets.back),
+          icon: Image.asset(ImageAssets.ic_back),
         ),
         SizedBox(width: 68.w,),
         Text(

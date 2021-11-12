@@ -53,7 +53,7 @@ void showTokenSuccessfully(BuildContext context) {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(ImageAssets.icFrame),
+                  Image.asset(ImageAssets.frameGreen),
                   SizedBox(
                     height: 22.h,
                   ),
