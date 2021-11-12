@@ -54,7 +54,7 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
                   );
                 },
                 child: Image.asset(
-                  ImageAssets.icCopy,
+                  ImageAssets.ic_copy,
                   height: 17.67.h,
                   width: 19.14.w,
                   color: AppTheme.getInstance().fillColor(),

@@ -243,7 +243,7 @@ class _WalletState extends State<WalletScreen>
                                 ),
                                 ImportToken(
                                   title: S.current.import_token,
-                                  icon: ImageAssets.icImport,
+                                  icon: ImageAssets.ic_import2,
                                   keyRouter: 1,
                                 ),
                                 SizedBox(
@@ -286,12 +286,12 @@ class _WalletState extends State<WalletScreen>
                                 ),
                                 ImportToken(
                                   title: S.current.import_NFT,
-                                  icon: ImageAssets.icImport,
+                                  icon: ImageAssets.ic_import2,
                                   keyRouter: 2,
                                 ),
                                 CreateNFT(
                                   title: S.current.create_NFT,
-                                  icon: ImageAssets.icAdd,
+                                  icon: ImageAssets.ic_add,
                                 ),
                                 SizedBox(
                                   height: 102.h,
@@ -380,7 +380,7 @@ class _WalletState extends State<WalletScreen>
                       );
                     },
                     child: ImageIcon(
-                      const AssetImage(ImageAssets.icEdit),
+                      const AssetImage(ImageAssets.ic_edit),
                       color: Colors.white,
                       size: 24.sp,
                     ),
@@ -453,7 +453,7 @@ class _WalletState extends State<WalletScreen>
               IconButton(
                 onPressed: () {},
                 icon: const ImageIcon(
-                  AssetImage(ImageAssets.code),
+                  AssetImage(ImageAssets.ic_qr_code),
                   color: Colors.white,
                 ),
               ),

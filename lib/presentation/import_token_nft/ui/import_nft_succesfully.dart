@@ -54,7 +54,7 @@ void showNFTSuccessfully(BuildContext context) {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(ImageAssets.icFrame),
+                      Image.asset(ImageAssets.frameGreen),
                       SizedBox(
                         height: 22.h,
                       ),

@@ -23,7 +23,7 @@ Container headerPRVAndSeedPhr({
       children: [
         GestureDetector(
           child: IconButton(
-            icon: Image.asset(ImageAssets.back),
+            icon: Image.asset(ImageAssets.ic_back),
             onPressed: leftFunction,
           ),
         ),
@@ -37,7 +37,7 @@ Container headerPRVAndSeedPhr({
         ),
         GestureDetector(
             child: IconButton(
-              icon: Image.asset(ImageAssets.icClose),
+              icon: Image.asset(ImageAssets.ic_close),
               onPressed: leftFunction,
             ),
         )

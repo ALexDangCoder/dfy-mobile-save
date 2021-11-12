@@ -121,7 +121,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
               },
               child: Row(
                 children: [
-                  Image.asset(ImageAssets.addsWallet),
+                  Image.asset(ImageAssets.ic_add_wallet),
                   SizedBox(
                     width: 8.w,
                   ),
@@ -160,7 +160,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
           children: [
             IconButton(
               onPressed: () {},
-              icon: Image.asset(ImageAssets.menu),
+              icon: Image.asset(ImageAssets.ic_menu),
             ),
             Column(
               children: [
@@ -187,7 +187,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
             ),
             IconButton(
               onPressed: () {},
-              icon: Image.asset(ImageAssets.notification),
+              icon: Image.asset(ImageAssets.ic_notify),
             )
           ],
         ),

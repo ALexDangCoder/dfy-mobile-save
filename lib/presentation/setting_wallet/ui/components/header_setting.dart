@@ -24,10 +24,8 @@ Container headerSetting({
       children: [
         GestureDetector(
           child: IconButton(
-            icon: Image.asset(ImageAssets.back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            icon: Image.asset(ImageAssets.ic_back),
+            onPressed: leftFunction,
           ),
         ),
         Text(

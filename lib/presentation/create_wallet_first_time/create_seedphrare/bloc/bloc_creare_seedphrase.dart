@@ -87,6 +87,8 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         'password': password,
       };
       await PrefsService.saveFirstAppConfig('false');
+      await PrefsService.saveAppLockConfig(isAppLock.toString());
+      await PrefsService.saveFaceIDConfig(isFaceID.toString());
       await trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {
       //todo
@@ -97,6 +99,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   String passPhrase = '';
   String walletAddress = '';
   String privateKey = '';
+  bool configSuccess = false;
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {

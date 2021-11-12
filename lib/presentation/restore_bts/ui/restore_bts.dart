@@ -131,7 +131,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                         child: Container(
                           margin: EdgeInsets.only(right: 28.w, left: 37.w),
                           child: const ImageIcon(
-                            AssetImage(ImageAssets.back),
+                            AssetImage(ImageAssets.ic_back),
                             color: Colors.white,
                           ),
                         ),
@@ -239,7 +239,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                       child: Row(
                                         children: [
                                           Image.asset(
-                                            ImageAssets.security,
+                                            ImageAssets.ic_security,
                                             color: Colors.white,
                                           ),
                                           SizedBox(
@@ -270,7 +270,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                           ),
                                           const Expanded(
                                             child: ImageIcon(
-                                              AssetImage(ImageAssets.expand),
+                                              AssetImage(
+                                                ImageAssets.ic_line_down,
+                                              ),
                                               color: Colors.white,
                                             ),
                                           ),
@@ -288,7 +290,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                       type = snapshot.data!;
                                       return type == FormType.PASS_PHRASE
                                           ? ItemForm(
-                                              prefix: ImageAssets.key,
+                                              prefix: ImageAssets.ic_key24,
                                               hint: S.current.wallet_secret,
                                               suffix: ImageAssets.paste,
                                               formType: FormType.PASS_PHRASE,
@@ -304,7 +306,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                               },
                                             )
                                           : ItemForm(
-                                              prefix: ImageAssets.key,
+                                              prefix: ImageAssets.ic_key24,
                                               hint: S.current.private_key,
                                               suffix: S.current.paste,
                                               formType: FormType.PRIVATE_KEY,
@@ -330,11 +332,11 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     builder: (ctx, snapshot) {
                                       isShowNewPass = snapshot.data!;
                                       return ItemForm(
-                                        prefix: ImageAssets.lock,
+                                        prefix: ImageAssets.ic_lock,
                                         hint: S.current.new_pass,
                                         suffix: isShowNewPass
-                                            ? ImageAssets.show
-                                            : ImageAssets.hide,
+                                            ? ImageAssets.ic_show
+                                            : ImageAssets.ic_hide,
                                         formType: FormType.PASSWORD,
                                         isShow: isShowNewPass,
                                         callback: () {
@@ -355,11 +357,11 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     builder: (ctx, snapshot) {
                                       isShowConPass = snapshot.data!;
                                       return ItemForm(
-                                        prefix: ImageAssets.lock,
+                                        prefix: ImageAssets.ic_lock,
                                         hint: S.current.con_pass,
                                         suffix: isShowConPass
-                                            ? ImageAssets.show
-                                            : ImageAssets.hide,
+                                            ? ImageAssets.ic_show
+                                            : ImageAssets.ic_hide,
                                         formType: FormType.PASSWORD,
                                         isShow: isShowConPass,
                                         callback: () {
@@ -409,7 +411,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                                 );
                                               },
                                               child: Image.asset(
-                                                ImageAssets.scan_qr,
+                                                ImageAssets.ic_qr_code,
                                               ),
                                             )
                                           ],

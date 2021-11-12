@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 28.h,
                   ),
                   const Image(
-                    image: AssetImage(ImageAssets.center),
+                    image: AssetImage(ImageAssets.centered),
                   ),
                   SizedBox(
                     height: 68.h,
@@ -237,17 +237,26 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           if (controller.value.text.isNotEmpty && !errorText) {
                             _cubit.checkPasswordWallet(controller.value.text);
-                            Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                builder: (context) => const MainScreen(
-                                  index: 1,
+                            if (state is LoginSuccess) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                  const MainScreen(
+                                    index: 1,
+                                  ),
                                 ),
-                              ),
-                              (route) => route.isFirst,
-                            );
+                                    (route) => route.isFirst,
+                              );
+                            }
+                            if (state is LoginSuccess) {
+                              _showDialog();
+                            }
                           }
-                          else {
-                            _showDialog();
+                          if(!errorText) {
+                            _showDialog(
+                              alert: S.current.password_is_required,
+                              text: '',
+                            );
                           }
                         },
                       );
@@ -268,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 index: 1,
                               ),
                             ),
-                                (route) => route.isFirst,
+                            (route) => route.isFirst,
                           );
                         }
                       },
@@ -353,7 +362,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _showDialog() {
+  void _showDialog({String? alert, String? text}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -370,7 +379,7 @@ class _LoginScreenState extends State<LoginScreen> {
           title: Column(
             children: [
               Text(
-                S.current.password_is_not_correct,
+                alert ?? S.current.password_is_not_correct,
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
@@ -381,7 +390,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 4.h,
               ),
               Text(
-                S.current.please_try_agian,
+                text ?? S.current.please_try_agian,
                 style: textNormalCustom(
                   Colors.white,
                   12.sp,
