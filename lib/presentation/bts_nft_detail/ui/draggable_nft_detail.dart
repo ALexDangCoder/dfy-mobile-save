@@ -321,11 +321,12 @@ class _NFTDetailState extends State<NFTDetail> {
     final text = mockData[index];
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const TransactionDetail(
-              detailTransaction: '158.2578',
-            ),
+        showModalBottomSheet(
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          context: context,
+          builder: (context) => const TransactionDetail(
+            detailTransaction: '158.2578',
           ),
         );
       },
