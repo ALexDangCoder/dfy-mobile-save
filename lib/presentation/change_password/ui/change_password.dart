@@ -54,7 +54,9 @@ class _ChangePasswordState extends State<ChangePassword> {
         child: Column(
           children: [
             headerChangePW(
-              callBack: () {},
+              callBack: () {
+                Navigator.pop(context);
+              },
             ),
             const Divider(
               thickness: 1,
