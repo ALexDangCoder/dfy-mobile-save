@@ -99,7 +99,7 @@ class _BodyState extends State<Body> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Image.asset(ImageAssets.icFrame),
+                  Image.asset(ImageAssets.frameGreen),
                   SizedBox(
                     height: 22.h,
                   ),
@@ -121,7 +121,7 @@ class _BodyState extends State<Body> {
                         bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
                         title: S.current.use_face,
                         isCheck: snapshot.data ?? false,
-                        urlPrefixIcon: ImageAssets.icFace,
+                        urlPrefixIcon: ImageAssets.ic_face,
                       );
                     },
                   ),
@@ -135,7 +135,7 @@ class _BodyState extends State<Body> {
                         bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
                         title: S.current.wallet_app_lock,
                         isCheck: snapshot.data ?? false,
-                        urlPrefixIcon: ImageAssets.icPassword,
+                        urlPrefixIcon: ImageAssets.ic_password,
                       );
                     },
                   ),
@@ -149,22 +149,24 @@ class _BodyState extends State<Body> {
           Center(
             child: GestureDetector(
               onTap: () {
-                //Navigator.popAndPushNamed(context,AppRouter.login);
-                //cubit.walletSink.add(2);
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => MainScreen(
-                      index: 1,
-                      wallet: widget.wallet,
-                    ),
-                  ),
-                  (route) => false,
-                );
                 widget.bLocCreateSeedPhrase.setConfig(
                   password: widget.bLocCreateSeedPhrase.passWord,
                   isAppLock: widget.bLocCreateSeedPhrase.isCheckAppLock.value,
                   isFaceID: widget.bLocCreateSeedPhrase.isCheckTouchID.value,
                 );
+                //Navigator.popAndPushNamed(context,AppRouter.login);
+                //cubit.walletSink.add(2);
+                if(widget.bLocCreateSeedPhrase.configSuccess){
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                      const MainScreen(
+                        index: 1,
+                      ),
+                    ),
+                        (route) => route.isFirst,
+                  );
+                }
               },
               child: ButtonGold(
                 title: S.current.complete,

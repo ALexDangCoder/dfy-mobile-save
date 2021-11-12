@@ -8,17 +8,15 @@ const String url_ic_out = 'assets/images/ic_out.png';
 
 const String url_ic_wallet = 'assets/images/ic_wallet.png';
 
-const String url_ic_address = 'assets/images/location.png';
+const String url_ic_address = 'assets/images/ic_location.png';
 
 const String url_ic_symbol = 'assets/images/ic_token.png';
+const String url_ic_qr = 'assets/images/ic_qr_code.png';
 
-const String url_ic_decimal = 'assets/images/Token dercima.png';
+const String url_ic_decimal = 'assets/images/ic_token_dercima.png';
+const String url_ic_search = 'assets/images/ic_search.png';
 
-const String url_ic_qr = 'assets/images/scan-barcode.png';
-
-const String url_ic_search = 'assets/images/Search.png';
-
-const String url_ic_enter_id = 'assets/images/ID.png';
+const String url_ic_enter_id = 'assets/images/ic_id.png';
 
 const String url_ic_copy = 'assets/images/ic_copy.png';
 const String url_ic_close = 'assets/images/ic_close.png';

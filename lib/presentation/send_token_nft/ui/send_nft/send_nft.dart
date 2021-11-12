@@ -58,7 +58,7 @@ class _SendNftState extends State<SendNft> {
                   formShowFtAddress(
                     hintText: '0xf94138c9...43FE932eA',
                     readOnly: true,
-                    prefixImg: ImageAssets.from,
+                    prefixImg: ImageAssets.ic_from,
                     suffixImg: '',
                   ),
                   SizedBox(
@@ -77,8 +77,8 @@ class _SendNftState extends State<SendNft> {
                         ),
                       );
                     },
-                    suffixImg: ImageAssets.code,
-                    prefixImg: ImageAssets.to,
+                    suffixImg: ImageAssets.ic_qr_code,
+                    prefixImg: ImageAssets.ic_to,
                   ),
                   txtWaringAddress(),
                   SizedBox(
@@ -307,7 +307,7 @@ class _SendNftState extends State<SendNft> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Image.asset('assets/images/Group.png'),
+              icon: Image.asset('assets/images/ic_group.png'),
             ),
           )
         ],

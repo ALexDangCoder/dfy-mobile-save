@@ -41,8 +41,8 @@ class _NFTItemState extends State<NFTItem> {
               ),
               child: ImageIcon(
                 _customTileExpanded
-                    ? const AssetImage(ImageAssets.icLineDown)
-                    : const AssetImage(ImageAssets.icLineRight),
+                    ? const AssetImage(ImageAssets.ic_line_down)
+                    : const AssetImage(ImageAssets.ic_line_right),
                 size: 24.sp,
                 color: Colors.white,
               ),

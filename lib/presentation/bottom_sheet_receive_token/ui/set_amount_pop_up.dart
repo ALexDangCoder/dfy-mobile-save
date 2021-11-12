@@ -66,7 +66,7 @@ class SetAmountPopUp extends StatelessWidget {
                           height: 24.h,
                         ),
                         ItemForm(
-                          prefix: ImageAssets.token,
+                          prefix: ImageAssets.ic_token,
                           hint: S.current.amount,
                           suffix: S.current.max,
                           formType: FormType.AMOUNT,

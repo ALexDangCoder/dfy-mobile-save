@@ -35,33 +35,17 @@ class AppRouter {
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
       case scanQR:
-      // return MaterialPageRoute(
-      //     builder: (ctx) => QRViewExample(
-      //           bloc: ImportTokenNftBloc(),
-      //         ));
-      case setupPassWord:
-        return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
       case main:
-        return MaterialPageRoute(builder: (ctx) {
-          final  arg = ModalRoute.of(ctx)!.settings.arguments as int?;
-          return MainScreen(
-            index: arg,
-          );
-        });
+        return MaterialPageRoute(
+          builder: (ctx) {
+            final arg = ModalRoute.of(ctx)!.settings.arguments as int?;
+            return MainScreen(
+              index: arg,
+            );
+          },
+        );
       case sendToken:
         return MaterialPageRoute(builder: (ctx) => const SendToken());
-      // case main:
-      //   return MaterialPageRoute(
-      //       builder: (ctx) => MainScreen(
-      //             bLocCreateSeedPhrase: BLocCreateSeedPhrase(),
-      //           ),);
-
-      // case login:
-      //   return MaterialPageRoute(
-      //     builder: (ctx) =>  LoginScreen(),
-      //   );
-      // case wallet:
-      //   return MaterialPageRoute(builder: (ctx) => const WalletScreen());
     }
   }
 }
