@@ -92,7 +92,7 @@ class _ReceiveState extends State<Receive> {
                     height: 16.8.h,
                     width: 16.8.w,
                     child: const ImageIcon(
-                      AssetImage(ImageAssets.back),
+                      AssetImage(ImageAssets.ic_back),
                       color: Colors.white,
                     ),
                   ),
@@ -237,7 +237,7 @@ class _ReceiveState extends State<Receive> {
                   : MainAxisAlignment.center,
               children: [
                 _buildColumnButton(
-                  path: ImageAssets.save,
+                  path: ImageAssets.ic_save,
                   label: S.current.save,
                   callback: () async {
                     final RenderRepaintBoundary? boundary =
@@ -260,7 +260,7 @@ class _ReceiveState extends State<Receive> {
                 ),
                 if (widget.type == TokenType.DFY)
                   _buildColumnButton(
-                    path: ImageAssets.set_amount,
+                    path: ImageAssets.ic_set_amount,
                     label: S.current.set_amount,
                     callback: () {
                       Navigator.of(context).push(
@@ -281,7 +281,7 @@ class _ReceiveState extends State<Receive> {
                     width: 60.w,
                   ),
                 _buildColumnButton(
-                  path: ImageAssets.share,
+                  path: ImageAssets.ic_share,
                   label: S.current.share,
                   callback: () async {
                     final RenderRepaintBoundary? boundary =

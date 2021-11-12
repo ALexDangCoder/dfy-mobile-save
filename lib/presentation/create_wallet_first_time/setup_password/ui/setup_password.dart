@@ -296,16 +296,16 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 },
                 child: snapshot.data ?? false
                     ? const ImageIcon(
-                        AssetImage(ImageAssets.show),
+                        AssetImage(ImageAssets.ic_show),
                         color: Colors.grey,
                       )
                     : const ImageIcon(
-                        AssetImage(ImageAssets.hide),
+                        AssetImage(ImageAssets.ic_hide),
                         color: Colors.grey,
                       ),
               ),
               prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.lock),
+                AssetImage(ImageAssets.ic_lock),
                 color: Colors.white,
               ),
               border: InputBorder.none,
@@ -359,16 +359,16 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 },
                 child: snapshot.data ?? false
                     ? const ImageIcon(
-                        AssetImage(ImageAssets.show),
+                        AssetImage(ImageAssets.ic_show),
                         color: Colors.grey,
                       )
                     : const ImageIcon(
-                        AssetImage(ImageAssets.hide),
+                        AssetImage(ImageAssets.ic_hide),
                         color: Colors.grey,
                       ),
               ),
               prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.lock),
+                AssetImage(ImageAssets.ic_lock),
                 color: Colors.white,
               ),
               border: InputBorder.none,
@@ -410,7 +410,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Image.asset(ImageAssets.backArrow),
+              icon: Image.asset(ImageAssets.ic_back),
             ),
           ),
           SizedBox(
@@ -432,7 +432,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Image.asset(ImageAssets.group),
+              icon: Image.asset(ImageAssets.ic_close),
             ),
           )
         ],

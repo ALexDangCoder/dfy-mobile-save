@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:Dfy/generated/l10n.dart';
 
-import 'components/face_id_button.dart';
 import 'components/header.dart';
 
 class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
@@ -41,7 +40,7 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
           SizedBox(height: 40.h,),
           ButtonGold(title: S.current.continue_s, isEnable: true),
           SizedBox(height: 40.h,),
-          faceIDButton(),
+          const Image(image: AssetImage(ImageAssets.faceID),),
         ],
       ),
     );
@@ -82,16 +81,16 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
             onTap: () {},
             child: isShow
                 ? const ImageIcon(
-                    AssetImage(ImageAssets.show),
+                    AssetImage(ImageAssets.ic_show),
                     color: Colors.grey,
                   )
                 : const ImageIcon(
-                    AssetImage(ImageAssets.hide),
+                    AssetImage(ImageAssets.ic_hide),
                     color: Colors.grey,
                   ),
           ),
           prefixIcon: const ImageIcon(
-            AssetImage(ImageAssets.lock),
+            AssetImage(ImageAssets.ic_lock),
             color: Colors.white,
           ),
           border: InputBorder.none,
