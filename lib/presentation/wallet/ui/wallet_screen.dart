@@ -10,6 +10,8 @@ import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedph
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
+import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
+import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/createNFT.dart';
 import 'package:Dfy/presentation/wallet/ui/import.dart';

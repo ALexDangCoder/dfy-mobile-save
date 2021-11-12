@@ -17,7 +17,7 @@ Container headerSetting({
       right: 16.w,
       left: 16.w,
       top: 16.h,
-      bottom: 20.h,
+      // bottom: 20.h,
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,13 +39,13 @@ Container headerSetting({
         GestureDetector(
           child: Text(
             S.current.lock,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w700,
-              color: const Color.fromRGBO(228, 172, 26, 1),
+            style: textNormalCustom(
+              const Color.fromRGBO(228, 172, 26, 1),
+              16.sp,
+              FontWeight.w700,
             ),
           ),
-        ),
+        )
       ],
     ),
   );

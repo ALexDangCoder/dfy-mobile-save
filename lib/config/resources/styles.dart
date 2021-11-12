@@ -1,4 +1,6 @@
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const emptyView = SizedBox(width: 0, height: 0);
@@ -49,6 +51,25 @@ TextStyle textNormal(Color? color, double? fontSize) {
   );
 }
 
+TextStyle tokenDetailAmount({Color color = Colors.white, double fontSize = 24,
+  FontWeight weight = FontWeight.w600,}) {
+  return GoogleFonts.sen(
+    color: color,
+    fontWeight: weight,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize,
+  );
+}
+
+TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
+  return GoogleFonts.sen(
+    color: color,
+    fontWeight: FontWeight.w700,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize,
+  );
+}
+
 TextStyle textNormalCustom(
   Color? color,
   double? fontSize,
@@ -61,3 +82,20 @@ TextStyle textNormalCustom(
     fontSize: fontSize ?? 14,
   );
 }
+
+TextStyle textFieldNFT = GoogleFonts.sen(
+  color: AppTheme.getInstance().textThemeColor(),
+  fontWeight: FontWeight.w700,
+  fontSize: 16.sp,
+);
+TextStyle textValueNFT = GoogleFonts.sen(
+  color: AppTheme.getInstance().textThemeColor(),
+  fontWeight: FontWeight.w400,
+  fontSize: 16.sp,
+);
+TextStyle richTextValueNFT = GoogleFonts.sen(
+  color: const Color(0xff46BCFF),
+  fontWeight: FontWeight.w400,
+  fontSize: 16.sp,
+  decoration: TextDecoration.underline,
+);

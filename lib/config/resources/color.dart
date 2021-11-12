@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 
 ///=========== Colors for default when didn't setup app theme ===============
@@ -20,6 +21,8 @@ const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
 ];
+const successTransactionColor = Color(0xFF61C777);
+const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
 
 //bottom navigation color
@@ -117,6 +120,14 @@ abstract class AppColor {
   Color whiteColor();
 
   Color backgroundLoginTextField();
+
+  Color successTransactionColors();
+
+  Color blueColor();
+
+  Color failTransactionColors();
+
+  Color currencyDetailTokenColor();
 }
 
 class LightApp extends AppColor {
@@ -257,8 +268,28 @@ class LightApp extends AppColor {
 
   @override
   Color whiteColor() {
-    // TODO: implement whiteColor
     return Colors.white;
+  }
+
+  @override
+  Color blueColor() {
+    // TODO: implement blueColor
+    return const Color(0xFF46BCFF);
+  }
+
+  @override
+  Color currencyDetailTokenColor() {
+    return Colors.white.withOpacity(0.7);
+  }
+
+  @override
+  Color failTransactionColors() {
+   return failTransactionColor;
+  }
+
+  @override
+  Color successTransactionColors() {
+    return successTransactionColor;
   }
 }
 
@@ -416,6 +447,30 @@ class DarkApp extends AppColor {
   @override
   Color backgroundLoginTextField() {
     // TODO: implement backgroundLoginTextField
+    throw UnimplementedError();
+  }
+
+  @override
+  Color blueColor() {
+    // TODO: implement blueColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color currencyDetailTokenColor() {
+    // TODO: implement currencyDetailTokenColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color failTransactionColors() {
+    // TODO: implement failTransactionColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color successTransactionColors() {
+    // TODO: implement successTransactionColors
     throw UnimplementedError();
   }
 }

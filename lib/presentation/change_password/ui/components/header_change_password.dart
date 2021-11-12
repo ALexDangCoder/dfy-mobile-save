@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +22,8 @@ Container headerChangePW({
         ),
         Text(
           S.current.change_password,
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 20.sp,
-            color: Colors.white,
-          ),
+          style: textNormal(Colors.white, 20.sp)
+              .copyWith(fontWeight: FontWeight.w700),
         ),
       ],
     ),

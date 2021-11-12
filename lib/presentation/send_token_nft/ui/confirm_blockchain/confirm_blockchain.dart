@@ -43,7 +43,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
       fromAddress: '0xFE5...4fd0',
       amount: 0.551,
       nameToken: 'BNB',
-      imgWallet: ImageAssets.symbol,
+      imgWallet: ImageAssets.ic_symbol,
     );
     sendTokenCubit = SendTokenCubit();
     txtGasLimit = TextEditingController(text: gasLimitFirstFetch.toString());

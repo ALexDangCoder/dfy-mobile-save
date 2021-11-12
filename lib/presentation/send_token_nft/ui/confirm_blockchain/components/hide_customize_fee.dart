@@ -1,7 +1,9 @@
-import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Dfy/generated/l10n.dart';
 
 class HideCustomizeFee extends StatelessWidget {
   //todo show warning text
@@ -49,10 +51,10 @@ class HideCustomizeFee extends StatelessWidget {
                       children: [
                         Text(
                           S.current.estimate_gas_fee,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16.sp,
+                            FontWeight.w600,
                           ),
                         ),
                         StreamBuilder(
@@ -75,10 +77,11 @@ class HideCustomizeFee extends StatelessWidget {
                                           builder: (context, snapshot) {
                                             return Text(
                                               '${snapshot.data} $nameToken',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16.sp,
-                                                color: Colors.white,
+                                              style: textNormalCustom(
+                                                AppTheme.getInstance()
+                                                    .whiteColor(),
+                                                16.sp,
+                                                FontWeight.w600,
                                               ),
                                             );
                                           },
@@ -102,10 +105,10 @@ class HideCustomizeFee extends StatelessWidget {
                                           builder: (context, snapshot) {
                                             return Text(
                                               '${snapshot.data} $nameToken',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16.sp,
-                                                color: Colors.red,
+                                              style: textNormalCustom(
+                                                Colors.red,
+                                                16.sp,
+                                                FontWeight.w600,
                                               ),
                                             );
                                           },
@@ -115,10 +118,10 @@ class HideCustomizeFee extends StatelessWidget {
                                         ),
                                         Text(
                                           S.current.insufficient_balance,
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.red,
+                                          style: textNormalCustom(
+                                            Colors.red,
+                                            12.sp,
+                                            FontWeight.w400,
                                           ),
                                         ),
                                       ],
@@ -154,10 +157,10 @@ class HideCustomizeFee extends StatelessWidget {
   Text btnShow() {
     return Text(
       S.current.customize_fee,
-      style: TextStyle(
-        fontWeight: FontWeight.w400,
-        fontSize: 14.sp,
-        color: const Color.fromRGBO(70, 188, 255, 1),
+      style: textNormalCustom(
+        const Color.fromRGBO(70, 188, 255, 1),
+        14.sp,
+        FontWeight.w400,
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+
 class SendToken extends StatefulWidget {
   const SendToken({Key? key}) : super(key: key);
 
@@ -223,8 +224,19 @@ class _SendTokenState extends State<SendToken> {
         ),
         child: TextFormField(
           onChanged: (value) {
-             tokenCubit.checkValidAddress(value);
-            },
+            tokenCubit.checkValidAddress(value);
+            // if (txtAmount.text.isNotEmpty && value.isNotEmpty) {
+            //   tokenCubit.isShowConfirmBlockChain(
+            //     isHaveFrAddress: true,
+            //     isHaveAmount: true,
+            //   );
+            // } else {
+            //   tokenCubit.isShowConfirmBlockChain(
+            //     isHaveFrAddress: false,
+            //     isHaveAmount: false,
+            //   );
+            // }
+          },
           controller: readOnly ? null : txtToAddress,
           readOnly: readOnly,
           style: textNormal(
@@ -389,7 +401,7 @@ class _SendTokenState extends State<SendToken> {
                           color: const Color.fromRGBO(255, 108, 108, 1),
                         ),
                       );
-                    },),
+                    }),
               ),
             ],
           ),

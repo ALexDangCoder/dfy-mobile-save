@@ -1,4 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/components/header.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
 import 'package:Dfy/presentation/private_key_seed_phrase/ui/private_key_seed_phrase.dart';
@@ -10,7 +13,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'components/header.dart';
 
 class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
-  const ConfirmPWShowPRVSeedPhr({Key? key}) : super(key: key);
+  ConfirmPWShowPRVSeedPhr({required this.cubit, Key? key}) : super(key: key);
+
+  late String password = 'Huydepzai1102.';
+  final ConfirmPwPrvKeySeedpharseCubit cubit;
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,33 +33,49 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
       ),
       child: Column(
         children: [
-          headerPRVAndSeedPhr(leftFunction: () {}, rightFunction: () {}),
-          const Divider(
+          headerPRVAndSeedPhr(
+            leftFunction: () {
+              Navigator.pop(context);
+            },
+            rightFunction: () {
+              Navigator.pop(context);
+            },
+          ),
+          Divider(
             thickness: 1,
-            color: Color.fromRGBO(255, 255, 255, 0.1),
+            color: AppTheme.getInstance().divideColor(),
           ),
           SizedBox(
             height: 24.h,
           ),
           formSetupPassWordConfirm(
             hintText: S.current.enter_password,
-            controller: TextEditingController(),
+            controller: controller,
             isShow: true,
           ),
           SizedBox(
             height: 40.h,
           ),
-          GestureDetector(
-            onTap: () {
-              showPrivateKeySeedPhrase(context, PrivateKeySeedPhraseBloc());
+          StreamBuilder<bool>(
+            stream: cubit.isEnableBtnStream,
+            builder: (context, snapshot) {
+              return snapshot.data ?? false
+                  ? ButtonGold(
+                      title: S.current.continue_s,
+                      isEnable: true,
+                    )
+                  : ButtonGold(
+                      title: S.current.continue_s,
+                      isEnable: false,
+                    );
             },
-            child: ButtonGold(title: S.current.continue_s, isEnable: true),
           ),
           SizedBox(
             height: 40.h,
           ),
-
-          const Image(image: AssetImage(ImageAssets.faceID),),
+          const Image(
+            image: AssetImage(ImageAssets.faceID),
+          ),
         ],
       ),
     );
@@ -70,13 +93,18 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: TextFormField(
+        onChanged: (value) {
+          cubit.isEnableButton(
+            value: value,
+          );
+        },
         style: textNormal(
           Colors.white,
           16.sp,

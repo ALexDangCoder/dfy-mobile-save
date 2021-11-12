@@ -81,14 +81,26 @@ class ImageAssets {
   static const String ic_to = '$baseImg/ic_to.png';
   static const String ic_key24 = '$baseImg/ic_key24.png';
   static const String ic_from = '$baseImg/ic_from.png';
+  static const String ic_go_to = '$baseImg/To.png';
+  static const String codeS = '$baseImg/Code.png';
+  static const String ic_go_from = '$baseImg/From.png';
+  static const String img_card_defi = '$baseImg/card_defi.png';
+  static const String ic_receive = '$baseImg/receive-square.png';
+  static const String ic_send = '$baseImg/send-square.png';
+  static const String ic_clock = '$baseImg/clock.png';
+  static const String ic_fail = '$baseImg/close-circle.png';
+  static const String ic_tick_circle = '$baseImg/tick-circle.png';
   static const String background_splash = '$baseImg/background_splash.png';
   static const String image_splash = '$baseImg/image_splash.png';
-  static const String quantity = '$baseImg/Quantity.png';
+  static const String ic_quantity = '$baseImg/Quantity.png';
   static const String ic_global = '$baseImg/ic_global.png';
   static const String slc_acc = '$baseImg/Wallet.png';
 
 
-  static const String symbol = 'assets/images/symbol.png';
+  static const String ic_plus = '$baseImg/Plus.png';
+  static const String ic_symbol = 'assets/images/symbol.png';
+  static const String image_example_pop_up = '$baseImg/pop_image.png';
+
   static SvgPicture svgAssets(
     String name, {
     Color? color,

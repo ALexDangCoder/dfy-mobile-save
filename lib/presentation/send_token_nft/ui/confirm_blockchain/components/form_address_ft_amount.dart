@@ -1,4 +1,6 @@
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -38,10 +40,10 @@ class FormAddFtAmount extends StatelessWidget {
                   children: [
                     Text(
                       '${S.current.from}:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16.sp,
-                        color: const Color.fromRGBO(255, 255, 255, 1),
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        16.sp,
+                        FontWeight.w400,
                       ),
                     ),
                     SizedBox(
@@ -49,10 +51,10 @@ class FormAddFtAmount extends StatelessWidget {
                     ),
                     Text(
                       '${S.current.to}:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16.sp,
-                        color: const Color.fromRGBO(255, 255, 255, 1),
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        16.sp,
+                        FontWeight.w400,
                       ),
                     ),
                     SizedBox(
@@ -60,10 +62,10 @@ class FormAddFtAmount extends StatelessWidget {
                     ),
                     Text(
                       '${S.current.amount}:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16.sp,
-                        color: const Color.fromRGBO(255, 255, 255, 1),
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        16.sp,
+                        FontWeight.w400,
                       ),
                     )
                   ],
@@ -77,10 +79,10 @@ class FormAddFtAmount extends StatelessWidget {
                 children: [
                   Text(
                     from,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                      color: const Color.fromRGBO(255, 255, 255, 1),
+                    style: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16.sp,
+                      FontWeight.w400,
                     ),
                   ),
                   SizedBox(
@@ -88,10 +90,10 @@ class FormAddFtAmount extends StatelessWidget {
                   ),
                   Text(
                     to,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                      color: const Color.fromRGBO(255, 255, 255, 1),
+                    style: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16.sp,
+                      FontWeight.w400,
                     ),
                   ),
                   SizedBox(
@@ -99,10 +101,10 @@ class FormAddFtAmount extends StatelessWidget {
                   ),
                   Text(
                     amount,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20.sp,
-                      color: const Color.fromRGBO(228, 172, 26, 1),
+                    style: textNormalCustom(
+                      AppTheme.getInstance().fillColor(),
+                      20.sp,
+                      FontWeight.w600,
                     ),
                   ),
                 ],

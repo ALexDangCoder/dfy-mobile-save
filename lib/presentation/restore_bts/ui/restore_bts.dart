@@ -37,7 +37,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
   bool isShowNewPass = true;
   bool isShowConPass = true;
   int checkBox = 1;
-  bool tickCheckBox = false;
+  bool tickCheckBox = true;
   FormType type = FormType.PASS_PHRASE;
   late final TextEditingController passwordController;
   late final TextEditingController confirmPasswordController;
@@ -112,6 +112,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                 Container(
                   padding: EdgeInsets.only(
                     right: 37.w,
+                    left: 11.w,
                   ),
                   decoration: BoxDecoration(
                     border: Border(
@@ -129,7 +130,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          margin: EdgeInsets.only(right: 28.w, left: 37.w),
+                          margin: EdgeInsets.only(right: 16.w, left: 16.w),
                           child: const ImageIcon(
                             AssetImage(ImageAssets.ic_back),
                             color: Colors.white,
@@ -137,7 +138,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                         ),
                       ),
                       SizedBox(
-                        width: 49.w,
+                        width: 75.w,
                       ),
                       Expanded(
                         child: Text(
@@ -422,7 +423,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     },
                                   ),
                                   SizedBox(
-                                    height: 50.h,
+                                    height: 100.h,
                                   ),
                                 ],
                               ),

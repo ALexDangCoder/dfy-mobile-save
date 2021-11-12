@@ -1,8 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/confirm_blockchain.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
@@ -70,10 +70,9 @@ class _SendNftState extends State<SendNft> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (ctx) =>
-                              QRViewExample(
-                                controller: txtToAddress,
-                              ),
+                          builder: (ctx) => QRViewExample(
+                            controller: txtToAddress,
+                          ),
                         ),
                       );
                     },
@@ -88,7 +87,7 @@ class _SendNftState extends State<SendNft> {
                     hintText: S.current.quantity,
                     isAmount: true,
                     isQuantity: true,
-                    prefixImg: ImageAssets.quantity,
+                    prefixImg: ImageAssets.ic_quantity,
                   ),
                   txtWaringQuantity(),
                   SizedBox(
@@ -123,7 +122,8 @@ class _SendNftState extends State<SendNft> {
                   }
                 },
               );
-            },),
+            },
+          ),
           SizedBox(
             height: 34.h,
           ),
@@ -167,25 +167,22 @@ class _SendNftState extends State<SendNft> {
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: readOnly
-                ? TextStyle(
-              color: const Color.fromRGBO(255, 255, 255, 1),
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w400,
-            )
+                ? textNormal(const Color.fromRGBO(255, 255, 255, 1), 16.sp)
+                    .copyWith(fontWeight: FontWeight.w400)
                 : textNormal(
-              Colors.grey,
-              14.sp,
-            ),
+                    Colors.grey,
+                    14.sp,
+                  ),
             suffixIcon: InkWell(
               onTap: callBack,
               child: suffixImg == ''
                   ? const SizedBox(
-                width: 0,
-              )
+                      width: 0,
+                    )
                   : ImageIcon(
-                AssetImage(suffixImg),
-                color: Colors.white,
-              ),
+                      AssetImage(suffixImg),
+                      color: Colors.white,
+                    ),
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),
@@ -244,31 +241,27 @@ class _SendNftState extends State<SendNft> {
               onTap: callBack,
               child: (isAmount && !isQuantity)
                   ? Padding(
-                padding: EdgeInsets.only(
-                  top: 18.h,
-                ),
-                child: Text(
-                  S.current.max,
-                  style: TextStyle(
-                    color: const Color.fromRGBO(228, 172, 26, 1),
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16.sp,
-                  ),
-                ),
-              )
+                      padding: EdgeInsets.only(
+                        top: 18.h,
+                      ),
+                      child: Text(
+                        S.current.max,
+                        style: textNormal(
+                                const Color.fromRGBO(228, 172, 26, 1), 16.sp)
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    )
                   : Padding(
-                padding: EdgeInsets.only(
-                  top: 18.h,
-                ),
-                child: Text(
-                  '${S.current.of_all} 10',
-                  style: TextStyle(
-                    color: const Color.fromRGBO(255, 255, 255, 1),
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
+                      padding: EdgeInsets.only(
+                        top: 18.h,
+                      ),
+                      child: Text(
+                        '${S.current.of_all} 10',
+                        style: textNormal(
+                                const Color.fromRGBO(255, 255, 255, 1), 16.sp)
+                            .copyWith(fontWeight: FontWeight.w400),
+                      ),
+                    ),
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),
@@ -281,25 +274,18 @@ class _SendNftState extends State<SendNft> {
     );
   }
 
-  Padding header({required String nameSend}) {
-    return Padding(
-      padding:
-      EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
+  Container header({required String nameSend}) {
+    return Container(
+      width: 343.w,
+      margin: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 20.h),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          Text('Send $nameSend',
+              style: textNormal(Colors.white, 20.sp)
+                  .copyWith(fontWeight: FontWeight.w700)),
           SizedBox(
-            width: 121.w,
-          ),
-          Text(
-            'Send $nameSend',
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(
-            width: 94.w,
+            width: 120.48.w,
           ),
           Expanded(
             child: IconButton(
@@ -335,13 +321,13 @@ class _SendNftState extends State<SendNft> {
                     builder: (context, snapshot) {
                       return Text(
                         snapshot.data ?? '',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: const Color.fromRGBO(255, 108, 108, 1),
+                        style: textNormalCustom(
+                          const Color.fromRGBO(255, 108, 108, 1),
+                          12.sp,
+                          FontWeight.w400,
                         ),
                       );
-                    },),
+                    }),
               ),
             ],
           ),
@@ -366,18 +352,19 @@ class _SendNftState extends State<SendNft> {
                 width: 323.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
-                    initialData: '',
-                    stream: sendNftCubit.txtInvalidQuantityFormStream,
-                    builder: (context, snapshot) {
-                       return Text(
-                        snapshot.data ?? '',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: const Color.fromRGBO(255, 108, 108, 1),
-                        ),
-                      );
-                    },),
+                  initialData: '',
+                  stream: sendNftCubit.txtInvalidQuantityFormStream,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: textNormalCustom(
+                        const Color.fromRGBO(255, 108, 108, 1),
+                        12.sp,
+                        FontWeight.w400,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
