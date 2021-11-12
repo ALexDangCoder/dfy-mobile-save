@@ -46,7 +46,7 @@ class DefaultSubScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          icon: Image.asset(ImageAssets.backArrow),
+                          icon: Image.asset(ImageAssets.ic_back),
                         ),
                       ),
                       Expanded(

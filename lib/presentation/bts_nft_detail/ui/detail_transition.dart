@@ -20,7 +20,6 @@ class TransactionDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const int amount = 1000635;
     const double gasFee = 0.0000454546;
     final DateTime _time = DateTime.now();
     const String txhID = '0xaaa042c0632f4d44c7cea978f22cd02e751a410e';

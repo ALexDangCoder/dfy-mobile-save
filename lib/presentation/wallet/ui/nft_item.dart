@@ -65,7 +65,7 @@ class _NFTItemState extends State<NFTItem> {
                     width: 28.w,
                     height: 28.h,
                     image: const AssetImage(
-                      ImageAssets.symbol,
+                      ImageAssets.ic_symbol,
                     ),
                   ),
                   SizedBox(

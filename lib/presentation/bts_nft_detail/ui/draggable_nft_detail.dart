@@ -115,7 +115,7 @@ class _NFTDetailState extends State<NFTDetail> {
                           children: [
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: Image.asset(ImageAssets.card_defi),
+                              child: Image.asset(ImageAssets.img_card_defi),
                             ),
                             SizedBox(
                               height: 18.h,
@@ -159,8 +159,8 @@ class _NFTDetailState extends State<NFTDetail> {
                               height: 24.h,
                             ),
                             buildRowButton(
-                              ImageAssets.receive,
-                              ImageAssets.send,
+                              ImageAssets.ic_receive,
+                              ImageAssets.ic_send,
                             ),
                             SizedBox(
                               height: 30.h,
@@ -262,7 +262,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Image.asset(
-                                      ImageAssets.expand,
+                                      ImageAssets.ic_expanded,
                                       color: AppTheme.getInstance().fillColor(),
                                     ),
                                     SizedBox(
@@ -359,7 +359,7 @@ class _NFTDetailState extends State<NFTDetail> {
                     SizedBox(
                       width: 6.w,
                     ),
-                    Image.asset(ImageAssets.tick_circle)
+                    Image.asset(ImageAssets.ic_tick_circle)
                   ],
                 ),
                 Text(
