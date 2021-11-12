@@ -46,7 +46,19 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    btnAddWallet(),
+                    GestureDetector(
+                      child: btnAddWallet(),
+                      onTap: () {
+                        showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) {
+                            return const SetupPassWord();
+                          },
+                          isScrollControlled: true,
+                        );
+                      },
+                    ),
                     SizedBox(height: 39.h),
                     GestureDetector(
                       onTap: () {},
@@ -108,35 +120,23 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
           width: 131.w,
           height: 28.h,
           child: Center(
-            child: GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  backgroundColor: Colors.transparent,
-                  context: context,
-                  builder: (context) {
-                    return const SetupPassWord();
-                  },
-                  isScrollControlled: true,
-                );
-              },
-              child: Row(
-                children: [
-                  Image.asset(ImageAssets.ic_add_wallet),
-                  SizedBox(
-                    width: 8.w,
-                  ),
-                  Expanded(
-                    child: Text(
-                      S.current.add_wallet,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20.sp,
-                        color: const Color.fromRGBO(228, 172, 26, 1),
-                      ),
+            child: Row(
+              children: [
+                Image.asset(ImageAssets.ic_add_wallet),
+                SizedBox(
+                  width: 10.w,
+                ),
+                Expanded(
+                  child: Text(
+                    S.current.add_wallet,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20.sp,
+                      color: const Color.fromRGBO(228, 172, 26, 1),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -144,13 +144,13 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
     );
   }
 
-  Padding header() {
-    return Padding(
-      padding: EdgeInsets.only(
+  Container header() {
+    return Container(
+      margin: EdgeInsets.only(
         top: 44.h,
         left: 26.w,
         right: 26.w,
-        bottom: 14.h,
+        // bottom: 14.h,
       ),
       child: SizedBox(
         width: 323.w,

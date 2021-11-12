@@ -38,12 +38,12 @@ Container headerSetting({
         GestureDetector(
           child: Text(
             S.current.lock,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w700,
-              color: const Color.fromRGBO(228, 172, 26, 1),
+            style: textNormalCustom(
+              const Color.fromRGBO(228, 172, 26, 1),
+              16.sp,
+              FontWeight.w700,
             ),
-          )
+          ),
         )
       ],
     ),

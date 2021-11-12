@@ -15,7 +15,6 @@ class AppRouter {
   static const splash = '/splash';
   static const main = '/main';
   static const setupPassWord = '/setupPassWord';
-  static const testScreen = '/testScreen';
   static const login = '/login';
   static const wallet = '/wallet';
   static const sendToken = '/sendToken';
@@ -30,8 +29,6 @@ class AppRouter {
 
       case setupPassWord:
         return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
-      case testScreen:
-        return MaterialPageRoute(builder: (ctx) => const TestScreenUtils());
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
       case scanQR:

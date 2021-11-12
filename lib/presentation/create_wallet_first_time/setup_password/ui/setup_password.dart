@@ -1,4 +1,6 @@
+import 'package:Dfy/config/app_config.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
@@ -53,7 +55,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         width: 375.w,
         height: 764.h,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(62, 61, 92, 1),
+          color: AppTheme.getInstance().bgBtsColor(),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.r),
             topRight: Radius.circular(30.r),
@@ -62,9 +64,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
         child: Column(
           children: [
             header(),
-            const Divider(
+            Divider(
               thickness: 1,
-              color: Color.fromRGBO(255, 255, 255, 0.1),
+              color: AppTheme.getInstance().divideColor(),
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -149,11 +151,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 // height: 30.h,
                 child: Text(
                   S.current.pass_must,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: const Color.fromRGBO(255, 108, 108, 1),
-                  ),
+                  style: textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                      .copyWith(fontWeight: FontWeight.w400),
                 ),
               ),
             ],
@@ -179,11 +178,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 // height: 30.h,
                 child: Text(
                   S.current.not_match,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: const Color.fromRGBO(255, 108, 108, 1),
-                  ),
+                  style: textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                      .copyWith(fontWeight: FontWeight.w400),
                 ),
               ),
             ],
@@ -241,11 +237,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
             // height: 48.h,
             child: Text(
               S.current.understand_defi,
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 14.sp,
-                color: const Color.fromRGBO(255, 255, 255, 1),
-              ),
+              style: textNormal(const Color.fromRGBO(255, 255, 255, 1), 14.sp)
+                  .copyWith(fontWeight: FontWeight.w400),
             ),
           ),
         ],
@@ -261,11 +254,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showPWStream,
@@ -324,21 +317,19 @@ class _SetupPassWordState extends State<SetupPassWord> {
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().bgBtsColor(),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showConfirmPWStream,
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           return TextFormField(
             obscureText: snapshot.data ?? false,
-            style: textNormal(
-              Colors.white,
-              16.sp,
-            ),
+            style: textNormal(Colors.white, 16.sp)
+                .copyWith(fontWeight: FontWeight.w400),
             cursorColor: Colors.white,
             controller: confirmPassword,
             decoration: InputDecoration(
@@ -387,54 +378,47 @@ class _SetupPassWordState extends State<SetupPassWord> {
         // height: 72.h,
         child: Text(
           S.current.please,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w400,
-            color: const Color.fromRGBO(255, 255, 255, 1.0),
-          ),
+          style: textNormal(const Color.fromRGBO(255, 255, 255, 1.0), 16.sp)
+              .copyWith(fontWeight: FontWeight.w400),
         ),
       ),
     );
   }
 
-  Padding header() {
-    return Padding(
-      padding:
-          EdgeInsets.only( top: 16.h, bottom: 20.h),
-          // EdgeInsets.only(left: 0),
+  Container header() {
+    return Container(
+      width: 343.w,
+      // height: 28.h,
+      margin: EdgeInsets.only(
+        top: 16.h,
+        // bottom: 20.h,
+        left: 16.w,
+        right: 16.w,
+      ),
+      // EdgeInsets.only(left: 0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // SizedBox(width: 26.w,),
-          Expanded(
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Image.asset(ImageAssets.ic_back),
-            ),
+
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Image.asset(ImageAssets.ic_back),
           ),
-          SizedBox(
-            width: 66.w,
-          ),
+
           Text(
             S.current.create_new_wallet,
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
+            style: textNormal(Colors.white, 20.sp)
+                .copyWith(fontWeight: FontWeight.w700),
           ),
-          SizedBox(
-            width: 64.48.w,
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Image.asset(ImageAssets.ic_close),
           ),
-          Expanded(
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Image.asset(ImageAssets.ic_close),
-            ),
-          )
         ],
       ),
     );

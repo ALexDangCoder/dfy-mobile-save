@@ -1,7 +1,9 @@
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/header_setting.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ class SettingWallet extends StatelessWidget {
       width: 375.w,
       height: 764.h,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(62, 61, 92, 1),
+        color: AppTheme.getInstance().bgBtsColor(),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.r),
           topRight: Radius.circular(30.r),
@@ -25,7 +27,9 @@ class SettingWallet extends StatelessWidget {
       child: Column(
         children: [
           headerSetting(
-            leftFunction: () {},
+            leftFunction: () {
+              Navigator.pop(context);
+            },
             rightFunction: () {},
           ),
           const Divider(
@@ -72,13 +76,15 @@ class SettingWallet extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
-                        builder: (context) => const ConfirmPWShowPRVSeedPhr(),
+                        builder: (context) => ConfirmPWShowPRVSeedPhr(
+                          cubit: ConfirmPwPrvKeySeedpharseCubit(),
+                        ),
                         context: context,
                       );
                     },
                     child: buttonForm(
                       hintText: S.current.show_key_seed,
-                      prefixIcon: ImageAssets.ic_key,
+                      prefixIcon: ImageAssets.ic_key24,
                     ),
                   ),
                   SizedBox(
@@ -102,7 +108,7 @@ class SettingWallet extends StatelessWidget {
                     height: 16.h,
                   ),
                   switchForm(
-                    prefixImg: ImageAssets.ic_key,
+                    prefixImg: ImageAssets.ic_key24,
                     isCheck: true,
                     callBack: () {},
                     hintText: S.current.face_touch_id,
