@@ -13,7 +13,7 @@ class ChoiceDialog extends StatefulWidget {
     required this.controller1,
     required this.controller2,
   }) : super(key: key);
-  final RestoreCubit cubit;
+  final ImportCubit cubit;
   final TextEditingController controller1;
   final TextEditingController controller2;
 

@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/nft.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
+import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_nft.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ final NFT nft = NFT(
   '#357594',
 );
 
-import 'hero.dart';
 
 class NFTItem extends StatefulWidget {
   const NFTItem({
@@ -90,7 +90,7 @@ class _NFTItemState extends State<NFTItem> {
                       width: 28.w,
                       height: 28.h,
                       image: const AssetImage(
-                        ImageAssets.symbol,
+                        ImageAssets.ic_symbol,
                       ),
                     ),
                     SizedBox(
@@ -128,7 +128,7 @@ class _NFTItemState extends State<NFTItem> {
                       scrollDirection: Axis.horizontal,
                       itemCount: 6,
                       itemBuilder: (BuildContext context, int index) =>
-                          const CardNFT(objNFT: nft,),
+                           CardNFT(objNFT: nft,),
                     ),
                   ),
                 ),

@@ -8,6 +8,7 @@ import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/choose_acc.dart';
 import 'package:Dfy/widgets/form/form%20_text3.dart';
+import 'package:Dfy/widgets/form/form_text4.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase_copy2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,7 @@ class _BodyState extends State<Body> {
                         S.current.prv_key_ft_seed_phr,
                         style: textNormalCustom(
                           Colors.white,
-                          20.sp,
+                          20,
                           FontWeight.bold,
                         ),
                       ),
@@ -146,7 +147,7 @@ class _BodyState extends State<Body> {
                         SizedBox(
                           height: 16.h,
                         ),
-                        FromText3(
+                        FromText4(
                           titleCopy:
                               widget.bloc.listWallet[index ?? 0].privateKey ??
                                   '',

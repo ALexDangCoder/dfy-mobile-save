@@ -56,19 +56,19 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
           SizedBox(
             height: 40.h,
           ),
-          StreamBuilder<bool>(
-            stream: cubit.isEnableBtnStream,
-            builder: (context, snapshot) {
-              return snapshot.data ?? false
-                  ? ButtonGold(
-                      title: S.current.continue_s,
-                      isEnable: true,
-                    )
-                  : ButtonGold(
-                      title: S.current.continue_s,
-                      isEnable: false,
-                    );
+          GestureDetector(
+            onTap: () {
+              showPrivateKeySeedPhrase(context, PrivateKeySeedPhraseBloc());
             },
+            child: StreamBuilder<bool>(
+              stream: cubit.isEnableBtnStream,
+              builder: (context, snapshot) {
+                return ButtonGold(
+                  title: S.current.continue_s,
+                  isEnable: snapshot.data ?? false,
+                );
+              },
+            ),
           ),
           SizedBox(
             height: 40.h,

@@ -9,9 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class ChooseAcc extends StatelessWidget {
   final PrivateKeySeedPhraseBloc bloc;
+
   const ChooseAcc({
     Key? key,
     required this.bloc,
@@ -66,66 +66,70 @@ class ChooseAcc extends StatelessWidget {
                     ],
                   ),
                   spaceH12,
-                  SizedBox(
-                    height: 246.h,
-                    child: ListView.builder(
-                      itemCount: bloc.listWallet.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            bloc.index.sink.add(index);
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            width: 312.w,
-                            height: 82.h,
+                  Expanded(
+                    child: SizedBox(
+                      height: 246.h,
+                      child: ListView.builder(
+                        itemCount: bloc.listWallet.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              bloc.index.sink.add(index);
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              width: 312.w,
+                              height: 82.h,
                               decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.white.withOpacity(0.5),
-                                  width: 0.5,
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.white.withOpacity(0.5),
+                                    width: 0.5,
+                                  ),
                                 ),
                               ),
+                              child: Row(
+                                children: [
+                                  spaceW16,
+                                  Image.asset(
+                                    bloc.listWallet[index].urlImage ?? '',
+                                  ),
+                                  spaceW8,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        bloc.listWallet[index].walletName ?? '',
+                                        style: textNormal(Colors.white, 20.sp)
+                                            .copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                      Text(
+                                        bloc.formatText(
+                                          bloc.listWallet[index]
+                                                  .walletAddress ??
+                                              '',
+                                        ),
+                                        style: textNormal(
+                                          Colors.white.withOpacity(0.5),
+                                          16.sp,
+                                        ).copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
-                            child: Row(
-                              children: [
-                                spaceW16,
-                                Image.asset(
-                                  bloc.listWallet[index].urlImage ?? '',
-                                ),
-                                spaceW8,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      bloc.listWallet[index].walletName ?? '',
-                                      style: textNormal(Colors.white, 20.sp)
-                                          .copyWith(
-                                        fontWeight: FontWeight.w600,
-                                        fontStyle: FontStyle.normal,
-                                      ),
-                                    ),
-                                    Text(
-                                      bloc.formatText(
-                                        bloc.listWallet[index].walletAddress ??
-                                            '',
-                                      ),
-                                      style: textNormal(
-                                        Colors.white.withOpacity(0.5),
-                                        16.sp,
-                                      ).copyWith(
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   )
                 ],

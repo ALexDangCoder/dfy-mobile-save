@@ -324,7 +324,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        color: AppTheme.getInstance().bgBtsColor(),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showConfirmPWStream,
