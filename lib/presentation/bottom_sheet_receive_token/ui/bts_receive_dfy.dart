@@ -207,7 +207,8 @@ class _ReceiveState extends State<Receive> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Text(formatUSD.format(19990.3932212),
+                      Text(
+                        formatUSD.format(19990.3932212),
                         style: textNormal(
                           Colors.grey.withOpacity(0.5),
                           16.sp,

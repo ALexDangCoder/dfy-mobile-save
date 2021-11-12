@@ -55,41 +55,42 @@ void showCreateSuccessfully2({
             spaceH20,
             line,
             spaceH24,
-            Center(
-              child: Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 80.h,
+            SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 80.h,
+                    ),
+                    Image.asset(ImageAssets.icFrame),
+                    spaceH20,
+                    Text(
+                      S.current.congratulation,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32.sp,
                       ),
-                      Image.asset(ImageAssets.icFrame),
-                      spaceH20,
-                      Text(
-                        S.current.congratulation,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32.sp,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 213.h,
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 213.h,
+                    ),
+                  ],
                 ),
               ),
             ),
             Center(
               child: GestureDetector(
                 onTap: () {
-                  //Navigator.popAndPushNamed(context,AppRouter.login);
-                  Navigator.of(context).pushAndRemoveUntil(
+                  Navigator.push(
+                    context,
                     MaterialPageRoute(
-                      builder: (context) => const MainScreen(),
+                      builder: (context) => MainScreen(
+                        index: 1,
+                        wallet: wallet,
+                      ),
                     ),
-                    (route) => route.isFirst,
                   );
                 },
                 child: ButtonGold(

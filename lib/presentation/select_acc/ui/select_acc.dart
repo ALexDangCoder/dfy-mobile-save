@@ -3,7 +3,7 @@ import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/select_acc/bloc/select_acc_bloc.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_account.dart';
@@ -11,7 +11,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showSelectAcc(BuildContext context, SelectAccBloc bloc) {
+enum TypeScreen2 { setting, detail }
+
+void showSelectAcc(
+  BuildContext context,
+  WalletCubit bloc,
+  TypeScreen2 typeScreen2,
+) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -19,15 +25,18 @@ void showSelectAcc(BuildContext context, SelectAccBloc bloc) {
     builder: (context) {
       return SelectAcc(
         bloc: bloc,
+        typeScreen2: typeScreen2,
       );
     },
   );
 }
 
 class SelectAcc extends StatefulWidget {
-  final SelectAccBloc bloc;
+  final WalletCubit bloc;
+  final TypeScreen2 typeScreen2;
 
-  const SelectAcc({Key? key, required this.bloc}) : super(key: key);
+  const SelectAcc({Key? key, required this.bloc, required this.typeScreen2})
+      : super(key: key);
 
   @override
   _SelectAccState createState() => _SelectAccState();
@@ -93,7 +102,17 @@ class _SelectAccState extends State<SelectAcc> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
+                        widget.bloc.addressWallet.sink
+                            .add(snapshot.data?[index].addressWallet ?? '');
+                        widget.bloc.walletName.sink
+                            .add(snapshot.data?[index].nameWallet ?? '');
                         widget.bloc.click(index);
+                        if (widget.typeScreen2 == TypeScreen2.detail) {
+                          Navigator.pop(context);
+                        } else {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        }
                       },
                       onLongPress: () {
                         Navigator.of(context).push(
@@ -112,7 +131,9 @@ class _SelectAccState extends State<SelectAcc> {
                         decoration: BoxDecoration(
                           border: Border(
                             top: BorderSide(
-                                width: 1, color: Colors.white.withOpacity(0.1)),
+                              width: 1,
+                              color: Colors.white.withOpacity(0.1),
+                            ),
                           ),
                         ),
                         height: 74.h,
@@ -129,7 +150,8 @@ class _SelectAccState extends State<SelectAcc> {
                                 Row(
                                   children: [
                                     Image.asset(
-                                        snapshot.data?[index].url ?? ''),
+                                      snapshot.data?[index].url ?? '',
+                                    ),
                                     spaceW8,
                                     Column(
                                       crossAxisAlignment:
@@ -149,7 +171,7 @@ class _SelectAccState extends State<SelectAcc> {
                                             ),
                                             spaceW4,
                                             Text(
-                                              widget.bloc.formatAddress(
+                                              widget.bloc.formatAddress1(
                                                 snapshot.data?[index]
                                                         .addressWallet ??
                                                     '',
@@ -184,6 +206,8 @@ class _SelectAccState extends State<SelectAcc> {
                                           ? Container(
                                               width: 65.w,
                                               height: 22.h,
+                                              padding:
+                                                  EdgeInsets.only(top: 3.h),
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     const BorderRadius.all(

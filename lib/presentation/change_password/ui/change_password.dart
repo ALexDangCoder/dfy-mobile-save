@@ -109,7 +109,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                     );
                     _passwordCubit.showTxtWarningNewPW(_txtNewPW.text);
                     _passwordCubit.showTxtWarningConfirmPW(
-                      _txtConfirmPW.text, newPassword: _txtNewPW.text,);
+                      _txtConfirmPW.text,
+                      newPassword: _txtNewPW.text,
+                    );
                   },
                 );
               },

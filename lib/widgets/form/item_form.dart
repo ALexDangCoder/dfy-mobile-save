@@ -82,7 +82,7 @@ class ItemForm extends StatelessWidget {
           ),
         ),
       );
-    }else if (formType == FormType.PRIVATE_KEY) {
+    } else if (formType == FormType.PRIVATE_KEY) {
       return Container(
         height: 64.h,
         width: 323.w,

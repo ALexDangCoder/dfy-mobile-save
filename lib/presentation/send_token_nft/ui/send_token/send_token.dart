@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
@@ -7,7 +8,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 class SendToken extends StatefulWidget {
   const SendToken({Key? key}) : super(key: key);
@@ -223,20 +223,8 @@ class _SendTokenState extends State<SendToken> {
         ),
         child: TextFormField(
           onChanged: (value) {
-            print(value);
-            tokenCubit.checkValidAddress(value);
-            // if (txtAmount.text.isNotEmpty && value.isNotEmpty) {
-            //   tokenCubit.isShowConfirmBlockChain(
-            //     isHaveFrAddress: true,
-            //     isHaveAmount: true,
-            //   );
-            // } else {
-            //   tokenCubit.isShowConfirmBlockChain(
-            //     isHaveFrAddress: false,
-            //     isHaveAmount: false,
-            //   );
-            // }
-          },
+             tokenCubit.checkValidAddress(value);
+            },
           controller: readOnly ? null : txtToAddress,
           readOnly: readOnly,
           style: textNormal(
@@ -401,7 +389,7 @@ class _SendTokenState extends State<SendToken> {
                           color: const Color.fromRGBO(255, 108, 108, 1),
                         ),
                       );
-                    }),
+                    },),
               ),
             ],
           ),
@@ -429,7 +417,6 @@ class _SendTokenState extends State<SendToken> {
                     initialData: '',
                     stream: tokenCubit.txtInvalidAmountStream,
                     builder: (context, snapshot) {
-                      print(snapshot.data);
                       return Text(
                         snapshot.data ?? '',
                         style: TextStyle(
@@ -438,7 +425,7 @@ class _SendTokenState extends State<SendToken> {
                           color: const Color.fromRGBO(255, 108, 108, 1),
                         ),
                       );
-                    }),
+                    },),
               ),
             ],
           ),

@@ -46,8 +46,8 @@ Container headerSetting({
               fontWeight: FontWeight.w700,
               color: const Color.fromRGBO(228, 172, 26, 1),
             ),
-          )
-        )
+          ),
+        ),
       ],
     ),
   );

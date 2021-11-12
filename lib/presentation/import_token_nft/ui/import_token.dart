@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
-import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
@@ -28,7 +27,7 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
       //     symbol: "dsfsadf",
       //     decimal: 1);
       bloc.getListSupportedToken(
-        walletAddress: "walletAddress",
+        walletAddress: 'walletAddress',
       );
       trustWalletChannel.setMethodCallHandler(
         bloc.nativeMethodCallBackTrustWallet,

@@ -44,7 +44,6 @@ class _RestoreBTSState extends State<RestoreBTS> {
   late final TextEditingController privateKeyController;
   late final TextEditingController seedPhraseController;
 
-
   @override
   void initState() {
     super.initState();

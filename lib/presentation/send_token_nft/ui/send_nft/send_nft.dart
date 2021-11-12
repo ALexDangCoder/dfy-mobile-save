@@ -1,8 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/confirm_blockchain.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
@@ -156,7 +156,6 @@ class _SendNftState extends State<SendNft> {
         child: TextFormField(
           controller: readOnly ? null : txtToAddress,
           onChanged: (value) {
-            print(value);
             sendNftCubit.checkValidAddress(value);
           },
           readOnly: readOnly,
@@ -342,7 +341,7 @@ class _SendNftState extends State<SendNft> {
                           color: const Color.fromRGBO(255, 108, 108, 1),
                         ),
                       );
-                    }),
+                    },),
               ),
             ],
           ),
@@ -370,8 +369,7 @@ class _SendNftState extends State<SendNft> {
                     initialData: '',
                     stream: sendNftCubit.txtInvalidQuantityFormStream,
                     builder: (context, snapshot) {
-                      print(snapshot.data);
-                      return Text(
+                       return Text(
                         snapshot.data ?? '',
                         style: TextStyle(
                           fontSize: 12.sp,
@@ -379,7 +377,7 @@ class _SendNftState extends State<SendNft> {
                           color: const Color.fromRGBO(255, 108, 108, 1),
                         ),
                       );
-                    }),
+                    },),
               ),
             ],
           ),

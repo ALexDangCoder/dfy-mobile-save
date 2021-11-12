@@ -4,11 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'timer_event.dart';
+
 part 'timer_state.dart';
 
-
 class TimeBloc extends Bloc<TimeEvent, TimeState> {
-
   static const int _timeDuration = 12000;
 
   StreamSubscription<int>? _timeSubsctiption;
@@ -38,6 +37,7 @@ class TimeBloc extends Bloc<TimeEvent, TimeState> {
       yield const InitialState(_timeDuration);
     }
   }
+
   Stream<int> changeTime(int time) {
     return Stream.periodic(const Duration(seconds: 1), (x) => time - x - 1)
         .take(time);

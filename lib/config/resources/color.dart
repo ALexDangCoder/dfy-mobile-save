@@ -59,6 +59,7 @@ const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
+
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color primaryColor();
@@ -108,6 +109,7 @@ abstract class AppColor {
   Color selectDialogColor();
 
   Color columnButtonColor();
+
   List<Color> listColorAddWalletSeedPhrase();
 
   List<Color> gradientButtonColor();
@@ -190,7 +192,7 @@ class LightApp extends AppColor {
 
   @override
   Color divideColor() {
-   return const Color.fromRGBO(255, 255, 255, 0.1);
+    return const Color.fromRGBO(255, 255, 255, 0.1);
   }
 
   @override
@@ -245,7 +247,7 @@ class LightApp extends AppColor {
 
   @override
   Color columnButtonColor() {
-   return buttonGrey;
+    return buttonGrey;
   }
 
   @override
@@ -416,7 +418,6 @@ class DarkApp extends AppColor {
     // TODO: implement backgroundLoginTextField
     throw UnimplementedError();
   }
-
 }
 
 ///============ End setup app theme ======================================

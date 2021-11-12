@@ -2,13 +2,13 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/select_acc/bloc/select_acc_bloc.dart';
-import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
+import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/createNFT.dart';
@@ -45,22 +45,29 @@ class _WalletState extends State<WalletScreen>
   late TabController _tabController;
   final WalletCubit cubit = WalletCubit();
   late FToast fToast;
+  final changeName = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    cubit.formatAddress(cubit.addressWallet);
-    cubit.formatAddress(widget.wallet?.address ?? cubit.addressWallet);
+
+    cubit.addressWallet.sink.add(
+      widget.wallet?.address ??
+          'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    );
+    cubit.walletName.sink.add(widget.wallet?.name ?? 'xxxxxxxxxxxxxxxxx');
+    cubit.walletName.stream.listen((event) {
+      changeName.text = event;
+    });
     _tabController = TabController(length: 2, vsync: this);
     fToast = FToast();
     fToast.init(context);
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     cubit.getListNFT(
-      cubit.addressWallet,
+      cubit.addressWallet.value,
       password: 'aaa',
     );
-    cubit.checkScreen();
   }
 
   @override
@@ -138,7 +145,9 @@ class _WalletState extends State<WalletScreen>
                                 isScrollControlled: true,
                                 backgroundColor: Colors.transparent,
                                 builder: (context) {
-                                  return const SettingWallet();
+                                  return SettingWallet(
+                                    cubit: cubit,
+                                  );
                                 },
                               );
                             },
@@ -199,16 +208,36 @@ class _WalletState extends State<WalletScreen>
                             physics: const ScrollPhysics(),
                             child: Column(
                               children: [
-                                ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: 2,
-                                  itemBuilder: (context, index) {
-                                    return TokenItem(
-                                      symbolUrl: ImageAssets.symbol,
-                                      amount: '1200000',
-                                      nameToken: 'DFY',
-                                      price: '$widget.index',
+                                StreamBuilder(
+                                  stream: cubit.listTokenStream,
+                                  builder: (
+                                    context,
+                                    AsyncSnapshot<List<TokenModel>> snapshot,
+                                  ) {
+                                    return ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data?.length,
+                                      itemBuilder: (context, index) {
+                                        return TokenItem(
+                                          index: index,
+                                          bloc: cubit,
+                                          symbolUrl:
+                                              snapshot.data?[index].iconToken ??
+                                                  '',
+                                          amount: snapshot
+                                                  .data?[index].amountToken
+                                                  .toString() ??
+                                              '',
+                                          nameToken: snapshot.data?[index]
+                                                  .nameTokenSymbol ??
+                                              '',
+                                          price: snapshot.data?[index].price
+                                                  .toString() ??
+                                              '',
+                                        );
+                                      },
                                     );
                                   },
                                 ),
@@ -229,14 +258,29 @@ class _WalletState extends State<WalletScreen>
                           child: SingleChildScrollView(
                             child: Column(
                               children: [
-                                ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: 2,
-                                  itemBuilder: (context, index) {
-                                    return const NFTItem(
-                                      symbolUrl: ImageAssets.symbol,
-                                      nameNFT: 'DeFi For You',
+                                StreamBuilder(
+                                  stream: cubit.listNFTStream,
+                                  builder: (
+                                    context,
+                                    AsyncSnapshot<List<TokenModel>> snapshot,
+                                  ) {
+                                    return ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data?.length,
+                                      itemBuilder: (context, index) {
+                                        return NFTItem(
+                                          index: index,
+                                          bloc: cubit,
+                                          symbolUrl:
+                                              snapshot.data?[index].iconToken ??
+                                                  '',
+                                          nameNFT:
+                                              snapshot.data?[index].nameToken ??
+                                                  '',
+                                        );
+                                      },
                                     );
                                   },
                                 ),
@@ -286,7 +330,7 @@ class _WalletState extends State<WalletScreen>
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    showSelectAcc(context, SelectAccBloc());
+                    showSelectAcc(context, cubit, TypeScreen2.detail);
                   },
                   child: CircleAvatar(
                     radius: 27.sp,
@@ -305,13 +349,18 @@ class _WalletState extends State<WalletScreen>
                   SizedBox(
                     width: 37.w,
                   ),
-                  Text(
-                    widget.wallet?.name ?? 'Nguyen Van Hung',
-                    style: textNormalCustom(
-                      Colors.white,
-                      24.sp,
-                      FontWeight.w700,
-                    ),
+                  StreamBuilder(
+                    stream: cubit.walletName,
+                    builder: (context, AsyncSnapshot<String> snapshot) {
+                      return Text(
+                        snapshot.data ?? '',
+                        style: textNormalCustom(
+                          Colors.white,
+                          24.sp,
+                          FontWeight.w700,
+                        ),
+                      );
+                    },
                   ),
                   SizedBox(
                     width: 13.w,
@@ -322,6 +371,7 @@ class _WalletState extends State<WalletScreen>
                         HeroDialogRoute(
                           builder: (context) {
                             return ChangeWalletName(
+                              textEditingController: changeName,
                               bloc: cubit,
                             );
                           },
@@ -365,7 +415,7 @@ class _WalletState extends State<WalletScreen>
               GestureDetector(
                 onLongPress: () {
                   Clipboard.setData(
-                    ClipboardData(text: cubit.addressWallet),
+                    ClipboardData(text: cubit.addressWallet.value),
                   ).then((_) {
                     fToast.showToast(
                       child: const Copied(),
@@ -383,15 +433,20 @@ class _WalletState extends State<WalletScreen>
                     color: const Color(0xFF585769),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Center(
-                    child: Text(
-                      cubit.formatAddressWallet,
-                      style: textNormalCustom(
-                        Colors.white,
-                        16.sp,
-                        FontWeight.w400,
-                      ),
-                    ),
+                  child: StreamBuilder(
+                    stream: cubit.addressWallet,
+                    builder: (context, AsyncSnapshot<String> snapshot) {
+                      return Center(
+                        child: Text(
+                          cubit.formatAddress(snapshot.data ?? ''),
+                          style: textNormalCustom(
+                            Colors.white,
+                            16.sp,
+                            FontWeight.w400,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

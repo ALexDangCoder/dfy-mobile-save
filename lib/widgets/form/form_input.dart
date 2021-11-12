@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';

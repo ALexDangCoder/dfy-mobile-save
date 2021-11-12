@@ -1,10 +1,7 @@
-
-
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
-
 
 part 'check_pass_state.dart';
 
@@ -54,7 +51,7 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   }
 
   void isEnable(int index) {
-    if(index == 1) {
+    if (index == 1) {
       // index == 1 disEnableBtn
       isEnableBtnSink.add(false);
     } else {
@@ -69,7 +66,6 @@ class CheckPassCubit extends Cubit<CheckPassState> {
       return true;
     }
   }
-
 
   bool checkMatchPW({required String password, required String confirmPW}) {
     if (password == confirmPW) {

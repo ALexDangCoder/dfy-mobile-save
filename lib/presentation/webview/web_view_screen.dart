@@ -52,34 +52,35 @@ class _WebViewScreenState extends State<WebViewScreen> {
         error: AppException('', S.current.something_went_wrong),
         textEmpty: '',
         child: WillPopScope(
-            child: WebView(
-              initialUrl: widget.url,
-              javascriptMode: JavascriptMode.unrestricted,
-              onWebViewCreated: (WebViewController webViewController) {
-                _controller.complete(webViewController);
-              },
-              onProgress: (int progress) {
-                logger.d('WebView is loading (progress : $progress%)');
-              },
-              javascriptChannels: const <JavascriptChannel>{},
-              navigationDelegate: (NavigationRequest request) {
-                return NavigationDecision.navigate;
-              },
-              onPageStarted: (String url) {
-                showLoading();
-              },
-              onPageFinished: (String url) {
-                hideLoading();
-              },
-              onWebResourceError: (error) {
-                showError();
-              },
-              gestureNavigationEnabled: true,
-            ),
-            onWillPop: () async {
-              await backToPreScreen();
-              return true;
-            },),
+          child: WebView(
+            initialUrl: widget.url,
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController) {
+              _controller.complete(webViewController);
+            },
+            onProgress: (int progress) {
+              logger.d('WebView is loading (progress : $progress%)');
+            },
+            javascriptChannels: const <JavascriptChannel>{},
+            navigationDelegate: (NavigationRequest request) {
+              return NavigationDecision.navigate;
+            },
+            onPageStarted: (String url) {
+              showLoading();
+            },
+            onPageFinished: (String url) {
+              hideLoading();
+            },
+            onWebResourceError: (error) {
+              showError();
+            },
+            gestureNavigationEnabled: true,
+          ),
+          onWillPop: () async {
+            await backToPreScreen();
+            return true;
+          },
+        ),
       ),
     );
   }

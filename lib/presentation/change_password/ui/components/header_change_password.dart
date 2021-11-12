@@ -16,16 +16,17 @@ Container headerChangePW({
           onPressed: callBack,
           icon: Image.asset(ImageAssets.back),
         ),
-        SizedBox(width: 68.w,),
+        SizedBox(
+          width: 68.w,
+        ),
         Text(
-            S.current.change_password,
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 20.sp,
-              color: Colors.white,
-            ),
+          S.current.change_password,
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 20.sp,
+            color: Colors.white,
           ),
-
+        ),
       ],
     ),
   );

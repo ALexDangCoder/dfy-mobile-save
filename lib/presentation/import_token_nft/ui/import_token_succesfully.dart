@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/image_asset.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/generated/l10n.dart';

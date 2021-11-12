@@ -1,5 +1,3 @@
-
-
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -87,7 +85,6 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   //function will show text warning base on type error value
 
   void showTxtWarningOldPW(String value, {String? passwordOld}) {
-
     if ((value.isNotEmpty && value.length < 8) ||
         (value.isNotEmpty && value.length > 15)) {
       matchOldPWSink.add(true);
@@ -101,12 +98,11 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchOldPWSink.add(true);
       txtWarnOldPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else if(value != passwordOld) {
+    } else if (value != passwordOld) {
       matchOldPWSink.add(true);
       txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
       isEnableButtonSink.add(false);
-    }
-    else {
+    } else {
       matchOldPWSink.add(false);
       _flagOldPW = 1;
       if (_flagCfPW == 1 && _flagNewPW == 1 && _flagOldPW == 1) {
@@ -156,12 +152,11 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else if(!(value == newPassword)) {
+    } else if (!(value == newPassword)) {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_cf_pw);
       isEnableButtonSink.add(false);
-    }
-    else {
+    } else {
       _flagCfPW = 1;
       if (_flagCfPW == 1 && _flagNewPW == 1 && _flagOldPW == 1) {
         isEnableButtonSink.add(true);

@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/presentation/change_password/bloc/change_password_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +22,6 @@ Container formSetupPassWord({
       color: Color(0xff32324c),
     ),
     child: TextFormField(
-      obscureText: false,
       style: textNormal(
         Colors.white,
         16.sp,

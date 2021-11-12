@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-import 'dart:ui' as ui;
 import 'package:Dfy/presentation/bottom_sheet_receive_token/bloc/receive_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,7 +41,7 @@ class ReceiveCubit extends Cubit<ReceiveState> {
           gapless: true,
         );
         path = await createPath();
-        final picData = await painter.toImageData(2048, format: ui.ImageByteFormat.png);
+        final picData = await painter.toImageData(2048);
         log(picData.toString());
         await writeToFile(picData!, path);
       }
@@ -55,7 +54,8 @@ class ReceiveCubit extends Cubit<ReceiveState> {
   Future<void> writeToFile(ByteData data, String path) async {
     final buffer = data.buffer;
     await File(path).writeAsBytes(
-        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+      buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
+    );
   }
 
   void dispose() {

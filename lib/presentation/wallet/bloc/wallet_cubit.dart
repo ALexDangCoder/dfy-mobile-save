@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/domain/model/account_model.dart';
+import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/main.dart';
@@ -15,28 +17,37 @@ import '../../../main.dart';
 part 'wallet_state.dart';
 
 class WalletCubit extends BaseCubit<WalletState> {
-  WalletCubit() : super(WalletInitial());
+  WalletCubit() : super(WalletInitial()) {
+    getList();
+    getListTokenItem();
+    getListNFTItem();
+  }
 
-  final String addressWallet = '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
-  String formatAddressWallet = '';
-  BehaviorSubject<String> walletName = BehaviorSubject.seeded('');
-  BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(false);
-  void getIsWalletName() {
-    if (Validator.validateNotNull(walletName.value)) {
+  BehaviorSubject<String> addressWallet =
+      BehaviorSubject.seeded('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+  BehaviorSubject<String> walletName =
+      BehaviorSubject.seeded('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+  BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
+
+  void getIsWalletName(String value) {
+    if (Validator.validateNotNull(value)) {
       isWalletName.sink.add(true);
-    }else{
+    } else {
       isWalletName.sink.add(false);
     }
   }
+
   bool checkLogin = false;
 
   Future<void> getAddressWallet() async {}
 
-  void formatAddress(String address) {
-    formatAddressWallet = '${address.substring(0, 5)}...${address.substring(
+  String formatAddress(String address) {
+    String formatAddressWallet =
+        '${address.substring(0, 5)}...${address.substring(
       address.length - 4,
       address.length,
     )}';
+    return formatAddressWallet;
   }
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
@@ -81,11 +92,263 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  void checkScreen() {
-    if (PrefsService.getAppLockConfig() == 'true' && checkLogin == false) {
-      checkLogin = true;
-    } else {
-      emit(WalletInitial());
-    }
+  BehaviorSubject<List<TokenModel>> listTokenStream =
+      BehaviorSubject.seeded([]);
+
+  void getListTokenItem() {
+    listTokenStream.sink.add(listToken);
   }
+
+  List<TokenModel> listToken = [
+    TokenModel(
+      price: 34213423,
+      nameTokenSymbol: 'DFY',
+      iconToken: 'assets/images/Ellipse 39.png',
+      amountToken: 3344,
+    ),
+    TokenModel(
+      price: 34213423,
+      nameTokenSymbol: 'DFY',
+      iconToken: 'assets/images/Ellipse 39.png',
+      amountToken: 3344,
+    ),
+    TokenModel(
+      price: 34213423,
+      nameTokenSymbol: 'DF2Y',
+      iconToken: 'assets/images/Ellipse 39.png',
+      amountToken: 3344,
+    ),
+    TokenModel(
+      price: 34213423,
+      nameTokenSymbol: 'DFY1',
+      iconToken: 'assets/images/Ellipse 39.png',
+      amountToken: 3344,
+    ),
+    TokenModel(
+      price: 34213423,
+      nameTokenSymbol: 'DF3Y',
+      iconToken: 'assets/images/Ellipse 39.png',
+      amountToken: 3344,
+    ),
+    TokenModel(
+      price: 34213423,
+      nameTokenSymbol: 'D4FY',
+      iconToken: 'assets/images/Ellipse 39.png',
+      amountToken: 3344,
+    ),
+    TokenModel(
+      price: 34213423,
+      nameTokenSymbol: 'D5FY',
+      iconToken: 'assets/images/Ellipse 39.png',
+      amountToken: 3344,
+    ),
+    TokenModel(
+      price: 34213423,
+      nameTokenSymbol: 'DFY',
+      iconToken: 'assets/images/Ellipse 39.png',
+      amountToken: 3344,
+    ),
+  ];
+
+  BehaviorSubject<List<AccountModel>> list = BehaviorSubject.seeded([]);
+
+  void getList() {
+    list.sink.add(listSelectAccBloc);
+  }
+
+  List<AccountModel> listSelectAccBloc = [
+    AccountModel(
+      isCheck: true,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: false,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: false,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: false,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: false,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: false,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+    AccountModel(
+      isCheck: false,
+      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
+      amountWallet: 21342314,
+      imported: true,
+      nameWallet: 'Account 1',
+      url: 'assets/images/Ellipse 39.png',
+    ),
+  ];
+
+  String formatAddress1(String address) {
+    final String a = '${address.substring(0, 5)}...${address.substring(
+      address.length - 4,
+      address.length,
+    )}';
+    return a;
+  }
+
+  void click(int index) {
+    for (final AccountModel value in listSelectAccBloc) {
+      value.isCheck = false;
+    }
+    listSelectAccBloc[index].isCheck = true;
+    list.sink.add(listSelectAccBloc);
+  }
+
+  BehaviorSubject<List<TokenModel>> listNFTStream = BehaviorSubject.seeded([]);
+
+  void getListNFTItem() {
+    listNFTStream.sink.add(listNFT);
+  }
+
+  List<TokenModel> listNFT = [
+    TokenModel(
+      nameToken: 'DEFI FOR YOU2',
+      iconToken: 'assets/images/Ellipse 39.png',
+    ),
+    TokenModel(
+      nameToken: 'DEFI FOR 3YOU',
+      iconToken: 'assets/images/Ellipse 39.png',
+    ),
+    TokenModel(
+      nameToken: 'DEFI FOR 3YOU',
+      iconToken: 'assets/images/Ellipse 39.png',
+    ),
+    TokenModel(
+      nameToken: 'DEFI FOR 3YOU',
+      iconToken: 'assets/images/Ellipse 39.png',
+    ),
+    TokenModel(
+      nameToken: 'DEFI FOR 3YOU',
+      iconToken: 'assets/images/Ellipse 39.png',
+    ),
+    TokenModel(
+      nameToken: 'DEFI FOR2 YOU',
+      iconToken: 'assets/images/Ellipse 39.png',
+    ),
+    TokenModel(
+      nameToken: 'DEFI FOR 34YOU',
+      iconToken: 'assets/images/Ellipse 39.png',
+    ),
+    TokenModel(
+      nameToken: 'DEFI FOR453 YOU',
+      iconToken: 'assets/images/Ellipse 39.png',
+    ),
+    TokenModel(
+      nameToken: 'DEFI FOR23452345 YOU',
+      iconToken: 'assets/images/Ellipse 39.png',
+    ),
+    TokenModel(
+      nameToken: 'DEFI FOR YOU',
+      iconToken: 'assets/images/Ellipse 39.png',
+    ),
+  ];
 }

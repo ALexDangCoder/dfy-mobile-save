@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
-import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -45,7 +44,6 @@ class FormSearch extends StatelessWidget {
                 maxLength: 20,
                 onChanged: (value) {
                   bloc.textSearch.sink.add(value);
-                  print(bloc.textSearch.value);
                   bloc.search();
                 },
                 cursorColor: Colors.white,

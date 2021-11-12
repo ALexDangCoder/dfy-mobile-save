@@ -44,12 +44,12 @@ void showCreateSeedPhrase2(
 }
 
 class Body extends StatefulWidget {
-  const Body(
-      {Key? key,
-      required this.bLocCreateSeedPhrase,
-      required this.typeScreen,
-      required this.isCheckApp})
-      : super(key: key);
+  const Body({
+    Key? key,
+    required this.bLocCreateSeedPhrase,
+    required this.typeScreen,
+    required this.isCheckApp,
+  }) : super(key: key);
 
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
   final TypeScreen typeScreen;

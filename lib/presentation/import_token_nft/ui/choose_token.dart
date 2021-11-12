@@ -1,12 +1,10 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
-import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/widgets/form/form_search.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
 
 class ChooseToken extends StatefulWidget {
@@ -58,15 +56,16 @@ class _ChooseTokenState extends State<ChooseToken> {
                           value:
                               widget.bloc.getList.value[index].isShow ?? false,
                           leading: Image.asset(
-                              widget.bloc.getList.value[index].iconToken ?? ''),
+                              widget.bloc.getList.value[index].iconToken ??
+                                  '',),
                           onChanged: (value) {
                             widget.bloc.getList.value[index].isShow = value;
                             widget.bloc.setShowedToken(
-                                walletAddress: "walletAddress",
+                                walletAddress: 'walletAddress',
                                 tokenID:
                                     widget.bloc.getList.value[index].tokenId ??
                                         0,
-                                isShow: value);
+                                isShow: value,);
                             setState(() {});
                           },
                           switchActiveColor: const Color(0xffE4AC1A),
@@ -96,7 +95,8 @@ class _ChooseTokenState extends State<ChooseToken> {
                             ],
                           ),
                           subtitle: Text(
-                            '${widget.bloc.getList.value[index].amountToken?.toStringAsFixed(5)}' +
+                            '${widget.bloc.getList.value[index]
+                                .amountToken?.toStringAsFixed(5)}' +
                                 ' ${widget.bloc.getList.value[index]
                                     .nameTokenSymbol ?? ''} ',
                             style: textNormalCustom(

@@ -8,14 +8,14 @@ import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-
 class ChangeWalletName extends StatefulWidget {
   final WalletCubit bloc;
+  final TextEditingController textEditingController;
 
   const ChangeWalletName({
     Key? key,
     required this.bloc,
+    required this.textEditingController,
   }) : super(key: key);
 
   @override
@@ -25,7 +25,6 @@ class ChangeWalletName extends StatefulWidget {
 class _ChangeWalletNameState extends State<ChangeWalletName> {
   @override
   Widget build(BuildContext context) {
-    final textName = TextEditingController();
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaY: 1.0, sigmaX: 1.0),
       child: Center(
@@ -101,7 +100,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                 child: Container(
                                   padding: EdgeInsets.only(right: 5.w),
                                   child: TextFormField(
-                                    controller: textName,
+                                    controller: widget.textEditingController,
                                     maxLength: 20,
                                     cursorColor: Colors.white,
                                     style: textNormal(
@@ -109,8 +108,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                       16.sp,
                                     ),
                                     onChanged: (value) {
-                                      widget.bloc.walletName.sink.add(value);
-                                      widget.bloc.getIsWalletName();
+                                      widget.bloc.getIsWalletName(value);
                                     },
                                     decoration: InputDecoration(
                                       hintText: S.current.name_wallet,
@@ -125,17 +123,27 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                   ),
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  widget.bloc.walletName.sink.add('');
-                                  textName.text = '';
-                                  widget.bloc.getIsWalletName();
+                              StreamBuilder(
+                                stream: widget.bloc.isWalletName,
+                                builder:
+                                    (context, AsyncSnapshot<bool> snapshot) {
+                                  return SizedBox(
+                                    child: snapshot.data ?? false
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              widget.textEditingController
+                                                  .text = '';
+                                              widget.bloc.getIsWalletName('');
+                                            },
+                                            child: Image.asset(
+                                              url_ic_close,
+                                              width: 20.w,
+                                              height: 20.h,
+                                            ),
+                                          )
+                                        : null,
+                                  );
                                 },
-                                child: Image.asset(
-                                  url_ic_close,
-                                  width: 20.w,
-                                  height: 20.h,
-                                ),
                               ),
                             ],
                           ),
@@ -203,6 +211,10 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                     child: GestureDetector(
                                       onTap: () {
                                         if (snapshot.data ?? false) {
+                                          final String value =
+                                              widget.textEditingController.text;
+                                          widget.bloc.walletName.sink
+                                              .add(value);
                                           Navigator.pop(context);
                                         }
                                       },

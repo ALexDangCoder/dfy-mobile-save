@@ -2,17 +2,19 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
-import 'package:Dfy/presentation/select_acc/bloc/select_acc_bloc.dart';
+import 'package:Dfy/presentation/restore_bts/ui/restore_bts.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/header_setting.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SettingWallet extends StatelessWidget {
-  const SettingWallet({Key? key}) : super(key: key);
+  const SettingWallet({Key? key, required this.cubit}) : super(key: key);
+  final WalletCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,11 @@ class SettingWallet extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showSelectAcc(context, SelectAccBloc());
+                      showSelectAcc(
+                        context,
+                        cubit,
+                        TypeScreen2.setting,
+                      );
                     },
                     child: buttonForm(
                       hintText: S.current.select_acc,
@@ -65,8 +71,12 @@ class SettingWallet extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showCreateSeedPhrase1(context, true, BLocCreateSeedPhrase('')
-                      ,TypeScreen.one);
+                      showCreateSeedPhrase1(
+                        context,
+                        true,
+                        BLocCreateSeedPhrase(''),
+                        TypeScreen.one,
+                      );
                     },
                     child: buttonForm(
                       hintText: S.current.create_new_acc,
@@ -76,9 +86,19 @@ class SettingWallet extends StatelessWidget {
                   SizedBox(
                     height: 16.h,
                   ),
-                  buttonForm(
-                    hintText: S.current.import_acc,
-                    prefixIcon: ImageAssets.import,
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        builder: (context) => const RestoreBTS(),
+                        context: context,
+                      );
+                    },
+                    child: buttonForm(
+                      hintText: S.current.import_acc,
+                      prefixIcon: ImageAssets.import,
+                    ),
                   ),
                   SizedBox(
                     height: 16.h,

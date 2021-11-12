@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/images.dart';
-import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
@@ -101,9 +100,9 @@ class _EnterAddressState extends State<EnterAddress> {
                 return InkWell(
                   onTap: () {
                     widget.bloc.importToken(
-                      walletAddress: "walletAddress",
-                      tokenAddress: "tokenAddress",
-                      symbol: "symbol",
+                      walletAddress: 'walletAddress',
+                      tokenAddress: 'tokenAddress',
+                      symbol: 'symbol',
                       decimal: 1,
                     );
                     trustWalletChannel.setMethodCallHandler(

@@ -89,7 +89,7 @@ class _BodyState extends State<Body> {
                         },
                       ),
                       Text(
-                        S.current.create_new_wallet,
+                        S.current.prv_key_ft_seed_phr,
                         style: textNormalCustom(
                           Colors.white,
                           20.sp,

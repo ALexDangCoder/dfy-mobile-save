@@ -119,8 +119,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
                       password: password.text,
                     ) &&
                     Validator.isValidPassword(password.text)) {
-                  showCreateSeedPhrase1(context, false,
-                      BLocCreateSeedPhrase(password.text), TypeScreen.tow);
+                  showCreateSeedPhrase1(
+                    context,
+                    false,
+                    BLocCreateSeedPhrase(password.text),
+                    TypeScreen.tow,
+                  );
                 }
               },
             ),

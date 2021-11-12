@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_nft.dart';
@@ -8,10 +9,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'hero.dart';
 
 class NFTItem extends StatefulWidget {
-  const NFTItem({Key? key, required this.symbolUrl, required this.nameNFT})
-      : super(key: key);
+  const NFTItem({
+    Key? key,
+    required this.symbolUrl,
+    required this.nameNFT,
+    required this.bloc,
+    required this.index,
+  }) : super(key: key);
   final String symbolUrl;
   final String nameNFT;
+  final WalletCubit bloc;
+  final int index;
 
   @override
   _NFTItemState createState() => _NFTItemState();
@@ -27,7 +35,10 @@ class _NFTItemState extends State<NFTItem> {
         Navigator.of(context).push(
           HeroDialogRoute(
             builder: (context) {
-              return const RemoveNft();
+              return RemoveNft(
+                index: widget.index,
+                cubit: widget.bloc,
+              );
             },
             isNonBackground: false,
           ),
@@ -75,7 +86,7 @@ class _NFTItemState extends State<NFTItem> {
                       width: 8.w,
                     ),
                     Text(
-                      'DeFi For You',
+                      widget.nameNFT,
                       style: textNormalCustom(
                         Colors.white,
                         20.sp,

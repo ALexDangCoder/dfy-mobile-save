@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/select_acc/bloc/select_acc_bloc.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class RemoveAcc extends StatelessWidget {
-  final SelectAccBloc bloc;
+  final WalletCubit bloc;
   final int index;
 
   const RemoveAcc({

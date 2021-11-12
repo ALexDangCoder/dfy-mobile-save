@@ -21,7 +21,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BehaviorSubject<List<Item>> listTitle = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
   BehaviorSubject<bool> isCheckTouchID = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isCheckAppLock = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckAppLock = BehaviorSubject.seeded(true);
 
   BehaviorSubject<bool> isSeedPhraseImportFailed =
       BehaviorSubject.seeded(false);
@@ -87,8 +87,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         'password': password,
       };
       await PrefsService.saveFirstAppConfig('false');
-      await PrefsService.saveAppLockConfig(isAppLock.toString());
-      await PrefsService.saveFaceIDConfig(isFaceID.toString());
       await trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {
       //todo
@@ -101,7 +99,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   String privateKey = '';
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    print('callback ');
     switch (methodCall.method) {
       case 'generateWalletCallback':
         privateKey = await methodCall.arguments['privateKey'];
@@ -111,12 +108,11 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         isCheckData.sink.add(true);
         break;
       case 'storeWalletCallback':
-        bool isSuccess = await methodCall.arguments['isSuccess'];
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
         emit(SeedNavState());
         break;
       case 'setConfigCallback':
         bool isSuccess = await methodCall.arguments['isSuccess'];
-        print(isSuccess);
         break;
       default:
         break;

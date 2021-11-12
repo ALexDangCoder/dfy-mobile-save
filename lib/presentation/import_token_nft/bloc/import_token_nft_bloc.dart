@@ -1,9 +1,5 @@
-import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/domain/model/token.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../main.dart';
@@ -76,8 +72,8 @@ class ImportTokenNftBloc {
   }
 
   void search() {
-    List<TokenModel> list = [];
-    for (TokenModel value in listToken) {
+    final List<TokenModel> list = [];
+    for (final TokenModel value in listToken) {
       if (value.nameToken!.toLowerCase().contains(
             textSearch.value.toLowerCase(),
           )) {
@@ -309,7 +305,7 @@ class ImportTokenNftBloc {
         break;
       case 'getListSupportedTokenCallback':
         //[TokenObject]
-        var a = await methodCall.arguments['TokenObject'];
+        final a = await methodCall.arguments['TokenObject'];
 
         break;
       case 'setShowedTokenCallback':

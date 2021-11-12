@@ -10,6 +10,6 @@ class PrivateKeyModel {
     this.walletAddress,
     this.privateKey,
     this.seedPhrase,
-    this.walletName
+    this.walletName,
   });
 }

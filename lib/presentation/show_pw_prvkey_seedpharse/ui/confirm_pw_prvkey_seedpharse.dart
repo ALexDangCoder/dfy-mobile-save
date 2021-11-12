@@ -1,9 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
+import 'package:Dfy/presentation/private_key_seed_phrase/ui/private_key_seed_phrase.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 import 'components/face_id_button.dart';
 import 'components/header.dart';
@@ -38,9 +40,18 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
             controller: TextEditingController(),
             isShow: true,
           ),
-          SizedBox(height: 40.h,),
-          ButtonGold(title: S.current.continue_s, isEnable: true),
-          SizedBox(height: 40.h,),
+          SizedBox(
+            height: 40.h,
+          ),
+          GestureDetector(
+            onTap: () {
+              showPrivateKeySeedPhrase(context, PrivateKeySeedPhraseBloc());
+            },
+            child: ButtonGold(title: S.current.continue_s, isEnable: true),
+          ),
+          SizedBox(
+            height: 40.h,
+          ),
           faceIDButton(),
         ],
       ),

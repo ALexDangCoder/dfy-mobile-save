@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
-import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
@@ -56,7 +55,7 @@ class _BodyState extends State<Body> {
             width: 323.w,
             height: 28.h,
             margin: EdgeInsets.only(
-                left: 26.w, top: 16.h, right: 26.w, bottom: 20.h),
+                left: 26.w, top: 16.h, right: 26.w, bottom: 20.h,),
             child: Row(
               children: [
                 GestureDetector(
@@ -75,7 +74,7 @@ class _BodyState extends State<Body> {
                 Container(
                   margin: EdgeInsets.only(right: 88.w, left: 90.w),
                   child: Text(S.current.import_NFT,
-                      style: textNormalCustom(null, 20, FontWeight.bold)),
+                      style: textNormalCustom(null, 20, FontWeight.bold),),
                 ),
               ],
             ),
@@ -140,8 +139,8 @@ class _BodyState extends State<Body> {
                 return InkWell(
                   onTap: () {
                     widget.bloc.importNft(
-                      walletAddress: "walletAddress",
-                      nftAddress: "tokenAddress",
+                      walletAddress: 'walletAddress',
+                      nftAddress: 'tokenAddress',
                       nftID: 1,
                     );
                     trustWalletChannel.setMethodCallHandler(
@@ -153,7 +152,7 @@ class _BodyState extends State<Body> {
                     }
                     widget.bloc.setShowedNft(
                       isShow: true,
-                      walletAddress: "walletAddress",
+                      walletAddress: 'walletAddress',
                       nftID: 1,
                       password: '',
                     );

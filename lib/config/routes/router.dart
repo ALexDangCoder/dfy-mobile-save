@@ -25,12 +25,14 @@ class AppRouter {
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
       case main:
-        return MaterialPageRoute(builder: (ctx) {
-          final arg = ModalRoute.of(ctx)!.settings.arguments as int?;
-          return MainScreen(
-            index: arg,
-          );
-        });
+        return MaterialPageRoute(
+          builder: (ctx) {
+            final arg = ModalRoute.of(ctx)!.settings.arguments as int?;
+            return MainScreen(
+              index: arg,
+            );
+          },
+        );
     }
   }
 }

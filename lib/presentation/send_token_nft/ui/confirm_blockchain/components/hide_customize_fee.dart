@@ -1,7 +1,7 @@
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 class HideCustomizeFee extends StatelessWidget {
   //todo show warning text
@@ -25,8 +25,8 @@ class HideCustomizeFee extends StatelessWidget {
         children: [
           ConstrainedBox(
             constraints: const BoxConstraints(
-              // minHeight: 78.h,
-            ),
+                // minHeight: 78.h,
+                ),
             child: Container(
               width: 323.w,
               height: 83.h,
@@ -64,7 +64,8 @@ class HideCustomizeFee extends StatelessWidget {
                                 ? Expanded(
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         //todo handle amount ??
                                         StreamBuilder<String>(
@@ -91,7 +92,8 @@ class HideCustomizeFee extends StatelessWidget {
                                 //else will show warning read text
                                 : Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         StreamBuilder<String>(
                                           initialData: gasFee.toString(),

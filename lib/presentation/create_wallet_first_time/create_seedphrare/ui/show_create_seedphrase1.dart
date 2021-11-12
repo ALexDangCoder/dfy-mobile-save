@@ -9,7 +9,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom.dart';
 import 'package:Dfy/widgets/form/form_text.dart';
-import 'package:Dfy/widgets/header_create/header_create.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrasse_copy.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +19,12 @@ import '../../../../main.dart';
 
 enum TypeScreen { one, tow }
 
-void showCreateSeedPhrase1(BuildContext context, bool isCheckApp,
-    BLocCreateSeedPhrase blocCreateSeedPhrase, TypeScreen type) {
+void showCreateSeedPhrase1(
+  BuildContext context,
+  bool isCheckApp,
+  BLocCreateSeedPhrase blocCreateSeedPhrase,
+  TypeScreen type,
+) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -48,12 +51,12 @@ void showCreateSeedPhrase1(BuildContext context, bool isCheckApp,
 }
 
 class Body extends StatefulWidget {
-  const Body(
-      {Key? key,
-      required this.blocCreateSeedPhrase,
-      required this.typeScreen,
-      required this.isCheckApp})
-      : super(key: key);
+  const Body({
+    Key? key,
+    required this.blocCreateSeedPhrase,
+    required this.typeScreen,
+    required this.isCheckApp,
+  }) : super(key: key);
   final BLocCreateSeedPhrase blocCreateSeedPhrase;
   final TypeScreen typeScreen;
   final bool isCheckApp;
@@ -203,19 +206,26 @@ class _BodyState extends State<Body> {
                                     ),
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    widget.blocCreateSeedPhrase.nameWallet.sink
-                                        .add('');
-                                    nameWallet.text = '';
-                                    widget.blocCreateSeedPhrase.isButton();
-                                    setState(() {});
-                                  },
-                                  child: Image.asset(
-                                    url_ic_close,
-                                    width: 20.w,
-                                    height: 20.h,
-                                  ),
+                                Container(
+                                  child:
+                                      widget.blocCreateSeedPhrase.isWalletName()
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                widget.blocCreateSeedPhrase
+                                                    .nameWallet.sink
+                                                    .add('');
+                                                nameWallet.text = '';
+                                                widget.blocCreateSeedPhrase
+                                                    .isButton();
+                                                setState(() {});
+                                              },
+                                              child: Image.asset(
+                                                url_ic_close,
+                                                width: 20.w,
+                                                height: 20.h,
+                                              ),
+                                            )
+                                          : null,
                                 ),
                               ],
                             ),

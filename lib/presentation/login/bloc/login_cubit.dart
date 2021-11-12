@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -31,8 +30,7 @@ class LoginCubit extends BaseCubit<LoginState> {
         loginSuccess = methodCall.arguments['isCorrect'];
         break;
       case 'importWalletCallback':
-        print('3: ' + methodCall.arguments.toString());
-        break;
+           break;
       default:
         break;
     }
