@@ -18,7 +18,7 @@ Container buttonForm({
     ),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(20.r)),
-      color: AppTheme.getInstance().bgBtsColor(),
+      color: AppTheme.getInstance().itemBtsColors(),
     ),
     child: Row(
       children: [
@@ -47,7 +47,7 @@ Container switchForm({
     ),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(20.r)),
-      color: AppTheme.getInstance().bgBtsColor(),
+      color: AppTheme.getInstance().itemBtsColors(),
     ),
     child: ListTileSwitch(
       value: isCheck,

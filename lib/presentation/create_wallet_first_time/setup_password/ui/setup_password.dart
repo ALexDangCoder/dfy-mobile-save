@@ -151,9 +151,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 // height: 30.h,
                 child: Text(
                   S.current.pass_must,
-                  style:
-                      textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
-                          .copyWith(fontWeight: FontWeight.w400),
+                  style: textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                      .copyWith(fontWeight: FontWeight.w400),
                 ),
               ),
             ],
@@ -179,9 +178,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 // height: 30.h,
                 child: Text(
                   S.current.not_match,
-                  style:
-                      textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
-                          .copyWith(fontWeight: FontWeight.w400),
+                  style: textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                      .copyWith(fontWeight: FontWeight.w400),
                 ),
               ),
             ],
@@ -260,7 +258,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        color: AppTheme.getInstance().bgBtsColor(),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showPWStream,
@@ -387,40 +385,40 @@ class _SetupPassWordState extends State<SetupPassWord> {
     );
   }
 
-  Padding header() {
-    return Padding(
-      padding: EdgeInsets.only(top: 16.h, bottom: 20.h),
+  Container header() {
+    return Container(
+      width: 343.w,
+      // height: 28.h,
+      margin: EdgeInsets.only(
+        top: 16.h,
+        // bottom: 20.h,
+        left: 16.w,
+        right: 16.w,
+      ),
       // EdgeInsets.only(left: 0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // SizedBox(width: 26.w,),
-          Expanded(
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Image.asset(ImageAssets.ic_back),
-            ),
+
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Image.asset(ImageAssets.ic_back),
           ),
-          SizedBox(
-            width: 66.w,
-          ),
+
           Text(
             S.current.create_new_wallet,
             style: textNormal(Colors.white, 20.sp)
                 .copyWith(fontWeight: FontWeight.w700),
           ),
-          SizedBox(
-            width: 64.48.w,
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Image.asset(ImageAssets.ic_close),
           ),
-          Expanded(
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Image.asset(ImageAssets.ic_close),
-            ),
-          )
         ],
       ),
     );

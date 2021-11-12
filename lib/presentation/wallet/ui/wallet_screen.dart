@@ -7,6 +7,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
+import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/createNFT.dart';
 import 'package:Dfy/presentation/wallet/ui/import.dart';
@@ -123,7 +124,15 @@ class _WalletState extends State<WalletScreen>
                             ),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (_) {
+                                  return SettingWallet();
+                                },
+                                isScrollControlled: true,
+                              );
+                            },
                             icon: Icon(
                               Icons.settings_outlined,
                               size: 24.sp,
@@ -283,7 +292,7 @@ class _WalletState extends State<WalletScreen>
                     width: 37.w,
                   ),
                   Text(
-                    widget.wallet?.name ??'Nguyen Van Hung',
+                    widget.wallet?.name ?? 'Nguyen Van Hung',
                     style: textNormalCustom(
                       Colors.white,
                       24.sp,

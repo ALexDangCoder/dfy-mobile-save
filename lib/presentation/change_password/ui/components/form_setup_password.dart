@@ -31,6 +31,9 @@ Container formSetupPassWord({
         stream: cubit.showOldStream,
         builder: (context, snapshot) {
           return TextFormField(
+            onChanged: (value) {
+              cubit.checkHaveValueOldPW(value);
+            },
             obscureText: snapshot.data ?? true,
             style: textNormal(
               Colors.white,
@@ -92,6 +95,9 @@ Container formSetupPassWord({
         stream: cubit.showNewPWStream,
         builder: (context, snapshot) {
           return TextFormField(
+            onChanged: (value) {
+              cubit.checkHaveValueNewPW(value);
+            },
             obscureText: snapshot.data ?? true,
             style: textNormal(
               Colors.white,
@@ -153,6 +159,9 @@ Container formSetupPassWord({
         stream: cubit.showCfPWStream,
         builder: (context, snapshot) {
           return TextFormField(
+            onChanged: (value) {
+              cubit.checkHaveValueConfirmPW(value);
+            },
             obscureText: snapshot.data ?? true,
             style: textNormal(
               Colors.white,
@@ -186,7 +195,7 @@ Container formSetupPassWord({
                     color: Colors.grey,
                   )),
               prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_show),
+                AssetImage(ImageAssets.ic_lock),
                 color: Colors.white,
               ),
               border: InputBorder.none,
