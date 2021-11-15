@@ -1,28 +1,28 @@
-import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
-
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully2.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase.dart';
 import 'package:Dfy/widgets/list_passphrase/list_passphrase.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void showCreateSeedPhrase2(
+  bool isCheckApp,
   BuildContext context,
   BLocCreateSeedPhrase bLocCreateSeedPhrase,
+  TypeScreen typeScreen,
 ) {
   showModalBottomSheet(
     isScrollControlled: true,
@@ -30,6 +30,8 @@ void showCreateSeedPhrase2(
     backgroundColor: Colors.transparent,
     builder: (context) {
       return Body(
+        isCheckApp: isCheckApp,
+        typeScreen: typeScreen,
         bLocCreateSeedPhrase: bLocCreateSeedPhrase,
       );
     },
@@ -42,9 +44,16 @@ void showCreateSeedPhrase2(
 }
 
 class Body extends StatefulWidget {
-  const Body({Key? key, required this.bLocCreateSeedPhrase}) : super(key: key);
+  const Body({
+    Key? key,
+    required this.bLocCreateSeedPhrase,
+    required this.typeScreen,
+    required this.isCheckApp,
+  }) : super(key: key);
 
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
+  final TypeScreen typeScreen;
+  final bool isCheckApp;
 
   @override
   _BodyState createState() => _BodyState();
@@ -58,15 +67,26 @@ class _BodyState extends State<Body> {
       bloc: widget.bLocCreateSeedPhrase,
       listener: (ctx, state) {
         if (state is SeedNavState) {
-          showCreateSuccessfully(
-            type: KeyType.CREATE,
-            context: context,
-            bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
-            wallet: Wallet(
-              name: bLocCreateSeedPhrase.nameWallet.value,
-              address: bLocCreateSeedPhrase.walletAddress,
-            ),
-          );
+          if (widget.isCheckApp) {
+            showCreateSuccessfully2(
+              context: context,
+              type: KeyType.CREATE,
+              wallet: Wallet(
+                name: bLocCreateSeedPhrase.nameWallet.value,
+                address: bLocCreateSeedPhrase.walletAddress,
+              ),
+            );
+          } else {
+            showCreateSuccessfully(
+              type: KeyType.CREATE,
+              context: context,
+              bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
+              wallet: Wallet(
+                name: bLocCreateSeedPhrase.nameWallet.value,
+                address: bLocCreateSeedPhrase.walletAddress,
+              ),
+            );
+          }
         }
       },
       builder: (ctx, _) {
@@ -93,7 +113,7 @@ class _BodyState extends State<Body> {
                       child: Container(
                         margin: const EdgeInsets.only(left: 10, right: 10),
                         child: Image.asset(
-                          ImageAssets.ic_out,
+                          ImageAssets.ic_back,
                           width: 20.w,
                           height: 20,
                         ),
@@ -118,11 +138,14 @@ class _BodyState extends State<Body> {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRouter.main,
-                          (route) => false,
-                        );
+                        if (widget.typeScreen == TypeScreen.one) {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        } else {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        }
                       },
                     ),
                   ],
@@ -171,7 +194,7 @@ class _BodyState extends State<Body> {
                                 width: 323.w,
                                 child: snapshot.data ?? false
                                     ? Text(
-                                        S.current.failed,
+                                        S.current.invalid_order,
                                         style: textNormal(Colors.red, 14),
                                       )
                                     : null,

@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 
 ///=========== Colors for default when didn't setup app theme ===============
@@ -21,6 +20,8 @@ const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
 ];
+const successTransactionColor = Color(0xFF61C777);
+const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
 
 //bottom navigation color
@@ -60,8 +61,7 @@ const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
-const successTransactionColor = Color(0xFF61C777);
-const failTransactionColor = Color(0xFFFF6C6C);
+
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color primaryColor();
@@ -111,6 +111,7 @@ abstract class AppColor {
   Color selectDialogColor();
 
   Color columnButtonColor();
+
   List<Color> listColorAddWalletSeedPhrase();
 
   List<Color> gradientButtonColor();
@@ -203,7 +204,7 @@ class LightApp extends AppColor {
 
   @override
   Color divideColor() {
-   return const Color.fromRGBO(255, 255, 255, 0.1);
+    return const Color.fromRGBO(255, 255, 255, 0.1);
   }
 
   @override
@@ -258,7 +259,7 @@ class LightApp extends AppColor {
 
   @override
   Color columnButtonColor() {
-   return buttonGrey;
+    return buttonGrey;
   }
 
   @override
@@ -268,7 +269,6 @@ class LightApp extends AppColor {
 
     @override
   Color whiteColor() {
-    // TODO: implement whiteColor
     return Colors.white;
   }
   @override
@@ -462,14 +462,13 @@ class DarkApp extends AppColor {
   }
 
   @override
-  Color successTransactionColors() {
-    // TODO: implement successTransactionColors
+  Color pendingTransactionColors() {
+    // TODO: implement pendingTransactionColors
     throw UnimplementedError();
   }
 
-  @override
-  Color failTransactionColors() {
-    // TODO: implement failTransactionColors
+  Color successTransactionColors() {
+    // TODO: implement successTransactionColors
     throw UnimplementedError();
   }
 
@@ -480,11 +479,10 @@ class DarkApp extends AppColor {
   }
 
   @override
-  Color pendingTransactionColors() {
-    // TODO: implement pendingTransactionColors
+  Color failTransactionColors() {
+    // TODO: implement failTransactionColors
     throw UnimplementedError();
   }
-
 }
 
 ///============ End setup app theme ======================================

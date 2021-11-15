@@ -82,7 +82,7 @@ class TransactionList extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Image.asset(
-                                    ImageAssets.expand,
+                                    ImageAssets.ic_expanded,
                                     color: AppTheme.getInstance().fillColor(),
                                   ),
                                   SizedBox(

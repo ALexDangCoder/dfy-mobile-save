@@ -1,11 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FormInput2 extends StatelessWidget {
   final String urlIcon1;
-  final ImportTokenNftBloc bloc;
+  final WalletCubit bloc;
   final String hint;
 
   const FormInput2({

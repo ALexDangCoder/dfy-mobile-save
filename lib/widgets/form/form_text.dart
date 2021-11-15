@@ -1,10 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/widgets/toast/toast_copy.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class FromText extends StatelessWidget {
   final String urlPrefixIcon;
@@ -38,8 +37,8 @@ class FromText extends StatelessWidget {
             children: [
               Image.asset(
                 urlPrefixIcon,
-                height: 17.67.h,
-                width: 19.14.w,
+                height: 20.h,
+                width: 20.14.w,
               ),
               SizedBox(
                 width: 17.5.w,
@@ -52,8 +51,6 @@ class FromText extends StatelessWidget {
                     Colors.grey,
                     16.sp,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -61,18 +58,14 @@ class FromText extends StatelessWidget {
           InkWell(
             onTap: () {
               FlutterClipboard.copy(title);
-              Fluttertoast.showToast(
-                msg: S.current.copy,
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.TOP,
-              );
+              toast_copy();
             },
             child: Container(
               child: urlSuffixIcon.isNotEmpty
                   ? Image.asset(
                       urlSuffixIcon,
-                      height: 17.67.h,
-                      width: 19.14.w,
+                      height: 20.67.h,
+                      width: 20.14.w,
                     )
                   : null,
             ),

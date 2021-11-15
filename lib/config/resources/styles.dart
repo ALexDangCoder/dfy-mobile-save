@@ -51,20 +51,20 @@ TextStyle textNormal(Color? color, double? fontSize) {
   );
 }
 
-TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
+
+TextStyle tokenDetailAmount({Color color = Colors.white, double fontSize = 24,
+  FontWeight weight = FontWeight.w600,}) {
   return GoogleFonts.sen(
     color: color,
-    fontWeight: FontWeight.w700,
+    fontWeight: weight,
     fontStyle: FontStyle.normal,
     fontSize: fontSize,
   );
 }
-
-TextStyle tokenDetailAmount({Color color = Colors.white, double fontSize = 24,
-FontWeight weight = FontWeight.w600,}) {
+TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
   return GoogleFonts.sen(
     color: color,
-    fontWeight: weight,
+    fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
     fontSize: fontSize,
   );
@@ -99,4 +99,3 @@ TextStyle richTextValueNFT = GoogleFonts.sen(
   fontSize: 16.sp,
   decoration: TextDecoration.underline,
 );
-

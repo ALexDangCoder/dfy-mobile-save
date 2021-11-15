@@ -1,5 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class FormInput3 extends StatelessWidget {
   final String urlIcon1;
   final String urlIcon2;
-  final ImportTokenNftBloc bloc;
+  final WalletCubit bloc;
   final String hint;
   final TextEditingController controller;
 
@@ -43,6 +43,11 @@ class FormInput3 extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
+                maxLength: 100,
+                onChanged: (value) {
+                  bloc.checkAddressNull2();
+                  bloc.tokenAddressTextNft.sink.add(value);
+                },
                 controller: controller,
                 cursorColor: Colors.white,
                 style: textNormal(
@@ -50,6 +55,7 @@ class FormInput3 extends StatelessWidget {
                   16.sp,
                 ),
                 decoration: InputDecoration(
+                  counterText: '',
                   hintText: hint,
                   hintStyle: textNormal(
                     Colors.white54,

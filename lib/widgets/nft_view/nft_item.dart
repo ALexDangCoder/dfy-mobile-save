@@ -83,7 +83,8 @@ class _NFTItemState extends State<NFTItem> {
                             decoration: BoxDecoration(
                               image: const DecorationImage(
                                 image: AssetImage(
-                                    'assets/images/img_defi_test.png',),
+                                  'assets/images/img_defi_test.png',
+                                ),
                                 fit: BoxFit.fill,
                               ),
                               borderRadius: BorderRadius.circular(10),
@@ -204,9 +205,9 @@ class _NFTItemState extends State<NFTItem> {
 
   Future<bool> _pickImageFromGallery() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    print(File(pickedFile!.path).readAsBytesSync().lengthInBytes / 1048576);
+
     if (checkSizeImage(
-      File(pickedFile.path).readAsBytesSync().lengthInBytes / 1048576,
+      File(pickedFile!.path).readAsBytesSync().lengthInBytes / 1048576,
     )) {
       setState(() {
         _imageFile = File(pickedFile.path);

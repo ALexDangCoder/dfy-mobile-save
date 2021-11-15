@@ -50,7 +50,7 @@
 //               onPressed: () {
 //                 Navigator.pop(context);
 //               },
-//               icon: Image.asset('assets/images/Group.png'),
+//               icon: Image.asset('assets/images/ic_group.png'),
 //             ),
 //           )
 //         ],

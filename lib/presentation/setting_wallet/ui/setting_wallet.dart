@@ -1,14 +1,27 @@
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
+import 'package:Dfy/presentation/import_account_login_bts/ui/import_account_login.dart';
+import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
+import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/header_setting.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+enum typeSwitchForm { FINGER_FT_FACEID, APPLOCK }
+
 class SettingWallet extends StatelessWidget {
-  const SettingWallet({Key? key}) : super(key: key);
+  SettingWallet({required this.cubit, Key? key, required this.cubitSetting})
+      : super(key: key);
+  final SettingWalletCubit cubitSetting;
+  final WalletCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +29,7 @@ class SettingWallet extends StatelessWidget {
       width: 375.w,
       height: 764.h,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(62, 61, 92, 1),
+        color: AppTheme.getInstance().bgBtsColor(),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.r),
           topRight: Radius.circular(30.r),
@@ -25,7 +38,10 @@ class SettingWallet extends StatelessWidget {
       child: Column(
         children: [
           headerSetting(
-            leftFunction: () {},
+            leftFunction: () {
+              Navigator.pop(context);
+            },
+            context: context,
             rightFunction: () {},
           ),
           const Divider(
@@ -41,28 +57,40 @@ class SettingWallet extends StatelessWidget {
                   ),
                   buttonForm(
                     hintText: 'Dapp',
-                    prefixIcon: ImageAssets.global,
+                    prefixIcon: ImageAssets.ic_global,
                   ),
                   SizedBox(
                     height: 16.h,
                   ),
-                  buttonForm(
-                    hintText: S.current.select_acc,
-                    prefixIcon: ImageAssets.slc_acc,
+                  GestureDetector(
+                    onTap: () {
+                      showSelectAcc(
+                        context,
+                        cubit,
+                        TypeScreen2.setting,
+                      );
+                    },
+                    child: buttonForm(
+                      hintText: S.current.select_acc,
+                      prefixIcon: ImageAssets.slc_acc,
+                    ),
                   ),
                   SizedBox(
                     height: 16.h,
                   ),
-                  buttonForm(
-                    hintText: S.current.create_new_acc,
-                    prefixIcon: ImageAssets.plus,
-                  ),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  buttonForm(
-                    hintText: S.current.import_acc,
-                    prefixIcon: ImageAssets.import,
+                  GestureDetector(
+                    onTap: () {
+                      showCreateSeedPhrase1(
+                        context,
+                        true,
+                        BLocCreateSeedPhrase(''),
+                        TypeScreen.one,
+                      );
+                    },
+                    child: buttonForm(
+                      hintText: S.current.create_new_acc,
+                      prefixIcon: ImageAssets.ic_add,
+                    ),
                   ),
                   SizedBox(
                     height: 16.h,
@@ -72,13 +100,32 @@ class SettingWallet extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
-                        builder: (context) => const ConfirmPWShowPRVSeedPhr(),
+                        builder: (context) => const ImportBTS(),
+                        context: context,
+                      );
+                    },
+                    child: buttonForm(
+                      hintText: S.current.import_acc,
+                      prefixIcon: ImageAssets.ic_import,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        builder: (context) => ConfirmPWShowPRVSeedPhr(
+                          cubit: ConfirmPwPrvKeySeedpharseCubit(),
+                        ),
                         context: context,
                       );
                     },
                     child: buttonForm(
                       hintText: S.current.show_key_seed,
-                      prefixIcon: ImageAssets.key,
+                      prefixIcon: ImageAssets.ic_key24,
                     ),
                   ),
                   SizedBox(
@@ -87,7 +134,7 @@ class SettingWallet extends StatelessWidget {
                   GestureDetector(
                     child: buttonForm(
                       hintText: S.current.change_password,
-                      prefixIcon: ImageAssets.security,
+                      prefixIcon: ImageAssets.ic_security,
                     ),
                     onTap: () {
                       showModalBottomSheet(
@@ -101,21 +148,32 @@ class SettingWallet extends StatelessWidget {
                   SizedBox(
                     height: 16.h,
                   ),
-                  switchForm(
-                    prefixImg: ImageAssets.key,
-                    isCheck: true,
-                    callBack: () {},
-                    hintText: S.current.face_touch_id,
+                  StreamBuilder<bool>(
+                    stream: cubitSetting.isSwitchFingerFtFaceIdOnStream,
+                    builder: (context, snapshot) {
+                      return switchForm(
+                        prefixImg: ImageAssets.ic_key24,
+                        isCheck: snapshot.data ?? false,
+                        hintText: S.current.face_touch_id,
+                        cubit: cubitSetting,
+                        type: typeSwitchForm.FINGER_FT_FACEID,
+                      );
+                    },
                   ),
                   SizedBox(
                     height: 16.h,
                   ),
-                  switchForm(
-                    prefixImg: ImageAssets.lock,
-                    isCheck: false,
-                    callBack: () {},
-                    hintText: S.current.app_wallet_lock,
-                  ),
+                  StreamBuilder<bool>(
+                      stream: cubitSetting.isSwitchAppLockOnStream,
+                      builder: (context, snapshot) {
+                        return switchForm(
+                          prefixImg: ImageAssets.ic_lock,
+                          isCheck: snapshot.data ?? false,
+                          hintText: S.current.app_wallet_lock,
+                          type: typeSwitchForm.APPLOCK,
+                          cubit: cubitSetting,
+                        );
+                      }),
                   SizedBox(
                     height: 51.h,
                   ),

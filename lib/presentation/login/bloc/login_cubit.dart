@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -25,22 +24,19 @@ class LoginCubit extends BaseCubit<LoginState> {
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     emit(LoginLoading());
     bool loginSuccess = false;
-
     switch (methodCall.method) {
       case 'checkPasswordCallback':
-        loginSuccess = methodCall.arguments['isCorrect'];
+       loginSuccess = await methodCall.arguments['isCorrect'];
+       if (loginSuccess == true) {
+         emit(LoginSuccess());
+       } else {
+         emit(LoginError('Password was wrong...'));
+       }
         break;
       case 'importWalletCallback':
-        print('3: ' + methodCall.arguments.toString());
-        break;
+           break;
       default:
         break;
-    }
-
-    if (loginSuccess == true) {
-      emit(LoginSuccess());
-    } else {
-      emit(LoginError('Password was wrong...'));
     }
   }
 
@@ -64,7 +60,9 @@ class LoginCubit extends BaseCubit<LoginState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('checkPassword', data);
-    } on PlatformException {}
+    } on PlatformException {
+
+    }
   }
 
   String authorized = 'Not Authorized';

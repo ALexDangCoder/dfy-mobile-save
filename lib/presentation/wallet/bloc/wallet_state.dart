@@ -1,9 +1,7 @@
 part of 'wallet_cubit.dart';
 
 @immutable
-abstract class WalletState extends Equatable {
-
-}
+abstract class WalletState extends Equatable {}
 
 class WalletInitial extends WalletState {
   @override
@@ -13,8 +11,4 @@ class WalletInitial extends WalletState {
 class WalletScreenState extends WalletState {
   @override
   List<Object?> get props => throw UnimplementedError();
-
 }
-
-
-

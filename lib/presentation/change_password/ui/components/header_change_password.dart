@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,18 +15,16 @@ Container headerChangePW({
       children: [
         IconButton(
           onPressed: callBack,
-          icon: Image.asset(ImageAssets.back),
+          icon: Image.asset(ImageAssets.ic_back),
         ),
-        SizedBox(width: 68.w,),
+        SizedBox(
+          width: 68.w,
+        ),
         Text(
-            S.current.change_password,
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 20.sp,
-              color: Colors.white,
-            ),
-          ),
-
+          S.current.change_password,
+          style: textNormal(Colors.white, 20.sp)
+              .copyWith(fontWeight: FontWeight.w700),
+        ),
       ],
     ),
   );

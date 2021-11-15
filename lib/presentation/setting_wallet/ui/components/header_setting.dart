@@ -1,11 +1,13 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Container headerSetting({
+  required BuildContext context,
   required Function()? leftFunction,
   required Function()? rightFunction,
 }) {
@@ -16,14 +18,14 @@ Container headerSetting({
       right: 16.w,
       left: 16.w,
       top: 16.h,
-      bottom: 20.h,
+      // bottom: 20.h,
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
           child: IconButton(
-            icon: Image.asset(ImageAssets.back),
+            icon: Image.asset(ImageAssets.ic_back),
             onPressed: leftFunction,
           ),
         ),
@@ -36,14 +38,24 @@ Container headerSetting({
           ),
         ),
         GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainScreen(
+                  index: 2,
+                ),
+              ),
+            );
+          },
           child: Text(
             S.current.lock,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w700,
-              color: const Color.fromRGBO(228, 172, 26, 1),
+            style: textNormalCustom(
+              const Color.fromRGBO(228, 172, 26, 1),
+              16.sp,
+              FontWeight.w700,
             ),
-          )
+          ),
         )
       ],
     ),

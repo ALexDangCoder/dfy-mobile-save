@@ -1,3 +1,4 @@
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components/form_address_ft_amount.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components/hide_customize_fee.dart';
@@ -7,7 +8,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 class ConfirmBlockchain extends StatefulWidget {
   const ConfirmBlockchain({
@@ -38,12 +38,12 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
     gasPriceFirstFetch = 1.1;
     gasLimitFirstFetch = 0.624;
     gasFeeFirstFetch = 0.6;
-    informationWallet = InformationWallet(
+    informationWallet = const InformationWallet(
       nameWallet: 'Test wallet',
       fromAddress: '0xFE5...4fd0',
       amount: 0.551,
       nameToken: 'BNB',
-      imgWallet: ImageAssets.hardCoreImgWallet,
+      imgWallet: ImageAssets.ic_symbol,
     );
     sendTokenCubit = SendTokenCubit();
     txtGasLimit = TextEditingController(text: gasLimitFirstFetch.toString());
@@ -163,7 +163,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Image.asset(ImageAssets.back),
+            icon: Image.asset(ImageAssets.ic_back),
           ),
           SizedBox(
             width: 95.w,

@@ -23,7 +23,8 @@ class ButtonGold extends StatelessWidget {
           center: const Alignment(0.5, -0.5),
           colors: isEnable
               ? AppTheme.getInstance().gradientButtonColor()
-              : [AppTheme.getInstance().disableColor(),AppTheme.getInstance().disableColor()],
+              : [AppTheme.getInstance().disableColor()
+            ,AppTheme.getInstance().disableColor()],
         ),
         borderRadius: const BorderRadius.all(
           Radius.circular(22),

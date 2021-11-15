@@ -1,17 +1,17 @@
 
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_token.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImportToken extends StatelessWidget {
 
-
+final WalletCubit walletCubit;
 
   const ImportToken({Key? key, required this.title, required this.icon,
-    required this.keyRouter,})
+    required this.keyRouter, required this.walletCubit,})
       : super(key: key);
 
 
@@ -25,10 +25,10 @@ class ImportToken extends StatelessWidget {
     void _checkKey() {
       switch(keyRouter){
         case 1:
-          showImportToken(context, ImportTokenNftBloc());
+          showImportToken(context, walletCubit);
           break;
         case 2:
-        showImportNft(context, ImportTokenNftBloc());
+        showImportNft(context, walletCubit);
           break;
       }
     }
