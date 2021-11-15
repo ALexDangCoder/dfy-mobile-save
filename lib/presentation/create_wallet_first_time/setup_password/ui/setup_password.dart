@@ -1,13 +1,14 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Dfy/generated/l10n.dart';
 
 class SetupPassWord extends StatefulWidget {
   const SetupPassWord({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
   int checkBox = 1;
   int isValidPass = 1;
   int isMatchPass = 1;
+  int isEnable = 1;
 
   @override
   void initState() {
@@ -42,79 +44,96 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 375.w,
-      height: 764.h,
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.r),
-          topRight: Radius.circular(30.r),
-        ),
-      ),
-      child: Column(
-        children: [
-          header(),
-          Divider(
-            thickness: 1,
-            color: AppTheme.getInstance().divideColor(),
+    return GestureDetector(
+      onTap: () {
+        final FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Container(
+        width: 375.w,
+        height: 764.h,
+        decoration: BoxDecoration(
+          color: AppTheme.getInstance().bgBtsColor(),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30.r),
+            topRight: Radius.circular(30.r),
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  textShowSetupPass(),
-                  SizedBox(
-                    height: 28.h,
-                  ),
-                  formSetupPassWord(
-                    hintText: S.current.new_pass,
-                  ),
-                  showTextValidatePassword(),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  formSetupPassWordConfirm(
-                    hintText: S.current.con_pass,
-                  ),
-                  showTextValidateMatchPassword(),
-                  SizedBox(
-                    height: 25.h,
-                  ),
-                  ckcBoxAndTextSetupPass(),
-                  SizedBox(
-                    height: 256.h,
-                  ),
-                ],
+        ),
+        child: Column(
+          children: [
+            header(),
+            Divider(
+              thickness: 1,
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    textShowSetupPass(),
+                    SizedBox(
+                      height: 28.h,
+                    ),
+                    formSetupPassWord(
+                      hintText: S.current.new_pass,
+                    ),
+                    showTextValidatePassword(),
+                    SizedBox(
+                      height: 16.h,
+                    ),
+                    formSetupPassWordConfirm(
+                      hintText: S.current.con_pass,
+                    ),
+                    showTextValidateMatchPassword(),
+                    SizedBox(
+                      height: 25.h,
+                    ),
+                    ckcBoxAndTextSetupPass(),
+                    SizedBox(
+                      height: 256.h,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          GestureDetector(
-            child: ButtonGold(
-              title: S.current.continue_s, isEnable: true,
-            ),
-            onTap: () async {
-              isValidPassCubit.isValidate(password.text);
-              isValidPassCubit.isMatchPW(
-                password: password.text,
-                confirmPW: confirmPassword.text,
-              );
-              if (checkBox == 2 &&
-                  isValidPassCubit.isValidFtMatchPW(
-                    password.text,
-                    confirmPassword.text,
-                  )) {
-                showCreateSeedPhrase1(
-                  context,
-                  BLocCreateSeedPhrase(password.text),
+            GestureDetector(
+              child: StreamBuilder(
+                stream: isValidPassCubit.isEnableBtnStream,
+                builder: (context, AsyncSnapshot<bool> snapshot) {
+                  return ButtonGold(
+                    title: S.current.continue_s,
+                    isEnable: snapshot.data ?? false,
+                  );
+                },
+              ),
+              onTap: () {
+                isValidPassCubit.isValidate(password.text);
+                isValidPassCubit.isMatchPW(
+                  password: password.text,
+                  confirmPW: confirmPassword.text,
                 );
-              }
-            },
-          ),
-          SizedBox(
-            height: 38.h,
-          ),
-        ],
+                if (checkBox == 2 &&
+                    isValidPassCubit.checkMatchPW(
+                      confirmPW: confirmPassword.text,
+                      password: password.text,
+                    ) &&
+                    Validator.isValidPassword(password.text)) {
+                  showCreateSeedPhrase1(
+                    context,
+                    false,
+                    BLocCreateSeedPhrase(password.text),
+                    TypeScreen.tow,
+                  );
+                }
+              },
+            ),
+            SizedBox(
+              height: 38.h,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -132,15 +151,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
               ),
               SizedBox(
                 width: 323.w,
-                height: 30.h,
+                // height: 30.h,
                 child: Text(
                   S.current.pass_must,
-                  style: textNormal(
-                    AppTheme.getInstance().wrongColor(),
-                    12.sp,
-                  ).copyWith(
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                      .copyWith(fontWeight: FontWeight.w400),
                 ),
               ),
             ],
@@ -163,15 +178,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
               ),
               SizedBox(
                 width: 323.w,
-                height: 30.h,
+                // height: 30.h,
                 child: Text(
                   S.current.not_match,
-                  style: textNormal(
-                    AppTheme.getInstance().wrongColor(),
-                    12.sp,
-                  ).copyWith(
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                      .copyWith(fontWeight: FontWeight.w400),
                 ),
               ),
             ],
@@ -183,36 +194,39 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   SizedBox ckcBoxAndTextSetupPass() {
     return SizedBox(
-      height: 48.h,
+      // height: 48.h,
       width: 323.w,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Align(
             alignment: Alignment.topLeft,
             child: SizedBox(
               width: 24.w,
               height: 24.h,
-              child: StreamBuilder(
+              child: StreamBuilder<bool>(
+                initialData: false,
                 stream: isValidPassCubit.ckcBoxStream,
-                builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                builder: (context, snapshot) {
                   return Checkbox(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    fillColor: MaterialStateProperty.all(
-                      AppTheme.getInstance().fillColor(),
-                    ),
-                    activeColor: AppTheme.getInstance().activeColor(),
+                    fillColor:
+                        MaterialStateProperty.all(const Color(0xffE4AC1A)),
+                    activeColor: const Color.fromRGBO(228, 172, 26, 1),
                     // checkColor: const Colors,
                     onChanged: (bool? value) {
                       isValidPassCubit.ckcBoxSink.add(value ?? false);
                       if (value == true) {
                         checkBox = 2;
+                        isValidPassCubit.isEnable(2);
                       } else {
                         checkBox = 1;
+                        isValidPassCubit.isEnable(1);
                       }
                     },
-                    value: snapshot.data,
+                    value: snapshot.data ?? false,
                   );
                 },
               ),
@@ -223,15 +237,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
           ),
           SizedBox(
             width: 287.w,
-            height: 48.h,
+            // height: 48.h,
             child: Text(
               S.current.understand_defi,
-              style: textNormal(
-                AppTheme.getInstance().whiteWithOpacity(),
-                14.sp,
-              ).copyWith(
-                fontWeight: FontWeight.w400,
-              ),
+              style: textNormal(const Color.fromRGBO(255, 255, 255, 1), 14.sp)
+                  .copyWith(fontWeight: FontWeight.w400),
             ),
           ),
         ],
@@ -282,16 +292,16 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 },
                 child: snapshot.data ?? false
                     ? const ImageIcon(
-                        AssetImage(ImageAssets.hide),
+                        AssetImage(ImageAssets.ic_show),
                         color: Colors.grey,
                       )
                     : const ImageIcon(
-                        AssetImage(ImageAssets.show),
+                        AssetImage(ImageAssets.ic_hide),
                         color: Colors.grey,
                       ),
               ),
               prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.lock),
+                AssetImage(ImageAssets.ic_lock),
                 color: Colors.white,
               ),
               border: InputBorder.none,
@@ -321,10 +331,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           return TextFormField(
             obscureText: snapshot.data ?? false,
-            style: textNormal(
-              Colors.white,
-              16.sp,
-            ),
+            style: textNormal(Colors.white, 16.sp)
+                .copyWith(fontWeight: FontWeight.w400),
             cursorColor: Colors.white,
             controller: confirmPassword,
             decoration: InputDecoration(
@@ -345,16 +353,16 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 },
                 child: snapshot.data ?? false
                     ? const ImageIcon(
-                        AssetImage(ImageAssets.hide),
+                        AssetImage(ImageAssets.ic_show),
                         color: Colors.grey,
                       )
                     : const ImageIcon(
-                        AssetImage(ImageAssets.show),
+                        AssetImage(ImageAssets.ic_hide),
                         color: Colors.grey,
                       ),
               ),
               prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.lock),
+                AssetImage(ImageAssets.ic_lock),
                 color: Colors.white,
               ),
               border: InputBorder.none,
@@ -370,57 +378,50 @@ class _SetupPassWordState extends State<SetupPassWord> {
       padding: EdgeInsets.only(top: 24.h),
       child: SizedBox(
         width: 323.w,
-        height: 72.h,
+        // height: 72.h,
         child: Text(
           S.current.please,
-          style: textNormal(
-            AppTheme.getInstance().whiteWithOpacity(),
-            16.sp,
-          ).copyWith(
-            fontWeight: FontWeight.w400,
-          ),
+          style: textNormal(const Color.fromRGBO(255, 255, 255, 1.0), 16.sp)
+              .copyWith(fontWeight: FontWeight.w400),
         ),
       ),
     );
   }
 
-  Padding header() {
-    return Padding(
-      padding:
-          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
+  Container header() {
+    return Container(
+      width: 343.w,
+      // height: 28.h,
+      margin: EdgeInsets.only(
+        top: 16.h,
+        // bottom: 20.h,
+        left: 16.w,
+        right: 16.w,
+      ),
+      // EdgeInsets.only(left: 0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Image.asset(ImageAssets.back),
-            ),
+          // SizedBox(width: 26.w,),
+
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Image.asset(ImageAssets.ic_back),
           ),
-          SizedBox(
-            width: 66.w,
-          ),
+
           Text(
-            S.current.create_wallet,
-            style: textNormal(
-              AppTheme.getInstance().whiteWithOpacity(),
-              20.sp,
-            ).copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+            S.current.create_new_wallet,
+            style: textNormal(Colors.white, 20.sp)
+                .copyWith(fontWeight: FontWeight.w700),
           ),
-          SizedBox(
-            width: 64.48.w,
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Image.asset(ImageAssets.ic_close),
           ),
-          Expanded(
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Image.asset(ImageAssets.ic_group),
-            ),
-          )
         ],
       ),
     );

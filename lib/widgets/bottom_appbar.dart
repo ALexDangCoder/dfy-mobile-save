@@ -9,6 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+
+@immutable
 class CustomBottomHomeAppbar extends StatefulWidget {
   MainCubit mainCubit;
 
@@ -29,7 +31,7 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
           topRight: Radius.circular(20.0),
         ),
         border: Border.all(
-          width: 1.3,
+          width: 1.3.w,
           color: const Color.fromRGBO(255, 255, 255, 0.2),
         ),
       ),
@@ -138,7 +140,7 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
           value,
           style: textNormalCustom(
             isSelect == true ? Colors.white : Colors.white.withOpacity(0.3),
-            12,
+            12.sp,
             isSelect == true ? FontWeight.w600 : FontWeight.w400,
           ),
         )

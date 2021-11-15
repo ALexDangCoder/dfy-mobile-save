@@ -1,8 +1,9 @@
-import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/main.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
@@ -13,40 +14,42 @@ class LoginCubit extends BaseCubit<LoginState> {
   LoginCubit() : super(LoginInitial());
 
   bool hidePass = true;
+  bool isAppLock = true;
+  bool isFaceID = false;
 
   bool hidePassword() {
     return hidePass = !hidePass;
   }
 
-  //
-  // String privateKey = '';
-  // String walletAddress = '';
-  // String passPhrase = '';
-
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     emit(LoginLoading());
     bool loginSuccess = false;
-
     switch (methodCall.method) {
       case 'checkPasswordCallback':
-        loginSuccess = methodCall.arguments['isCorrect'];
+       loginSuccess = await methodCall.arguments['isCorrect'];
+       if (loginSuccess == true) {
+         emit(LoginSuccess());
+       } else {
+         emit(LoginError('Password was wrong...'));
+       }
         break;
-      // case 'generateWalletCallback':
-      //   privateKey = await methodCall.arguments['privateKey'];
-      //   walletAddress = await methodCall.arguments['walletAddress'];
-      //   passPhrase = await methodCall.arguments['passPhrase'];
-      //   print(privateKey);
-      //   print(passPhrase);
-      //   print(walletAddress);
-      //   break;
+      case 'importWalletCallback':
+           break;
       default:
         break;
     }
+  }
 
-    if (loginSuccess == true) {
-      emit(LoginSuccess());
+  void getConfig() {
+    if (PrefsService.getAppLockConfig() == 'true') {
+      isAppLock = true;
     } else {
-      emit(LoginError('Password was wrong...'));
+      isAppLock = false;
+    }
+    if (PrefsService.getFaceIDConfig() == 'true') {
+      isFaceID = true;
+    } else {
+      isFaceID = false;
     }
   }
 
@@ -58,7 +61,7 @@ class LoginCubit extends BaseCubit<LoginState> {
       };
       await trustWalletChannel.invokeMethod('checkPassword', data);
     } on PlatformException {
-      log(e);
+
     }
   }
 

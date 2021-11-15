@@ -1,20 +1,30 @@
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/item.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../main.dart';
 
-class BLocCreateSeedPhrase {
-  BLocCreateSeedPhrase(this.passWord);
+class BLocCreateSeedPhrase extends Cubit<SeedState> {
+  BLocCreateSeedPhrase(this.passWord) : super(SeedInitialState());
 
   BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isCheckBox1 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckBox2 = BehaviorSubject.seeded(false);
+
+  BehaviorSubject<bool> isCheckButton1 = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckButton = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckData = BehaviorSubject.seeded(false);
   BehaviorSubject<List<Item>> listTitle = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
   BehaviorSubject<bool> isCheckTouchID = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isCheckAppLock = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckAppLock = BehaviorSubject.seeded(true);
+
+  BehaviorSubject<bool> isSeedPhraseImportFailed =
+      BehaviorSubject.seeded(false);
 
   final String passWord;
 
@@ -27,6 +37,23 @@ class BLocCreateSeedPhrase {
     } on PlatformException {
       //todo
 
+    }
+  }
+
+  bool getIsSeedPhraseImport() {
+    for (final Item item in listTitle.value) {
+      if (!item.isCheck) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  void getIsSeedPhraseImport2() {
+    if (getIsSeedPhraseImport() && isCheckBox2.value) {
+      isCheckButton.sink.add(true);
+    } else {
+      isCheckButton.sink.add(false);
     }
   }
 
@@ -49,9 +76,9 @@ class BLocCreateSeedPhrase {
   }
 
   Future<void> setConfig({
-    String password = '',
-    bool isAppLock = false,
-    bool isFaceID = false,
+    required String password,
+    required bool isAppLock,
+    required bool isFaceID,
   }) async {
     try {
       final data = {
@@ -59,6 +86,9 @@ class BLocCreateSeedPhrase {
         'isFaceID': isFaceID,
         'password': password,
       };
+      await PrefsService.saveFirstAppConfig('false');
+      await PrefsService.saveAppLockConfig(isAppLock.toString());
+      await PrefsService.saveFaceIDConfig(isFaceID.toString());
       await trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {
       //todo
@@ -69,9 +99,9 @@ class BLocCreateSeedPhrase {
   String passPhrase = '';
   String walletAddress = '';
   String privateKey = '';
+  bool configSuccess = false;
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    print('callback ');
     switch (methodCall.method) {
       case 'generateWalletCallback':
         privateKey = await methodCall.arguments['privateKey'];
@@ -81,15 +111,29 @@ class BLocCreateSeedPhrase {
         isCheckData.sink.add(true);
         break;
       case 'storeWalletCallback':
-        bool isSuccess = await methodCall.arguments['isSuccess'];
-        print(isSuccess);
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+        emit(SeedNavState());
         break;
       case 'setConfigCallback':
         bool isSuccess = await methodCall.arguments['isSuccess'];
-        print(isSuccess);
         break;
       default:
         break;
+    }
+  }
+
+  bool isWalletName() {
+    if (Validator.validateNotNull(nameWallet.value)) {
+      return true;
+    }
+    return false;
+  }
+
+  void isButton() {
+    if (Validator.validateNotNull(nameWallet.value) && isCheckBox1.value) {
+      isCheckButton1.sink.add(true);
+    } else {
+      isCheckButton1.sink.add(false);
     }
   }
 
@@ -98,15 +142,16 @@ class BLocCreateSeedPhrase {
     getListTitle();
   }
 
-  bool getCheck() {
+  void getCheck() {
     String isData = '';
     for (final Item value in listTitle3) {
       isData += '${value.title} ';
     }
     if ('$passPhrase ' == isData) {
-      return true;
+      isSeedPhraseImportFailed.sink.add(false);
+    } else {
+      isSeedPhraseImportFailed.sink.add(true);
     }
-    return false;
   }
 
   List<String> listTitle1 = [];

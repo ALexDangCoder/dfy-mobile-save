@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -72,9 +73,16 @@ class _RestoreBTSState extends State<RestoreBTS> {
       bloc: restoreCubit,
       listener: (ctx, state) {
         if (state is NavState) {
-          showCreateSuccessfully(
-            context,
-            BLocCreateSeedPhrase(passwordController.text),
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (context) => Body(
+              bLocCreateSeedPhrase:
+                  BLocCreateSeedPhrase(passwordController.text),
+              wallet: restoreCubit.wallet ?? Wallet(),
+              type: KeyType.IMPORT,
+            ),
           );
         }
         if (state is ErrorState) {
@@ -104,8 +112,8 @@ class _RestoreBTSState extends State<RestoreBTS> {
               children: [
                 Container(
                   padding: EdgeInsets.only(
-                    left: 37.w,
                     right: 37.w,
+                    left: 11.w,
                   ),
                   decoration: BoxDecoration(
                     border: Border(
@@ -118,17 +126,20 @@ class _RestoreBTSState extends State<RestoreBTS> {
                   width: 375.h,
                   child: Row(
                     children: [
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const ImageIcon(
-                          AssetImage(ImageAssets.back),
-                          color: Colors.white,
+                        child: Container(
+                          margin: EdgeInsets.only(right: 16.w, left: 16.w),
+                          child: const ImageIcon(
+                            AssetImage(ImageAssets.ic_back),
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                       SizedBox(
-                        width: 77.w,
+                        width: 75.w,
                       ),
                       Expanded(
                         child: Text(
@@ -230,7 +241,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                       child: Row(
                                         children: [
                                           Image.asset(
-                                            ImageAssets.security,
+                                            ImageAssets.ic_security,
                                             color: Colors.white,
                                           ),
                                           SizedBox(
@@ -261,7 +272,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                           ),
                                           const Expanded(
                                             child: ImageIcon(
-                                              AssetImage(ImageAssets.expand),
+                                              AssetImage(
+                                                ImageAssets.ic_line_down,
+                                              ),
                                               color: Colors.white,
                                             ),
                                           ),
@@ -279,9 +292,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                       type = snapshot.data!;
                                       return type == FormType.PASS_PHRASE
                                           ? ItemForm(
-                                              leadPath: ImageAssets.key,
+                                              prefix: ImageAssets.ic_key24,
                                               hint: S.current.wallet_secret,
-                                              trailingPath: ImageAssets.paste,
+                                              suffix: ImageAssets.paste,
                                               formType: FormType.PASS_PHRASE,
                                               isShow: false,
                                               cubit: restoreCubit,
@@ -296,9 +309,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                               },
                                             )
                                           : ItemForm(
-                                              leadPath: ImageAssets.key,
+                                              prefix: ImageAssets.ic_key24,
                                               hint: S.current.private_key,
-                                              trailingPath: S.current.paste,
+                                              suffix: S.current.paste,
                                               formType: FormType.PRIVATE_KEY,
                                               isShow: false,
                                               cubit: restoreCubit,
@@ -324,11 +337,11 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     builder: (ctx, snapshot) {
                                       isShowNewPass = snapshot.data!;
                                       return ItemForm(
-                                        leadPath: ImageAssets.lock,
+                                        prefix: ImageAssets.ic_lock,
                                         hint: S.current.new_pass,
-                                        trailingPath: isShowNewPass
-                                            ? ImageAssets.show
-                                            : ImageAssets.hide,
+                                        suffix: isShowNewPass
+                                            ? ImageAssets.ic_show
+                                            : ImageAssets.ic_hide,
                                         formType: FormType.PASSWORD,
                                         isShow: isShowNewPass,
                                         cubit: restoreCubit,
@@ -351,11 +364,11 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     builder: (ctx, snapshot) {
                                       isShowConPass = snapshot.data!;
                                       return ItemForm(
-                                        leadPath: ImageAssets.lock,
+                                        prefix: ImageAssets.ic_lock,
                                         hint: S.current.con_pass,
-                                        trailingPath: isShowConPass
-                                            ? ImageAssets.show
-                                            : ImageAssets.hide,
+                                        suffix: isShowConPass
+                                            ? ImageAssets.ic_show
+                                            : ImageAssets.ic_hide,
                                         formType: FormType.PASSWORD,
                                         isShow: isShowConPass,
                                         cubit: restoreCubit,
@@ -407,7 +420,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                                 );
                                               },
                                               child: Image.asset(
-                                                ImageAssets.scan_qr,
+                                                ImageAssets.ic_qr_code,
                                               ),
                                             )
                                           ],
@@ -418,7 +431,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     },
                                   ),
                                   SizedBox(
-                                    height: 50.h,
+                                    height: 100.h,
                                   ),
                                 ],
                               ),

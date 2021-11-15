@@ -36,16 +36,20 @@ class CheckBoxCustom extends StatelessWidget {
                   if (snapshot.data ?? false) {
                     bLocCreateSeedPhrase.isCheckBox1.sink.add(false);
                   }
+
+                  bLocCreateSeedPhrase.isButton();
                 },
                 activeColor: AppTheme.getInstance().fillColor(),
               );
             },
           ),
-          Text(
-            title,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              14.sp,
+          Expanded(
+            child: Text(
+              title,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                14.sp,
+              ),
             ),
           )
         ],

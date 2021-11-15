@@ -3,7 +3,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
 
-
 part 'check_pass_state.dart';
 
 class CheckPassCubit extends Cubit<CheckPassState> {
@@ -52,7 +51,7 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   }
 
   void isEnable(int index) {
-    if(index == 1) {
+    if (index == 1) {
       // index == 1 disEnableBtn
       isEnableBtnSink.add(false);
     } else {
@@ -61,7 +60,16 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   }
 
   bool isValidFtMatchPW(String value, String confirmValue) {
-    if (Validator.validateStructure(value) && (value == confirmValue)) {
+    if (Validator.validateStructure(value)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  bool checkMatchPW({required String password, required String confirmPW}) {
+    if (password == confirmPW) {
+      //if equal widget warning will not appear
       return true;
     } else {
       return false;

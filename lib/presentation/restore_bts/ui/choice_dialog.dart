@@ -9,7 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ChoiceDialog extends StatefulWidget {
   const ChoiceDialog({
     Key? key,
-    required this.cubit, required this.controller1, required this.controller2,
+    required this.cubit,
+    required this.controller1,
+    required this.controller2,
   }) : super(key: key);
   final RestoreCubit cubit;
   final TextEditingController controller1;

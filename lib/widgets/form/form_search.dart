@@ -1,20 +1,27 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
-import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FormSearch extends StatelessWidget {
+class FormSearch extends StatefulWidget {
   final String urlIcon1;
-  final ImportTokenNftBloc bloc;
+  final WalletCubit bloc;
   final String hint;
 
-  const FormSearch({
+  FormSearch({
     Key? key,
     required this.urlIcon1,
     required this.bloc,
     required this.hint,
   }) : super(key: key);
+
+  @override
+  State<FormSearch> createState() => _FormSearchState();
+}
+
+class _FormSearchState extends State<FormSearch> {
+  final textSearch = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +37,7 @@ class FormSearch extends StatelessWidget {
       child: Row(
         children: [
           Image.asset(
-            urlIcon1,
+            widget.urlIcon1,
           ),
           SizedBox(
             width: 11.5.w,
@@ -39,14 +46,20 @@ class FormSearch extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(right: 5.w),
               child: TextFormField(
-                onFieldSubmitted: (value) {},
+                controller: textSearch,
+                maxLength: 20,
+                onChanged: (value) {
+                  widget.bloc.textSearch.sink.add(value);
+                  widget.bloc.search();
+                },
                 cursorColor: Colors.white,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.white,
+                style: textNormal(
+                  Colors.white54,
+                  16.sp,
                 ),
                 decoration: InputDecoration(
-                  hintText: hint,
+                  counterText: '',
+                  hintText: widget.hint,
                   hintStyle: textNormal(
                     Colors.white54,
                     16.sp,
@@ -56,6 +69,28 @@ class FormSearch extends StatelessWidget {
                 // onFieldSubmitted: ,
               ),
             ),
+          ),
+          StreamBuilder(
+            stream: widget.bloc.textSearch,
+            builder: (context, AsyncSnapshot<String> snapshot) {
+              return GestureDetector(
+                onTap: () {
+                  widget.bloc.textSearch.sink.add('');
+                  textSearch.text = '';
+                  widget.bloc.search();
+                },
+                child: snapshot.data?.isNotEmpty ?? false
+                    ? Image.asset(
+                        ImageAssets.ic_close,
+                        width: 20.w,
+                        height: 20.h,
+                      )
+                    : SizedBox(
+                        height: 20.h,
+                        width: 20.w,
+                      ),
+              );
+            },
           ),
         ],
       ),

@@ -1,6 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'hero.dart';
 
 class TokenItem extends StatelessWidget {
   const TokenItem({
@@ -9,17 +13,34 @@ class TokenItem extends StatelessWidget {
     required this.amount,
     required this.nameToken,
     required this.price,
+    required this.index,
+    required this.bloc,
   }) : super(key: key);
 
   final String symbolUrl;
   final String amount;
   final String nameToken;
   final String price;
+  final int index;
+  final WalletCubit bloc;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {},
+      onLongPress: () {
+        Navigator.of(context).push(
+          HeroDialogRoute(
+            builder: (context) {
+              return RemoveToken(
+                cubit: bloc,
+                index: index,
+              );
+            },
+            isNonBackground: false,
+          ),
+        );
+      },
       child: Column(
         children: [
           Divider(
