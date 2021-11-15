@@ -44,8 +44,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<List<AccountModel>> list = BehaviorSubject.seeded([]);
   BehaviorSubject<String> addressWallet =
       BehaviorSubject.seeded('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
-  BehaviorSubject<String> walletName =
-      BehaviorSubject.seeded('Account 1');
+  BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
 
   void getIsWalletName(String value) {
@@ -154,15 +153,13 @@ class WalletCubit extends BaseCubit<WalletState> {
     listTokenStream.sink.add(listTokenShow);
   }
 
-
   double total(List<TokenModel> list) {
     double total = 0;
-    for(int i = 0; i<list.length;i++) {
+    for (int i = 0; i < list.length; i++) {
       total = total + list[i].price!;
     }
     return total;
   }
-
 
   void getListTokenItemRemove() {
     listTokenStream.sink.add(listTokenShow);
@@ -380,9 +377,8 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   void getListSort() {
-    listTokenShow1 = listToken;
     final List<TokenModel> list = [];
-    for (final TokenModel value in listTokenShow1) {
+    for (final TokenModel value in listToken) {
       if (value.isShow ?? false) {
         list.add(value);
       }
@@ -391,7 +387,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
     list.sort(amountTokenComparator);
     final List<TokenModel> list1 = [];
-    for (final TokenModel value in listTokenShow1) {
+    for (final TokenModel value in listToken) {
       if (value.isShow ?? false) {
       } else {
         if ((value.amountToken ?? 0) > 0) {
@@ -401,7 +397,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
     list1.sort(amountTokenComparator);
     list.addAll(list1);
-    for (final TokenModel value in listTokenShow1) {
+    for (final TokenModel value in listToken) {
       if (value.isShow ?? false) {
       } else {
         if ((value.amountToken ?? 0) > 0) {
@@ -415,6 +411,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   void search() {
     final List<TokenModel> list = [];
+    listTokenShow1=listToken;
     for (final TokenModel value in listTokenShow1) {
       if (value.nameToken!.toLowerCase().contains(
             textSearch.value.toLowerCase(),

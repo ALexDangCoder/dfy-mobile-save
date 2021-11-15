@@ -77,7 +77,7 @@ class _FormSearchState extends State<FormSearch> {
                 onTap: () {
                   widget.bloc.textSearch.sink.add('');
                   textSearch.text = '';
-                  widget.bloc.search();
+                 // widget.bloc.search();
                 },
                 child: snapshot.data?.isNotEmpty ?? false
                     ? Image.asset(

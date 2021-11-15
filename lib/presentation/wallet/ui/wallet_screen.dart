@@ -262,23 +262,25 @@ class _WalletState extends State<WalletScreen>
                                 AsyncSnapshot<List<TokenModel>> snapshot,
                               ) {
                                 if (snapshot.hasData) {
-                                  return ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: snapshot.data?.length,
-                                    itemBuilder: (context, index) {
-                                      return NFTItem(
-                                        index: index,
-                                        bloc: cubit,
-                                        symbolUrl:
-                                            snapshot.data?[index].iconToken ??
-                                                '',
-                                        nameNFT:
-                                            snapshot.data?[index].nameToken ??
-                                                '',
-                                      );
-                                    },
+                                  return SafeArea(
+                                    child: ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data?.length,
+                                      itemBuilder: (context, index) {
+                                        return NFTItem(
+                                          index: index,
+                                          bloc: cubit,
+                                          symbolUrl:
+                                              snapshot.data?[index].iconToken ??
+                                                  '',
+                                          nameNFT:
+                                              snapshot.data?[index].nameToken ??
+                                                  '',
+                                        );
+                                      },
+                                    ),
                                   );
                                 } else {
                                   return const Center(

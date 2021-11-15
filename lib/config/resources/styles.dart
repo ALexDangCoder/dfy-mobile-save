@@ -3,44 +3,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const emptyView = SizedBox(width: 0, height: 0);
+final emptyView = SizedBox(width: 0.w, height: 0.h);
 
 /// height and width space
-const spaceH2 = SizedBox(height: 2);
-const spaceH3 = SizedBox(height: 3);
-const spaceH4 = SizedBox(height: 4);
-const spaceH5 = SizedBox(height: 5);
-const spaceH6 = SizedBox(height: 6);
-const spaceH8 = SizedBox(height: 8);
-const spaceH10 = SizedBox(height: 10);
-const spaceH12 = SizedBox(height: 12);
-const spaceH15 = SizedBox(height: 15);
-const spaceH16 = SizedBox(height: 16);
-const spaceH20 = SizedBox(height: 20);
-const spaceH24 = SizedBox(height: 24);
-const spaceH25 = SizedBox(height: 25);
-const spaceH30 = SizedBox(height: 30);
-const spaceH35 = SizedBox(height: 35);
-const spaceH50 = SizedBox(height: 50);
-const spaceH60 = SizedBox(height: 60);
-const spaceH70 = SizedBox(height: 70);
+
+/// height and width space
+final spaceH2 = SizedBox(height: 2.h);
+final spaceH3 = SizedBox(height: 3.h);
+final spaceH4 = SizedBox(height: 4.h);
+final spaceH5 = SizedBox(height: 5.h);
+final spaceH6 = SizedBox(height: 6.h);
+final spaceH8 = SizedBox(height: 8.h);
+final spaceH10 = SizedBox(height: 10.h);
+final spaceH12 = SizedBox(height: 12.h);
+final spaceH15 = SizedBox(height: 15.h);
+final spaceH16 = SizedBox(height: 16.h);
+final spaceH20 = SizedBox(height: 20.h);
+final spaceH24 = SizedBox(height: 24.h);
+final spaceH25 = SizedBox(height: 25.h);
+final spaceH30 = SizedBox(height: 30.h);
+final spaceH35 = SizedBox(height: 35.h);
+final spaceH50 = SizedBox(height: 50.h);
+final spaceH60 = SizedBox(height: 60.h);
+final spaceH70 = SizedBox(height: 70.h);
 
 ///W
-const spaceW2 = SizedBox(width: 2);
-const spaceW3 = SizedBox(width: 3);
-const spaceW4 = SizedBox(width: 4);
-const spaceW5 = SizedBox(width: 5);
-const spaceW6 = SizedBox(width: 6);
-const spaceW8 = SizedBox(width: 8);
-const spaceW10 = SizedBox(width: 10);
-const spaceW12 = SizedBox(width: 12);
-const spaceW15 = SizedBox(width: 15);
-const spaceW16 = SizedBox(width: 16);
-const spaceW18 = SizedBox(width: 18);
-const spaceW20 = SizedBox(width: 20);
-const spaceW25 = SizedBox(width: 25);
-const spaceW30 = SizedBox(width: 30);
-const spaceW100 = SizedBox(width: 100);
+final spaceW2 = SizedBox(width: 2.w);
+final spaceW3 = SizedBox(width: 3.w);
+final spaceW4 = SizedBox(width: 4.w);
+final spaceW5 = SizedBox(width: 5.w);
+final spaceW6 = SizedBox(width: 6.w);
+final spaceW8 = SizedBox(width: 8.w);
+final spaceW10 = SizedBox(width: 10.w);
+final spaceW12 = SizedBox(width: 12.w);
+final spaceW15 = SizedBox(width: 15.w);
+final spaceW16 = SizedBox(width: 16.w);
+final spaceW18 = SizedBox(width: 18.w);
+final spaceW20 = SizedBox(width: 20.w);
+final spaceW25 = SizedBox(width: 25.w);
+final spaceW30 = SizedBox(width: 30.w);
+final spaceW100 = SizedBox(width: 100.w);
 
 TextStyle textNormal(Color? color, double? fontSize) {
   return GoogleFonts.sen(
@@ -51,8 +53,11 @@ TextStyle textNormal(Color? color, double? fontSize) {
   );
 }
 
-TextStyle tokenDetailAmount({Color color = Colors.white, double fontSize = 24,
-  FontWeight weight = FontWeight.w600,}) {
+TextStyle tokenDetailAmount({
+  Color color = Colors.white,
+  double fontSize = 24,
+  FontWeight weight = FontWeight.w600,
+}) {
   return GoogleFonts.sen(
     color: color,
     fontWeight: weight,
