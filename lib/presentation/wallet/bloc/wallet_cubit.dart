@@ -23,9 +23,9 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   BehaviorSubject<String> addressWallet =
-      BehaviorSubject.seeded('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+      BehaviorSubject.seeded('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
   BehaviorSubject<String> walletName =
-      BehaviorSubject.seeded('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+      BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
 
   void getIsWalletName(String value) {
@@ -41,7 +41,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getAddressWallet() async {}
 
   String formatAddress(String address) {
-    String formatAddressWallet =
+    final String formatAddressWallet =
         '${address.substring(0, 5)}...${address.substring(
       address.length - 4,
       address.length,

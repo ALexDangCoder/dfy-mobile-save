@@ -9,7 +9,6 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
-import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -54,9 +53,9 @@ class _WalletState extends State<WalletScreen>
 
     cubit.addressWallet.sink.add(
       widget.wallet?.address ??
-          'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+          '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
     );
-    cubit.walletName.sink.add(widget.wallet?.name ?? 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+    cubit.walletName.sink.add(widget.wallet?.name ?? 'Nguyen Van Hung');
     cubit.walletName.stream.listen((event) {
       changeName.text = event;
     });
