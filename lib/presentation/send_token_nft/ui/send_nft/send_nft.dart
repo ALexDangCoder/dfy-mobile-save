@@ -5,6 +5,7 @@ import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/confirm_bl
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -144,8 +145,8 @@ class _SendNftState extends State<SendNft> {
       child: Container(
         width: 323.w,
         padding: EdgeInsets.only(
-          top: 12.h,
-          bottom: 12.h,
+          top: 10.h,
+          bottom: 10.h,
         ),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(
@@ -153,42 +154,45 @@ class _SendNftState extends State<SendNft> {
           ),
           color: Color(0xff32324c),
         ),
-        child: TextFormField(
-          controller: readOnly ? null : txtToAddress,
-          onChanged: (value) {
-            sendNftCubit.checkValidAddress(value);
-          },
-          readOnly: readOnly,
-          style: textNormal(
-            Colors.white,
-            16.sp,
-          ),
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: readOnly
-                ? textNormal(const Color.fromRGBO(255, 255, 255, 1), 16.sp)
-                    .copyWith(fontWeight: FontWeight.w400)
-                : textNormal(
-                    Colors.grey,
-                    14.sp,
-                  ),
-            suffixIcon: InkWell(
-              onTap: callBack,
-              child: suffixImg == ''
-                  ? const SizedBox(
-                      width: 0,
-                    )
-                  : ImageIcon(
-                      AssetImage(suffixImg),
-                      color: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.only(top: 0.h),
+          child: TextFormField(
+            controller: readOnly ? null : txtToAddress,
+            onChanged: (value) {
+              sendNftCubit.checkValidAddress(value);
+            },
+            readOnly: readOnly,
+            style: textNormal(
+              Colors.white,
+              16.sp,
+            ),
+            cursorColor: Colors.white,
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: readOnly
+                  ? textNormal(const Color.fromRGBO(255, 255, 255, 1), 16.sp)
+                      .copyWith(fontWeight: FontWeight.w400)
+                  : textNormal(
+                      Colors.grey,
+                      14.sp,
                     ),
+              suffixIcon: InkWell(
+                onTap: callBack,
+                child: suffixImg == ''
+                    ? const SizedBox(
+                        width: 0,
+                      )
+                    : ImageIcon(
+                        AssetImage(suffixImg),
+                        color: Colors.white,
+                      ),
+              ),
+              prefixIcon: ImageIcon(
+                AssetImage(prefixImg),
+                color: Colors.white,
+              ),
+              border: InputBorder.none,
             ),
-            prefixIcon: ImageIcon(
-              AssetImage(prefixImg),
-              color: Colors.white,
-            ),
-            border: InputBorder.none,
           ),
         ),
       ),
