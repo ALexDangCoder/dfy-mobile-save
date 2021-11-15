@@ -43,8 +43,9 @@ class WalletCubit extends BaseCubit<WalletState> {
       BehaviorSubject.seeded([]);
   BehaviorSubject<List<AccountModel>> list = BehaviorSubject.seeded([]);
   BehaviorSubject<String> addressWallet =
-      BehaviorSubject.seeded('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-  BehaviorSubject<String> walletName = BehaviorSubject.seeded('xxxxxxxxxxxxx');
+      BehaviorSubject.seeded('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
+  BehaviorSubject<String> walletName =
+      BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
 
   void getIsWalletName(String value) {
@@ -55,6 +56,8 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  String addressWalletCore = '';
+
   void addToken(TokenModel tokenModel) {
     listTokenShow.add(tokenModel);
     listTokenStream.sink.add(listTokenShow);
@@ -63,7 +66,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getAddressWallet() async {}
 
   String formatAddress(String address) {
-    String formatAddressWallet =
+    final String formatAddressWallet =
         '${address.substring(0, 5)}...${address.substring(
       address.length - 4,
       address.length,
@@ -150,6 +153,16 @@ class WalletCubit extends BaseCubit<WalletState> {
     listTokenShow.addAll(list);
     listTokenStream.sink.add(listTokenShow);
   }
+
+
+  double total(List<TokenModel> list) {
+    double total = 0;
+    for(int i = 0; i<list.length;i++) {
+      total = total + list[i].price!;
+    }
+    return total;
+  }
+
 
   void getListTokenItemRemove() {
     listTokenStream.sink.add(listTokenShow);

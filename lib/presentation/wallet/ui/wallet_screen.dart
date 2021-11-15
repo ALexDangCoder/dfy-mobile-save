@@ -6,10 +6,10 @@ import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
-import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -25,6 +25,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 import 'hero.dart';
 
@@ -47,16 +48,18 @@ class _WalletState extends State<WalletScreen>
   final WalletCubit cubit = WalletCubit();
   late FToast fToast;
   final changeName = TextEditingController();
+  final formatUSD = NumberFormat('\$ ###,###.###', 'en_US');
 
   @override
   void initState() {
     super.initState();
+    cubit.addressWalletCore =
+        widget.wallet?.address ?? '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
 
     cubit.addressWallet.sink.add(
-      widget.wallet?.address ??
-          'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+      widget.wallet?.address ?? '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
     );
-    cubit.walletName.sink.add(widget.wallet?.name ?? 'xxxxxxxxxxxxxx');
+    cubit.walletName.sink.add(widget.wallet?.name ?? 'Nguyen Van Hung');
     cubit.walletName.stream.listen((event) {
       changeName.text = event;
     });
@@ -392,7 +395,7 @@ class _WalletState extends State<WalletScreen>
               ),
               Center(
                 child: Text(
-                  '\$ 3,800',
+                  formatUSD.format(cubit.total(cubit.listToken)),
                   style: textNormalCustom(
                     const Color(0xFFE4AC1A),
                     20.sp,
@@ -415,7 +418,7 @@ class _WalletState extends State<WalletScreen>
               GestureDetector(
                 onLongPress: () {
                   Clipboard.setData(
-                    ClipboardData(text: cubit.addressWallet.value),
+                    ClipboardData(text: cubit.addressWalletCore),
                   ).then((_) {
                     fToast.showToast(
                       child: const Copied(),
@@ -451,7 +454,18 @@ class _WalletState extends State<WalletScreen>
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (context) => Receive(
+                      walletAddress: widget.wallet?.address ??
+                          '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
+                      type: TokenType.QR,
+                    ),
+                  );
+                },
                 icon: const ImageIcon(
                   AssetImage(ImageAssets.ic_qr_code),
                   color: Colors.white,

@@ -22,10 +22,7 @@ import 'package:share_plus/share_plus.dart';
 
 final formatCoin = NumberFormat('#,##0.#####', 'en_US');
 final formatUSD = NumberFormat('#,##0.#####\$', 'en_US');
-enum TokenType {
-  DFY,
-  NFT,
-}
+enum TokenType { DFY, NFT, QR }
 
 class Receive extends StatefulWidget {
   const Receive({Key? key, required this.walletAddress, required this.type})
@@ -100,18 +97,7 @@ class _ReceiveState extends State<Receive> {
                 SizedBox(
                   width: 93.w,
                 ),
-                Text(
-                  widget.type == TokenType.DFY
-                      ? S.current.receive_dfy
-                      : S.current.receive_nft,
-                  style: textNormal(
-                    null,
-                    20.sp,
-                  ).copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
+                title(widget.type),
               ],
             ),
           ),
@@ -127,7 +113,7 @@ class _ReceiveState extends State<Receive> {
             height: 41.h,
           ),
           Container(
-            height: 367.h,
+            height: 370.h,
             width: 311.w,
             padding: EdgeInsets.only(
               top: 16.h,
@@ -161,10 +147,10 @@ class _ReceiveState extends State<Receive> {
                   ),
                 ),
                 SizedBox(
-                  height: 12.h,
+                  height: 11.h,
                 ),
                 SizedBox(
-                  height: 54.h,
+                  height: 39.h,
                   width: 232.w,
                   child: Text(
                     widget.walletAddress,
@@ -396,5 +382,47 @@ class _ReceiveState extends State<Receive> {
         child: child,
       ),
     );
+  }
+
+  Widget title(TokenType type) {
+    if(type == TokenType.DFY) {
+      return Text(
+        S.current.receive_dfy,
+        style: textNormal(
+          null,
+          20.sp,
+        ).copyWith(
+          fontWeight: FontWeight.w700,
+          fontStyle: FontStyle.normal,
+        ),
+      );
+    }
+    else if(type == TokenType.NFT) {
+      return Text(
+        S.current.receive_nft,
+        style: textNormal(
+          null,
+          20.sp,
+        ).copyWith(
+          fontWeight: FontWeight.w700,
+          fontStyle: FontStyle.normal,
+        ),
+      );
+    }
+    else if (type == TokenType.QR) {
+      return Text(
+        S.current.scan_qr_code,
+        style: textNormal(
+          null,
+          20.sp,
+        ).copyWith(
+          fontWeight: FontWeight.w700,
+          fontStyle: FontStyle.normal,
+        ),
+      );
+    }
+    else {
+      return Container();
+    }
   }
 }
