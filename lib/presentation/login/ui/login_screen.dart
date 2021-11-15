@@ -407,7 +407,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Center(
               child: TextButton(
                 child: Text(
-                  S.current.OK,
+                  S.current.ok,
                   style: textNormalCustom(
                     AppTheme.getInstance().fillColor(),
                     20.sp,

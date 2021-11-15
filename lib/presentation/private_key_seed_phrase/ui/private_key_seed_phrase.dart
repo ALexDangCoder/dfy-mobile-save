@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
@@ -80,7 +79,7 @@ class _BodyState extends State<Body> {
                         child: Container(
                           margin: const EdgeInsets.only(left: 10, right: 10),
                           child: Image.asset(
-                            ImageAssets.ic_out,
+                            ImageAssets.ic_back,
                             width: 20.w,
                             height: 20,
                           ),
@@ -105,6 +104,7 @@ class _BodyState extends State<Body> {
                           ),
                         ),
                         onTap: () {
+                          Navigator.pop(context);
                           Navigator.pop(context);
                         },
                       ),
@@ -131,7 +131,7 @@ class _BodyState extends State<Body> {
                               ),
                             );
                           },
-                          child: FromText3(
+                          child: FromText4(
                             titleCopy: widget.bloc.listWallet[index ?? 0]
                                     .walletAddress ??
                                 '',
@@ -140,22 +140,22 @@ class _BodyState extends State<Body> {
                                       .walletAddress ??
                                   '',
                             ),
-                            urlSuffixIcon: url_ic_outline,
-                            urlPrefixIcon: url_ic_addresss,
+                            urlSuffixIcon: ImageAssets.ic_line_down,
+                            urlPrefixIcon: ImageAssets.ic_address,
                           ),
                         ),
                         SizedBox(
                           height: 16.h,
                         ),
-                        FromText4(
+                        FromText3(
                           titleCopy:
                               widget.bloc.listWallet[index ?? 0].privateKey ??
                                   '',
                           title: widget.bloc.formatText(
                             widget.bloc.listWallet[index ?? 0].privateKey ?? '',
                           ),
-                          urlSuffixIcon: url_ic_copy,
-                          urlPrefixIcon: url_ic_key,
+                          urlSuffixIcon: ImageAssets.ic_copy,
+                          urlPrefixIcon: ImageAssets.ic_key24,
                         ),
                         SizedBox(
                           height: 20.h,

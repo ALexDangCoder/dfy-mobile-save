@@ -28,6 +28,11 @@ class LoginCubit extends BaseCubit<LoginState> {
     switch (methodCall.method) {
       case 'checkPasswordCallback':
         loginSuccess = methodCall.arguments['isCorrect'];
+        if (loginSuccess == true) {
+          emit(LoginSuccess());
+        } else {
+          emit(LoginError('Password was wrong...'));
+        }
         break;
       case 'importWalletCallback':
            break;
@@ -35,11 +40,6 @@ class LoginCubit extends BaseCubit<LoginState> {
         break;
     }
 
-    if (loginSuccess == true) {
-      emit(LoginSuccess());
-    } else {
-      emit(LoginError('Password was wrong...'));
-    }
   }
 
   void getConfig() {

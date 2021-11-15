@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft_succesfully.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_input3.dart';
 import 'package:Dfy/widgets/form/form_input_number.dart';
@@ -14,7 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../main.dart';
 
-void showImportNft(BuildContext context, ImportTokenNftBloc bloc) {
+void showImportNft(BuildContext context, WalletCubit bloc) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -26,7 +26,7 @@ void showImportNft(BuildContext context, ImportTokenNftBloc bloc) {
 }
 
 class Body extends StatefulWidget {
-  final ImportTokenNftBloc bloc;
+  final WalletCubit bloc;
 
   const Body({Key? key, required this.bloc}) : super(key: key);
 
@@ -55,14 +55,18 @@ class _BodyState extends State<Body> {
             width: 323.w,
             height: 28.h,
             margin: EdgeInsets.only(
-                left: 26.w, top: 16.h, right: 26.w, bottom: 20.h,),
+              left: 26.w,
+              top: 16.h,
+              right: 26.w,
+              bottom: 20.h,
+            ),
             child: Row(
               children: [
                 GestureDetector(
                   child: Container(
                     margin: EdgeInsets.only(right: 10.w, left: 10.w),
                     child: Image.asset(
-                      url_ic_out,
+                      ImageAssets.ic_back,
                       width: 20.w,
                       height: 20.h,
                     ),
@@ -73,8 +77,10 @@ class _BodyState extends State<Body> {
                 ),
                 Container(
                   margin: EdgeInsets.only(right: 88.w, left: 90.w),
-                  child: Text(S.current.import_NFT,
-                      style: textNormalCustom(null, 20, FontWeight.bold),),
+                  child: Text(
+                    S.current.import_nft,
+                    style: textNormalCustom(null, 20, FontWeight.bold),
+                  ),
                 ),
               ],
             ),
@@ -95,9 +101,9 @@ class _BodyState extends State<Body> {
                   children: [
                     FormInput3(
                       controller: controller,
-                      urlIcon1: url_ic_address,
-                      hint: S.current.Token_address,
-                      urlIcon2: url_ic_qr,
+                      urlIcon1: ImageAssets.ic_address,
+                      hint: S.current.token_address,
+                      urlIcon2: ImageAssets.ic_qr_code,
                       bloc: widget.bloc,
                     ),
                     StreamBuilder(
@@ -108,7 +114,7 @@ class _BodyState extends State<Body> {
                           child: widget.bloc.isNFT.value
                               ? null
                               : Text(
-                                  S.current.Invalid_address,
+                                  S.current.invalid_address,
                                   style: textNormal(
                                     Colors.red,
                                     14.sp,
@@ -120,7 +126,7 @@ class _BodyState extends State<Body> {
                     ),
                     spaceH16,
                     FormInputNumber(
-                      urlIcon1: url_ic_enter_id,
+                      urlIcon1: ImageAssets.ic_face_id,
                       bloc: widget.bloc,
                       hint: S.current.enter_id,
                     ),

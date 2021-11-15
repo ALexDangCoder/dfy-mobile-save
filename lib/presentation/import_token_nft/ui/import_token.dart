@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,17 +15,12 @@ import '../../../main.dart';
 import 'choose_token.dart';
 import 'enter_address.dart';
 
-void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
+void showImportToken(BuildContext context, WalletCubit bloc) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
     backgroundColor: Colors.transparent,
     builder: (context) {
-      // bloc.importToken(
-      //     walletAddress: "walletAddress",
-      //     tokenAddress: "tokenAddress",
-      //     symbol: "dsfsadf",
-      //     decimal: 1);
       bloc.getListSupportedToken(
         walletAddress: 'walletAddress',
       );
@@ -61,7 +56,7 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                       child: Container(
                         margin: EdgeInsets.only(right: 10.w, left: 10.w),
                         child: Image.asset(
-                          url_ic_out,
+                          ImageAssets.ic_back,
                           width: 20.w,
                           height: 20.h,
                         ),
@@ -139,5 +134,5 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
         ),
       );
     },
-  );
+  ).whenComplete(() => bloc.getListTokenItem());
 }

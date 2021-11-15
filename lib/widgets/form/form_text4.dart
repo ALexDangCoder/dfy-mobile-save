@@ -1,10 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/generated/l10n.dart';
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class FromText4 extends StatelessWidget {
   final String urlPrefixIcon;
@@ -58,19 +55,10 @@ class FromText4 extends StatelessWidget {
               ),
             ],
           ),
-          InkWell(
-            onTap: () {
-
-            },
-            child: Container(
-              child: urlSuffixIcon.isNotEmpty
-                  ? Image.asset(
-                urlSuffixIcon,
-                height: 20.67.h,
-                width: 20.14.w,
-              )
-                  : null,
-            ),
+          Image.asset(
+            urlSuffixIcon,
+            height: 20.67.h,
+            width: 20.14.w,
           ),
         ],
       ),

@@ -30,7 +30,7 @@ class RestoreBTS extends StatefulWidget {
 }
 
 class _RestoreBTSState extends State<RestoreBTS> {
-  late final ImportCubit restoreCubit;
+  late final RestoreCubit restoreCubit;
   List<String> listString = [S.current.restore_with_seed, S.current.only_first];
   String strValue = S.current.seed_phrase;
   bool isVisible = false;
@@ -47,7 +47,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
   @override
   void initState() {
     super.initState();
-    restoreCubit = ImportCubit();
+    restoreCubit = RestoreCubit();
     trustWalletChannel
         .setMethodCallHandler(restoreCubit.nativeMethodCallBackTrustWallet);
     passwordController = TextEditingController();
@@ -68,7 +68,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ImportCubit, RestoreState>(
+    return BlocConsumer<RestoreCubit, RestoreState>(
       bloc: restoreCubit,
       listener: (ctx, state) {
         if (state is NavState) {
@@ -80,7 +80,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
               bLocCreateSeedPhrase:
                   BLocCreateSeedPhrase(passwordController.text),
               wallet: restoreCubit.wallet ?? Wallet(),
-              type: KeyType1.IMPORT,
+              type: KeyType.IMPORT,
             ),
           );
         }

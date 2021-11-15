@@ -1,12 +1,12 @@
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FormSearch extends StatelessWidget {
+class FormSearch extends StatefulWidget {
   final String urlIcon1;
-  final ImportTokenNftBloc bloc;
+  final WalletCubit bloc;
   final String hint;
 
   FormSearch({
@@ -15,6 +15,12 @@ class FormSearch extends StatelessWidget {
     required this.bloc,
     required this.hint,
   }) : super(key: key);
+
+  @override
+  State<FormSearch> createState() => _FormSearchState();
+}
+
+class _FormSearchState extends State<FormSearch> {
   final textSearch = TextEditingController();
 
   @override
@@ -31,7 +37,7 @@ class FormSearch extends StatelessWidget {
       child: Row(
         children: [
           Image.asset(
-            urlIcon1,
+            widget.urlIcon1,
           ),
           SizedBox(
             width: 11.5.w,
@@ -43,8 +49,8 @@ class FormSearch extends StatelessWidget {
                 controller: textSearch,
                 maxLength: 20,
                 onChanged: (value) {
-                  bloc.textSearch.sink.add(value);
-                  bloc.search();
+                  widget.bloc.textSearch.sink.add(value);
+                  widget.bloc.search();
                 },
                 cursorColor: Colors.white,
                 style: textNormal(
@@ -53,7 +59,7 @@ class FormSearch extends StatelessWidget {
                 ),
                 decoration: InputDecoration(
                   counterText: '',
-                  hintText: hint,
+                  hintText: widget.hint,
                   hintStyle: textNormal(
                     Colors.white54,
                     16.sp,
@@ -64,17 +70,27 @@ class FormSearch extends StatelessWidget {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              bloc.textSearch.sink.add('');
-              textSearch.text = '';
-              bloc.search();
+          StreamBuilder(
+            stream: widget.bloc.textSearch,
+            builder: (context, AsyncSnapshot<String> snapshot) {
+              return GestureDetector(
+                onTap: () {
+                  widget.bloc.textSearch.sink.add('');
+                  textSearch.text = '';
+                  widget.bloc.search();
+                },
+                child: snapshot.data?.isNotEmpty ?? false
+                    ? Image.asset(
+                        ImageAssets.ic_close,
+                        width: 20.w,
+                        height: 20.h,
+                      )
+                    : SizedBox(
+                        height: 20.h,
+                        width: 20.w,
+                      ),
+              );
             },
-            child: Image.asset(
-              url_ic_close,
-              width: 20.w,
-              height: 20.h,
-            ),
           ),
         ],
       ),

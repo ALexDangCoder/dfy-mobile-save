@@ -56,7 +56,7 @@ class _WalletState extends State<WalletScreen>
       widget.wallet?.address ??
           'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     );
-    cubit.walletName.sink.add(widget.wallet?.name ?? 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+    cubit.walletName.sink.add(widget.wallet?.name ?? 'xxxxxxxxxxxxxx');
     cubit.walletName.stream.listen((event) {
       changeName.text = event;
     });
@@ -145,7 +145,6 @@ class _WalletState extends State<WalletScreen>
                               return SettingWallet(
                                 cubitSetting: SettingWalletCubit(),
                                 cubit: cubit,
-
                               );
                             },
                           );
@@ -236,6 +235,7 @@ class _WalletState extends State<WalletScreen>
                               },
                             ),
                             ImportToken(
+                              walletCubit: cubit,
                               title: S.current.import_token,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 1,
@@ -285,13 +285,15 @@ class _WalletState extends State<WalletScreen>
                               },
                             ),
                             ImportToken(
-                              title: S.current.import_NFT,
+                              walletCubit: cubit,
+                              title: S.current.import_nft,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 2,
                             ),
                             CreateNFT(
-                              title: S.current.create_NFT,
+                              title: S.current.create_nft,
                               icon: ImageAssets.ic_add,
+                              walletCubit: cubit,
                             ),
                             SizedBox(
                               height: 102.h,
@@ -431,8 +433,7 @@ class _WalletState extends State<WalletScreen>
                     color: const Color(0xFF585769),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child:
-                  StreamBuilder(
+                  child: StreamBuilder(
                     stream: cubit.addressWallet,
                     builder: (context, AsyncSnapshot<String> snapshot) {
                       return Center(

@@ -14,13 +14,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum KeyType1 { IMPORT, CREATE }
+enum KeyType { IMPORT, CREATE }
 
 void showCreateSuccessfully({
   required BuildContext context,
   required BLocCreateSeedPhrase bLocCreateSeedPhrase,
   required Wallet wallet,
-  required KeyType1 type,
+  required KeyType type,
 }) {
   showModalBottomSheet(
     isScrollControlled: true,
@@ -45,7 +45,7 @@ class Body extends StatefulWidget {
   }) : super(key: key);
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
   final Wallet wallet;
-  final KeyType1 type;
+  final KeyType type;
 
   @override
   _BodyState createState() => _BodyState();
@@ -82,7 +82,7 @@ class _BodyState extends State<Body> {
           ),
           Center(
             child: Text(
-              widget.type == KeyType1.CREATE
+              widget.type == KeyType.CREATE
                   ? S.current.success
                   : S.current.success_import,
               style: TextStyle(

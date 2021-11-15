@@ -6,7 +6,6 @@ import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
 import 'package:Dfy/presentation/pawn/ui/pawn_screen.dart';
 import 'package:Dfy/presentation/staking/ui/staking_screen.dart';
 import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/bottom_appbar.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
