@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -116,7 +115,7 @@ class _BodyState extends State<Body> {
                           child: Container(
                             margin: const EdgeInsets.only(left: 10, right: 10),
                             child: Image.asset(
-                              ImageAssets.ic_out,
+                              ImageAssets.ic_back,
                               width: 20.w,
                               height: 20,
                             ),
@@ -172,7 +171,7 @@ class _BodyState extends State<Body> {
                             child: Row(
                               children: [
                                 Image.asset(
-                                  url_ic_wallet,
+                                  ImageAssets.ic_wallet,
                                   height: 17.67.h,
                                   width: 19.14.w,
                                 ),
@@ -220,7 +219,7 @@ class _BodyState extends State<Body> {
                                                 setState(() {});
                                               },
                                               child: Image.asset(
-                                                url_ic_close,
+                                                ImageAssets.ic_close,
                                                 width: 20.w,
                                                 height: 20.h,
                                               ),
@@ -248,16 +247,16 @@ class _BodyState extends State<Body> {
                           ),
                           FromText(
                             title: widget.blocCreateSeedPhrase.walletAddress,
-                            urlSuffixIcon: url_ic_copy,
-                            urlPrefixIcon: url_ic_addresss,
+                            urlSuffixIcon: ImageAssets.ic_copy,
+                            urlPrefixIcon: ImageAssets.ic_address,
                           ),
                           SizedBox(
                             height: 16.h,
                           ),
                           FromText(
                             title: widget.blocCreateSeedPhrase.privateKey,
-                            urlSuffixIcon: url_ic_copy,
-                            urlPrefixIcon: url_ic_key,
+                            urlSuffixIcon: ImageAssets.ic_copy,
+                            urlPrefixIcon: ImageAssets.ic_key24,
                           ),
                           SizedBox(
                             height: 20.h,

@@ -78,7 +78,7 @@ class _BodyState extends State<Body> {
             );
           } else {
             showCreateSuccessfully(
-              type: KeyType1.CREATE,
+              type: KeyType.CREATE,
               context: context,
               bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
               wallet: Wallet(
@@ -113,7 +113,7 @@ class _BodyState extends State<Body> {
                       child: Container(
                         margin: const EdgeInsets.only(left: 10, right: 10),
                         child: Image.asset(
-                          ImageAssets.ic_out,
+                          ImageAssets.ic_back,
                           width: 20.w,
                           height: 20,
                         ),
@@ -194,7 +194,7 @@ class _BodyState extends State<Body> {
                                 width: 323.w,
                                 child: snapshot.data ?? false
                                     ? Text(
-                                        S.current.Invalid_order,
+                                        S.current.invalid_order,
                                         style: textNormal(Colors.red, 14),
                                       )
                                     : null,

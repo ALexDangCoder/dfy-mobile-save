@@ -2,7 +2,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';

@@ -3,21 +3,17 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully2.dart';
-import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
-import 'package:Dfy/presentation/restore_bts/bloc/restore_state.dart';
-import 'package:Dfy/presentation/restore_bts/ui/choice_dialog.dart';
+import 'package:Dfy/presentation/import_account_login_bts/bloc/import_cubit.dart';
+import 'package:Dfy/presentation/import_account_login_bts/ui/choice_import_dialog.dart';
 import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/form/item_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 const String PASS_PHRASE = 'PASS_PHRASE';
 const String PRIVATE_KEY = 'PRIVATE_KEY';
@@ -360,16 +356,13 @@ class _ImportBTSState extends State<ImportBTS> {
                         );
                       },
                     ),
-                    SizedBox(
-                      height: 313.h,
-                    ),
                   ],
                 ),
               ),
             ),
           ),
           SizedBox(
-            height: 200.h,
+            height: 150.h,
           ),
           Container(
             margin: EdgeInsets.only(

@@ -34,7 +34,7 @@ void showNFTSuccessfully(BuildContext context) {
             ),
             Center(
               child: Text(
-                S.current.Nft_successfully,
+                S.current.nft_successfully,
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
@@ -48,39 +48,35 @@ void showNFTSuccessfully(BuildContext context) {
             SizedBox(
               height: 56.h,
             ),
-            Center(
-              child: Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(ImageAssets.frameGreen),
-                      SizedBox(
-                        height: 22.h,
+            SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(ImageAssets.frameGreen),
+                    SizedBox(
+                      height: 22.h,
+                    ),
+                    Text(
+                      S.current.congratulation,
+                      style: textNormalCustom(
+                        Colors.white,
+                        32.sp,
+                        FontWeight.bold,
                       ),
-                      Text(
-                        S.current.congratulation,
-                        style: textNormalCustom(
-                          Colors.white,
-                          32.sp,
-                          FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 213.h,
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 213.h,
+                    ),
+                  ],
                 ),
               ),
             ),
             Center(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    AppRouter.main,
-                    (route) => route.isFirst,
-                  );
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 child: ButtonGold(
                   title: S.current.complete,

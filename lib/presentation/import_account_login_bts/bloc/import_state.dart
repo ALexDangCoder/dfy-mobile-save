@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 abstract class ImportState extends Equatable {}
 
-class RestoreInitial extends ImportState {
+class ImportInitial extends ImportState {
   @override
   List<Object?> get props => [];
 }

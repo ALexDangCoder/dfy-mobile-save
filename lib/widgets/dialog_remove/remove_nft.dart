@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -54,7 +54,7 @@ class RemoveNft extends StatelessWidget {
                                 ),
                                 Container(
                                   child: Text(
-                                    S.current.Are_you_sure_collectible,
+                                    S.current.are_you_sure_collectible,
                                     style: textNormal(
                                       null,
                                       20.sp,
@@ -69,7 +69,7 @@ class RemoveNft extends StatelessWidget {
                                   padding:
                                   EdgeInsets.symmetric(horizontal: 34.w),
                                   child: Text(
-                                    S.current.This_will_also,
+                                    S.current.this_will_also,
                                     style: textNormal(
                                       null,
                                       12.sp,
@@ -119,7 +119,7 @@ class RemoveNft extends StatelessWidget {
                                           Navigator.pop(context);
                                         },
                                         child: Text(
-                                          S.current.Remove,
+                                          S.current.remove,
                                           style: textNormal(
                                             const Color(0xffE4AC1A),
                                             20.sp,
@@ -148,7 +148,7 @@ class RemoveNft extends StatelessWidget {
                   width: 162.w,
                   height: 162.h,
                   child: Image.asset(
-                    url_ic_delete,
+                    ImageAssets.img_delete,
                   ),
                 ),
               )

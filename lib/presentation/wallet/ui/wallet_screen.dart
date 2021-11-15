@@ -238,6 +238,7 @@ class _WalletState extends State<WalletScreen>
                               },
                             ),
                             ImportToken(
+                              walletCubit: cubit,
                               title: S.current.import_token,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 1,
@@ -287,13 +288,15 @@ class _WalletState extends State<WalletScreen>
                               },
                             ),
                             ImportToken(
-                              title: S.current.import_NFT,
+                              walletCubit: cubit,
+                              title: S.current.import_nft,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 2,
                             ),
                             CreateNFT(
-                              title: S.current.create_NFT,
+                              title: S.current.create_nft,
                               icon: ImageAssets.ic_add,
+                              walletCubit: cubit,
                             ),
                             SizedBox(
                               height: 102.h,

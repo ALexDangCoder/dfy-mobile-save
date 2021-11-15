@@ -2,17 +2,17 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/restore_bts/bloc/restore_state.dart';
+import 'package:Dfy/presentation/import_account_login_bts/bloc/import_state.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:Dfy/widgets/form/item_form.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ImportCubit extends Cubit<RestoreState> {
+class ImportCubit extends Cubit<ImportState> {
   Wallet? wallet = Wallet();
 
-  ImportCubit() : super(RestoreInitial());
+  ImportCubit() : super(ImportInitial());
   final BehaviorSubject<List<String>> _behaviorSubject =
       BehaviorSubject<List<String>>();
   final BehaviorSubject<String> _stringSubject =
