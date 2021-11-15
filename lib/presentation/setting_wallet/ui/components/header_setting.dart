@@ -39,13 +39,14 @@ Container headerSetting({
         ),
         GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
+            Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => const MainScreen(
-                  index: 2,
+                builder: (context) =>
+                const MainScreen(
+                  index: 1,
                 ),
               ),
+                  (route) => route.isFirst,
             );
           },
           child: Text(
