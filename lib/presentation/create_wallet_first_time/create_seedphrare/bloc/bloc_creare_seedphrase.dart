@@ -1,6 +1,7 @@
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
+import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';

@@ -24,4 +24,12 @@ class Validator {
     final RegExp regExp = RegExp(pattern);
     return regExp.hasMatch(value);
   }
+
+  static bool validateNotNull(String value) {
+    if (value.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
