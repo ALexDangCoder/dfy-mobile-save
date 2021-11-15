@@ -2,7 +2,13 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/bloc/change_password_cubit.dart';
 import 'package:Dfy/presentation/change_password/ui/components/form_setup_password.dart';
 import 'package:Dfy/presentation/change_password/ui/components/header_change_password.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully2.dart';
+import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
+import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/success/successful_by_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -114,30 +120,45 @@ class _ChangePasswordState extends State<ChangePassword> {
                     isEnable: snapshot.data ?? true,
                   ),
                   onTap: () {
-                   if(snapshot.data ?? false) {
-                     _passwordCubit.showTxtWarningOldPW(
-                       _txtOldPW.text,
-                       passwordOld: oldPWFetchFromApi,
-                     );
-                     _passwordCubit.showTxtWarningNewPW(_txtNewPW.text);
-                     _passwordCubit.showTxtWarningConfirmPW(
-                       _txtConfirmPW.text,
-                       newPassword: _txtNewPW.text,
-                     );
+                    if (snapshot.data ?? false) {
+                      _passwordCubit.showTxtWarningOldPW(
+                        _txtOldPW.text,
+                        passwordOld: oldPWFetchFromApi,
+                      );
+                      _passwordCubit.showTxtWarningNewPW(_txtNewPW.text);
+                      _passwordCubit.showTxtWarningConfirmPW(
+                        _txtConfirmPW.text,
+                        newPassword: _txtNewPW.text,
+                      );
 
-                     if (_passwordCubit.checkAllValidate(
-                       oldPWFetch: oldPWFetchFromApi,
-                       oldPW: _txtOldPW.text,
-                       newPW: _txtNewPW.text,
-                       confirmPW: _txtConfirmPW.text,)) {
-                       //next screen
-                     } else {
-                       //nothing
-                     }
-                   } else {
-                     // nothing
-                   }
-
+                      if (_passwordCubit.checkAllValidate(
+                        oldPWFetch: oldPWFetchFromApi,
+                        oldPW: _txtOldPW.text,
+                        newPW: _txtNewPW.text,
+                        confirmPW: _txtConfirmPW.text,
+                      )) {
+                        showSuccessfulByTitle(
+                          title: S.current.change_pw_success,
+                          callBack: () {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (_) {
+                                return SettingWallet(
+                                  cubitSetting: SettingWalletCubit(),
+                                  cubit: WalletCubit(),
+                                );
+                              },
+                            );
+                          },
+                          context: context,
+                        );
+                      } else {
+                        //nothing
+                      }
+                    } else {
+                      // nothing
+                    }
                   },
                 );
               },

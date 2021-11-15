@@ -133,95 +133,89 @@ class _SendNftState extends State<SendNft> {
     );
   }
 
-  ConstrainedBox formShowFtAddress({
+  Container formShowFtAddress({
     required String hintText,
     bool readOnly = false,
     Function()? callBack,
     required String suffixImg,
     required String prefixImg,
   }) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(minHeight: 64.h),
-      child: Container(
-        width: 323.w,
-        padding: EdgeInsets.only(
-          top: 10.h,
-          bottom: 10.h,
+    return Container(
+      height: 64.h,
+      width: 323.w,
+      // padding: EdgeInsets.only(
+      //   top: 12.h,
+      //   bottom: 12.h,
+      // ),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20),
         ),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
+        color: Color(0xff32324c),
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(top: 5.h),
+        child: TextFormField(
+          controller: readOnly ? null : txtToAddress,
+          onChanged: (value) {
+            sendNftCubit.checkValidAddress(value);
+          },
+          style: textNormal(
+            Colors.white,
+            16.sp,
           ),
-          color: Color(0xff32324c),
-        ),
-        child: Padding(
-          padding: EdgeInsets.only(top: 0.h),
-          child: TextFormField(
-            controller: readOnly ? null : txtToAddress,
-            onChanged: (value) {
-              sendNftCubit.checkValidAddress(value);
-            },
-            readOnly: readOnly,
-            style: textNormal(
-              Colors.white,
-              16.sp,
+          cursorColor: Colors.white,
+          // controller: controller,
+          readOnly: readOnly,
+          decoration: InputDecoration(
+            hintText: hintText,
+            hintStyle: textNormal(
+              Colors.grey,
+              14.sp,
             ),
-            cursorColor: Colors.white,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: readOnly
-                  ? textNormal(const Color.fromRGBO(255, 255, 255, 1), 16.sp)
-                      .copyWith(fontWeight: FontWeight.w400)
-                  : textNormal(
-                      Colors.grey,
-                      14.sp,
+            suffixIcon: InkWell(
+              onTap: callBack,
+              child: suffixImg == ''
+                  ? const SizedBox(
+                      width: 0,
+                    )
+                  : ImageIcon(
+                      AssetImage(suffixImg),
+                      color: Colors.white,
                     ),
-              suffixIcon: InkWell(
-                onTap: callBack,
-                child: suffixImg == ''
-                    ? const SizedBox(
-                        width: 0,
-                      )
-                    : ImageIcon(
-                        AssetImage(suffixImg),
-                        color: Colors.white,
-                      ),
-              ),
-              prefixIcon: ImageIcon(
+            ),
+            prefixIcon: Padding(
+              padding: EdgeInsets.only(top: 0.h,),
+              child: ImageIcon(
                 AssetImage(prefixImg),
                 color: Colors.white,
               ),
-              border: InputBorder.none,
             ),
+            border: InputBorder.none,
           ),
         ),
       ),
     );
   }
 
-  ConstrainedBox formAmountFtQuantity({
+  Container formAmountFtQuantity({
     required String hintText,
     required bool isAmount,
     required bool isQuantity,
     required String prefixImg,
     Function()? callBack,
   }) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 64.h,
+    return Container(
+      height: 64.h,
+      width: 323.w,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20),
+        ),
+        color: Color(0xff32324c),
       ),
-      child: Container(
-        width: 323.w,
-        padding: EdgeInsets.only(
-          top: 12.h,
-          bottom: 12.h,
-        ),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
-          color: Color(0xff32324c),
-        ),
+      child: Padding(
+        padding: EdgeInsets.only(top: 0.h),
         child: TextFormField(
           onChanged: (value) {
             //todo
@@ -246,30 +240,35 @@ class _SendNftState extends State<SendNft> {
               child: (isAmount && !isQuantity)
                   ? Padding(
                       padding: EdgeInsets.only(
-                        top: 18.h,
+                        top: 10.h,
+                        right: 20.w,
                       ),
                       child: Text(
                         S.current.max,
                         style: textNormal(
-                                const Color.fromRGBO(228, 172, 26, 1), 16.sp)
+                                const Color.fromRGBO(228, 172, 26, 1), 16)
                             .copyWith(fontWeight: FontWeight.w600),
                       ),
                     )
                   : Padding(
                       padding: EdgeInsets.only(
-                        top: 18.h,
+                        top: 20.h,
+                        right: 20.w
                       ),
                       child: Text(
                         '${S.current.of_all} 10',
                         style: textNormal(
-                                const Color.fromRGBO(255, 255, 255, 1), 16.sp)
+                                const Color.fromRGBO(255, 255, 255, 1), 16)
                             .copyWith(fontWeight: FontWeight.w400),
                       ),
                     ),
             ),
-            prefixIcon: ImageIcon(
-              AssetImage(prefixImg),
-              color: Colors.white,
+            prefixIcon: Padding(
+              padding: EdgeInsets.only(top: 10.h),
+              child: ImageIcon(
+                AssetImage(prefixImg),
+                color: Colors.white,
+              ),
             ),
             border: InputBorder.none,
           ),

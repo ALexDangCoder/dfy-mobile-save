@@ -38,10 +38,10 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
     gasPriceFirstFetch = 1.1;
     gasLimitFirstFetch = 0.624;
     gasFeeFirstFetch = 0.6;
-    informationWallet = const InformationWallet(
+    informationWallet = InformationWallet(
       nameWallet: 'Test wallet',
       fromAddress: '0xFE5...4fd0',
-      amount: 0.551,
+      amount: gasFeeFirstFetch,
       nameToken: 'BNB',
       imgWallet: ImageAssets.ic_symbol,
     );
@@ -138,7 +138,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
               builder: (context, snapshot) {
                 return GestureDetector(
                   child: ButtonGold(
-                    title: S.current.wallet_app_lock,
+                    title: S.current.approve,
                     isEnable: snapshot.data ?? false,
                   ),
                 );
@@ -156,7 +156,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
   Padding header({required String nameToken}) {
     return Padding(
       padding:
-          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
+          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h),
       child: Row(
         children: [
           IconButton(

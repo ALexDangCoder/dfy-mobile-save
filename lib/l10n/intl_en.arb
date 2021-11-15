@@ -158,5 +158,6 @@
   "view_on_bscscan": "View on Bscscan",
   "detail_transaction": "Detail",
   "only_desc": "Only the first account on this wallet will auto load. Imported accounts will not be associated with your originally created account Secret Seed Phrase",
-  "imported": "Imported accounts will not be associated with your originally created account Secret Seed Phrase"
+  "imported": "Imported accounts will not be associated with your originally created account Secret Seed Phrase",
+  "change_pw_success" : "Change Successfull"
 }

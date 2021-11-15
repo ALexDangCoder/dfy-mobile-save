@@ -156,5 +156,6 @@
   "login": "Đăng nhập",
   "new_wallet": "Ví mới",
   "password_is_required": "Vui lòng điền mật khẩu",
-  "only_desc": "Chỉ tài khoản đầu tiên trên ví này sẽ tự động tải. Các tài khoản đã nhập sẽ không được liên kết với tài khoản được tạo ban đầu của bạn"
+  "only_desc": "Chỉ tài khoản đầu tiên trên ví này sẽ tự động tải. Các tài khoản đã nhập sẽ không được liên kết với tài khoản được tạo ban đầu của bạn",
+  "change_pw_success" : "Thay đổi thành công"
 }

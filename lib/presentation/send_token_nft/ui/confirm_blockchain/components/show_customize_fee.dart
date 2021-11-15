@@ -42,7 +42,7 @@ class ShowCustomizeFee extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(top: 8.h),
             width: 323.w,
-            height: 321.h,
+            height: 343.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(16.r)),
               border:
@@ -155,7 +155,6 @@ class ShowCustomizeFee extends StatelessWidget {
                   color: Color.fromRGBO(255, 255, 255, 0.1),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
                     child: Column(
                       children: [
                         SizedBox(
@@ -196,7 +195,7 @@ class ShowCustomizeFee extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(
                             left: 12.w,
-                            right: 12.w,
+                            right: 12 .w,
                           ),
                           child: SizedBox(
                             height: 64.h,
@@ -241,7 +240,7 @@ class ShowCustomizeFee extends StatelessWidget {
                       ],
                     ),
                   ),
-                )
+
               ],
             ),
           ),
@@ -280,8 +279,8 @@ class ShowCustomizeFee extends StatelessWidget {
       height: 64.h,
       width: 178.w,
       padding: EdgeInsets.only(
-        top: 20.h,
-        bottom: 20.h,
+        // top: 20.h,
+        // bottom: 20.h,
         left: 20.w,
         right: 20.w,
       ),
@@ -326,19 +325,24 @@ class ShowCustomizeFee extends StatelessWidget {
     );
   }
 
-  Container btnReset() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(88, 87, 130, 1),
-        borderRadius: BorderRadius.circular(6.r),
+  ConstrainedBox btnReset() {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 30.h
       ),
-      child: Text(
-        S.current.reset,
-        style: TextStyle(
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w400,
-          color: Colors.white,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(88, 87, 130, 1),
+          borderRadius: BorderRadius.circular(6.r),
+        ),
+        child: Text(
+          S.current.reset,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
+          ),
         ),
       ),
     );

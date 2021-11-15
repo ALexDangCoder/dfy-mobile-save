@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FormAddFtAmount extends StatelessWidget {
-  const FormAddFtAmount({
+  const  FormAddFtAmount({
     required this.amount,
     required this.from,
     required this.to,
