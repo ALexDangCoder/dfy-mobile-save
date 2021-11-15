@@ -292,7 +292,7 @@ class _SendNftState extends State<SendNft> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Image.asset('assets/images/ic_group.png'),
+              icon: Image.asset(ImageAssets.ic_close),
             ),
           )
         ],

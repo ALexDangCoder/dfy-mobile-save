@@ -36,6 +36,8 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  String addressWalletCore = '';
+
   bool checkLogin = false;
 
   Future<void> getAddressWallet() async {}
