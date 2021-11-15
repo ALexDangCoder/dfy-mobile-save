@@ -80,7 +80,10 @@ Container switchForm({
       ),
       child: ListTileSwitch(
         value: isCheck,
-        onChanged: (bool value) => cubit.changeValueAppLock(value: value),
+        onChanged: (value) {
+          cubit.changeValueAppLock(value: value);
+          cubit.setIsAppLock(value: value);
+        },
         //todo
         leading: Image.asset(prefixImg),
         switchActiveColor: AppTheme.getInstance().fillColor(),
