@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/images.dart';
-import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:Dfy/widgets/form/form_input.dart';
 import 'package:Dfy/widgets/form/form_text2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../main.dart';
 import 'import_token_succesfully.dart';
@@ -29,6 +27,9 @@ class _EnterAddressState extends State<EnterAddress> {
   void initState() {
     // TODO: implement initState
     controller = TextEditingController();
+    controller.addListener(() {
+      widget.bloc.tokenAddressText.sink.add(controller.text);
+    });
   }
 
   @override
@@ -40,30 +41,6 @@ class _EnterAddressState extends State<EnterAddress> {
 
   @override
   Widget build(BuildContext context) {
-    final FToast fToast = FToast();
-    fToast.init(context);
-    void _showToast() {
-      final Widget toast = Container(
-        margin: EdgeInsets.only(bottom: 70.h),
-        height: 35.h,
-        width: 298.w,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.0),
-          color: Colors.black.withOpacity(0.5),
-        ),
-        padding: EdgeInsets.only(left: 10.w, top: 10.h),
-        child: Text(
-          S.current.failed,
-          style: TextStyle(color: Colors.red, fontSize: 14.sp),
-        ),
-      );
-      fToast.showToast(
-        child: toast,
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: const Duration(seconds: 2),
-      );
-    }
-
     return SizedBox(
       child: Column(
         children: [
@@ -75,20 +52,38 @@ class _EnterAddressState extends State<EnterAddress> {
                   FormInput(
                     controller: controller,
                     urlIcon1: url_ic_address,
-                    hint: 'Token address',
+                    hint: S.current.Token_address,
                     urlIcon2: url_ic_qr,
                     bloc: widget.bloc,
                   ),
+                  StreamBuilder(
+                    stream: widget.bloc.isTokenAddressText,
+                    builder: (context, snapshot) {
+                      return SizedBox(
+                        width: 323.w,
+                        child: widget.bloc.isTokenAddressText.value
+                            ? null
+                            : Text(
+                                S.current.Invalid_address,
+                                style: textNormal(
+                                  Colors.red,
+                                  14.sp,
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                      );
+                    },
+                  ),
                   spaceH16,
-                  const FromText2(
-                    title:'Token symbol',
-                    urlPrefixIcon:  url_ic_symbol,
+                  FromText2(
+                    title: S.current.Token_symbol,
+                    urlPrefixIcon: url_ic_symbol,
                     urlSuffixIcon: '',
                   ),
                   spaceH16,
-                  const FromText2(
-                    title:'Token decimal',
-                    urlPrefixIcon:  url_ic_decimal,
+                  FromText2(
+                    title: S.current.Token_decimal,
+                    urlPrefixIcon: url_ic_decimal,
                     urlSuffixIcon: '',
                   ),
                   SizedBox(
@@ -99,37 +94,31 @@ class _EnterAddressState extends State<EnterAddress> {
             ),
           ),
           Center(
-            child: InkWell(
-              onTap: () {
-                if (widget.bloc.isImportToken()) {
-                  widget.bloc.importToken(
-                    walletAddress: "walletAddress",
-                    tokenAddress: "tokenAddress",
-                    symbol: "symbol",
-                    decimal: 1,
-                  );
-                  //  bloc.getListSupportedToken(walletAddress: 'walletAddress');
-
-                  // bloc.importNft(
-                  //     walletAddress: "walletAddress",
-                  //     nftAddress: "nftAddress",
-                  //     nftID: 111);
-                  // bloc.setShowedToken(
-                  //     walletAddress: "walletAddress", tokenID: 111, isShow: true);
-                  // bloc.setShowedNft(
-                  //     walletAddress: "walletAddress", nftID: 23213, isShow: true);
-                  trustWalletChannel.setMethodCallHandler(
-                    widget.bloc.nativeMethodCallBackTrustWallet,
-                  );
-                } else {
-                  _showToast();
-                  showTokenSuccessfully(context);
-                }
+            child: StreamBuilder(
+              stream: widget.bloc.isTokenEnterAddress,
+              builder: (context, snapshot) {
+                return InkWell(
+                  onTap: () {
+                    widget.bloc.importToken(
+                      walletAddress: 'walletAddress',
+                      tokenAddress: 'tokenAddress',
+                      symbol: 'symbol',
+                      decimal: 1,
+                    );
+                    trustWalletChannel.setMethodCallHandler(
+                      widget.bloc.nativeMethodCallBackTrustWallet,
+                    );
+                    widget.bloc.checkAddressNull();
+                    if (widget.bloc.isTokenAddressText.value) {
+                      showTokenSuccessfully(context);
+                    }
+                  },
+                  child: ButtonGold(
+                    title: S.current.import,
+                    isEnable: widget.bloc.isTokenEnterAddress.value,
+                  ),
+                );
               },
-              child: const ButtonGold(
-                title: Strings.import,
-                isEnable: true,
-              ),
             ),
           ),
         ],

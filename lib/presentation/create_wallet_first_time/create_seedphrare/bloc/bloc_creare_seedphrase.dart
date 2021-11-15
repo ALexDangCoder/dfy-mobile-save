@@ -15,12 +15,13 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BehaviorSubject<bool> isCheckBox1 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckBox2 = BehaviorSubject.seeded(false);
 
+  BehaviorSubject<bool> isCheckButton1 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckButton = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckData = BehaviorSubject.seeded(false);
   BehaviorSubject<List<Item>> listTitle = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
   BehaviorSubject<bool> isCheckTouchID = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isCheckAppLock = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckAppLock = BehaviorSubject.seeded(true);
 
   BehaviorSubject<bool> isSeedPhraseImportFailed =
       BehaviorSubject.seeded(false);
@@ -101,7 +102,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   bool configSuccess = false;
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    print('callback ');
     switch (methodCall.method) {
       case 'generateWalletCallback':
         privateKey = await methodCall.arguments['privateKey'];
@@ -111,11 +111,11 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         isCheckData.sink.add(true);
         break;
       case 'storeWalletCallback':
-        bool isSuccess = await methodCall.arguments['isSuccess'];
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
         emit(SeedNavState());
         break;
       case 'setConfigCallback':
-        configSuccess = await methodCall.arguments['isSuccess'];
+        bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       default:
         break;
@@ -127,6 +127,14 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
       return true;
     }
     return false;
+  }
+
+  void isButton() {
+    if (Validator.validateNotNull(nameWallet.value) && isCheckBox1.value) {
+      isCheckButton1.sink.add(true);
+    } else {
+      isCheckButton1.sink.add(false);
+    }
   }
 
   void getStringToList(String passPhrase) {

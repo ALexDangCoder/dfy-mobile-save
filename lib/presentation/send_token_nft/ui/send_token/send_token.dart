@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
@@ -7,7 +8,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/generated/l10n.dart';
+
 
 class SendToken extends StatefulWidget {
   const SendToken({Key? key}) : super(key: key);
@@ -165,14 +166,15 @@ class _SendTokenState extends State<SendToken> {
   }
 
   //header
-  Container header({required String nameToken}) {
-    return Container(
-      width: 343.w,
-      margin:
-          EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 20.h),
+  Padding header({required String nameToken}) {
+    return Padding(
+      padding:
+          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          SizedBox(
+            width: 121.w,
+          ),
           Text(
             '${S.current.send} $nameToken',
             style: TextStyle(
@@ -182,7 +184,7 @@ class _SendTokenState extends State<SendToken> {
             ),
           ),
           SizedBox(
-            width: 120.48.w,
+            width: 94.w,
           ),
           Expanded(
             child: IconButton(
@@ -435,7 +437,7 @@ class _SendTokenState extends State<SendToken> {
                           color: const Color.fromRGBO(255, 108, 108, 1),
                         ),
                       );
-                    }),
+                    },),
               ),
             ],
           ),

@@ -18,9 +18,12 @@ class ListViewLoadMore extends StatelessWidget {
   final Widget Function(dynamic) viewItem;
 
   const ListViewLoadMore(
-      this.cubit, this.callApi, this.callApiMore, this.viewItem,
-      {Key? key,})
-      : super(key: key);
+    this.cubit,
+    this.callApi,
+    this.callApiMore,
+    this.viewItem, {
+    Key? key,
+  }) : super(key: key);
 
   Future<void> refreshPosts() async {
     if (!cubit.loadMoreLoading) {
@@ -52,9 +55,12 @@ class ListViewLoadMore extends StatelessWidget {
         if (state is Loading && cubit.loadMoreRefresh) {
           if (!_isLoading) {
             _isLoading = true;
-            showLoading(ctx, close: (value) {
-              _isLoading = false;
-            },);
+            showLoading(
+              ctx,
+              close: (value) {
+                _isLoading = false;
+              },
+            );
           }
         }
         if (_isLoading && state is! Loading) {
@@ -106,7 +112,7 @@ class ListViewLoadMore extends StatelessWidget {
                   if (index < cubit.loadMoreList.length) {
                     return viewItem(cubit.loadMoreList[index]);
                   } else {
-                    return LoadingItem();
+                    return const LoadingItem();
                   }
                 },
               ),

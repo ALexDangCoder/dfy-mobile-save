@@ -16,7 +16,7 @@ class DottedBorder extends StatelessWidget {
   final StrokeCap strokeCap;
   final PathBuilder? customPath;
 
-  DottedBorder({
+  DottedBorder({Key? key,
     required this.child,
     this.color = Colors.black,
     this.strokeWidth = 1,
@@ -26,7 +26,7 @@ class DottedBorder extends StatelessWidget {
     this.radius = const Radius.circular(0),
     this.strokeCap = StrokeCap.butt,
     this.customPath,
-  }) {
+  }) : super(key: key) {
     assert(_isValidDashPattern(dashPattern), 'Invalid dash pattern');
   }
 
@@ -59,7 +59,7 @@ class DottedBorder extends StatelessWidget {
   /// * Cannot be null or empty
   /// * If [dashPattern] has only 1 element, it cannot be 0
   bool _isValidDashPattern(List<double>? dashPattern) {
-    Set<double>? _dashSet = dashPattern?.toSet();
+    final Set<double>? _dashSet = dashPattern?.toSet();
     if (_dashSet == null) return false;
     if (_dashSet.length == 1 && _dashSet.elementAt(0) == 0.0) return false;
     if (_dashSet.isEmpty) return false;

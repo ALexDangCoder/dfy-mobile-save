@@ -1,6 +1,4 @@
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:Dfy/presentation/splash/splash_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +12,7 @@ class AppRouter {
   static const splash = '/splash';
   static const main = '/main';
   static const setupPassWord = '/setupPassWord';
+  static const testScreen = '/testScreen';
   static const login = '/login';
   static const wallet = '/wallet';
   static const sendToken = '/sendToken';
@@ -23,14 +22,8 @@ class AppRouter {
     // final args = settings.arguments;
 
     switch (settings.name) {
-      // case splash:
-      //   return MaterialPageRoute(builder: (ctx) => SplashScreen(false));
-
-      case setupPassWord:
-        return MaterialPageRoute(builder: (ctx) => const SetupPassWord());
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
-      case scanQR:
       case main:
         return MaterialPageRoute(
           builder: (ctx) {
@@ -40,8 +33,6 @@ class AppRouter {
             );
           },
         );
-      case sendToken:
-        return MaterialPageRoute(builder: (ctx) => const SendToken());
     }
   }
 }

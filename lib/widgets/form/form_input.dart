@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
@@ -44,13 +43,20 @@ class FormInput extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
+                maxLength: 100,
                 controller: controller,
                 cursorColor: Colors.white,
                 style: textNormal(
                   Colors.white,
                   16.sp,
                 ),
+
+                onChanged: (value) {
+                  bloc.checkAddressNull();
+                  bloc.tokenAddressText.sink.add(value);
+                },
                 decoration: InputDecoration(
+                  counterText: '',
                   hintText: hint,
                   hintStyle: textNormal(
                     Colors.white54,

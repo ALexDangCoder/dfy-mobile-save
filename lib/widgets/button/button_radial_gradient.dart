@@ -1,4 +1,3 @@
-import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -1,10 +1,11 @@
+import 'dart:math';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/generated/l10n.dart';
-import 'dart:math';
 
 class ShowCustomizeFee extends StatelessWidget {
   //todo show warning text
@@ -72,8 +73,7 @@ class ShowCustomizeFee extends StatelessWidget {
                               ? Expanded(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       //todo handle amount ??
                                       StreamBuilder<String>(
@@ -82,7 +82,8 @@ class ShowCustomizeFee extends StatelessWidget {
                                             .formEstimateGasFeeStream,
                                         builder: (context, snapshot) {
                                           return Text(
-                                            '${snapshot.data ?? balanceFirstFetch.toString()}'
+                                            '${snapshot.data ??
+                                                balanceFirstFetch.toString()}'
                                             ' $nameToken',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
@@ -117,7 +118,7 @@ class ShowCustomizeFee extends StatelessWidget {
                                                 color: Colors.red,
                                               ),
                                             );
-                                          }),
+                                          },),
                                       SizedBox(
                                         height: 2.h,
                                       ),
@@ -165,11 +166,11 @@ class ShowCustomizeFee extends StatelessWidget {
                             left: 12.w,
                             right: 12.w,
                           ),
-                          child: Container(
+                          child: SizedBox(
                             height: 64.h,
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                               mainAxisAlignment:
+                               MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   S.current.gas_limit,
@@ -199,7 +200,6 @@ class ShowCustomizeFee extends StatelessWidget {
                           child: SizedBox(
                             height: 64.h,
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
@@ -233,7 +233,6 @@ class ShowCustomizeFee extends StatelessWidget {
                             );
                           },
                         ),
-
 
                         SizedBox(
                           height: 24.h,
@@ -304,17 +303,11 @@ class ShowCustomizeFee extends StatelessWidget {
             valueHandle = double.parse(value);
           }
           result = (valueHandle * double.parse(numHandle)) / pow(10, 9);
-          print(result.toString());
-          // final String numFormatted = sendTokenCubit.toExact(result);
-          // if(sendTokenCubit.toExact(result).length > 10) {
-          //
-          // }
-          sendTokenCubit.isEstimatingGasFee(sendTokenCubit.toExact(result));
+             sendTokenCubit.isEstimatingGasFee(sendTokenCubit.toExact(result));
           sendTokenCubit.isSufficientGasFee(
             gasFee: result,
             balance: balanceFirstFetch,
           );
-
         },
         style: textNormal(
           Colors.white,

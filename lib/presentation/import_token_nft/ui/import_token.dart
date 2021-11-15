@@ -2,8 +2,8 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
-import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -26,7 +26,9 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
       //     tokenAddress: "tokenAddress",
       //     symbol: "dsfsadf",
       //     decimal: 1);
-      bloc.getListSupportedToken(walletAddress: "walletAddress",);
+      bloc.getListSupportedToken(
+        walletAddress: 'walletAddress',
+      );
       trustWalletChannel.setMethodCallHandler(
         bloc.nativeMethodCallBackTrustWallet,
       );
@@ -48,23 +50,32 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                 width: 323.w,
                 height: 28.h,
                 margin: EdgeInsets.only(
-                    left: 26.w, top: 16.h, right: 26.w, bottom: 20.h,),
+                  left: 26.w,
+                  top: 16.h,
+                  right: 26.w,
+                  bottom: 20.h,
+                ),
                 child: Row(
-                  
                   children: [
-                    spaceW5,
                     GestureDetector(
-                      child: Image.asset(
-                        url_ic_out,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10.w, left: 10.w),
+                        child: Image.asset(
+                          url_ic_out,
+                          width: 20.w,
+                          height: 20.h,
+                        ),
                       ),
                       onTap: () {
                         Navigator.pop(context);
                       },
                     ),
                     Container(
-                      margin: EdgeInsets.only( left: 90.w),
-                      child: Text(Strings.import_token,
-                          style: textNormalCustom(null, 20, FontWeight.bold),),
+                      margin: EdgeInsets.only(left: 70.w),
+                      child: Text(
+                        S.current.import_token,
+                        style: textNormalCustom(null, 20, FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
@@ -80,12 +91,12 @@ void showImportToken(BuildContext context, ImportTokenNftBloc bloc) {
                   height: 35.h,
                   width: 253.w,
                   child: TabBar(
-                    tabs: const [
+                    tabs: [
                       Tab(
-                        text: Strings.enter_token,
+                        text: S.current.enter_token,
                       ),
                       Tab(
-                        text: Strings.choose_token,
+                        text: S.current.choose_token,
                       ),
                     ],
                     labelColor: Colors.white,

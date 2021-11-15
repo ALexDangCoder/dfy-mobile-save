@@ -68,8 +68,9 @@ class _MyAppState extends State<MyApp> {
             selectionColor: AppTheme.getInstance().primaryColor(),
             selectionHandleColor: AppTheme.getInstance().primaryColor(),
           ),
-          colorScheme: ColorScheme.fromSwatch()
-              .copyWith(secondary: AppTheme.getInstance().accentColor()),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            secondary: AppTheme.getInstance().accentColor(),
+          ),
         ),
         supportedLocales: S.delegate.supportedLocales,
         localizationsDelegates: const [
@@ -78,7 +79,7 @@ class _MyAppState extends State<MyApp> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
+        // locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
         onGenerateRoute: AppRouter.generateRoute,
         initialRoute: AppRouter.splash,
       ),
@@ -88,41 +89,33 @@ class _MyAppState extends State<MyApp> {
   Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'checkPasswordCallback':
-        print('1: ' + methodCall.arguments.toString());
-        break;
+         break;
       case 'getConfigCallback':
         await PrefsService.saveAppLockConfig(
-            methodCall.arguments['isAppLock'].toString(),);
+          methodCall.arguments['isAppLock'].toString(),
+        );
         await PrefsService.saveFaceIDConfig(
-          methodCall.arguments['isFaceID'].toString(),);
+          methodCall.arguments['isFaceID'].toString(),
+        );
         break;
       case 'importWalletCallback':
-        print('3: ' + methodCall.arguments.toString());
         break;
       case 'getListWalletsCallback':
-        print('4: ' + methodCall.arguments.toString());
-        break;
+         break;
       case 'generateWalletCallback':
-        print('5: ' + methodCall.arguments.toString());
         break;
       case 'storeWalletCallback':
-        print('6: ' + methodCall.arguments.toString());
-        break;
+         break;
       case 'setConfigCallback':
-        print('7: ' + methodCall.arguments.toString());
         break;
       case 'getListShowedTokenCallback':
-        print('8: ' + methodCall.arguments.toString());
-        break;
+          break;
       case 'getListShowedNftCallback':
-        print('9: ' + methodCall.arguments.toString());
-        break;
+          break;
       case 'importTokenCallback':
-        print('10: ' + methodCall.arguments.toString());
-        break;
+         break;
       case 'getListSupportedTokenCallback':
-        print('11: ' + methodCall.arguments.toString());
-        break;
+         break;
       default:
         break;
     }
@@ -154,7 +147,8 @@ class _MyAppState extends State<MyApp> {
       final data = {
         'type': 'PASS_PHRASE',
         'content':
-            'party response give dove tooth master flip video permit game expire token',
+            'party response give dove tooth master flip'
+                ' video permit game expire token',
         'password': '123456',
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
@@ -244,4 +238,3 @@ class _MyAppState extends State<MyApp> {
     } on PlatformException {}
   }
 }
-

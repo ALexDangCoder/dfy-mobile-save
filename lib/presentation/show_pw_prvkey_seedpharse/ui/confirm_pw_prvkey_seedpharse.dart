@@ -2,11 +2,13 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/components/header.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
+import 'package:Dfy/presentation/private_key_seed_phrase/ui/private_key_seed_phrase.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 import 'components/header.dart';
 
@@ -54,19 +56,19 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
           SizedBox(
             height: 40.h,
           ),
-          StreamBuilder<bool>(
-            stream: cubit.isEnableBtnStream,
-            builder: (context, snapshot) {
-              return snapshot.data ?? false
-                  ? ButtonGold(
-                      title: S.current.continue_s,
-                      isEnable: true,
-                    )
-                  : ButtonGold(
-                      title: S.current.continue_s,
-                      isEnable: false,
-                    );
+          GestureDetector(
+            onTap: () {
+              showPrivateKeySeedPhrase(context, PrivateKeySeedPhraseBloc());
             },
+            child: StreamBuilder<bool>(
+              stream: cubit.isEnableBtnStream,
+              builder: (context, snapshot) {
+                return ButtonGold(
+                  title: S.current.continue_s,
+                  isEnable: snapshot.data ?? false,
+                );
+              },
+            ),
           ),
           SizedBox(
             height: 40.h,

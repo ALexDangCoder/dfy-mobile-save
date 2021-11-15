@@ -1,11 +1,15 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Container headerSetting({
+  required BuildContext context,
   required Function()? leftFunction,
   required Function()? rightFunction,
 }) {
@@ -36,6 +40,16 @@ Container headerSetting({
           ),
         ),
         GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainScreen(
+                  index: 2,
+                ),
+              ),
+            );
+          },
           child: Text(
             S.current.lock,
             style: textNormalCustom(
