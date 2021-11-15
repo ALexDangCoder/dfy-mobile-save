@@ -166,10 +166,10 @@ class _SendTokenState extends State<SendToken> {
   }
 
   //header
-  Padding header({required String nameToken}) {
-    return Padding(
+  Container header({required String nameToken}) {
+    return Container(
       padding:
-          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
+          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h,),
       child: Row(
         children: [
           SizedBox(
@@ -189,9 +189,9 @@ class _SendTokenState extends State<SendToken> {
           Expanded(
             child: IconButton(
               onPressed: () {
-                // Navigator.pop(context);
+                Navigator.pop(context);
               },
-              icon: Image.asset('assets/images/ic_group.png'),
+              icon: Image.asset(ImageAssets.ic_close),
             ),
           )
         ],
@@ -225,17 +225,6 @@ class _SendTokenState extends State<SendToken> {
         child: TextFormField(
           onChanged: (value) {
             tokenCubit.checkValidAddress(value);
-            // if (txtAmount.text.isNotEmpty && value.isNotEmpty) {
-            //   tokenCubit.isShowConfirmBlockChain(
-            //     isHaveFrAddress: true,
-            //     isHaveAmount: true,
-            //   );
-            // } else {
-            //   tokenCubit.isShowConfirmBlockChain(
-            //     isHaveFrAddress: false,
-            //     isHaveAmount: false,
-            //   );
-            // }
           },
           controller: readOnly ? null : txtToAddress,
           readOnly: readOnly,
@@ -307,17 +296,6 @@ class _SendTokenState extends State<SendToken> {
         child: TextFormField(
           onChanged: (value) {
             tokenCubit.checkValidAmount(value);
-            // if (txtToAddress.text.isNotEmpty && value.isNotEmpty) {
-            //   tokenCubit.isShowConfirmBlockChain(
-            //     isHaveFrAddress: true,
-            //     isHaveAmount: true,
-            //   );
-            // } else {
-            //   tokenCubit.isShowConfirmBlockChain(
-            //     isHaveFrAddress: false,
-            //     isHaveAmount: false,
-            //   );
-            // }
           },
           controller: txtAmount,
           keyboardType: TextInputType.number,

@@ -5,6 +5,7 @@ import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/confirm_bl
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -277,24 +278,29 @@ class _SendNftState extends State<SendNft> {
   Container header({required String nameSend}) {
     return Container(
       width: 343.w,
-      margin: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 20.h),
+      margin: EdgeInsets.only(
+        left: 16.w,
+        right: 16.w,
+        top: 16.h,
+      ),
       child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Text('Send $nameSend',
-              style: textNormal(Colors.white, 20.sp)
-                  .copyWith(fontWeight: FontWeight.w700)),
-          SizedBox(
-            width: 120.48.w,
+          Text(
+            '${S.current.send} $nameSend',
+            style: textNormal(Colors.white, 20.sp)
+                .copyWith(fontWeight: FontWeight.w700),
           ),
-          Expanded(
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Image.asset('assets/images/ic_group.png'),
-            ),
-          )
+          SizedBox(
+            width: 110.w,
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Image.asset(ImageAssets.ic_close),
+          ),
         ],
       ),
     );

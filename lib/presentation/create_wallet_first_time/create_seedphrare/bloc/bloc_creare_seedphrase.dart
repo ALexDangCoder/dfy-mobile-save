@@ -49,6 +49,14 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     return true;
   }
 
+  bool isWalletName() {
+    if (Validator.validateNotNull(nameWallet.value)) {
+      return true;
+    }
+    return false;
+  }
+
+
   void getIsSeedPhraseImport2() {
     if (getIsSeedPhraseImport() && isCheckBox2.value) {
       isCheckButton.sink.add(true);

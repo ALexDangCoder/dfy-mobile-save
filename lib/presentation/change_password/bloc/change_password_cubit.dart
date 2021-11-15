@@ -24,7 +24,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   final BehaviorSubject<bool> _showNewPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _showCfPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _isEnableButton =
-  BehaviorSubject<bool>.seeded(false);
+  BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<String> _txtWarnOldPW =
   BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnNewPW =

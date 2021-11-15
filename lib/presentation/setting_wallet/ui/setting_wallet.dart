@@ -2,6 +2,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/import_account_login_bts/ui/import_account_login.dart';
+import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
@@ -19,8 +20,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 enum typeSwitchForm { FINGER_FT_FACEID, APPLOCK }
 
 class SettingWallet extends StatelessWidget {
-  SettingWallet({required this.cubit, Key? key, required this.cubitSetting})
-      : super(key: key);
+  const SettingWallet({
+    required this.cubit,
+    Key? key,
+    required this.cubitSetting,
+  }) : super(key: key);
   final SettingWalletCubit cubitSetting;
   final WalletCubit cubit;
 
@@ -56,9 +60,20 @@ class SettingWallet extends StatelessWidget {
                   SizedBox(
                     height: 24.h,
                   ),
-                  buttonForm(
-                    hintText: 'Dapp',
-                    prefixIcon: ImageAssets.ic_global,
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (_) {
+                          return const SendToken();
+                        },
+                      );
+                    },
+                    child: buttonForm(
+                      hintText: 'Dapp',
+                      prefixIcon: ImageAssets.ic_global,
+                    ),
                   ),
                   SizedBox(
                     height: 16.h,
@@ -165,16 +180,17 @@ class SettingWallet extends StatelessWidget {
                     height: 16.h,
                   ),
                   StreamBuilder<bool>(
-                      stream: cubitSetting.isSwitchAppLockOnStream,
-                      builder: (context, snapshot) {
-                        return switchForm(
-                          prefixImg: ImageAssets.ic_lock,
-                          isCheck: snapshot.data ?? false,
-                          hintText: S.current.app_wallet_lock,
-                          type: typeSwitchForm.APPLOCK,
-                          cubit: cubitSetting,
-                        );
-                      }),
+                    stream: cubitSetting.isSwitchAppLockOnStream,
+                    builder: (context, snapshot) {
+                      return switchForm(
+                        prefixImg: ImageAssets.ic_lock,
+                        isCheck: snapshot.data ?? true,
+                        hintText: S.current.app_wallet_lock,
+                        type: typeSwitchForm.APPLOCK,
+                        cubit: cubitSetting,
+                      );
+                    },
+                  ),
                   SizedBox(
                     height: 51.h,
                   ),

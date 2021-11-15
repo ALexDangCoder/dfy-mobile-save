@@ -111,7 +111,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 return GestureDetector(
                   child: ButtonGold(
                     title: S.current.continue_s,
-                    isEnable: snapshot.data ?? false,
+                    isEnable: snapshot.data ?? true,
                   ),
                   onTap: () {
                    if(snapshot.data ?? false) {
