@@ -53,6 +53,9 @@
   "or_scan": "Or scan QR",
   "scan_qr_code": "Scan QR code",
   "no_data": "No data",
+  "paste": "Paste",
+  "warning_seed": "Secret seed phrases contain 12, 15, 18, 21, or 24 words",
+
   "approve": "Approve",
   "send": "Send",
   "txh_id": "Txh ID",
@@ -78,7 +81,6 @@
   "address_required": "Address is required",
   "amount_required": "Amount is required",
   "amount": "Amount",
-  "paste": "Paste",
   "name_not_null": "Wallet name is required",
   "password": "Password",
   "wallet_secret": "Wallet secret seed phrase",

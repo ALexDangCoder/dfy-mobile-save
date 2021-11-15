@@ -87,6 +87,7 @@
   "amount_required": "Gía trị là bắt buộc",
   "paste": "Dán",
   "no_data": "Không có dữ liệu",
+  "warning_seed": "Seed phrase phải chứa 12, 15, 18, 21 hoặc 24 từ",
   "change_password": "Đổi mật khẩu",
   "name_of_nft": "Tên của NFT",
   "description": "Mô tả",
