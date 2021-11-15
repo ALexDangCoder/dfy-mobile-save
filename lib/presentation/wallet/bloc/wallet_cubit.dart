@@ -98,51 +98,60 @@ class WalletCubit extends BaseCubit<WalletState> {
     listTokenStream.sink.add(listToken);
   }
 
+
+  double total(List<TokenModel> list) {
+    double total = 0;
+    for(int i = 0; i<list.length;i++) {
+      total = total + list[i].price!;
+    }
+    return total;
+  }
+
   List<TokenModel> listToken = [
     TokenModel(
-      price: 34213423,
+      price: 323,
       nameTokenSymbol: 'DFY',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 34423,
       nameTokenSymbol: 'DFY',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 2423,
       nameTokenSymbol: 'DF2Y',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 3423,
       nameTokenSymbol: 'DFY1',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 123,
       nameTokenSymbol: 'DF3Y',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 3423,
       nameTokenSymbol: 'D4FY',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 33423,
       nameTokenSymbol: 'D5FY',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 13423,
       nameTokenSymbol: 'DFY',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
