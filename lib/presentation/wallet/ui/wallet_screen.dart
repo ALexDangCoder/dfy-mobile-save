@@ -53,6 +53,8 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
+    cubit.addressWalletCore =
+        widget.wallet?.address ?? '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
 
     cubit.addressWallet.sink.add(
       widget.wallet?.address ?? '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
@@ -413,7 +415,7 @@ class _WalletState extends State<WalletScreen>
               GestureDetector(
                 onLongPress: () {
                   Clipboard.setData(
-                    ClipboardData(text: cubit.addressWallet.value),
+                    ClipboardData(text: cubit.addressWalletCore),
                   ).then((_) {
                     fToast.showToast(
                       child: const Copied(),
