@@ -62,6 +62,7 @@
   "or_scan": "Or scan QR",
   "scan_qr_code": "Scan QR code",
   "no_data": "No data",
-  "paste": "Paste"
+  "paste": "Paste",
+  "warning_seed": "Secret seed phrases contain 12, 15, 18, 21, or 24 words"
 
 }

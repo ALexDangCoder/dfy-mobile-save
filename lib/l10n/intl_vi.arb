@@ -62,5 +62,6 @@
   "or_scan": "hoặc quét mã QR",
   "scan_qr_code": "Quét mã QR",
   "no_data": "Không có dữ liệu",
-  "paste": "Dán"
+  "paste": "Dán",
+  "warning_seed": "Seed phrase phải chứa 12, 15, 18, 21 hoặc 24 từ"
 }

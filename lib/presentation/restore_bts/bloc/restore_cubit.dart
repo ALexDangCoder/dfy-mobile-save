@@ -23,6 +23,25 @@ class RestoreCubit extends Cubit<RestoreState> {
   final BehaviorSubject<bool> _ckcBoxSubject = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _validate = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _match = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _buttonSubject = BehaviorSubject<bool>();
+  final BehaviorSubject<bool> _seedSubject = BehaviorSubject<bool>();
+  bool seedField = false;
+  bool newPassField = false;
+  bool conPassField = false;
+  bool privateField = false;
+  bool ckc = false;
+
+  Stream<bool> get btnStream => _buttonSubject.stream;
+
+  Sink<bool> get btnSink => _buttonSubject.sink;
+
+  bool get btnValue => _buttonSubject.valueOrNull ?? false;
+
+  Stream<bool> get seedStream => _seedSubject.stream;
+
+  Sink<bool> get seedSink => _seedSubject.sink;
+
+  bool get seedValue => _seedSubject.valueOrNull ?? false;
 
   Stream<bool> get validateStream => _validate.stream;
 
@@ -94,6 +113,78 @@ class RestoreCubit extends Cubit<RestoreState> {
       throw CommonException();
     }
   }
+
+  void checkSeedField(String value) {
+    if (value.isNotEmpty) {
+      seedField = true;
+    } else {
+      seedField = false;
+    }
+    if ((privateField || seedField) && newPassField && conPassField && ckc) {
+      btnSink.add(true);
+    } else {
+      btnSink.add(false);
+    }
+  }
+
+  void checkCkcValue(value) {
+    ckc = value;
+    if ((privateField || seedField) && newPassField && conPassField && ckc) {
+      btnSink.add(true);
+    } else {
+      btnSink.add(false);
+    }
+  }
+
+  void checkNewPassField(String value) {
+    if (value.isNotEmpty) {
+      newPassField = true;
+    } else {
+      newPassField = false;
+    }
+    if ((privateField || seedField) && newPassField && conPassField && ckc) {
+      btnSink.add(true);
+    } else {
+      btnSink.add(false);
+    }
+  }
+
+  void checkConPassField(String value) {
+    if (value.isNotEmpty) {
+      conPassField = true;
+    } else {
+      conPassField = false;
+    }
+    if ((privateField || seedField) && newPassField && conPassField && ckc) {
+      btnSink.add(true);
+    } else {
+      btnSink.add(false);
+    }
+  }
+
+  void checkPrivateField(String value) {
+    if (value.isNotEmpty) {
+      privateField = true;
+    } else {
+      privateField = false;
+    }
+    if ((privateField || seedField) && newPassField && conPassField && ckc) {
+      btnSink.add(true);
+    } else {
+      btnSink.add(false);
+    }
+  }
+
+  void checkSeedPhrase(String strArray) {
+    final int len = strArray.split(' ').length;
+    if (len == 12 || len == 15 || len == 18 || len == 21 || len == 24) {
+      seedSink.add(false);
+    } else {
+      seedSink.add(true);
+    }
+  }
+
+//warning
 
   void isValidate(String value) {
     if (Validator.validateStructure(value)) {

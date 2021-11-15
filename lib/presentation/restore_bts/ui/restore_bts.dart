@@ -36,7 +36,8 @@ class _RestoreBTSState extends State<RestoreBTS> {
   bool isShowNewPass = true;
   bool isShowConPass = true;
   int checkBox = 1;
-  bool tickCheckBox = false;
+  bool isEnable = true;
+  bool tickCheckBox = true;
   FormType type = FormType.PASS_PHRASE;
   late final TextEditingController passwordController;
   late final TextEditingController confirmPasswordController;
@@ -283,6 +284,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                               trailingPath: ImageAssets.paste,
                                               formType: FormType.PASS_PHRASE,
                                               isShow: false,
+                                              cubit: restoreCubit,
                                               controller: seedPhraseController,
                                               callback: () async {
                                                 final ClipboardData? data =
@@ -299,6 +301,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                               trailingPath: S.current.paste,
                                               formType: FormType.PRIVATE_KEY,
                                               isShow: false,
+                                              cubit: restoreCubit,
                                               controller: privateKeyController,
                                               callback: () async {
                                                 final ClipboardData? data =
@@ -311,6 +314,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                             );
                                     },
                                   ),
+                                  warningSeedPhrase(),
                                   SizedBox(
                                     height: 20.h,
                                   ),
@@ -327,11 +331,13 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                             : ImageAssets.hide,
                                         formType: FormType.PASSWORD,
                                         isShow: isShowNewPass,
+                                        cubit: restoreCubit,
                                         callback: () {
                                           restoreCubit.newSink
                                               .add(!isShowNewPass);
                                         },
                                         controller: passwordController,
+                                        passType: PassType.NEW,
                                       );
                                     },
                                   ),
@@ -352,11 +358,13 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                             : ImageAssets.hide,
                                         formType: FormType.PASSWORD,
                                         isShow: isShowConPass,
+                                        cubit: restoreCubit,
                                         callback: () {
                                           restoreCubit.conSink
                                               .add(!isShowConPass);
                                         },
                                         controller: confirmPasswordController,
+                                        passType: PassType.CON,
                                       );
                                     },
                                   ),
@@ -461,6 +469,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                             activeColor: AppTheme.getInstance().activeColor(),
                             onChanged: (bool? value) {
                               restoreCubit.ckcSink.add(value ?? false);
+                              restoreCubit.checkCkcValue(value ?? false);
                               if (value == true) {
                                 checkBox = 2;
                               } else {
@@ -505,11 +514,11 @@ class _RestoreBTSState extends State<RestoreBTS> {
                     right: 39.w,
                   ),
                   child: StreamBuilder<bool>(
-                    initialData: tickCheckBox,
-                    stream: restoreCubit.ckcStream,
+                    initialData: isEnable,
+                    stream: restoreCubit.btnStream,
                     builder: (ctx, snapshot) {
-                      tickCheckBox = snapshot.data!;
-                      return tickCheckBox
+                      isEnable = snapshot.data!;
+                      return isEnable
                           ? ButtonGradient(
                               onPressed: () {
                                 restoreCubit
@@ -518,10 +527,14 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                   password: passwordController.text,
                                   confirmPW: confirmPasswordController.text,
                                 );
+                                restoreCubit
+                                    .checkSeedPhrase(seedPhraseController.text);
                                 if (restoreCubit.isMatch(
-                                  passwordController.text,
-                                  confirmPasswordController.text,
-                                )) {
+                                          passwordController.text,
+                                          confirmPasswordController.text,
+                                        ) ==
+                                        true &&
+                                    restoreCubit.seedValue == false) {
                                   final flag = restoreCubit.strValue ==
                                       S.current.seed_phrase;
                                   restoreCubit.importWallet(
@@ -529,6 +542,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     content: privateKeyController.text,
                                     password: passwordController.text,
                                   );
+                                } else {
+                                  restoreCubit.btnSink.add(false);
+                                  restoreCubit.ckcSink.add(false);
                                 }
                               },
                               gradient: RadialGradient(
@@ -564,6 +580,36 @@ class _RestoreBTSState extends State<RestoreBTS> {
                 ),
               ],
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget warningSeedPhrase() {
+    return StreamBuilder<bool>(
+      stream: restoreCubit.seedStream,
+      builder: (BuildContext context, snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 323.w,
+                child: Text(
+                  S.current.warning_seed,
+                  style: textNormal(
+                    AppTheme.getInstance().wrongColor(),
+                    12.sp,
+                  ).copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
