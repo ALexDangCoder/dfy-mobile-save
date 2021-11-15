@@ -111,6 +111,16 @@ class ImageAssets {
   static const String ic_symbol = 'assets/images/symbol.png';
   static const String image_example_pop_up = '$baseImg/pop_image.png';
 
+  ///SvgImage
+  static const String ic_btn_send_token_svg = '$baseImg/ic_btn_send_token_svg.svg';
+  static const String ic_btn_receive_token_svg = '$baseImg/ic_btn_send_token_svg.svg';
+  static const String ic_transaction_success_svg = '$baseImg/ic_transaction_success_svg.svg';
+  static const String ic_transaction_fail_svg = '$baseImg/ic_transaction_fail_svg.svg';
+  static const String ic_transaction_pending_svg = '$baseImg/ic_transaction_pending_svg.svg';
+
+
+
+
   static SvgPicture svgAssets(
     String name, {
     Color? color,

@@ -71,11 +71,11 @@ extension StatusExtension on TransactionStatus {
   String get statusImage {
     switch (this) {
       case TransactionStatus.SUCCESS:
-        return ImageAssets.ic_selected;
+        return ImageAssets.ic_transaction_success_svg;
       case TransactionStatus.FAILED:
-        return ImageAssets.ic_close;
+        return ImageAssets.ic_transaction_fail_svg;
       case TransactionStatus.PENDING:
-        return ImageAssets.ic_clock;
+        return ImageAssets.ic_transaction_pending_svg;
     }
   }
 }

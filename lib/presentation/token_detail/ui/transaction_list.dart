@@ -34,7 +34,7 @@ class TransactionList extends StatelessWidget {
                   children: [
                     ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxHeight: dataLen * 66.h,
+                        maxHeight: dataLen * 70.h,
                       ),
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
@@ -67,12 +67,9 @@ class TransactionList extends StatelessWidget {
                                 right: 16.w,
                                 left: 16.w,
                               ),
-                              height: 60.h,
+                              height: 69.h,
                               decoration: BoxDecoration(
                                 border: Border(
-                                  top: BorderSide(
-                                    color: AppTheme.getInstance().divideColor(),
-                                  ),
                                   bottom: BorderSide(
                                     color: AppTheme.getInstance().divideColor(),
                                   ),
@@ -143,73 +140,82 @@ class TransactionList extends StatelessWidget {
     required TransactionType type,
     required int amount,
   }) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) {
-              return TransactionDetail(
-                detailTransaction: tokenData == 1 ? '158.2578' : '13.25',
-                amount: amount,
-                status: status,
-              );
-            },
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: AppTheme.getInstance().divideColor(),
           ),
-        );
-      },
-      child: Container(
-        height: 66.h,
-        padding: EdgeInsets.only(
-          top: 14.h,
-          left: 16.h,
-          right: 16.h,
-          bottom: 12.h,
         ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    transactionTitle,
+      ),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return TransactionDetail(
+                  detailTransaction: tokenData == 1 ? '158.2578' : '13.25',
+                  amount: amount,
+                  status: status,
+                );
+              },
+            ),
+          );
+        },
+        child: Container(
+          height: 69.h,
+          padding: EdgeInsets.only(
+            top: 14.h,
+            left: 16.h,
+            right: 16.h,
+            bottom: 12.h,
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      transactionTitle,
+                      style: tokenDetailAmount(
+                        color: AppTheme.getInstance().whiteColor(),
+                        fontSize: 16.sp,
+                      ),
+                    ),
+                  ),
+                  sizedSvgImage(
+                    w: 20,
+                    h: 20,
+                    image: status.statusImage,
+                  ),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.topRight,
+                      child: transactionAmountText(
+                        status: status,
+                        amount: amount,
+                        type: type,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 2.h,
+              ),
+              Row(
+                children: [
+                  Text(
+                    time.stringFromDateTime,
                     style: tokenDetailAmount(
-                      color: AppTheme.getInstance().whiteColor(),
-                      fontSize: 16,
+                      color: AppTheme.getInstance().currencyDetailTokenColor(),
+                      fontSize: 14,
                     ),
                   ),
-                ),
-                sizedPngImage(
-                  w: 20,
-                  h: 20,
-                  image: status.statusImage,
-                ),
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.topRight,
-                    child: transactionAmountText(
-                      status: status,
-                      amount: amount,
-                      type: type,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-            Row(
-              children: [
-                Text(
-                  time.stringFromDateTime,
-                  style: tokenDetailAmount(
-                    color: AppTheme.getInstance().currencyDetailTokenColor(),
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

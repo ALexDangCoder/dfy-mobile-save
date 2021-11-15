@@ -1,8 +1,8 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
+import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/transaction_list.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -12,18 +12,21 @@ import 'package:Dfy/widgets/views/default_sub_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class TokenDetail extends StatelessWidget {
   final int tokenData;
   final TokenDetailBloc bloc;
   final String title;
 
-  const TokenDetail(
-      {Key? key,
-      required this.tokenData,
-      required this.bloc,
-      required this.title})
-      : super(key: key);
+  const TokenDetail({
+    Key? key,
+    required this.tokenData,
+    required this.bloc,
+    required this.title,
+  }) : super(
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +35,15 @@ class TokenDetail extends StatelessWidget {
       title: title,
       mainWidget: Column(
         children: [
-          SizedBox(
+          Container(
             height: 308.h,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: AppTheme.getInstance().divideColor(),
+                ),
+              ),
+            ),
             child: Column(
               children: [
                 Container(
@@ -84,22 +94,39 @@ class TokenDetail extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          log('On Receive Token Tap');
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) {
+                              return const Receive(
+                                walletAddress: 'afafafa',
+                                type: TokenType.DFY,
+                              );
+                            },
+                          );
                         },
-                        child: sizedPngImage(
+                        child: sizedSvgImage(
                           w: 48,
                           h: 48,
-                          image: ImageAssets.btnReceiveToken,
+                          image: ImageAssets.ic_btn_receive_token_svg,
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          log('On Send Token Tap');
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) {
+                              return const SendToken();
+                            },
+                          );
                         },
-                        child: sizedPngImage(
+                        child: sizedSvgImage(
                           w: 48,
                           h: 48,
-                          image: ImageAssets.btnSendToken,
+                          image: ImageAssets.ic_btn_send_token_svg,
                         ),
                       ),
                     ],
@@ -107,7 +134,6 @@ class TokenDetail extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    log('On tap Create Collateral');
                   },
                   child: Container(
                     height: 48.h,
@@ -132,13 +158,9 @@ class TokenDetail extends StatelessWidget {
               ],
             ),
           ),
-          Divider(
-            color: AppTheme.getInstance().divideColor(),
-          ),
           TransactionList(title: title, bloc: bloc)
         ],
       ),
     );
   }
-
 }
