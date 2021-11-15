@@ -248,11 +248,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     (route) => route.isFirst,
                               );
                             }
-                            if (state is LoginSuccess) {
+                            if (state is LoginError) {
                               _showDialog();
                             }
                           }
-                          if(!errorText) {
+                          if(errorText) {
                             _showDialog(
                               alert: S.current.password_is_required,
                               text: '',

@@ -23,9 +23,9 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   BehaviorSubject<String> addressWallet =
-      BehaviorSubject.seeded('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+      BehaviorSubject.seeded('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
   BehaviorSubject<String> walletName =
-      BehaviorSubject.seeded('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+      BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
 
   void getIsWalletName(String value) {
@@ -36,12 +36,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  String addressWalletCore = '';
+
   bool checkLogin = false;
 
   Future<void> getAddressWallet() async {}
 
   String formatAddress(String address) {
-    String formatAddressWallet =
+    final String formatAddressWallet =
         '${address.substring(0, 5)}...${address.substring(
       address.length - 4,
       address.length,
@@ -98,51 +100,60 @@ class WalletCubit extends BaseCubit<WalletState> {
     listTokenStream.sink.add(listToken);
   }
 
+
+  double total(List<TokenModel> list) {
+    double total = 0;
+    for(int i = 0; i<list.length;i++) {
+      total = total + list[i].price!;
+    }
+    return total;
+  }
+
   List<TokenModel> listToken = [
     TokenModel(
-      price: 34213423,
+      price: 323,
       nameTokenSymbol: 'DFY',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 34423,
       nameTokenSymbol: 'DFY',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 2423,
       nameTokenSymbol: 'DF2Y',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 3423,
       nameTokenSymbol: 'DFY1',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 123,
       nameTokenSymbol: 'DF3Y',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 3423,
       nameTokenSymbol: 'D4FY',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 33423,
       nameTokenSymbol: 'D5FY',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
     ),
     TokenModel(
-      price: 34213423,
+      price: 13423,
       nameTokenSymbol: 'DFY',
       iconToken: 'assets/images/Ellipse 39.png',
       amountToken: 3344,
