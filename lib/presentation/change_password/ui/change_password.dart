@@ -114,15 +114,30 @@ class _ChangePasswordState extends State<ChangePassword> {
                     isEnable: snapshot.data ?? false,
                   ),
                   onTap: () {
-                    _passwordCubit.showTxtWarningOldPW(
-                      _txtOldPW.text,
-                      passwordOld: oldPWFetchFromApi,
-                    );
-                    _passwordCubit.showTxtWarningNewPW(_txtNewPW.text);
-                    _passwordCubit.showTxtWarningConfirmPW(
-                      _txtConfirmPW.text,
-                      newPassword: _txtNewPW.text,
-                    );
+                   if(snapshot.data ?? false) {
+                     _passwordCubit.showTxtWarningOldPW(
+                       _txtOldPW.text,
+                       passwordOld: oldPWFetchFromApi,
+                     );
+                     _passwordCubit.showTxtWarningNewPW(_txtNewPW.text);
+                     _passwordCubit.showTxtWarningConfirmPW(
+                       _txtConfirmPW.text,
+                       newPassword: _txtNewPW.text,
+                     );
+
+                     if (_passwordCubit.checkAllValidate(
+                       oldPWFetch: oldPWFetchFromApi,
+                       oldPW: _txtOldPW.text,
+                       newPW: _txtNewPW.text,
+                       confirmPW: _txtConfirmPW.text,)) {
+                       //next screen
+                     } else {
+                       //nothing
+                     }
+                   } else {
+                     // nothing
+                   }
+
                   },
                 );
               },

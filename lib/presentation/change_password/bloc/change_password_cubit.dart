@@ -1,4 +1,4 @@
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
+import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,13 +24,13 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   final BehaviorSubject<bool> _showNewPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _showCfPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _isEnableButton =
-      BehaviorSubject<bool>.seeded(false);
+  BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<String> _txtWarnOldPW =
-      BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnNewPW =
-      BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnCfPW =
-      BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String>.seeded('');
 
   //stream
   Stream<bool> get validatePWStream => _validatePW.stream;
@@ -248,6 +248,18 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       isEnableButtonSink.add(true);
     } else {
       isEnableButtonSink.add(false);
+    }
+  }
+
+  //check 3 forms is validate -> change screen
+  bool checkAllValidate(
+      {required String oldPWFetch, required String oldPW, required String newPW,
+        required String confirmPW,}) {
+    if (oldPW == oldPWFetch && Validator.validateStructure(newPW) &&
+        Validator.validateStructure(confirmPW)) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

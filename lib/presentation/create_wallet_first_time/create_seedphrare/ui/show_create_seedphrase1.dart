@@ -163,19 +163,19 @@ class _BodyState extends State<Body> {
                               ],
                             ),
                           ),
-                          SizedBox(
-                            width: 323.w,
-                            child: widget.blocCreateSeedPhrase.isWalletName()
-                                ? null
-                                : Text(
-                                    S.current.name_not_null,
-                                    style: textNormal(
-                                      Colors.red,
-                                      14.sp,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                          ),
+                          // SizedBox(
+                          //   width: 323.w,
+                          //   child: widget.blocCreateSeedPhrase.isWalletName()
+                          //       ? null
+                          //       : Text(
+                          //           S.current.name_not_null,
+                          //           style: textNormal(
+                          //             Colors.red,
+                          //             14.sp,
+                          //           ),
+                          //           textAlign: TextAlign.start,
+                          //         ),
+                          // ),
                           SizedBox(
                             height: 16.h,
                           ),
@@ -223,13 +223,13 @@ class _BodyState extends State<Body> {
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        if (widget.blocCreateSeedPhrase.isCheckBox1.value &&
-                            widget.blocCreateSeedPhrase.isWalletName()) {
-                          showCreateSeedPhrase2(
-                            context,
-                            widget.blocCreateSeedPhrase,
-                          );
-                        }
+                        // if (widget.blocCreateSeedPhrase.isCheckBox1.value &&
+                        //     widget.blocCreateSeedPhrase.isWalletName()) {
+                        //   showCreateSeedPhrase2(
+                        //     context,
+                        //     widget.blocCreateSeedPhrase,
+                        //   );
+                        // }
                       },
                       child: StreamBuilder(
                         stream: widget.blocCreateSeedPhrase.isCheckBox1,

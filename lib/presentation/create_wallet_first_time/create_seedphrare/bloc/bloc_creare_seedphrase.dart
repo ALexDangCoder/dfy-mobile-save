@@ -1,7 +1,6 @@
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -122,12 +121,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     }
   }
 
-  bool isWalletName() {
-    if (Validator.validateNotNull(nameWallet.value)) {
-      return true;
-    }
-    return false;
-  }
 
   void getStringToList(String passPhrase) {
     listTitle1 = passPhrase.split(' ');

@@ -101,13 +101,7 @@ class _EnterAddressState extends State<EnterAddress> {
           Center(
             child: InkWell(
               onTap: () {
-                if (widget.bloc.isImportToken()) {
-                  widget.bloc.importToken(
-                    walletAddress: "walletAddress",
-                    tokenAddress: "tokenAddress",
-                    symbol: "symbol",
-                    decimal: 1,
-                  );
+
                   //  bloc.getListSupportedToken(walletAddress: 'walletAddress');
 
                   // bloc.importNft(
@@ -121,10 +115,7 @@ class _EnterAddressState extends State<EnterAddress> {
                   trustWalletChannel.setMethodCallHandler(
                     widget.bloc.nativeMethodCallBackTrustWallet,
                   );
-                } else {
-                  _showToast();
-                  showTokenSuccessfully(context);
-                }
+
               },
               child: const ButtonGold(
                 title: Strings.import,
