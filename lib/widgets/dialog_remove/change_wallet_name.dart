@@ -1,10 +1,9 @@
 import 'dart:ui';
-
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -63,7 +62,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                           bottom: 24.h,
                         ),
                         child: Text(
-                          S.current.Enter_name,
+                          S.current.enter_name,
                           style: textNormal(Colors.white, 20.sp).copyWith(
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal,
@@ -89,7 +88,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                           child: Row(
                             children: [
                               Image.asset(
-                                url_ic_wallet,
+                                ImageAssets.ic_wallet,
                                 height: 17.67.h,
                                 width: 19.14.w,
                               ),
@@ -136,7 +135,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                               widget.bloc.getIsWalletName('');
                                             },
                                             child: Image.asset(
-                                              url_ic_close,
+                                              ImageAssets.ic_close,
                                               width: 20.w,
                                               height: 20.h,
                                             ),
@@ -219,7 +218,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                         }
                                       },
                                       child: Text(
-                                        S.current.Confirm,
+                                        S.current.confirm,
                                         style: textNormal(
                                           snapshot.data ?? false
                                               ? const Color(0xffE4AC1A)

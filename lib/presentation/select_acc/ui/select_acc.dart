@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -68,7 +67,7 @@ class _SelectAccState extends State<SelectAcc> {
                   child: Container(
                     margin: const EdgeInsets.only(left: 10, right: 10),
                     child: Image.asset(
-                      ImageAssets.ic_out,
+                      ImageAssets.ic_back,
                       width: 20.w,
                       height: 20,
                     ),
@@ -242,7 +241,7 @@ class _SelectAccState extends State<SelectAcc> {
                                       child:
                                           snapshot.data?[index].isCheck ?? false
                                               ? Image.asset(
-                                                  url_ic_select,
+                                                  ImageAssets.ic_selected,
                                                   width: 24.w,
                                                 )
                                               : SizedBox(

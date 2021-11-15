@@ -32,6 +32,7 @@ class ImageAssets {
   static const String ic_hide = '$baseImg/ic_hide.png';
   static const String defiText = '$baseImg/defi_text.png';
   static const String ic_save = '$baseImg/ic_save.png';
+  static const String ic_search = '$baseImg/ic_search.png';
   static const String ic_set_amount = '$baseImg/ic_set_amount.png';
   static const String ic_share = '$baseImg/ic_share.png';
   static const String ic_wallet = '$baseImg/ic_wallet.png';
@@ -44,7 +45,6 @@ class ImageAssets {
   static const String ic_menu = '$baseImg/ic_menu.png';
   static const String ic_notify = '$baseImg/ic_notification.png';
   static const String ic_touch = '$baseImg/finger_icon.png';
-  static const String ic_out = '$baseImg/ic_out.png';
   static const String ic_close = '$baseImg/ic_close.png';
   static const String img_empty = '$baseImg/img_empty.png';
   static const String paste = '$baseImg/Paste.png';
@@ -95,8 +95,9 @@ class ImageAssets {
   static const String ic_quantity = '$baseImg/Quantity.png';
   static const String ic_global = '$baseImg/ic_global.png';
   static const String slc_acc = '$baseImg/Wallet.png';
-
-
+  static const String ic_id = '$baseImg/ic_id.png';
+  static const String img_delete = '$baseImg/Delete.png';
+  static const String ic_selected = '$baseImg/Selected.png';
   static const String ic_plus = '$baseImg/Plus.png';
   static const String ic_symbol = 'assets/images/symbol.png';
   static const String image_example_pop_up = '$baseImg/pop_image.png';

@@ -1,7 +1,8 @@
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_input.dart';
 
@@ -14,7 +15,7 @@ import 'import_token_succesfully.dart';
 
 class EnterAddress extends StatefulWidget {
   const EnterAddress({Key? key, required this.bloc}) : super(key: key);
-  final ImportTokenNftBloc bloc;
+  final WalletCubit bloc;
 
   @override
   _EnterAddressState createState() => _EnterAddressState();
@@ -25,7 +26,7 @@ class _EnterAddressState extends State<EnterAddress> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     controller = TextEditingController();
     controller.addListener(() {
       widget.bloc.tokenAddressText.sink.add(controller.text);
@@ -51,9 +52,9 @@ class _EnterAddressState extends State<EnterAddress> {
                   spaceH24,
                   FormInput(
                     controller: controller,
-                    urlIcon1: url_ic_address,
-                    hint: S.current.Token_address,
-                    urlIcon2: url_ic_qr,
+                    urlIcon1: ImageAssets.ic_address,
+                    hint: S.current.token_address,
+                    urlIcon2: ImageAssets.ic_qr_code,
                     bloc: widget.bloc,
                   ),
                   StreamBuilder(
@@ -64,7 +65,7 @@ class _EnterAddressState extends State<EnterAddress> {
                         child: widget.bloc.isTokenAddressText.value
                             ? null
                             : Text(
-                                S.current.Invalid_address,
+                                S.current.invalid_address,
                                 style: textNormal(
                                   Colors.red,
                                   14.sp,
@@ -76,14 +77,14 @@ class _EnterAddressState extends State<EnterAddress> {
                   ),
                   spaceH16,
                   FromText2(
-                    title: S.current.Token_symbol,
-                    urlPrefixIcon: url_ic_symbol,
+                    title: S.current.token_symbol,
+                    urlPrefixIcon: ImageAssets.ic_token,
                     urlSuffixIcon: '',
                   ),
                   spaceH16,
                   FromText2(
-                    title: S.current.Token_decimal,
-                    urlPrefixIcon: url_ic_decimal,
+                    title: S.current.token_decimal,
+                    urlPrefixIcon: ImageAssets.ic_group,
                     urlSuffixIcon: '',
                   ),
                   SizedBox(
@@ -110,6 +111,15 @@ class _EnterAddressState extends State<EnterAddress> {
                     );
                     widget.bloc.checkAddressNull();
                     if (widget.bloc.isTokenAddressText.value) {
+                     widget.bloc.addToken(TokenModel(
+                       price: 34213423,
+                       tokenId: 21,
+                       iconToken: 'assets/images/Ellipse 39.png',
+                       isShow: true,
+                       nameToken: 'DoanhCoin',
+                       nameTokenSymbol: 'DC',
+                       amountToken: 0,
+                     ),);
                       showTokenSuccessfully(context);
                     }
                   },

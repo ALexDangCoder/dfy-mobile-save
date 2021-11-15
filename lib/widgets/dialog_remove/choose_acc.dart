@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,7 +59,7 @@ class ChooseAcc extends StatelessWidget {
                         child: Container(
                           margin: EdgeInsets.only(right: 26.w, top: 27.h),
                           child: Image.asset(
-                            url_ic_close,
+                            ImageAssets.ic_close,
                           ),
                         ),
                       ),
