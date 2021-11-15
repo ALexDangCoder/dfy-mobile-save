@@ -99,6 +99,7 @@
   "contract_interaction": "Contract interaction",
   "create_collateral": "Create collateral",
   "view_more": "View more",
+  "show_qr_code": "Show QR code",
   "copy": "Copy Successfully",
   "token_successfully": "Import Token successfully",
   "Nft_successfully": "Import NFT successfully",

@@ -24,21 +24,19 @@ class LoginCubit extends BaseCubit<LoginState> {
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     emit(LoginLoading());
     bool loginSuccess = false;
-
     switch (methodCall.method) {
       case 'checkPasswordCallback':
-        loginSuccess = methodCall.arguments['isCorrect'];
+       loginSuccess = await methodCall.arguments['isCorrect'];
+       if (loginSuccess == true) {
+         emit(LoginSuccess());
+       } else {
+         emit(LoginError('Password was wrong...'));
+       }
         break;
       case 'importWalletCallback':
            break;
       default:
         break;
-    }
-
-    if (loginSuccess == true) {
-      emit(LoginSuccess());
-    } else {
-      emit(LoginError('Password was wrong...'));
     }
   }
 

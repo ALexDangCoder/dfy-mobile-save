@@ -143,6 +143,7 @@
   "time": "Thời gian",
   "txh_id": "Txh ID",
   "nonce": "Nonce",
+  "show_qr_code": "QR code",
   "transaction_success": "Thành công",
   "transaction_fail": "Thất bại",
   "view_on_bscscan": "Xem trên Bscscan",
