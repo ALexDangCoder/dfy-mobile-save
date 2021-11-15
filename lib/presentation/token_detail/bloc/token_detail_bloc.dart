@@ -1,17 +1,26 @@
 import 'dart:math' hide log;
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
-  static const len_mock_data = 40;
+  static const len_mock_data = 23;
   final List<String> mockData =
       List.generate(len_mock_data, (index) => S.current.contract_interaction);
-  final List<int> mockType =
-      List.generate(len_mock_data, (index) => Random().nextInt(3));
+  final List<TransactionStatus> mockStatus = List.generate(
+    len_mock_data,
+    (index) => TransactionStatus
+        .values[Random().nextInt(TransactionStatus.values.length)],
+  );
+  final List<TransactionType> mockType = List.generate(
+      len_mock_data,
+          (index) => TransactionType
+          .values[Random().nextInt(TransactionType.values.length)],);
   final List<DateTime> mockDate =
       List.generate(len_mock_data, (index) => DateTime.now());
   final List<int> mockAmount =
       List.generate(len_mock_data, (index) => Random().nextInt(5000));
+  ///todoClearFakeData
 
   int dataListLen = 4;
   List<String> transactionList = [];
@@ -26,7 +35,7 @@ class TokenDetailBloc {
 
   Stream<bool> get showMoreStream => _showMoreSubject.stream;
 
-  void test() {
+  void adData() {
     _transactionListSubject.sink.add(mockData);
   }
 
@@ -56,4 +65,27 @@ class TokenDetailBloc {
   void hideShowMore() {
     _showMoreSubject.sink.add(false);
   }
+}
+
+extension StatusExtension on TransactionStatus {
+  String get statusImage {
+    switch (this) {
+      case TransactionStatus.SUCCESS:
+        return ImageAssets.tick_circle;
+      case TransactionStatus.FAILED:
+        return ImageAssets.close;
+      case TransactionStatus.PENDING:
+        return ImageAssets.clock;
+    }
+  }
+}
+
+enum TransactionStatus {
+  SUCCESS,
+  FAILED,
+  PENDING,
+}
+enum TransactionType{
+  SEND,
+  RECEIVE,
 }

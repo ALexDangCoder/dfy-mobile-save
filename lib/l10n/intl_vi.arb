@@ -134,5 +134,6 @@
   "transaction_success" : "Thành công",
   "transaction_fail" : "Thất bại",
   "view_on_bscscan" : "Xem trên Bscscan",
-  "detail_transaction" : "Chi tiết giao dịch"
+  "detail_transaction" : "Chi tiết giao dịch",
+  "transaction_pending": "Đang xử lý"
 }

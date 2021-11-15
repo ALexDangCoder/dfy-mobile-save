@@ -125,6 +125,8 @@ abstract class AppColor {
 
   Color failTransactionColors();
 
+  Color pendingTransactionColors();
+
   Color blueColor();
 }
 
@@ -288,6 +290,11 @@ class LightApp extends AppColor {
   Color blueColor() {
     // TODO: implement blueColor
     return const Color(0xFF46BCFF);
+  }
+
+  @override
+  Color pendingTransactionColors() {
+    return const Color(0XFFFFBD48);
   }
 }
 
@@ -469,6 +476,12 @@ class DarkApp extends AppColor {
   @override
   Color blueColor() {
     // TODO: implement blueColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color pendingTransactionColors() {
+    // TODO: implement pendingTransactionColors
     throw UnimplementedError();
   }
 

@@ -26,7 +26,7 @@ class TokenItem extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) {
               return TokenDetail(
-                tokenData: nameToken.isNotEmpty? 159753 : 12345,
+                tokenData: nameToken.isNotEmpty? 54321 : 12345,
                 bloc: TokenDetailBloc(),
                 title: 'DFY',
               );
@@ -57,7 +57,7 @@ class TokenItem extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    top: 20.h,
+                    top: 20.w,
                     left: 10.w,
                     bottom: 20.h,
                   ),

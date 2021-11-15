@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/views/default_sub_screen.dart';
@@ -13,18 +14,22 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class TransactionDetail extends StatelessWidget {
   final String detailTransaction;
+  final TransactionStatus status;
+  final int amount;
 
-  const TransactionDetail({Key? key, required this.detailTransaction})
+  const TransactionDetail(
+      {Key? key,
+      required this.detailTransaction,
+      required this.status,
+      required this.amount})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final int amount = 1000635;
-    final double gasFee = 0.0000454546;
+    const double gasFee = 0.0000454546;
     final DateTime _time = DateTime.now();
-    final String txhID = '0xaaa042c0632f4d44c7cea978f22cd02e751a410e';
-    final int nonce = 351;
-    const isSuccess = true;
+    const String txhID = '0xaaa042c0632f4d44c7cea978f22cd02e751a410e';
+    const int nonce = 351;
     return DefaultSubScreen(
       title: S.current.detail_transaction,
       mainWidget: Container(
@@ -37,35 +42,16 @@ class TransactionDetail extends StatelessWidget {
                 bottom: 16.h,
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        flex: 2,
-                        child: textRow(
-                          name: S.current.amount,
-                          value: amount.stringIntFormat,
-                        ),
+                      textRow(
+                        name: S.current.amount,
+                        value: amount.stringIntFormat,
                       ),
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          alignment: Alignment.topLeft,
-                          child: isSuccess
-                              ? textRow(
-                                  name: S.current.status,
-                                  value: S.current.transaction_success,
-                                  valueColor: AppTheme.getInstance()
-                                      .successTransactionColors(),
-                                )
-                              : textRow(
-                                  name: S.current.status,
-                                  value: S.current.transaction_fail,
-                                  valueColor: AppTheme.getInstance()
-                                      .failTransactionColors(),
-                                ),
-                        ),
-                      ),
+                      transactionStatsWidget(status),
                     ],
                   ),
                   textRow(
@@ -139,6 +125,35 @@ class TransactionDetail extends StatelessWidget {
     );
   }
 
+  Widget transactionStatsWidget(TransactionStatus status) {
+    switch (status) {
+      case TransactionStatus.SUCCESS:
+        return textRow(
+          name: S.current.status,
+          value: S.current.transaction_success,
+          valueColor: AppTheme.getInstance().successTransactionColors(),
+        );
+      case TransactionStatus.FAILED:
+        return textRow(
+          name: S.current.status,
+          value: S.current.transaction_fail,
+          valueColor: AppTheme.getInstance().failTransactionColors(),
+        );
+      case TransactionStatus.PENDING:
+        return textRow(
+          name: S.current.status,
+          value: S.current.transaction_pending,
+          valueColor: AppTheme.getInstance().pendingTransactionColors(),
+        );
+      default:
+        return textRow(
+          name: S.current.status,
+          value: S.current.transaction_fail,
+          valueColor: AppTheme.getInstance().failTransactionColors(),
+        );
+    }
+  }
+
   Widget textRow({
     required String name,
     required String value,
@@ -153,14 +168,14 @@ class TransactionDetail extends StatelessWidget {
             '$name : ',
             style: tokenDetailAmount(
               color: AppTheme.getInstance().currencyDetailTokenColor(),
-              fontSize: 14.h,
+              fontSize: 14,
             ),
           ),
           Text(
             showCopy ? value.formatAddress : value,
             style: tokenDetailAmount(
               color: valueColor ?? AppTheme.getInstance().textThemeColor(),
-              fontSize: 16.h,
+              fontSize: 16,
             ),
           ),
           if (showCopy)

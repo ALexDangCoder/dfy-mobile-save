@@ -27,6 +27,7 @@ class TokenDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bloc.checkData();
     return DefaultSubScreen(
       title: title,
       mainWidget: Column(
@@ -68,7 +69,7 @@ class TokenDetail extends StatelessWidget {
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().currencyDetailTokenColor(),
                     weight: FontWeight.w400,
-                    fontSize: 16.h,
+                    fontSize: 16,
                   ),
                 ),
                 Container(
@@ -122,7 +123,7 @@ class TokenDetail extends StatelessWidget {
                         S.current.create_collateral,
                         style: tokenDetailAmount(
                           color: AppTheme.getInstance().fillColor(),
-                          fontSize: 16.h,
+                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -158,8 +159,9 @@ class TokenDetail extends StatelessWidget {
                                   context: context,
                                   transactionTitle: bloc.mockData[index],
                                   time: bloc.mockDate[index],
-                                  type: bloc.mockType[index],
+                                  status: bloc.mockStatus[index],
                                   amount: bloc.mockAmount[index],
+                                  type: bloc.mockType[index],
                                 );
                               },
                             ),
@@ -182,7 +184,6 @@ class TokenDetail extends StatelessWidget {
                                     ),
                                     height: 60.h,
                                     decoration: BoxDecoration(
-                                      // color: AppTheme.getInstance().bgBtsColor(),
                                       border: Border(
                                         top: BorderSide(
                                           color: AppTheme.getInstance()
@@ -195,12 +196,13 @@ class TokenDetail extends StatelessWidget {
                                       ),
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           ImageAssets.expand,
-                                          color:
-                                          AppTheme.getInstance().fillColor(),
+                                          color: AppTheme.getInstance()
+                                              .fillColor(),
                                         ),
                                         SizedBox(
                                           width: 13.15.w,
@@ -209,7 +211,7 @@ class TokenDetail extends StatelessWidget {
                                           S.current.view_more,
                                           style: textNormalCustom(
                                             AppTheme.getInstance().fillColor(),
-                                            16.sp,
+                                            16,
                                             FontWeight.w400,
                                           ),
                                         ),
@@ -244,12 +246,6 @@ class TokenDetail extends StatelessWidget {
                             fontSize: 20,
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            bloc.checkData();
-                          },
-                          child: const Text('Click'),
-                        ),
                       ],
                     ),
                   ),
@@ -266,7 +262,8 @@ class TokenDetail extends StatelessWidget {
     required BuildContext context,
     required String transactionTitle,
     required DateTime time,
-    required int type,
+    required TransactionStatus status,
+    required TransactionType type,
     required int amount,
   }) {
     return InkWell(
@@ -276,6 +273,8 @@ class TokenDetail extends StatelessWidget {
             builder: (context) {
               return TransactionDetail(
                 detailTransaction: tokenData == 1 ? '158.2578' : '13.25',
+                amount: amount,
+                status: status,
               );
             },
           ),
@@ -298,59 +297,22 @@ class TokenDetail extends StatelessWidget {
                     transactionTitle,
                     style: tokenDetailAmount(
                       color: AppTheme.getInstance().whiteColor(),
-                      fontSize: 16.h,
+                      fontSize: 16,
                     ),
                   ),
                 ),
-                if (type == 0)
-                  sizedPngImage(
-                    w: 20,
-                    h: 20,
-                    image: ImageAssets.tick_circle,
-                  ),
-                if (type == 1)
-                  sizedPngImage(
-                    w: 20,
-                    h: 20,
-                    image: ImageAssets.close,
-                  ),
-                if (type == 2)
-                  sizedPngImage(
-                    w: 20,
-                    h: 20,
-                    image: ImageAssets.clock,
-                  ),
+                sizedPngImage(
+                  w: 20,
+                  h: 20,
+                  image: status.statusImage,
+                ),
                 Expanded(
                   child: Container(
                     alignment: Alignment.topRight,
-                    child: type == 0
-                        ? Text(
-                      '+ $amount $title',
-                      style: tokenDetailAmount(
-                        color: AppTheme.getInstance()
-                            .successTransactionColors(),
-                        fontSize: 16.h,
-                        weight: FontWeight.w400,
-                      ),
-                    )
-                        : type == 1
-                        ? Text(
-                      '- $amount $title',
-                      style: tokenDetailAmount(
-                        color: AppTheme.getInstance()
-                            .currencyDetailTokenColor(),
-                        fontSize: 16.h,
-                        weight: FontWeight.w400,
-                      ),
-                    )
-                        : Text(
-                      '$amount $title',
-                      style: tokenDetailAmount(
-                        color: AppTheme.getInstance()
-                            .currencyDetailTokenColor(),
-                        fontSize: 16.h,
-                        weight: FontWeight.w400,
-                      ),
+                    child: transactionAmountText(
+                      status: status,
+                      amount: amount,
+                      type: type,
                     ),
                   ),
                 ),
@@ -365,7 +327,7 @@ class TokenDetail extends StatelessWidget {
                   time.stringFromDateTime,
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().currencyDetailTokenColor(),
-                    fontSize: 14.h,
+                    fontSize: 14,
                   ),
                 ),
               ],
@@ -376,13 +338,53 @@ class TokenDetail extends StatelessWidget {
     );
   }
 
+  Text transactionAmountText({
+    required int amount,
+    required TransactionType type,
+    required TransactionStatus status,
+  }) {
+    switch (status) {
+      case TransactionStatus.FAILED:
+        return Text(
+          '0 $title',
+          style: tokenDetailAmount(
+            color: AppTheme.getInstance().currencyDetailTokenColor(),
+            fontSize: 16,
+            weight: FontWeight.w400,
+          ),
+        );
+      case TransactionStatus.SUCCESS:
+        return Text(
+          type == TransactionType.RECEIVE
+              ? '+ $amount $title'
+              : '- $amount $title',
+          style: tokenDetailAmount(
+            color: type == TransactionType.RECEIVE
+                ? AppTheme.getInstance().successTransactionColors()
+                : AppTheme.getInstance().currencyDetailTokenColor(),
+            fontSize: 16,
+            weight: FontWeight.w400,
+          ),
+        );
+      case TransactionStatus.PENDING:
+        return Text(
+          '$amount $title',
+          style: tokenDetailAmount(
+            color: AppTheme.getInstance().currencyDetailTokenColor(),
+            fontSize: 16,
+            weight: FontWeight.w400,
+          ),
+        );
+    }
+  }
+
   Widget sizedPngImage({
     required double w,
     required double h,
     required String image,
   }) {
     return SizedBox(
-      height: w.h,
+      height: h.h,
       width: w.h,
       child: Image.asset(
         image,
