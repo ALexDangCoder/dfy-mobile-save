@@ -3,8 +3,8 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/helper/validator.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -119,7 +119,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
                       confirmPW: confirmPassword.text,
                       password: password.text,
                     ) &&
-                    Validator.isValidPassword(password.text)) {
+                    Validator.validateStructure(password.text) &&
+                    Validator.validateStructure(confirmPassword.text)) {
                   showCreateSeedPhrase1(
                     context,
                     false,
@@ -213,7 +214,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     fillColor:
-                        MaterialStateProperty.all(const Color(0xffE4AC1A)),
+                    MaterialStateProperty.all(const Color(0xffE4AC1A)),
                     activeColor: const Color.fromRGBO(228, 172, 26, 1),
                     // checkColor: const Colors,
                     onChanged: (bool? value) {
@@ -292,13 +293,13 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 },
                 child: snapshot.data ?? false
                     ? const ImageIcon(
-                        AssetImage(ImageAssets.ic_show),
-                        color: Colors.grey,
-                      )
+                  AssetImage(ImageAssets.ic_show),
+                  color: Colors.grey,
+                )
                     : const ImageIcon(
-                        AssetImage(ImageAssets.ic_hide),
-                        color: Colors.grey,
-                      ),
+                  AssetImage(ImageAssets.ic_hide),
+                  color: Colors.grey,
+                ),
               ),
               prefixIcon: const ImageIcon(
                 AssetImage(ImageAssets.ic_lock),
@@ -353,13 +354,13 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 },
                 child: snapshot.data ?? false
                     ? const ImageIcon(
-                        AssetImage(ImageAssets.ic_show),
-                        color: Colors.grey,
-                      )
+                  AssetImage(ImageAssets.ic_show),
+                  color: Colors.grey,
+                )
                     : const ImageIcon(
-                        AssetImage(ImageAssets.ic_hide),
-                        color: Colors.grey,
-                      ),
+                  AssetImage(ImageAssets.ic_hide),
+                  color: Colors.grey,
+                ),
               ),
               prefixIcon: const ImageIcon(
                 AssetImage(ImageAssets.ic_lock),
