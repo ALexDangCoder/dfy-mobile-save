@@ -1,19 +1,18 @@
 import 'dart:ui';
-import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/images.dart';
-import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/bloc/import_token_nft_bloc.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft_succesfully.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/form/form_input.dart';
-import 'package:Dfy/widgets/form/form_input2.dart';
 import 'package:Dfy/widgets/form/form_input3.dart';
 import 'package:Dfy/widgets/form/form_input_number.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../main.dart';
 
 void showImportNft(BuildContext context, ImportTokenNftBloc bloc) {
   showModalBottomSheet(
@@ -56,13 +55,17 @@ class _BodyState extends State<Body> {
             width: 323.w,
             height: 28.h,
             margin: EdgeInsets.only(
-                left: 26.w, top: 16.h, right: 26.w, bottom: 20.h),
+                left: 26.w, top: 16.h, right: 26.w, bottom: 20.h,),
             child: Row(
               children: [
-                spaceW5,
                 GestureDetector(
-                  child: Image.asset(
-                    url_ic_out,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 10.w, left: 10.w),
+                    child: Image.asset(
+                      url_ic_out,
+                      width: 20.w,
+                      height: 20.h,
+                    ),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -70,8 +73,8 @@ class _BodyState extends State<Body> {
                 ),
                 Container(
                   margin: EdgeInsets.only(right: 88.w, left: 90.w),
-                  child: Text('Import NFT',
-                      style: textNormalCustom(null, 20, FontWeight.bold)),
+                  child: Text(S.current.import_NFT,
+                      style: textNormalCustom(null, 20, FontWeight.bold),),
                 ),
               ],
             ),
@@ -93,15 +96,33 @@ class _BodyState extends State<Body> {
                     FormInput3(
                       controller: controller,
                       urlIcon1: url_ic_address,
-                      hint: 'Token address',
+                      hint: S.current.Token_address,
                       urlIcon2: url_ic_qr,
                       bloc: widget.bloc,
+                    ),
+                    StreamBuilder(
+                      stream: widget.bloc.isNFT,
+                      builder: (context, snapshot) {
+                        return SizedBox(
+                          width: 323.w,
+                          child: widget.bloc.isNFT.value
+                              ? null
+                              : Text(
+                                  S.current.Invalid_address,
+                                  style: textNormal(
+                                    Colors.red,
+                                    14.sp,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                        );
+                      },
                     ),
                     spaceH16,
                     FormInputNumber(
                       urlIcon1: url_ic_enter_id,
                       bloc: widget.bloc,
-                      hint: Strings.enter_id,
+                      hint: S.current.enter_id,
                     ),
                     const SizedBox(
                       height: 429,
@@ -112,14 +133,36 @@ class _BodyState extends State<Body> {
             ),
           ),
           Center(
-            child: InkWell(
-              onTap: () {
-                showNFTSuccessfully(context);
+            child: StreamBuilder(
+              stream: widget.bloc.isNFT,
+              builder: (context, snapshot) {
+                return InkWell(
+                  onTap: () {
+                    widget.bloc.importNft(
+                      walletAddress: 'walletAddress',
+                      nftAddress: 'tokenAddress',
+                      nftID: 1,
+                    );
+                    trustWalletChannel.setMethodCallHandler(
+                      widget.bloc.nativeMethodCallBackTrustWallet,
+                    );
+                    widget.bloc.checkAddressNull2();
+                    if (widget.bloc.isNFT.value) {
+                      showNFTSuccessfully(context);
+                    }
+                    widget.bloc.setShowedNft(
+                      isShow: true,
+                      walletAddress: 'walletAddress',
+                      nftID: 1,
+                      password: '',
+                    );
+                  },
+                  child: ButtonGold(
+                    title: S.current.import,
+                    isEnable: widget.bloc.isNFT.value,
+                  ),
+                );
               },
-              child: const ButtonGold(
-                title: Strings.import,
-                isEnable: true,
-              ),
             ),
           ),
         ],

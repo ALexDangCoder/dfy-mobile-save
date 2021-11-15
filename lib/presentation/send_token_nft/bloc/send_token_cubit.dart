@@ -211,21 +211,13 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'sendTokenCallback':
-        bool isSuccess = await methodCall.arguments['isSuccess'];
-        print(isSuccess);
-        // fromFieldSink.add(walletAddressToken);
-        break;
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+           break;
       default:
         break;
     }
   }
 
-  // "walletAddress*: String
-  // receiveAddress*: String
-  // tokenID*: Int
-  // amount*: Int
-  // password: String"
-  //input and nameCallback
   Future<void> sendNft({
     required String walletAddress,
     required String receiveAddress,
@@ -281,12 +273,12 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       value = -value;
       sign = '-';
     }
-    var string = value.toString();
-    var e = string.lastIndexOf('e');
+    final string = value.toString();
+    final e = string.lastIndexOf('e');
     if (e < 0) return '$sign$string';
     assert(string.indexOf('.') == 1);
     final offset = int.parse(
-        string.substring(e + (string.startsWith('-', e + 1) ? 1 : 2)));
+        string.substring(e + (string.startsWith('-', e + 1) ? 1 : 2)),);
     final digits = string.substring(0, 1) + string.substring(2, e);
     if (offset < 0) {
       return "${sign}0.${"0" * ~offset}$digits";

@@ -40,8 +40,9 @@ const spaceW30 = SizedBox(width: 30);
 
 TextStyle textStyle({double size = 16, double height = 1.2}) =>
     GoogleFonts.mulish(
-        fontSize: size,
-        fontWeight: FontWeight.w500,
-        color: dfTxtColor,
-        fontStyle: FontStyle.normal,
-        height: height,);
+      fontSize: size,
+      fontWeight: FontWeight.w500,
+      color: dfTxtColor,
+      fontStyle: FontStyle.normal,
+      height: height,
+    );

@@ -14,13 +14,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum KeyType { IMPORT, CREATE }
+enum KeyType1 { IMPORT, CREATE }
 
 void showCreateSuccessfully({
   required BuildContext context,
   required BLocCreateSeedPhrase bLocCreateSeedPhrase,
   required Wallet wallet,
-  required KeyType type,
+  required KeyType1 type,
 }) {
   showModalBottomSheet(
     isScrollControlled: true,
@@ -45,7 +45,7 @@ class Body extends StatefulWidget {
   }) : super(key: key);
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
   final Wallet wallet;
-  final KeyType type;
+  final KeyType1 type;
 
   @override
   _BodyState createState() => _BodyState();
@@ -82,7 +82,7 @@ class _BodyState extends State<Body> {
           ),
           Center(
             child: Text(
-              widget.type == KeyType.CREATE
+              widget.type == KeyType1.CREATE
                   ? S.current.success
                   : S.current.success_import,
               style: TextStyle(
@@ -149,24 +149,21 @@ class _BodyState extends State<Body> {
           Center(
             child: GestureDetector(
               onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainScreen(
+                      index: 1,
+                      wallet: widget.wallet,
+                    ),
+                  ),
+                );
+
                 widget.bLocCreateSeedPhrase.setConfig(
                   password: widget.bLocCreateSeedPhrase.passWord,
                   isAppLock: widget.bLocCreateSeedPhrase.isCheckAppLock.value,
                   isFaceID: widget.bLocCreateSeedPhrase.isCheckTouchID.value,
                 );
-                //Navigator.popAndPushNamed(context,AppRouter.login);
-                //cubit.walletSink.add(2);
-                if(widget.bLocCreateSeedPhrase.configSuccess){
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                      const MainScreen(
-                        index: 1,
-                      ),
-                    ),
-                        (route) => route.isFirst,
-                  );
-                }
               },
               child: ButtonGold(
                 title: S.current.complete,

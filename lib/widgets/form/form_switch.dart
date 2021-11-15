@@ -45,7 +45,7 @@ class FromSwitch extends StatelessWidget {
           title: Text(
             title,
             style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
+              Colors.white54,
               16.sp,
             ),
           ),

@@ -14,7 +14,6 @@ class HtmlText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Html(
       data: data,
-      shrinkWrap: false,
       style: {
         'p': Style(
           // border: Border.all(color: Colors.grey),

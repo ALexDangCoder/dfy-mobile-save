@@ -1,31 +1,198 @@
-import 'package:Dfy/config/resources/strings.dart';
-import 'package:Dfy/utils/extensions/validator.dart';
+import 'package:Dfy/domain/model/token.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../main.dart';
 
 class ImportTokenNftBloc {
-  BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
+  ImportTokenNftBloc() {
+    getListSort();
+  }
 
+  BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenDecimal = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenSymbol = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenAddressTextNft = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenSymbolText = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenDecimalText = BehaviorSubject.seeded('');
+  BehaviorSubject<bool> isTokenAddressText = BehaviorSubject.seeded(true);
 
-  // void formatAddress() {
-  //   tokenAddressText.stream.listen((event) {
-  //     final splitAddress = event.split('');
-  //     tokenAddressText1.sink.add('${splitAddress[0]}'
-  //         '${splitAddress[1]}${splitAddress[2]}'
-  //         '${splitAddress[3]}${splitAddress[6]}'
-  //         '${splitAddress[5]}...${splitAddress[37]}'
-  //         '${splitAddress[38]}${splitAddress[39]}'
-  //         '${splitAddress[40]}');
-  //   });
-  // }
-  //
+  BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
+
+  BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject.seeded(false);
+
+  BehaviorSubject<bool> isNFT = BehaviorSubject.seeded(true);
+
+  BehaviorSubject<List<TokenModel>> getList = BehaviorSubject.seeded([]);
+
+  String formatNumber(double amount) {
+    return '${amount.toStringAsExponential(5).toString().substring(0, 5)}'
+        ',${amount.toStringAsExponential(5).toString().substring(5, 7)}';
+  }
+
+  void checkAddressNull2() {
+    if (tokenAddressTextNft.value == '') {
+      isNFT.sink.add(false);
+    } else {
+      isNFT.sink.add(true);
+    }
+  }
+
+  void getListSort() {
+    final List<TokenModel> list = [];
+    for (final TokenModel value in listToken) {
+      if (value.isShow ?? false) {
+        list.add(value);
+      }
+    }
+    final Comparator<TokenModel> amountTokenComparator =
+        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
+    list.sort(amountTokenComparator);
+    final List<TokenModel> list1 = [];
+    for (final TokenModel value in listToken) {
+      if (value.isShow ?? false) {
+      } else {
+        if ((value.amountToken ?? 0) > 0) {
+          list1.add(value);
+        }
+      }
+    }
+    list1.sort(amountTokenComparator);
+    list.addAll(list1);
+    for (final TokenModel value in listToken) {
+      if (value.isShow ?? false) {
+      } else {
+        if ((value.amountToken ?? 0) > 0) {
+        } else {
+          list.add(value);
+        }
+      }
+    }
+    getList.sink.add(list);
+  }
+
+  void search() {
+    final List<TokenModel> list = [];
+    for (final TokenModel value in listToken) {
+      if (value.nameToken!.toLowerCase().contains(
+            textSearch.value.toLowerCase(),
+          )) {
+        list.add(value);
+      }
+    }
+    if (textSearch.value == '') {
+      getListSort();
+    } else {
+      getList.sink.add(list);
+    }
+  }
+
+  List<TokenModel> listToken = [
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'TBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 0,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'TBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 0,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'TBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 1,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'Bitcoin',
+      nameTokenSymbol: 'BTC',
+      amountToken: 0.2134,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: true,
+      nameToken: 'ABitcoin',
+      nameTokenSymbol: 'BTC',
+      amountToken: 0.324,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'CBitcoin',
+      nameTokenSymbol: 'BTC',
+      amountToken: 2.21321434,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: true,
+      nameToken: 'DBitcoin',
+      nameTokenSymbol: 'BTC',
+      amountToken: 0,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: true,
+      nameToken: 'WBitcoin',
+      nameTokenSymbol: 'BTC3',
+      amountToken: 021342342134.21312344,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'QBitcoin',
+      nameTokenSymbol: 'BT3C',
+      amountToken: 0,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: true,
+      nameToken: 'UBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 0.213434,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'TBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 0.423213423,
+    ),
+    TokenModel(
+      tokenId: 21,
+      iconToken: 'assets/images/Ellipse 39.png',
+      isShow: false,
+      nameToken: 'TBitcoin',
+      nameTokenSymbol: 'B3TC',
+      amountToken: 0,
+    ),
+  ];
+
+  void checkAddressNull() {
+    if (tokenAddressText.value == '') {
+      isTokenAddressText.sink.add(false);
+    } else {
+      isTokenAddressText.sink.add(true);
+    }
+  }
 
   Future<void> importToken({
     String password = '',
@@ -125,7 +292,6 @@ class ImportTokenNftBloc {
     }
   }
 
-
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     final bool isImportToken;
     final bool isSetShowedToken;
@@ -139,25 +305,19 @@ class ImportTokenNftBloc {
         break;
       case 'getListSupportedTokenCallback':
         //[TokenObject]
-        var a = await methodCall.arguments['TokenObject'];
+        final a = await methodCall.arguments['TokenObject'];
 
         break;
       case 'setShowedTokenCallback':
         isSetShowedToken = await methodCall.arguments['isSuccess'];
 
-
         break;
       case 'importNftCallback':
-
-
         isImportNft = await methodCall.arguments['isSuccess'];
-
 
         break;
       case 'setShowedNftCallback':
-
         isSetShowedNft = await methodCall.arguments['isSuccess'];
-
 
         break;
       default:

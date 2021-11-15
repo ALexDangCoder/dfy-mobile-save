@@ -9,10 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RestoreCubit extends Cubit<RestoreState> {
+class ImportCubit extends Cubit<RestoreState> {
   Wallet? wallet = Wallet();
 
-  RestoreCubit() : super(RestoreInitial());
+  ImportCubit() : super(RestoreInitial());
   final BehaviorSubject<List<String>> _behaviorSubject =
       BehaviorSubject<List<String>>();
   final BehaviorSubject<String> _stringSubject =
