@@ -44,18 +44,6 @@ class _SendTokenState extends State<SendToken> {
 
   @override
   Widget build(BuildContext context) {
-    // return StreamBuilder(
-    //   stream: tokenCubit.fromFieldStream,
-    //   builder: (context, AsyncSnapshot<String> snapshot) {
-    //     switch(snapshot.connectionState) {
-    //       case ConnectionState.active:
-    //         print(snapshot.data);
-    //         return Text(snapshot.data ?? 'k co data');
-    //       default:
-    //         return Text('loiu');
-    //     }
-    //   },
-    // );
     return GestureDetector(
       onTap: () {
         final FocusScopeNode currentFocus = FocusScope.of(context);
