@@ -63,7 +63,7 @@ class TokenDetail extends StatelessWidget {
                 Text(
                   customCurrency(
                     amount: '5157.415478951',
-                    type: 'DFY',
+                    type: title,
                     digit: 8,
                   ),
                   style: tokenDetailAmount(

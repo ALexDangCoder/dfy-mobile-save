@@ -30,11 +30,17 @@ class TokenItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => TokenDetail(
-                tokenData: 123, bloc: TokenDetailBloc(), title: 'DFY'),
-          ),
+        showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          backgroundColor: Colors.transparent,
+          builder: (context) {
+            return TokenDetail(
+              tokenData: 123,
+              bloc: TokenDetailBloc(),
+              title: nameToken,
+            );
+          },
         );
       },
       onLongPress: () {
