@@ -377,18 +377,17 @@ class _WalletState extends State<WalletScreen>
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context)
-                          .push(
-                            HeroDialogRoute(
-                              builder: (context) {
-                                return ChangeWalletName(
-                                  textEditingController: changeName,
-                                  bloc: cubit,
-                                );
-                              },
-                              isNonBackground: false,
-                            ),
-                          );
+                      Navigator.of(context).push(
+                        HeroDialogRoute(
+                          builder: (context) {
+                            return ChangeWalletName(
+                              textEditingController: changeName,
+                              bloc: cubit,
+                            );
+                          },
+                          isNonBackground: false,
+                        ),
+                      );
                     },
                     child: ImageIcon(
                       const AssetImage(ImageAssets.ic_edit),

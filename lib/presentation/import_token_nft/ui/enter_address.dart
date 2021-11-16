@@ -117,8 +117,8 @@ class _EnterAddressState extends State<EnterAddress> {
                        iconToken: 'assets/images/Ellipse 39.png',
                        isShow: true,
                        nameToken: 'DoanhCoin',
-                       nameTokenSymbol: 'DoanhCoin',
-                       amountToken: 2,
+                       nameTokenSymbol: 'DC',
+                       amountToken: 0,
                      ),);
                       showTokenSuccessfully(context);
                     }
