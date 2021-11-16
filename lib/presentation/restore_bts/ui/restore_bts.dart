@@ -230,7 +230,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                         ? ItemForm(
                                             prefix: ImageAssets.ic_key24,
                                             hint: S.current.wallet_secret,
-                                            suffix: ImageAssets.paste,
+                                            suffix: S.current.paste,
                                             formType: FormType.PASS_PHRASE,
                                             isShow: false,
                                             cubit: restoreCubit,

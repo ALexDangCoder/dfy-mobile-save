@@ -426,7 +426,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   List<TokenModel> listTokenDetailScreen = [];
   List<TokenModel> listTokenInitial = [
     TokenModel(
-      price: 34213423,
+      price: 342.423,
       tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
@@ -435,7 +435,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       amountToken: 0,
     ),
     TokenModel(
-      price: 34213423,
+      price: 3421.2223,
       tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,

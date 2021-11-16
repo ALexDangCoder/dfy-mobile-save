@@ -87,7 +87,7 @@ class SettingWallet extends StatelessWidget {
                     },
                     child: buttonForm(
                       hintText: S.current.select_acc,
-                      prefixIcon: ImageAssets.slc_acc,
+                      prefixIcon: ImageAssets.ic_wallet,
                     ),
                   ),
                   SizedBox(

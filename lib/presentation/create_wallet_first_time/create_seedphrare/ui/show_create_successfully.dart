@@ -135,7 +135,7 @@ class _BodyState extends State<Body> {
                         bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
                         title: S.current.wallet_app_lock,
                         isCheck: snapshot.data ?? false,
-                        urlPrefixIcon: ImageAssets.ic_password,
+                        urlPrefixIcon: ImageAssets.ic_lock,
                       );
                     },
                   ),
