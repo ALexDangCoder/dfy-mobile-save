@@ -14,13 +14,34 @@ class Validator {
   }
 
   static bool validateAddress(String value) {
+    if(value.substring(0,2) != '0x') {
+      return false;
+    }
     const String pattern = r'^[a-zA-Z0-9]{1,40}+$';
     final RegExp regExp = RegExp(pattern);
-    return regExp.hasMatch(value);
+    return regExp.hasMatch(value.substring(2));
   }
 
   static bool validateNumber(String value) {
     const String pattern = r'(^\-?\d*\.?\d*)';
+    final RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
+
+  static bool validateQuantity(String value) {
+    const String pattern = r'^[0-9]+$';
+    final RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
+
+  static bool validateMoney(String value) {
+    const String pattern = r'/(?=.*\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|0)?(\.\d{1,2})?$/';
+    final RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
+
+  static validateAmountFtQuantity(String value) {
+    const String pattern = r'^[0-9]*$';
     final RegExp regExp = RegExp(pattern);
     return regExp.hasMatch(value);
   }
