@@ -53,19 +53,24 @@ class _ChooseTokenState extends State<ChooseToken> {
                         width: 322,
                         child: ListTileSwitch(
                           switchScale: 1,
-                          value:
-                              widget.bloc.getListTokenModel.value[index].isShow ?? false,
+                          value: widget
+                                  .bloc.getListTokenModel.value[index].isShow ??
+                              false,
                           leading: Image.asset(
-                              widget.bloc.getListTokenModel.value[index].iconToken ??
-                                  '',),
+                            widget.bloc.getListTokenModel.value[index]
+                                    .iconToken ??
+                                '',
+                          ),
                           onChanged: (value) {
-                            widget.bloc.getListTokenModel.value[index].isShow = value;
+                            widget.bloc.getListTokenModel.value[index].isShow =
+                                value;
                             widget.bloc.setShowedToken(
-                                walletAddress: 'walletAddress',
-                                tokenID:
-                                    widget.bloc.getListTokenModel.value[index].tokenId ??
-                                        0,
-                                isShow: value,);
+                              walletAddress: 'walletAddress',
+                              tokenID: widget.bloc.getListTokenModel
+                                      .value[index].tokenId ??
+                                  0,
+                              isShow: value,
+                            );
                             setState(() {});
                           },
                           switchActiveColor: const Color(0xffE4AC1A),
@@ -73,7 +78,8 @@ class _ChooseTokenState extends State<ChooseToken> {
                           title: Row(
                             children: [
                               Text(
-                                widget.bloc.getListTokenModel.value[index].nameToken ??
+                                widget.bloc.getListTokenModel.value[index]
+                                        .nameToken ??
                                     '',
                                 style: textNormalCustom(
                                   Colors.white,
@@ -95,10 +101,8 @@ class _ChooseTokenState extends State<ChooseToken> {
                             ],
                           ),
                           subtitle: Text(
-                            '${widget.bloc.getListTokenModel.value[index]
-                                .amountToken?.toStringAsFixed(5)}' +
-                                ' ${widget.bloc.getListTokenModel.value[index]
-                                    .nameTokenSymbol ?? ''} ',
+                            '${widget.bloc.getListTokenModel.value[index].amountToken?.toStringAsFixed(5)}' +
+                                ' ${widget.bloc.getListTokenModel.value[index].nameTokenSymbol ?? ''} ',
                             style: textNormalCustom(
                               const Color.fromRGBO(255, 255, 255, 0.5),
                               16,

@@ -12,6 +12,8 @@ import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
+import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
+import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/createNFT.dart';
 import 'package:Dfy/presentation/wallet/ui/import.dart';
@@ -19,7 +21,9 @@ import 'package:Dfy/presentation/wallet/ui/nft_item.dart';
 import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
 import 'package:Dfy/presentation/wallet/ui/token_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/dialog_remove/change_wallet_name.dart';
+import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,7 +52,7 @@ class _WalletState extends State<WalletScreen>
   final WalletCubit cubit = WalletCubit();
   late FToast fToast;
   final changeName = TextEditingController();
-  final formatUSD = NumberFormat('\$ ###,###.###', 'en_US');
+  final formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
 
   @override
   void initState() {
@@ -211,27 +215,32 @@ class _WalletState extends State<WalletScreen>
                           children: [
                             StreamBuilder(
                               stream: cubit.listTokenStream,
-                              builder: (context,
-                                  AsyncSnapshot<List<TokenModel>> snapshot) {
+                              builder: (
+                                context,
+                                AsyncSnapshot<List<TokenModel>> snapshot,
+                              ) {
                                 return ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: cubit.listTokenStream.value.length,
                                   itemBuilder: (context, index) {
                                     return TokenItem(
-                                      index: index,
-                                      bloc: cubit,
-                                      symbolUrl:
-                                          snapshot.data?[index].iconToken ?? '',
-                                      amount: snapshot.data?[index].amountToken
-                                              .toString() ??
-                                          '',
-                                      nameToken: snapshot
-                                              .data?[index].nameTokenSymbol ??
-                                          '',
-                                      price: snapshot.data?[index].price
-                                              .toString() ??
-                                          '',
+                                        index: index,
+                                        bloc: cubit,
+                                        symbolUrl:
+                                            snapshot.data?[index].iconToken ??
+                                                'assets/images/Ellipse 39.png',
+                                        amount: snapshot
+                                                .data?[index].amountToken
+                                                .toString() ??
+                                            '',
+                                        nameToken: snapshot
+                                                .data?[index].nameTokenSymbol ??
+                                            '',
+                                        price: snapshot.data?[index].price
+                                                .toString() ??
+                                            '',
+
                                     );
                                   },
                                 );
@@ -262,23 +271,25 @@ class _WalletState extends State<WalletScreen>
                                 AsyncSnapshot<List<TokenModel>> snapshot,
                               ) {
                                 if (snapshot.hasData) {
-                                  return ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: snapshot.data?.length,
-                                    itemBuilder: (context, index) {
-                                      return NFTItem(
-                                        index: index,
-                                        bloc: cubit,
-                                        symbolUrl:
-                                            snapshot.data?[index].iconToken ??
-                                                '',
-                                        nameNFT:
-                                            snapshot.data?[index].nameToken ??
-                                                '',
-                                      );
-                                    },
+                                  return SafeArea(
+                                    child: ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data?.length,
+                                      itemBuilder: (context, index) {
+                                        return NFTItem(
+                                          index: index,
+                                          bloc: cubit,
+                                          symbolUrl:
+                                              snapshot.data?[index].iconToken ??
+                                                  '',
+                                          nameNFT:
+                                              snapshot.data?[index].nameToken ??
+                                                  '',
+                                        );
+                                      },
+                                    ),
                                   );
                                 } else {
                                   return const Center(
@@ -394,14 +405,21 @@ class _WalletState extends State<WalletScreen>
                 height: 8.h,
               ),
               Center(
-                child: Text(
-                  formatUSD.format(cubit.total(cubit.listToken)),
-                  style: textNormalCustom(
-                    const Color(0xFFE4AC1A),
-                    20.sp,
-                    FontWeight.w600,
-                  ),
-                ),
+                child: StreamBuilder(
+                    stream: cubit.totalBalance,
+                    builder: (context, AsyncSnapshot<double> snapshot) {
+                      return Text(
+                        formatUSD.format(
+                          snapshot.data ??
+                              cubit.total(cubit.getListTokenModel.value),
+                        ),
+                        style: textNormalCustom(
+                          const Color(0xFFE4AC1A),
+                          20.sp,
+                          FontWeight.w600,
+                        ),
+                      );
+                    }),
               ),
             ],
           ),
@@ -441,7 +459,9 @@ class _WalletState extends State<WalletScreen>
                     builder: (context, AsyncSnapshot<String> snapshot) {
                       return Center(
                         child: Text(
-                          cubit.formatAddress(snapshot.data ?? ''),
+                          cubit.formatAddress(
+                            snapshot.data ?? cubit.addressWalletCore,
+                          ),
                           style: textNormalCustom(
                             Colors.white,
                             16.sp,

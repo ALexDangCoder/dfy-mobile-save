@@ -53,11 +53,13 @@ class RemoveNft extends StatelessWidget {
                                   height: 93,
                                 ),
                                 Container(
+                                  padding:
+                                  EdgeInsets.symmetric(horizontal: 34.w),
                                   child: Text(
                                     S.current.are_you_sure_collectible,
                                     style: textNormal(
                                       null,
-                                      20.sp,
+                                      20,
                                     ).copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -72,7 +74,7 @@ class RemoveNft extends StatelessWidget {
                                     S.current.this_will_also,
                                     style: textNormal(
                                       null,
-                                      12.sp,
+                                      12,
                                     ).copyWith(
                                       fontWeight: FontWeight.w400,
                                     ),

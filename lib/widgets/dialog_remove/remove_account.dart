@@ -7,8 +7,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-
 class RemoveAcc extends StatelessWidget {
   final WalletCubit bloc;
   final int index;
@@ -55,15 +53,19 @@ class RemoveAcc extends StatelessWidget {
                                 const SizedBox(
                                   height: 93,
                                 ),
-                                Text(
-                                  S.current.are_you_sure_acc,
-                                  style: textNormal(
-                                    null,
-                                    20.sp,
-                                  ).copyWith(
-                                    fontWeight: FontWeight.bold,
+                                Container(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 34.w),
+                                  child: Text(
+                                    S.current.are_you_sure_acc,
+                                    style: textNormal(
+                                      null,
+                                      20,
+                                    ).copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
                                 spaceH12,
                                 Container(
@@ -73,7 +75,7 @@ class RemoveAcc extends StatelessWidget {
                                     S.current.this_will_also,
                                     style: textNormal(
                                       null,
-                                      12.sp,
+                                      12,
                                     ).copyWith(
                                       fontWeight: FontWeight.w400,
                                     ),

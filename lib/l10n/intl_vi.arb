@@ -104,7 +104,7 @@
   "token_successfully": "Nhập Token thành công ",
   "nft_successfully": "Nhập  thành công NFT",
   "token_address": "Token địa chỉ",
-  "token_symbol": " Biểu tượng token",
+  "token_symbol": "Biểu tượng token",
   "token_decimal": "Giá trị token ",
   "invalid_order": "Giao dịch không hợp lệ",
   "enter_token": "Điền token",

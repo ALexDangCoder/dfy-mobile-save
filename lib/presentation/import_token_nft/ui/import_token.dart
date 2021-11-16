@@ -134,5 +134,12 @@ void showImportToken(BuildContext context, WalletCubit bloc) {
         ),
       );
     },
-  ).whenComplete(() => bloc.getListTokenItem());
+  ).whenComplete(
+    () => {
+      bloc.getListTokenItem(),
+      bloc.totalBalance.add(
+        bloc.total(bloc.listTokenStream.value),
+      ),
+    },
+  );
 }
