@@ -113,7 +113,7 @@ class ImageAssets {
 
   ///SvgImage
   static const String ic_btn_send_token_svg = '$baseImg/ic_btn_send_token_svg.svg';
-  static const String ic_btn_receive_token_svg = '$baseImg/ic_btn_send_token_svg.svg';
+  static const String ic_btn_receive_token_svg = '$baseImg/ic_btn_receive_token_svg.svg';
   static const String ic_transaction_success_svg = '$baseImg/ic_transaction_success_svg.svg';
   static const String ic_transaction_fail_svg = '$baseImg/ic_transaction_fail_svg.svg';
   static const String ic_transaction_pending_svg = '$baseImg/ic_transaction_pending_svg.svg';

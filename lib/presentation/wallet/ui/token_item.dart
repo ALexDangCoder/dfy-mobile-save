@@ -29,7 +29,20 @@ class TokenItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      onLongPress: () {
+        Navigator.of(context).push(
+          HeroDialogRoute(
+            builder: (context) {
+              return RemoveToken(
+                cubit: bloc,
+                index: index,
+              );
+            },
+            isNonBackground: false,
+          ),
+        );
+      },
       onTap: () {
         showModalBottomSheet(
           isScrollControlled: true,
@@ -42,19 +55,6 @@ class TokenItem extends StatelessWidget {
               tokenType: EnumTokenType.DFY,
             );
           },
-        );
-      },
-      onLongPress: () {
-        Navigator.of(context).push(
-          HeroDialogRoute(
-            builder: (context) {
-              return RemoveToken(
-                cubit: bloc,
-                index: index,
-              );
-            },
-            isNonBackground: false,
-          ),
         );
       },
       child: Column(

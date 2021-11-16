@@ -53,14 +53,6 @@ class TokenDetail extends StatelessWidget {
                     top: 24.h,
                     bottom: 8.h,
                   ),
-                  // child: SizedBox(
-                  //   height: 54.h,
-                  //   width: 54.h,
-                  //   child: Image.asset(
-                  //     ImageAssets.symbol,
-                  //     fit: BoxFit.fill,
-                  //   ),
-                  // ),
                   child:
                       sizedSvgImage(w: 54, h: 54, image: tokenType.imageToken),
                 ),
