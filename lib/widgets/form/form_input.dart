@@ -33,39 +33,42 @@ class FormInput extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image.asset(
-            urlIcon1,
+          SizedBox(
+            width: 20.w,
+            height: 20.h,
+            child: Image.asset(
+              urlIcon1,
+              width: 20.w,
+              height: 20.h,
+            ),
           ),
           SizedBox(
             width: 20.5.w,
           ),
           Expanded(
-            child: Container(
-              margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
-              child: TextFormField(
-                maxLength: 100,
-                controller: controller,
-                cursorColor: Colors.white,
-                style: textNormal(
-                  Colors.white,
-                  16.sp,
-                ),
-
-                onChanged: (value) {
-                  bloc.checkAddressNull();
-                  bloc.tokenAddressText.sink.add(value);
-                },
-                decoration: InputDecoration(
-                  counterText: '',
-                  hintText: hint,
-                  hintStyle: textNormal(
-                    Colors.white54,
-                    16.sp,
-                  ),
-                  border: InputBorder.none,
-                ),
-                // onFieldSubmitted: ,
+            child: TextFormField(
+              maxLength: 100,
+              controller: controller,
+              cursorColor: Colors.white,
+              style: textNormal(
+                Colors.white,
+                16,
               ),
+
+              onChanged: (value) {
+                bloc.checkAddressNull();
+                bloc.tokenAddressText.sink.add(value);
+              },
+              decoration: InputDecoration(
+                counterText: '',
+                hintText: hint,
+                hintStyle: textNormal(
+                  Colors.white54,
+                  16,
+                ),
+                border: InputBorder.none,
+              ),
+              // onFieldSubmitted: ,
             ),
           ),
           GestureDetector(

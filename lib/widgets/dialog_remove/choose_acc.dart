@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
@@ -24,115 +25,123 @@ class ChooseAcc extends StatelessWidget {
       child: Center(
         child: SizedBox(
           height: 313.h,
-          width: 312.w,
-          child: Hero(
-            tag: '',
-            createRectTween: (begin, end) {
-              return CustomRectTween(begin: begin!, end: end!);
-            },
-            child: Material(
-              color: const Color(0xff585782),
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(36),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 24.h, left: 26.w),
-                        child: Text(
-                          S.current.choose_acc,
-                          style: textNormal(Colors.white, 20.sp).copyWith(
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
+          width: 311.w,
+          child: SafeArea(
+            child: Hero(
+              tag: '',
+              createRectTween: (begin, end) {
+                return CustomRectTween(begin: begin!, end: end!);
+              },
+              child: Material(
+                color: const Color(0xff585782),
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(36),
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 24.h, left: 26.w),
+                          child: Text(
+                            S.current.choose_acc,
+                            style: textNormal(Colors.white, 20.sp).copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.normal,
+                            ),
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(right: 26.w, top: 27.h),
-                          child: Image.asset(
-                            ImageAssets.ic_close,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 26.w, top: 27.h),
+                            child: Image.asset(
+                              ImageAssets.ic_close,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  spaceH12,
-                  Expanded(
-                    child: SizedBox(
-                      height: 246.h,
-                      child: ListView.builder(
-                        itemCount: bloc.listWallet.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              bloc.index.sink.add(index);
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              width: 312.w,
-                              height: 82.h,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.white.withOpacity(0.5),
-                                    width: 0.5,
-                                  ),
-                                ),
-                              ),
-                              child: Row(
+                      ],
+                    ),
+                    spaceH12,
+                    Expanded(
+                      child: SizedBox(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: bloc.listWallet.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                bloc.index.sink.add(index);
+                                Navigator.pop(context);
+                              },
+                              child: Column(
                                 children: [
-                                  spaceW16,
-                                  Image.asset(
-                                    bloc.listWallet[index].urlImage ?? '',
+                                  SizedBox(
+                                    width: 311.w,
+                                    height: 82.h,
+                                    child: Row(
+                                      children: [
+                                        spaceW16,
+                                        Image.asset(
+                                          bloc.listWallet[index].urlImage ?? '',
+                                        ),
+                                        spaceW8,
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              bloc.listWallet[index]
+                                                      .walletName ??
+                                                  '',
+                                              style: textNormal(
+                                                      Colors.white, 20.sp)
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                fontStyle: FontStyle.normal,
+                                              ),
+                                            ),
+                                            Text(
+                                              bloc.formatText(
+                                                bloc.listWallet[index]
+                                                        .walletAddress ??
+                                                    '',
+                                              ),
+                                              style: textNormal(
+                                                Colors.white.withOpacity(0.5),
+                                                16.sp,
+                                              ).copyWith(
+                                                fontWeight: FontWeight.w400,
+                                                fontStyle: FontStyle.normal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  spaceW8,
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        bloc.listWallet[index].walletName ?? '',
-                                        style: textNormal(Colors.white, 20.sp)
-                                            .copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                      ),
-                                      Text(
-                                        bloc.formatText(
-                                          bloc.listWallet[index]
-                                                  .walletAddress ??
-                                              '',
-                                        ),
-                                        style: textNormal(
-                                          Colors.white.withOpacity(0.5),
-                                          16.sp,
-                                        ).copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                      ),
-                                    ],
+                                  SizedBox(
+                                    child: index == bloc.listWallet.length
+                                        ?null
+                                        : line,
                                   )
                                 ],
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
