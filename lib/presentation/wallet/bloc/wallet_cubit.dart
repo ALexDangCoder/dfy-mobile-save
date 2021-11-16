@@ -44,9 +44,9 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<List<AccountModel>> list = BehaviorSubject.seeded([]);
   BehaviorSubject<String> addressWallet =
       BehaviorSubject.seeded('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
-  BehaviorSubject<String> walletName =
-      BehaviorSubject.seeded('Account 1');
+  BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
+  BehaviorSubject<double> totalBalance = BehaviorSubject();
 
   void getIsWalletName(String value) {
     if (Validator.validateNotNull(value)) {
@@ -61,6 +61,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   void addToken(TokenModel tokenModel) {
     listTokenShow.add(tokenModel);
     listTokenStream.sink.add(listTokenShow);
+
   }
 
   Future<void> getAddressWallet() async {}
@@ -154,15 +155,13 @@ class WalletCubit extends BaseCubit<WalletState> {
     listTokenStream.sink.add(listTokenShow);
   }
 
-
   double total(List<TokenModel> list) {
     double total = 0;
-    for(int i = 0; i<list.length;i++) {
+    for (int i = 0; i < list.length; i++) {
       total = total + list[i].price!;
     }
     return total;
   }
-
 
   void getListTokenItemRemove() {
     listTokenStream.sink.add(listTokenShow);
@@ -302,14 +301,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       url: 'assets/images/Ellipse 39.png',
     ),
   ];
-
-  String formatAddress1(String address) {
-    final String a = '${address.substring(0, 5)}...${address.substring(
-      address.length - 4,
-      address.length,
-    )}';
-    return a;
-  }
 
   void click(int index) {
     for (final AccountModel value in listSelectAccBloc) {
@@ -502,7 +493,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       isShow: true,
       nameToken: 'WBitcoin',
       nameTokenSymbol: 'BTC3',
-      amountToken: 021342342134.21312344,
+      amountToken: 42134.12344,
     ),
     TokenModel(
       price: 121,
@@ -529,7 +520,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       isShow: false,
       nameToken: 'TBitcoin',
       nameTokenSymbol: 'B3TC',
-      amountToken: 0.423213423,
+      amountToken: 0.413423,
     ),
     TokenModel(
       price: 121,
