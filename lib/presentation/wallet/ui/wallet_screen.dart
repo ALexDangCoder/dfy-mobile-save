@@ -21,6 +21,7 @@ import 'package:Dfy/presentation/wallet/ui/nft_item.dart';
 import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
 import 'package:Dfy/presentation/wallet/ui/token_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/dialog_remove/change_wallet_name.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/cupertino.dart';
@@ -230,7 +231,7 @@ class _WalletState extends State<WalletScreen>
                                             builder: (context) => TokenDetail(
                                               tokenData: 123,
                                               bloc: TokenDetailBloc(),
-                                              title: 'DFY',
+                                              tokenType: EnumTokenType.DFY,
                                             ),
                                           ),
                                         );
@@ -305,9 +306,9 @@ class _WalletState extends State<WalletScreen>
                                         return NFTItem(
                                           index: index,
                                           bloc: cubit,
-                                          symbolUrl: snapshot
-                                                  .data?[index].iconToken ??
-                                              '',
+                                          symbolUrl:
+                                              snapshot.data?[index].iconToken ??
+                                                  '',
                                           nameNFT:
                                               snapshot.data?[index].nameToken ??
                                                   '',
