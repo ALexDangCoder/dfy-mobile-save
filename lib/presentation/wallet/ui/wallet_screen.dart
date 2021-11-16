@@ -48,7 +48,7 @@ class _WalletState extends State<WalletScreen>
   final WalletCubit cubit = WalletCubit();
   late FToast fToast;
   final changeName = TextEditingController();
-  final formatUSD = NumberFormat('\$ ###,###.###', 'en_US');
+  final formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
 
   @override
   void initState() {
@@ -211,8 +211,10 @@ class _WalletState extends State<WalletScreen>
                           children: [
                             StreamBuilder(
                               stream: cubit.listTokenStream,
-                              builder: (context,
-                                  AsyncSnapshot<List<TokenModel>> snapshot) {
+                              builder: (
+                                context,
+                                AsyncSnapshot<List<TokenModel>> snapshot,
+                              ) {
                                 return ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
@@ -394,14 +396,20 @@ class _WalletState extends State<WalletScreen>
                 height: 8.h,
               ),
               Center(
-                child: Text(
-                  formatUSD.format(cubit.total(cubit.listToken)),
-                  style: textNormalCustom(
-                    const Color(0xFFE4AC1A),
-                    20.sp,
-                    FontWeight.w600,
-                  ),
-                ),
+                child: StreamBuilder(
+                    stream: cubit.totalBalance,
+                    builder: (context, AsyncSnapshot<double> snapshot) {
+                      return Text(
+                        formatUSD.format(
+                          snapshot.data ?? cubit.total(cubit.listToken),
+                        ),
+                        style: textNormalCustom(
+                          const Color(0xFFE4AC1A),
+                          20.sp,
+                          FontWeight.w600,
+                        ),
+                      );
+                    }),
               ),
             ],
           ),

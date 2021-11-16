@@ -170,7 +170,7 @@ class _SelectAccState extends State<SelectAcc> {
                                             ),
                                             spaceW4,
                                             Text(
-                                              widget.bloc.formatAddress1(
+                                              widget.bloc.formatAddress(
                                                 snapshot.data?[index]
                                                         .addressWallet ??
                                                     '',
