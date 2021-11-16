@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -8,9 +9,11 @@ class DefaultSubScreen extends StatelessWidget {
   final String title;
   final Widget mainWidget;
 
-  const DefaultSubScreen(
-      {Key? key, required this.title, required this.mainWidget})
-      : super(key: key);
+  const DefaultSubScreen({
+    Key? key,
+    required this.title,
+    required this.mainWidget,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +21,11 @@ class DefaultSubScreen extends StatelessWidget {
       height: 764.h,
       width: 375.w,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.h),
-          topRight: Radius.circular(30.h),
-        ),
         color: AppTheme.getInstance().bgBtsColor(),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
       ),
       child: Column(
         children: [

@@ -110,7 +110,7 @@
   "enter_token": "Enter token",
   "choose_token": "Choose token",
   "search_token": "Search token",
-  "import": "Import",
+  "import": "Import ",
   "enter_id": "Enter ID",
   "are_you_sure_collectible": "Are you sure you want to remove this collectible?",
   "this_will_also": "This will also delete all transactions under this wallet and cannot be recovered.",
@@ -148,6 +148,7 @@
   "share": "Share",
   "receive_nft": "Receive NFT",
   "receive_dfy": "Receive DFY",
+  "transaction_pending": "Pending",
   "no_transaction": "No transaction",
   "status": "Status",
   "gas_fee": "Gas fee",
@@ -158,6 +159,9 @@
   "view_on_bscscan": "View on Bscscan",
   "detail_transaction": "Detail",
   "only_desc": "Only the first account on this wallet will auto load. Imported accounts will not be associated with your originally created account Secret Seed Phrase",
+  "change_pw_success" : "Change Successfull",
   "imported": "Imported accounts will not be associated with your originally created account Secret Seed Phrase",
-  "change_pw_success" : "Change Successfull"
+  "are_you_sure": "Are you sure you want to erase your wallet?",
+  "your_current_wallet": "Your current wallet, accounts and assets will be removed from this app permanently. This action cannot be undone.",
+  "you_can_only": "You can ONLY recover this wallet with your Secret Seed Phrase/Private Key. DeFi For You does not have your Secret Seed Phrase/Private Key."
 }

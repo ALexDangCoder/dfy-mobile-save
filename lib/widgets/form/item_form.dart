@@ -40,10 +40,11 @@ class ItemForm extends StatelessWidget {
           minHeight: 64.h,
         ),
         child: Container(
-          width: 323.w,
+          width: 343.w,
           padding: EdgeInsets.only(
             top: 10.h,
             bottom: 10.h,
+            right: 12.w,
           ),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
@@ -94,7 +95,7 @@ class ItemForm extends StatelessWidget {
     } else if (formType == FormType.PRIVATE_KEY) {
       return Container(
         height: 64.h,
-        width: 323.w,
+        width: 343.w,
         padding: EdgeInsets.only(
           top: 12.h,
           bottom: 12.h,
@@ -147,7 +148,7 @@ class ItemForm extends StatelessWidget {
     } else if (formType == FormType.AMOUNT) {
       return Container(
         height: 64.h,
-        width: 323.w,
+        width: 343.w,
         padding: EdgeInsets.only(
           top: 12.h,
           bottom: 12.h,
@@ -216,7 +217,7 @@ class ItemForm extends StatelessWidget {
     } else {
       return Container(
         height: 64.h,
-        width: 323.w,
+        width: 343.w,
         padding: EdgeInsets.only(
           top: 12.h,
           bottom: 12.h,
