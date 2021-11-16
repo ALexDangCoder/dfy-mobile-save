@@ -5,19 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// use for common bottom sheet
-/// trailing icon default is false if you want use trailing icon close right trailing icon = true
 /// child is a Column
 /// padding bottom is 38, use common for bts have button
+/// if has right icon or text, assign value for arg text
+/// if this is arg text is image isImage = true, opposite with text
 class BaseBottomSheet extends StatelessWidget {
   final String title;
   final Widget child;
-  final bool trailingIcon;
+  final String? text;
+  final bool? isImage;
+  final Function()? callback;
 
   const BaseBottomSheet({
     Key? key,
     required this.title,
     required this.child,
-    this.trailingIcon = false,
+    this.text,
+    this.callback,
+    this.isImage,
   }) : super(key: key);
 
   @override
@@ -27,9 +32,9 @@ class BaseBottomSheet extends StatelessWidget {
       width: 375.w,
       decoration: BoxDecoration(
         color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.r),
+          topRight: Radius.circular(30.r),
         ),
       ),
       child: Column(
@@ -75,19 +80,26 @@ class BaseBottomSheet extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (trailingIcon)
+                  if (text != null)
                     Flexible(
                       child: InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
+                        onTap: callback,
                         child: Container(
                           margin: EdgeInsets.only(
                             top: 5.h,
                             left: 11.w,
                             right: 11.w,
                           ),
-                          child: Image.asset(ImageAssets.ic_close),
+                          child: isImage ?? false
+                              ? Image.asset(text ?? '')
+                              : Text(
+                                  text ?? '',
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().fillColor(),
+                                    16.sp,
+                                    FontWeight.w700,
+                                  ),
+                                ),
                         ),
                       ),
                     )
@@ -109,8 +121,6 @@ class BaseBottomSheet extends StatelessWidget {
               padding: EdgeInsets.only(
                 left: 16.w,
                 right: 16.w,
-                top: 24.h,
-                bottom: 38.h,
               ),
               child: child,
             ),

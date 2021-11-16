@@ -6,6 +6,7 @@ import 'package:Dfy/presentation/import_token_nft/ui/import_nft_succesfully.dart
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/form_input3.dart';
 import 'package:Dfy/widgets/form/form_input_number.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,54 +40,10 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 764.h,
-      width: 375.w,
-      decoration: const BoxDecoration(
-        color: Color(0xff3e3d5c),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
+    return BaseBottomSheet(
+      title: S.current.import_nft,
       child: Column(
         children: [
-          Container(
-            width: 323.w,
-            height: 28.h,
-            margin: EdgeInsets.only(
-              left: 26.w,
-              top: 16.h,
-              right: 26.w,
-              bottom: 20.h,
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10.w, left: 10.w),
-                    child: Image.asset(
-                      ImageAssets.ic_back,
-                      width: 20.w,
-                      height: 20.h,
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                Container(
-                  margin: EdgeInsets.only(right: 88.w, left: 90.w),
-                  child: Text(
-                    S.current.import_nft,
-                    style: textNormalCustom(null, 20, FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          line,
-          spaceH24,
           Expanded(
             child: GestureDetector(
               onTap: () {
@@ -99,6 +56,7 @@ class _BodyState extends State<Body> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    spaceH24,
                     FormInput3(
                       controller: controller,
                       urlIcon1: ImageAssets.ic_address,
@@ -110,7 +68,7 @@ class _BodyState extends State<Body> {
                       stream: widget.bloc.isNFT,
                       builder: (context, snapshot) {
                         return SizedBox(
-                          width: 323.w,
+                          width: 343.w,
                           child: widget.bloc.isNFT.value
                               ? null
                               : Text(
