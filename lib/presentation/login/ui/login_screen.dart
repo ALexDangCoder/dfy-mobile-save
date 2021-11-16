@@ -7,9 +7,10 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
+import 'package:Dfy/presentation/login/ui/alert_import_pop_up.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/restore_bts/ui/restore_bts.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/utils/animate/hero_dialog_route.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -240,19 +241,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (state is LoginSuccess) {
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                  const MainScreen(
+                                  builder: (context) => const MainScreen(
                                     index: 1,
                                   ),
                                 ),
-                                    (route) => route.isFirst,
+                                (route) => route.isFirst,
                               );
                             }
                             if (state is LoginError) {
                               _showDialog();
                             }
                           }
-                          if(errorText) {
+                          if (errorText) {
                             _showDialog(
                               alert: S.current.password_is_required,
                               text: '',
@@ -336,11 +336,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => const RestoreBTS(),
+                          Navigator.of(context).push(
+                            HeroDialogRoute(
+                              builder: (context) {
+                                return const AlertPopUp();
+                              },
+                              isNonBackground: false,
+                            ),
                           );
                         },
                         child: Text(
