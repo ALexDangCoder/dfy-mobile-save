@@ -50,6 +50,7 @@ class _FormSearchState extends State<FormSearch> {
                 maxLength: 20,
                 onChanged: (value) {
                   widget.bloc.textSearch.sink.add(value);
+                  print(value);
                   widget.bloc.search();
                 },
                 cursorColor: Colors.white,
@@ -77,7 +78,7 @@ class _FormSearchState extends State<FormSearch> {
                 onTap: () {
                   widget.bloc.textSearch.sink.add('');
                   textSearch.text = '';
-                 // widget.bloc.search();
+                  widget.bloc.search();
                 },
                 child: snapshot.data?.isNotEmpty ?? false
                     ? Image.asset(

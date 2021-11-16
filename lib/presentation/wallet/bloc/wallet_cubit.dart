@@ -17,15 +17,15 @@ part 'wallet_state.dart';
 
 class WalletCubit extends BaseCubit<WalletState> {
   WalletCubit() : super(WalletInitial()) {
-    listTokenShow1 = listToken;
-    listTokenShow = listToken;
+    listTokenDetailScreen = listTokenInitial;
     getListSort();
     getList();
     getListTokenItem();
     getListNFTItem();
   }
-
   bool checkLogin = false;
+  List<TokenModel> listStart = [];
+
   BehaviorSubject<List<TokenModel>> listTokenStream =
       BehaviorSubject.seeded([]);
   BehaviorSubject<List<TokenModel>> listNFTStream = BehaviorSubject.seeded([]);
@@ -58,15 +58,15 @@ class WalletCubit extends BaseCubit<WalletState> {
   String addressWalletCore = '';
 
   void addToken(TokenModel tokenModel) {
-    listTokenShow.add(tokenModel);
-    listTokenStream.sink.add(listTokenShow);
+    listTokenDetailScreen.add(tokenModel);
+    listTokenStream.sink.add(listTokenDetailScreen);
   }
 
   Future<void> getAddressWallet() async {}
 
   String formatAddress(String address) {
     final String formatAddressWallet =
-        '${address.substring(0,5)}...${address.substring(
+        '${address.substring(0, 5)}...${address.substring(
       address.length - 4,
       address.length,
     )}';
@@ -126,6 +126,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+// list
   Future<void> getListNFT(
     String walletAddress, {
     required String password,
@@ -148,9 +149,9 @@ class WalletCubit extends BaseCubit<WalletState> {
         list.add(value);
       }
     }
-    listTokenShow.clear();
-    listTokenShow.addAll(list);
-    listTokenStream.sink.add(listTokenShow);
+    listTokenDetailScreen.clear();
+    listTokenDetailScreen.addAll(list);
+    listTokenStream.sink.add(listTokenDetailScreen);
   }
 
   double total(List<TokenModel> list) {
@@ -162,7 +163,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   void getListTokenItemRemove() {
-    listTokenStream.sink.add(listTokenShow);
+    listTokenStream.sink.add(listTokenDetailScreen);
   }
 
   void getList() {
@@ -378,7 +379,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   void getListSort() {
     final List<TokenModel> list = [];
-    for (final TokenModel value in listToken) {
+    for (final TokenModel value in listTokenInitial) {
       if (value.isShow ?? false) {
         list.add(value);
       }
@@ -387,7 +388,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
     list.sort(amountTokenComparator);
     final List<TokenModel> list1 = [];
-    for (final TokenModel value in listToken) {
+    for (final TokenModel value in listTokenInitial) {
       if (value.isShow ?? false) {
       } else {
         if ((value.amountToken ?? 0) > 0) {
@@ -397,7 +398,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
     list1.sort(amountTokenComparator);
     list.addAll(list1);
-    for (final TokenModel value in listToken) {
+    for (final TokenModel value in listTokenInitial) {
       if (value.isShow ?? false) {
       } else {
         if ((value.amountToken ?? 0) > 0) {
@@ -406,29 +407,31 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
       }
     }
+    listStart.addAll(list);
+    print(list.length);
     getListTokenModel.sink.add(list);
   }
 
   void search() {
-    final List<TokenModel> list = [];
+    final List<TokenModel> result = [];
     // listTokenShow1=listToken;
-    for (final TokenModel value in listToken) {
+    for (final TokenModel value in listTokenInitial) {
       if (value.nameToken!.toLowerCase().contains(
             textSearch.value.toLowerCase(),
           )) {
-        list.add(value);
+        result.add(value);
       }
     }
     if (textSearch.value.isEmpty) {
-      getListSort();
-    } else {
-      getListTokenModel.sink.add(list);
+      getListTokenModel.sink.add(listStart);
+    }
+    if (textSearch.value.isNotEmpty) {
+      getListTokenModel.sink.add(result);
     }
   }
 
-  List<TokenModel> listTokenShow1 = [];
-  List<TokenModel> listTokenShow = [];
-  List<TokenModel> listToken = [
+  List<TokenModel> listTokenDetailScreen = [];
+  List<TokenModel> listTokenInitial = [
     TokenModel(
       price: 34213423,
       tokenId: 21,
@@ -644,6 +647,4 @@ class WalletCubit extends BaseCubit<WalletState> {
 
     }
   }
-
-
 }

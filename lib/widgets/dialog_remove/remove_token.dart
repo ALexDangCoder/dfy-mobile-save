@@ -117,7 +117,7 @@ class RemoveToken extends StatelessWidget {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
-                                          cubit.listTokenShow.removeAt(index);
+                                          cubit.listTokenDetailScreen.removeAt(index);
                                           cubit.getListTokenItemRemove();
                                           Navigator.pop(context);
                                         },

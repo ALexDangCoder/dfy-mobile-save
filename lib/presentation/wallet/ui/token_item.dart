@@ -28,82 +28,59 @@ class TokenItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => TokenDetail(
-                tokenData: 123, bloc: TokenDetailBloc(), title: 'DFY'),
-          ),
-        );
-      },
-      onLongPress: () {
-        Navigator.of(context).push(
-          HeroDialogRoute(
-            builder: (context) {
-              return RemoveToken(
-                cubit: bloc,
-                index: index,
-              );
-            },
-            isNonBackground: false,
-          ),
-        );
-      },
-      child: Column(
-        children: [
-          Divider(
-            height: 1.h,
-            color: const Color(0xFF4b4a60),
-          ),
-          SizedBox(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: 19.h,
-                    left: 20.w,
-                  ),
-                  child: Image(
-                    width: 28.w,
-                    height: 28.h,
-                    image: AssetImage(symbolUrl),
-                  ),
+    return Column(
+      children: [
+        Divider(
+          height: 1.h,
+          color: const Color(0xFF4b4a60),
+        ),
+        SizedBox(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 19.h,
+                  left: 20.w,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: 20.h,
-                    left: 10.w,
-                    bottom: 20.h,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '$amount $nameToken',
-                        style: textNormalCustom(
-                          Colors.white,
-                          20.sp,
-                          FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        '\$ $price',
-                        style: textNormalCustom(
-                          Colors.grey.shade400,
-                          16.sp,
-                          FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
+                child: Image(
+                  width: 28.w,
+                  height: 28.h,
+                  image: AssetImage(symbolUrl),
                 ),
-              ],
-            ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 20.h,
+                  left: 10.w,
+                  bottom: 20.h,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '$amount $nameToken',
+                      style: textNormalCustom(
+                        Colors.white,
+                        20.sp,
+                        FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      '\$ $price',
+                      style: textNormalCustom(
+                        Colors.grey.shade400,
+                        16.sp,
+                        FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

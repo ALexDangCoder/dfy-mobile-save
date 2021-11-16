@@ -12,6 +12,8 @@ import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
+import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
+import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/createNFT.dart';
 import 'package:Dfy/presentation/wallet/ui/import.dart';
@@ -220,6 +222,16 @@ class _WalletState extends State<WalletScreen>
                                   itemCount: cubit.listTokenStream.value.length,
                                   itemBuilder: (context, index) {
                                     return InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => TokenDetail(
+                                                tokenData: 123,
+                                                bloc: TokenDetailBloc(),
+                                                title: 'DFY',),
+                                          ),
+                                        );
+                                      },
                                       onLongPress: () {
                                         Navigator.of(context).push(
                                           HeroDialogRoute(
@@ -415,7 +427,7 @@ class _WalletState extends State<WalletScreen>
               ),
               Center(
                 child: Text(
-                  formatUSD.format(cubit.total(cubit.listToken)),
+                  formatUSD.format(cubit.total(cubit.listTokenInitial)),
                   style: textNormalCustom(
                     const Color(0xFFE4AC1A),
                     20.sp,
