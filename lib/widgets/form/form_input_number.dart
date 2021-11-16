@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,13 +19,12 @@ class FormInputNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 323.w,
+      width: 343.w,
       height: 64.h,
-      margin: EdgeInsets.symmetric(horizontal: 26.w),
       padding: EdgeInsets.only(right: 15.w, left: 15.w),
-      decoration: const BoxDecoration(
-        color: Color(0xff32324c),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppTheme.getInstance().itemBtsColors(),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       child: Row(
         children: [

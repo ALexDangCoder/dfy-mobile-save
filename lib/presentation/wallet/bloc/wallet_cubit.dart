@@ -11,7 +11,6 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
-import '../../../main.dart';
 
 part 'wallet_state.dart';
 
@@ -70,6 +69,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getAddressWallet() async {}
 
   String formatAddress(String address) {
+    if(address.isEmpty) return address;
     final String formatAddressWallet =
         '${address.substring(0, 5)}...${address.substring(
       address.length - 4,
@@ -430,7 +430,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   List<TokenModel> listTokenDetailScreen = [];
   List<TokenModel> listTokenInitial = [
     TokenModel(
-      price: 34213423,
+      price: 342.423,
       tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,
@@ -439,7 +439,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       amountToken: 0,
     ),
     TokenModel(
-      price: 34213423,
+      price: 3421.2223,
       tokenId: 21,
       iconToken: 'assets/images/Ellipse 39.png',
       isShow: false,

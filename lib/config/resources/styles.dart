@@ -23,6 +23,8 @@ final spaceH24 = SizedBox(height: 24.h);
 final spaceH25 = SizedBox(height: 25.h);
 final spaceH30 = SizedBox(height: 30.h);
 final spaceH35 = SizedBox(height: 35.h);
+final spaceH38 = SizedBox(height: 38.h);
+final spaceH40 = SizedBox(height: 40.h);
 final spaceH50 = SizedBox(height: 50.h);
 final spaceH60 = SizedBox(height: 60.h);
 final spaceH70 = SizedBox(height: 70.h);
@@ -49,7 +51,7 @@ TextStyle textNormal(Color? color, double? fontSize) {
     color: color ?? Colors.white,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize ?? 14,
+    fontSize: fontSize ?? 14.sp,
   );
 }
 
@@ -62,7 +64,7 @@ TextStyle tokenDetailAmount({
     color: color,
     fontWeight: weight,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize,
+    fontSize: fontSize.sp,
   );
 }
 TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
@@ -70,7 +72,7 @@ TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
     color: color,
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize,
+    fontSize: fontSize.sp,
   );
 }
 
@@ -83,7 +85,7 @@ TextStyle textNormalCustom(
     color: color ?? Colors.white,
     fontWeight: fontWeight ?? FontWeight.w500,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize ?? 14,
+    fontSize: fontSize ?? 14.sp,
   );
 }
 
