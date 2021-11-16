@@ -79,7 +79,7 @@ class _SelectAccState extends State<SelectAcc> {
                 Container(
                   margin: EdgeInsets.only(left: 70.w),
                   child: Text(
-                    S.current.choose_acc,
+                    S.current.select_acc,
                     style: textNormalCustom(
                       Colors.white,
                       20.sp,
@@ -130,7 +130,6 @@ class _SelectAccState extends State<SelectAcc> {
                         decoration: BoxDecoration(
                           border: Border(
                             top: BorderSide(
-                              width: 1,
                               color: Colors.white.withOpacity(0.1),
                             ),
                           ),
@@ -186,7 +185,8 @@ class _SelectAccState extends State<SelectAcc> {
                                           ],
                                         ),
                                         Text(
-                                          '${snapshot.data?[index].amountWallet?.toStringAsFixed(5)} BNB',
+                                          '${snapshot.data?[index].amountWallet
+                                              ?.toStringAsFixed(5)} BNB',
                                           style: textNormalCustom(
                                             Colors.white,
                                             16.sp,
