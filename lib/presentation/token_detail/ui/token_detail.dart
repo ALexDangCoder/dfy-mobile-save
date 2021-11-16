@@ -6,6 +6,7 @@ import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/transaction_list.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/default_sub_screen.dart';
@@ -17,13 +18,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 class TokenDetail extends StatelessWidget {
   final int tokenData;
   final TokenDetailBloc bloc;
-  final String title;
+  final EnumTokenType tokenType;
 
   const TokenDetail({
     Key? key,
     required this.tokenData,
     required this.bloc,
-    required this.title,
+    required this.tokenType,
   }) : super(
           key: key,
         );
@@ -31,6 +32,7 @@ class TokenDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bloc.checkData();
+    final title = tokenType.nameToken;
     return DefaultSubScreen(
       title: title,
       mainWidget: Column(
@@ -51,14 +53,16 @@ class TokenDetail extends StatelessWidget {
                     top: 24.h,
                     bottom: 8.h,
                   ),
-                  child: SizedBox(
-                    height: 54.h,
-                    width: 54.h,
-                    child: Image.asset(
-                      ImageAssets.symbol,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  // child: SizedBox(
+                  //   height: 54.h,
+                  //   width: 54.h,
+                  //   child: Image.asset(
+                  //     ImageAssets.symbol,
+                  //     fit: BoxFit.fill,
+                  //   ),
+                  // ),
+                  child:
+                      sizedSvgImage(w: 54, h: 54, image: tokenType.imageToken),
                 ),
                 Text(
                   customCurrency(
@@ -133,8 +137,7 @@ class TokenDetail extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: Container(
                     height: 48.h,
                     width: 210.h,
