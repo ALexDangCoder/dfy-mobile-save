@@ -113,7 +113,7 @@ class TransactionDetail extends StatelessWidget {
               child: Text(
                 S.current.view_on_bscscan,
                 style: tokenDetailAmount(
-                  fontSize: 16.h,
+                  fontSize: 16,
                   weight: FontWeight.w400,
                   color: AppTheme.getInstance().blueColor(),
                 ),

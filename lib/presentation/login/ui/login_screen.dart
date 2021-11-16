@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 68.h,
                   ),
                   Container(
-                    width: 323.w,
+                    width: 343.w,
                     height: 64.h,
                     decoration: BoxDecoration(
                       color: AppTheme.getInstance().itemBtsColors(),

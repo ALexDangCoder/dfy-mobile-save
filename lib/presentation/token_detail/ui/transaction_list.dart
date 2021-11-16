@@ -179,7 +179,7 @@ class TransactionList extends StatelessWidget {
                       transactionTitle,
                       style: tokenDetailAmount(
                         color: AppTheme.getInstance().whiteColor(),
-                        fontSize: 16.sp,
+                        fontSize: 16,
                       ),
                     ),
                   ),

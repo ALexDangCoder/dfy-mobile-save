@@ -16,7 +16,7 @@ Container formSetupPassWord({
     int index = 0;
     return Container(
       height: 64.h,
-      width: 323.w,
+      width: 343.w,
       padding: EdgeInsets.only(
         top: 12.h,
         bottom: 12.h,
@@ -80,7 +80,7 @@ Container formSetupPassWord({
     int index = 0;
     return Container(
       height: 64.h,
-      width: 323.w,
+      width: 343.w,
       padding: EdgeInsets.only(
         top: 12.h,
         bottom: 12.h,
@@ -144,7 +144,7 @@ Container formSetupPassWord({
     int index = 0;
     return Container(
       height: 64.h,
-      width: 323.w,
+      width: 343.w,
       padding: EdgeInsets.only(
         top: 12.h,
         bottom: 12.h,

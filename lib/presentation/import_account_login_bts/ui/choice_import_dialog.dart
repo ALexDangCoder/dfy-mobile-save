@@ -43,7 +43,7 @@ class _CustomDialogState extends State<ChoiceDialog> {
               widget.cubit.stringSink.add(S.current.seed_phrase);
               widget.cubit.typeSink.add(FormType.PASS_PHRASE);
               widget.cubit.listStringSink.add(
-                [S.current.restore_with_seed, S.current.only_first],
+                [S.current.only_desc],
               );
               widget.controller1.clear();
               widget.cubit.boolSink.add(false);
@@ -72,7 +72,7 @@ class _CustomDialogState extends State<ChoiceDialog> {
               widget.cubit.stringSink.add(S.current.private_key);
               widget.cubit.typeSink.add(FormType.PRIVATE_KEY);
               widget.cubit.listStringSink.add(
-                [S.current.restore_with_private],
+                [S.current.imported],
               );
               widget.controller2.clear();
               widget.cubit.boolSink.add(false);

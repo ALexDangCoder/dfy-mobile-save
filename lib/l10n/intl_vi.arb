@@ -117,7 +117,7 @@
   "remove": "Xóa",
   "are_you_sure_token": "Bạn có chắc chắn muốn xóa mã thông báo này không?",
   "select_account": "Chọn tài khoản",
-  "imported": "ĐÃ NHẬP KHẨU",
+  "imported": "Các tài khoản đã nhập sẽ không được liên kết với tài khoản được tạo ban đầu của bạn Secret seed phrase",
   "are_you_sure_acc": "Bạn có chắc chắn muốn xóa tài khoản này không?",
   "enter_name": "Điền tên",
   "choose_acc": "Chọn tài khoản",
@@ -157,7 +157,7 @@
   "login": "Đăng nhập",
   "new_wallet": "Ví mới",
   "password_is_required": "Vui lòng điền mật khẩu",
-  "only_desc": "Chỉ tài khoản đầu tiên trên ví này sẽ tự động tải. Các tài khoản đã nhập sẽ không được liên kết với tài khoản được tạo ban đầu của bạn",
+  "only_desc": "Chỉ tài khoản đầu tiên trên ví này sẽ tự động tải. Các tài khoản đã nhập sẽ không được liên kết với tài khoản được tạo ban đầu của bạn Secret seed phrse",
   "are_you_sure": "Bạn có chắc chắn muốn xóa ví của mình không?",
   "your_current_wallet": "Ví, tài khoản và tài sản hiện tại của bạn sẽ bị xóa vĩnh viễn khỏi ứng dụng này. Hành động này không thể được hoàn tác.",
   "you_can_only": "Bạn CHỈ có thể khôi phục ví này bằng Seed phrase/Private key của mình. DeFi For You không có Secret seed phrase/Private key."

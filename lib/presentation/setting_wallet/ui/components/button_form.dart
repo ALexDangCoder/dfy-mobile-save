@@ -13,10 +13,6 @@ Container buttonForm({
   return Container(
     width: 343.w,
     height: 64.h,
-    margin: EdgeInsets.only(
-      left: 16.w,
-      right: 16.w,
-    ),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(20.r)),
       color: AppTheme.getInstance().itemBtsColors(),
@@ -44,10 +40,6 @@ Container switchForm({
     return Container(
       width: 343.w,
       height: 64.h,
-      margin: EdgeInsets.only(
-        left: 16.w,
-        right: 16.w,
-      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
         color: AppTheme.getInstance().itemBtsColors(),
@@ -70,10 +62,6 @@ Container switchForm({
     return Container(
       width: 343.w,
       height: 64.h,
-      margin: EdgeInsets.only(
-        left: 16.w,
-        right: 16.w,
-      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
         color: AppTheme.getInstance().itemBtsColors(),

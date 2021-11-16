@@ -1,18 +1,19 @@
-import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
-import 'package:Dfy/presentation/import_account_login_bts/ui/import_account_login.dart';
-import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
-import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
+import 'package:Dfy/presentation/import_account_login_bts/ui/import_account_login.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
+import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
+import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
-import 'package:Dfy/presentation/setting_wallet/ui/components/header_setting.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -29,36 +30,27 @@ class SettingWallet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 375.w,
-      height: 764.h,
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.r),
-          topRight: Radius.circular(30.r),
-        ),
-      ),
+    return BaseBottomSheet(
+      title: S.current.setting,
+      text: S.current.lock,
+      isImage: false,
+      callback: () {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const MainScreen(
+              index: 2,
+            ),
+          ),
+          (route) => route.isFirst,
+        );
+      },
       child: Column(
         children: [
-          headerSetting(
-            leftFunction: () {
-              Navigator.pop(context);
-            },
-            context: context,
-            rightFunction: () {},
-          ),
-          const Divider(
-            thickness: 1,
-            color: Color.fromRGBO(255, 255, 255, 0.1),
-          ),
+          spaceH24,
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 24.h,
-                  ),
                   GestureDetector(
                     onTap: () {
                       showModalBottomSheet(
@@ -189,9 +181,6 @@ class SettingWallet extends StatelessWidget {
                         cubit: cubitSetting,
                       );
                     },
-                  ),
-                  SizedBox(
-                    height: 51.h,
                   ),
                 ],
               ),
