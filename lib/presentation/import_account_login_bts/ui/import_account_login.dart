@@ -189,7 +189,7 @@ class _ImportBTSState extends State<ImportBTS> {
                                   ? ItemForm(
                                       prefix: ImageAssets.ic_key24,
                                       hint: S.current.wallet_secret,
-                                      suffix: ImageAssets.paste,
+                                      suffix: S.current.paste,
                                       formType: FormType.PASS_PHRASE,
                                       isShow: false,
                                       controller: seedPhraseController,

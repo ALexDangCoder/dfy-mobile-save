@@ -115,8 +115,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(top: 12.h),
-                              child: Icon(
-                                Icons.lock_outline,
+                              child: ImageIcon(
+                               const AssetImage( ImageAssets.ic_lock),
                                 color: AppTheme.getInstance().whiteColor(),
                                 size: 24.sp,
                               ),
@@ -168,13 +168,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   }
                                 },
                                 child: _cubit.hidePass
-                                    ? Icon(
-                                        Icons.visibility_outlined,
+                                    ? ImageIcon(
+                                  const AssetImage( ImageAssets.ic_show),
                                         color: AppTheme.getInstance()
                                             .suffixColor(),
                                       )
-                                    : Icon(
-                                        Icons.visibility_off_outlined,
+                                    : ImageIcon(
+                                  const AssetImage( ImageAssets.ic_hide),
                                         color: AppTheme.getInstance()
                                             .suffixColor(),
                                       ),

@@ -5,26 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ImageAssets {
   ///Svg path
   ///
-  static const String icTabWalletSelected =
-      '$baseImg/ic_wallet_tab_selected.svg';
-  static const String icTabWalletUnSelected =
-      '$baseImg/ic_wallet_tab_unselect.svg';
 
-  static const String icTabPawnSelected = '$baseImg/ic_tab_pawn_selected.svg';
-  static const String icTabPawnUnselected =
-      '$baseImg/ic_tab_pawn_unselected.svg';
 
-  static const String icTabMarketPlaceSelected =
-      '$baseImg/ic_tab_market_place_select.svg';
-  static const String icTabMarketPlaceUnselected =
-      '$baseImg/ic_tab_market_place_unselect.svg';
-
-  static const String icTabStakingSelected =
-      '$baseImg/ic_tab_staking_selected.svg';
-  static const String icTabStakingUnselected =
-      '$baseImg/ic_tab_staking_unselected.svg';
-  static const String icBack = '$baseImg/ic_back.svg';
-  static const String icMenu = '$baseImg/ic_menu.svg';
   static const String ic_back = '$baseImg/ic_back.png';
   static const String ic_security = '$baseImg/ic_security.png';
   static const String ic_lock = '$baseImg/ic_lock.png';
@@ -38,22 +20,19 @@ class ImageAssets {
   static const String ic_wallet = '$baseImg/ic_wallet.png';
   static const String ic_copy = '$baseImg/ic_copy.png';
   static const String ic_address = '$baseImg/ic_address.png';
-  static const String ic_face_id = '$baseImg/ic_faceid.png';
-  static const String ic_password = '$baseImg/ic_password.png';
-  static const String ic_group = '$baseImg/ic_group.png';
+  static const String ic_face_id = '$baseImg/ic_face_id.png';
+  static const String ic_group = '$baseImg/ic_decimal.png';
   static const String ic_add_wallet = '$baseImg/ic_add_wallet.png';
   static const String ic_menu = '$baseImg/ic_menu.png';
   static const String ic_notify = '$baseImg/ic_notification.png';
-  static const String ic_touch = '$baseImg/finger_icon.png';
   static const String ic_close = '$baseImg/ic_close.png';
   static const String img_empty = '$baseImg/img_empty.png';
-  static const String paste = '$baseImg/Paste.png';
   static const String centered = '$baseImg/Centered.png';
   static const String ic_qr_code = '$baseImg/ic_qr_code.png';
   static const String ic_expanded = '$baseImg/ic_expanded.png';
   static const String faceID = '$baseImg/face_id_icon.png';
   static const String ic_finger = '$baseImg/finger_icon.png';
-  static const String frameGreen = '$baseImg/Framegreen.png';
+  static const String frameGreen = '$baseImg/Frame.png';
   static const String ic_add = '$baseImg/ic_add.png';
   static const String ic_token = '$baseImg/ic_token.png';
   static const String ic_circle = '$baseImg/ic_circle.png';
@@ -64,25 +43,12 @@ class ImageAssets {
   static const String ic_key = '$baseImg/ic_key.png';
   static const String ic_line_down = '$baseImg/ic_line_down.png';
   static const String ic_line_right = '$baseImg/ic_line_right.png';
-  static const String icTabMarketSelect =
-      '$baseImg/ic_tab_market_place_select.svg.svg';
-  static const String icTabMarketUnselect =
-      '$baseImg/ic_tab_market_place_unselect.svg';
-  static const String icTabPawnS = '$baseImg/ic_tab_pawn_selected.svg';
-  static const String icTabPawnU = '$baseImg/ic_tab_pawn_unselected.svg';
-  static const String icTabStakingS = '$baseImg/ic_tab_stacking_selected.svg';
-  static const String icTabStackingU =
-      '$baseImg/ic_tab_stacking_unselected.svg';
-  static const String icWalletTabS = '$baseImg/ic_wallet_tab_selected.svg';
-  static const String icWalletTabU = '$baseImg/ic_wallet_tab_unselected.svg';
   static const String imgEmpty = '$baseImg/img_empty.png';
   static const String imgTabHome = '$baseImg/img_tab_home.png';
-
   static const String ic_to = '$baseImg/ic_to.png';
   static const String ic_key24 = '$baseImg/ic_key24.png';
   static const String ic_from = '$baseImg/ic_from.png';
   static const String ic_go_to = '$baseImg/To.png';
-  static const String codeS = '$baseImg/Code.png';
   static const String ic_go_from = '$baseImg/From.png';
   static const String img_card_defi = '$baseImg/card_defi.png';
   static const String ic_receive = '$baseImg/receive-square.png';
@@ -94,45 +60,58 @@ class ImageAssets {
   static const String image_splash = '$baseImg/image_splash.png';
   static const String ic_quantity = '$baseImg/Quantity.png';
   static const String ic_global = '$baseImg/ic_global.png';
-  static const String slc_acc = '$baseImg/Wallet.png';
-  static const String plus = '$baseImg/Plus.png';
-  static const String import = '$baseImg/Import.png';
-  static const String face_id = '$baseImg/face_id.png';
-
+   static const String import = '$baseImg/Import.png';
   static const String symbol = '$baseImg/symbol.png';
-
   static const String btnSendToken = '$baseImg/btn_send_token.png';
   static const String btnReceiveToken = '$baseImg/btn_receive_token.png';
   static const String icNoTransaction = '$baseImg/ic_no_transactions.png';
   static const String ic_id = '$baseImg/ic_id.png';
   static const String img_delete = '$baseImg/Delete.png';
   static const String ic_selected = '$baseImg/Selected.png';
-  static const String ic_plus = '$baseImg/Plus.png';
   static const String ic_symbol = 'assets/images/symbol.png';
   static const String image_example_pop_up = '$baseImg/pop_image.png';
 
+
+
+
+
   ///SvgImage
   static const String ic_btn_send_token_svg = '$baseImg/ic_btn_send_token_svg.svg';
-  static const String ic_btn_receive_token_svg = '$baseImg/ic_btn_receive_token_svg.svg';
+  static const String ic_btn_receive_token_svg = '$baseImg/ic_btn_send_token_svg.svg';
   static const String ic_transaction_success_svg = '$baseImg/ic_transaction_success_svg.svg';
   static const String ic_transaction_fail_svg = '$baseImg/ic_transaction_fail_svg.svg';
   static const String ic_transaction_pending_svg = '$baseImg/ic_transaction_pending_svg.svg';
-
   static const String ic_token_dfy_svg = '$baseImg/ic_token_dfy_svg.svg';
   static const String ic_token_btc_svg = '$baseImg/ic_token_btc_svg.svg';
   static const String ic_token_bnb_svg = '$baseImg/ic_token_bnb_svg.svg';
-
-
+  static const String icTabMarketSelect = '$baseImg/ic_tab_market_place_select.svg.svg';
+  static const String icTabMarketUnselect = '$baseImg/ic_tab_market_place_unselect.svg';
+  static const String icTabPawnS = '$baseImg/ic_tab_pawn_selected.svg';
+  static const String icTabPawnU = '$baseImg/ic_tab_pawn_unselected.svg';
+  static const String icTabStakingS = '$baseImg/ic_tab_stacking_selected.svg';
+  static const String icTabStackingU = '$baseImg/ic_tab_stacking_unselected.svg';
+  static const String icWalletTabS = '$baseImg/ic_wallet_tab_selected.svg';
+  static const String icWalletTabU = '$baseImg/ic_wallet_tab_unselected.svg';
+  static const String icTabWalletSelected = '$baseImg/ic_wallet_tab_selected.svg';
+  static const String icTabWalletUnSelected = '$baseImg/ic_wallet_tab_unselect.svg';
+  static const String icTabPawnSelected = '$baseImg/ic_tab_pawn_selected.svg';
+  static const String icTabPawnUnselected = '$baseImg/ic_tab_pawn_unselected.svg';
+  static const String icTabMarketPlaceSelected = '$baseImg/ic_tab_market_place_select.svg';
+  static const String icTabMarketPlaceUnselected = '$baseImg/ic_tab_market_place_unselect.svg';
+  static const String icTabStakingSelected = '$baseImg/ic_tab_staking_selected.svg';
+  static const String icTabStakingUnselected = '$baseImg/ic_tab_staking_unselected.svg';
+  static const String icBack = '$baseImg/ic_back.svg';
+  static const String icMenu = '$baseImg/ic_menu.svg';
 
 
   static SvgPicture svgAssets(
-    String name, {
-    Color? color,
-    double? width,
-    double? height,
-    BoxFit? fit,
-    BlendMode? blendMode,
-  }) {
+      String name, {
+        Color? color,
+        double? width,
+        double? height,
+        BoxFit? fit,
+        BlendMode? blendMode,
+      }) {
     final size = _svgImageSize[name];
     var w = width;
     var h = height;
