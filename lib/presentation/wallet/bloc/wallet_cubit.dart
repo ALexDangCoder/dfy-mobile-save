@@ -401,7 +401,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       }
     }
     listStart.addAll(list);
-    print(list.length);
+
     getListTokenModel.sink.add(list);
   }
 

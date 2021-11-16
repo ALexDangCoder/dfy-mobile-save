@@ -123,7 +123,6 @@ class RemoveToken extends StatelessWidget {
                                               cubit.listTokenStream.value,
                                             ),
                                           );
-                                          cubit.listTokenDetailScreen.removeAt(index);
                                           cubit.getListTokenItemRemove();
                                           Navigator.pop(context);
                                         },

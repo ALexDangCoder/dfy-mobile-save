@@ -228,9 +228,10 @@ class _WalletState extends State<WalletScreen>
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (context) => TokenDetail(
-                                                tokenData: 123,
-                                                bloc: TokenDetailBloc(),
-                                                title: 'DFY',),
+                                              tokenData: 123,
+                                              bloc: TokenDetailBloc(),
+                                              title: 'DFY',
+                                            ),
                                           ),
                                         );
                                       },
@@ -252,7 +253,7 @@ class _WalletState extends State<WalletScreen>
                                         bloc: cubit,
                                         symbolUrl:
                                             snapshot.data?[index].iconToken ??
-                                                '',
+                                                'assets/images/Ellipse 39.png',
                                         amount: snapshot
                                                 .data?[index].amountToken
                                                 .toString() ??
@@ -304,9 +305,9 @@ class _WalletState extends State<WalletScreen>
                                         return NFTItem(
                                           index: index,
                                           bloc: cubit,
-                                          symbolUrl:
-                                              snapshot.data?[index].iconToken ??
-                                                  '',
+                                          symbolUrl: snapshot
+                                                  .data?[index].iconToken ??
+                                              '',
                                           nameNFT:
                                               snapshot.data?[index].nameToken ??
                                                   '',
@@ -433,7 +434,8 @@ class _WalletState extends State<WalletScreen>
                     builder: (context, AsyncSnapshot<double> snapshot) {
                       return Text(
                         formatUSD.format(
-                          snapshot.data ?? cubit.total(cubit.listToken),
+                          snapshot.data ??
+                              cubit.total(cubit.getListTokenModel.value),
                         ),
                         style: textNormalCustom(
                           const Color(0xFFE4AC1A),
