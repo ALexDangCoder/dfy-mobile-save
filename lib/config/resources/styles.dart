@@ -47,7 +47,7 @@ TextStyle textNormal(Color? color, double? fontSize) {
     color: color ?? Colors.white,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize ?? 14,
+    fontSize: fontSize ?? 14.sp,
   );
 }
 
@@ -58,7 +58,7 @@ TextStyle tokenDetailAmount({Color color = Colors.white, double fontSize = 24,
     color: color,
     fontWeight: weight,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize,
+    fontSize: fontSize.sp,
   );
 }
 TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
@@ -79,7 +79,7 @@ TextStyle textNormalCustom(
     color: color ?? Colors.white,
     fontWeight: fontWeight ?? FontWeight.w500,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize ?? 14,
+    fontSize: fontSize ?? 14.sp,
   );
 }
 

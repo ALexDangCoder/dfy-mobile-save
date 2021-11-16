@@ -11,7 +11,6 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
-import '../../../main.dart';
 
 part 'wallet_state.dart';
 
@@ -67,6 +66,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getAddressWallet() async {}
 
   String formatAddress(String address) {
+    if(address.isEmpty) return address;
     final String formatAddressWallet =
         '${address.substring(0, 5)}...${address.substring(
       address.length - 4,

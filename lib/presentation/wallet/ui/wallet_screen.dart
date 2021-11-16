@@ -224,7 +224,8 @@ class _WalletState extends State<WalletScreen>
                                       index: index,
                                       bloc: cubit,
                                       symbolUrl:
-                                          snapshot.data?[index].iconToken ?? '',
+                                          snapshot.data?[index].iconToken ??
+                                              'assets/images/ic_hide.png',
                                       amount: snapshot.data?[index].amountToken
                                               .toString() ??
                                           '',
@@ -445,6 +446,7 @@ class _WalletState extends State<WalletScreen>
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: StreamBuilder(
+                    initialData: '',
                     stream: cubit.addressWallet,
                     builder: (context, AsyncSnapshot<String> snapshot) {
                       return Center(
