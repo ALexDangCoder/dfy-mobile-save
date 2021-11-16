@@ -224,32 +224,7 @@ class _WalletState extends State<WalletScreen>
                                   shrinkWrap: true,
                                   itemCount: cubit.listTokenStream.value.length,
                                   itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) => TokenDetail(
-                                              tokenData: 123,
-                                              bloc: TokenDetailBloc(),
-                                              tokenType: EnumTokenType.DFY,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      onLongPress: () {
-                                        Navigator.of(context).push(
-                                          HeroDialogRoute(
-                                            builder: (context) {
-                                              return RemoveToken(
-                                                cubit: cubit,
-                                                index: index,
-                                              );
-                                            },
-                                            isNonBackground: false,
-                                          ),
-                                        );
-                                      },
-                                      child: TokenItem(
+                                    return TokenItem(
                                         index: index,
                                         bloc: cubit,
                                         symbolUrl:
@@ -265,7 +240,7 @@ class _WalletState extends State<WalletScreen>
                                         price: snapshot.data?[index].price
                                                 .toString() ??
                                             '',
-                                      ),
+
                                     );
                                   },
                                 );
