@@ -237,7 +237,7 @@ class _SendNftState extends State<SendNft> {
         color: Color(0xff32324c),
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: 5.h),
+        padding: EdgeInsets.only(top: 10.h),
         child: TextFormField(
           onChanged: (value) {
             sendNftCubit.checkHaveVLQuantityFormNFT(value);

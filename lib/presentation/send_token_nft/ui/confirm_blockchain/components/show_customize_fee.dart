@@ -279,7 +279,7 @@ class ShowCustomizeFee extends StatelessWidget {
       height: 64.h,
       width: 178.w,
       padding: EdgeInsets.only(
-        // top: 20.h,
+        top: 10.h,
         // bottom: 20.h,
         left: 20.w,
         right: 20.w,

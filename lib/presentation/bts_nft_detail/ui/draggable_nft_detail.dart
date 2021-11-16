@@ -12,7 +12,6 @@ import 'package:Dfy/widgets/column_button/buil_column.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'detail_transition.dart';
 
 class NFTDetail extends StatefulWidget {

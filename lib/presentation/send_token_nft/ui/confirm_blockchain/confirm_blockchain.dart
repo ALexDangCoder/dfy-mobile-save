@@ -85,14 +85,15 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FormAddFtAmount(
                       from: widget.fromAddress,
                       to: widget.toAddress,
                       amount: '${widget.amount} DFY',
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 26.w, right: 26.w),
+                    Container(
+                      margin: EdgeInsets.only(left: 26.w, right: 26.w),
                       child: const Divider(
                         thickness: 1,
                         color: Color.fromRGBO(255, 255, 255, 0.1),
