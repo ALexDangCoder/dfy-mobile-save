@@ -31,54 +31,64 @@ class RestoreCubit extends Cubit<RestoreState> {
   bool newPassField = false;
   bool conPassField = false;
   bool privateField = false;
-  bool ckc = false;
+  bool ckc = true;
 
+  /// button subject
   Stream<bool> get btnStream => _buttonSubject.stream;
 
   Sink<bool> get btnSink => _buttonSubject.sink;
 
   bool get btnValue => _buttonSubject.valueOrNull ?? false;
 
+  /// seed phrase subject
   Stream<bool> get seedStream => _seedSubject.stream;
 
   Sink<bool> get seedSink => _seedSubject.sink;
 
   bool get seedValue => _seedSubject.valueOrNull ?? false;
 
+  /// check validate password
   Stream<bool> get validateStream => _validate.stream;
 
   Stream<bool> get matchStream => _match.stream;
 
   Sink<bool> get validateSink => _validate.sink;
 
+  /// compare password
   Sink<bool> get matchSink => _match.sink;
 
   Stream<List<String>> get listStringStream => _behaviorSubject.stream;
 
   Sink<List<String>> get listStringSink => _behaviorSubject.sink;
 
+  /// select string
   String get strValue => _stringSubject.value;
 
   Stream<String> get stringStream => _stringSubject.stream;
 
   Sink<String> get stringSink => _stringSubject.sink;
 
+  /// show or hide password
   Stream<bool> get boolStream => _boolSubject.stream;
 
   Sink<bool> get boolSink => _boolSubject.sink;
 
+  /// select private or seed phrase form
   Stream<FormType> get typeStream => _formTypeSubject.stream;
 
   Sink<FormType> get typeSink => _formTypeSubject.sink;
 
+  /// stream of new password
   Stream<bool> get newStream => _newPassSubject.stream;
 
   Sink<bool> get newSink => _newPassSubject.sink;
 
+  /// stream of confirm password
   Stream<bool> get conStream => _conPassSubject.stream;
 
   Sink<bool> get conSink => _conPassSubject.sink;
 
+  /// stream of checkbox
   Stream<bool> get ckcStream => _ckcBoxSubject.stream;
 
   Sink<bool> get ckcSink => _ckcBoxSubject.sink;
@@ -117,6 +127,7 @@ class RestoreCubit extends Cubit<RestoreState> {
     }
   }
 
+  /// check null seed field
   void checkSeedField(String value) {
     if (value.isNotEmpty) {
       seedField = true;
@@ -130,6 +141,7 @@ class RestoreCubit extends Cubit<RestoreState> {
     }
   }
 
+  /// listen check box onchange
   void checkCkcValue(value) {
     ckc = value;
     if ((privateField || seedField) && newPassField && conPassField && ckc) {
@@ -139,6 +151,7 @@ class RestoreCubit extends Cubit<RestoreState> {
     }
   }
 
+  /// check null new password
   void checkNewPassField(String value) {
     if (value.isNotEmpty) {
       newPassField = true;
@@ -152,6 +165,7 @@ class RestoreCubit extends Cubit<RestoreState> {
     }
   }
 
+  /// check null confirm password
   void checkConPassField(String value) {
     if (value.isNotEmpty) {
       conPassField = true;
@@ -165,6 +179,7 @@ class RestoreCubit extends Cubit<RestoreState> {
     }
   }
 
+  /// check null private key
   void checkPrivateField(String value) {
     if (value.isNotEmpty) {
       privateField = true;
@@ -178,6 +193,7 @@ class RestoreCubit extends Cubit<RestoreState> {
     }
   }
 
+  /// check validate of seed phrase
   void checkSeedPhrase(String strArray) {
     final int len = strArray.split(' ').length;
     if (len == 12 || len == 15 || len == 18 || len == 21 || len == 24) {
@@ -187,17 +203,16 @@ class RestoreCubit extends Cubit<RestoreState> {
     }
   }
 
-//warning
-
+  /// check validation of password
   void isValidate(String value) {
     if (Validator.validateStructure(value)) {
-      //if validate widget warning will not appear
       validateSink.add(false);
     } else {
       validateSink.add(true);
     }
   }
 
+  /// check match password
   void isMatchPW({required String password, required String confirmPW}) {
     if (password == confirmPW) {
       matchSink.add(false);
@@ -221,6 +236,11 @@ class RestoreCubit extends Cubit<RestoreState> {
     _formTypeSubject.close();
     _newPassSubject.close();
     _conPassSubject.close();
+    _seedSubject.close();
+    _ckcBoxSubject.close();
+    _conPassSubject.close();
+    _newPassSubject.close();
+    _buttonSubject.close();
 
     super.close();
   }

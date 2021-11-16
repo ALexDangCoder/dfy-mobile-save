@@ -43,7 +43,7 @@
   "import_seed": "Nhập seed phrase",
   "import_wallet": "Nhập ví",
   "add_wallet": "Thêm ví",
-  "restore_account": "Khôi phục",
+  "restore_account": "Khôi phục tài khoản",
   "restore_with_seed": "Khôi phục tài khoản sử dụng Seed Phrase bí mật",
   "only_first": "Chỉ tài khoản đầu tiên của ví này sẽ tự động được cập . Sau khi hoàn tất quá trình này, để thêm các tài khoản khác bạn có  tạo thể tạo mới tài khoản hoặc nhập tài khoản",
   "restore": "Khôi phục",

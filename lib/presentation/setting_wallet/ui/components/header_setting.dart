@@ -43,7 +43,7 @@ Container headerSetting({
               MaterialPageRoute(
                 builder: (context) =>
                 const MainScreen(
-                  index: 1,
+                  index: 2,
                 ),
               ),
                   (route) => route.isFirst,
