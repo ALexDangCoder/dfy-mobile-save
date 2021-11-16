@@ -20,6 +20,7 @@ import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
 import 'package:Dfy/presentation/wallet/ui/token_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/change_wallet_name.dart';
+import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -218,20 +219,37 @@ class _WalletState extends State<WalletScreen>
                                   shrinkWrap: true,
                                   itemCount: cubit.listTokenStream.value.length,
                                   itemBuilder: (context, index) {
-                                    return TokenItem(
-                                      index: index,
-                                      bloc: cubit,
-                                      symbolUrl:
-                                          snapshot.data?[index].iconToken ?? '',
-                                      amount: snapshot.data?[index].amountToken
-                                              .toString() ??
-                                          '',
-                                      nameToken: snapshot
-                                              .data?[index].nameTokenSymbol ??
-                                          '',
-                                      price: snapshot.data?[index].price
-                                              .toString() ??
-                                          '',
+                                    return InkWell(
+                                      onLongPress: () {
+                                        Navigator.of(context).push(
+                                          HeroDialogRoute(
+                                            builder: (context) {
+                                              return RemoveToken(
+                                                cubit: cubit,
+                                                index: index,
+                                              );
+                                            },
+                                            isNonBackground: false,
+                                          ),
+                                        );
+                                      },
+                                      child: TokenItem(
+                                        index: index,
+                                        bloc: cubit,
+                                        symbolUrl:
+                                            snapshot.data?[index].iconToken ??
+                                                '',
+                                        amount: snapshot
+                                                .data?[index].amountToken
+                                                .toString() ??
+                                            '',
+                                        nameToken: snapshot
+                                                .data?[index].nameTokenSymbol ??
+                                            '',
+                                        price: snapshot.data?[index].price
+                                                .toString() ??
+                                            '',
+                                      ),
                                     );
                                   },
                                 );
@@ -443,7 +461,9 @@ class _WalletState extends State<WalletScreen>
                     builder: (context, AsyncSnapshot<String> snapshot) {
                       return Center(
                         child: Text(
-                          cubit.formatAddress(snapshot.data ?? ''),
+                          cubit.formatAddress(
+                            snapshot.data ?? cubit.addressWalletCore,
+                          ),
                           style: textNormalCustom(
                             Colors.white,
                             16.sp,

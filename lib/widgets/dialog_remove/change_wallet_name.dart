@@ -63,7 +63,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                         ),
                         child: Text(
                           S.current.enter_name,
-                          style: textNormal(Colors.white, 20.sp).copyWith(
+                          style: textNormal(Colors.white, 20).copyWith(
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal,
                           ),

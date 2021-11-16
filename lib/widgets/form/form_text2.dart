@@ -22,7 +22,7 @@ class FromText2 extends StatelessWidget {
       width: 323.w,
       height: 64.h,
       margin: EdgeInsets.symmetric(horizontal: 26.w),
-      padding: EdgeInsets.symmetric(horizontal: 15.5.w, vertical: 23.h),
+      padding: EdgeInsets.symmetric(horizontal: 15.5.w),
       decoration: const BoxDecoration(
         color: Color(0xff32324c),
         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -36,15 +36,14 @@ class FromText2 extends StatelessWidget {
                 urlPrefixIcon,
               ),
               SizedBox(
-                width: 23.5.w,
+                width: 20.5.w,
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 child: Text(
                   title,
-                  style: textNormal(Colors.grey, 16.sp),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  style: textNormal(Colors.grey, 16),
+
                 ),
               ),
             ],
@@ -55,12 +54,14 @@ class FromText2 extends StatelessWidget {
 
               toast_copy();
             },
-            child: Container(
+            child: SizedBox(
+              height: 20.h,
+              width: 20.w,
               child: urlSuffixIcon.isNotEmpty
                   ? Image.asset(
                       urlSuffixIcon,
-                      height: 17.67.h,
-                      width: 19.14.w,
+                      height: 20.h,
+                      width: 20.w,
                     )
                   : null,
             ),

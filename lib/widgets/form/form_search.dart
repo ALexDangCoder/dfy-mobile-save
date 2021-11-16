@@ -9,7 +9,7 @@ class FormSearch extends StatefulWidget {
   final WalletCubit bloc;
   final String hint;
 
-  FormSearch({
+  const FormSearch({
     Key? key,
     required this.urlIcon1,
     required this.bloc,

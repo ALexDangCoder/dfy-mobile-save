@@ -66,7 +66,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   String formatAddress(String address) {
     final String formatAddressWallet =
-        '${address.substring(0, 5)}...${address.substring(
+        '${address.substring(0,5)}...${address.substring(
       address.length - 4,
       address.length,
     )}';
@@ -411,15 +411,15 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   void search() {
     final List<TokenModel> list = [];
-    listTokenShow1=listToken;
-    for (final TokenModel value in listTokenShow1) {
+    // listTokenShow1=listToken;
+    for (final TokenModel value in listToken) {
       if (value.nameToken!.toLowerCase().contains(
             textSearch.value.toLowerCase(),
           )) {
         list.add(value);
       }
     }
-    if (textSearch.value == '') {
+    if (textSearch.value.isEmpty) {
       getListSort();
     } else {
       getListTokenModel.sink.add(list);
@@ -499,7 +499,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       isShow: true,
       nameToken: 'WBitcoin',
       nameTokenSymbol: 'BTC3',
-      amountToken: 021342342134.21312344,
+      amountToken: 021342344,
     ),
     TokenModel(
       price: 121,
@@ -644,4 +644,6 @@ class WalletCubit extends BaseCubit<WalletState> {
 
     }
   }
+
+
 }

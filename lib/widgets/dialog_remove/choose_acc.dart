@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
@@ -24,7 +25,7 @@ class ChooseAcc extends StatelessWidget {
       child: Center(
         child: SizedBox(
           height: 313.h,
-          width: 312.w,
+          width: 311.w,
           child: SafeArea(
             child: Hero(
               tag: '',
@@ -79,57 +80,60 @@ class ChooseAcc extends StatelessWidget {
                                 bloc.index.sink.add(index);
                                 Navigator.pop(context);
                               },
-                              child: Container(
-                                width: 312.w,
-                                height: 82.h,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Colors.white.withOpacity(0.5),
-                                      width: 0.5,
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    spaceW16,
-                                    Image.asset(
-                                      bloc.listWallet[index].urlImage ?? '',
-                                    ),
-                                    spaceW8,
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    width: 311.w,
+                                    height: 82.h,
+                                    child: Row(
                                       children: [
-                                        Text(
-                                          bloc.listWallet[index].walletName ??
-                                              '',
-                                          style: textNormal(Colors.white, 20.sp)
-                                              .copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            fontStyle: FontStyle.normal,
-                                          ),
+                                        spaceW16,
+                                        Image.asset(
+                                          bloc.listWallet[index].urlImage ?? '',
                                         ),
-                                        Text(
-                                          bloc.formatText(
-                                            bloc.listWallet[index]
-                                                    .walletAddress ??
-                                                '',
-                                          ),
-                                          style: textNormal(
-                                            Colors.white.withOpacity(0.5),
-                                            16.sp,
-                                          ).copyWith(
-                                            fontWeight: FontWeight.w400,
-                                            fontStyle: FontStyle.normal,
-                                          ),
+                                        spaceW8,
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              bloc.listWallet[index]
+                                                      .walletName ??
+                                                  '',
+                                              style: textNormal(
+                                                      Colors.white, 20.sp)
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                fontStyle: FontStyle.normal,
+                                              ),
+                                            ),
+                                            Text(
+                                              bloc.formatText(
+                                                bloc.listWallet[index]
+                                                        .walletAddress ??
+                                                    '',
+                                              ),
+                                              style: textNormal(
+                                                Colors.white.withOpacity(0.5),
+                                                16.sp,
+                                              ).copyWith(
+                                                fontWeight: FontWeight.w400,
+                                                fontStyle: FontStyle.normal,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    child: index == bloc.listWallet.length
+                                        ?null
+                                        : line,
+                                  )
+                                ],
                               ),
                             );
                           },

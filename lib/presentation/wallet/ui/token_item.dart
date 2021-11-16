@@ -27,20 +27,6 @@ class TokenItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
-      onLongPress: () {
-        Navigator.of(context).push(
-          HeroDialogRoute(
-            builder: (context) {
-              return RemoveToken(
-                cubit: bloc,
-                index: index,
-              );
-            },
-            isNonBackground: false,
-          ),
-        );
-      },
       child: Column(
         children: [
           Divider(
