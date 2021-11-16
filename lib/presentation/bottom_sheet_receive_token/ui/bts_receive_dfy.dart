@@ -6,10 +6,11 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bottom_sheet_receive_token/bloc/receive_cubit.dart';
+import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/set_amount_pop_up.dart';
 import 'package:Dfy/utils/animate/custom_rect_tween.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/set_amount_pop_up.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,55 +61,10 @@ class _ReceiveState extends State<Receive> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 764.h,
-      width: 375.w,
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
+    return BaseBottomSheet(
+      title: textTitle(widget.type),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            margin: EdgeInsets.only(
-              top: 16.h,
-              left: 37.14.w,
-              right: 26.w,
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: SizedBox(
-                    height: 16.8.h,
-                    width: 16.8.w,
-                    child: const ImageIcon(
-                      AssetImage(ImageAssets.ic_back),
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 93.w,
-                ),
-                title(widget.type),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          Divider(
-            height: 1,
-            thickness: 1,
-            color: AppTheme.getInstance().divideColor(),
-          ),
           SizedBox(
             height: 41.h,
           ),
@@ -384,8 +340,20 @@ class _ReceiveState extends State<Receive> {
     );
   }
 
+  String textTitle(TokenType type) {
+    if (type == TokenType.DFY) {
+      return S.current.receive_dfy;
+    } else if (type == TokenType.NFT) {
+      return S.current.receive_nft;
+    } else if (type == TokenType.QR) {
+      return S.current.scan_qr_code;
+    } else {
+      return '';
+    }
+  }
+
   Widget title(TokenType type) {
-    if(type == TokenType.DFY) {
+    if (type == TokenType.DFY) {
       return Text(
         S.current.receive_dfy,
         style: textNormal(
@@ -396,8 +364,7 @@ class _ReceiveState extends State<Receive> {
           fontStyle: FontStyle.normal,
         ),
       );
-    }
-    else if(type == TokenType.NFT) {
+    } else if (type == TokenType.NFT) {
       return Text(
         S.current.receive_nft,
         style: textNormal(
@@ -408,8 +375,7 @@ class _ReceiveState extends State<Receive> {
           fontStyle: FontStyle.normal,
         ),
       );
-    }
-    else if (type == TokenType.QR) {
+    } else if (type == TokenType.QR) {
       return Text(
         S.current.scan_qr_code,
         style: textNormal(
@@ -420,8 +386,7 @@ class _ReceiveState extends State<Receive> {
           fontStyle: FontStyle.normal,
         ),
       );
-    }
-    else {
+    } else {
       return Container();
     }
   }
