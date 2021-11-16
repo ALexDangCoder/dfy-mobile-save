@@ -23,6 +23,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     getListTokenItem();
     getListNFTItem();
   }
+
   bool checkLogin = false;
   List<TokenModel> listStart = [];
 
@@ -59,8 +60,11 @@ class WalletCubit extends BaseCubit<WalletState> {
   String addressWalletCore = '';
 
   void addToken(TokenModel tokenModel) {
-    listTokenDetailScreen.add(tokenModel);
-    listTokenStream.sink.add(listTokenDetailScreen);
+    final List<TokenModel> list = [];
+    list.addAll(listTokenDetailScreen);
+    list.add(tokenModel);
+    listTokenStream.sink.add(list);
+    print('sadfaf');
   }
 
   Future<void> getAddressWallet() async {}
