@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
@@ -31,7 +30,7 @@ class AlertPopUp extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(36)),
             child: SizedBox(
               width: 312.w,
-              height: 310.h,
+              height: 300.h,
               child: Column(
                 children: [
                   Padding(
@@ -44,14 +43,21 @@ class AlertPopUp extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          S.current.are_you_sure,
-                          textAlign: TextAlign.center,
-                          style: textNormal(
-                            AppTheme.getInstance().wrongColor(),
-                            20.sp,
-                          ).copyWith(
-                            fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 3,
+                            top: 4,
+                            right: 3,
+                          ),
+                          child: Text(
+                            S.current.are_you_sure,
+                            textAlign: TextAlign.center,
+                            style: textNormal(
+                              AppTheme.getInstance().wrongColor(),
+                              20.sp,
+                            ).copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -80,7 +86,9 @@ class AlertPopUp extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 20.h,)
+                        SizedBox(
+                          height: 20.h,
+                        )
                       ],
                     ),
                   ),
@@ -101,14 +109,7 @@ class AlertPopUp extends StatelessWidget {
                             onTap: () {
                               Navigator.pop(context);
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  right: BorderSide(
-                                    color: AppTheme.getInstance().divideColor(),
-                                  ),
-                                ),
-                              ),
+                            child: SizedBox(
                               width: 156.w,
                               child: Center(
                                 child: Text(
@@ -122,6 +123,7 @@ class AlertPopUp extends StatelessWidget {
                             ),
                           ),
                         ),
+                        const VerticalDivider(),
                         Flexible(
                           child: InkWell(
                             onTap: () {
