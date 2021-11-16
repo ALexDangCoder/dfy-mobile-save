@@ -150,16 +150,16 @@ class TransactionList extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return TransactionDetail(
-                  detailTransaction: tokenData == 1 ? '158.2578' : '13.25',
-                  amount: amount,
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (context) {
+              return TransactionDetail(
+                  detailTransaction: time == DateTime.now() ? '123' : '234',
                   status: status,
-                );
-              },
-            ),
+                  amount: amount,);
+            },
           );
         },
         child: Container(
