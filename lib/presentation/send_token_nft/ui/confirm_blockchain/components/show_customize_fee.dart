@@ -82,20 +82,21 @@ class ShowCustomizeFee extends StatelessWidget {
                                         stream: sendTokenCubit
                                             .formEstimateGasFeeStream,
                                         builder: (context, snapshot) {
-                                          return Text(
-                                            '${snapshot.data ??
-                                                balanceFirstFetch.toString()}'
-                                            ' $nameToken',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16.sp,
-                                              color: Colors.white,
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                              top: 8.h,
+                                            ),
+                                            child: Text(
+                                              '${snapshot.data ?? balanceFirstFetch.toString()}'
+                                              ' $nameToken',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16.sp,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           );
                                         },
-                                      ),
-                                      SizedBox(
-                                        height: 17.h,
                                       ),
                                     ],
                                   ),
@@ -107,19 +108,20 @@ class ShowCustomizeFee extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       StreamBuilder<String>(
-                                          initialData: gasFee.toString(),
-                                          stream: sendTokenCubit
-                                              .formEstimateGasFeeStream,
-                                          builder: (context, snapshot) {
-                                            return Text(
-                                              '${snapshot.data} $nameToken',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16.sp,
-                                                color: Colors.red,
-                                              ),
-                                            );
-                                          },),
+                                        initialData: gasFee.toString(),
+                                        stream: sendTokenCubit
+                                            .formEstimateGasFeeStream,
+                                        builder: (context, snapshot) {
+                                          return Text(
+                                            '${snapshot.data} $nameToken',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16.sp,
+                                              color: Colors.red,
+                                            ),
+                                          );
+                                        },
+                                      ),
                                       SizedBox(
                                         height: 2.h,
                                       ),
@@ -155,92 +157,90 @@ class ShowCustomizeFee extends StatelessWidget {
                   color: Color.fromRGBO(255, 255, 255, 0.1),
                 ),
                 Expanded(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 16.h,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      //form  gas limit
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 12.w,
+                          right: 12.w,
                         ),
-                        //form  gas limit
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: 12.w,
-                            right: 12.w,
-                          ),
-                          child: SizedBox(
-                            height: 64.h,
-                            child: Row(
-                               mainAxisAlignment:
-                               MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  S.current.gas_limit,
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                  ),
+                        child: SizedBox(
+                          height: 64.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                S.current.gas_limit,
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
                                 ),
-                                formType(
-                                  txtController: txtGasLimit,
-                                  numHandle: txtGasPrice.text,
-                                ),
-                              ],
-                            ),
+                              ),
+                              formType(
+                                txtController: txtGasLimit,
+                                numHandle: txtGasPrice.text,
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: 16.h,
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      //form gas price
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 12.w,
+                          right: 12.w,
                         ),
-                        //form gas price
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: 12.w,
-                            right: 12 .w,
-                          ),
-                          child: SizedBox(
-                            height: 64.h,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '${S.current.gas_price} (GWEI)',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                  ),
+                        child: SizedBox(
+                          height: 64.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${S.current.gas_price} (GWEI)',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
                                 ),
-                                formType(
-                                  txtController: txtGasPrice,
-                                  numHandle: txtGasLimit.text,
-                                ),
-                              ],
-                            ),
+                              ),
+                              formType(
+                                txtController: txtGasPrice,
+                                numHandle: txtGasLimit.text,
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: 24.h,
-                        ),
-                        GestureDetector(
-                          child: btnReset(),
-                          onTap: () {
-                            txtGasPrice.text = gasPriceFirstFetch.toString();
-                            txtGasLimit.text = gasLimitFirstFetch.toString();
-                            sendTokenCubit.isSufficientTokenSink
-                                .add(gasFee < balanceFirstFetch);
-                            sendTokenCubit.formEstimateGasFeeSink.add(
-                              gasFee.toString(),
-                            );
-                          },
-                        ),
+                      ),
+                      SizedBox(
+                        height: 24.h,
+                      ),
+                      GestureDetector(
+                        child: btnReset(),
+                        onTap: () {
+                          txtGasPrice.text = gasPriceFirstFetch.toString();
+                          txtGasLimit.text = gasLimitFirstFetch.toString();
+                          sendTokenCubit.isSufficientTokenSink
+                              .add(gasFee < balanceFirstFetch);
+                          sendTokenCubit.formEstimateGasFeeSink.add(
+                            gasFee.toString(),
+                          );
+                        },
+                      ),
 
-                        SizedBox(
-                          height: 24.h,
-                        ),
-                      ],
-                    ),
+                      SizedBox(
+                        height: 24.h,
+                      ),
+                    ],
                   ),
-
+                ),
               ],
             ),
           ),
@@ -303,7 +303,7 @@ class ShowCustomizeFee extends StatelessWidget {
             valueHandle = double.parse(value);
           }
           result = (valueHandle * double.parse(numHandle)) / pow(10, 9);
-             sendTokenCubit.isEstimatingGasFee(Validator.toExact(result));
+          sendTokenCubit.isEstimatingGasFee(Validator.toExact(result));
           sendTokenCubit.isSufficientGasFee(
             gasFee: result,
             balance: balanceFirstFetch,
@@ -327,9 +327,7 @@ class ShowCustomizeFee extends StatelessWidget {
 
   ConstrainedBox btnReset() {
     return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 30.h
-      ),
+      constraints: BoxConstraints(minHeight: 30.h),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
         decoration: BoxDecoration(

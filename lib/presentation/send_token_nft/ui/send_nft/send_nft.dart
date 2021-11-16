@@ -88,6 +88,7 @@ class _SendNftState extends State<SendNft> {
                         ).then(
                           (_) => sendNftCubit.checkHaveVlAddressFormToken(
                             txtToAddressNft.text,
+                            type: typeSend.SEND_NFT,
                           ),
                         );
                       },
@@ -178,7 +179,10 @@ class _SendNftState extends State<SendNft> {
         child: TextFormField(
           controller: readOnly ? null : txtToAddressNft,
           onChanged: (value) {
-            sendNftCubit.checkHaveVlAddressFormToken(value);
+            sendNftCubit.checkHaveVlAddressFormToken(
+              value,
+              type: typeSend.SEND_NFT,
+            );
           },
           style: textNormal(
             Colors.white,
@@ -241,7 +245,10 @@ class _SendNftState extends State<SendNft> {
         child: TextFormField(
           onChanged: (value) {
             sendNftCubit.checkHaveVLQuantityFormNFT(value);
-            sendNftCubit.checkHaveVlAddressFormToken(txtToAddressNft.text);
+            sendNftCubit.checkHaveVlAddressFormToken(
+              txtToAddressNft.text,
+              type: typeSend.SEND_NFT,
+            );
           },
           keyboardType: TextInputType.number,
           textAlignVertical: TextAlignVertical.center,

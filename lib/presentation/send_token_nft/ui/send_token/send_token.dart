@@ -99,6 +99,7 @@ class _SendTokenState extends State<SendToken> {
                         ).then(
                           (_) => tokenCubit.checkHaveVlAddressFormToken(
                             txtToAddressToken.text,
+                            type: typeSend.SEND_TOKEN,
                           ),
                         );
                       },
@@ -135,7 +136,7 @@ class _SendTokenState extends State<SendToken> {
                       tokenCubit.checkValidAddress(txtToAddressToken.text);
                       tokenCubit.checkValidAmount(txtAmount.text);
                       //check validate before go to next screen
-                      if(tokenCubit.checkAddressFtAmount()) {
+                      if (tokenCubit.checkAddressFtAmount()) {
                         showModalBottomSheet(
                           backgroundColor: Colors.transparent,
                           isScrollControlled: true,
@@ -227,7 +228,10 @@ class _SendTokenState extends State<SendToken> {
         ),
         child: TextFormField(
           onChanged: (value) {
-            tokenCubit.checkHaveVlAddressFormToken(value);
+            tokenCubit.checkHaveVlAddressFormToken(
+              value,
+              type: typeSend.SEND_TOKEN,
+            );
           },
           controller: readOnly ? null : txtToAddressToken,
           readOnly: readOnly,
@@ -299,7 +303,10 @@ class _SendTokenState extends State<SendToken> {
         child: TextFormField(
           onChanged: (value) {
             tokenCubit.checkHaveVLAmountFormToken(value);
-            tokenCubit.checkHaveVlAddressFormToken(txtToAddressToken.text);
+            tokenCubit.checkHaveVlAddressFormToken(
+              txtToAddressToken.text,
+              type: typeSend.SEND_TOKEN,
+            );
           },
           controller: txtAmount,
           keyboardType: TextInputType.number,

@@ -8,6 +8,8 @@ import 'package:Dfy/generated/l10n.dart';
 
 part 'send_token_state.dart';
 
+enum typeSend { SEND_NFT, SEND_TOKEN }
+
 //this class will handle cubit nft and token
 class SendTokenCubit extends Cubit<SendTokenState> {
   //todo fix handle warning error
@@ -109,23 +111,25 @@ class SendTokenCubit extends Cubit<SendTokenState> {
 
   //handle send token screen
   //check have value will enable button
-  void checkHaveVlAddressFormToken(String value) {
+  void checkHaveVlAddressFormToken(String value, {required typeSend type}) {
     if (value.isEmpty) {
       _haveVLAddress = false;
     } else {
       _haveVLAddress = true;
     }
-    if (_haveVLAddress && _haveVLAmount) {
-      isShowCFBlockChainSink.add(true);
+    if (type == typeSend.SEND_TOKEN) {
+      if (_haveVLAddress && _haveVLAmount) {
+        isShowCFBlockChainSink.add(true);
+      } else {
+        isShowCFBlockChainSink.add(false);
+      }
     } else {
-      isShowCFBlockChainSink.add(false);
+      if (_haveVLAddress && _haveVLQuantity) {
+        isShowCFBlockChainSink.add(true);
+      } else {
+        isShowCFBlockChainSink.add(false);
+      }
     }
-    if (_haveVLAddress && _haveVLQuantity) {
-      isShowCFBlockChainSink.add(true);
-    } else {
-      isShowCFBlockChainSink.add(false);
-    }
-
   }
 
   void checkHaveVLAmountFormToken(String value) {
@@ -180,7 +184,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       isValidAmountFormSink.add(true);
       txtInvalidAmountSink.add(S.current.amount_required);
       isShowCFBlockChainSink.add(false);
-    } 
+    }
     // else if (!Validator.validateMoney(value)) { todo
     else if (value.contains(',')) {
       _flagAmount = false;
@@ -199,8 +203,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       isValidQuantityFormSink.add(true);
       txtInvalidQuantityFormSink.add(S.current.amount_required);
       isShowCFBlockChainSink.add(false);
-    }
-    else if (!Validator.validateQuantity(value)) {
+    } else if (!Validator.validateQuantity(value)) {
       _flagQuantity = false;
       isValidQuantityFormSink.add(true);
       txtInvalidQuantityFormSink.add(S.current.amount_invalid);
@@ -210,15 +213,14 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       isValidQuantityFormSink.add(true);
       txtInvalidQuantityFormSink.add(S.current.quantity_invalid_of_all);
       isShowCFBlockChainSink.add(false);
-    }
-    else {
+    } else {
       _flagQuantity = true;
       isValidQuantityFormSink.add(false);
     }
   }
 
   bool checkAddressFtAmount() {
-    if(_flagAmount && _flagAddress) {
+    if (_flagAmount && _flagAddress) {
       return true;
     } else {
       return false;
@@ -226,13 +228,12 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   }
 
   bool checkAddressFtQuantity() {
-    if(_flagQuantity && _flagAddress) {
+    if (_flagQuantity && _flagAddress) {
       return true;
     } else {
       return false;
     }
   }
-
 
   void isShowCustomizeFee({required bool isShow}) {
     isCustomizeFeeSink.add(isShow);
