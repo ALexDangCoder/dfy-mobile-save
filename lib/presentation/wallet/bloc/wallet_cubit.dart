@@ -46,6 +46,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       BehaviorSubject.seeded('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
   BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
+  BehaviorSubject<double> totalBalance = BehaviorSubject();
 
   void getIsWalletName(String value) {
     if (Validator.validateNotNull(value)) {
@@ -301,14 +302,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     ),
   ];
 
-  String formatAddress1(String address) {
-    final String a = '${address.substring(0, 5)}...${address.substring(
-      address.length - 4,
-      address.length,
-    )}';
-    return a;
-  }
-
   void click(int index) {
     for (final AccountModel value in listSelectAccBloc) {
       value.isCheck = false;
@@ -529,7 +522,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       isShow: false,
       nameToken: 'TBitcoin',
       nameTokenSymbol: 'B3TC',
-      amountToken: 0.423213423,
+      amountToken: 0.413423,
     ),
     TokenModel(
       price: 121,
