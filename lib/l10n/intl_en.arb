@@ -53,6 +53,9 @@
   "or_scan": "Or scan QR",
   "scan_qr_code": "Scan QR code",
   "no_data": "No data",
+  "paste": "Paste",
+  "warning_seed": "Secret seed phrases contain 12, 15, 18, 21, or 24 words",
+
   "approve": "Approve",
   "send": "Send",
   "txh_id": "Txh ID",
@@ -78,7 +81,6 @@
   "address_required": "Address is required",
   "amount_required": "Amount is required",
   "amount": "Amount",
-  "paste": "Paste",
   "name_not_null": "Wallet name is required",
   "password": "Password",
   "wallet_secret": "Wallet secret seed phrase",
@@ -108,7 +110,7 @@
   "enter_token": "Enter token",
   "choose_token": "Choose token",
   "search_token": "Search token",
-  "import": "Import",
+  "import": "Import ",
   "enter_id": "Enter ID",
   "are_you_sure_collectible": "Are you sure you want to remove this collectible?",
   "this_will_also": "This will also delete all transactions under this wallet and cannot be recovered.",
@@ -146,6 +148,7 @@
   "share": "Share",
   "receive_nft": "Receive NFT",
   "receive_dfy": "Receive DFY",
+  "transaction_pending": "Pending",
   "no_transaction": "No transaction",
   "status": "Status",
   "gas_fee": "Gas fee",
@@ -156,5 +159,8 @@
   "view_on_bscscan": "View on Bscscan",
   "detail_transaction": "Detail",
   "only_desc": "Only the first account on this wallet will auto load. Imported accounts will not be associated with your originally created account Secret Seed Phrase",
-  "imported": "Imported accounts will not be associated with your originally created account Secret Seed Phrase"
+  "imported": "Imported accounts will not be associated with your originally created account Secret Seed Phrase",
+  "are_you_sure": "Are you sure you want to erase your wallet?",
+  "your_current_wallet": "Your current wallet, accounts and assets will be removed from this app permanently. This action cannot be undone.",
+  "you_can_only": "You can ONLY recover this wallet with your Secret Seed Phrase/Private Key. DeFi For You does not have your Secret Seed Phrase/Private Key."
 }

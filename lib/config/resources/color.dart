@@ -120,13 +120,15 @@ abstract class AppColor {
 
   Color backgroundLoginTextField();
 
-  Color successTransactionColors();
+  Color currencyDetailTokenColor();
 
-  Color blueColor();
+  Color successTransactionColors();
 
   Color failTransactionColors();
 
-  Color currencyDetailTokenColor();
+  Color pendingTransactionColors();
+
+  Color blueColor();
 }
 
 class LightApp extends AppColor {
@@ -265,9 +267,23 @@ class LightApp extends AppColor {
     return Colors.white;
   }
 
-  @override
+    @override
   Color whiteColor() {
     return Colors.white;
+  }
+  @override
+  Color currencyDetailTokenColor() {
+    return Colors.white.withOpacity(0.7);
+  }
+
+  @override
+  Color successTransactionColors() {
+    return successTransactionColor;
+  }
+
+  @override
+  Color failTransactionColors() {
+    return failTransactionColor;
   }
 
   @override
@@ -277,18 +293,8 @@ class LightApp extends AppColor {
   }
 
   @override
-  Color currencyDetailTokenColor() {
-    return Colors.white.withOpacity(0.7);
-  }
-
-  @override
-  Color failTransactionColors() {
-   return failTransactionColor;
-  }
-
-  @override
-  Color successTransactionColors() {
-    return successTransactionColor;
+  Color pendingTransactionColors() {
+    return const Color(0XFFFFBD48);
   }
 }
 
@@ -351,6 +357,12 @@ class DarkApp extends AppColor {
   @override
   Color disableColor() {
     return Colors.grey;
+  }
+
+  @override
+  Color currencyDetailTokenColor() {
+    // TODO: implement currencyDetailTokenColor
+    return Colors.white.withOpacity(0.7);
   }
 
   @override
@@ -450,26 +462,25 @@ class DarkApp extends AppColor {
   }
 
   @override
+  Color pendingTransactionColors() {
+    // TODO: implement pendingTransactionColors
+    throw UnimplementedError();
+  }
+
+  Color successTransactionColors() {
+    // TODO: implement successTransactionColors
+    throw UnimplementedError();
+  }
+
+  @override
   Color blueColor() {
     // TODO: implement blueColor
     throw UnimplementedError();
   }
 
   @override
-  Color currencyDetailTokenColor() {
-    // TODO: implement currencyDetailTokenColor
-    throw UnimplementedError();
-  }
-
-  @override
   Color failTransactionColors() {
     // TODO: implement failTransactionColors
-    throw UnimplementedError();
-  }
-
-  @override
-  Color successTransactionColors() {
-    // TODO: implement successTransactionColors
     throw UnimplementedError();
   }
 }

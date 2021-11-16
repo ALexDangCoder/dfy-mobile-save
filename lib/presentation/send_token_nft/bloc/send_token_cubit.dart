@@ -1,4 +1,5 @@
 import 'package:Dfy/main.dart';
+import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +9,12 @@ import 'package:Dfy/generated/l10n.dart';
 part 'send_token_state.dart';
 
 class SendTokenCubit extends Cubit<SendTokenState> {
+  //todo fix handle warning error
   SendTokenCubit() : super(SendTokenInitial());
+
+  int flagAddress = 0;
+  int flagAmount = 0;
+  int flagQuantity = 0;
 
   final BehaviorSubject<String> _formField = BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _formEstimateGasFee = BehaviorSubject<String>();
@@ -20,14 +26,17 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   final BehaviorSubject<bool> _isShowCFBlockChain =
       BehaviorSubject<bool>.seeded(false);
 
-  //stream below regrex amount form and address
-  final BehaviorSubject<bool> _isValidAddressForm = BehaviorSubject<bool>();
-  final BehaviorSubject<bool> _isValidAmountForm = BehaviorSubject<bool>();
+  //stream below regex amount form and address
+  final BehaviorSubject<bool> _isValidAddressForm =
+      BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _isValidAmountForm =
+      BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _isValidQuantityForm =
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<String> _txtInvalidAddressForm =
       BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtInvalidAmount =
       BehaviorSubject<String>.seeded('');
-  final BehaviorSubject<bool> _isValidQuantityForm = BehaviorSubject<bool>();
   final BehaviorSubject<String> _txtInvalidQuantityForm =
       BehaviorSubject<String>.seeded('');
 
@@ -90,11 +99,17 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   int? amountToken;
   String passwordToken = '';
   String passwordNft = '';
-  int flagAddress = 0;
-  int flagAmount = 0;
-  int flagQuantity = 0;
 
   void checkValidAddress(String value) {
+    // if(value.isEmpty) {
+    //   isValidAddressFormSink.add(true);
+    //   txtInvalidAddressFormSink.add(S.current.address_required);
+    //   isShowCFBlockChainSink.add(false);
+    // } else if (Validator.validateAddress(value)) {
+    //   isValidAddressFormSink.add(true);
+    //   txtInvalidAddressFormSink.add(S.current.invalid_address);
+    //   isShowCFBlockChainSink.add(false);
+    // }
     if (value.isEmpty) {
       flagAddress = 0;
       txtInvalidAddressFormSink.add(S.current.address_required);
@@ -120,6 +135,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
+
   void checkValidAmount(String value) {
     if (value.isEmpty) {
       flagAmount = 0;
@@ -138,7 +154,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   }
 
   void checkValidQuantity(String value) {
-    if(value.isEmpty) {
+    if (value.isEmpty) {
       flagQuantity = 0;
       txtInvalidAmountSink.add(S.current.amount_required);
       isValidQuantityFormSink.add(true);
@@ -146,7 +162,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     } else {
       flagQuantity = 1;
       isValidQuantityFormSink.add(false);
-      if(flagAddress == 1 && flagQuantity == 1) {
+      if (flagAddress == 1 && flagQuantity == 1) {
         isShowCFBlockChainSink.add(true);
       } else {
         //nothing
@@ -157,7 +173,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   void isShowCustomizeFee({required bool isShow}) {
     isCustomizeFeeSink.add(isShow);
   }
-
+  //handle enable or disable button gold to go to confirm screen
   void isShowConfirmBlockChain({
     required bool isHaveFrAddress,
     required bool isHaveAmount,
@@ -212,7 +228,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     switch (methodCall.method) {
       case 'sendTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
-           break;
+        break;
       default:
         break;
     }
@@ -266,30 +282,5 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   }
 
   //handle number with e
-  String toExact(double input) {
-    double value = double.parse(input.toStringAsFixed(5));
-    var sign = '';
-    if (value < 0) {
-      value = -value;
-      sign = '-';
-    }
-    final string = value.toString();
-    final e = string.lastIndexOf('e');
-    if (e < 0) return '$sign$string';
-    assert(string.indexOf('.') == 1);
-    final offset = int.parse(
-        string.substring(e + (string.startsWith('-', e + 1) ? 1 : 2)),);
-    final digits = string.substring(0, 1) + string.substring(2, e);
-    if (offset < 0) {
-      return "${sign}0.${"0" * ~offset}$digits";
-    }
-    if (offset > 0) {
-      if (offset >= digits.length) {
-        return sign + digits.padRight(offset + 1, '0');
-      }
-      return '$sign${digits.substring(0, offset + 1)}'
-          '.${digits.substring(offset + 1)}';
-    }
-    return digits;
-  }
+
 }

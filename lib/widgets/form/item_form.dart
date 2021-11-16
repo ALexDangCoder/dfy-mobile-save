@@ -1,11 +1,13 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum FormType { PASS_PHRASE, PASSWORD, PRIVATE_KEY, AMOUNT }
+enum FormType { PASS_PHRASE, PASSWORD, PRIVATE_KEY , AMOUNT}
+enum PassType { NEW, CON }
 
 class ItemForm extends StatelessWidget {
   const ItemForm({
@@ -17,6 +19,8 @@ class ItemForm extends StatelessWidget {
     this.callback,
     required this.isShow,
     required this.controller,
+    this.cubit,
+    this.passType,
   }) : super(key: key);
   final String prefix;
   final String hint;
@@ -25,6 +29,8 @@ class ItemForm extends StatelessWidget {
   final Function()? callback;
   final bool isShow;
   final TextEditingController controller;
+  final RestoreCubit? cubit;
+  final PassType? passType;
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +40,11 @@ class ItemForm extends StatelessWidget {
           minHeight: 64.h,
         ),
         child: Container(
-          width: 323.w,
+          width: 343.w,
           padding: EdgeInsets.only(
             top: 10.h,
             bottom: 10.h,
+            right: 12.w,
           ),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
@@ -51,6 +58,9 @@ class ItemForm extends StatelessWidget {
               Colors.white,
               16.sp,
             ),
+            onChanged: (value) {
+              cubit?.checkSeedField(value);
+            },
             minLines: 1,
             maxLines: 10,
             cursorColor: Colors.white,
@@ -85,7 +95,7 @@ class ItemForm extends StatelessWidget {
     } else if (formType == FormType.PRIVATE_KEY) {
       return Container(
         height: 64.h,
-        width: 323.w,
+        width: 343.w,
         padding: EdgeInsets.only(
           top: 12.h,
           bottom: 12.h,
@@ -104,6 +114,9 @@ class ItemForm extends StatelessWidget {
             Colors.white,
             16.sp,
           ),
+          onChanged: (value) {
+            cubit?.checkPrivateField(value);
+          },
           cursorColor: Colors.white,
           decoration: InputDecoration(
             hintText: hint,
@@ -135,7 +148,7 @@ class ItemForm extends StatelessWidget {
     } else if (formType == FormType.AMOUNT) {
       return Container(
         height: 64.h,
-        width: 323.w,
+        width: 343.w,
         padding: EdgeInsets.only(
           top: 12.h,
           bottom: 12.h,
@@ -204,7 +217,7 @@ class ItemForm extends StatelessWidget {
     } else {
       return Container(
         height: 64.h,
-        width: 323.w,
+        width: 343.w,
         padding: EdgeInsets.only(
           top: 12.h,
           bottom: 12.h,
@@ -222,6 +235,13 @@ class ItemForm extends StatelessWidget {
             Colors.white,
             16.sp,
           ),
+          onChanged: passType == PassType.CON
+              ? (value) {
+            cubit?.checkConPassField(value);
+          }
+              : (value) {
+            cubit?.checkNewPassField(value);
+          },
           cursorColor: Colors.white,
           decoration: InputDecoration(
             hintText: hint,

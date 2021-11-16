@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final emptyView = SizedBox(width: 0.w, height: 0.h);
+const emptyView = SizedBox(width: 0, height: 0);
 
 /// height and width space
 
@@ -65,7 +65,6 @@ TextStyle tokenDetailAmount({
     fontSize: fontSize,
   );
 }
-
 TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
   return GoogleFonts.sen(
     color: color,
