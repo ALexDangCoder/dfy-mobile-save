@@ -104,7 +104,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                     cursorColor: Colors.white,
                                     style: textNormal(
                                       Colors.white54,
-                                      16.sp,
+                                      16,
                                     ),
                                     onChanged: (value) {
                                       widget.bloc.getIsWalletName(value);
@@ -113,7 +113,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                       hintText: S.current.name_wallet,
                                       hintStyle: textNormal(
                                         Colors.white54,
-                                        16.sp,
+                                        16,
                                       ),
                                       counterText: '',
                                       border: InputBorder.none,
@@ -165,7 +165,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                       S.current.name_not_null,
                                       style: textNormal(
                                         Colors.red,
-                                        14.sp,
+                                        14,
                                       ),
                                       textAlign: TextAlign.start,
                                     ),
@@ -223,7 +223,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                           snapshot.data ?? false
                                               ? const Color(0xffE4AC1A)
                                               : Colors.grey,
-                                          20.sp,
+                                          20,
                                         ).copyWith(
                                           fontWeight: FontWeight.w700,
                                           fontStyle: FontStyle.normal,

@@ -126,7 +126,7 @@ class _BodyState extends State<Body> {
                       S.current.create_new_wallet,
                       style: textNormalCustom(
                         Colors.white,
-                        20.sp,
+                        20,
                         FontWeight.bold,
                       ),
                     ),
@@ -165,7 +165,7 @@ class _BodyState extends State<Body> {
                           S.current.tap_the_word,
                           style: textNormal(
                             AppTheme.getInstance().textThemeColor(),
-                            16.sp,
+                            16,
                           ),
                         ),
                       ),

@@ -37,7 +37,7 @@ void showTokenSuccessfully(BuildContext context) {
                 S.current.token_successfully,
                 style: textNormalCustom(
                   Colors.white,
-                  20.sp,
+                  20,
                   FontWeight.bold,
                 ),
               ),
@@ -61,7 +61,7 @@ void showTokenSuccessfully(BuildContext context) {
                       S.current.congratulation,
                       style: textNormalCustom(
                         Colors.white,
-                        32.sp,
+                        32,
                         FontWeight.bold,
                       ),
                     ),

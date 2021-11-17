@@ -53,7 +53,7 @@ class HideCustomizeFee extends StatelessWidget {
                           S.current.estimate_gas_fee,
                           style: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
-                            16.sp,
+                            16,
                             FontWeight.w600,
                           ),
                         ),
@@ -80,7 +80,7 @@ class HideCustomizeFee extends StatelessWidget {
                                               style: textNormalCustom(
                                                 AppTheme.getInstance()
                                                     .whiteColor(),
-                                                16.sp,
+                                                16,
                                                 FontWeight.w600,
                                               ),
                                             );
@@ -107,7 +107,7 @@ class HideCustomizeFee extends StatelessWidget {
                                               '${snapshot.data} $nameToken',
                                               style: textNormalCustom(
                                                 Colors.red,
-                                                16.sp,
+                                                16,
                                                 FontWeight.w600,
                                               ),
                                             );
@@ -120,7 +120,7 @@ class HideCustomizeFee extends StatelessWidget {
                                           S.current.insufficient_balance,
                                           style: textNormalCustom(
                                             Colors.red,
-                                            12.sp,
+                                            12,
                                             FontWeight.w400,
                                           ),
                                         ),
@@ -159,7 +159,7 @@ class HideCustomizeFee extends StatelessWidget {
       S.current.customize_fee,
       style: textNormalCustom(
         const Color.fromRGBO(70, 188, 255, 1),
-        14.sp,
+        14,
         FontWeight.w400,
       ),
     );

@@ -69,7 +69,7 @@ class InformationWallet extends StatelessWidget {
                           nameWallet,
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            fontSize: 16.sp,
+                            fontSize: 16,
                             color: const Color.fromRGBO(255, 255, 255, 1),
                           ),
                         ),
@@ -80,7 +80,7 @@ class InformationWallet extends StatelessWidget {
                           fromAddress,
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontSize: 14.sp,
+                            fontSize: 14,
                             color: const Color.fromRGBO(255, 255, 255, 0.5),
                           ),
                         )
@@ -95,7 +95,7 @@ class InformationWallet extends StatelessWidget {
                     '${S.current.balance}: $amount $nameToken',
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
+                      fontSize: 16,
                       color: const Color.fromRGBO(255, 255, 255, 1),
                     ),
                   )

@@ -37,7 +37,7 @@ Container formSetupPassWord({
             obscureText: snapshot.data ?? true,
             style: textNormal(
               Colors.white,
-              16.sp,
+              16,
             ),
             cursorColor: Colors.white,
             controller: controller,
@@ -45,7 +45,7 @@ Container formSetupPassWord({
               hintText: hintText,
               hintStyle: textNormal(
                 Colors.grey,
-                14.sp,
+                14,
               ),
               suffixIcon: InkWell(
                   onTap: () {
@@ -101,7 +101,7 @@ Container formSetupPassWord({
             obscureText: snapshot.data ?? true,
             style: textNormal(
               Colors.white,
-              16.sp,
+              16,
             ),
             cursorColor: Colors.white,
             controller: controller,
@@ -109,7 +109,7 @@ Container formSetupPassWord({
               hintText: hintText,
               hintStyle: textNormal(
                 Colors.grey,
-                14.sp,
+                14,
               ),
               suffixIcon: InkWell(
                   onTap: () {
@@ -165,7 +165,7 @@ Container formSetupPassWord({
             obscureText: snapshot.data ?? true,
             style: textNormal(
               Colors.white,
-              16.sp,
+              16,
             ),
             cursorColor: Colors.white,
             controller: controller,
@@ -173,7 +173,7 @@ Container formSetupPassWord({
               hintText: hintText,
               hintStyle: textNormal(
                 Colors.grey,
-                14.sp,
+                14,
               ),
               suffixIcon: InkWell(
                   onTap: () {

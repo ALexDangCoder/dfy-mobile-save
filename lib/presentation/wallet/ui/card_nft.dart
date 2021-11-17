@@ -38,7 +38,7 @@ class _CardNFTState extends State<CardNFT> {
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(
-                10.sp,
+                10,
               ),
             ),
           ),
