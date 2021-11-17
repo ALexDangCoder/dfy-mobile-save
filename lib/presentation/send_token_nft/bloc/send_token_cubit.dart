@@ -30,7 +30,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
 
   //both stream below is manage confirm fee token screen
   final BehaviorSubject<bool> _isCustomizeFee =
-      BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isSufficientToken = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isShowCFBlockChain =
       BehaviorSubject<bool>.seeded(true);

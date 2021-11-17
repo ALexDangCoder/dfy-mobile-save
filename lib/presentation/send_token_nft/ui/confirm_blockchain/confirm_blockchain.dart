@@ -37,11 +37,11 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
   void initState() {
     gasPriceFirstFetch = 1.1;
     gasLimitFirstFetch = 0.624;
-    gasFeeFirstFetch = 0.6;
+    gasFeeFirstFetch = 0.4;
     informationWallet = InformationWallet(
       nameWallet: 'Test wallet',
       fromAddress: '0xFE5...4fd0',
-      amount: gasFeeFirstFetch,
+      amount: 0.3,
       nameToken: 'BNB',
       imgWallet: ImageAssets.ic_symbol,
     );
@@ -117,7 +117,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                                 txtGasPrice: txtGasPrice,
                                 txtGasLimit: txtGasLimit,
                                 balanceFirstFetch: informationWallet.amount,
-                                gasFee: 0.6,
+                                gasFee: gasFeeFirstFetch,
                                 gasLimitFirstFetch: gasLimitFirstFetch,
                                 gasPriceFirstFetch: gasPriceFirstFetch,
                               )
@@ -125,7 +125,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                                 nameToken: 'BNB',
                                 sendTokenCubit: sendTokenCubit,
                                 balance: informationWallet.amount,
-                                gasFee: 0.6,
+                                gasFee: gasFeeFirstFetch,
                               );
                       },
                     )
@@ -134,7 +134,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
               ),
             ),
             StreamBuilder<bool>(
-              initialData: gasFeeFirstFetch < informationWallet.amount,
+              initialData: gasFeeFirstFetch <= informationWallet.amount,
               stream: sendTokenCubit.isSufficientTokenStream,
               builder: (context, snapshot) {
                 return GestureDetector(

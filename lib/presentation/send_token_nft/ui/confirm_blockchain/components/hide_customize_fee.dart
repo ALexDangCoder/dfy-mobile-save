@@ -31,7 +31,7 @@ class HideCustomizeFee extends StatelessWidget {
                 ),
             child: Container(
               width: 323.w,
-              height: 83.h,
+              height: 90.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16.r)),
                 border:
@@ -61,7 +61,7 @@ class HideCustomizeFee extends StatelessWidget {
                           // initialData: gasFee < balance,
                           stream: sendTokenCubit.isSufficientTokenStream,
                           builder: (context, AsyncSnapshot<bool> snapshot) {
-                            return snapshot.data ?? gasFee < balance
+                            return snapshot.data ?? gasFee > balance
                                 //if sufficient will not show warning red text
                                 ? Expanded(
                                     child: Column(
