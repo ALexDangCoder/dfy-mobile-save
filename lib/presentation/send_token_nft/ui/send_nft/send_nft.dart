@@ -86,7 +86,7 @@ class _SendNftState extends State<SendNft> {
                             ),
                           ),
                         ).then(
-                              (_) => sendNftCubit.checkHaveVlAddressFormToken(
+                          (_) => sendNftCubit.checkHaveVlAddressFormToken(
                             txtToAddressNft.text,
                             type: typeSend.SEND_NFT,
                           ),
@@ -201,16 +201,16 @@ class _SendNftState extends State<SendNft> {
               onTap: callBack,
               child: suffixImg == ''
                   ? const SizedBox(
-                width: 0,
-              )
+                      width: 0,
+                    )
                   : ImageIcon(
-                AssetImage(suffixImg),
-                color: Colors.white,
-              ),
+                      AssetImage(suffixImg),
+                      color: Colors.white,
+                    ),
             ),
             prefixIcon: Padding(
               padding: EdgeInsets.only(
-                top: 0.h,
+                bottom: 9.h,
               ),
               child: ImageIcon(
                 AssetImage(prefixImg),
@@ -268,30 +268,30 @@ class _SendNftState extends State<SendNft> {
               onTap: callBack,
               child: (isAmount && !isQuantity)
                   ? Padding(
-                padding: EdgeInsets.only(
-                  top: 10.h,
-                  right: 20.w,
-                ),
-                child: Text(
-                  S.current.max,
-                  style: textNormal(
-                      const Color.fromRGBO(228, 172, 26, 1), 16)
-                      .copyWith(fontWeight: FontWeight.w600),
-                ),
-              )
+                      padding: EdgeInsets.only(
+                        top: 10.h,
+                        right: 20.w,
+                      ),
+                      child: Text(
+                        S.current.max,
+                        style: textNormal(
+                                const Color.fromRGBO(228, 172, 26, 1), 16)
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    )
                   : Padding(
-                padding: EdgeInsets.only(top: 20.h, right: 20.w),
-                child: Text(
-                  '${S.current.of_all} $maxQuantityFirstFetch',
-                  style: textNormal(
-                    const Color.fromRGBO(255, 255, 255, 1),
-                    16,
-                  ).copyWith(fontWeight: FontWeight.w400),
-                ),
-              ),
+                      padding: EdgeInsets.only(top: 15.h, right: 20.w),
+                      child: Text(
+                        '${S.current.of_all} $maxQuantityFirstFetch',
+                        style: textNormal(
+                          const Color.fromRGBO(255, 255, 255, 1),
+                          16,
+                        ).copyWith(fontWeight: FontWeight.w400),
+                      ),
+                    ),
             ),
             prefixIcon: Padding(
-              padding: EdgeInsets.only(top: 10.h),
+              padding: EdgeInsets.only(top: 0.h),
               child: ImageIcon(
                 AssetImage(prefixImg),
                 color: Colors.white,
