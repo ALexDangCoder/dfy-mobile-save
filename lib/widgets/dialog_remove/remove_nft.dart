@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
@@ -86,11 +87,11 @@ class RemoveNft extends StatelessWidget {
                             ),
                             Expanded(
                               child: Container(
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                   border: Border(
                                     top: BorderSide(
-                                      color: Colors.white,
-                                      width: 0.2,
+                                      color: AppTheme.getInstance().divideColor(),
+                                      width: 1.w,
                                     ),
                                   ),
                                 ),
@@ -104,7 +105,7 @@ class RemoveNft extends StatelessWidget {
                                         child: Text(
                                           S.current.cancel,
                                           style:
-                                          textNormal(null, 20.sp).copyWith(
+                                          textNormal(null, 20).copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,
                                           ),
@@ -112,7 +113,9 @@ class RemoveNft extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    const VerticalDivider(),
+                                    VerticalDivider(
+                                 color: AppTheme.getInstance().divideColor(),
+                              ),
                                     Expanded(
                                       child: InkWell(
                                         onTap: () {

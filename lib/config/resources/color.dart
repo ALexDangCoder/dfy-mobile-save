@@ -467,6 +467,7 @@ class DarkApp extends AppColor {
     throw UnimplementedError();
   }
 
+  @override
   Color successTransactionColors() {
     // TODO: implement successTransactionColors
     throw UnimplementedError();

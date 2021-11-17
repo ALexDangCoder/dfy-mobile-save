@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
@@ -27,7 +28,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaY: 1.0, sigmaX: 1.0),
       child: Center(
-        child: InkWell(
+        child: GestureDetector(
           onTap: () {
             final FocusScopeNode currentFocus = FocusScope.of(context);
 
@@ -152,7 +153,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                         stream: widget.bloc.isWalletName,
                         builder: (context, AsyncSnapshot<bool> snapshot) {
                           return SizedBox(
-                            width: 323.w,
+                            width: 343.w,
                             child: snapshot.data ?? false
                                 ? spaceH24
                                 : Container(
@@ -176,11 +177,11 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                       spaceH8,
                       Expanded(
                         child: Container(
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             border: Border(
                               top: BorderSide(
-                                color: Colors.white,
-                                width: 0.2,
+                                color: AppTheme.getInstance().divideColor(),
+                                width: 1.w,
                               ),
                             ),
                           ),
@@ -193,7 +194,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                   },
                                   child: Text(
                                     S.current.cancel,
-                                    style: textNormal(null, 20.sp).copyWith(
+                                    style: textNormal(null, 20).copyWith(
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,
                                     ),
@@ -201,7 +202,9 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                   ),
                                 ),
                               ),
-                              const VerticalDivider(),
+                               VerticalDivider(
+                                 color: AppTheme.getInstance().divideColor(),
+                              ),
                               StreamBuilder(
                                 stream: widget.bloc.isWalletName,
                                 builder:

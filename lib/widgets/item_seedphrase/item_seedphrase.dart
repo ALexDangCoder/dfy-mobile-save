@@ -12,10 +12,6 @@ class ItemSeedPhrase extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 30.h,
-      padding: EdgeInsets.symmetric(
-        vertical: 5.h,
-        horizontal: 12.w,
-      ),
       decoration: BoxDecoration(
         color: Colors.transparent,
         border: Border.all(
@@ -24,11 +20,17 @@ class ItemSeedPhrase extends StatelessWidget {
         ),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
-      child: Text(
-        title,
-        style: textNormal(
-          AppTheme.getInstance().textThemeColor(),
-          16,
+      child: Container(
+        margin: EdgeInsets.symmetric(
+          vertical: 4.h,
+          horizontal: 12.w,
+        ),
+        child: Text(
+          title,
+          style: textNormal(
+            AppTheme.getInstance().textThemeColor(),
+            16,
+          ),
         ),
       ),
     );

@@ -1,8 +1,8 @@
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 part 'change_password_state.dart';
 

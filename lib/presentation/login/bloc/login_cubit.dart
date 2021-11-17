@@ -59,7 +59,7 @@ class LoginCubit extends BaseCubit<LoginState> {
       final data = {
         'password': password,
       };
-      await trustWalletChannel.invokeMethod('checkPassword', data);
+      await  trustWalletChannel.invokeMethod('checkPassword', data);
     } on PlatformException {
 
     }

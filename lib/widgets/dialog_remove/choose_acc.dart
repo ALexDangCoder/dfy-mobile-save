@@ -49,7 +49,7 @@ class ChooseAcc extends StatelessWidget {
                           margin: EdgeInsets.only(top: 24.h, left: 26.w),
                           child: Text(
                             S.current.choose_acc,
-                            style: textNormal(Colors.white, 20.sp).copyWith(
+                            style: textNormal(Colors.white, 20).copyWith(
                               fontWeight: FontWeight.w700,
                               fontStyle: FontStyle.normal,
                             ),
@@ -103,7 +103,7 @@ class ChooseAcc extends StatelessWidget {
                                                       .walletName ??
                                                   '',
                                               style: textNormal(
-                                                      Colors.white, 20.sp)
+                                                      Colors.white, 20)
                                                   .copyWith(
                                                 fontWeight: FontWeight.w600,
                                                 fontStyle: FontStyle.normal,

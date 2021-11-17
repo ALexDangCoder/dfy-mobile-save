@@ -31,7 +31,7 @@ class RestoreCubit extends Cubit<RestoreState> {
   bool newPassField = false;
   bool conPassField = false;
   bool privateField = false;
-  bool ckc = false;
+  bool ckc = true;
 
   /// button subject
   Stream<bool> get btnStream => _buttonSubject.stream;

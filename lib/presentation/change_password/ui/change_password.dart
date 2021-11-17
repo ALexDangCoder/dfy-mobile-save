@@ -182,7 +182,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 height: 4.h,
               ),
               SizedBox(
-                width: 323.w,
+                width: 343.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
                   stream: _passwordCubit.txtWarnOldPWStream,
@@ -217,7 +217,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 height: 4.h,
               ),
               SizedBox(
-                width: 323.w,
+                width: 343.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
                   stream: _passwordCubit.txtWarnNewPWStream,
@@ -252,7 +252,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 height: 4.h,
               ),
               SizedBox(
-                width: 323.w,
+                width: 343.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
                   stream: _passwordCubit.txtWarnCfPWStream,

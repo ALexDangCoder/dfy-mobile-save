@@ -70,7 +70,7 @@ class _BodyState extends State<Body> {
               children: [
                 Container(
                   height: 28.h,
-                  width: 323.w,
+                  width: 343.w,
                   margin: EdgeInsets.only(right: 26.w, left: 26.w, top: 16.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

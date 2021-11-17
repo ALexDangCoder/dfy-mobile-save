@@ -85,7 +85,7 @@
   "password": "Password",
   "wallet_secret": "Wallet secret seed phrase",
   "password_is_not_correct": "Password is not correct",
-  "please_try_agian": "Please try agian",
+  "please_try_again": "Please try again",
   "ok": "OK",
   "password_is_required": "Password is required",
   "name_of_nft": "Name of NFT",
@@ -126,7 +126,7 @@
   "select_acc": "Select Account",
   "create_new_acc": "Create New Account",
   "import_acc": "Import Account",
-  "show_key_seed": "Show private key & seed pharse",
+  "show_key_seed": "Show private key & seed phrase",
   "face_touch_id": "Face/touch ID",
   "app_wallet_lock": "App wallet lock",
   "old_password": "Old password",
@@ -158,9 +158,7 @@
   "transaction_fail": "Fail",
   "view_on_bscscan": "View on Bscscan",
   "detail_transaction": "Detail",
-  "only_desc": "Only the first account on this wallet will auto load. Imported accounts will not be associated with your originally created account Secret Seed Phrase",
-  "change_pw_success" : "Change Successfull",
-  "imported": "Imported accounts will not be associated with your originally created account Secret Seed Phrase",
+  "change_pw_success" : "Change Successful",
   "only_desc": "Only the first account on this wallet will auto load. Imported accounts will not be associated with your originally created account Secret Seed Phrase.",
   "imported": "Imported accounts will not be associated with your originally created account Secret Seed Phrase.",
   "are_you_sure": "Are you sure you want to erase your wallet?",
@@ -168,4 +166,5 @@
   "you_can_only": "You can ONLY recover this wallet with your Secret Seed Phrase/Private Key. DeFi For You does not have your Secret Seed Phrase/Private Key.",
   "amount_invalid": "Invalid amount",
   "quantity_invalid_of_all": "Your quantity must be smaller than quantity of all"
+
 }

@@ -1,11 +1,10 @@
-import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListPassPhrase extends StatelessWidget {
-  final List<Item> listTitle;
+  final List<String> listTitle;
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
   const ListPassPhrase({
@@ -21,22 +20,17 @@ class ListPassPhrase extends StatelessWidget {
         height: 123.h,
         padding: EdgeInsets.only(right: 26.w, left: 26.w),
         child: Wrap(
-          spacing: 12.w,
+          spacing: 5.w,
           runSpacing: 12.h,
           children: List<Widget>.generate(
             listTitle.length,
             (int index) {
               return GestureDetector(
                 onTap: () {
-                  listTitle[index].isCheck = true;
-                  bLocCreateSeedPhrase.listTitle3.add(
-                    Item(title: listTitle[index].title, isCheck: true),
-                  );
-                  bLocCreateSeedPhrase.reloadListTitle();
+                  bLocCreateSeedPhrase.addListBoxSeedPhrase(listTitle[index]);
+                  bLocCreateSeedPhrase.removeListSeedPhrase(index);
                 },
-                child: listTitle[index].isCheck
-                    ? const SizedBox()
-                    : ItemSeedPhrase(title: listTitle[index].title),
+                child: ItemSeedPhrase(title: listTitle[index]),
               );
             },
           ),
