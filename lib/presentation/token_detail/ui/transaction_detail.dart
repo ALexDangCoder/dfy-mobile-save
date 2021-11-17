@@ -50,7 +50,7 @@ class TransactionDetail extends StatelessWidget {
                   textRow(
                     name: S.current.gas_fee,
                     value: customCurrency(
-                      amount: transaction.amount/123654,
+                      amount: transaction.amount / 123654,
                       digit: 8,
                       type: 'BNB',
                     ),
@@ -168,7 +168,8 @@ class TransactionDetail extends StatelessWidget {
             showCopy ? value.formatAddress : value,
             style: tokenDetailAmount(
               color: valueColor ?? AppTheme.getInstance().textThemeColor(),
-              fontSize: 16,
+              fontSize: 14,
+              weight: FontWeight.w400
             ),
           ),
           if (showCopy)
