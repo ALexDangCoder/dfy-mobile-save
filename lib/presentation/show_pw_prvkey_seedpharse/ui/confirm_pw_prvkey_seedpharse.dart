@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -12,7 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
   ConfirmPWShowPRVSeedPhr({required this.cubit, Key? key}) : super(key: key);
-
+  //todo change stl to stf to check config when init this screen
   late String password = 'Huydepzai1102.';
   final ConfirmPwPrvKeySeedpharseCubit cubit;
   TextEditingController controller = TextEditingController();
@@ -61,6 +64,43 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
           const Image(
             image: AssetImage(ImageAssets.faceID),
           ),
+
+          //todo handel scan finger or faceID
+          StreamBuilder<bool>(
+            stream: cubit.isSuccessWhenScanStream,
+            builder: (context, snapshot) {
+              return Visibility(
+                visible: cubit.isFaceID,
+                // child: BlocListener<LoginCubit, LoginState>(
+                //   bloc: _cubit,
+                  // listener: (context, state) {
+                  //   if (state is LoginSuccess) {
+                  //     Navigator.of(context).pushAndRemoveUntil(
+                  //       MaterialPageRoute(
+                  //         builder: (context) => const MainScreen(
+                  //           index: 1,
+                  //         ),
+                  //       ),
+                  //           (route) => route.isFirst,
+                  //     );
+                  //   }
+                  // },
+                  child: GestureDetector(
+                    onTap: () {
+                      cubit.authenticate(); //todo change stream not bloc
+                    },
+                    child: Platform.isIOS
+                        ? const Image(
+                      image: AssetImage(ImageAssets.faceID),
+                    )
+                        : const Image(
+                      image: AssetImage(ImageAssets.ic_finger),
+                    ),
+                  ),
+
+              );
+            }
+          )
         ],
       ),
     );
@@ -123,4 +163,5 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
       ),
     );
   }
+
 }
