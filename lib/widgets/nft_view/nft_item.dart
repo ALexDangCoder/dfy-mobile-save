@@ -121,10 +121,10 @@ class _NFTItemState extends State<NFTItem> {
                       children: [
                         Text(
                           widget.price,
-                          style: const TextStyle(
-                            color: Colors.yellow,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
+                          style: textNormalCustom(
+                            Colors.yellow,
+                            22,
+                            FontWeight.w600,
                           ),
                         ),
                         const SizedBox(

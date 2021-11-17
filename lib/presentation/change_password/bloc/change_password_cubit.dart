@@ -256,7 +256,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       {required String oldPWFetch, required String oldPW, required String newPW,
         required String confirmPW,}) {
     if (oldPW == oldPWFetch && Validator.validateStructure(newPW) &&
-        Validator.validateStructure(confirmPW)) {
+        Validator.validateStructure(confirmPW) && (newPW == confirmPW)) {
       return true;
     } else {
       return false;
