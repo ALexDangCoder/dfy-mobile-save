@@ -14,7 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TransactionDetail extends StatelessWidget {
-  final Transaction transaction;
+  final TransactionModel transaction;
 
   const TransactionDetail({
     Key? key,

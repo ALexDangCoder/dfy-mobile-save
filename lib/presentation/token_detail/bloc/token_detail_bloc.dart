@@ -6,10 +6,10 @@ import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
   static const len_mock_data = 23;
-    final List<Transaction> mocObject = List.generate(
+    final List<TransactionModel> mocObject = List.generate(
     len_mock_data,
         (index) =>
-        Transaction(
+        TransactionModel(
           title: S.current.contract_interaction,
           amount: Random().nextInt(9999),
           status: TransactionStatus
@@ -26,14 +26,14 @@ class TokenDetailBloc {
   ///todoClearFakeData
 
   int dataListLen = 4;
-  List<Transaction> transactionList = [];
+  List<TransactionModel> transactionList = [];
 
-  final BehaviorSubject<List<Transaction>> _transactionListSubject =
+  final BehaviorSubject<List<TransactionModel>> _transactionListSubject =
   BehaviorSubject();
 
   final BehaviorSubject<bool> _showMoreSubject = BehaviorSubject();
 
-  Stream<List<Transaction>> get transactionListStream =>
+  Stream<List<TransactionModel>> get transactionListStream =>
       _transactionListSubject.stream;
 
   Stream<bool> get showMoreStream => _showMoreSubject.stream;

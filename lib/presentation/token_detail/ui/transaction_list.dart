@@ -24,7 +24,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Transaction>>(
+    return StreamBuilder<List<TransactionModel>>(
       initialData: const [],
       stream: bloc.transactionListStream,
       builder: (context, snapshot) {
@@ -47,7 +47,7 @@ class TransactionList extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return transactionRow(
                             context: context,
-                            transaction: snapData?[index] ?? Transaction.init(),
+                            transaction: snapData?[index] ?? TransactionModel.init(),
                           );
                         },
                       ),
@@ -135,7 +135,7 @@ class TransactionList extends StatelessWidget {
 
   Widget transactionRow({
     required BuildContext context,
-    required Transaction transaction,
+    required TransactionModel transaction,
   }) {
     return Container(
       decoration: BoxDecoration(

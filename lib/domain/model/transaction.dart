@@ -1,6 +1,6 @@
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 
-class Transaction {
+class TransactionModel {
   String title = '';
   int amount = 0;
   TransactionStatus status = TransactionStatus.PENDING;
@@ -11,7 +11,7 @@ class Transaction {
   int nonce = 0;
   TransactionType type = TransactionType.RECEIVE;
 
-  Transaction({
+  TransactionModel({
     required this.title,
     required this.amount,
     required this.status,
@@ -23,5 +23,5 @@ class Transaction {
     required this.type,
   });
 
-  Transaction.init();
+  TransactionModel.init();
 }
