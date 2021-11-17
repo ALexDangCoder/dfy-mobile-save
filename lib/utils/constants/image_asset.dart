@@ -40,7 +40,7 @@ class ImageAssets {
   static const String ic_address = '$baseImg/ic_address.png';
   static const String ic_face_id = '$baseImg/ic_faceid.png';
   static const String ic_password = '$baseImg/ic_password.png';
-  static const String ic_group = '$baseImg/ic_group.png';
+  static const String ic_group = '$baseImg/ic_decimal.png';
   static const String ic_add_wallet = '$baseImg/ic_add_wallet.png';
   static const String ic_menu = '$baseImg/ic_menu.png';
   static const String ic_notify = '$baseImg/ic_notification.png';
