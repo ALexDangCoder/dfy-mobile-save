@@ -40,7 +40,7 @@ class ImageAssets {
   static const String ic_address = '$baseImg/ic_address.png';
   static const String ic_face_id = '$baseImg/ic_faceid.png';
   static const String ic_password = '$baseImg/ic_password.png';
-  static const String ic_group = '$baseImg/ic_group.png';
+  static const String ic_group = '$baseImg/ic_decimal.png';
   static const String ic_add_wallet = '$baseImg/ic_add_wallet.png';
   static const String ic_menu = '$baseImg/ic_menu.png';
   static const String ic_notify = '$baseImg/ic_notification.png';
@@ -53,15 +53,13 @@ class ImageAssets {
   static const String ic_expanded = '$baseImg/ic_expanded.png';
   static const String faceID = '$baseImg/face_id_icon.png';
   static const String ic_finger = '$baseImg/finger_icon.png';
-  static const String frameGreen = '$baseImg/Framegreen.png';
+  static const String frameGreen = '$baseImg/Frame.png';
   static const String ic_add = '$baseImg/ic_add.png';
   static const String ic_token = '$baseImg/ic_token.png';
   static const String ic_circle = '$baseImg/ic_circle.png';
   static const String ic_edit = '$baseImg/ic_edit.png';
-  static const String ic_face = '$baseImg/ic_faceid.png';
   static const String ic_import = '$baseImg/ic_import.png';
   static const String ic_import2 = '$baseImg/ic_import2.png';
-  static const String ic_key = '$baseImg/ic_key.png';
   static const String ic_line_down = '$baseImg/ic_line_down.png';
   static const String ic_line_right = '$baseImg/ic_line_right.png';
   static const String icTabMarketSelect =
@@ -79,11 +77,9 @@ class ImageAssets {
   static const String imgTabHome = '$baseImg/img_tab_home.png';
 
   static const String ic_to = '$baseImg/ic_to.png';
-  static const String ic_key24 = '$baseImg/ic_key24.png';
+  static const String ic_key24 = '$baseImg/key.png';
   static const String ic_from = '$baseImg/ic_from.png';
-  static const String ic_go_to = '$baseImg/To.png';
   static const String codeS = '$baseImg/Code.png';
-  static const String ic_go_from = '$baseImg/From.png';
   static const String img_card_defi = '$baseImg/card_defi.png';
   static const String ic_receive = '$baseImg/receive-square.png';
   static const String ic_send = '$baseImg/send-square.png';
@@ -113,7 +109,7 @@ class ImageAssets {
 
   ///SvgImage
   static const String ic_btn_send_token_svg = '$baseImg/ic_btn_send_token_svg.svg';
-  static const String ic_btn_receive_token_svg = '$baseImg/ic_btn_receive_token_svg.svg';
+  static const String ic_btn_receive_token_svg = '$baseImg/ic_btn_send_token_svg.svg';
   static const String ic_transaction_success_svg = '$baseImg/ic_transaction_success_svg.svg';
   static const String ic_transaction_fail_svg = '$baseImg/ic_transaction_fail_svg.svg';
   static const String ic_transaction_pending_svg = '$baseImg/ic_transaction_pending_svg.svg';

@@ -161,6 +161,8 @@
   "only_desc": "Only the first account on this wallet will auto load. Imported accounts will not be associated with your originally created account Secret Seed Phrase",
   "change_pw_success" : "Change Successfull",
   "imported": "Imported accounts will not be associated with your originally created account Secret Seed Phrase",
+  "only_desc": "Only the first account on this wallet will auto load. Imported accounts will not be associated with your originally created account Secret Seed Phrase.",
+  "imported": "Imported accounts will not be associated with your originally created account Secret Seed Phrase.",
   "are_you_sure": "Are you sure you want to erase your wallet?",
   "your_current_wallet": "Your current wallet, accounts and assets will be removed from this app permanently. This action cannot be undone.",
   "you_can_only": "You can ONLY recover this wallet with your Secret Seed Phrase/Private Key. DeFi For You does not have your Secret Seed Phrase/Private Key.",

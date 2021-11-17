@@ -28,7 +28,7 @@ class ImportBTS extends StatefulWidget {
 
 class _ImportBTSState extends State<ImportBTS> {
   late final ImportCubit importCubit;
-  List<String> listString = [S.current.only_desc, S.current.imported];
+  List<String> listString = [S.current.only_desc];
   String strValue = S.current.seed_phrase;
   bool isVisible = false;
   bool isShowNewPass = true;
@@ -63,6 +63,7 @@ class _ImportBTSState extends State<ImportBTS> {
       title: S.current.import_seed,
       child: Column(
         children: [
+          spaceH24,
           StreamBuilder<List<String>>(
             initialData: listString,
             stream: importCubit.listStringStream,
@@ -134,38 +135,37 @@ class _ImportBTSState extends State<ImportBTS> {
                                 color: AppTheme.getInstance().itemBtsColors(),
                               ),
                               child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Image.asset(
-                                    ImageAssets.ic_security,
-                                    color: Colors.white,
+                                  Flexible(
+                                    child: Image.asset(
+                                      ImageAssets.ic_security,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                  SizedBox(
-                                    width: 14.w,
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 8.h),
-                                    height: 24.h,
-                                    width: 215.w,
+                                  Flexible(
+                                    flex: 8,
                                     child: StreamBuilder<String>(
                                       stream: importCubit.stringStream,
                                       initialData: strValue,
                                       builder: (ctx, snapshot) {
                                         strValue = snapshot.data!;
-                                        return Text(
-                                          strValue,
-                                          style: textNormal(
-                                            AppTheme.getInstance()
-                                                .textThemeColor(),
-                                            16.sp,
+                                        return Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            strValue,
+                                            style: textNormal(
+                                              AppTheme.getInstance()
+                                                  .textThemeColor(),
+                                              16.sp,
+                                            ),
                                           ),
                                         );
                                       },
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 27.15.w,
-                                  ),
-                                  const Expanded(
+                                  const Flexible(
                                     child: ImageIcon(
                                       AssetImage(
                                         ImageAssets.ic_line_down,
@@ -189,7 +189,7 @@ class _ImportBTSState extends State<ImportBTS> {
                                   ? ItemForm(
                                       prefix: ImageAssets.ic_key24,
                                       hint: S.current.wallet_secret,
-                                      suffix: ImageAssets.paste,
+                                      suffix: S.current.paste,
                                       formType: FormType.PASS_PHRASE,
                                       isShow: false,
                                       controller: seedPhraseController,
@@ -234,8 +234,7 @@ class _ImportBTSState extends State<ImportBTS> {
                                     Text(
                                       S.current.or_scan,
                                       style: textNormal(
-                                        AppTheme.getInstance()
-                                            .textThemeColor(),
+                                        AppTheme.getInstance().textThemeColor(),
                                         16.sp,
                                       ).copyWith(
                                         fontWeight: FontWeight.w600,
@@ -250,8 +249,7 @@ class _ImportBTSState extends State<ImportBTS> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (ctx) => QRViewExample(
-                                              controller:
-                                                  privateKeyController,
+                                              controller: privateKeyController,
                                             ),
                                           ),
                                         );

@@ -114,7 +114,7 @@ class TransactionDetail extends StatelessWidget {
             child: Text(
               S.current.view_on_bscscan,
               style: tokenDetailAmount(
-                fontSize: 16.sp,
+                fontSize: 16,
                 weight: FontWeight.w400,
                 color: AppTheme.getInstance().blueColor(),
               ),
@@ -139,14 +139,14 @@ class TransactionDetail extends StatelessWidget {
             '$name : ',
             style: tokenDetailAmount(
               color: AppTheme.getInstance().currencyDetailTokenColor(),
-              fontSize: 14.sp,
+              fontSize: 14,
             ),
           ),
           Text(
             showCopy ? value.formatAddress : value,
             style: tokenDetailAmount(
               color: valueColor ?? AppTheme.getInstance().textThemeColor(),
-              fontSize: 16.sp,
+              fontSize: 16,
             ),
           ),
           if (showCopy)

@@ -103,6 +103,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
             title: S.current.restore_account,
             child: Column(
               children: [
+                spaceH24,
                 StreamBuilder<List<String>>(
                   initialData: listString,
                   stream: restoreCubit.listStringStream,
@@ -174,39 +175,38 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                       color: AppTheme.getInstance()
                                           .itemBtsColors(),
                                     ),
-                                    child: Row(
+                                    child:  Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Image.asset(
-                                          ImageAssets.ic_security,
-                                          color: Colors.white,
+                                        Flexible(
+                                          child: Image.asset(
+                                            ImageAssets.ic_security,
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                        SizedBox(
-                                          width: 14.w,
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(top: 8.h),
-                                          height: 24.h,
-                                          width: 215.w,
+                                        Flexible(
+                                          flex: 8,
                                           child: StreamBuilder<String>(
                                             stream: restoreCubit.stringStream,
                                             initialData: strValue,
                                             builder: (ctx, snapshot) {
                                               strValue = snapshot.data!;
-                                              return Text(
-                                                strValue,
-                                                style: textNormal(
-                                                  AppTheme.getInstance()
-                                                      .textThemeColor(),
-                                                  16.sp,
+                                              return Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  strValue,
+                                                  style: textNormal(
+                                                    AppTheme.getInstance()
+                                                        .textThemeColor(),
+                                                    16.sp,
+                                                  ),
                                                 ),
                                               );
                                             },
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 27.15.w,
-                                        ),
-                                        const Expanded(
+                                        const Flexible(
                                           child: ImageIcon(
                                             AssetImage(
                                               ImageAssets.ic_line_down,
@@ -230,7 +230,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                         ? ItemForm(
                                             prefix: ImageAssets.ic_key24,
                                             hint: S.current.wallet_secret,
-                                            suffix: ImageAssets.paste,
+                                            suffix: S.current.paste,
                                             formType: FormType.PASS_PHRASE,
                                             isShow: false,
                                             cubit: restoreCubit,
@@ -450,9 +450,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                     );
                   },
                 ),
-                SizedBox(
-                  height: 40.h,
-                ),
+                spaceH40,
                 Container(
                   margin: EdgeInsets.only(
                     left: 23.w,
@@ -520,6 +518,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                     },
                   ),
                 ),
+                spaceH38
               ],
             ),
           ),

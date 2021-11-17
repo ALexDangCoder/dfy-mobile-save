@@ -1,16 +1,14 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
-import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/components/header.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
 import 'package:Dfy/presentation/private_key_seed_phrase/ui/private_key_seed_phrase.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'components/header.dart';
 
 class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
   ConfirmPWShowPRVSeedPhr({required this.cubit, Key? key}) : super(key: key);
@@ -21,33 +19,16 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 375.w,
-      height: 764.h,
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(62, 61, 92, 1),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.r),
-          topRight: Radius.circular(30.r),
-        ),
-      ),
+    return BaseBottomSheet(
+      title: S.current.prv_key_ft_seed_phr,
+      text: ImageAssets.ic_close,
+      isImage: true,
+      callback: () {
+        Navigator.pop(context);
+      },
       child: Column(
         children: [
-          headerPRVAndSeedPhr(
-            leftFunction: () {
-              Navigator.pop(context);
-            },
-            rightFunction: () {
-              Navigator.pop(context);
-            },
-          ),
-          Divider(
-            thickness: 1,
-            color: AppTheme.getInstance().divideColor(),
-          ),
-          SizedBox(
-            height: 24.h,
-          ),
+          spaceH24,
           formSetupPassWordConfirm(
             hintText: S.current.enter_password,
             controller: controller,
@@ -88,7 +69,7 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
   }) {
     return Container(
       height: 64.h,
-      width: 323.w,
+      width: 343.w,
       padding: EdgeInsets.only(
         top: 12.h,
         bottom: 12.h,

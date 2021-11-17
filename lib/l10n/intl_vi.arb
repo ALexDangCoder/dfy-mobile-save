@@ -117,7 +117,7 @@
   "remove": "Xóa",
   "are_you_sure_token": "Bạn có chắc chắn muốn xóa mã thông báo này không?",
   "select_account": "Chọn tài khoản",
-  "imported": "ĐÃ NHẬP KHẨU",
+  "imported": "Các tài khoản đã nhập sẽ không được liên kết với tài khoản được tạo ban đầu của bạn Secret seed phrase",
   "are_you_sure_acc": "Bạn có chắc chắn muốn xóa tài khoản này không?",
   "enter_name": "Điền tên",
   "choose_acc": "Chọn tài khoản",
