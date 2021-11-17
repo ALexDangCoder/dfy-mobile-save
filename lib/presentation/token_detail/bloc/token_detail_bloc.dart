@@ -1,62 +1,62 @@
 import 'dart:math' hide log;
+import 'package:Dfy/domain/model/transaction.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
   static const len_mock_data = 23;
-  final List<String> mockData =
-      List.generate(len_mock_data, (index) => S.current.contract_interaction);
-  final List<TransactionStatus> mockStatus = List.generate(
+    final List<TransactionModel> mocObject = List.generate(
     len_mock_data,
-    (index) => TransactionStatus
-        .values[Random().nextInt(TransactionStatus.values.length)],
+        (index) =>
+        TransactionModel(
+          title: S.current.contract_interaction,
+          amount: Random().nextInt(9999),
+          status: TransactionStatus
+              .values[Random().nextInt(TransactionStatus.values.length)],
+          time: DateTime.now(),
+          txhId: '0xaaa042c0632f4d44c7cea978f22cd02e751a410e',
+          from: '0xaaa042c0632f4d44c7cea978f22cd02e751a410e',
+          to: '0xaaa042c0632f4d44c7cea978f22cd02e751a410e',
+          nonce: Random().nextInt(9999),
+          type: TransactionType.values[Random().nextInt(
+            TransactionType.values.length,)],
+        ),
   );
-  final List<TransactionType> mockType = List.generate(
-      len_mock_data,
-          (index) => TransactionType
-          .values[Random().nextInt(TransactionType.values.length)],);
-  final List<DateTime> mockDate =
-      List.generate(len_mock_data, (index) => DateTime.now());
-  final List<int> mockAmount =
-      List.generate(len_mock_data, (index) => Random().nextInt(5000));
   ///todoClearFakeData
 
   int dataListLen = 4;
-  List<String> transactionList = [];
+  List<TransactionModel> transactionList = [];
 
-  final BehaviorSubject<List<String>> _transactionListSubject =
-      BehaviorSubject();
+  final BehaviorSubject<List<TransactionModel>> _transactionListSubject =
+  BehaviorSubject();
 
   final BehaviorSubject<bool> _showMoreSubject = BehaviorSubject();
 
-  Stream<List<String>> get transactionListStream =>
+  Stream<List<TransactionModel>> get transactionListStream =>
       _transactionListSubject.stream;
 
   Stream<bool> get showMoreStream => _showMoreSubject.stream;
 
-  void adData() {
-    _transactionListSubject.sink.add(mockData);
-  }
 
   void checkData() {
-    if (mockData.length <= dataListLen) {
-      _transactionListSubject.sink.add(mockData);
+    if (mocObject.length <= dataListLen) {
+      _transactionListSubject.sink.add(mocObject);
       hideShowMore();
     } else {
-      transactionList = mockData.sublist(0, dataListLen);
+      transactionList = mocObject.sublist(0, dataListLen);
       _transactionListSubject.sink.add(transactionList);
       _showMoreSubject.sink.add(true);
     }
   }
 
   void showMore() {
-    if (mockData.length - transactionList.length > 10) {
+    if (mocObject.length - transactionList.length > 10) {
       transactionList.addAll(
-        mockData.sublist(transactionList.length, transactionList.length + 10),
+        mocObject.sublist(transactionList.length, transactionList.length + 10),
       );
     } else {
-      transactionList = mockData;
+      transactionList = mocObject;
       hideShowMore();
     }
     _transactionListSubject.sink.add(transactionList);
@@ -85,7 +85,7 @@ enum TransactionStatus {
   FAILED,
   PENDING,
 }
-enum TransactionType{
+enum TransactionType {
   SEND,
   RECEIVE,
 }
