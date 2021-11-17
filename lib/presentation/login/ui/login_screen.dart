@@ -6,7 +6,6 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/login/ui/alert_import_pop_up.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
@@ -393,7 +392,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 4.h,
               ),
               Text(
-                text ?? S.current.please_try_agian,
+                text ?? S.current.please_try_again,
                 style: textNormalCustom(
                   Colors.white,
                   12,

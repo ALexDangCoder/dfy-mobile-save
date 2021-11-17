@@ -105,7 +105,7 @@ class RemoveAcc extends StatelessWidget {
                                         child: Text(
                                           S.current.cancel,
                                           style:
-                                              textNormal(null, 20.sp).copyWith(
+                                              textNormal(null, 20).copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,
                                           ),

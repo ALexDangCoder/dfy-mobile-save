@@ -30,24 +30,24 @@ class SendTokenCubit extends Cubit<SendTokenState> {
 
   //both stream below is manage confirm fee token screen
   final BehaviorSubject<bool> _isCustomizeFee =
-      BehaviorSubject<bool>();
+  BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isSufficientToken = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isShowCFBlockChain =
-      BehaviorSubject<bool>.seeded(true);
+  BehaviorSubject<bool>.seeded(true);
 
   //stream below regex amount form and address
   final BehaviorSubject<bool> _isValidAddressForm =
-      BehaviorSubject<bool>.seeded(false);
+  BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _isValidAmountForm =
-      BehaviorSubject<bool>.seeded(false);
+  BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _isValidQuantityForm =
-      BehaviorSubject<bool>.seeded(false);
+  BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<String> _txtInvalidAddressForm =
-      BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtInvalidAmount =
-      BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtInvalidQuantityForm =
-      BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String>.seeded('');
 
   //stream
   Stream<String> get fromFieldStream => _formField.stream;

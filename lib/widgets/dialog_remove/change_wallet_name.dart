@@ -27,7 +27,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaY: 1.0, sigmaX: 1.0),
       child: Center(
-        child: InkWell(
+        child: GestureDetector(
           onTap: () {
             final FocusScopeNode currentFocus = FocusScope.of(context);
 
@@ -193,7 +193,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                   },
                                   child: Text(
                                     S.current.cancel,
-                                    style: textNormal(null, 20.sp).copyWith(
+                                    style: textNormal(null, 20).copyWith(
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,
                                     ),

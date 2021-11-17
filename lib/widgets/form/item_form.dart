@@ -76,7 +76,7 @@ class ItemForm extends StatelessWidget {
                   padding: EdgeInsets.only(top: 12.h),
                   child: Text(
                     S.current.paste,
-                    style: textNormal(AppTheme.getInstance().fillColor(), 16.sp)
+                    style: textNormal(AppTheme.getInstance().fillColor(), 16)
                         .copyWith(
                       fontWeight: FontWeight.w400,
                     ),
@@ -130,7 +130,7 @@ class ItemForm extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10.h),
                 child: Text(
                   suffix,
-                  style: textNormal(AppTheme.getInstance().fillColor(), 16.sp)
+                  style: textNormal(AppTheme.getInstance().fillColor(), 16)
                       .copyWith(
                     fontWeight: FontWeight.w400,
                   ),

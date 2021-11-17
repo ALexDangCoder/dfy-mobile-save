@@ -154,7 +154,7 @@
   "warn_cf_pw": "Mật khẩu xác nhận không khớp",
   "warn_old_pw_not_match": "Mật khẩu cũ không đúng",
   "password_is_not_correct": "Mật khẩu không chính xác",
-  "please_try_agian": "Vui lòng thử lại",
+  "please_try_again": "Vui lòng thử lại",
   "login": "Đăng nhập",
   "new_wallet": "Ví mới",
   "password_is_required": "Vui lòng điền mật khẩu",
