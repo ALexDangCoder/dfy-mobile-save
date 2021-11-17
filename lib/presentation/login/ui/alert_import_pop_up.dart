@@ -150,14 +150,14 @@ class AlertPopUp extends StatelessWidget {
                                   backgroundColor: Colors.transparent,
                                   context: context,
                                   builder: (context) => const RestoreBTS(),
-                                ).then((value) => Navigator.pop(context));
+                                ).then((_) => Navigator.pop(context));
                               } : () {
                                 showModalBottomSheet(
                                   isScrollControlled: true,
                                   backgroundColor: Colors.transparent,
                                   context: context,
                                   builder: (context) => const SetupPassWord(),
-                                ).then((value) => Navigator.pop(context));
+                                ).then((_) => Navigator.pop(context));
                               } ,
                               child: SizedBox(
                                 width: 156.w,

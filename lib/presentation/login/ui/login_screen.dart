@@ -55,6 +55,13 @@ class _LoginScreenState extends State<LoginScreen> {
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
     _cubit.getConfig();
   }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _cubit.close();
+    super.dispose();
+
+  }
 
   @override
   Widget build(BuildContext context) {

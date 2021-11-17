@@ -54,7 +54,7 @@ class BaseBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
-                    child: InkWell(
+                    child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
                       },

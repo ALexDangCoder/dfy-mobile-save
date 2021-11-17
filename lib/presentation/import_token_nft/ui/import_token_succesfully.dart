@@ -45,30 +45,33 @@ void showTokenSuccessfully(BuildContext context) {
             spaceH20,
             line,
             spaceH24,
-            SizedBox(
-              height: 56.h,
-            ),
-            SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(ImageAssets.frameGreen),
-                    SizedBox(
-                      height: 22.h,
-                    ),
-                    Text(
-                      S.current.congratulation,
-                      style: textNormalCustom(
-                        Colors.white,
-                        32,
-                        FontWeight.bold,
+
+            Expanded(
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 56.h,
                       ),
-                    ),
-                    SizedBox(
-                      height: 213.h,
-                    ),
-                  ],
+                      Image.asset(ImageAssets.frameGreen),
+                      SizedBox(
+                        height: 22.h,
+                      ),
+                      Text(
+                        S.current.congratulation,
+                        style: textNormalCustom(
+                          Colors.white,
+                          32,
+                          FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 231.h,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
