@@ -72,7 +72,7 @@ class CheckPassCubit extends Cubit<CheckPassState> {
     } else if (value.isEmpty) {
       _flagNewPW = false;
       validatePWSink.add(true);
-      txtWarningNewPWSink.add(S.current.warn_pw_required);
+      txtWarningNewPWSink.add(S.current.password_is_required);
       isEnableBtnSink.add(false);
     } else if (!Validator.validateStructure(value)) {
       _flagNewPW = false;
