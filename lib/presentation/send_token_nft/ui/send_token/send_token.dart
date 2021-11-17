@@ -181,10 +181,10 @@ class _SendTokenState extends State<SendToken> {
           ),
           Text(
             '${S.current.send} $nameToken',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
+            style: textNormalCustom(
+              Colors.white,
+              20,
+              FontWeight.w700,
             ),
           ),
           SizedBox(
@@ -243,10 +243,10 @@ class _SendTokenState extends State<SendToken> {
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: readOnly
-                ? TextStyle(
-                    color: const Color.fromRGBO(255, 255, 255, 1),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                ? textNormalCustom(
+                    Colors.white,
+                    16,
+                    FontWeight.w400,
                   )
                 : textNormal(
                     Colors.grey,
@@ -332,10 +332,10 @@ class _SendTokenState extends State<SendToken> {
                       ),
                       child: Text(
                         S.current.max,
-                        style: TextStyle(
-                          color: const Color.fromRGBO(228, 172, 26, 1),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
+                        style: textNormalCustom(
+                          const Color.fromRGBO(228, 172, 26, 1),
+                          16,
+                          FontWeight.w600,
                         ),
                       ),
                     )
@@ -345,10 +345,10 @@ class _SendTokenState extends State<SendToken> {
                       ),
                       child: Text(
                         '${S.current.of_all} 10',
-                        style: TextStyle(
-                          color: const Color.fromRGBO(255, 255, 255, 1),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                        style: textNormalCustom(
+                          const Color.fromRGBO(255, 255, 255, 1),
+                          16,
+                          FontWeight.w400,
                         ),
                       ),
                     ),
@@ -380,18 +380,19 @@ class _SendTokenState extends State<SendToken> {
                 width: 323.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
-                    initialData: '',
-                    stream: tokenCubit.txtInvalidAddressFormStream,
-                    builder: (context, snapshot) {
-                      return Text(
-                        snapshot.data ?? '',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: const Color.fromRGBO(255, 108, 108, 1),
-                        ),
-                      );
-                    }),
+                  initialData: '',
+                  stream: tokenCubit.txtInvalidAddressFormStream,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: textNormalCustom(
+                        const Color.fromRGBO(255, 108, 108, 1),
+                        12,
+                        FontWeight.w400,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
@@ -421,10 +422,10 @@ class _SendTokenState extends State<SendToken> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w400,
-                        color: const Color.fromRGBO(255, 108, 108, 1),
+                      style: textNormalCustom(
+                        const Color.fromRGBO(255, 108, 108, 1),
+                        12,
+                        FontWeight.w400,
                       ),
                     );
                   },

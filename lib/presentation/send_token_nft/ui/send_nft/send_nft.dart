@@ -186,7 +186,7 @@ class _SendNftState extends State<SendNft> {
           },
           style: textNormal(
             Colors.white,
-            16.sp,
+            16,
           ),
           cursorColor: Colors.white,
           // controller: controller,
@@ -195,7 +195,7 @@ class _SendNftState extends State<SendNft> {
             hintText: hintText,
             hintStyle: textNormal(
               Colors.grey,
-              14.sp,
+              14,
             ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -318,7 +318,7 @@ class _SendNftState extends State<SendNft> {
         children: [
           Text(
             '${S.current.send} $nameSend',
-            style: textNormal(Colors.white, 20.sp)
+            style: textNormal(Colors.white, 20)
                 .copyWith(fontWeight: FontWeight.w700),
           ),
           SizedBox(

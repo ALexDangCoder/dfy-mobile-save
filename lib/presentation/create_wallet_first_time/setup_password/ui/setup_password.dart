@@ -153,7 +153,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     return Text(
                       snapshot.data ?? '',
                       style:
-                          textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                          textNormal(AppTheme.getInstance().wrongColor(), 12)
                               .copyWith(fontWeight: FontWeight.w400),
                     );
                   },
@@ -186,7 +186,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     return Text(
                       snapshot.data ?? '',
                       style:
-                          textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                          textNormal(AppTheme.getInstance().wrongColor(), 12)
                               .copyWith(fontWeight: FontWeight.w400),
                     );
                   },
@@ -247,7 +247,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
             // height: 48.h,
             child: Text(
               S.current.understand_defi,
-              style: textNormal(const Color.fromRGBO(255, 255, 255, 1), 14.sp)
+              style: textNormal(const Color.fromRGBO(255, 255, 255, 1), 14)
                   .copyWith(fontWeight: FontWeight.w400),
             ),
           ),
@@ -344,7 +344,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               isValidPassCubit.checkHaveValueConfirmPW(value);
             },
             obscureText: snapshot.data ?? false,
-            style: textNormal(Colors.white, 16.sp)
+            style: textNormal(Colors.white, 16)
                 .copyWith(fontWeight: FontWeight.w400),
             cursorColor: Colors.white,
             controller: confirmPassword,
@@ -394,7 +394,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         // height: 72.h,
         child: Text(
           S.current.please,
-          style: textNormal(const Color.fromRGBO(255, 255, 255, 1.0), 16.sp)
+          style: textNormal(const Color.fromRGBO(255, 255, 255, 1.0), 16)
               .copyWith(fontWeight: FontWeight.w400),
         ),
       ),
@@ -426,7 +426,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
           Text(
             S.current.create_new_wallet,
-            style: textNormal(Colors.white, 20.sp)
+            style: textNormal(Colors.white, 20)
                 .copyWith(fontWeight: FontWeight.w700),
           ),
           IconButton(

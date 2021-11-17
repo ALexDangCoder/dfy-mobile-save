@@ -60,10 +60,10 @@ class ShowCustomizeFee extends StatelessWidget {
                     children: [
                       Text(
                         '${S.current.estimate_gas_fee} :',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                        style: textNormalCustom(
+                          Colors.white,
+                          16,
+                          FontWeight.w600,
                         ),
                       ),
                       StreamBuilder<bool>(
@@ -89,10 +89,10 @@ class ShowCustomizeFee extends StatelessWidget {
                                             child: Text(
                                               '${snapshot.data ?? balanceFirstFetch.toString()}'
                                               ' $nameToken',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16.sp,
-                                                color: Colors.white,
+                                              style: textNormalCustom(
+                                                Colors.white,
+                                                16,
+                                                FontWeight.w600,
                                               ),
                                             ),
                                           );
@@ -114,10 +114,10 @@ class ShowCustomizeFee extends StatelessWidget {
                                         builder: (context, snapshot) {
                                           return Text(
                                             '${snapshot.data} $nameToken',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16,
-                                              color: Colors.red,
+                                            style: textNormalCustom(
+                                              Colors.red,
+                                              16,
+                                              FontWeight.w600,
                                             ),
                                           );
                                         },
@@ -127,10 +127,10 @@ class ShowCustomizeFee extends StatelessWidget {
                                       ),
                                       Text(
                                         S.current.insufficient_balance,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.red,
+                                        style: textNormalCustom(
+                                          Colors.red,
+                                          12,
+                                          FontWeight.w400,
                                         ),
                                       ),
                                     ],
@@ -175,10 +175,10 @@ class ShowCustomizeFee extends StatelessWidget {
                             children: [
                               Text(
                                 S.current.gas_limit,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
+                                style: textNormalCustom(
+                                  Colors.white,
+                                  14,
+                                  FontWeight.w400,
                                 ),
                               ),
                               formType(
@@ -205,10 +205,10 @@ class ShowCustomizeFee extends StatelessWidget {
                             children: [
                               Text(
                                 '${S.current.gas_price} (GWEI)',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
+                                style: textNormalCustom(
+                                  Colors.white,
+                                  16,
+                                  FontWeight.w400,
                                 ),
                               ),
                               formType(
@@ -260,10 +260,10 @@ class ShowCustomizeFee extends StatelessWidget {
       ),
       child: Text(
         S.current.hide_customize_fee,
-        style: TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
-          color: const Color.fromRGBO(70, 188, 255, 1),
+        style: textNormalCustom(
+          const Color.fromRGBO(70, 188, 255, 1),
+          14,
+          FontWeight.w400,
         ),
       ),
     );
@@ -334,10 +334,10 @@ class ShowCustomizeFee extends StatelessWidget {
       ),
       child: Text(
         S.current.reset,
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          color: Colors.white,
+        style: textNormalCustom(
+          Colors.white,
+          14,
+          FontWeight.w400,
         ),
       ),
     );

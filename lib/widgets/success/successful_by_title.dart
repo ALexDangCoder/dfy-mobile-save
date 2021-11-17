@@ -40,7 +40,7 @@ void showSuccessfulByTitle({
               child: Text(
                 title,
                 style: TextStyle(
-                  fontSize: 20.sp,
+                  fontSize: 20,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
@@ -65,7 +65,7 @@ void showSuccessfulByTitle({
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 32.sp,
+                          fontSize: 32,
                         ),
                       ),
                       SizedBox(
