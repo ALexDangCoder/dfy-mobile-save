@@ -152,7 +152,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                         stream: widget.bloc.isWalletName,
                         builder: (context, AsyncSnapshot<bool> snapshot) {
                           return SizedBox(
-                            width: 323.w,
+                            width: 343.w,
                             child: snapshot.data ?? false
                                 ? spaceH24
                                 : Container(

@@ -41,7 +41,7 @@ class ShowCustomizeFee extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.only(top: 8.h),
-            width: 323.w,
+            width: 343.w,
             height: 321.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(16.r)),

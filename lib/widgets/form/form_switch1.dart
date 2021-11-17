@@ -21,9 +21,9 @@ class FromSwitch1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 323.w,
+      width: 343.w,
       height: 64.h,
-      margin: EdgeInsets.symmetric(horizontal: 26.w),
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
       //padding: EdgeInsets.symmetric(horizontal: 15.5.w),
       decoration: const BoxDecoration(
         color: Color(0xff32324c),

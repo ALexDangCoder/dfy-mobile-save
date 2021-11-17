@@ -14,6 +14,7 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase.dart';
 import 'package:Dfy/widgets/list_passphrase/list_passphrase.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,7 +38,7 @@ void showCreateSeedPhrase2(
     },
   ).whenComplete(
     () => {
-      bLocCreateSeedPhrase.reloadListSeedPhrase1(),
+      bLocCreateSeedPhrase.resetPassPhrase(),
       bLocCreateSeedPhrase.isSeedPhraseImportFailed.sink.add(false),
     },
   );
@@ -101,11 +102,12 @@ class _BodyState extends State<Body> {
             ),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 height: 28.h,
-                width: 323.w,
-                margin: EdgeInsets.only(right: 26.w, left: 26.w, top: 16.h),
+                width: 343.w,
+                margin: EdgeInsets.only(right: 16.w, left: 16.w, top: 16.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -157,10 +159,9 @@ class _BodyState extends State<Body> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(right: 26.w, left: 26.w),
+                        margin: EdgeInsets.only(right: 16.w, left: 16.w),
                         child: Text(
                           S.current.tap_the_word,
                           style: textNormal(
@@ -171,17 +172,20 @@ class _BodyState extends State<Body> {
                       ),
                       spaceH20,
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           StreamBuilder(
                             stream: bLocCreateSeedPhrase.listSeedPhrase,
                             builder: (
                               context,
-                              AsyncSnapshot<List<Item>> snapshot,
+                              AsyncSnapshot<List<String>> snapshot,
                             ) {
                               final listSeedPhrase = snapshot.data;
-                              return BoxListPassWordPhrase(
-                                listTitle: listSeedPhrase ?? [],
-                                bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+                              return Center(
+                                child: BoxListPassWordPhrase(
+                                  listTitle: listSeedPhrase ?? [],
+                                  bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+                                ),
                               );
                             },
                           ),
@@ -190,8 +194,10 @@ class _BodyState extends State<Body> {
                                 bLocCreateSeedPhrase.isSeedPhraseImportFailed,
                             builder: (context, AsyncSnapshot<bool> snapshot) {
                               bLocCreateSeedPhrase.getIsSeedPhraseImport2();
-                              return SizedBox(
-                                width: 323.w,
+                              return Container(
+                                margin:
+                                    EdgeInsets.only(right: 16.w, left: 16.w),
+                                width: 343.w,
                                 child: snapshot.data ?? false
                                     ? Text(
                                         S.current.invalid_order,
@@ -206,7 +212,7 @@ class _BodyState extends State<Body> {
                             stream: bLocCreateSeedPhrase.listTitle,
                             builder: (
                               BuildContext context,
-                              AsyncSnapshot<List<Item>> snapshot,
+                              AsyncSnapshot<List<String>> snapshot,
                             ) {
                               bLocCreateSeedPhrase.getIsSeedPhraseImport2();
                               final listTitle = snapshot.data;

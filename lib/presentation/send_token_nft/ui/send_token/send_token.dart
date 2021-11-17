@@ -199,7 +199,7 @@ class _SendTokenState extends State<SendToken> {
         minHeight: 64.h,
       ),
       child: Container(
-        width: 323.w,
+        width: 343.w,
         padding: EdgeInsets.only(
           top: 12.h,
           bottom: 12.h,
@@ -270,7 +270,7 @@ class _SendTokenState extends State<SendToken> {
         minHeight: 64.h,
       ),
       child: Container(
-        width: 323.w,
+        width: 343.w,
         padding: EdgeInsets.only(
           top: 12.h,
           bottom: 12.h,
@@ -353,7 +353,7 @@ class _SendTokenState extends State<SendToken> {
                 height: 4.h,
               ),
               SizedBox(
-                width: 323.w,
+                width: 343.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
                     initialData: '',
@@ -389,7 +389,7 @@ class _SendTokenState extends State<SendToken> {
                 height: 4.h,
               ),
               SizedBox(
-                width: 323.w,
+                width: 343.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
                     initialData: '',

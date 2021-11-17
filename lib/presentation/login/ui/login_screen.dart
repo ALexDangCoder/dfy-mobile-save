@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 4.h,
                   ),
                   SizedBox(
-                    width: 323.w,
+                    width: 343.w,
                     child: Visibility(
                       visible: errorText,
                       child: Text(

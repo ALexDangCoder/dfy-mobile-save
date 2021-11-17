@@ -17,7 +17,7 @@ class CheckBoxCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 26.w, left: 26.w),
+      margin: EdgeInsets.only(right: 16.w, left: 16.w),
       child: Row(
         children: [
           StreamBuilder(

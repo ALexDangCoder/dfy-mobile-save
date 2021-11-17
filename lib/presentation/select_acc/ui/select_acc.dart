@@ -59,7 +59,7 @@ class _SelectAccState extends State<SelectAcc> {
         children: [
           Container(
             height: 28.h,
-            width: 323.w,
+            width: 343.w,
             margin: EdgeInsets.only(right: 26.w, left: 16.w, top: 16.h),
             child: Row(
               children: [

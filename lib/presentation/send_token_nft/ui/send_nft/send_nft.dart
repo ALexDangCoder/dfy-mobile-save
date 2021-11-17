@@ -143,7 +143,7 @@ class _SendNftState extends State<SendNft> {
     return ConstrainedBox(
       constraints: BoxConstraints(minHeight: 64.h),
       child: Container(
-        width: 323.w,
+        width: 343.w,
         padding: EdgeInsets.only(
           top: 10.h,
           bottom: 10.h,
@@ -211,7 +211,7 @@ class _SendNftState extends State<SendNft> {
         minHeight: 64.h,
       ),
       child: Container(
-        width: 323.w,
+        width: 343.w,
         padding: EdgeInsets.only(
           top: 12.h,
           bottom: 12.h,
@@ -322,7 +322,7 @@ class _SendNftState extends State<SendNft> {
                 height: 4.h,
               ),
               SizedBox(
-                width: 323.w,
+                width: 343.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
                     initialData: '',
@@ -358,7 +358,7 @@ class _SendNftState extends State<SendNft> {
                 height: 4.h,
               ),
               SizedBox(
-                width: 323.w,
+                width: 343.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
                   initialData: '',

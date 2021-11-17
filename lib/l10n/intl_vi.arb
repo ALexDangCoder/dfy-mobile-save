@@ -106,7 +106,7 @@
   "token_address": "Token địa chỉ",
   "token_symbol": "Biểu tượng token",
   "token_decimal": "Giá trị token ",
-  "invalid_order": "Giao dịch không hợp lệ",
+  "invalid_order": "Chuỗi không hợp lệ",
   "enter_token": "Điền token",
   "choose_token": "Chọn token",
   "search_token": "Tìm kiếm token",

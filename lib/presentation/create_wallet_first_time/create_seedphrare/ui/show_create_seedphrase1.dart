@@ -106,7 +106,7 @@ class _BodyState extends State<Body> {
                 children: [
                   Container(
                     height: 28.h,
-                    width: 323.w,
+                    width: 343.w,
                     margin: EdgeInsets.only(right: 26.w, left: 26.w, top: 16.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,9 +159,9 @@ class _BodyState extends State<Body> {
                       child: Column(
                         children: [
                           Container(
-                            width: 323.w,
+                            width: 343.w,
                             height: 64.h,
-                            margin: EdgeInsets.symmetric(horizontal: 26.w),
+                            margin: EdgeInsets.symmetric(horizontal: 16.w),
                             padding: EdgeInsets.only(right: 15.w, left: 15.w),
                             decoration: const BoxDecoration(
                               color: Color(0xff32324c),
@@ -230,7 +230,7 @@ class _BodyState extends State<Body> {
                             ),
                           ),
                           SizedBox(
-                            width: 323.w,
+                            width: 343.w,
                             child: widget.blocCreateSeedPhrase.isWalletName()
                                 ? null
                                 : Text(

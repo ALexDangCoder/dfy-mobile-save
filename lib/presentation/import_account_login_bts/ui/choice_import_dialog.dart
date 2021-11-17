@@ -26,7 +26,7 @@ class _CustomDialogState extends State<ChoiceDialog> {
   Widget build(BuildContext context) {
     return Container(
       height: 124.h,
-      width: 323.w,
+      width: 343.w,
       decoration: BoxDecoration(
         color: AppTheme.getInstance().selectDialogColor(),
         borderRadius: const BorderRadius.all(
@@ -51,7 +51,7 @@ class _CustomDialogState extends State<ChoiceDialog> {
             child: Container(
               margin: EdgeInsets.only(left: 24.w),
               height: 44.h,
-              width: 323.w,
+              width: 343.w,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -80,7 +80,7 @@ class _CustomDialogState extends State<ChoiceDialog> {
             child: Container(
               margin: EdgeInsets.only(left: 24.w),
               height: 44.h,
-              width: 323.w,
+              width: 343.w,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(

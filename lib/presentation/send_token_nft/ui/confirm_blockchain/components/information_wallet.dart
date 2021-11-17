@@ -26,7 +26,7 @@ class InformationWallet extends StatelessWidget {
         right: 26.w,
       ),
       child: Container(
-        width: 323.w,
+        width: 343.w,
         height: 74.h,
         decoration: BoxDecoration(
           // color: const Color.fromRGBO(255, 255, 255, 0.1),
