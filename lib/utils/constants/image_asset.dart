@@ -61,7 +61,6 @@ class ImageAssets {
   static const String ic_face = '$baseImg/ic_faceid.png';
   static const String ic_import = '$baseImg/ic_import.png';
   static const String ic_import2 = '$baseImg/ic_import2.png';
-  static const String ic_key = '$baseImg/ic_key.png';
   static const String ic_line_down = '$baseImg/ic_line_down.png';
   static const String ic_line_right = '$baseImg/ic_line_right.png';
   static const String icTabMarketSelect =
@@ -79,7 +78,7 @@ class ImageAssets {
   static const String imgTabHome = '$baseImg/img_tab_home.png';
 
   static const String ic_to = '$baseImg/ic_to.png';
-  static const String ic_key24 = '$baseImg/ic_key24.png';
+  static const String ic_key24 = '$baseImg/key.png';
   static const String ic_from = '$baseImg/ic_from.png';
   static const String ic_go_to = '$baseImg/To.png';
   static const String codeS = '$baseImg/Code.png';
