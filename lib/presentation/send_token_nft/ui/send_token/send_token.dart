@@ -327,29 +327,24 @@ class _SendTokenState extends State<SendToken> {
               child: (isAmount && !isQuantity)
                   ? Padding(
                       padding: EdgeInsets.only(
-                        top: 15.h,
-                        right: 10.w,
+                        top: 10.h,
+                        right: 20.w,
                       ),
                       child: Text(
                         S.current.max,
-                        style: textNormalCustom(
-                          const Color.fromRGBO(228, 172, 26, 1),
-                          16,
-                          FontWeight.w600,
-                        ),
+                        style: textNormal(
+                                const Color.fromRGBO(228, 172, 26, 1), 16)
+                            .copyWith(fontWeight: FontWeight.w600),
                       ),
                     )
                   : Padding(
-                      padding: EdgeInsets.only(
-                        top: 20.h,
-                      ),
+                      padding: EdgeInsets.only(top: 15.h, right: 20.w),
                       child: Text(
                         '${S.current.of_all} 10',
-                        style: textNormalCustom(
+                        style: textNormal(
                           const Color.fromRGBO(255, 255, 255, 1),
                           16,
-                          FontWeight.w400,
-                        ),
+                        ).copyWith(fontWeight: FontWeight.w400),
                       ),
                     ),
             ),
