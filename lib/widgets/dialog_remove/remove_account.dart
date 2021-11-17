@@ -98,7 +98,7 @@ class RemoveAcc extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: GestureDetector(
+                                      child: InkWell(
                                         onTap: () {
                                           Navigator.pop(context);
                                         },
@@ -115,7 +115,7 @@ class RemoveAcc extends StatelessWidget {
                                     ),
                                     const VerticalDivider(),
                                     Expanded(
-                                      child: GestureDetector(
+                                      child: InkWell(
                                         onTap: () {
                                           bloc.listSelectAccBloc
                                               .removeAt(index);

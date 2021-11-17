@@ -97,7 +97,7 @@ class RemoveNft extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: GestureDetector(
+                                      child: InkWell(
                                         onTap: () {
                                           Navigator.pop(context);
                                         },
@@ -114,7 +114,7 @@ class RemoveNft extends StatelessWidget {
                                     ),
                                     const VerticalDivider(),
                                     Expanded(
-                                      child: GestureDetector(
+                                      child: InkWell(
                                         onTap: () {
                                           cubit.listNFT.removeAt(index);
                                           cubit.getListNFTItem();
