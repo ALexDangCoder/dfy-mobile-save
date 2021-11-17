@@ -1,5 +1,6 @@
 import 'package:Dfy/config/base/base_screen.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/home/ui/home_screen.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
@@ -87,22 +88,41 @@ class _MainScreenState extends BaseState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      resizeToAvoidBottomInset: false,
-      body: StreamBuilder(
-        stream: _cubit.indexStream,
-        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-          return Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              _pages.elementAt(snapshot.data ?? tabHomeIndex),
-              CustomBottomHomeAppbar(
-                mainCubit: _cubit,
+    DateTime? _lastQuitTime;
+    return WillPopScope(
+      onWillPop: () async {
+        if (_lastQuitTime == null ||
+            DateTime.now().difference(_lastQuitTime!).inSeconds > 1) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                S.current.out_app,
               ),
-            ],
+            ),
           );
-        },
+          _lastQuitTime = DateTime.now();
+          return Future.value(false);
+        } else {
+          return Future.value(true);
+        }
+      },
+      child: Scaffold(
+        key: scaffoldKey,
+        resizeToAvoidBottomInset: false,
+        body: StreamBuilder(
+          stream: _cubit.indexStream,
+          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+            return Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                _pages.elementAt(snapshot.data ?? tabHomeIndex),
+                CustomBottomHomeAppbar(
+                  mainCubit: _cubit,
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

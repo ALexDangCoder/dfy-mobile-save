@@ -98,7 +98,7 @@ class RemoveToken extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: GestureDetector(
+                                      child: InkWell(
                                         onTap: () {
                                           Navigator.pop(context);
                                         },
@@ -115,9 +115,10 @@ class RemoveToken extends StatelessWidget {
                                     ),
                                     const VerticalDivider(),
                                     Expanded(
-                                      child: GestureDetector(
+                                      child: InkWell(
                                         onTap: () {
-                                          cubit.listTokenDetailScreen.removeAt(index);
+                                          cubit.listTokenDetailScreen
+                                              .removeAt(index);
                                           cubit.totalBalance.add(
                                             cubit.total(
                                               cubit.listTokenStream.value,

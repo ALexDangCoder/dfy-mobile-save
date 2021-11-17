@@ -27,7 +27,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaY: 1.0, sigmaX: 1.0),
       child: Center(
-        child: GestureDetector(
+        child: InkWell(
           onTap: () {
             final FocusScopeNode currentFocus = FocusScope.of(context);
 
@@ -128,7 +128,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                     (context, AsyncSnapshot<bool> snapshot) {
                                   return SizedBox(
                                     child: snapshot.data ?? false
-                                        ? GestureDetector(
+                                        ? InkWell(
                                             onTap: () {
                                               widget.textEditingController
                                                   .text = '';
@@ -187,7 +187,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                           child: Row(
                             children: [
                               Expanded(
-                                child: GestureDetector(
+                                child: InkWell(
                                   onTap: () {
                                     Navigator.pop(context);
                                   },
@@ -207,7 +207,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                 builder:
                                     (context, AsyncSnapshot<bool> snapshot) {
                                   return Expanded(
-                                    child: GestureDetector(
+                                    child: InkWell(
                                       onTap: () {
                                         if (snapshot.data ?? false) {
                                           final String value =

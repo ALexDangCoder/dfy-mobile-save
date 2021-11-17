@@ -55,7 +55,7 @@ class ChooseAcc extends StatelessWidget {
                             ),
                           ),
                         ),
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
                             Navigator.pop(context);
                           },
@@ -75,7 +75,7 @@ class ChooseAcc extends StatelessWidget {
                           shrinkWrap: true,
                           itemCount: bloc.listWallet.length,
                           itemBuilder: (context, index) {
-                            return GestureDetector(
+                            return InkWell(
                               onTap: () {
                                 bloc.index.sink.add(index);
                                 Navigator.pop(context);

@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
@@ -61,7 +62,7 @@ class _NFTItemState extends State<NFTItem> {
             visible: !_customTileExpanded,
             child: Divider(
               height: 1.h,
-              color: const Color(0xFF4b4a60),
+              color: AppTheme.getInstance().divideColor(),
             ),
           ),
           Theme(

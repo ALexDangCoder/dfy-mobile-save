@@ -30,7 +30,7 @@ class AlertPopUp extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(36)),
             child: SizedBox(
               width: 312.w,
-              height: 300.h,
+              height: 310.h,
               child: Column(
                 children: [
                   Padding(
@@ -93,7 +93,7 @@ class AlertPopUp extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: 61.h,
+                    height: 50.h,
                     decoration: const BoxDecoration(
                       border: Border(
                         top: BorderSide(
