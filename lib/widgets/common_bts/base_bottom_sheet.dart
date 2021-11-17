@@ -88,7 +88,7 @@ class BaseBottomSheet extends StatelessWidget {
                           margin: EdgeInsets.only(
                             top: 5.h,
                             left: 11.w,
-                            right: 11.w,
+                            //right: 11.w,
                           ),
                           child: isImage ?? false
                               ? Image.asset(text ?? '')
