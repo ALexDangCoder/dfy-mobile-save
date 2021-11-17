@@ -56,14 +56,14 @@ class _FormSearchState extends State<FormSearch> {
                 cursorColor: Colors.white,
                 style: textNormal(
                   Colors.white54,
-                  16.sp,
+                  16,
                 ),
                 decoration: InputDecoration(
                   counterText: '',
                   hintText: widget.hint,
                   hintStyle: textNormal(
                     Colors.white54,
-                    16.sp,
+                    16,
                   ),
                   border: InputBorder.none,
                 ),

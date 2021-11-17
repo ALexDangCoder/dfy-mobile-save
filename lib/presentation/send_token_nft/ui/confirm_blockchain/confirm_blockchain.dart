@@ -171,7 +171,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
           Text(
             '${S.current.send} $nameToken',
             style: TextStyle(
-              fontSize: 20.sp,
+              fontSize: 20,
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),

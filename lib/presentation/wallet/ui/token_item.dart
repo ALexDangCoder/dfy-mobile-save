@@ -91,7 +91,7 @@ class TokenItem extends StatelessWidget {
                         '$amount $nameToken',
                         style: textNormalCustom(
                           Colors.white,
-                          20.sp,
+                          20,
                           FontWeight.w600,
                         ),
                       ),
@@ -99,7 +99,7 @@ class TokenItem extends StatelessWidget {
                         '\$ $price',
                         style: textNormalCustom(
                           Colors.grey.shade400,
-                          16.sp,
+                          16,
                           FontWeight.w400,
                         ),
                       ),

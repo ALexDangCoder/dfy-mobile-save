@@ -37,7 +37,7 @@ class ButtonGold extends StatelessWidget {
           title,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
-            20.sp,
+            20,
           ).copyWith(fontWeight: FontWeight.bold),
         ),
       ),

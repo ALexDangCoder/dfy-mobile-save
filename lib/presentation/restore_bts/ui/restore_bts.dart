@@ -118,7 +118,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                             listString.first,
                             style: textNormal(
                               AppTheme.getInstance().textThemeColor(),
-                              16.sp,
+                              16,
                             ),
                           ),
                         ),
@@ -130,7 +130,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                             listString[1],
                             style: textNormal(
                               AppTheme.getInstance().textThemeColor(),
-                              16.sp,
+                              16,
                             ),
                           )
                         else
@@ -199,7 +199,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                                   style: textNormal(
                                                     AppTheme.getInstance()
                                                         .textThemeColor(),
-                                                    16.sp,
+                                                    16,
                                                   ),
                                                 ),
                                               );
@@ -334,7 +334,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                             style: textNormal(
                                               AppTheme.getInstance()
                                                   .textThemeColor(),
-                                              16.sp,
+                                              16,
                                             ).copyWith(
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -438,7 +438,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                 textAlign: TextAlign.start,
                                 style: textNormal(
                                   const Color.fromRGBO(255, 255, 255, 1),
-                                  14.sp,
+                                  14,
                                 ).copyWith(
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -500,7 +500,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                 S.current.restore,
                                 style: textNormal(
                                   AppTheme.getInstance().textThemeColor(),
-                                  20.sp,
+                                  20,
                                 ),
                               ),
                             )
@@ -510,7 +510,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                   S.current.restore,
                                   style: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
-                                    20.sp,
+                                    20,
                                   ),
                                 ),
                               ),
@@ -544,7 +544,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                   S.current.warning_seed,
                   style: textNormal(
                     AppTheme.getInstance().wrongColor(),
-                    12.sp,
+                    12,
                   ).copyWith(
                     fontWeight: FontWeight.w400,
                   ),
@@ -575,7 +575,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                   S.current.not_match,
                   style: textNormal(
                     AppTheme.getInstance().wrongColor(),
-                    12.sp,
+                    12,
                   ).copyWith(
                     fontWeight: FontWeight.w400,
                   ),
@@ -603,7 +603,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                 S.current.pass_must,
                 style: textNormal(
                   AppTheme.getInstance().wrongColor(),
-                  12.sp,
+                  12,
                 ).copyWith(
                   fontWeight: FontWeight.w400,
                 ),

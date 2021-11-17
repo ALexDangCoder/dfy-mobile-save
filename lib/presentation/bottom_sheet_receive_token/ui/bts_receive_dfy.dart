@@ -113,7 +113,7 @@ class _ReceiveState extends State<Receive> {
                     textAlign: TextAlign.center,
                     style: textNormalCustom(
                       null,
-                      18.sp,
+                      18,
                       FontWeight.w300,
                     ),
                   ),
@@ -144,7 +144,7 @@ class _ReceiveState extends State<Receive> {
                         '${receiveCubit.value} BNB',
                         style: textNormal(
                           AppTheme.getInstance().fillColor(),
-                          24.sp,
+                          24,
                         ).copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -153,7 +153,7 @@ class _ReceiveState extends State<Receive> {
                         formatUSD.format(19990.3932212),
                         style: textNormal(
                           Colors.grey.withOpacity(0.5),
-                          16.sp,
+                          16,
                         ).copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -278,7 +278,7 @@ class _ReceiveState extends State<Receive> {
               height: 22.h,
               child: Text(
                 label,
-                style: textNormalCustom(null, 16.sp, FontWeight.w400),
+                style: textNormalCustom(null, 16, FontWeight.w400),
               ),
             ),
           ),
@@ -309,7 +309,7 @@ class _ReceiveState extends State<Receive> {
                     S.current.saved,
                     style: textNormal(
                       null,
-                      20.sp,
+                      20,
                     ).copyWith(
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
@@ -358,7 +358,7 @@ class _ReceiveState extends State<Receive> {
         S.current.receive_dfy,
         style: textNormal(
           null,
-          20.sp,
+          20,
         ).copyWith(
           fontWeight: FontWeight.w700,
           fontStyle: FontStyle.normal,
@@ -369,7 +369,7 @@ class _ReceiveState extends State<Receive> {
         S.current.receive_nft,
         style: textNormal(
           null,
-          20.sp,
+          20,
         ).copyWith(
           fontWeight: FontWeight.w700,
           fontStyle: FontStyle.normal,
@@ -380,7 +380,7 @@ class _ReceiveState extends State<Receive> {
         S.current.scan_qr_code,
         style: textNormal(
           null,
-          20.sp,
+          20,
         ).copyWith(
           fontWeight: FontWeight.w700,
           fontStyle: FontStyle.normal,

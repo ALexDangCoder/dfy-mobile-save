@@ -60,7 +60,7 @@ class AlertPopUp extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: textNormal(
                                 AppTheme.getInstance().wrongColor(),
-                                20.sp,
+                                20,
                               ).copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -79,7 +79,7 @@ class AlertPopUp extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: textNormal(
                                 AppTheme.getInstance().whiteColor(),
-                                12.sp,
+                                12,
                               ).copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -98,7 +98,7 @@ class AlertPopUp extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: textNormal(
                                 AppTheme.getInstance().whiteColor(),
-                                12.sp,
+                                12,
                               ).copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -166,7 +166,7 @@ class AlertPopUp extends StatelessWidget {
                                     S.current.continue_s,
                                     style: textNormal(
                                       AppTheme.getInstance().wrongColor(),
-                                      20.sp,
+                                      20,
                                     ).copyWith(
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,

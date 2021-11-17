@@ -60,7 +60,7 @@ class _CustomDialogState extends State<ChoiceDialog> {
                   S.current.seed_phrase,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
-                    16.sp,
+                    16,
                   ),
                 ),
               ),
@@ -90,7 +90,7 @@ class _CustomDialogState extends State<ChoiceDialog> {
                   S.current.private_key,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
-                    16.sp,
+                    16,
                   ),
                 ),
               ),

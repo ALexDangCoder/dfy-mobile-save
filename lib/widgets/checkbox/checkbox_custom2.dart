@@ -49,7 +49,7 @@ class CheckBoxCustom2 extends StatelessWidget {
               title,
               style: textNormal(
                 AppTheme.getInstance().textThemeColor(),
-                14.sp,
+                14,
               ),
             ),
           )

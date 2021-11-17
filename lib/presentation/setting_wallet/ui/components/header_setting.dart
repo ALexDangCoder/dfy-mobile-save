@@ -33,7 +33,7 @@ Container headerSetting({
           S.current.setting,
           style: textNormalCustom(
             Colors.white,
-            20.sp,
+            20,
             FontWeight.bold,
           ),
         ),
@@ -53,7 +53,7 @@ Container headerSetting({
             S.current.lock,
             style: textNormalCustom(
               const Color.fromRGBO(228, 172, 26, 1),
-              16.sp,
+              16,
               FontWeight.w700,
             ),
           ),

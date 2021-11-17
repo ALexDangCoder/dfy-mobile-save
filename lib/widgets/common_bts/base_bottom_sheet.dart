@@ -96,7 +96,7 @@ class BaseBottomSheet extends StatelessWidget {
                                   text ?? '',
                                   style: textNormalCustom(
                                     AppTheme.getInstance().fillColor(),
-                                    16.sp,
+                                    16,
                                     FontWeight.w700,
                                   ),
                                 ),

@@ -49,7 +49,7 @@ class FromText extends StatelessWidget {
                   title,
                   style: textNormal(
                     Colors.grey,
-                    16.sp,
+                    16,
                   ),
                 ),
               ),

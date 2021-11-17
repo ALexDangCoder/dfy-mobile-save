@@ -75,7 +75,7 @@ class _BodyState extends State<Body> {
                                   S.current.invalid_address,
                                   style: textNormal(
                                     Colors.red,
-                                    14.sp,
+                                    14,
                                   ),
                                   textAlign: TextAlign.start,
                                 ),
