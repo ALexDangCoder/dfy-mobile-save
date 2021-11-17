@@ -5,6 +5,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/login/ui/alert_import_pop_up.dart';
@@ -303,13 +304,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return const SetupPassWord();
-                            },
+                          Navigator.of(context).push(
+                            HeroDialogRoute(
+                              builder: (context) {
+                                return const AlertPopUp(type: KeyType.CREATE,);
+                              },
+                              isNonBackground: false,
+                            ),
                           );
                         },
                         child: Text(
@@ -339,7 +340,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp();
+                                return const AlertPopUp(type: KeyType.IMPORT,);
                               },
                               isNonBackground: false,
                             ),

@@ -539,7 +539,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                 height: 4.h,
               ),
               SizedBox(
-                width: 323.w,
+                width: 343.w,
                 child: Text(
                   S.current.warning_seed,
                   style: textNormal(
@@ -569,7 +569,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                 height: 4.h,
               ),
               SizedBox(
-                width: 323.w,
+                width: 343.w,
                 height: 30.h,
                 child: Text(
                   S.current.not_match,
