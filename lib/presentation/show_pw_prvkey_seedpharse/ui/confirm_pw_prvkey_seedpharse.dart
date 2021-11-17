@@ -88,7 +88,7 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
         },
         style: textNormal(
           Colors.white,
-          16.sp,
+          16,
         ),
         cursorColor: Colors.white,
         controller: controller,
@@ -96,7 +96,7 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
           hintText: hintText,
           hintStyle: textNormal(
             Colors.grey,
-            14.sp,
+            14,
           ),
           suffixIcon: InkWell(
             onTap: () {},

@@ -117,7 +117,7 @@ class ChooseAcc extends StatelessWidget {
                                               ),
                                               style: textNormal(
                                                 Colors.white.withOpacity(0.5),
-                                                16.sp,
+                                                16,
                                               ).copyWith(
                                                 fontWeight: FontWeight.w400,
                                                 fontStyle: FontStyle.normal,

@@ -45,7 +45,7 @@ class FormInputNumber extends StatelessWidget {
                 cursorColor: Colors.white,
                 style: textNormal(
                   Colors.white54,
-                  16.sp,
+                  16,
                 ),
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -53,7 +53,7 @@ class FormInputNumber extends StatelessWidget {
                   hintText: hint,
                   hintStyle: textNormal(
                     Colors.white54,
-                    16.sp,
+                    16,
                   ),
                   border: InputBorder.none,
                 ),

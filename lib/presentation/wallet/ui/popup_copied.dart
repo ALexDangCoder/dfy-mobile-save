@@ -31,7 +31,7 @@ class Copied extends StatelessWidget {
                   'Copied address !',//todo text
                   style: textNormal(
                     null,
-                    20.sp,
+                    20,
                   ).copyWith(
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.normal,

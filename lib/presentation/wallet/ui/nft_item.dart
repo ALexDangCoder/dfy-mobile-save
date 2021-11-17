@@ -79,7 +79,7 @@ class _NFTItemState extends State<NFTItem> {
                   _customTileExpanded
                       ? const AssetImage(ImageAssets.ic_line_down)
                       : const AssetImage(ImageAssets.ic_line_right),
-                  size: 24.sp,
+                  size: 24,
                   color: Colors.white,
                 ),
               ),
@@ -101,7 +101,7 @@ class _NFTItemState extends State<NFTItem> {
                       widget.nameNFT,
                       style: textNormalCustom(
                         Colors.white,
-                        20.sp,
+                        20,
                         FontWeight.w600,
                       ),
                     ),

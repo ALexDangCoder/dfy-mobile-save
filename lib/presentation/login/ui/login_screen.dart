@@ -5,6 +5,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/login/ui/alert_import_pop_up.dart';
@@ -118,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: ImageIcon(
                                const AssetImage( ImageAssets.ic_lock),
                                 color: AppTheme.getInstance().whiteColor(),
-                                size: 24.sp,
+                                size: 24,
                               ),
                             ),
                             SizedBox(
@@ -139,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 cursorColor:
                                     AppTheme.getInstance().whiteColor(),
                                 style: TextStyle(
-                                  fontSize: 18.sp,
+                                  fontSize: 18,
                                   color: AppTheme.getInstance().whiteColor(),
                                 ),
                                 controller: controller,
@@ -150,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   hintText: S.current.password,
                                   hintStyle: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
-                                    18.sp,
+                                    18,
                                   ),
                                   border: InputBorder.none,
                                 ),
@@ -196,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         S.current.password_is_required,
                         style: textNormal(
                           Colors.red,
-                          12.sp,
+                          12,
                         ).copyWith(
                           fontWeight: FontWeight.w400,
                         ),
@@ -217,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     S.current.login,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20.sp,
+                                      20,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -229,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     S.current.login,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20.sp,
+                                      20,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -303,20 +304,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return const SetupPassWord();
-                            },
+                          Navigator.of(context).push(
+                            HeroDialogRoute(
+                              builder: (context) {
+                                return const AlertPopUp(type: KeyType.CREATE,);
+                              },
+                              isNonBackground: false,
+                            ),
                           );
                         },
                         child: Text(
                           S.current.new_wallet,
                           style: textNormal(
                             Colors.amber,
-                            18.sp,
+                            18,
                           ),
                         ),
                       ),
@@ -339,7 +340,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp();
+                                return const AlertPopUp(type: KeyType.IMPORT,);
                               },
                               isNonBackground: false,
                             ),
@@ -349,7 +350,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           S.current.import_seed_phrase,
                           style: textNormal(
                             Colors.amber,
-                            18.sp,
+                            18,
                           ),
                         ),
                       ),
@@ -384,7 +385,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 alert ?? S.current.password_is_not_correct,
                 style: textNormalCustom(
                   Colors.white,
-                  20.sp,
+                  20,
                   FontWeight.w700,
                 ),
               ),
@@ -395,7 +396,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 text ?? S.current.please_try_agian,
                 style: textNormalCustom(
                   Colors.white,
-                  12.sp,
+                  12,
                   FontWeight.w400,
                 ),
               ),
@@ -412,7 +413,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   S.current.ok,
                   style: textNormalCustom(
                     AppTheme.getInstance().fillColor(),
-                    20.sp,
+                    20,
                     FontWeight.w700,
                   ),
                 ),

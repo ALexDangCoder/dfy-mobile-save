@@ -45,8 +45,10 @@ class _CustomDialogState extends State<ChoiceDialog> {
               widget.cubit.listStringSink.add(
                 [S.current.restore_with_seed, S.current.only_first],
               );
-              widget.controller1.clear();
+
               widget.cubit.boolSink.add(false);
+              widget.cubit.btnSink.add(false);
+              widget.controller1.clear();
             },
             child: Container(
               margin: EdgeInsets.only(left: 24.w),
@@ -58,7 +60,7 @@ class _CustomDialogState extends State<ChoiceDialog> {
                   S.current.seed_phrase,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
-                    16.sp,
+                    16,
                   ),
                 ),
               ),
@@ -74,8 +76,9 @@ class _CustomDialogState extends State<ChoiceDialog> {
               widget.cubit.listStringSink.add(
                 [S.current.restore_with_private],
               );
-              widget.controller2.clear();
               widget.cubit.boolSink.add(false);
+              widget.cubit.btnSink.add(false);
+              widget.controller2.clear();
             },
             child: Container(
               margin: EdgeInsets.only(left: 24.w),
@@ -87,7 +90,7 @@ class _CustomDialogState extends State<ChoiceDialog> {
                   S.current.private_key,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
-                    16.sp,
+                    16,
                   ),
                 ),
               ),

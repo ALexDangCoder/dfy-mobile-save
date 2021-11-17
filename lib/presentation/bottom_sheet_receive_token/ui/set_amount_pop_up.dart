@@ -56,7 +56,7 @@ class SetAmountPopUp extends StatelessWidget {
                             S.current.set_amount,
                             style: textNormal(
                               null,
-                              20.sp,
+                              20,
                             ).copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -128,7 +128,7 @@ class SetAmountPopUp extends StatelessWidget {
                                     S.current.confirm,
                                     style: textNormal(
                                       AppTheme.getInstance().fillColor(),
-                                      20.sp,
+                                      20,
                                     ).copyWith(
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,

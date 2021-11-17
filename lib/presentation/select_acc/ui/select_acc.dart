@@ -82,7 +82,7 @@ class _SelectAccState extends State<SelectAcc> {
                     S.current.select_acc,
                     style: textNormalCustom(
                       Colors.white,
-                      20.sp,
+                      20,
                       FontWeight.bold,
                     ),
                   ),
@@ -163,7 +163,7 @@ class _SelectAccState extends State<SelectAcc> {
                                                   '',
                                               style: textNormalCustom(
                                                 Colors.white,
-                                                16.sp,
+                                                16,
                                                 FontWeight.w700,
                                               ),
                                             ),
@@ -178,7 +178,7 @@ class _SelectAccState extends State<SelectAcc> {
                                                 Colors.white.withOpacity(
                                                   0.5,
                                                 ),
-                                                14.sp,
+                                                14,
                                                 FontWeight.w400,
                                               ),
                                             ),
@@ -189,7 +189,7 @@ class _SelectAccState extends State<SelectAcc> {
                                               ?.toStringAsFixed(5)} BNB',
                                           style: textNormalCustom(
                                             Colors.white,
-                                            16.sp,
+                                            16,
                                             FontWeight.w400,
                                           ),
                                         ),
@@ -226,7 +226,7 @@ class _SelectAccState extends State<SelectAcc> {
                                                   Colors.white.withOpacity(
                                                     0.5,
                                                   ),
-                                                  11.sp,
+                                                  11,
                                                 ),
                                                 textAlign: TextAlign.center,
                                               ),

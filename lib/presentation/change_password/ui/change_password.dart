@@ -151,7 +151,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     return Text(
                       snapshot.data ?? '',
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: const Color.fromRGBO(255, 108, 108, 1),
                       ),
@@ -186,7 +186,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     return Text(
                       snapshot.data ?? '',
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: const Color.fromRGBO(255, 108, 108, 1),
                       ),
@@ -221,7 +221,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     return Text(
                       snapshot.data ?? '',
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: const Color.fromRGBO(255, 108, 108, 1),
                       ),

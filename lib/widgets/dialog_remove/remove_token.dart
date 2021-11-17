@@ -131,7 +131,7 @@ class RemoveToken extends StatelessWidget {
                                           S.current.remove,
                                           style: textNormal(
                                             const Color(0xffE4AC1A),
-                                            20.sp,
+                                            20,
                                           ).copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,

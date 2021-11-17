@@ -44,7 +44,7 @@ class ItemForm extends StatelessWidget {
           padding: EdgeInsets.only(
             top: 10.h,
             bottom: 10.h,
-            right: 12.w,
+            //right: 12.w,
           ),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
@@ -56,7 +56,7 @@ class ItemForm extends StatelessWidget {
             controller: controller,
             style: textNormal(
               Colors.white,
-              16.sp,
+              16,
             ),
             onChanged: (value) {
               cubit?.checkSeedField(value);
@@ -68,7 +68,7 @@ class ItemForm extends StatelessWidget {
               hintText: hint,
               hintStyle: textNormal(
                 Colors.grey,
-                16.sp,
+                16,
               ),
               suffixIcon: InkWell(
                 onTap: callback,
@@ -99,7 +99,7 @@ class ItemForm extends StatelessWidget {
         padding: EdgeInsets.only(
           top: 12.h,
           bottom: 12.h,
-          right: 10.w,
+          //right: 10.w,
         ),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(
@@ -112,7 +112,7 @@ class ItemForm extends StatelessWidget {
           obscureText: isShow,
           style: textNormal(
             Colors.white,
-            16.sp,
+            16,
           ),
           onChanged: (value) {
             cubit?.checkPrivateField(value);
@@ -122,7 +122,7 @@ class ItemForm extends StatelessWidget {
             hintText: hint,
             hintStyle: textNormal(
               Colors.grey,
-              16.sp,
+              16,
             ),
             suffixIcon: InkWell(
               onTap: callback,
@@ -171,14 +171,14 @@ class ItemForm extends StatelessWidget {
                 ],
                 style: textNormal(
                   Colors.white,
-                  16.sp,
+                  16,
                 ),
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
                   hintText: hint,
                   hintStyle: textNormal(
                     Colors.grey,
-                    16.sp,
+                    16,
                   ),
                   suffixIcon: InkWell(
                     onTap: callback,
@@ -188,7 +188,7 @@ class ItemForm extends StatelessWidget {
                         suffix,
                         style: textNormal(
                           AppTheme.getInstance().fillColor(),
-                          16.sp,
+                          16,
                         ),
                       ),
                     ),
@@ -208,7 +208,7 @@ class ItemForm extends StatelessWidget {
               'BNB',
               style: textNormal(
                 Colors.grey,
-                16.sp,
+                16,
               ),
             ),
           ],
@@ -233,7 +233,7 @@ class ItemForm extends StatelessWidget {
           obscureText: isShow,
           style: textNormal(
             Colors.white,
-            16.sp,
+            16,
           ),
           onChanged: passType == PassType.CON
               ? (value) {
@@ -247,7 +247,7 @@ class ItemForm extends StatelessWidget {
             hintText: hint,
             hintStyle: textNormal(
               Colors.grey,
-              16.sp,
+              16,
             ),
             suffixIcon: InkWell(
               onTap: callback,

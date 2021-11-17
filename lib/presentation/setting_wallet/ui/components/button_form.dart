@@ -22,7 +22,7 @@ Container buttonForm({
         IconButton(onPressed: () {}, icon: Image.asset(prefixIcon)),
         Text(
           hintText,
-          style: textNormalCustom(Colors.white, 16.sp, FontWeight.w400),
+          style: textNormalCustom(Colors.white, 16, FontWeight.w400),
         )
       ],
     ),
@@ -54,7 +54,7 @@ Container switchForm({
         switchType: SwitchType.cupertino,
         title: Text(
           hintText,
-          style: textNormalCustom(Colors.white, 16.sp, FontWeight.w400),
+          style: textNormalCustom(Colors.white, 16, FontWeight.w400),
         ),
       ),
     );
@@ -78,7 +78,7 @@ Container switchForm({
         switchType: SwitchType.cupertino,
         title: Text(
           hintText,
-          style: textNormalCustom(Colors.white, 16.sp, FontWeight.w400),
+          style: textNormalCustom(Colors.white, 16, FontWeight.w400),
         ),
       ),
     );

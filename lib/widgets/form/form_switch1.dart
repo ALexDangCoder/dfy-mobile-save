@@ -43,7 +43,7 @@ class FromSwitch1 extends StatelessWidget {
             title,
             style: textNormal(
               Colors.white54,
-              16.sp,
+              16,
             ),
           ),
         ),

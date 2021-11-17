@@ -271,7 +271,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
             obscureText: snapshot.data ?? false,
             style: textNormal(
               Colors.white,
-              16.sp,
+              16,
             ),
             cursorColor: Colors.white,
             controller: password,
@@ -279,7 +279,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               hintText: hintText,
               hintStyle: textNormal(
                 Colors.grey,
-                14.sp,
+                14,
               ),
               suffixIcon: InkWell(
                 onTap: () {
@@ -340,7 +340,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               hintText: hintText,
               hintStyle: textNormal(
                 Colors.grey,
-                14.sp,
+                14,
               ),
               suffixIcon: InkWell(
                 onTap: () {

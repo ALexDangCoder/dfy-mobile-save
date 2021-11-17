@@ -1,8 +1,8 @@
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/restore_bts/ui/restore_bts.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddWalletFtSeedPharse extends StatefulWidget {
@@ -93,7 +93,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
           child: Text(
             S.current.pls_import_seed,
             style: TextStyle(
-              fontSize: 20.sp,
+              fontSize: 20,
               fontWeight: FontWeight.w600,
               color: const Color.fromRGBO(228, 172, 26, 1),
             ),
@@ -131,7 +131,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                     S.current.add_wallet,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 20.sp,
+                      fontSize: 20,
                       color: const Color.fromRGBO(228, 172, 26, 1),
                     ),
                   ),
@@ -167,7 +167,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                 Text(
                   S.current.wallet,
                   style: TextStyle(
-                    fontSize: 20.sp,
+                    fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: const Color.fromRGBO(255, 255, 255, 1),
                   ),
@@ -178,7 +178,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                 Text(
                   S.current.smart_chain,
                   style: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: const Color.fromRGBO(189, 189, 189, 1),
                   ),
