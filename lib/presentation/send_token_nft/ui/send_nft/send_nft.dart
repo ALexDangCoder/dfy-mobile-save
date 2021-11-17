@@ -210,7 +210,7 @@ class _SendNftState extends State<SendNft> {
             ),
             prefixIcon: Padding(
               padding: EdgeInsets.only(
-                top: 0.h,
+                bottom: 9.h,
               ),
               child: ImageIcon(
                 AssetImage(prefixImg),
@@ -280,7 +280,7 @@ class _SendNftState extends State<SendNft> {
                       ),
                     )
                   : Padding(
-                      padding: EdgeInsets.only(top: 20.h, right: 20.w),
+                      padding: EdgeInsets.only(top: 15.h, right: 20.w),
                       child: Text(
                         '${S.current.of_all} $maxQuantityFirstFetch',
                         style: textNormal(
@@ -291,7 +291,7 @@ class _SendNftState extends State<SendNft> {
                     ),
             ),
             prefixIcon: Padding(
-              padding: EdgeInsets.only(top: 10.h),
+              padding: EdgeInsets.only(top: 0.h),
               child: ImageIcon(
                 AssetImage(prefixImg),
                 color: Colors.white,

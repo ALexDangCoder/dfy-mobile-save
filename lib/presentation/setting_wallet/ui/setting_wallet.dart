@@ -53,14 +53,14 @@ class SettingWallet extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (_) {
-                          return const SendToken();
-                        },
-                      );
+                      // showModalBottomSheet(
+                      //   isScrollControlled: true,
+                      //   backgroundColor: Colors.transparent,
+                      //   context: context,
+                      //   builder: (_) {
+                      //     return const SendToken();
+                      //   },
+                      // );
                     },
                     child: buttonForm(
                       hintText: 'Dapp',
