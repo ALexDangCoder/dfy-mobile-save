@@ -255,14 +255,14 @@ class _SendNftState extends State<SendNft> {
           controller: txtQuantity,
           style: textNormal(
             Colors.white,
-            16.sp,
+            16,
           ),
           cursorColor: Colors.white,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: textNormal(
               Colors.grey,
-              14.sp,
+              14,
             ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -358,7 +358,7 @@ class _SendNftState extends State<SendNft> {
                         snapshot.data ?? '',
                         style: textNormalCustom(
                           const Color.fromRGBO(255, 108, 108, 1),
-                          12.sp,
+                          12,
                           FontWeight.w400,
                         ),
                       );
@@ -394,7 +394,7 @@ class _SendNftState extends State<SendNft> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         const Color.fromRGBO(255, 108, 108, 1),
-                        12.sp,
+                        12,
                         FontWeight.w400,
                       ),
                     );

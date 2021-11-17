@@ -128,7 +128,7 @@ class _BodyState extends State<Body> {
                           S.current.create_new_wallet,
                           style: textNormalCustom(
                             Colors.white,
-                            20.sp,
+                            20,
                             FontWeight.bold,
                           ),
                         ),
@@ -187,7 +187,7 @@ class _BodyState extends State<Body> {
                                       cursorColor: Colors.white,
                                       style: textNormal(
                                         Colors.white54,
-                                        16.sp,
+                                        16,
                                       ),
                                       onChanged: (value) {
                                         widget.blocCreateSeedPhrase.isButton();
@@ -196,7 +196,7 @@ class _BodyState extends State<Body> {
                                         hintText: S.current.name_wallet,
                                         hintStyle: textNormal(
                                           Colors.white54,
-                                          16.sp,
+                                          16,
                                         ),
                                         counterText: '',
                                         border: InputBorder.none,
@@ -237,7 +237,7 @@ class _BodyState extends State<Body> {
                                     S.current.name_not_null,
                                     style: textNormal(
                                       Colors.red,
-                                      14.sp,
+                                      14,
                                     ),
                                     textAlign: TextAlign.start,
                                   ),

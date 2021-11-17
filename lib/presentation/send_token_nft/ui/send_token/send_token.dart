@@ -182,7 +182,7 @@ class _SendTokenState extends State<SendToken> {
           Text(
             '${S.current.send} $nameToken',
             style: TextStyle(
-              fontSize: 20.sp,
+              fontSize: 20,
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
@@ -237,7 +237,7 @@ class _SendTokenState extends State<SendToken> {
           readOnly: readOnly,
           style: textNormal(
             Colors.white,
-            16.sp,
+            16,
           ),
           cursorColor: Colors.white,
           decoration: InputDecoration(
@@ -245,12 +245,12 @@ class _SendTokenState extends State<SendToken> {
             hintStyle: readOnly
                 ? TextStyle(
                     color: const Color.fromRGBO(255, 255, 255, 1),
-                    fontSize: 16.sp,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400,
                   )
                 : textNormal(
                     Colors.grey,
-                    14.sp,
+                    14,
                   ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -313,14 +313,14 @@ class _SendTokenState extends State<SendToken> {
           textAlignVertical: TextAlignVertical.center,
           style: textNormal(
             Colors.white,
-            16.sp,
+            16,
           ),
           cursorColor: Colors.white,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: textNormal(
               Colors.grey,
-              14.sp,
+              14,
             ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -335,7 +335,7 @@ class _SendTokenState extends State<SendToken> {
                         style: TextStyle(
                           color: const Color.fromRGBO(228, 172, 26, 1),
                           fontWeight: FontWeight.w600,
-                          fontSize: 16.sp,
+                          fontSize: 16,
                         ),
                       ),
                     )
@@ -347,7 +347,7 @@ class _SendTokenState extends State<SendToken> {
                         '${S.current.of_all} 10',
                         style: TextStyle(
                           color: const Color.fromRGBO(255, 255, 255, 1),
-                          fontSize: 16.sp,
+                          fontSize: 16,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -386,7 +386,7 @@ class _SendTokenState extends State<SendToken> {
                       return Text(
                         snapshot.data ?? '',
                         style: TextStyle(
-                          fontSize: 12.sp,
+                          fontSize: 12,
                           fontWeight: FontWeight.w400,
                           color: const Color.fromRGBO(255, 108, 108, 1),
                         ),

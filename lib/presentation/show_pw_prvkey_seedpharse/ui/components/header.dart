@@ -30,7 +30,7 @@ Container headerPRVAndSeedPhr({
           S.current.prv_key_ft_seed_phr,
           style: textNormalCustom(
             Colors.white,
-            20.sp,
+            20,
             FontWeight.bold,
           ),
         ),

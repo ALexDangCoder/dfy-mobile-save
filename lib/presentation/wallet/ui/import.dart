@@ -51,7 +51,7 @@ final WalletCubit walletCubit;
                   ImageIcon(
                     AssetImage(icon),
                     color: const Color(0xFFE4AC1A),
-                    size: 24.sp,
+                    size: 24,
                   ),
                   SizedBox(
                     width: 8.w,
@@ -60,7 +60,7 @@ final WalletCubit walletCubit;
                     title,
                     style: textNormalCustom(
                       const Color(0xFFE4AC1A),
-                      16.sp,
+                      16,
                       FontWeight.w400,
                     ),
                   ),

@@ -51,14 +51,14 @@ class FormInput3 extends StatelessWidget {
                 cursorColor: Colors.white,
                 style: textNormal(
                   Colors.white,
-                  16.sp,
+                  16,
                 ),
                 decoration: InputDecoration(
                   counterText: '',
                   hintText: hint,
                   hintStyle: textNormal(
                     Colors.white54,
-                    16.sp,
+                    16,
                   ),
                   border: InputBorder.none,
                 ),

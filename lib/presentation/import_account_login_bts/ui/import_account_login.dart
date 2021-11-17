@@ -78,7 +78,7 @@ class _ImportBTSState extends State<ImportBTS> {
                       listString.first,
                       style: textNormal(
                         AppTheme.getInstance().textThemeColor(),
-                        16.sp,
+                        16,
                       ),
                     ),
                   ),
@@ -90,7 +90,7 @@ class _ImportBTSState extends State<ImportBTS> {
                       listString[1],
                       style: textNormal(
                         AppTheme.getInstance().textThemeColor(),
-                        16.sp,
+                        16,
                       ),
                     )
                   else
@@ -158,7 +158,7 @@ class _ImportBTSState extends State<ImportBTS> {
                                             style: textNormal(
                                               AppTheme.getInstance()
                                                   .textThemeColor(),
-                                              16.sp,
+                                              16,
                                             ),
                                           ),
                                         );
@@ -235,7 +235,7 @@ class _ImportBTSState extends State<ImportBTS> {
                                       S.current.or_scan,
                                       style: textNormal(
                                         AppTheme.getInstance().textThemeColor(),
-                                        16.sp,
+                                        16,
                                       ).copyWith(
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -322,7 +322,7 @@ class _ImportBTSState extends State<ImportBTS> {
                 S.current.import,
                 style: textNormal(
                   AppTheme.getInstance().textThemeColor(),
-                  20.sp,
+                  20,
                 ),
               ),
             ),

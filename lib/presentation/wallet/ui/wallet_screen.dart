@@ -109,7 +109,7 @@ class _WalletState extends State<WalletScreen>
                         onPressed: () {},
                         icon: Icon(
                           Icons.menu,
-                          size: 24.sp,
+                          size: 24,
                           color: Colors.white,
                         ),
                       ),
@@ -123,7 +123,7 @@ class _WalletState extends State<WalletScreen>
                               S.current.wallet,
                               style: textNormalCustom(
                                 Colors.white,
-                                20.sp,
+                                20,
                                 FontWeight.w700,
                               ),
                             ),
@@ -131,7 +131,7 @@ class _WalletState extends State<WalletScreen>
                               S.current.smart_chain,
                               style: textNormalCustom(
                                 Colors.grey.shade400,
-                                14.sp,
+                                14,
                                 FontWeight.w400,
                               ),
                             ),
@@ -154,7 +154,7 @@ class _WalletState extends State<WalletScreen>
                         },
                         icon: Icon(
                           Icons.settings_outlined,
-                          size: 24.sp,
+                          size: 24,
                           color: Colors.white,
                         ),
                       ),
@@ -185,7 +185,7 @@ class _WalletState extends State<WalletScreen>
                   unselectedLabelColor: const Color(0xFF9997FF),
                   indicatorColor: const Color(0xFF6F6FC5),
                   labelStyle: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
                   tabs: [
@@ -343,7 +343,7 @@ class _WalletState extends State<WalletScreen>
                     showSelectAcc(context, cubit, TypeScreen2.detail);
                   },
                   child: CircleAvatar(
-                    radius: 27.sp,
+                    radius: 27,
                     child: const Image(
                       image: AssetImage(ImageAssets.ic_symbol),
                     ),
@@ -366,7 +366,7 @@ class _WalletState extends State<WalletScreen>
                         snapshot.data ?? '',
                         style: textNormalCustom(
                           Colors.white,
-                          24.sp,
+                          24,
                           FontWeight.w700,
                         ),
                       );
@@ -392,7 +392,7 @@ class _WalletState extends State<WalletScreen>
                     child: ImageIcon(
                       const AssetImage(ImageAssets.ic_edit),
                       color: Colors.white,
-                      size: 24.sp,
+                      size: 24,
                     ),
                   ),
                 ],
@@ -411,7 +411,7 @@ class _WalletState extends State<WalletScreen>
                         ),
                         style: textNormalCustom(
                           const Color(0xFFE4AC1A),
-                          20.sp,
+                          20,
                           FontWeight.w600,
                         ),
                       );
@@ -460,7 +460,7 @@ class _WalletState extends State<WalletScreen>
                           ),
                           style: textNormalCustom(
                             Colors.white,
-                            16.sp,
+                            16,
                             FontWeight.w400,
                           ),
                         ),

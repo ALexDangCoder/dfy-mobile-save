@@ -51,7 +51,7 @@ TextStyle textNormal(Color? color, double? fontSize) {
     color: color ?? Colors.white,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize ?? 14.sp,
+    fontSize: fontSize ?? 14,
   );
 }
 
@@ -64,7 +64,7 @@ TextStyle tokenDetailAmount({
     color: color,
     fontWeight: weight,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize.sp,
+    fontSize: fontSize,
   );
 }
 TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
@@ -72,7 +72,7 @@ TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
     color: color,
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize.sp,
+    fontSize: fontSize,
   );
 }
 
@@ -85,23 +85,23 @@ TextStyle textNormalCustom(
     color: color ?? Colors.white,
     fontWeight: fontWeight ?? FontWeight.w500,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize ?? 14.sp,
+    fontSize: fontSize ?? 14,
   );
 }
 
 TextStyle textFieldNFT = GoogleFonts.sen(
   color: AppTheme.getInstance().textThemeColor(),
   fontWeight: FontWeight.w700,
-  fontSize: 16.sp,
+  fontSize: 16,
 );
 TextStyle textValueNFT = GoogleFonts.sen(
   color: AppTheme.getInstance().textThemeColor(),
   fontWeight: FontWeight.w400,
-  fontSize: 16.sp,
+  fontSize: 16,
 );
 TextStyle richTextValueNFT = GoogleFonts.sen(
   color: const Color(0xff46BCFF),
   fontWeight: FontWeight.w400,
-  fontSize: 16.sp,
+  fontSize: 16,
   decoration: TextDecoration.underline,
 );

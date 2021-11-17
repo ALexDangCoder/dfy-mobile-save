@@ -32,7 +32,7 @@ class SavePopUp extends StatelessWidget {
                   S.current.saved,
                   style: textNormal(
                     null,
-                    20.sp,
+                    20,
                   ).copyWith(
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.normal,

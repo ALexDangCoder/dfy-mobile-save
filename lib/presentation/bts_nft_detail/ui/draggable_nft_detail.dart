@@ -125,7 +125,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                 nft.name,
                                 style: textNormal(
                                   AppTheme.getInstance().textThemeColor(),
-                                  24.sp,
+                                  24,
                                 ).copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -138,7 +138,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                   nft.identity,
                                   style: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
-                                    20.sp,
+                                    20,
                                   ).copyWith(
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -147,7 +147,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                   '1 of 10',
                                   style: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
-                                    20.sp,
+                                    20,
                                   ).copyWith(
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -271,7 +271,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                       S.current.view_more,
                                       style: textNormalCustom(
                                         AppTheme.getInstance().fillColor(),
-                                        16.sp,
+                                        16,
                                         FontWeight.w400,
                                       ),
                                     ),
@@ -296,7 +296,7 @@ class _NFTDetailState extends State<NFTDetail> {
                           S.current.put_on_market,
                           style: textNormal(
                             AppTheme.getInstance().textThemeColor(),
-                            20.sp,
+                            20,
                           ).copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -370,7 +370,7 @@ class _NFTDetailState extends State<NFTDetail> {
             ),
             Text(
               DateTime.now().toIso8601String(),
-              style: textValueNFT.copyWith(fontSize: 14.sp, color: Colors.grey),
+              style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
             )
           ],
         ),
