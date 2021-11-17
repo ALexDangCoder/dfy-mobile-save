@@ -181,7 +181,8 @@ class _BodyState extends State<Body> {
                               AsyncSnapshot<List<String>> snapshot,
                             ) {
                               final listSeedPhrase = snapshot.data;
-                              return Center(
+                              return Container(
+                                margin: EdgeInsets.only(right: 16.w, left: 16.w),
                                 child: BoxListPassWordPhrase(
                                   listTitle: listSeedPhrase ?? [],
                                   bLocCreateSeedPhrase: bLocCreateSeedPhrase,
