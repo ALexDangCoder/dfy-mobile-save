@@ -19,16 +19,12 @@ class SetupPassWord extends StatefulWidget {
 
 class _SetupPassWordState extends State<SetupPassWord> {
   late CheckPassCubit isValidPassCubit;
-
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
 
   int indexPW = 1;
   int indexConfirmPW = 1;
   int checkBox = 1;
-  int isValidPass = 1;
-  int isMatchPass = 1;
-  int isEnable = 1;
 
   @override
   void initState() {
@@ -98,38 +94,36 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 ),
               ),
             ),
-            GestureDetector(
-              child: StreamBuilder(
+            StreamBuilder<bool>(
                 stream: isValidPassCubit.isEnableBtnStream,
-                builder: (context, AsyncSnapshot<bool> snapshot) {
-                  return ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: snapshot.data ?? false,
+                builder: (context, snapshot) {
+                  return GestureDetector(
+                    child: ButtonGold(
+                      title: S.current.continue_s,
+                      isEnable: snapshot.data ?? true,
+                    ),
+                    onTap: () {
+
+                      if (snapshot.data ?? false) {
+                        isValidPassCubit.showTxtWarningNewPW(password.text);
+                        isValidPassCubit.showTxtWarningConfirmPW(
+                          confirmPassword.text,
+                          newPW: password.text,
+                        );
+                        if(isValidPassCubit.validateAll()) {
+                            showCreateSeedPhrase1(
+                              context,
+                              false,
+                              BLocCreateSeedPhrase(password.text),
+                              TypeScreen.tow,
+                            );
+                        } else {
+                          //will not change screen
+                        }
+                      }
+                    },
                   );
-                },
-              ),
-              onTap: () {
-                isValidPassCubit.isValidate(password.text);
-                isValidPassCubit.isMatchPW(
-                  password: password.text,
-                  confirmPW: confirmPassword.text,
-                );
-                if (checkBox == 2 &&
-                    isValidPassCubit.checkMatchPW(
-                      confirmPW: confirmPassword.text,
-                      password: password.text,
-                    ) &&
-                    Validator.validateStructure(password.text) &&
-                    Validator.validateStructure(confirmPassword.text)) {
-                  showCreateSeedPhrase1(
-                    context,
-                    false,
-                    BLocCreateSeedPhrase(password.text),
-                    TypeScreen.tow,
-                  );
-                }
-              },
-            ),
+                }),
             SizedBox(
               height: 38.h,
             ),
@@ -153,10 +147,16 @@ class _SetupPassWordState extends State<SetupPassWord> {
               SizedBox(
                 width: 323.w,
                 // height: 30.h,
-                child: Text(
-                  S.current.pass_must,
-                  style: textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
-                      .copyWith(fontWeight: FontWeight.w400),
+                child: StreamBuilder<String>(
+                  stream: isValidPassCubit.txtWarningNewPWStream,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style:
+                          textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                              .copyWith(fontWeight: FontWeight.w400),
+                    );
+                  },
                 ),
               ),
             ],
@@ -180,10 +180,16 @@ class _SetupPassWordState extends State<SetupPassWord> {
               SizedBox(
                 width: 323.w,
                 // height: 30.h,
-                child: Text(
-                  S.current.not_match,
-                  style: textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
-                      .copyWith(fontWeight: FontWeight.w400),
+                child: StreamBuilder<String>(
+                  stream: isValidPassCubit.txtWarningConfirmPWStream,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style:
+                          textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                              .copyWith(fontWeight: FontWeight.w400),
+                    );
+                  },
                 ),
               ),
             ],
@@ -206,7 +212,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               width: 24.w,
               height: 24.h,
               child: StreamBuilder<bool>(
-                initialData: false,
+                initialData: true,
                 stream: isValidPassCubit.ckcBoxStream,
                 builder: (context, snapshot) {
                   return Checkbox(
@@ -214,7 +220,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     fillColor:
-                    MaterialStateProperty.all(const Color(0xffE4AC1A)),
+                        MaterialStateProperty.all(const Color(0xffE4AC1A)),
                     activeColor: const Color.fromRGBO(228, 172, 26, 1),
                     // checkColor: const Colors,
                     onChanged: (bool? value) {
@@ -268,6 +274,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
         stream: isValidPassCubit.showPWStream,
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           return TextFormField(
+            onChanged: (value) {
+              isValidPassCubit.checkHaveValuePW(value);
+            },
             obscureText: snapshot.data ?? false,
             style: textNormal(
               Colors.white,
@@ -293,13 +302,13 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 },
                 child: snapshot.data ?? false
                     ? const ImageIcon(
-                  AssetImage(ImageAssets.ic_show),
-                  color: Colors.grey,
-                )
+                        AssetImage(ImageAssets.ic_show),
+                        color: Colors.grey,
+                      )
                     : const ImageIcon(
-                  AssetImage(ImageAssets.ic_hide),
-                  color: Colors.grey,
-                ),
+                        AssetImage(ImageAssets.ic_hide),
+                        color: Colors.grey,
+                      ),
               ),
               prefixIcon: const ImageIcon(
                 AssetImage(ImageAssets.ic_lock),
@@ -331,6 +340,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
         stream: isValidPassCubit.showConfirmPWStream,
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           return TextFormField(
+            onChanged: (value) {
+              isValidPassCubit.checkHaveValueConfirmPW(value);
+            },
             obscureText: snapshot.data ?? false,
             style: textNormal(Colors.white, 16.sp)
                 .copyWith(fontWeight: FontWeight.w400),
@@ -354,13 +366,13 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 },
                 child: snapshot.data ?? false
                     ? const ImageIcon(
-                  AssetImage(ImageAssets.ic_show),
-                  color: Colors.grey,
-                )
+                        AssetImage(ImageAssets.ic_show),
+                        color: Colors.grey,
+                      )
                     : const ImageIcon(
-                  AssetImage(ImageAssets.ic_hide),
-                  color: Colors.grey,
-                ),
+                        AssetImage(ImageAssets.ic_hide),
+                        color: Colors.grey,
+                      ),
               ),
               prefixIcon: const ImageIcon(
                 AssetImage(ImageAssets.ic_lock),

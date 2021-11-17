@@ -88,7 +88,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
       },
       child: SizedBox(
         width: 323.w,
-        height: 25.h,
+        // height: 25.h,
         child: Center(
           child: Text(
             S.current.pls_import_seed,
