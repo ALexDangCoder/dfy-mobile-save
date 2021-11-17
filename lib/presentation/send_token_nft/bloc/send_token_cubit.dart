@@ -8,23 +8,32 @@ import 'package:Dfy/generated/l10n.dart';
 
 part 'send_token_state.dart';
 
+enum typeSend { SEND_NFT, SEND_TOKEN }
+
+//this class will handle cubit nft and token
 class SendTokenCubit extends Cubit<SendTokenState> {
   //todo fix handle warning error
   SendTokenCubit() : super(SendTokenInitial());
 
-  int flagAddress = 0;
-  int flagAmount = 0;
-  int flagQuantity = 0;
+  // 3 boolean below check validate
+  bool _flagAddress = false;
+  bool _flagAmount = false;
+  bool _flagQuantity = false;
+
+  //3 boolean below check if 3 forms have value
+  bool _haveVLAddress = false;
+  bool _haveVLQuantity = false;
+  bool _haveVLAmount = false;
 
   final BehaviorSubject<String> _formField = BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _formEstimateGasFee = BehaviorSubject<String>();
 
   //both stream below is manage confirm fee token screen
   final BehaviorSubject<bool> _isCustomizeFee =
-      BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isSufficientToken = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isShowCFBlockChain =
-      BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(true);
 
   //stream below regex amount form and address
   final BehaviorSubject<bool> _isValidAddressForm =
@@ -100,79 +109,136 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   String passwordToken = '';
   String passwordNft = '';
 
-  void checkValidAddress(String value) {
-    // if(value.isEmpty) {
-    //   isValidAddressFormSink.add(true);
-    //   txtInvalidAddressFormSink.add(S.current.address_required);
-    //   isShowCFBlockChainSink.add(false);
-    // } else if (Validator.validateAddress(value)) {
-    //   isValidAddressFormSink.add(true);
-    //   txtInvalidAddressFormSink.add(S.current.invalid_address);
-    //   isShowCFBlockChainSink.add(false);
-    // }
+  //handle send token screen
+  //check have value will enable button
+  void checkHaveVlAddressFormToken(String value, {required typeSend type}) {
     if (value.isEmpty) {
-      flagAddress = 0;
-      txtInvalidAddressFormSink.add(S.current.address_required);
-      isValidAddressFormSink.add(true);
-      isShowCFBlockChainSink.add(false);
+      _haveVLAddress = false;
+    } else {
+      _haveVLAddress = true;
     }
-    // else if(Validator.validateAddress(value)) {
-    //   print('here2');
-    //   txtInvalidAddressFormSink.add(S.current.invalid_address);
-    //   isValidAddressFormSink.add(true);
-    //   isShowCFBlockChainSink.add(false);
-    //   flagAddress = 0;
-    // }
-    else {
-      // txtInvalidAddressFormSink.add('');
-      flagAddress = 1;
-      isValidAddressFormSink.add(false);
-      if (flagAddress == 1 && flagAmount == 1) {
+    if (type == typeSend.SEND_TOKEN) {
+      if (_haveVLAddress && _haveVLAmount) {
         isShowCFBlockChainSink.add(true);
       } else {
-        //nothing
+        isShowCFBlockChainSink.add(false);
+      }
+    } else {
+      if (_haveVLAddress && _haveVLQuantity) {
+        isShowCFBlockChainSink.add(true);
+      } else {
+        isShowCFBlockChainSink.add(false);
       }
     }
   }
 
+  void checkHaveVLAmountFormToken(String value) {
+    if (value.isEmpty) {
+      _haveVLAmount = false;
+    } else {
+      _haveVLAmount = true;
+    }
+    if (_haveVLAddress && _haveVLAmount) {
+      isShowCFBlockChainSink.add(true);
+    } else {
+      isShowCFBlockChainSink.add(false);
+    }
+  }
+
+  void checkHaveVLQuantityFormNFT(String value) {
+    if (value.isEmpty) {
+      _haveVLQuantity = false;
+    } else {
+      _haveVLQuantity = true;
+    }
+    if (_haveVLAddress && _haveVLQuantity) {
+      isShowCFBlockChainSink.add(true);
+    } else {
+      isShowCFBlockChainSink.add(false);
+    }
+  }
+
+  void checkValidAddress(String value) {
+    if (value.isEmpty) {
+      _flagAddress = false;
+      isValidAddressFormSink.add(true);
+      txtInvalidAddressFormSink.add(S.current.address_required);
+      isShowCFBlockChainSink.add(false);
+    }
+    //todo
+    // else if (!Validator.validateAddress(value)) {
+    //   _flagAddress = false;
+    //   isValidAddressFormSink.add(true);
+    //   txtInvalidAddressFormSink.add(S.current.invalid_address);
+    //   isShowCFBlockChainSink.add(false);
+    // }
+    else {
+      _flagAddress = true;
+      isValidAddressFormSink.add(false);
+    }
+  }
 
   void checkValidAmount(String value) {
     if (value.isEmpty) {
-      flagAmount = 0;
-      txtInvalidAmountSink.add(S.current.amount_required);
+      _flagAmount = false;
       isValidAmountFormSink.add(true);
+      txtInvalidAmountSink.add(S.current.amount_required);
+      isShowCFBlockChainSink.add(false);
+    }
+    // else if (!Validator.validateMoney(value)) { todo
+    else if (value.contains(',')) {
+      _flagAmount = false;
+      isValidAmountFormSink.add(true);
+      txtInvalidAmountSink.add(S.current.amount_invalid);
       isShowCFBlockChainSink.add(false);
     } else {
-      flagAmount = 1;
+      _flagAmount = true;
       isValidAmountFormSink.add(false);
-      if (flagAddress == 1 && flagAmount == 1) {
-        isShowCFBlockChainSink.add(true);
-      } else {
-        //nothing
-      }
     }
   }
 
-  void checkValidQuantity(String value) {
+  void checkValidQuantity(String value, {required int quantityFirstFetch}) {
     if (value.isEmpty) {
-      flagQuantity = 0;
-      txtInvalidAmountSink.add(S.current.amount_required);
+      _flagQuantity = false;
       isValidQuantityFormSink.add(true);
+      txtInvalidQuantityFormSink.add(S.current.amount_required);
+      isShowCFBlockChainSink.add(false);
+    } else if (!Validator.validateQuantity(value)) {
+      _flagQuantity = false;
+      isValidQuantityFormSink.add(true);
+      txtInvalidQuantityFormSink.add(S.current.amount_invalid);
+      isShowCFBlockChainSink.add(false);
+    } else if (int.parse(value) > quantityFirstFetch) {
+      _flagQuantity = false;
+      isValidQuantityFormSink.add(true);
+      txtInvalidQuantityFormSink.add(S.current.quantity_invalid_of_all);
       isShowCFBlockChainSink.add(false);
     } else {
-      flagQuantity = 1;
+      _flagQuantity = true;
       isValidQuantityFormSink.add(false);
-      if (flagAddress == 1 && flagQuantity == 1) {
-        isShowCFBlockChainSink.add(true);
-      } else {
-        //nothing
-      }
+    }
+  }
+
+  bool checkAddressFtAmount() {
+    if (_flagAmount && _flagAddress) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool checkAddressFtQuantity() {
+    if (_flagQuantity && _flagAddress) {
+      return true;
+    } else {
+      return false;
     }
   }
 
   void isShowCustomizeFee({required bool isShow}) {
     isCustomizeFeeSink.add(isShow);
   }
+
   //handle enable or disable button gold to go to confirm screen
   void isShowConfirmBlockChain({
     required bool isHaveFrAddress,
@@ -193,10 +259,6 @@ class SendTokenCubit extends Cubit<SendTokenState> {
 
     formEstimateGasFeeSink.add(value);
   }
-
-  // void isValidGasLimitFtPrice(String value) {
-  //   if(value.contains(other))
-  // }
 
   void isSufficientGasFee({required double gasFee, required double balance}) {
     if (gasFee < balance) {
@@ -281,6 +343,6 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-  //handle number with e
+//handle number with e
 
 }

@@ -16,7 +16,6 @@ Container headerPRVAndSeedPhr({
       right: 16.w,
       left: 16.w,
       top: 16.h,
-      bottom: 20.h,
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

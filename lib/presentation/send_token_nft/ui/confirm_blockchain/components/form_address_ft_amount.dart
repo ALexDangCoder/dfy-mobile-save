@@ -1,11 +1,11 @@
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FormAddFtAmount extends StatelessWidget {
-  const FormAddFtAmount({
+  const  FormAddFtAmount({
     required this.amount,
     required this.from,
     required this.to,
@@ -17,10 +17,10 @@ class FormAddFtAmount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
+    return Container(
+      // height: 93.h,
+      margin: EdgeInsets.only(
         left: 26.w,
-        right: 99.w,
         top: 24.h,
         bottom: 20.h,
       ),
@@ -33,9 +33,9 @@ class FormAddFtAmount extends StatelessWidget {
           // width: 250.w,
           // height: 93.h,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Column(
+               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -70,45 +70,46 @@ class FormAddFtAmount extends StatelessWidget {
                     )
                   ],
                 ),
-              ),
+
               SizedBox(
                 width: 30.w,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    from,
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
+               Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      from,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        16,
+                        FontWeight.w400,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  Text(
-                    to,
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
+                    SizedBox(
+                      height: 24.h,
                     ),
-                  ),
-                  SizedBox(
-                    height: 18.h,
-                  ),
-                  Text(
-                    amount,
-                    style: textNormalCustom(
-                      AppTheme.getInstance().fillColor(),
-                      20,
-                      FontWeight.w600,
+                    Text(
+                      to,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        16,
+                        FontWeight.w400,
+                      ),
                     ),
-                  ),
-                ],
-              )
+                    SizedBox(
+                      height: 18.h,
+                    ),
+                    Text(
+                      amount,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().fillColor(),
+                        20,
+                        FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+
             ],
           ),
         ),
