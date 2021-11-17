@@ -55,6 +55,7 @@ class SettingWallet extends StatelessWidget {
                     onTap: () {
                       showModalBottomSheet(
                         isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
                         context: context,
                         builder: (_) {
                           return const SendToken();

@@ -31,7 +31,7 @@ class HideCustomizeFee extends StatelessWidget {
                 ),
             child: Container(
               width: 323.w,
-              height: 83.h,
+              height: 90.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16.r)),
                 border:
@@ -61,11 +61,12 @@ class HideCustomizeFee extends StatelessWidget {
                           // initialData: gasFee < balance,
                           stream: sendTokenCubit.isSufficientTokenStream,
                           builder: (context, AsyncSnapshot<bool> snapshot) {
-                            return snapshot.data ?? gasFee < balance
+                            return snapshot.data ?? gasFee > balance
                                 //if sufficient will not show warning red text
                                 ? Expanded(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
@@ -75,20 +76,24 @@ class HideCustomizeFee extends StatelessWidget {
                                           stream: sendTokenCubit
                                               .formEstimateGasFeeStream,
                                           builder: (context, snapshot) {
-                                            return Text(
-                                              '${snapshot.data} $nameToken',
-                                              style: textNormalCustom(
-                                                AppTheme.getInstance()
-                                                    .whiteColor(),
-                                                16,
-                                                FontWeight.w600,
+                                            return Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 8.h),
+                                              child: Text(
+                                                '${snapshot.data} $nameToken',
+                                                style: textNormalCustom(
+                                                  AppTheme.getInstance()
+                                                      .whiteColor(),
+                                                  16,
+                                                  FontWeight.w600,
+                                                ),
                                               ),
                                             );
                                           },
                                         ),
-                                        SizedBox(
-                                          height: 15.h,
-                                        ),
+                                        // SizedBox(
+                                        //   height: 15.h,
+                                        // ),
                                       ],
                                     ),
                                   )

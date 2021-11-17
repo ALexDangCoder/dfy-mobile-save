@@ -37,11 +37,11 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
   void initState() {
     gasPriceFirstFetch = 1.1;
     gasLimitFirstFetch = 0.624;
-    gasFeeFirstFetch = 0.6;
-    informationWallet = const InformationWallet(
+    gasFeeFirstFetch = 0.4;
+    informationWallet = InformationWallet(
       nameWallet: 'Test wallet',
       fromAddress: '0xFE5...4fd0',
-      amount: 0.551,
+      amount: 0.3,
       nameToken: 'BNB',
       imgWallet: ImageAssets.ic_symbol,
     );
@@ -85,14 +85,15 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FormAddFtAmount(
                       from: widget.fromAddress,
                       to: widget.toAddress,
                       amount: '${widget.amount} DFY',
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 26.w, right: 26.w),
+                    Container(
+                      margin: EdgeInsets.only(left: 26.w, right: 26.w),
                       child: const Divider(
                         thickness: 1,
                         color: Color.fromRGBO(255, 255, 255, 0.1),
@@ -116,7 +117,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                                 txtGasPrice: txtGasPrice,
                                 txtGasLimit: txtGasLimit,
                                 balanceFirstFetch: informationWallet.amount,
-                                gasFee: 0.6,
+                                gasFee: gasFeeFirstFetch,
                                 gasLimitFirstFetch: gasLimitFirstFetch,
                                 gasPriceFirstFetch: gasPriceFirstFetch,
                               )
@@ -124,7 +125,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                                 nameToken: 'BNB',
                                 sendTokenCubit: sendTokenCubit,
                                 balance: informationWallet.amount,
-                                gasFee: 0.6,
+                                gasFee: gasFeeFirstFetch,
                               );
                       },
                     )
@@ -133,12 +134,12 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
               ),
             ),
             StreamBuilder<bool>(
-              initialData: gasFeeFirstFetch < informationWallet.amount,
+              initialData: gasFeeFirstFetch <= informationWallet.amount,
               stream: sendTokenCubit.isSufficientTokenStream,
               builder: (context, snapshot) {
                 return GestureDetector(
                   child: ButtonGold(
-                    title: S.current.wallet_app_lock,
+                    title: S.current.approve,
                     isEnable: snapshot.data ?? false,
                   ),
                 );
@@ -156,7 +157,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
   Padding header({required String nameToken}) {
     return Padding(
       padding:
-          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h, bottom: 20.h),
+          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h),
       child: Row(
         children: [
           IconButton(
