@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/transaction.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -13,23 +14,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TransactionDetail extends StatelessWidget {
-  final String detailTransaction;
-  final TransactionStatus status;
-  final int amount;
+  final Transaction transaction;
 
-  const TransactionDetail(
-      {Key? key,
-      required this.detailTransaction,
-      required this.status,
-      required this.amount})
-      : super(key: key);
+  const TransactionDetail({
+    Key? key,
+    required this.transaction,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    const double gasFee = 0.0000454546;
-    final DateTime _time = DateTime.now();
-    const String txhID = '0xaaa042c0632f4d44c7cea978f22cd02e751a410e';
-    const int nonce = 351;
     return DefaultSubScreen(
       title: S.current.detail_transaction,
       mainWidget: Container(
@@ -49,22 +42,22 @@ class TransactionDetail extends StatelessWidget {
                     children: [
                       textRow(
                         name: S.current.amount,
-                        value: amount.stringIntFormat,
+                        value: transaction.amount.stringIntFormat,
                       ),
-                      transactionStatsWidget(status),
+                      transactionStatsWidget(transaction.status),
                     ],
                   ),
                   textRow(
                     name: S.current.gas_fee,
                     value: customCurrency(
-                      amount: gasFee,
+                      amount: transaction.amount/123654,
                       digit: 8,
                       type: 'BNB',
                     ),
                   ),
                   textRow(
                     name: S.current.time,
-                    value: _time.stringFromDateTime,
+                    value: transaction.time.stringFromDateTime,
                   ),
                 ],
               ),
@@ -81,16 +74,16 @@ class TransactionDetail extends StatelessWidget {
                 children: [
                   textRow(
                     name: S.current.txh_id,
-                    value: txhID,
+                    value: transaction.txhId,
                     showCopy: true,
                   ),
                   textRow(
                     name: S.current.from,
-                    value: txhID.formatAddress,
+                    value: transaction.from.formatAddress,
                   ),
                   textRow(
                     name: S.current.to,
-                    value: txhID,
+                    value: transaction.to,
                     showCopy: true,
                   ),
                 ],
@@ -103,7 +96,7 @@ class TransactionDetail extends StatelessWidget {
               padding: EdgeInsets.only(top: 16.h, bottom: 36.h),
               child: textRow(
                 name: S.current.nonce,
-                value: '#$nonce',
+                value: '#${transaction.nonce}',
               ),
             ),
             GestureDetector(

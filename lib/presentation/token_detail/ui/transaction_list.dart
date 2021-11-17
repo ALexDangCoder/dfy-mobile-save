@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/transaction.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/transaction_detail.dart';
@@ -14,18 +15,22 @@ class TransactionList extends StatelessWidget {
   final TokenDetailBloc bloc;
   final int tokenData;
 
-  const TransactionList(
-      {Key? key, required this.title, required this.bloc, this.tokenData = 1})
-      : super(key: key);
+  const TransactionList({
+    Key? key,
+    required this.title,
+    required this.bloc,
+    this.tokenData = 1,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<String>>(
+    return StreamBuilder<List<Transaction>>(
       initialData: const [],
       stream: bloc.transactionListStream,
       builder: (context, snapshot) {
         if (snapshot.data?.isNotEmpty ?? false) {
           final dataLen = snapshot.data?.length ?? 0;
+          final snapData = snapshot.data;
           return Expanded(
             child: Scrollbar(
               child: SingleChildScrollView(
@@ -42,11 +47,7 @@ class TransactionList extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return transactionRow(
                             context: context,
-                            transactionTitle: bloc.mockData[index],
-                            time: bloc.mockDate[index],
-                            status: bloc.mockStatus[index],
-                            amount: bloc.mockAmount[index],
-                            type: bloc.mockType[index],
+                            transaction: snapData?[index] ?? Transaction.init(),
                           );
                         },
                       ),
@@ -134,11 +135,7 @@ class TransactionList extends StatelessWidget {
 
   Widget transactionRow({
     required BuildContext context,
-    required String transactionTitle,
-    required DateTime time,
-    required TransactionStatus status,
-    required TransactionType type,
-    required int amount,
+    required Transaction transaction,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -156,9 +153,8 @@ class TransactionList extends StatelessWidget {
             backgroundColor: Colors.transparent,
             builder: (context) {
               return TransactionDetail(
-                  detailTransaction: time == DateTime.now() ? '123' : '234',
-                  status: status,
-                  amount: amount,);
+                transaction: transaction,
+              );
             },
           );
         },
@@ -176,7 +172,7 @@ class TransactionList extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      transactionTitle,
+                      transaction.title,
                       style: tokenDetailAmount(
                         color: AppTheme.getInstance().whiteColor(),
                         fontSize: 16,
@@ -186,15 +182,16 @@ class TransactionList extends StatelessWidget {
                   sizedSvgImage(
                     w: 20,
                     h: 20,
-                    image: status.statusImage,
+                    image: transaction.status.statusImage,
                   ),
                   Expanded(
                     child: Container(
                       alignment: Alignment.topRight,
                       child: transactionAmountText(
-                        status: status,
-                        amount: amount,
-                        type: type,
+                        status:
+                            transaction.status,
+                        amount: transaction.amount,
+                        type: transaction.type,
                       ),
                     ),
                   ),
@@ -206,7 +203,7 @@ class TransactionList extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    time.stringFromDateTime,
+                    transaction.time.stringFromDateTime,
                     style: tokenDetailAmount(
                       color: AppTheme.getInstance().currencyDetailTokenColor(),
                       fontSize: 14,
