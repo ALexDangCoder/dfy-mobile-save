@@ -121,7 +121,7 @@ class _BodyState extends State<Body> {
                         bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
                         title: S.current.use_face,
                         isCheck: snapshot.data ?? false,
-                        urlPrefixIcon: ImageAssets.ic_face,
+                        urlPrefixIcon: ImageAssets.ic_face_id,
                       );
                     },
                   ),
