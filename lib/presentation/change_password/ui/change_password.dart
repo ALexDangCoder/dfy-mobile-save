@@ -5,6 +5,7 @@ import 'package:Dfy/presentation/change_password/ui/components/header_change_pas
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/success/successful_by_title.dart';
 import 'package:flutter/material.dart';
@@ -138,15 +139,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                         showSuccessfulByTitle(
                           title: S.current.change_pw_success,
                           callBack: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (_) {
-                                return SettingWallet(
-                                  cubitSetting: SettingWalletCubit(),
-                                  cubit: WalletCubit(),
-                                );
-                              },
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => const WalletScreen(
+                                  index: 2,
+                                ),
+                              ),
+                              (route) => route.isFirst,
                             );
                           },
                           context: context,

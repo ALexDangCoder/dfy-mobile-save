@@ -44,17 +44,20 @@ Container switchForm({
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
-      child: ListTileSwitch(
-        value: isCheck,
-        onChanged: (bool value) =>
-            cubit.changeValueFingerFtFaceID(value: value),
-        //todo
-        leading: Image.asset(prefixImg),
-        switchActiveColor: AppTheme.getInstance().fillColor(),
-        switchType: SwitchType.cupertino,
-        title: Text(
-          hintText,
-          style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+      child: Padding(
+        padding: EdgeInsets.only(top: 4.h),
+        child: ListTileSwitch(
+          value: isCheck,
+          onChanged: (bool value) =>
+              cubit.changeValueFingerFtFaceID(value: value),
+          //todo
+          leading: Image.asset(prefixImg),
+          switchActiveColor: AppTheme.getInstance().fillColor(),
+          switchType: SwitchType.cupertino,
+          title: Text(
+            hintText,
+            style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+          ),
         ),
       ),
     );
@@ -66,19 +69,22 @@ Container switchForm({
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
-      child: ListTileSwitch(
-        value: isCheck,
-        onChanged: (value) {
-          cubit.changeValueAppLock(value: value);
-          cubit.setIsAppLock(value: value);
-        },
-        //todo
-        leading: Image.asset(prefixImg),
-        switchActiveColor: AppTheme.getInstance().fillColor(),
-        switchType: SwitchType.cupertino,
-        title: Text(
-          hintText,
-          style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+      child: Padding(
+        padding: EdgeInsets.only(top: 4.h),
+        child: ListTileSwitch(
+          value: isCheck,
+          onChanged: (value) {
+            cubit.changeValueAppLock(value: value);
+            cubit.setIsAppLock(value: value);
+          },
+          //todo
+          leading: Image.asset(prefixImg),
+          switchActiveColor: AppTheme.getInstance().fillColor(),
+          switchType: SwitchType.cupertino,
+          title: Text(
+            hintText,
+            style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+          ),
         ),
       ),
     );
