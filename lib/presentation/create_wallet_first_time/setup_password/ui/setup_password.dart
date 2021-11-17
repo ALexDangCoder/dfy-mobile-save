@@ -145,7 +145,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 height: 4.h,
               ),
               SizedBox(
-                width: 323.w,
+                width: 343.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
                   stream: isValidPassCubit.txtWarningNewPWStream,
@@ -178,7 +178,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 height: 4.h,
               ),
               SizedBox(
-                width: 323.w,
+                width: 343.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
                   stream: isValidPassCubit.txtWarningConfirmPWStream,
@@ -202,7 +202,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
   SizedBox ckcBoxAndTextSetupPass() {
     return SizedBox(
       // height: 48.h,
-      width: 323.w,
+      width: 343.w,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -259,7 +259,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
   Container formSetupPassWord({required String hintText}) {
     return Container(
       height: 64.h,
-      width: 323.w,
+      width: 343.w,
       padding: EdgeInsets.only(
         top: 12.h,
         bottom: 12.h,
@@ -325,7 +325,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
   Container formSetupPassWordConfirm({required String hintText}) {
     return Container(
       height: 64.h,
-      width: 323.w,
+      width: 343.w,
       padding: EdgeInsets.only(
         top: 12.h,
         bottom: 12.h,
@@ -390,7 +390,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
     return Padding(
       padding: EdgeInsets.only(top: 24.h),
       child: SizedBox(
-        width: 323.w,
+        width: 343.w,
         // height: 72.h,
         child: Text(
           S.current.please,

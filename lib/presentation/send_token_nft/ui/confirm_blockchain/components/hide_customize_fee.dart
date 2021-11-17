@@ -30,7 +30,7 @@ class HideCustomizeFee extends StatelessWidget {
                 // minHeight: 78.h,
                 ),
             child: Container(
-              width: 323.w,
+              width: 343.w,
               height: 90.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16.r)),

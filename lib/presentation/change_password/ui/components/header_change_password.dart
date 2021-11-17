@@ -22,7 +22,7 @@ Container headerChangePW({
         ),
         Text(
           S.current.change_password,
-          style: textNormal(Colors.white, 20.sp)
+          style: textNormal(Colors.white, 20)
               .copyWith(fontWeight: FontWeight.w700),
         ),
       ],

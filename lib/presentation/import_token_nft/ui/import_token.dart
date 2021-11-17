@@ -42,7 +42,7 @@ void showImportToken(BuildContext context, WalletCubit bloc) {
           child: Column(
             children: [
               Container(
-                width: 323.w,
+                width: 343.w,
                 height: 28.h,
                 margin: EdgeInsets.only(
                   left: 26.w,

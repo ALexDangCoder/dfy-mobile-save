@@ -87,7 +87,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
         );
       },
       child: SizedBox(
-        width: 323.w,
+        width: 343.w,
         // height: 25.h,
         child: Center(
           child: Text(
@@ -153,7 +153,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
         // bottom: 14.h,
       ),
       child: SizedBox(
-        width: 323.w,
+        width: 343.w,
         height: 54.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

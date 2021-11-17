@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -48,27 +47,29 @@ void showNFTSuccessfully(BuildContext context) {
             SizedBox(
               height: 56.h,
             ),
-            SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(ImageAssets.frameGreen),
-                    SizedBox(
-                      height: 22.h,
-                    ),
-                    Text(
-                      S.current.congratulation,
-                      style: textNormalCustom(
-                        Colors.white,
-                        32,
-                        FontWeight.bold,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(ImageAssets.frameGreen),
+                      SizedBox(
+                        height: 22.h,
                       ),
-                    ),
-                    SizedBox(
-                      height: 213.h,
-                    ),
-                  ],
+                      Text(
+                        S.current.congratulation,
+                        style: textNormalCustom(
+                          Colors.white,
+                          32,
+                          FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 213.h,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

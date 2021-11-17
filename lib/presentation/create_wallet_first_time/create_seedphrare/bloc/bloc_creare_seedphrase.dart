@@ -1,5 +1,4 @@
 import 'package:Dfy/domain/locals/prefs_service.dart';
-import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:flutter/services.dart';
@@ -18,8 +17,8 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BehaviorSubject<bool> isCheckButton1 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckButton = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckData = BehaviorSubject.seeded(false);
-  BehaviorSubject<List<Item>> listTitle = BehaviorSubject.seeded([]);
-  BehaviorSubject<List<Item>> listSeedPhrase = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<String>> listTitle = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<String>> listSeedPhrase = BehaviorSubject.seeded([]);
   BehaviorSubject<bool> isCheckTouchID = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckAppLock = BehaviorSubject.seeded(true);
 
@@ -27,6 +26,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
       BehaviorSubject.seeded(false);
 
   final String passWord;
+  List<String> listTitle1 = [];
 
   Future<void> generateWallet({String password = ''}) async {
     try {
@@ -41,10 +41,8 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   }
 
   bool getIsSeedPhraseImport() {
-    for (final Item item in listTitle.value) {
-      if (!item.isCheck) {
-        return false;
-      }
+    if (listTitle.value.isNotEmpty) {
+      return false;
     }
     return true;
   }
@@ -56,13 +54,43 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     return false;
   }
 
-
   void getIsSeedPhraseImport2() {
     if (getIsSeedPhraseImport() && isCheckBox2.value) {
       isCheckButton.sink.add(true);
     } else {
       isCheckButton.sink.add(false);
     }
+  }
+
+  final List<String> listContain = [];
+
+  void addListBoxSeedPhrase(String title) {
+    listContain.add(title);
+    listSeedPhrase.sink.add(listContain);
+  }
+
+  void removeListSeedPhrase(int index) {
+    final List<String> list = listTitle.value;
+    list.removeAt(index);
+    listTitle.sink.add(list);
+  }
+
+  void addListSeedPhrase(String title) {
+    final List<String> listContainBox = listTitle.value;
+    listContainBox.add(title);
+    listTitle.sink.add(listContainBox);
+  }
+
+  void removeListBoxSeedPhrase(int index) {
+    final List<String> list = listSeedPhrase.value;
+    list.removeAt(index);
+    listSeedPhrase.sink.add(list);
+  }
+
+  void resetPassPhrase() {
+    getStringToList(passPhrase);
+    listSeedPhrase.value.clear();
+    isCheckBox2.sink.add(false);
   }
 
   Future<void> storeWallet({
@@ -130,7 +158,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     }
   }
 
-
   void isButton() {
     if (Validator.validateNotNull(nameWallet.value) && isCheckBox1.value) {
       isCheckButton1.sink.add(true);
@@ -141,58 +168,20 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
 
   void getStringToList(String passPhrase) {
     listTitle1 = passPhrase.split(' ');
-    getListTitle();
+    listTitle.sink.add(listTitle1);
   }
 
   void getCheck() {
     String isData = '';
-    for (final Item value in listTitle3) {
-      isData += '${value.title} ';
+    for (final String value in listSeedPhrase.value) {
+      isData += '$value ';
     }
+
     if ('$passPhrase ' == isData) {
       isSeedPhraseImportFailed.sink.add(false);
     } else {
       isSeedPhraseImportFailed.sink.add(true);
     }
-  }
-
-  List<String> listTitle1 = [];
-  final List<Item> listTitle2 = [];
-  final List<Item> listTitle3 = [];
-
-  void reloadListTitleBox(String title) {
-    for (final Item value in listTitle2) {
-      if (value.title == title) {
-        value.isCheck = false;
-      }
-    }
-    listTitle.sink.add(listTitle2);
-  }
-
-  void getListTitle() {
-    for (final String title in listTitle1) {
-      listTitle2.add(Item(title: title));
-    }
-    listTitle.sink.add(listTitle2);
-    reloadListSeedPhrase();
-  }
-
-  void reloadListSeedPhrase() {
-    listSeedPhrase.sink.add(listTitle3);
-  }
-
-  void reloadListSeedPhrase1() {
-    listSeedPhrase.sink.add([]);
-    for (final Item value in listTitle.value) {
-      value.isCheck = false;
-    }
-    listTitle3.clear();
-    isCheckBox2.sink.add(false);
-  }
-
-  void reloadListTitle() {
-    listTitle.sink.add(listTitle2);
-    reloadListSeedPhrase();
   }
 
   void dispose() {

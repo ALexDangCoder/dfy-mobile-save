@@ -61,7 +61,7 @@ class _EnterAddressState extends State<EnterAddress> {
                     stream: widget.bloc.isTokenAddressText,
                     builder: (context, snapshot) {
                       return SizedBox(
-                        width: 323.w,
+                        width: 343.w,
                         child: widget.bloc.isTokenAddressText.value
                             ? null
                             : Text(

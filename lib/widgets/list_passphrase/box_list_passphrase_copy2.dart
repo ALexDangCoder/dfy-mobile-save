@@ -22,14 +22,14 @@ class BoxListPassWordPhraseCopy2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 26.w, left: 26.w),
+      margin: EdgeInsets.only(right: 16.w, left: 16.w),
       decoration: BoxDecoration(
         color: AppTheme.getInstance().itemBtsColors(),
         borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       padding: EdgeInsets.only(top: 16.h, left: 13.w, right: 13.w),
       height: 222.h,
-      width: 323.w,
+      width: 343.w,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

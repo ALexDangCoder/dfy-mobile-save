@@ -107,7 +107,7 @@ class _WalletState extends State<WalletScreen>
                     children: [
                       IconButton(
                         onPressed: () {},
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.menu,
                           size: 24,
                           color: Colors.white,
@@ -152,7 +152,7 @@ class _WalletState extends State<WalletScreen>
                             },
                           );
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.settings_outlined,
                           size: 24,
                           color: Colors.white,
@@ -184,7 +184,7 @@ class _WalletState extends State<WalletScreen>
                   labelColor: Colors.white,
                   unselectedLabelColor: const Color(0xFF9997FF),
                   indicatorColor: const Color(0xFF6F6FC5),
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
@@ -342,9 +342,9 @@ class _WalletState extends State<WalletScreen>
                   onTap: () {
                     showSelectAcc(context, cubit, TypeScreen2.detail);
                   },
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 27,
-                    child: const Image(
+                    child: Image(
                       image: AssetImage(ImageAssets.ic_symbol),
                     ),
                   ),
@@ -389,8 +389,8 @@ class _WalletState extends State<WalletScreen>
                         ),
                       );
                     },
-                    child: ImageIcon(
-                      const AssetImage(ImageAssets.ic_edit),
+                    child: const ImageIcon(
+                      AssetImage(ImageAssets.ic_edit),
                       color: Colors.white,
                       size: 24,
                     ),
