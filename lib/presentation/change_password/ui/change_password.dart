@@ -2,6 +2,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/bloc/change_password_cubit.dart';
 import 'package:Dfy/presentation/change_password/ui/components/form_setup_password.dart';
 import 'package:Dfy/presentation/change_password/ui/components/header_change_password.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -141,7 +142,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                           callBack: () {
                             Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                builder: (context) => const WalletScreen(
+                                builder: (context) => const MainScreen(
                                   index: 2,
                                 ),
                               ),
