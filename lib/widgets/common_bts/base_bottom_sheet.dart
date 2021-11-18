@@ -68,7 +68,7 @@ class BaseBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Flexible(
-                    flex: 5,
+                    flex: 6,
                     child: Align(
                       child: Text(
                         title,
