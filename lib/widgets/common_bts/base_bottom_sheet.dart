@@ -60,7 +60,6 @@ class BaseBottomSheet extends StatelessWidget {
                       },
                       child: Container(
                         margin: EdgeInsets.only(
-                          top: 5.h,
                           left: 11.w,
                           right: 11.w,
                         ),
@@ -69,9 +68,8 @@ class BaseBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Flexible(
-                    flex: 4,
+                    flex: 5,
                     child: Align(
-                      alignment: Alignment.topCenter,
                       child: Text(
                         title,
                         style: titleText(
@@ -84,23 +82,16 @@ class BaseBottomSheet extends StatelessWidget {
                     Flexible(
                       child: InkWell(
                         onTap: callback,
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            top: 5.h,
-                            left: 11.w,
-                            //right: 11.w,
-                          ),
-                          child: isImage ?? false
-                              ? Image.asset(text ?? '')
-                              : Text(
-                                  text ?? '',
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().fillColor(),
-                                    16,
-                                    FontWeight.w700,
-                                  ),
+                        child: isImage ?? false
+                            ? Image.asset(text ?? '')
+                            : Text(
+                                text ?? '',
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().fillColor(),
+                                  16,
+                                  FontWeight.w700,
                                 ),
-                        ),
+                              ),
                       ),
                     )
                   else

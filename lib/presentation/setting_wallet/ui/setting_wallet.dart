@@ -160,7 +160,7 @@ class SettingWallet extends StatelessWidget {
                     stream: cubitSetting.isSwitchFingerFtFaceIdOnStream,
                     builder: (context, snapshot) {
                       return switchForm(
-                        prefixImg: ImageAssets.ic_key24,
+                        prefixImg: ImageAssets.ic_face_id,
                         isCheck: snapshot.data ?? false,
                         hintText: S.current.face_touch_id,
                         cubit: cubitSetting,
