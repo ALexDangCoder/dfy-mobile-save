@@ -70,7 +70,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
         }
       },
       child: BaseBottomSheet(
-        title: '${S.current.send} NFT',
+        title: '${S.current.send} DFY',
         child: Column(
           children: [
             spaceH24,
@@ -182,10 +182,10 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
           ),
           Text(
             '${S.current.send} $nameToken',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
+            style: textNormalCustom(
+              Colors.white,
+              20,
+              FontWeight.w700,
             ),
           ),
         ],
