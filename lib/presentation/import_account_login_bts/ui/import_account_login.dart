@@ -363,7 +363,6 @@ class _ImportBTSState extends State<ImportBTS> {
                                         ? seedPhraseController.text
                                         : privateKeyController.text,
                                   );
-                                  importCubit.emit(NavState(Wallet()));
                                 }
                               },
                               gradient: RadialGradient(

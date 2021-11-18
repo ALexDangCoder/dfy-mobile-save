@@ -32,7 +32,7 @@ class ImportCubit extends Cubit<ImportState> {
   final BehaviorSubject<bool> _buttonSubject = BehaviorSubject<bool>();
   final BehaviorSubject<String> _txtWarningSeed =
       BehaviorSubject<String>.seeded('');
-
+  ///
   Sink<String> get txtWarningSeedSink => _txtWarningSeed.sink;
 
   Stream<String> get txtWarningSeedStream => _txtWarningSeed.stream;
@@ -68,6 +68,7 @@ class ImportCubit extends Cubit<ImportState> {
   Stream<FormType> get typeStream => _formTypeSubject.stream;
 
   Sink<FormType> get typeSink => _formTypeSubject.sink;
+
   FormType get type => _formTypeSubject.value;
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
@@ -174,6 +175,7 @@ class ImportCubit extends Cubit<ImportState> {
       }
     }
   }
+
   bool validateAll() {
     if (seedField || privateField) {
       return true;
@@ -187,6 +189,8 @@ class ImportCubit extends Cubit<ImportState> {
     _stringSubject.close();
     _boolSubject.close();
     _formTypeSubject.close();
+    _txtWarningSeed.close();
+    _seedSubject.close();
     super.close();
   }
 }
