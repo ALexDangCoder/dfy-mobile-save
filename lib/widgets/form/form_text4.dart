@@ -22,7 +22,6 @@ class FromText4 extends StatelessWidget {
     return Container(
       width: 343.w,
       height: 64.h,
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
       padding: EdgeInsets.symmetric(horizontal: 15.5.w, vertical: 23.h),
       decoration: BoxDecoration(
         color: AppTheme.getInstance().itemBtsColors(),

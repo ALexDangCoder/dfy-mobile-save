@@ -340,8 +340,8 @@ class _ImportBTSState extends State<ImportBTS> {
                     stream: importCubit.btnStream,
                     builder: (ctx, snapshot) {
                       isEnable = snapshot.data!;
-                      return isEnable
-                          ? ButtonGradient(
+                      if (isEnable) {
+                        return ButtonGradient(
                               onPressed: () {
                                 if (importCubit.type == FormType.PASS_PHRASE) {
                                   importCubit.showTxtWarningSeed(
@@ -378,8 +378,9 @@ class _ImportBTSState extends State<ImportBTS> {
                                   20,
                                 ),
                               ),
-                            )
-                          : ErrorButton(
+                            );
+                      } else {
+                        return ErrorButton(
                               child: Center(
                                 child: Text(
                                   S.current.restore,
@@ -390,6 +391,7 @@ class _ImportBTSState extends State<ImportBTS> {
                                 ),
                               ),
                             );
+                      }
                     },
                   ),
                 ),

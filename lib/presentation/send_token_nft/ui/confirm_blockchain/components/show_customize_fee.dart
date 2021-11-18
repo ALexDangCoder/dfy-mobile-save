@@ -34,8 +34,8 @@ class ShowCustomizeFee extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        left: 26.w,
-        right: 26.w,
+        left: 10.w,
+        right: 10.w,
       ),
       child: Column(
         children: [
@@ -69,7 +69,7 @@ class ShowCustomizeFee extends StatelessWidget {
                       StreamBuilder<bool>(
                         stream: sendTokenCubit.isSufficientTokenStream,
                         builder: (context, snapshot) {
-                          return snapshot.data ?? gasFee > balanceFirstFetch
+                          return snapshot.data ?? gasFee < balanceFirstFetch
                               //if sufficient will not show warning red text
                               ? Expanded(
                                   child: Column(

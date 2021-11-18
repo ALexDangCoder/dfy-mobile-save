@@ -1,3 +1,5 @@
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -6,6 +8,9 @@ import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components/show_customize_fee.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/button/button_gradient.dart';
+import 'package:Dfy/widgets/button/error_button.dart';
+import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -38,7 +43,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
     gasPriceFirstFetch = 1.1;
     gasLimitFirstFetch = 0.624;
     gasFeeFirstFetch = 0.4;
-    informationWallet = InformationWallet(
+    informationWallet = const InformationWallet(
       nameWallet: 'Test wallet',
       fromAddress: '0xFE5...4fd0',
       amount: 0.3,
@@ -65,23 +70,11 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
           currentFocus.unfocus();
         }
       },
-      child: Container(
-        width: 375.w,
-        height: 764.h,
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(62, 61, 92, 1),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.r),
-            topRight: Radius.circular(30.r),
-          ),
-        ),
+      child: BaseBottomSheet(
+        title: '${S.current.send}DFY',
         child: Column(
           children: [
-            header(nameToken: 'DFY'),
-            const Divider(
-              thickness: 1,
-              color: Color.fromRGBO(255, 255, 255, 0.1),
-            ),
+            spaceH24,
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -92,12 +85,9 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                       to: widget.toAddress,
                       amount: '${widget.amount} DFY',
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 26.w, right: 26.w),
-                      child: const Divider(
-                        thickness: 1,
-                        color: Color.fromRGBO(255, 255, 255, 0.1),
-                      ),
+                    const Divider(
+                      thickness: 1,
+                      color: Color.fromRGBO(255, 255, 255, 0.1),
                     ),
                     SizedBox(
                       height: 16.h,
@@ -137,17 +127,40 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
               initialData: gasFeeFirstFetch <= informationWallet.amount,
               stream: sendTokenCubit.isSufficientTokenStream,
               builder: (context, snapshot) {
+                final isEnable = snapshot.data ?? false;
                 return GestureDetector(
-                  child: ButtonGold(
-                    title: S.current.approve,
-                    isEnable: snapshot.data ?? false,
-                  ),
+                  child: isEnable
+                      ? ButtonGradient(
+                          gradient: RadialGradient(
+                            center: const Alignment(0.5, -0.5),
+                            radius: 4,
+                            colors:
+                                AppTheme.getInstance().gradientButtonColor(),
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            S.current.approve,
+                            style: textNormal(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
+                            ),
+                          ),
+                        )
+                      : ErrorButton(
+                          child: Center(
+                            child: Text(
+                              S.current.approve,
+                              style: textNormal(
+                                AppTheme.getInstance().textThemeColor(),
+                                20,
+                              ),
+                            ),
+                          ),
+                        ),
                 );
               },
             ),
-            SizedBox(
-              height: 38.h,
-            ),
+            spaceH38,
           ],
         ),
       ),
@@ -156,8 +169,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
 
   Padding header({required String nameToken}) {
     return Padding(
-      padding:
-          EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h),
+      padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 16.h),
       child: Row(
         children: [
           IconButton(

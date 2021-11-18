@@ -20,7 +20,7 @@ class FormAddFtAmount extends StatelessWidget {
     return Container(
       // height: 93.h,
       margin: EdgeInsets.only(
-        left: 26.w,
+        left: 10.w,
         top: 24.h,
         bottom: 20.h,
       ),
