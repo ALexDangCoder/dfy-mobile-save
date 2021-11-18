@@ -218,25 +218,23 @@ class _WalletState extends State<WalletScreen>
                                 return ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount: cubit.listTokenStream.value.length,
+                                  itemCount:snapshot.data?.length ??0,
                                   itemBuilder: (context, index) {
                                     return TokenItem(
-                                        index: index,
-                                        bloc: cubit,
-                                        symbolUrl:
-                                            snapshot.data?[index].iconToken ??
-                                                'assets/images/Ellipse 39.png',
-                                        amount: snapshot
-                                                .data?[index].amountToken
-                                                .toString() ??
-                                            '',
-                                        nameToken: snapshot
-                                                .data?[index].nameTokenSymbol ??
-                                            '',
-                                        price: snapshot.data?[index].price
-                                                .toString() ??
-                                            '',
-
+                                      index: index,
+                                      bloc: cubit,
+                                      symbolUrl:
+                                          snapshot.data?[index].iconToken ??
+                                              'assets/images/Ellipse 39.png',
+                                      amount: snapshot.data?[index].amountToken
+                                              .toString() ??
+                                          '',
+                                      nameToken: snapshot
+                                              .data?[index].nameTokenSymbol ??
+                                          '',
+                                      price: snapshot.data?[index].price
+                                              .toString() ??
+                                          '',
                                     );
                                   },
                                 );
