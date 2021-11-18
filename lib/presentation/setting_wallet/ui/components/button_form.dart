@@ -47,6 +47,7 @@ Container switchForm({
       child: Padding(
         padding: EdgeInsets.only(top: 5.h),
         child: ListTileSwitch(
+          switchScale: 1,
           value: isCheck,
           onChanged: (bool value) =>
               cubit.changeValueFingerFtFaceID(value: value),
@@ -83,6 +84,7 @@ Container switchForm({
       child: Padding(
         padding: EdgeInsets.only(top: 5.h),
         child: ListTileSwitch(
+          switchScale: 1,
           value: isCheck,
           onChanged: (value) {
             cubit.changeValueAppLock(value: value);
