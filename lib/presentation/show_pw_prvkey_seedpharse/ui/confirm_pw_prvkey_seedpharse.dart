@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -10,12 +12,27 @@ import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
-  ConfirmPWShowPRVSeedPhr({required this.cubit, Key? key}) : super(key: key);
-
-  late String password = 'Huydepzai1102.';
+class ConfirmPWShowPRVSeedPhr extends StatefulWidget {
+  const ConfirmPWShowPRVSeedPhr({required this.cubit, Key? key})
+      : super(key: key);
   final ConfirmPwPrvKeySeedpharseCubit cubit;
-  TextEditingController controller = TextEditingController();
+
+  @override
+  _ConfirmPWShowPRVSeedPhrState createState() =>
+      _ConfirmPWShowPRVSeedPhrState();
+}
+
+class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
+  String password = 'Huydepzai1102.';
+  late TextEditingController txtController;
+
+  @override
+  void initState() {
+    txtController = TextEditingController();
+    print(Platform.isIOS);
+    widget.cubit.getConfig();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +48,7 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
           spaceH24,
           formSetupPassWordConfirm(
             hintText: S.current.enter_password,
-            controller: controller,
+            controller: txtController,
             isShow: true,
           ),
           SizedBox(
@@ -39,7 +56,7 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
           ),
           // cubit.isEnableBtnStream,
           StreamBuilder<bool>(
-            stream: cubit.isEnableBtnStream,
+            stream: widget.cubit.isEnableBtnStream,
             builder: (context, snapshot) {
               return GestureDetector(
                 onTap: () {
@@ -58,9 +75,34 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
           SizedBox(
             height: 40.h,
           ),
-          const Image(
-            image: AssetImage(ImageAssets.faceID),
-          ),
+
+          //todo handel scan finger or faceID
+          StreamBuilder<bool>(
+            stream: widget.cubit.isSuccessWhenScanStream,
+            builder: (context, snapshot) {
+              return Visibility(
+                child: GestureDetector(
+                  onTap: () async {
+                    await widget.cubit
+                        .authenticate(); //todo change stream not bloc
+                    if (snapshot.data == true) {
+                      showPrivateKeySeedPhrase(
+                          context, PrivateKeySeedPhraseBloc());
+                    } else {
+                      //nothing
+                    }
+                  },
+                  child: Platform.isIOS
+                      ? const Image(
+                          image: AssetImage(ImageAssets.ic_face_id),
+                        )
+                      : const Image(
+                          image: AssetImage(ImageAssets.ic_finger),
+                        ),
+                ),
+              );
+            },
+          )
         ],
       ),
     );
@@ -86,7 +128,7 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
       ),
       child: TextFormField(
         onChanged: (value) {
-          cubit.isEnableButton(
+          widget.cubit.isEnableButton(
             value: value,
           );
         },
