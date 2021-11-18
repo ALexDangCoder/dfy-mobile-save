@@ -23,16 +23,20 @@ class ConfirmPwPrvKeySeedpharseCubit
   BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<String> _txtWarningValidate =
   BehaviorSubject<String>.seeded('');
+  final BehaviorSubject<bool> _showPW =
+  BehaviorSubject<bool>.seeded(true);
 
   //stream
   Stream<bool> get isEnableBtnStream => _isEnableButton.stream;
   Stream<bool> get isSuccessWhenScanStream => _isSuccessWhenScan.stream;
+  Stream<bool> get showPWStream => _showPW.stream;
   Stream<bool> get showValidatePWStream => _showValidatePW.stream;
   Stream<String> get txtWarningValidateStream => _txtWarningValidate.stream;
 
   //sink
   Sink<bool> get isEnableBtnSink => _isEnableButton.sink;
   Sink<bool> get isSuccessWhenScanSink => _isSuccessWhenScan.sink;
+  Sink<bool> get showPWSink => _showPW.sink;
   Sink<bool> get showValidatePWSink => _showValidatePW.sink;
   Sink<String> get txtWarningValidateSink => _txtWarningValidate.sink;
 
@@ -73,6 +77,14 @@ class ConfirmPwPrvKeySeedpharseCubit
     } else {
       isValidPW = true;
       showValidatePWSink.add(false);
+    }
+  }
+
+  void showPW(int index) {
+    if (index == 0) {
+      showPWSink.add(true);
+    } else {
+      showPWSink.add(false);
     }
   }
 }
