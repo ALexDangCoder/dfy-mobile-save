@@ -7,7 +7,6 @@ import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components/information_wallet.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components/show_customize_fee.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -71,7 +70,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
         }
       },
       child: BaseBottomSheet(
-        title: '${S.current.send}DFY',
+        title: '${S.current.send} NFT',
         child: Column(
           children: [
             spaceH24,
