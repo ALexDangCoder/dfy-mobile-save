@@ -51,6 +51,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
             controller: txtController,
             isShow: true,
           ),
+          showTextValidatePW(),
           SizedBox(
             height: 40.h,
           ),
@@ -61,8 +62,16 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
               return GestureDetector(
                 onTap: () {
                   if (snapshot.data ?? false) {
-                    showPrivateKeySeedPhrase(
-                        context, PrivateKeySeedPhraseBloc());
+                    widget.cubit.checkValidate(
+                      txtController.text, rightPW: password,);
+                    if(widget.cubit.isValidPW) {
+                      showPrivateKeySeedPhrase(
+                        context,
+                        PrivateKeySeedPhraseBloc(),
+                      );
+                    } else {
+                      //nothing
+                    }
                   }
                 },
                 child: ButtonGold(
@@ -94,11 +103,11 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
                   },
                   child: Platform.isIOS
                       ? const Image(
-                          image: AssetImage(ImageAssets.ic_face_id),
-                        )
+                    image: AssetImage(ImageAssets.ic_face_id),
+                  )
                       : const Image(
-                          image: AssetImage(ImageAssets.ic_finger),
-                        ),
+                    image: AssetImage(ImageAssets.ic_finger),
+                  ),
                 ),
               );
             },
@@ -148,13 +157,13 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
             onTap: () {},
             child: isShow
                 ? const ImageIcon(
-                    AssetImage(ImageAssets.ic_show),
-                    color: Colors.grey,
-                  )
+              AssetImage(ImageAssets.ic_show),
+              color: Colors.grey,
+            )
                 : const ImageIcon(
-                    AssetImage(ImageAssets.ic_hide),
-                    color: Colors.grey,
-                  ),
+              AssetImage(ImageAssets.ic_hide),
+              color: Colors.grey,
+            ),
           ),
           prefixIcon: const ImageIcon(
             AssetImage(ImageAssets.ic_lock),
@@ -163,6 +172,41 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
           border: InputBorder.none,
         ),
       ),
+    );
+  }
+
+  Widget showTextValidatePW() {
+    return StreamBuilder(
+      stream: widget.cubit.showValidatePWStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 343.w,
+                // height: 30.h,
+                child: StreamBuilder<String>(
+                  stream: widget.cubit.txtWarningValidateStream,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromRGBO(255, 108, 108, 1),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
