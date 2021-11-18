@@ -39,7 +39,7 @@ class TransactionList extends StatelessWidget {
                   children: [
                     ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxHeight: dataLen * 70.h,
+                        maxHeight: dataLen * 67.h,
                       ),
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
@@ -47,7 +47,8 @@ class TransactionList extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return transactionRow(
                             context: context,
-                            transaction: snapData?[index] ?? TransactionModel.init(),
+                            transaction:
+                                snapData?[index] ?? TransactionModel.init(),
                           );
                         },
                       ),
@@ -159,25 +160,26 @@ class TransactionList extends StatelessWidget {
           );
         },
         child: Container(
-          height: 69.h,
+          height: 66.h,
           padding: EdgeInsets.only(
-            top: 14.h,
+            top: 12.h,
             left: 16.h,
             right: 16.h,
-            bottom: 12.h,
           ),
           child: Column(
             children: [
               Row(
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Text(
-                      transaction.title,
-                      style: tokenDetailAmount(
-                        color: AppTheme.getInstance().whiteColor(),
-                        fontSize: 16,
-                      ),
+                  Text(
+                    transaction.title,
+                    style: tokenDetailAmount(
+                      color: AppTheme.getInstance().whiteColor(),
+                      fontSize: 16,
                     ),
+                  ),
+                  SizedBox(
+                    width: 8.w,
                   ),
                   sizedSvgImage(
                     w: 20,
@@ -188,8 +190,7 @@ class TransactionList extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.topRight,
                       child: transactionAmountText(
-                        status:
-                            transaction.status,
+                        status: transaction.status,
                         amount: transaction.amount,
                         type: transaction.type,
                       ),
@@ -207,6 +208,7 @@ class TransactionList extends StatelessWidget {
                     style: tokenDetailAmount(
                       color: AppTheme.getInstance().currencyDetailTokenColor(),
                       fontSize: 14,
+                      weight: FontWeight.w400,
                     ),
                   ),
                 ],

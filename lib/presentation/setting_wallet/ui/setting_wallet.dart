@@ -2,7 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase1.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase.dart';
 import 'package:Dfy/presentation/import_account_login_bts/ui/import_account_login.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
@@ -160,7 +160,7 @@ class SettingWallet extends StatelessWidget {
                     stream: cubitSetting.isSwitchFingerFtFaceIdOnStream,
                     builder: (context, snapshot) {
                       return switchForm(
-                        prefixImg: ImageAssets.ic_key24,
+                        prefixImg: ImageAssets.ic_face_id,
                         isCheck: snapshot.data ?? false,
                         hintText: S.current.face_touch_id,
                         cubit: cubitSetting,

@@ -11,7 +11,6 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
-
 part 'wallet_state.dart';
 
 class WalletCubit extends BaseCubit<WalletState> {
@@ -22,6 +21,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     getListTokenItem();
     getListNFTItem();
   }
+
   bool checkLogin = false;
   List<TokenModel> listStart = [];
 
@@ -57,15 +57,10 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   String addressWalletCore = '';
 
-  void addToken(TokenModel tokenModel) {
-    listTokenDetailScreen.add(tokenModel);
-    listTokenStream.sink.add(listTokenDetailScreen);
-  }
-
   Future<void> getAddressWallet() async {}
 
   String formatAddress(String address) {
-    if(address.isEmpty) return address;
+    if (address.isEmpty) return address;
     final String formatAddressWallet =
         '${address.substring(0, 5)}...${address.substring(
       address.length - 4,
@@ -144,15 +139,22 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   void getListTokenItem() {
-    final List<TokenModel> list = [];
+    final List<TokenModel> listToken = [];
     for (final TokenModel value in getListTokenModel.value) {
       if (value.isShow ?? false) {
-        list.add(value);
+        listToken.add(value);
       }
     }
     listTokenDetailScreen.clear();
-    listTokenDetailScreen.addAll(list);
+    listTokenDetailScreen.addAll(listToken);
     listTokenStream.sink.add(listTokenDetailScreen);
+  }
+
+  void addToken(TokenModel tokenModel) {
+    final List<TokenModel> listToken = getListTokenModel.value;
+    listToken.add(tokenModel);
+    getListTokenModel.sink.add(listToken);
+    sortList(getListTokenModel.value);
   }
 
   double total(List<TokenModel> list) {
@@ -401,7 +403,39 @@ class WalletCubit extends BaseCubit<WalletState> {
       }
     }
     listStart.addAll(list);
+    getListTokenModel.sink.add(list);
+  }
 
+  void sortList(List<TokenModel> listSort) {
+    final List<TokenModel> list = [];
+    for (final TokenModel value in listSort) {
+      if (value.isShow ?? false) {
+        list.add(value);
+      }
+    }
+    final Comparator<TokenModel> amountTokenComparator =
+        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
+    list.sort(amountTokenComparator);
+    final List<TokenModel> list1 = [];
+    for (final TokenModel value in listSort) {
+      if (value.isShow ?? false) {
+      } else {
+        if ((value.amountToken ?? 0) > 0) {
+          list1.add(value);
+        }
+      }
+    }
+    list1.sort(amountTokenComparator);
+    list.addAll(list1);
+    for (final TokenModel value in listSort) {
+      if (value.isShow ?? false) {
+      } else {
+        if ((value.amountToken ?? 0) > 0) {
+        } else {
+          list.add(value);
+        }
+      }
+    }
     getListTokenModel.sink.add(list);
   }
 

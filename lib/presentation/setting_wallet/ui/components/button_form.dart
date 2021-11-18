@@ -44,17 +44,32 @@ Container switchForm({
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
-      child: ListTileSwitch(
-        value: isCheck,
-        onChanged: (bool value) =>
-            cubit.changeValueFingerFtFaceID(value: value),
-        //todo
-        leading: Image.asset(prefixImg),
-        switchActiveColor: AppTheme.getInstance().fillColor(),
-        switchType: SwitchType.cupertino,
-        title: Text(
-          hintText,
-          style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+      child: Padding(
+        padding: EdgeInsets.only(top: 5.h),
+        child: ListTileSwitch(
+          switchScale: 1,
+          value: isCheck,
+          onChanged: (bool value) =>
+              cubit.changeValueFingerFtFaceID(value: value),
+          //todo
+          leading: SizedBox(
+            // height: 20,
+            width: 200,
+            child: Center(
+              child: Row(
+                children: [
+                  Image.asset(prefixImg),
+                  spaceW10,
+                  Text(
+                    hintText,
+                    style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          switchActiveColor: AppTheme.getInstance().fillColor(),
+          switchType: SwitchType.cupertino,
         ),
       ),
     );
@@ -66,19 +81,37 @@ Container switchForm({
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
-      child: ListTileSwitch(
-        value: isCheck,
-        onChanged: (value) {
-          cubit.changeValueAppLock(value: value);
-          cubit.setIsAppLock(value: value);
-        },
-        //todo
-        leading: Image.asset(prefixImg),
-        switchActiveColor: AppTheme.getInstance().fillColor(),
-        switchType: SwitchType.cupertino,
-        title: Text(
-          hintText,
-          style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+      child: Padding(
+        padding: EdgeInsets.only(top: 5.h),
+        child: ListTileSwitch(
+          switchScale: 1,
+          value: isCheck,
+          onChanged: (value) {
+            cubit.changeValueAppLock(value: value);
+            cubit.setIsAppLock(value: value);
+          },
+          //todo
+          leading: SizedBox(
+            // height: 20,
+            width: 200,
+            child: Center(
+              child: Row(
+                children: [
+                  Image.asset(prefixImg),
+                  spaceW12,
+                  Text(
+                    hintText,
+                    style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          switchActiveColor: AppTheme.getInstance().fillColor(),
+          switchType: SwitchType.cupertino,
+          // leading: Image.asset(prefixImg),
+          // switchActiveColor: AppTheme.getInstance().fillColor(),
+          // switchType: SwitchType.cupertino,
         ),
       ),
     );
