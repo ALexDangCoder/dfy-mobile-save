@@ -24,6 +24,7 @@ class ChoiceDialog extends StatefulWidget {
 class _CustomDialogState extends State<ChoiceDialog> {
   @override
   Widget build(BuildContext context) {
+    final _cubit = widget.cubit;
     return Container(
       height: 124.h,
       width: 343.w,
@@ -40,13 +41,17 @@ class _CustomDialogState extends State<ChoiceDialog> {
           ),
           InkWell(
             onTap: () {
-              widget.cubit.stringSink.add(S.current.seed_phrase);
-              widget.cubit.typeSink.add(FormType.PASS_PHRASE);
-              widget.cubit.listStringSink.add(
-                [S.current.only_desc],
-              );
-              widget.controller1.clear();
-              widget.cubit.boolSink.add(false);
+              if (_cubit.type != FormType.PASS_PHRASE) {
+                _cubit.stringSink.add(S.current.seed_phrase);
+                _cubit.typeSink.add(FormType.PASS_PHRASE);
+                _cubit.listStringSink.add(
+                  [S.current.only_desc],
+                );
+                _cubit.seedSink.add(false);
+                _cubit.btnSink.add(true);
+                widget.controller2.clear();
+              }
+              _cubit.boolSink.add(false);
             },
             child: Container(
               margin: EdgeInsets.only(left: 24.w),
@@ -69,13 +74,17 @@ class _CustomDialogState extends State<ChoiceDialog> {
           ),
           InkWell(
             onTap: () {
-              widget.cubit.stringSink.add(S.current.private_key);
-              widget.cubit.typeSink.add(FormType.PRIVATE_KEY);
-              widget.cubit.listStringSink.add(
-                [S.current.imported],
-              );
-              widget.controller2.clear();
-              widget.cubit.boolSink.add(false);
+              if (_cubit.type != FormType.PRIVATE_KEY) {
+                _cubit.stringSink.add(S.current.private_key);
+                _cubit.typeSink.add(FormType.PRIVATE_KEY);
+                _cubit.listStringSink.add(
+                  [S.current.imported],
+                );
+                _cubit.seedSink.add(false);
+                _cubit.btnSink.add(true);
+                widget.controller1.clear();
+              }
+              _cubit.boolSink.add(false);
             },
             child: Container(
               margin: EdgeInsets.only(left: 24.w),

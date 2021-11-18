@@ -81,7 +81,7 @@ void showImportToken(BuildContext context, WalletCubit bloc) {
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(12)),
-                    color: backGroubBottomSheetColor,
+                    color: backgroundBottomSheetColor,
                   ),
                   height: 35.h,
                   width: 253.w,

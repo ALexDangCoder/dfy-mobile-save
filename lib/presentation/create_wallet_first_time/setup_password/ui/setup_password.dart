@@ -1,14 +1,13 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 class SetupPassWord extends StatefulWidget {
   const SetupPassWord({Key? key}) : super(key: key);
@@ -95,35 +94,35 @@ class _SetupPassWordState extends State<SetupPassWord> {
               ),
             ),
             StreamBuilder<bool>(
-                stream: isValidPassCubit.isEnableBtnStream,
-                builder: (context, snapshot) {
-                  return GestureDetector(
-                    child: ButtonGold(
-                      title: S.current.continue_s,
-                      isEnable: snapshot.data ?? true,
-                    ),
-                    onTap: () {
-
-                      if (snapshot.data ?? false) {
-                        isValidPassCubit.showTxtWarningNewPW(password.text);
-                        isValidPassCubit.showTxtWarningConfirmPW(
-                          confirmPassword.text,
-                          newPW: password.text,
+              stream: isValidPassCubit.isEnableBtnStream,
+              builder: (context, snapshot) {
+                return GestureDetector(
+                  child: ButtonGold(
+                    title: S.current.continue_s,
+                    isEnable: snapshot.data ?? true,
+                  ),
+                  onTap: () {
+                    if (snapshot.data ?? false) {
+                      isValidPassCubit.showTxtWarningNewPW(password.text);
+                      isValidPassCubit.showTxtWarningConfirmPW(
+                        confirmPassword.text,
+                        newPW: password.text,
+                      );
+                      if (isValidPassCubit.validateAll()) {
+                        showCreateSeedPhrase1(
+                          context,
+                          false,
+                          BLocCreateSeedPhrase(password.text),
+                          TypeScreen.tow,
                         );
-                        if(isValidPassCubit.validateAll()) {
-                            showCreateSeedPhrase1(
-                              context,
-                              false,
-                              BLocCreateSeedPhrase(password.text),
-                              TypeScreen.tow,
-                            );
-                        } else {
-                          //will not change screen
-                        }
+                      } else {
+                        //will not change screen
                       }
-                    },
-                  );
-                }),
+                    }
+                  },
+                );
+              },
+            ),
             SizedBox(
               height: 38.h,
             ),
@@ -152,9 +151,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style:
-                          textNormal(AppTheme.getInstance().wrongColor(), 12)
-                              .copyWith(fontWeight: FontWeight.w400),
+                      style: textNormal(AppTheme.getInstance().wrongColor(), 12)
+                          .copyWith(fontWeight: FontWeight.w400),
                     );
                   },
                 ),
@@ -185,9 +183,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style:
-                          textNormal(AppTheme.getInstance().wrongColor(), 12)
-                              .copyWith(fontWeight: FontWeight.w400),
+                      style: textNormal(AppTheme.getInstance().wrongColor(), 12)
+                          .copyWith(fontWeight: FontWeight.w400),
                     );
                   },
                 ),

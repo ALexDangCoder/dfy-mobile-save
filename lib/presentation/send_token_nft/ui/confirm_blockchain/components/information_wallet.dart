@@ -22,8 +22,8 @@ class InformationWallet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        left: 26.w,
-        right: 26.w,
+        left: 10.w,
+        right: 10.w,
       ),
       child: Container(
         width: 343.w,

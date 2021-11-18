@@ -165,6 +165,9 @@
   "your_current_wallet": "Your current wallet, accounts and assets will be removed from this app permanently. This action cannot be undone.",
   "you_can_only": "You can ONLY recover this wallet with your Secret Seed Phrase/Private Key. DeFi For You does not have your Secret Seed Phrase/Private Key.",
   "amount_invalid": "Invalid amount",
-  "quantity_invalid_of_all": "Your quantity must be smaller than quantity of all"
-
+  "quantity_invalid_of_all": "Your quantity must be smaller than quantity of all",
+  "warning_private": "Private key must require",
+  "seed_required": "Secret seed phrase must required",
+  "private_required": "Private key must required",
+  "private_warning": "Private key is not invalid"
 }

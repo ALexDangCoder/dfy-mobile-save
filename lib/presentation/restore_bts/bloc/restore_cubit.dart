@@ -19,19 +19,31 @@ class RestoreCubit extends Cubit<RestoreState> {
       BehaviorSubject.seeded(S.current.seed_phrase);
   final BehaviorSubject<bool> _boolSubject = BehaviorSubject<bool>();
   final BehaviorSubject<FormType> _formTypeSubject =
-      BehaviorSubject<FormType>();
+      BehaviorSubject.seeded(FormType.PASS_PHRASE);
   final BehaviorSubject<bool> _newPassSubject = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _conPassSubject = BehaviorSubject<bool>();
-  final BehaviorSubject<bool> _ckcBoxSubject = BehaviorSubject<bool>();
-  final BehaviorSubject<bool> _validate = BehaviorSubject<bool>.seeded(false);
-  final BehaviorSubject<bool> _match = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _ckcBoxSubject = BehaviorSubject.seeded(true);
   final BehaviorSubject<bool> _buttonSubject = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _seedSubject = BehaviorSubject<bool>();
+  final BehaviorSubject<bool> _validate = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<String> _txtWarningNewPW =
+      BehaviorSubject<String>.seeded('');
+  final BehaviorSubject<bool> _match = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<String> _txtWarningConfirmPW =
+      BehaviorSubject<String>.seeded('');
+  final BehaviorSubject<String> _txtWarningSeed =
+      BehaviorSubject<String>.seeded('');
+
+  /// Huy
+  bool newPasswordField = false;
+  bool confirmPasswordField = false;
+  bool haveValueConfirmPW = false;
+  bool haveValueSeed = false;
+  bool haveValuePrivate = false;
+  bool haveValueNewPW = false;
   bool seedField = false;
-  bool newPassField = false;
-  bool conPassField = false;
   bool privateField = false;
-  bool ckc = true;
+  bool checkBoxValue = true;
 
   /// button subject
   Stream<bool> get btnStream => _buttonSubject.stream;
@@ -40,26 +52,17 @@ class RestoreCubit extends Cubit<RestoreState> {
 
   bool get btnValue => _buttonSubject.valueOrNull ?? false;
 
-  /// seed phrase subject
+  /// compare password
+  Stream<List<String>> get listStringStream => _behaviorSubject.stream;
+
+  Sink<List<String>> get listStringSink => _behaviorSubject.sink;
+
+  ///
   Stream<bool> get seedStream => _seedSubject.stream;
 
   Sink<bool> get seedSink => _seedSubject.sink;
 
   bool get seedValue => _seedSubject.valueOrNull ?? false;
-
-  /// check validate password
-  Stream<bool> get validateStream => _validate.stream;
-
-  Stream<bool> get matchStream => _match.stream;
-
-  Sink<bool> get validateSink => _validate.sink;
-
-  /// compare password
-  Sink<bool> get matchSink => _match.sink;
-
-  Stream<List<String>> get listStringStream => _behaviorSubject.stream;
-
-  Sink<List<String>> get listStringSink => _behaviorSubject.sink;
 
   /// select string
   String get strValue => _stringSubject.value;
@@ -78,6 +81,8 @@ class RestoreCubit extends Cubit<RestoreState> {
 
   Sink<FormType> get typeSink => _formTypeSubject.sink;
 
+  FormType get type => _formTypeSubject.value;
+
   /// stream of new password
   Stream<bool> get newStream => _newPassSubject.stream;
 
@@ -92,7 +97,30 @@ class RestoreCubit extends Cubit<RestoreState> {
   Stream<bool> get ckcStream => _ckcBoxSubject.stream;
 
   Sink<bool> get ckcSink => _ckcBoxSubject.sink;
+  bool get ckcValue => _ckcBoxSubject.value;
 
+  ///
+  Stream<bool> get validateStream => _validate.stream;
+
+  Sink<bool> get validateSink => _validate.sink;
+
+  Sink<String> get txtWarningNewPWSink => _txtWarningNewPW.sink;
+
+  Stream<String> get txtWarningNewPWStream => _txtWarningNewPW.stream;
+
+  Stream<String> get txtWarningConfirmPWStream => _txtWarningConfirmPW.stream;
+
+  Sink<String> get txtWarningConfirmPWSink => _txtWarningConfirmPW.sink;
+
+  Stream<bool> get matchStream => _match.stream;
+
+  Sink<bool> get matchSink => _match.sink;
+
+  Sink<String> get txtWarningSeedSink => _txtWarningSeed.sink;
+
+  Stream<String> get txtWarningSeedStream => _txtWarningSeed.stream;
+
+  ///
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'importWalletCallback':
@@ -130,76 +158,36 @@ class RestoreCubit extends Cubit<RestoreState> {
   /// check null seed field
   void checkSeedField(String value) {
     if (value.isNotEmpty) {
-      seedField = true;
+      haveValueSeed = true;
     } else {
-      seedField = false;
+      haveValueSeed = false;
     }
-    if ((privateField || seedField) && newPassField && conPassField && ckc) {
+    if ((haveValueSeed || haveValuePrivate) &&
+        haveValueConfirmPW &&
+        haveValueNewPW &&
+        ckcValue) {
       btnSink.add(true);
     } else {
       btnSink.add(false);
+      ckcSink.add(false);
+      ckcSink.add(false);
     }
   }
 
-  /// listen check box onchange
-  void checkCkcValue(value) {
-    ckc = value;
-    if ((privateField || seedField) && newPassField && conPassField && ckc) {
-      btnSink.add(true);
-    } else {
-      btnSink.add(false);
-    }
-  }
-
-  /// check null new password
-  void checkNewPassField(String value) {
-    if (value.isNotEmpty) {
-      newPassField = true;
-    } else {
-      newPassField = false;
-    }
-    if ((privateField || seedField) && newPassField && conPassField && ckc) {
-      btnSink.add(true);
-    } else {
-      btnSink.add(false);
-    }
-  }
-
-  /// check null confirm password
-  void checkConPassField(String value) {
-    if (value.isNotEmpty) {
-      conPassField = true;
-    } else {
-      conPassField = false;
-    }
-    if ((privateField || seedField) && newPassField && conPassField && ckc) {
-      btnSink.add(true);
-    } else {
-      btnSink.add(false);
-    }
-  }
-
-  /// check null private key
   void checkPrivateField(String value) {
     if (value.isNotEmpty) {
-      privateField = true;
+      haveValuePrivate = true;
     } else {
-      privateField = false;
+      haveValuePrivate = false;
     }
-    if ((privateField || seedField) && newPassField && conPassField && ckc) {
+    if ((haveValueSeed || haveValuePrivate) &&
+        haveValueConfirmPW &&
+        haveValueNewPW &&
+        checkBoxValue) {
       btnSink.add(true);
     } else {
       btnSink.add(false);
-    }
-  }
-
-  /// check validate of seed phrase
-  void checkSeedPhrase(String strArray) {
-    final int len = strArray.split(' ').length;
-    if (len == 12 || len == 15 || len == 18 || len == 21 || len == 24) {
-      seedSink.add(false);
-    } else {
-      seedSink.add(true);
+      ckcSink.add(false);
     }
   }
 
@@ -223,6 +211,151 @@ class RestoreCubit extends Cubit<RestoreState> {
 
   bool isMatch(String value, String confirmValue) {
     if (Validator.validateStructure(value) && (value == confirmValue)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void showTxtWarningNewPW(String value) {
+    if ((value.isNotEmpty && value.length < 8) ||
+        (value.isNotEmpty && value.length > 15)) {
+      newPasswordField = false;
+      validateSink.add(true);
+      txtWarningNewPWSink.add(S.current.warn_pw_8_15);
+      btnSink.add(false);
+      ckcSink.add(false);
+    } else if (value.isEmpty) {
+      newPasswordField = false;
+      validateSink.add(true);
+      txtWarningNewPWSink.add(S.current.password_is_required);
+      btnSink.add(false);
+      ckcSink.add(false);
+    } else if (!Validator.validateStructure(value)) {
+      newPasswordField = false;
+      validateSink.add(true);
+      txtWarningNewPWSink.add(S.current.warn_pw_validate);
+      btnSink.add(false);
+      ckcSink.add(false);
+    } else {
+      validateSink.add(false);
+      newPasswordField = true;
+    }
+  }
+
+  void showTxtWarningSeed(String value, FormType type) {
+    if (type == FormType.PASS_PHRASE) {
+      if (value.isEmpty) {
+        seedField = false;
+        seedSink.add(true);
+        txtWarningSeedSink.add(S.current.seed_required);
+        btnSink.add(false);
+      ckcSink.add(false);
+      } else {
+        final int len = value.split(' ').length;
+        if (len == 12 || len == 15 || len == 18 || len == 21 || len == 24) {
+          seedSink.add(false);
+          seedField = true;
+        } else {
+          seedField = false;
+          seedSink.add(true);
+          txtWarningSeedSink.add(S.current.warning_seed);
+          btnSink.add(false);
+      ckcSink.add(false);
+        }
+      }
+    } else {
+      if (value.isEmpty) {
+        privateField = false;
+        seedSink.add(true);
+        txtWarningSeedSink.add(S.current.private_required);
+        btnSink.add(false);
+      ckcSink.add(false);
+      } else {
+        final int len = value.split(' ').length;
+        if (len != 12 || len != 15 || len != 18 || len != 21 || len != 24) {
+          privateField = false;
+          seedSink.add(true);
+          txtWarningSeedSink.add(S.current.private_warning);
+          btnSink.add(false);
+      ckcSink.add(false);
+        }
+      }
+    }
+  }
+
+  void showTxtWarningConfirmPW(String value, {required String newPW}) {
+    if (value != newPW) {
+      confirmPasswordField = false;
+      matchSink.add(true);
+      txtWarningConfirmPWSink.add(S.current.not_match);
+      btnSink.add(false);
+      ckcSink.add(false);
+    } else if (value.isEmpty) {
+      confirmPasswordField = false;
+      matchSink.add(true);
+      txtWarningConfirmPWSink.add(S.current.password_is_required);
+      btnSink.add(false);
+      ckcSink.add(false);
+    } else {
+      matchSink.add(false);
+      confirmPasswordField = true;
+    }
+  }
+
+  void checkHaveValuePW(String value) {
+    if (value.isEmpty) {
+      haveValueNewPW = false;
+      btnSink.add(false);
+      ckcSink.add(false);
+    } else {
+      haveValueNewPW = true;
+      if ((seedField || privateField) &&
+          haveValueConfirmPW &&
+          haveValueNewPW &&
+          checkBoxValue) {
+        btnSink.add(true);
+      } else {
+        //nothing
+      }
+    }
+  }
+
+  void checkHaveValueConfirmPW(String value) {
+    if (value.isEmpty) {
+      haveValueConfirmPW = false;
+      btnSink.add(false);
+      ckcSink.add(false);
+    } else {
+      haveValueConfirmPW = true;
+      if ((seedField || privateField) &&
+          haveValueConfirmPW &&
+          haveValueNewPW &&
+          checkBoxValue) {
+        btnSink.add(true);
+      } else {
+        //nothing
+      }
+    }
+  }
+  void checkCkcValue(value) {
+    checkBoxValue = value;
+    if ((haveValueSeed || haveValuePrivate) &&
+        haveValueConfirmPW &&
+        haveValueNewPW &&
+        checkBoxValue) {
+      btnSink.add(true);
+    } else {
+      btnSink.add(false);
+      ckcSink.add(false);
+    }
+  }
+  /// check validate of seed phrase
+  bool validateAll() {
+    if ((seedField || privateField) &&
+        confirmPasswordField &&
+        newPasswordField &&
+        ckcValue) {
       return true;
     } else {
       return false;
