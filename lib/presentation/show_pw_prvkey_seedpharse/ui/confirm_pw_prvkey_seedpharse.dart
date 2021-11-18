@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:Dfy/config/resources/styles.dart';
@@ -13,12 +12,27 @@ import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
-  ConfirmPWShowPRVSeedPhr({required this.cubit, Key? key}) : super(key: key);
-  //todo change stl to stf to check config when init this screen
-  late String password = 'Huydepzai1102.';
+class ConfirmPWShowPRVSeedPhr extends StatefulWidget {
+  const ConfirmPWShowPRVSeedPhr({required this.cubit, Key? key})
+      : super(key: key);
   final ConfirmPwPrvKeySeedpharseCubit cubit;
-  TextEditingController controller = TextEditingController();
+
+  @override
+  _ConfirmPWShowPRVSeedPhrState createState() =>
+      _ConfirmPWShowPRVSeedPhrState();
+}
+
+class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
+  String password = 'Huydepzai1102.';
+  late TextEditingController txtController;
+
+  @override
+  void initState() {
+    txtController = TextEditingController();
+    print(Platform.isIOS);
+    widget.cubit.getConfig();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +48,7 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
           spaceH24,
           formSetupPassWordConfirm(
             hintText: S.current.enter_password,
-            controller: controller,
+            controller: txtController,
             isShow: true,
           ),
           SizedBox(
@@ -42,7 +56,7 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
           ),
           // cubit.isEnableBtnStream,
           StreamBuilder<bool>(
-            stream: cubit.isEnableBtnStream,
+            stream: widget.cubit.isEnableBtnStream,
             builder: (context, snapshot) {
               return GestureDetector(
                 onTap: () {
@@ -61,45 +75,33 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
           SizedBox(
             height: 40.h,
           ),
-          const Image(
-            image: AssetImage(ImageAssets.faceID),
-          ),
 
           //todo handel scan finger or faceID
           StreamBuilder<bool>(
-            stream: cubit.isSuccessWhenScanStream,
+            stream: widget.cubit.isSuccessWhenScanStream,
             builder: (context, snapshot) {
               return Visibility(
-                visible: cubit.isFaceID,
-                // child: BlocListener<LoginCubit, LoginState>(
-                //   bloc: _cubit,
-                  // listener: (context, state) {
-                  //   if (state is LoginSuccess) {
-                  //     Navigator.of(context).pushAndRemoveUntil(
-                  //       MaterialPageRoute(
-                  //         builder: (context) => const MainScreen(
-                  //           index: 1,
-                  //         ),
-                  //       ),
-                  //           (route) => route.isFirst,
-                  //     );
-                  //   }
-                  // },
-                  child: GestureDetector(
-                    onTap: () {
-                      cubit.authenticate(); //todo change stream not bloc
-                    },
-                    child: Platform.isIOS
-                        ? const Image(
-                      image: AssetImage(ImageAssets.faceID),
-                    )
-                        : const Image(
-                      image: AssetImage(ImageAssets.ic_finger),
-                    ),
-                  ),
-
+                child: GestureDetector(
+                  onTap: () async {
+                    await widget.cubit
+                        .authenticate(); //todo change stream not bloc
+                    if (snapshot.data == true) {
+                      showPrivateKeySeedPhrase(
+                          context, PrivateKeySeedPhraseBloc());
+                    } else {
+                      //nothing
+                    }
+                  },
+                  child: Platform.isIOS
+                      ? const Image(
+                          image: AssetImage(ImageAssets.ic_face_id),
+                        )
+                      : const Image(
+                          image: AssetImage(ImageAssets.ic_finger),
+                        ),
+                ),
               );
-            }
+            },
           )
         ],
       ),
@@ -126,7 +128,7 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
       ),
       child: TextFormField(
         onChanged: (value) {
-          cubit.isEnableButton(
+          widget.cubit.isEnableButton(
             value: value,
           );
         },
@@ -163,5 +165,4 @@ class ConfirmPWShowPRVSeedPhr extends StatelessWidget {
       ),
     );
   }
-
 }

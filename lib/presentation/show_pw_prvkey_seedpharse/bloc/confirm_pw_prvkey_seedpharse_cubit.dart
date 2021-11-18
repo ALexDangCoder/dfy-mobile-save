@@ -18,7 +18,7 @@ class ConfirmPwPrvKeySeedpharseCubit
   final BehaviorSubject<bool> _isEnableButton =
       BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _isSuccessWhenScan =
-      BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(true);
 
   //stream
   Stream<bool> get isEnableBtnStream => _isEnableButton.stream;
