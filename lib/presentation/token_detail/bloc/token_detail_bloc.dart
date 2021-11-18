@@ -5,7 +5,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
-  static const len_mock_data = 23;
+  static const len_mock_data = 83;
     final List<TransactionModel> mocObject = List.generate(
     len_mock_data,
         (index) =>
