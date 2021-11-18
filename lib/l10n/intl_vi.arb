@@ -10,12 +10,12 @@
   "search": "Tìm kiếm...",
   "seed_phrase": "Seed phrase",
   "private_key": "Private key",
-  "wallet_secret": "Cụm từ bí mât trên ví",
+  "wallet_secret": "Seed phrase",
   "tab_wallet": "Wallet",
   "tab_pawn": "Pawn",
   "tab_market_place": "Marketplace",
   "confirm": "Xác Nhận",
-  "set_amount": "Thiết lập Số lượng",
+  "set_amount": "Đặt số lượng",
   "save": "Lưu",
   "saved": "Đã lưu",
   "out_app": "Ấn lại để thoát.",
@@ -164,5 +164,9 @@
   "your_current_wallet": "Ví, tài khoản và tài sản hiện tại của bạn sẽ bị xóa vĩnh viễn khỏi ứng dụng này. Hành động này không thể được hoàn tác.",
   "amount_invalid": "Số lượng không hợp lệ",
   "quantity_invalid_of_all": "Số lượng không đủ",
-  "you_can_only": "Bạn CHỈ có thể khôi phục ví này bằng Seed phrase/Private key của mình. DeFi For You không có Secret seed phrase/Private key của bạn."
+  "you_can_only": "Bạn CHỈ có thể khôi phục ví này bằng Seed phrase/Private key của mình. DeFi For You không có Secret seed phrase/Private key của bạn.",
+  "warning_private": "Private key không được để trống",
+  "seed_required": "Seed phrase bí mật không được để trống",
+  "private_required": "Private key không được để trống",
+  "private_warning": "Private key không hợp lệ"
 }
