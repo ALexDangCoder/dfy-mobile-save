@@ -62,6 +62,7 @@ const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
 
+
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color primaryColor();
@@ -129,6 +130,10 @@ abstract class AppColor {
   Color pendingTransactionColors();
 
   Color blueColor();
+
+  Color backgroundButtonColor();
+
+  Color whiteBackgroundButtonColor();
 }
 
 class LightApp extends AppColor {
@@ -295,6 +300,17 @@ class LightApp extends AppColor {
   @override
   Color pendingTransactionColors() {
     return const Color(0XFFFFBD48);
+  }
+
+  @override
+  Color backgroundButtonColor() {
+    return backgroundBottomSheet.withOpacity(0.6);
+  }
+
+  @override
+  Color whiteBackgroundButtonColor() {
+    // TODO: implement whiteBackgroundButtonColor
+    return Colors.white.withOpacity(0.1);
   }
 }
 
@@ -482,6 +498,18 @@ class DarkApp extends AppColor {
   @override
   Color failTransactionColors() {
     // TODO: implement failTransactionColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color backgroundButtonColor() {
+    // TODO: implement backgroundButtonColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color whiteBackgroundButtonColor() {
+    // TODO: implement whiteBackgroundButtonColor
     throw UnimplementedError();
   }
 }

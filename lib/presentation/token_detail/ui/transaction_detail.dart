@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/transaction.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/hard_nft_screen.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
@@ -102,6 +103,14 @@ class TransactionDetail extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 log('On tap View on Bscscan');
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) {
+                    return const HardNFTScreen();
+                  },
+                );
               },
               child: Text(
                 S.current.view_on_bscscan,

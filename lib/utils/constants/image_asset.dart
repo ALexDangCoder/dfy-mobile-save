@@ -117,6 +117,10 @@ class ImageAssets {
   static const String ic_token_dfy_svg = '$baseImg/ic_token_dfy_svg.svg';
   static const String ic_token_btc_svg = '$baseImg/ic_token_btc_svg.svg';
   static const String ic_token_bnb_svg = '$baseImg/ic_token_bnb_svg.svg';
+  static const String ic_filter_svg = '$baseImg/ic_filter_svg.svg';
+  static const String ic_btn_back_svg = '$baseImg/ic_btn_back_svg.svg';
+  static const String ic_flag_svg = '$baseImg/ic_flag_svg.svg';
+  static const String ic_share_svg = '$baseImg/ic_share_svg.svg';
 
 
 
