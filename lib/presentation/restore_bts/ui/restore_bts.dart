@@ -62,7 +62,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
 
   @override
   void dispose() {
-    restoreCubit.close();
+    //restoreCubit.close();
     seedPhraseController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
@@ -109,7 +109,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                 StreamBuilder<List<String>>(
                   initialData: listString,
                   stream: restoreCubit.listStringStream,
-                  builder: (ctx, snapshot) {
+                  builder: (BuildContext ctx, snapshot) {
                     listString = snapshot.data!;
                     return Column(
                       mainAxisSize: MainAxisSize.min,

@@ -169,5 +169,16 @@
   "warning_private": "Private key must require",
   "seed_required": "Secret seed phrase must required",
   "private_required": "Private key must required",
-  "private_warning": "Private key is not invalid"
+  "private_warning": "Private key is not invalid",
+  "outstanding_collection": "Outstanding collection",
+  "hot_auction": "Hot auction",
+  "NFTs_collateral": "NFTs collateral",
+  "sale_items": "Sale items",
+  "hard_NFT": "Hard NFT",
+  "explore_categories": "Explore categories",
+  "music": "Music",
+  "sports": "Sports",
+  "nature": "Nature",
+  "car": "Car",
+  "another": "Another"
 }
