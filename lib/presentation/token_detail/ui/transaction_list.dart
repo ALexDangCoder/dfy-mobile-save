@@ -39,7 +39,7 @@ class TransactionList extends StatelessWidget {
                   children: [
                     ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxHeight: dataLen * 67.h,
+                        maxHeight: dataLen * 67.08.h,
                       ),
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
