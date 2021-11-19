@@ -12,7 +12,6 @@ class AppRouter {
   static const splash = '/splash';
   static const main = '/main';
   static const setupPassWord = '/setupPassWord';
-  static const testScreen = '/testScreen';
   static const login = '/login';
   static const wallet = '/wallet';
   static const sendToken = '/sendToken';

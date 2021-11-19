@@ -15,12 +15,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 class BaseNFTMarket extends StatelessWidget {
   final String title;
   final Widget child;
+  final String image;
   final Function() filterFunc;
 
   const BaseNFTMarket({
     Key? key,
     required this.title,
     required this.child,
+    required this.image,
     required this.filterFunc,
   }) : super(key: key);
 
@@ -48,13 +50,13 @@ class BaseNFTMarket extends StatelessWidget {
                     topRight: Radius.circular(30.r),
                   ),
                   child: Image.network(
-                    'https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg',
+                    image,
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
               Positioned(
-                left: 16.h,
+                left: 16.w,
                 top: 16.h,
                 child: InkWell(
                   onTap: () {
@@ -64,7 +66,7 @@ class BaseNFTMarket extends StatelessWidget {
                 ),
               ),
               Positioned(
-                right: 16.h,
+                right: 16.w,
                 top: 16.h,
                 child: InkWell(
                   onTap: filterFunc,
@@ -73,55 +75,74 @@ class BaseNFTMarket extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(
-              top: 8.h,
-              left: 16.h,
-              right: 16.h,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: tokenDetailAmount(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 8.h,
+                      left: 16.w,
+                      right: 16.w,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                title,
+                                style: tokenDetailAmount(),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 25.h,
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: roundButton(
+                                image: ImageAssets.ic_flag_svg,
+                                whiteBackground: true,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20.h,
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: roundButton(
+                                image: ImageAssets.ic_share_svg,
+                                whiteBackground: true,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '1 of 1 available',
+                          textAlign: TextAlign.left,
+                          style: tokenDetailAmount(
+                            weight: FontWeight.w400,
+                            fontSize: 16,
+                          ),
+                        ),
+                        spaceH12,
+                        line,
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 25.h,
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: roundButton(
-                    image: ImageAssets.ic_flag_svg,
-                    whiteBackground: true,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                      right: 16.w,
+                    ),
+                    child: child,
                   ),
-                ),
-                SizedBox(
-                  width: 20.h,
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: roundButton(
-                    image: ImageAssets.ic_share_svg,
-                    whiteBackground: true,
-                  ),
-                ),
-
-              ],
-            ),
-          ),
-          line,
-          Flexible(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 16.w,
-                right: 16.w,
+                ],
               ),
-              child: child,
             ),
-          ),
+          )
         ],
       ),
     );

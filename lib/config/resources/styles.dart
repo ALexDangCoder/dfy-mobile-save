@@ -60,14 +60,18 @@ TextStyle tokenDetailAmount({
   Color color = Colors.white,
   double fontSize = 24,
   FontWeight weight = FontWeight.w600,
+  FontStyle fontStyle = FontStyle.normal,
+  TextDecoration decoration = TextDecoration.none,
 }) {
   return GoogleFonts.sen(
     color: color,
     fontWeight: weight,
-    fontStyle: FontStyle.normal,
+    fontStyle: fontStyle,
     fontSize: fontSize,
+    decoration: decoration,
   );
 }
+
 TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
   return GoogleFonts.sen(
     color: color,
@@ -105,4 +109,9 @@ TextStyle richTextValueNFT = GoogleFonts.sen(
   fontWeight: FontWeight.w400,
   fontSize: 16,
   decoration: TextDecoration.underline,
+);
+TextStyle whiteTextWithOpacity = GoogleFonts.sen(
+  color: Colors.white.withOpacity(0.7),
+  fontWeight: FontWeight.w400,
+  fontSize: 14,
 );

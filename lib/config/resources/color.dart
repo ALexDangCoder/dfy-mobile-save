@@ -30,6 +30,7 @@ const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
 
 //custom color
+const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
 const errorColor = Color(0xFFCDCDCD);
@@ -134,6 +135,7 @@ abstract class AppColor {
   Color backgroundButtonColor();
 
   Color whiteBackgroundButtonColor();
+  Color timeBorderColor();
 }
 
 class LightApp extends AppColor {
@@ -293,7 +295,6 @@ class LightApp extends AppColor {
 
   @override
   Color blueColor() {
-    // TODO: implement blueColor
     return const Color(0xFF46BCFF);
   }
 
@@ -311,6 +312,9 @@ class LightApp extends AppColor {
   Color whiteBackgroundButtonColor() {
     // TODO: implement whiteBackgroundButtonColor
     return Colors.white.withOpacity(0.1);
+  }
+  Color timeBorderColor() {
+    return borderColor;
   }
 }
 
@@ -510,6 +514,10 @@ class DarkApp extends AppColor {
   @override
   Color whiteBackgroundButtonColor() {
     // TODO: implement whiteBackgroundButtonColor
+    throw UnimplementedError();
+  }
+    Color timeBorderColor() {
+    // TODO: implement timeBorderColor
     throw UnimplementedError();
   }
 }

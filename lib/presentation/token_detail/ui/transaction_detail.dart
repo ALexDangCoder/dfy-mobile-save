@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/transaction.dart';
@@ -178,7 +179,7 @@ class TransactionDetail extends StatelessWidget {
             style: tokenDetailAmount(
               color: valueColor ?? AppTheme.getInstance().textThemeColor(),
               fontSize: 14,
-              weight: FontWeight.w400
+              weight: FontWeight.w400,
             ),
           ),
           if (showCopy)
