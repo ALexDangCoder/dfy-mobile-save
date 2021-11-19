@@ -1,6 +1,7 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/model/collection.dart';
 import 'package:Dfy/domain/model/nft_item.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:meta/meta.dart';
@@ -10,7 +11,9 @@ part 'marketplace_state.dart';
 class MarketplaceCubit extends BaseCubit<MarketplaceState> {
   MarketplaceCubit() : super(MarketplaceInitial());
 
-  List<String> categories = ['Music', 'Sports', 'Nature', 'Car', 'Another'];
+  List<String> categories = [S.current.music,
+    S.current.sports,
+    S.current.nature, S.current.car, S.current.another];
   List<Collection> listCollections = [
     Collection(
       background: ImageAssets.img_art,

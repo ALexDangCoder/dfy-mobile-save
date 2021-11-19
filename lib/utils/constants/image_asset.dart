@@ -109,6 +109,7 @@ class ImageAssets {
   static const String img_hard_nft = '$baseImg/hard_nft.png';
   static const String play_video = '$baseImg/play_video.png';
   static const String ic_clock2 = '$baseImg/ic_clock.png';
+  static const String ic_profile = '$baseImg/ic_profile.png';
   static const String img_push = '$baseImg/img_push.png';
   static const String img_categories = '$baseImg/category.png';
   static const String img_nature = '$baseImg/nature_collect.png';

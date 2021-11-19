@@ -1,10 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/category.dart';
 import 'package:Dfy/presentation/market_place/ui/collection_item.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,7 +74,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                           height: 24.h,
                         ),
                         Text(
-                          'Outstanding collection',
+                          S.current.outstanding_collection,
                           style: textNormalCustom(
                             Colors.white,
                             20,
@@ -106,7 +107,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Hot auction',
+                              S.current.hot_auction,
                               style: textNormalCustom(
                                 Colors.white,
                                 20,
@@ -155,7 +156,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'NFTs collateral',
+                              S.current.NFTs_collateral,
                               style: textNormalCustom(
                                 Colors.white,
                                 20,
@@ -201,7 +202,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Sale items',
+                              S.current.sale_items,
                               style: textNormalCustom(
                                 Colors.white,
                                 20,
@@ -247,7 +248,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Hard NFT',
+                              S.current.hard_NFT,
                               style: textNormalCustom(
                                 Colors.white,
                                 20,
@@ -293,7 +294,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                           height: 32.h,
                         ),
                         Text(
-                          'Explore categories',
+                          S.current.explore_categories,
                           style: textNormalCustom(
                             Colors.white,
                             20,
@@ -337,11 +338,89 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
   Widget header() {
     return Padding(
       padding: EdgeInsets.only(top: 44.h, left: 16.h),
-      child: Container(
+      child: SizedBox(
         height: 52.h,
         width: 343.w,
-        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              child: ImageIcon(
+                const AssetImage(ImageAssets.ic_profile),
+                size: 28.sp,
+                color: AppTheme.getInstance().whiteColor(),
+              ),
+            ),
+            searchBar(),
+            GestureDetector(
+              child: ImageIcon(
+                const AssetImage(ImageAssets.ic_notify),
+                size: 28.sp,
+                color: AppTheme.getInstance().whiteColor(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+  Widget searchBar() {
+    return Container(
+      width: 259.w,
+      height: 38.h,
+      decoration: const BoxDecoration(
+        color: Color(0xff4F4F65),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+      child: Row(
+        children: [
+          SizedBox(width: 14.w,),
+          Image.asset(
+            ImageAssets.ic_search,
+          ),
+          SizedBox(
+            width: 10.7.w,
+          ),
+          Expanded(
+            child: TextFormField(
+              onChanged: (value) {
+              },
+              cursorColor: Colors.white,
+              style: textNormal(
+                Colors.white54,
+                14,
+              ),
+              decoration: InputDecoration(
+                hintText: S.current.search,
+                hintStyle: textNormal(
+                  Colors.white54,
+                  16,
+                ),
+                border: InputBorder.none,
+              ),
+              // onFieldSubmitted: ,
+            ),
+          ),
+          StreamBuilder(
+            builder: (context, AsyncSnapshot<String> snapshot) {
+              return GestureDetector(
+                onTap: () {
+                },
+                child: snapshot.data?.isNotEmpty ?? false
+                    ? Image.asset(
+                  ImageAssets.ic_close,
+                  width: 20.w,
+                  height: 20.h,
+                )
+                    : SizedBox(
+                  height: 20.h,
+                  width: 20.w,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+}
 }
