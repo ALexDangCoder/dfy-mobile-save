@@ -169,10 +169,21 @@
   "warning_private": "Private key must require",
   "seed_required": "Secret seed phrase must required",
   "private_required": "Private key must required",
-  "private_warning": "Private key is not invalid",
   "buy": "Buy",
   "enter_quantity": "Enter quantity",
   "price_per_1": "Price per 1 copy",
   "total_payment": "TOTAL PAYMENT",
-  "your_balance": "Your balance:"
+  "your_balance": "Your balance:",
+  "private_warning": "Private key is not invalid",
+  "outstanding_collection": "Outstanding collection",
+  "hot_auction": "Hot auction",
+  "NFTs_collateral": "NFTs collateral",
+  "sale_items": "Sale items",
+  "hard_NFT": "Hard NFT",
+  "explore_categories": "Explore categories",
+  "music": "Music",
+  "sports": "Sports",
+  "nature": "Nature",
+  "car": "Car",
+  "another": "Another"
 }

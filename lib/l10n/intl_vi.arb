@@ -168,10 +168,21 @@
   "warning_private": "Private key không được để trống",
   "seed_required": "Seed phrase bí mật không được để trống",
   "private_required": "Private key không được để trống",
-  "private_warning": "Private key không hợp lệ",
   "buy": "Mua",
   "enter_quantity": "Nhập số lượng",
   "price_per_1": "Giá copy 1 cái",
   "total_payment": "Tổng tiền",
-  "your_balance": "Số dư:"
+  "your_balance": "Số dư:",
+  "private_warning": "Private key không hợp lệ",
+  "outstanding_collection": "Bộ sưu tập nổi bật",
+  "hot_auction": "Đấu giá đang hot",
+  "NFTs_collateral": "NFT thế chấp",
+  "sale_items": "Sản phẩm sale",
+  "hard_NFT": "Hard NFT",
+  "explore_categories": "Khám phá các danh mục",
+  "music": "Âm nhạc",
+  "sports": "Thể thao",
+  "nature": "Thiên nhiên",
+  "car": "Ô tô",
+  "another": "Khác"
 }

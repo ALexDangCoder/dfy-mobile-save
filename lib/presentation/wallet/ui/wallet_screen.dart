@@ -409,7 +409,7 @@ class _WalletState extends State<WalletScreen>
                         ),
                         style: textNormalCustom(
                           const Color(0xFFE4AC1A),
-                          20,
+                          20.sp,
                           FontWeight.w600,
                         ),
                       );
