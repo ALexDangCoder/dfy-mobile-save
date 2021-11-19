@@ -61,7 +61,7 @@ class HideCustomizeFee extends StatelessWidget {
                           // initialData: gasFee < balance,
                           stream: sendTokenCubit.isSufficientTokenStream,
                           builder: (context, AsyncSnapshot<bool> snapshot) {
-                            return snapshot.data ?? gasFee > balance
+                            return snapshot.data ?? gasFee < balance
                                 //if sufficient will not show warning red text
                                 ? Expanded(
                                     child: Column(

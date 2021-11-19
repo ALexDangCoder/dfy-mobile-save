@@ -24,7 +24,9 @@ const String PASS_PHRASE = 'PASS_PHRASE';
 const String PRIVATE_KEY = 'PRIVATE_KEY';
 
 class RestoreBTS extends StatefulWidget {
-  const RestoreBTS({Key? key}) : super(key: key);
+  const RestoreBTS({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _RestoreBTSState createState() => _RestoreBTSState();
@@ -175,9 +177,9 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                       color: AppTheme.getInstance()
                                           .itemBtsColors(),
                                     ),
-                                    child:  Row(
+                                    child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Flexible(
                                           child: Image.asset(
@@ -290,7 +292,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     );
                                   },
                                 ),
-                                warningInvalidPass(),
+                                warningPassword(),
                                 SizedBox(
                                   height: 16.h,
                                 ),
@@ -317,7 +319,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     );
                                   },
                                 ),
-                                warningNotMatchPass(),
+                                warningMatchPassword(),
                                 SizedBox(
                                   height: 24.h,
                                 ),
@@ -464,30 +466,34 @@ class _RestoreBTSState extends State<RestoreBTS> {
                       return isEnable
                           ? ButtonGradient(
                               onPressed: () {
-                                restoreCubit
-                                    .isValidate(passwordController.text);
-                                restoreCubit.isMatchPW(
-                                  password: passwordController.text,
-                                  confirmPW: confirmPasswordController.text,
+                                restoreCubit.showTxtWarningNewPW(
+                                  passwordController.text,
                                 );
-                                restoreCubit
-                                    .checkSeedPhrase(seedPhraseController.text);
-                                if (restoreCubit.isMatch(
-                                          passwordController.text,
-                                          confirmPasswordController.text,
-                                        ) ==
-                                        true &&
-                                    restoreCubit.seedValue == false) {
+                                restoreCubit.showTxtWarningConfirmPW(
+                                  confirmPasswordController.text,
+                                  newPW: passwordController.text,
+                                );
+                                if (restoreCubit.type == FormType.PASS_PHRASE) {
+                                  restoreCubit.showTxtWarningSeed(
+                                    seedPhraseController.text,
+                                    restoreCubit.type,
+                                  );
+                                } else {
+                                  restoreCubit.showTxtWarningSeed(
+                                    privateKeyController.text,
+                                    restoreCubit.type,
+                                  );
+                                }
+                                if (restoreCubit.validateAll()) {
                                   final flag = restoreCubit.strValue ==
                                       S.current.seed_phrase;
                                   restoreCubit.importWallet(
-                                    type: flag ? '' : PRIVATE_KEY,
-                                    content: privateKeyController.text,
+                                    type: flag ? PASS_PHRASE : PRIVATE_KEY,
+                                    content: flag
+                                        ? seedPhraseController.text
+                                        : privateKeyController.text,
                                     password: passwordController.text,
                                   );
-                                } else {
-                                  restoreCubit.btnSink.add(false);
-                                  restoreCubit.ckcSink.add(false);
                                 }
                               },
                               gradient: RadialGradient(
@@ -540,14 +546,16 @@ class _RestoreBTSState extends State<RestoreBTS> {
               ),
               SizedBox(
                 width: 343.w,
-                child: Text(
-                  S.current.warning_seed,
-                  style: textNormal(
-                    AppTheme.getInstance().wrongColor(),
-                    12,
-                  ).copyWith(
-                    fontWeight: FontWeight.w400,
-                  ),
+                // height: 30.h,
+                child: StreamBuilder<String>(
+                  stream: restoreCubit.txtWarningSeedStream,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: textNormal(AppTheme.getInstance().wrongColor(), 12)
+                          .copyWith(fontWeight: FontWeight.w400),
+                    );
+                  },
                 ),
               ),
             ],
@@ -557,7 +565,39 @@ class _RestoreBTSState extends State<RestoreBTS> {
     );
   }
 
-  Widget warningNotMatchPass() {
+  Widget warningPassword() {
+    return StreamBuilder<bool>(
+      stream: restoreCubit.validateStream,
+      builder: (BuildContext context, snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 343.w,
+                // height: 30.h,
+                child: StreamBuilder<String>(
+                  stream: restoreCubit.txtWarningNewPWStream,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: textNormal(AppTheme.getInstance().wrongColor(), 12)
+                          .copyWith(fontWeight: FontWeight.w400),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget warningMatchPassword() {
     return StreamBuilder<bool>(
       stream: restoreCubit.matchStream,
       builder: (BuildContext context, snapshot) {
@@ -570,42 +610,16 @@ class _RestoreBTSState extends State<RestoreBTS> {
               ),
               SizedBox(
                 width: 343.w,
-                height: 30.h,
-                child: Text(
-                  S.current.not_match,
-                  style: textNormal(
-                    AppTheme.getInstance().wrongColor(),
-                    12,
-                  ).copyWith(
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget warningInvalidPass() {
-    return StreamBuilder<bool>(
-      stream: restoreCubit.validateStream,
-      builder: (BuildContext context, snapshot) {
-        return Visibility(
-          visible: snapshot.data ?? false,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 4.h,
-              ),
-              Text(
-                S.current.pass_must,
-                style: textNormal(
-                  AppTheme.getInstance().wrongColor(),
-                  12,
-                ).copyWith(
-                  fontWeight: FontWeight.w400,
+                // height: 30.h,
+                child: StreamBuilder<String>(
+                  stream: restoreCubit.txtWarningConfirmPWStream,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: textNormal(AppTheme.getInstance().wrongColor(), 12)
+                          .copyWith(fontWeight: FontWeight.w400),
+                    );
+                  },
                 ),
               ),
             ],

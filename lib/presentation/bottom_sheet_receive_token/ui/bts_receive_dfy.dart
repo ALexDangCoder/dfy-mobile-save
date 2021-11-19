@@ -173,7 +173,7 @@ class _ReceiveState extends State<Receive> {
               right: 24.w,
             ),
             width: 311.w,
-            height: 76.h,
+            height: 78.h,
             child: Row(
               mainAxisAlignment: widget.type == TokenType.DFY
                   ? MainAxisAlignment.spaceBetween
@@ -202,27 +202,27 @@ class _ReceiveState extends State<Receive> {
                   },
                 ),
                 if (widget.type == TokenType.DFY)
-                  _buildColumnButton(
-                    path: ImageAssets.ic_set_amount,
-                    label: S.current.set_amount,
-                    callback: () {
-                      Navigator.of(context).push(
-                        HeroDialogRoute(
-                          builder: (context) {
-                            return SetAmountPopUp(
-                              controller: amountController,
-                              cubit: receiveCubit,
-                            );
-                          },
-                          isNonBackground: false,
-                        ),
-                      );
-                    },
+                  Flexible(
+                    child: _buildColumnButton(
+                      path: ImageAssets.ic_set_amount,
+                      label: S.current.set_amount,
+                      callback: () {
+                        Navigator.of(context).push(
+                          HeroDialogRoute(
+                            builder: (context) {
+                              return SetAmountPopUp(
+                                controller: amountController,
+                                cubit: receiveCubit,
+                              );
+                            },
+                            isNonBackground: false,
+                          ),
+                        );
+                      },
+                    ),
                   )
                 else
-                  SizedBox(
-                    width: 60.w,
-                  ),
+                  spaceW60,
                 _buildColumnButton(
                   path: ImageAssets.ic_share,
                   label: S.current.share,
@@ -274,11 +274,12 @@ class _ReceiveState extends State<Receive> {
             height: 8.h,
           ),
           Expanded(
-            child: SizedBox(
-              height: 22.h,
-              child: Text(
-                label,
-                style: textNormalCustom(null, 16, FontWeight.w400),
+            child: Text(
+              label,
+              style: textNormalCustom(
+                null,
+                16,
+                FontWeight.w400,
               ),
             ),
           ),

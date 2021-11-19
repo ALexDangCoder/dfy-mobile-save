@@ -42,7 +42,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val content = call.argument<String>("content")
                         ?: return@setMethodCallHandler
                     val password = call.argument<String>("password")
-                        ?: return@setMethodCallHandler
+                        ?: ""
                     importWallet(type, content, password)
                 }
                 "getListWallets" -> {

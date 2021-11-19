@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/import_account_login_bts/bloc/import_cubit.dart';
 import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +21,7 @@ class ItemForm extends StatelessWidget {
     required this.isShow,
     required this.controller,
     this.cubit,
-    this.passType,
+    this.passType, this.importCubit,
   }) : super(key: key);
   final String prefix;
   final String hint;
@@ -30,6 +31,7 @@ class ItemForm extends StatelessWidget {
   final bool isShow;
   final TextEditingController controller;
   final RestoreCubit? cubit;
+  final ImportCubit? importCubit;
   final PassType? passType;
 
   @override
@@ -60,6 +62,7 @@ class ItemForm extends StatelessWidget {
             ),
             onChanged: (value) {
               cubit?.checkSeedField(value);
+              importCubit?.checkSeedField(value);
             },
             minLines: 1,
             maxLines: 10,
@@ -116,6 +119,7 @@ class ItemForm extends StatelessWidget {
           ),
           onChanged: (value) {
             cubit?.checkPrivateField(value);
+            importCubit?.checkPrivateField(value);
           },
           cursorColor: Colors.white,
           decoration: InputDecoration(
@@ -237,10 +241,10 @@ class ItemForm extends StatelessWidget {
           ),
           onChanged: passType == PassType.CON
               ? (value) {
-            cubit?.checkConPassField(value);
+            cubit?.checkHaveValueConfirmPW(value);
           }
               : (value) {
-            cubit?.checkNewPassField(value);
+            cubit?.checkHaveValuePW(value);
           },
           cursorColor: Colors.white,
           decoration: InputDecoration(
