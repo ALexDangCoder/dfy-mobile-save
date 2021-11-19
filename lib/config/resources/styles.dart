@@ -13,11 +13,13 @@ final spaceH3 = SizedBox(height: 3.h);
 final spaceH4 = SizedBox(height: 4.h);
 final spaceH5 = SizedBox(height: 5.h);
 final spaceH6 = SizedBox(height: 6.h);
+final spaceH7 = SizedBox(height: 7.h);
 final spaceH8 = SizedBox(height: 8.h);
 final spaceH10 = SizedBox(height: 10.h);
 final spaceH12 = SizedBox(height: 12.h);
 final spaceH15 = SizedBox(height: 15.h);
 final spaceH16 = SizedBox(height: 16.h);
+final spaceH18 = SizedBox(height: 18.h);
 final spaceH20 = SizedBox(height: 20.h);
 final spaceH24 = SizedBox(height: 24.h);
 final spaceH25 = SizedBox(height: 25.h);
@@ -46,7 +48,10 @@ final spaceW25 = SizedBox(width: 25.w);
 final spaceW30 = SizedBox(width: 30.w);
 final spaceW60 = SizedBox(width: 60.w);
 final spaceW100 = SizedBox(width: 100.w);
-
+final divide = Divider(
+  color: AppTheme.getInstance().divideColor(),
+  thickness: 1,
+);
 TextStyle textNormal(Color? color, double? fontSize) {
   return GoogleFonts.sen(
     color: color ?? Colors.white,
@@ -100,9 +105,15 @@ TextStyle textValueNFT = GoogleFonts.sen(
   fontWeight: FontWeight.w400,
   fontSize: 16,
 );
-TextStyle richTextValueNFT = GoogleFonts.sen(
+TextStyle richTextBlue = GoogleFonts.sen(
   color: const Color(0xff46BCFF),
   fontWeight: FontWeight.w400,
   fontSize: 16,
   decoration: TextDecoration.underline,
+);TextStyle richTextWhite = GoogleFonts.sen(
+  color: AppTheme.getInstance().textThemeColor(),
+  fontWeight: FontWeight.w400,
+  fontSize: 16,
+  decoration: TextDecoration.underline,
 );
+

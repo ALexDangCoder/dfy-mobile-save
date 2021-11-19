@@ -20,6 +20,7 @@ const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
 ];
+const purple = Color(0xff9997FF);
 const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
@@ -131,6 +132,7 @@ abstract class AppColor {
 
   Color blueColor();
   Color timeBorderColor();
+  Color titleTabColor();
 }
 
 class LightApp extends AppColor {
@@ -301,6 +303,11 @@ class LightApp extends AppColor {
   @override
   Color timeBorderColor() {
     return borderColor;
+  }
+
+  @override
+  Color titleTabColor() {
+    return purple;
   }
 }
 
@@ -494,6 +501,12 @@ class DarkApp extends AppColor {
   @override
   Color timeBorderColor() {
     // TODO: implement timeBorderColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color titleTabColor() {
+    // TODO: implement titleTabColor
     throw UnimplementedError();
   }
 }

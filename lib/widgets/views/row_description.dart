@@ -1,10 +1,12 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum TextType {
-  RICH,
-  NORM,
+  RICH_BLUE,
+  RICH_WHITE,
+  NORMAL,
 }
 
 Row buildRow({
@@ -22,24 +24,31 @@ Row buildRow({
               alignment: Alignment.topLeft,
               child: Text(
                 title,
-                style: textFieldNFT,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                  14,
+                  FontWeight.w400,
+                ),
               ),
             ),
           ),
         ),
-        if (type == TextType.NORM)
+        if (type == TextType.NORMAL) ...[
           SizedBox(
             width: 225.w,
             child: Align(
               alignment: Alignment.topLeft,
               child: Text(
                 detail,
-                style: textValueNFT,
-                maxLines: 2,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  14,
+                  FontWeight.w400,
+                ),
               ),
             ),
           )
-        else
+        ] else if (type == TextType.RICH_BLUE) ...[
           SizedBox(
             width: 225.w,
             child: RichText(
@@ -48,7 +57,22 @@ Row buildRow({
                 children: [
                   TextSpan(
                     text: detail,
-                    style: richTextValueNFT,
+                    style: richTextBlue,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ] else
+          SizedBox(
+            width: 225.w,
+            child: RichText(
+              maxLines: 1,
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: detail,
+                    style: richTextWhite,
                   ),
                 ],
               ),

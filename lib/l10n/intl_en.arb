@@ -173,5 +173,13 @@
   "day": "Days",
   "hour": "Hours",
   "minute": "Minutes",
-  "second": "Seconds"
+  "second": "Seconds",
+  "place_a_bid": "Place a bid",
+  "buy_out": "Buy out",
+  "collection": "Collection",
+  "owner": "Owner",
+  "nft_token_id": "NFT token ID",
+  "history": "History",
+  "bidding": "Bidding"
+
 }

@@ -172,5 +172,12 @@
   "day": "Ngày",
   "hour": "Giờ",
   "minute": "Phút",
-  "second": "Giây"
+  "second": "Giây",
+  "place_a_bid": "Đấu giá",
+  "buy_out": "Mua lại",
+  "collection": "Bộ sưu tập",
+  "owner": "Chủ sở hữu",
+  "nft_token_id": "NFT token ID",
+  "history": "Lịch sử",
+  "bidding": "Đấu giá"
 }
