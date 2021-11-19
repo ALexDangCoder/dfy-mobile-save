@@ -30,6 +30,7 @@ const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
 
 //custom color
+const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
 const errorColor = Color(0xFFCDCDCD);
@@ -129,6 +130,7 @@ abstract class AppColor {
   Color pendingTransactionColors();
 
   Color blueColor();
+  Color timeBorderColor();
 }
 
 class LightApp extends AppColor {
@@ -288,13 +290,17 @@ class LightApp extends AppColor {
 
   @override
   Color blueColor() {
-    // TODO: implement blueColor
     return const Color(0xFF46BCFF);
   }
 
   @override
   Color pendingTransactionColors() {
     return const Color(0XFFFFBD48);
+  }
+
+  @override
+  Color timeBorderColor() {
+    return borderColor;
   }
 }
 
@@ -482,6 +488,12 @@ class DarkApp extends AppColor {
   @override
   Color failTransactionColors() {
     // TODO: implement failTransactionColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color timeBorderColor() {
+    // TODO: implement timeBorderColor
     throw UnimplementedError();
   }
 }

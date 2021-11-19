@@ -169,5 +169,9 @@
   "warning_private": "Private key must require",
   "seed_required": "Secret seed phrase must required",
   "private_required": "Private key must required",
-  "private_warning": "Private key is not invalid"
+  "private_warning": "Private key is not invalid",
+  "day": "Days",
+  "hour": "Hours",
+  "minute": "Minutes",
+  "second": "Seconds"
 }

@@ -106,6 +106,10 @@ class ImageAssets {
   static const String ic_plus = '$baseImg/Plus.png';
   static const String ic_symbol = 'assets/images/symbol.png';
   static const String image_example_pop_up = '$baseImg/pop_image.png';
+  static const String ic_filter = '$baseImg/Filter.png';
+  static const String ic_book_mark = '$baseImg/Report.png';
+  static const String ic_share_nft_detail = '$baseImg/Share.png';
+  static const String img_place = '$baseImg/placeholder.jpg';
 
   ///SvgImage
   static const String ic_btn_send_token_svg = '$baseImg/ic_btn_send_token_svg.svg';

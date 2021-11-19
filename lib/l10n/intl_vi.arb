@@ -168,5 +168,9 @@
   "warning_private": "Private key không được để trống",
   "seed_required": "Seed phrase bí mật không được để trống",
   "private_required": "Private key không được để trống",
-  "private_warning": "Private key không hợp lệ"
+  "private_warning": "Private key không hợp lệ",
+  "day": "Ngày",
+  "hour": "Giờ",
+  "minute": "Phút",
+  "second": "Giây"
 }
