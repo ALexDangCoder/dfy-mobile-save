@@ -144,13 +144,16 @@ class AlertPopUp extends StatelessWidget {
                           ),
                           Flexible(
                             child: InkWell(
+
                               onTap: type == KeyType.IMPORT ? () {
+                                Navigator.pop(context);
                                 showModalBottomSheet(
                                   isScrollControlled: true,
                                   backgroundColor: Colors.transparent,
                                   context: context,
                                   builder: (context) => const RestoreBTS(),
-                                ).then((_) => Navigator.pop(context));
+                                );
+
                               } : () {
                                 showModalBottomSheet(
                                   isScrollControlled: true,

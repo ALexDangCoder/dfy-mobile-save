@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 part 'login_state.dart';
 
@@ -61,11 +62,10 @@ class LoginCubit extends BaseCubit<LoginState> {
       };
       await  trustWalletChannel.invokeMethod('checkPassword', data);
     } on PlatformException {
-
+      log('error');
     }
   }
 
-  String authorized = 'Not Authorized';
   bool authenticated = false;
   final LocalAuthentication auth = LocalAuthentication();
 
