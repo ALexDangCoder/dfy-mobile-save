@@ -115,6 +115,7 @@ class ImageAssets {
   static const String img_nature = '$baseImg/nature_collect.png';
   static const String img_art = '$baseImg/art_collect.png';
   static const String img_collection = '$baseImg/img_collection.png';
+  static const String img_search_empty = '$baseImg/img_search_empty.png';
 
   ///SvgImage
   static const String ic_btn_send_token_svg = '$baseImg/ic_btn_send_token_svg.svg';
