@@ -185,5 +185,16 @@
   "sports": "Sports",
   "nature": "Nature",
   "car": "Car",
-  "another": "Another"
+  "another": "Another",
+  "nft_on_sale": "NFT giảm giá",
+  "soft_nft" : "Soft NFT",
+  "on_sale": "On sale",
+  "on_pawn": "On pawn",
+  "on auction" : "On auction",
+  "not_on_market": "Not on market",
+  "nft_type": "NFT type",
+  "collection" : "Collection",
+  "animals": "Animals",
+  "painting": "Painting",
+  "art_work": "Artwork"
 }

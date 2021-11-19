@@ -6,6 +6,7 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/s
 import 'package:Dfy/presentation/import_account_login_bts/ui/import_account_login.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/buy_nft/ui/buy_nft.dart';
+import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
@@ -59,7 +60,7 @@ class SettingWallet extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         context: context,
                         builder: (_) {
-                          return const BuyNFT();
+                          return const NFTListOnSale();
                         },
                       );
                     },
