@@ -169,5 +169,10 @@
   "warning_private": "Private key must require",
   "seed_required": "Secret seed phrase must required",
   "private_required": "Private key must required",
-  "private_warning": "Private key is not invalid"
+  "private_warning": "Private key is not invalid",
+  "buy": "Buy",
+  "enter_quantity": "Enter quantity",
+  "price_per_1": "Price per 1 copy",
+  "total_payment": "TOTAL PAYMENT",
+  "your_balance": "Your balance:"
 }
