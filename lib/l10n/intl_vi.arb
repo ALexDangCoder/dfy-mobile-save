@@ -206,5 +206,7 @@
   "on_auction": "Trên đấu giá",
   "soft_nft": "NFT mềm",
   "not_on_market": "Không có trên thị trường",
-  "on_pawn": "Cầm đồ"
+  "on_pawn": "Cầm đồ",
+  "no_result_found": "Không có kết quả nào"
+
 }

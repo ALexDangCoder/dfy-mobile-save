@@ -90,31 +90,70 @@ class _NftsCollectionState extends State<NftsCollection> {
             ),
           ),
         ),
-        Expanded(
-          child: GridView.builder(
-            padding: EdgeInsets.only(
-              top: 20.h,
-              bottom: 24.h,
-              // right: 21.w,
-              // left: 21.w,
-            ),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 21.w,
-              mainAxisSpacing: 20.h,
-              crossAxisCount: 2,
-            ),
-            itemCount: 300,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {},
-                //todo fix nftItem
-                child: NFTItemWidget(
-                  price: 1,
-                  name: '',
+        StreamBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.data==null) {
+              return Expanded(
+                child: GridView.builder(
+                  padding: EdgeInsets.only(
+                    top: 20.h,
+                    bottom: 24.h,
+                    // right: 21.w,
+                    // left: 21.w,
+                  ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: 21.w,
+                    mainAxisSpacing: 20.h,
+                    crossAxisCount: 2,
+                  ),
+                  itemCount: 300,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {},
+                      //todo fix nftItem
+                      child: NFTItemWidget(
+                        price: 1,
+                        name: '',
+                      ),
+                    );
+                  },
                 ),
               );
-            },
-          ),
+            } else if (snapshot.hasError) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  Image.asset(
+                    ImageAssets.img_search_empty,
+                  ),
+                  spaceH16,
+                  Text(
+                    S.current.no_result_found,
+                    style: textNormalCustom(
+                      Colors.white.withOpacity(0.7),
+                      20,
+                      FontWeight.bold,
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    height: 80.h,
+                  ),
+                  const CircularProgressIndicator(
+                    color: Colors.white,
+                  )
+                ],
+              );
+            }
+          },
         ),
       ],
     );

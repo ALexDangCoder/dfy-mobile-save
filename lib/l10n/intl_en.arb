@@ -207,5 +207,6 @@
   "explore_categories": "Explore categories",
   "nature": "Nature",
   "car": "Car",
-  "another": "Another"
+  "another": "Another",
+  "no_result_found": "No result found"
 }

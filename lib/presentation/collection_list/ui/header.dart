@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/collection_list/ui/filter_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:avatar_view/avatar_view.dart';
 import 'package:flutter/material.dart';
@@ -208,7 +209,13 @@ class _HeaderCollectionState extends State<HeaderCollection> {
           top: 16.h,
           right: 16.h,
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              showModalBottomSheet(
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (context) => FilterNFT(),
+              );
+            },
             child: SizedBox(
               height: 32.h,
               width: 32.w,

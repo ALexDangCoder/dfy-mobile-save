@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class IsUltilities extends StatelessWidget {
+class IsOnPawn extends StatelessWidget {
   final String title;
   final CollectionBloc collectionBloc;
 
-  const IsUltilities({
+  const IsOnPawn({
     Key? key,
     required this.title,
     required this.collectionBloc,
@@ -19,11 +19,11 @@ class IsUltilities extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 24.h,
-      margin: EdgeInsets.only(left: 4, top: 12.h, bottom: 12.h),
+      margin: EdgeInsets.only(left: 4,top: 12.h, bottom: 12.h),
       child: Row(
         children: [
           StreamBuilder(
-            stream: collectionBloc.isUltilities,
+            stream: collectionBloc.isOnPawn,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Transform.scale(
                 scale: 1.34,
@@ -41,12 +41,11 @@ class IsUltilities extends StatelessWidget {
                   ),
                   value: snapshot.data ?? false,
                   onChanged: (value) {
-                    collectionBloc.isUltilities.sink.add(true);
+                    collectionBloc.isOnPawn.sink.add(true);
                     if (snapshot.data ?? false) {
-                      collectionBloc.isUltilities.sink.add(false);
+                      collectionBloc.isOnPawn.sink.add(false);
                     }
                   },
-                  activeColor: AppTheme.getInstance().whiteColor(),
                 ),
               );
             },

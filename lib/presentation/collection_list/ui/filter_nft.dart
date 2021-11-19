@@ -4,31 +4,26 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box/cars.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box/collectibles.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box/game.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box/music.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box/my_collection.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box/others.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box/others_category.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box/sports.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box/ultilities.dart';
+import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/hard_nft.dart';
+import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/not_on_market.dart';
+import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/on_auction.dart';
+import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/on_pawn.dart';
+import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/on_sale.dart';
+import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/soft_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'check_box/art.dart';
-
-class Filter extends StatefulWidget {
-  const Filter({Key? key}) : super(key: key);
+class FilterNFT extends StatefulWidget {
+  const FilterNFT({Key? key}) : super(key: key);
 
   @override
-  _FilterState createState() => _FilterState();
+  _FilterNFTState createState() => _FilterNFTState();
 }
 
-class _FilterState extends State<Filter> {
+class _FilterNFTState extends State<FilterNFT> {
   late final CollectionBloc collectionBloc;
 
   @override
@@ -67,7 +62,6 @@ class _FilterState extends State<Filter> {
             Expanded(
               child: SingleChildScrollView(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Column(
@@ -77,38 +71,30 @@ class _FilterState extends State<Filter> {
                             height: 25.h,
                             margin: EdgeInsets.only(left: 16.w),
                             child: Text(
-                              S.current.owner,
+                              S.current.nft_type,
                               style:
                                   textNormalCustom(null, 20, FontWeight.w600),
                             ),
                           ),
-                          IsMyCollection(
-                            title: S.current.my_collection,
+                          IsHardNft(
+                            title: S.current.hard_nft,
                             collectionBloc: collectionBloc,
                           ),
                           Container(
                             height: 25.h,
                             margin: EdgeInsets.only(left: 16.w),
                             child: Text(
-                              S.current.category,
+                              S.current.status,
                               style:
                                   textNormalCustom(null, 20, FontWeight.w600),
                             ),
                           ),
-                          IsArt(
-                            title: S.current.art,
+                          IsOnSale(
+                            title: S.current.on_sale,
                             collectionBloc: collectionBloc,
                           ),
-                          IsMusic(
-                            title: S.current.music,
-                            collectionBloc: collectionBloc,
-                          ),
-                          IsSport(
-                            title: S.current.sports,
-                            collectionBloc: collectionBloc,
-                          ),
-                          IsCars(
-                            title: S.current.cars,
+                          IsOnAuction(
+                            title: S.current.on_auction,
                             collectionBloc: collectionBloc,
                           ),
                         ],
@@ -121,27 +107,19 @@ class _FilterState extends State<Filter> {
                           SizedBox(
                             height: 25.h,
                           ),
-                          IsOthes(
-                            title: S.current.others,
+                          IsSortNft(
+                            title: S.current.soft_nft,
                             collectionBloc: collectionBloc,
                           ),
                           SizedBox(
                             height: 25.h,
                           ),
-                          IsGame(
-                            title: S.current.game,
+                          IsOnPawn(
+                            title: S.current.on_pawn,
                             collectionBloc: collectionBloc,
                           ),
-                          IsCollectibles(
-                            title: S.current.collectibles,
-                            collectionBloc: collectionBloc,
-                          ),
-                          IsUltilities(
-                            title: S.current.ultilities,
-                            collectionBloc: collectionBloc,
-                          ),
-                          IsOthesCategory(
-                            title: S.current.others,
+                          IsNotOnMarket(
+                            title: S.current.not_on_market,
                             collectionBloc: collectionBloc,
                           ),
                         ],
