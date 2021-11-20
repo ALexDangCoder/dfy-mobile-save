@@ -195,6 +195,9 @@
   "collection" : "Bộ sưu tập",
   "animals": "Động vật",
   "painting": "Tranh vẽ",
-  "art_work": "Tranh điện tử"
+  "art_work": "Tranh điện tử",
+  "sale": "Sale",
+  "auction": "Auction",
+  "pawn" : "Pawn"
 
 }

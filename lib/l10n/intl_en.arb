@@ -196,5 +196,9 @@
   "collection" : "Collection",
   "animals": "Animals",
   "painting": "Painting",
-  "art_work": "Artwork"
+  "art_work": "Artwork",
+  "sale": "Sale",
+  "auction": "Auction",
+  "pawn" : "Pawn"
+
 }

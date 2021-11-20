@@ -100,7 +100,8 @@ class _NFTItemState extends State<NFTItemWidget> {
                               child: Row(
                                 children: [
                                   const Image(
-                                    image: AssetImage('assets/images/symbol.png'),
+                                    image:
+                                        AssetImage('assets/images/symbol.png'),
                                   ),
                                   SizedBox(
                                     width: 4.18.h,
@@ -135,7 +136,9 @@ class _NFTItemState extends State<NFTItemWidget> {
               timeCountdown(widget.hotAuction),
             ],
           ),
-          SizedBox(width: 12.w,),
+          SizedBox(
+            width: 12.w,
+          ),
         ],
       ),
     );
@@ -155,9 +158,9 @@ class _NFTItemState extends State<NFTItemWidget> {
   }
 
   Widget timeCountdown(TypeHotAuction? type) {
-    if(type == TypeHotAuction.YES) {
+    if (type == TypeHotAuction.YES) {
       return Padding(
-        padding: EdgeInsets.only(top: 119.h,left:45.w),
+        padding: EdgeInsets.only(top: 119.h, left: 45.w),
         child: Container(
           width: 85.w,
           height: 24.h,
@@ -172,7 +175,9 @@ class _NFTItemState extends State<NFTItemWidget> {
           ),
           child: Row(
             children: [
-              SizedBox(width: 7.w,),
+              SizedBox(
+                width: 7.w,
+              ),
               ImageIcon(
                 const AssetImage(
                   ImageAssets.ic_clock2,
@@ -195,8 +200,7 @@ class _NFTItemState extends State<NFTItemWidget> {
           ),
         ),
       );
-    }
-    else {
+    } else {
       return Container();
     }
   }
