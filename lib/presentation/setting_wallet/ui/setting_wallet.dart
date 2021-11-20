@@ -55,14 +55,14 @@ class SettingWallet extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (_) {
-                          return const NFTListOnSale();
-                        },
-                      );
+                      // showModalBottomSheet(
+                      //   isScrollControlled: true,
+                      //   backgroundColor: Colors.transparent,
+                      //   context: context,
+                        // builder: (_) {
+                        //   // return const NFTListOnSale();
+                        // },
+                      // );
                     },
                     child: buttonForm(
                       hintText: 'Dapp',
