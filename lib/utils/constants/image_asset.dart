@@ -94,6 +94,7 @@ class ImageAssets {
   static const String plus = '$baseImg/Plus.png';
   static const String import = '$baseImg/Import.png';
   static const String face_id = '$baseImg/face_id.png';
+  static const String ic_filter = '$baseImg/Filter.png';
 
   static const String symbol = '$baseImg/symbol.png';
 
