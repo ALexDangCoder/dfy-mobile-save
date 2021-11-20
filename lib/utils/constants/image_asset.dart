@@ -77,6 +77,7 @@ class ImageAssets {
   static const String imgTabHome = '$baseImg/img_tab_home.png';
 
   static const String ic_to = '$baseImg/ic_to.png';
+  static const String ic_ckc = '$baseImg/Vector.png';
   static const String ic_key24 = '$baseImg/key.png';
   static const String ic_from = '$baseImg/ic_from.png';
   static const String codeS = '$baseImg/Code.png';

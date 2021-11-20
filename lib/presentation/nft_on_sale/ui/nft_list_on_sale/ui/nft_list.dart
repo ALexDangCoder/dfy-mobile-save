@@ -1,4 +1,5 @@
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/components/filter_bts.dart';
 import 'package:Dfy/widgets/nft_item_by_category/nft_type_product.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -18,6 +19,16 @@ class _NFTListOnSaleState extends State<NFTListOnSale> {
   @override
   Widget build(BuildContext context) {
     return BaseBottomSheet(
+      callback: () {
+        showModalBottomSheet(
+          backgroundColor: Colors.transparent,
+          isScrollControlled: true,
+          context: context,
+          builder: (_) {
+            return const FilterBts();
+          },
+        );
+      },
       isImage: true,
       title: S.current.nft_on_sale,
       text: ImageAssets.ic_filter,
