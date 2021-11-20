@@ -169,6 +169,11 @@
   "warning_private": "Private key must require",
   "seed_required": "Secret seed phrase must required",
   "private_required": "Private key must required",
+  "buy": "Buy",
+  "enter_quantity": "Enter quantity",
+  "price_per_1": "Price per 1 copy",
+  "total_payment": "TOTAL PAYMENT",
+  "your_balance": "Your balance:",
   "private_warning": "Private key is not invalid",
   "outstanding_collection": "Outstanding collection",
   "hot_auction": "Hot auction",
@@ -180,5 +185,20 @@
   "sports": "Sports",
   "nature": "Nature",
   "car": "Car",
-  "another": "Another"
+  "another": "Another",
+  "nft_on_sale": "NFT giảm giá",
+  "soft_nft" : "Soft NFT",
+  "on_sale": "On sale",
+  "on_pawn": "On pawn",
+  "on auction" : "On auction",
+  "not_on_market": "Not on market",
+  "nft_type": "NFT type",
+  "collection" : "Collection",
+  "animals": "Animals",
+  "painting": "Painting",
+  "art_work": "Artwork",
+  "sale": "Sale",
+  "auction": "Auction",
+  "pawn" : "Pawn"
+
 }

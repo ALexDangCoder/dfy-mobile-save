@@ -48,24 +48,25 @@ Container formSetupPassWord({
                 14,
               ),
               suffixIcon: InkWell(
-                  onTap: () {
-                    if (index == 0) {
-                      index = 1;
-                      cubit.showOldPW(0);
-                    } else {
-                      index = 0;
-                      cubit.showOldPW(1);
-                    }
-                  },
-                  child: snapshot.data ?? false
-                      ? const ImageIcon(
-                          AssetImage(ImageAssets.ic_show),
-                          color: Colors.grey,
-                        )
-                      : const ImageIcon(
-                          AssetImage(ImageAssets.ic_hide),
-                          color: Colors.grey,
-                        )),
+                onTap: () {
+                  if (index == 0) {
+                    index = 1;
+                    cubit.showOldPW(0);
+                  } else {
+                    index = 0;
+                    cubit.showOldPW(1);
+                  }
+                },
+                child: snapshot.data ?? false
+                    ? const ImageIcon(
+                        AssetImage(ImageAssets.ic_show),
+                        color: Colors.grey,
+                      )
+                    : const ImageIcon(
+                        AssetImage(ImageAssets.ic_hide),
+                        color: Colors.grey,
+                      ),
+              ),
               prefixIcon: const ImageIcon(
                 AssetImage(ImageAssets.ic_lock),
                 color: Colors.white,
@@ -123,13 +124,13 @@ Container formSetupPassWord({
                   },
                   child: snapshot.data ?? false
                       ? const ImageIcon(
-                    AssetImage(ImageAssets.ic_show),
-                    color: Colors.grey,
-                  )
+                          AssetImage(ImageAssets.ic_show),
+                          color: Colors.grey,
+                        )
                       : const ImageIcon(
-                    AssetImage(ImageAssets.ic_hide),
-                    color: Colors.grey,
-                  )),
+                          AssetImage(ImageAssets.ic_hide),
+                          color: Colors.grey,
+                        )),
               prefixIcon: const ImageIcon(
                 AssetImage(ImageAssets.ic_lock),
                 color: Colors.white,
@@ -187,13 +188,13 @@ Container formSetupPassWord({
                   },
                   child: snapshot.data ?? false
                       ? const ImageIcon(
-                    AssetImage(ImageAssets.ic_show),
-                    color: Colors.grey,
-                  )
+                          AssetImage(ImageAssets.ic_show),
+                          color: Colors.grey,
+                        )
                       : const ImageIcon(
-                    AssetImage(ImageAssets.ic_hide),
-                    color: Colors.grey,
-                  )),
+                          AssetImage(ImageAssets.ic_hide),
+                          color: Colors.grey,
+                        )),
               prefixIcon: const ImageIcon(
                 AssetImage(ImageAssets.ic_lock),
                 color: Colors.white,
