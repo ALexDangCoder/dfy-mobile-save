@@ -94,7 +94,7 @@ class ImageAssets {
   static const String plus = '$baseImg/Plus.png';
   static const String import = '$baseImg/Import.png';
   static const String face_id = '$baseImg/face_id.png';
-  static const String ic_filter = '$baseImg/Filter.png';
+  //static const String ic_filter = '$baseImg/Filter.png';
 
   static const String symbol = '$baseImg/symbol.png';
 
@@ -118,8 +118,8 @@ class ImageAssets {
   static const String img_collection = '$baseImg/img_collection.png';
 
   static const String img_back = '$baseImg/img_back.png';
-  static const String img_filter = '$baseImg/filter.png';
-  static const String ic_filter = '$baseImg/ic_filter.png';
+   static const String img_filter = '$baseImg/filter.png';
+   static const String ic_filter = '$baseImg/ic_filter.png';
   static const String img_search_empty = '$baseImg/search-empty-icon.png';
   static const String imgRectangle = '$baseImg/rectangle.png';
   ///SvgImage

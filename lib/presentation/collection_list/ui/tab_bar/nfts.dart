@@ -1,7 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/nft_item_by_category/nft_type_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -92,17 +92,13 @@ class _NftsCollectionState extends State<NftsCollection> {
         ),
         StreamBuilder(
           builder: (context, snapshot) {
-            if (snapshot.data==null) {
-              return Expanded(
+            if (snapshot.data == null) {
+              return SizedBox(
+                height: 253.h,
                 child: GridView.builder(
-                  padding: EdgeInsets.only(
-                    top: 20.h,
-                    bottom: 24.h,
-                    // right: 21.w,
-                    // left: 21.w,
-                  ),
+                  padding: EdgeInsets.only(top: 21.h, bottom: 24.h, left: 20.w),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: 21.w,
+                    // crossAxisSpacing: 24.w,
                     mainAxisSpacing: 20.h,
                     crossAxisCount: 2,
                   ),
@@ -110,10 +106,12 @@ class _NftsCollectionState extends State<NftsCollection> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {},
-                      //todo fix nftItem
-                      child: NFTItemWidget(
-                        price: 1,
-                        name: '',
+                      child: NftProduct(
+                        nftIsHard: NFT_IS_HARD.HARD_NFT,
+                        nftCategory: NFT_CATEGORY.AUCTION,
+                        nftIsVidOrImg: NFT_IS_VID_OR_IMG.IMG_NFT,
+                        nftName: 'doanh handsome',
+                        price: 231,
                       ),
                     );
                   },

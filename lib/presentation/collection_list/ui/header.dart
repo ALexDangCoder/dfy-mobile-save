@@ -131,7 +131,7 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                               children: [
                                 Text(
                                   widget.owner,
-                                  style: textNormalCustom(
+                                  style: textNormalCustomUnderline(
                                     null,
                                     14,
                                     null,
@@ -140,7 +140,7 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                                 spaceH15,
                                 Text(
                                   widget.contract,
-                                  style: textNormalCustom(
+                                  style: textNormalCustomUnderline(
                                     const Color(0xff46BCFF),
                                     14,
                                     null,

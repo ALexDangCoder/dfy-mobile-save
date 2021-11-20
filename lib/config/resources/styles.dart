@@ -94,6 +94,19 @@ TextStyle textNormalCustom(
     fontSize: fontSize ?? 14,
   );
 }
+TextStyle textNormalCustomUnderline(
+    Color? color,
+    double? fontSize,
+    FontWeight? fontWeight,
+    ) {
+  return GoogleFonts.sen(
+    color: color ?? Colors.white,
+    fontWeight: fontWeight ?? FontWeight.w500,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize ?? 14,
+    decoration: TextDecoration.underline
+  );
+}
 
 TextStyle textFieldNFT = GoogleFonts.sen(
   color: AppTheme.getInstance().textThemeColor(),
