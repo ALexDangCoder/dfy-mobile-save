@@ -55,6 +55,7 @@ class _FilterBtsState extends State<FilterBts> {
             Expanded(
               child: SingleChildScrollView(
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Column(
@@ -97,6 +98,17 @@ class _FilterBtsState extends State<FilterBts> {
                           ),
                         ],
                       ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CheckBoxFilter(
+                            nameCkcFilter: S.current.soft_nft,
+                            typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -105,7 +117,7 @@ class _FilterBtsState extends State<FilterBts> {
             SizedBox(
               height: 32.h,
             ),
-            ButtonGold(
+            const ButtonGold(
               title: 'Apply',
               isEnable: true,
             )
