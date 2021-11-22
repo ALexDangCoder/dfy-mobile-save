@@ -36,7 +36,7 @@ class OnSale extends StatelessWidget {
           _buildTable(),
           spaceH20,
           divide,
-          const DetailNftTab()
+          const DetailNftTab(),
         ],
       ),
     );
@@ -129,7 +129,6 @@ Column _desColumn(String title, String detail) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          //S.current.description,
           title,
           style: textNormalCustom(
             AppTheme.getInstance().textThemeColor().withOpacity(0.7),
