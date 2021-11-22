@@ -7,7 +7,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
-import 'package:Dfy/widgets/count_down_view/ui/nft_countdownn.dart';
 import 'package:Dfy/widgets/nft_detail/nft_detail.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
@@ -20,24 +19,27 @@ class OnSale extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BaseDetailNFT(
-        title: 'Sasuke',
-        url:
-            'https://ss-images.saostar.vn/wwebp700/pc/1594115439836/GBESLN61nS1w07Anv557R8r0CQ2jziDhfZA0691LdBwlv1554468007730compressflag.png',
-        children: [
-          _priceContainer(),
-          _durationRow(),
-          spaceH24,
-          _buildButtonPlaceBid(context),
-          spaceH20,
-          _buildButtonBuyOut(context),
-          spaceH18,
-          divide,
-          _buildTable(),
-          spaceH20,
-          divide,
-          const DetailNftTab(),
-        ],
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: BaseDetailNFT(
+          title: 'Sasuke',
+          url:
+              'https://ss-images.saostar.vn/wwebp700/pc/1594115439836/GBESLN61nS1w07Anv557R8r0CQ2jziDhfZA0691LdBwlv1554468007730compressflag.png',
+          children: [
+            _priceContainer(),
+            _durationRow(),
+            spaceH24,
+            _buildButtonPlaceBid(context),
+            spaceH20,
+            _buildButtonBuyOut(context),
+            spaceH18,
+            divide,
+            _buildTable(),
+            spaceH20,
+            divide,
+            const DetailNftTab(),
+          ],
+        ),
       ),
     );
   }
