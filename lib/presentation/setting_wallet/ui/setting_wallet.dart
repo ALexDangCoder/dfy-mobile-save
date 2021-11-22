@@ -65,16 +65,16 @@ class SettingWallet extends StatelessWidget {
                       //   isScrollControlled: true,
                       //   backgroundColor: Colors.transparent,
                       //   context: context,
-                        // builder: (_) {
-                          // return BaseDetailNFT(
-                          //   title: 'name image',
-                          //   url: fakeImage,
-                          //   children: [
-                          //    DetailNftTab(),
-                          //   ],
-                          // );
-                          // return SendOffer();
-                        // },
+                      //   builder: (_) {
+                      //     // return BaseDetailNFT(
+                      //     //   title: 'name image',
+                      //     //   url: fakeImage,
+                      //     //   children: [
+                      //     //    DetailNftTab(),
+                      //     //   ],
+                      //     // );
+                      //     return SendOffer();
+                      //   },
                       // );
                     },
                     child: buttonForm(
