@@ -1,4 +1,6 @@
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/components/filter_bts.dart';
+import 'package:Dfy/widgets/nft_detail/nft_detail.dart';
 import 'package:Dfy/widgets/nft_item_by_category/nft_type_product.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -15,9 +17,22 @@ class NFTListOnSale extends StatefulWidget {
 }
 
 class _NFTListOnSaleState extends State<NFTListOnSale> {
+  String fakeImage =
+      'https://image-us.24h.com.vn/upload/2-2019/images/2019-05-25/1558802221-860-vi-dau-sieu-pham-hoat-hinh-he-doraemon-vua-quen-vua-la-unnamed--8--1558666578-width739height559.png';
+
   @override
   Widget build(BuildContext context) {
     return BaseBottomSheet(
+      callback: () {
+        showModalBottomSheet(
+          backgroundColor: Colors.transparent,
+          isScrollControlled: true,
+          context: context,
+          builder: (_) {
+            return const FilterBts();
+          },
+        );
+      },
       isImage: true,
       title: S.current.nft_on_sale,
       text: ImageAssets.ic_filter,
@@ -27,15 +42,29 @@ class _NFTListOnSaleState extends State<NFTListOnSale> {
         itemCount: products.length,
         crossAxisCount: 2,
         itemBuilder: (context, index) {
-          return products[index];
+          return GestureDetector(
+            onTap: () {
+              print('fuck');
+              // MaterialPageRoute(
+              //   builder: (context) => BaseDetailNFT(
+              //     title: products[index].nftName,
+              //     url: fakeImage,
+              //     children: [
+              //       Container(),
+              //     ],
+              //   ),
+              // );
+            },
+            child: products[index],
+          );
         },
-        staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+        staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
       ),
     );
   }
 }
 
-List<NftProduct> products = [
+List<NftProduct> products = const [
   NftProduct(
     nftName: 'Name of NFT',
     price: 10000,
@@ -63,5 +92,5 @@ List<NftProduct> products = [
     nftCategory: NFT_CATEGORY.PAWN,
     nftIsHard: NFT_IS_HARD.HARD_NFT,
     nftIsVidOrImg: NFT_IS_VID_OR_IMG.VIDEO_NFT,
-  )
+  ),
 ];
