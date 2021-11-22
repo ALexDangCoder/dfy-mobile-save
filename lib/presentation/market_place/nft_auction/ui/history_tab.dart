@@ -1,6 +1,5 @@
-import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HistoryTab extends StatelessWidget {
   const HistoryTab({Key? key}) : super(key: key);
@@ -17,16 +16,7 @@ class HistoryTab extends StatelessWidget {
 }
 
 Widget _buildItemHistory(int index) {
-  return Container(
-    height: 55.h,
-    decoration: BoxDecoration(
-      color: Colors.transparent,
-      border: Border(
-        bottom: BorderSide(
-          color: AppTheme.getInstance().divideColor(),
-        ),
-      ),
-    ),
+  return BaseItem(
     child: Text('$index'),
   );
 }

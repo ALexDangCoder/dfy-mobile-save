@@ -26,9 +26,9 @@ class BaseDetailNFT extends StatelessWidget {
       width: 375.w,
       decoration: BoxDecoration(
         color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.r),
-          topRight: Radius.circular(30.r),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
         ),
       ),
       child: Column(
@@ -39,9 +39,9 @@ class BaseDetailNFT extends StatelessWidget {
                 height: 360.h,
                 decoration: BoxDecoration(
                   color: AppTheme.getInstance().bgBtsColor(),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.r),
-                    topRight: Radius.circular(30.r),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
                   ),
                   image: DecorationImage(
                     image: NetworkImage(
@@ -151,7 +151,9 @@ class BaseDetailNFT extends StatelessWidget {
                                         .withOpacity(0.6),
                                     shape: BoxShape.circle,
                                     image: const DecorationImage(
-                                      image: AssetImage(ImageAssets.ic_book_mark),
+                                      image: AssetImage(
+                                        ImageAssets.ic_book_mark,
+                                      ),
                                     ),
                                   ),
                                 ),

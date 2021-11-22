@@ -1,7 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OwnerTab extends StatelessWidget {
   const OwnerTab({Key? key}) : super(key: key);
@@ -17,16 +18,7 @@ class OwnerTab extends StatelessWidget {
   }
 
   Widget _buildItemOwner(int index) {
-    return Container(
-      height: 55.h,
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border(
-          bottom: BorderSide(
-            color: AppTheme.getInstance().divideColor(),
-          ),
-        ),
-      ),
+    return BaseItem(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,7 +27,7 @@ class OwnerTab extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: '0xFE5788e2...EB7144fd0',
+                  text: '0xFE5788eEBaa5fw6fa5f6awf6ac7144fd0'.handleString(),
                   style: richTextWhite.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

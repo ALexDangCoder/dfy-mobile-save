@@ -4,6 +4,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/place_bit_bts.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/tab_bar_controller.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/count_down_view/ui/nft_countdownn.dart';
@@ -99,13 +100,15 @@ class OnAuction extends StatelessWidget {
           spaceH12,
           buildRow(
             title: S.current.owner,
-            detail: '0xd07dc4262...61d1d2430',
+            detail:
+                '0xffffadakakdwqiacmaciqwmcacmiacmaciwcmascmia'.handleString(),
             type: TextType.RICH_WHITE,
           ),
           spaceH12,
           buildRow(
             title: S.current.contract,
-            detail: '0xd07dc4262...61d1d2430',
+            detail:
+                '0xffffadakakdwqiacmaciqwmcacmiacmaciwcmascmia'.handleString(),
             type: TextType.RICH_BLUE,
           ),
           spaceH12,

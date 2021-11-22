@@ -1,10 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BidTab extends StatelessWidget {
   const BidTab({Key? key}) : super(key: key);
@@ -20,19 +21,8 @@ class BidTab extends StatelessWidget {
   }
 
   Widget _buildItemBid(int index) {
-    return Container(
-      height: 68.h,
-      padding: EdgeInsets.only(top: 12.h),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border(
-          bottom: BorderSide(
-            color: AppTheme.getInstance().divideColor(),
-          ),
-        ),
-      ),
+    return BaseItem(
       child: Row(
-        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
             child: Column(
@@ -43,7 +33,8 @@ class BidTab extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: '0xFE5...4fd0 bid',
+                        text: '0xFE529a8d8adk2829a9d02adad4fd0 bid'
+                            .handleString(),
                         style: richTextWhite.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

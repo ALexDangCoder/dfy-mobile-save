@@ -46,8 +46,8 @@ class _SendNftState extends State<SendNft> {
         decoration: BoxDecoration(
           color: const Color.fromRGBO(62, 61, 92, 1),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.r),
-            topRight: Radius.circular(30.r),
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
           ),
         ),
         child: Column(
