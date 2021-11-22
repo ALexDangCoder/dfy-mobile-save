@@ -70,7 +70,7 @@ class ItemCollection extends StatelessWidget {
                   top: 4.h,
                 ),
                 child: Text(
-                  '$items ${S.current.items} • $owners ${S.current.owners}',
+                  '$items ${S.current.items} • $owners ${S.current.owner}',
                   style: textNormalCustom(
                     Colors.white.withOpacity(0.7),
                     12,

@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/confirm_blockchain.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -38,7 +39,7 @@ class _PlaceBidState extends State<PlaceBid> {
           spaceH5,
           _cardCurrentBid('35000 DFY', ImageAssets.ic_token_dfy_svg, 'DFY'),
           spaceH344,
-          _spaceButton,
+          _spaceButton(context),
         ],
       ),
     );
@@ -126,23 +127,36 @@ class _PlaceBidState extends State<PlaceBid> {
     );
   }
 
-  final Widget _spaceButton = Align(
-    alignment: Alignment.bottomCenter,
-    child: ButtonGradient(
-      gradient: RadialGradient(
-        center: const Alignment(0.5, -0.5),
-        radius: 4,
-        colors: AppTheme.getInstance().gradientButtonColor(),
-      ),
-      onPressed: () {},
-      child: Text(
-        S.current.place_a_bid,
-        style: textNormalCustom(
-          AppTheme.getInstance().textThemeColor(),
-          20,
-          FontWeight.w700,
+  Widget _spaceButton(BuildContext context) => Align(
+        alignment: Alignment.bottomCenter,
+        child: ButtonGradient(
+          gradient: RadialGradient(
+            center: const Alignment(0.5, -0.5),
+            radius: 4,
+            colors: AppTheme.getInstance().gradientButtonColor(),
+          ),
+          onPressed: () {
+            showModalBottomSheet(
+              backgroundColor: Colors.transparent,
+              isScrollControlled: true,
+              context: context,
+              builder: (context) {
+                return const ConfirmBlockchain(
+                  fromAddress: '0xffafafkjafjwf',
+                  toAddress: '0xfafakjfwo',
+                  amount: 'afaf',
+                );
+              },
+            );
+          },
+          child: Text(
+            S.current.place_a_bid,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              20,
+              FontWeight.w700,
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 }

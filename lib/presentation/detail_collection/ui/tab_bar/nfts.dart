@@ -97,7 +97,11 @@ class _NftsCollectionState extends State<NftsCollection> {
               return Expanded(
                 child: StaggeredGridView.countBuilder(
                   padding: EdgeInsets.only(
-                      left: 21.w, right: 21.w, top: 20.h, bottom: 20.h),
+                    left: 21.w,
+                    right: 21.w,
+                    top: 20.h,
+                    bottom: 20.h,
+                  ),
                   mainAxisSpacing: 20.h,
                   crossAxisSpacing: 26.w,
                   itemCount: products.length,

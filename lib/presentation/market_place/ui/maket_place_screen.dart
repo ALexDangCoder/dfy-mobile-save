@@ -8,7 +8,10 @@ import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'nft_search.dart';
 
 enum TypePropertiesNFT { PAWN, AUCTION, SALE }
 enum TypeImage { IMAGE, VIDEO }
@@ -38,300 +41,329 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: AppTheme.getInstance().listBackgroundMarketColor(),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            header(),
-            SizedBox(
-              height: 14.h,
-            ),
-            Divider(
-              color: AppTheme.getInstance().divideColor(),
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: 16.w,
-                ),
-                child: SizedBox(
-                  height: 699.h,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 24.h,
-                        ),
-                        Text(
-                          S.current.outstanding_collection,
-                          style: textNormalCustom(
-                            Colors.white,
-                            20,
-                            FontWeight.w700,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        SizedBox(
-                          height: 147.h,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: cubit.listCollections.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return CollectionItem(
-                                urlIcon: cubit.listCollections[index].avatar,
-                                title: cubit.listCollections[index].title,
-                                urlBackGround:
-                                    cubit.listCollections[index].background,
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 32.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              S.current.hot_auction,
-                              style: textNormalCustom(
-                                Colors.white,
-                                20,
-                                FontWeight.w700,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  right: 16.w,
-                                ),
-                                child: const Image(
-                                  image: AssetImage(ImageAssets.img_push),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        SizedBox(
-                          height: 231.h,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: cubit.listFakeDataHotAuction.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return NFTItemWidget(
-                                name: cubit.listFakeDataHotAuction[index].name,
-                                price:
-                                    cubit.listFakeDataHotAuction[index].price,
-                                propertiesNFT: TypePropertiesNFT.AUCTION,
-                                typeNFT:
-                                    cubit.listFakeDataHotAuction[index].typeNFT,
-                                hotAuction: TypeHotAuction.YES,
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 32.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              S.current.NFTs_collateral,
-                              style: textNormalCustom(
-                                Colors.white,
-                                20,
-                                FontWeight.w700,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  right: 16.w,
-                                ),
-                                child: const Image(
-                                  image: AssetImage(ImageAssets.img_push),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        SizedBox(
-                          height: 231.h,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: cubit.listFakeDataCollateral.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return NFTItemWidget(
-                                name: cubit.listFakeDataCollateral[index].name,
-                                price:
-                                    cubit.listFakeDataCollateral[index].price,
-                                propertiesNFT: TypePropertiesNFT.PAWN,
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 32.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              S.current.sale_items,
-                              style: textNormalCustom(
-                                Colors.white,
-                                20,
-                                FontWeight.w700,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  right: 16.w,
-                                ),
-                                child: const Image(
-                                  image: AssetImage(ImageAssets.img_push),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        SizedBox(
-                          height: 231.h,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: cubit.listFakeDataCollateral.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return NFTItemWidget(
-                                name: cubit.listFakeDataCollateral[index].name,
-                                price:
-                                    cubit.listFakeDataCollateral[index].price,
-                                propertiesNFT: TypePropertiesNFT.SALE,
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 32.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              S.current.hard_NFT,
-                              style: textNormalCustom(
-                                Colors.white,
-                                20,
-                                FontWeight.w700,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  right: 16.w,
-                                ),
-                                child: const Image(
-                                  image: AssetImage(ImageAssets.img_push),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        SizedBox(
-                          height: 231.h,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: cubit.listFakeDataHardNFT.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return NFTItemWidget(
-                                name: cubit.listFakeDataHardNFT[index].name,
-                                price: cubit.listFakeDataHardNFT[index].price,
-                                propertiesNFT: cubit
-                                    .listFakeDataHardNFT[index].propertiesNFT,
-                                typeNFT: TypeNFT.HARD_NFT,
-                                hotAuction:
-                                    cubit.listFakeDataHardNFT[index].hotAuction,
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 32.h,
-                        ),
-                        Text(
-                          S.current.explore_categories,
-                          style: textNormalCustom(
-                            Colors.white,
-                            20,
-                            FontWeight.w700,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        SizedBox(
-                          height: 130.h,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: cubit.categories.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Category(
-                                title: cubit.categories[index],
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 32.h,
-                        ),
-                        SizedBox(
-                          height: 164.h,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return BlocBuilder<MarketplaceCubit, MarketplaceState>(
+      bloc: cubit,
+      builder: (context, state) {
+       if(state is OnSearch) {
+         return SearchNFT(cubit: cubit,);
+       }
+       return GestureDetector(
+         onTap: () {
+           FocusScope.of(context).unfocus();
+         },
+         child: Scaffold(
+           body: Container(
+             width: double.infinity,
+             height: double.infinity,
+             decoration: BoxDecoration(
+               gradient: LinearGradient(
+                 begin: Alignment.topCenter,
+                 end: Alignment.bottomCenter,
+                 colors: AppTheme.getInstance().listBackgroundMarketColor(),
+               ),
+             ),
+             child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
+                 header(),
+                 SizedBox(
+                   height: 14.h,
+                 ),
+                 Divider(
+                   color: AppTheme.getInstance().divideColor(),
+                 ),
+                 Expanded(
+                   child: Padding(
+                     padding: EdgeInsets.only(
+                       left: 16.w,
+                     ),
+                     child: SizedBox(
+                       height: 699.h,
+                       child: SingleChildScrollView(
+                         child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             SizedBox(
+                               height: 24.h,
+                             ),
+                             Text(
+                               S.current.outstanding_collection,
+                               style: textNormalCustom(
+                                 Colors.white,
+                                 20,
+                                 FontWeight.w700,
+                               ),
+                             ),
+                             SizedBox(
+                               height: 20.h,
+                             ),
+                             SizedBox(
+                               height: 147.h,
+                               child: ListView.builder(
+                                 shrinkWrap: true,
+                                 itemCount: cubit.listCollections.length,
+                                 scrollDirection: Axis.horizontal,
+                                 itemBuilder: (context, index) {
+                                   return CollectionItem(
+                                     urlIcon:
+                                     cubit.listCollections[index].avatar,
+                                     title: cubit.listCollections[index].title,
+                                     urlBackGround: cubit
+                                         .listCollections[index].background,
+                                   );
+                                 },
+                               ),
+                             ),
+                             SizedBox(
+                               height: 32.h,
+                             ),
+                             Row(
+                               mainAxisAlignment:
+                               MainAxisAlignment.spaceBetween,
+                               children: [
+                                 Text(
+                                   S.current.hot_auction,
+                                   style: textNormalCustom(
+                                     Colors.white,
+                                     20,
+                                     FontWeight.w700,
+                                   ),
+                                 ),
+                                 InkWell(
+                                   onTap: () {},
+                                   child: Padding(
+                                     padding: EdgeInsets.only(
+                                       right: 16.w,
+                                     ),
+                                     child: const Image(
+                                       image: AssetImage(ImageAssets.img_push),
+                                     ),
+                                   ),
+                                 ),
+                               ],
+                             ),
+                             SizedBox(
+                               height: 20.h,
+                             ),
+                             SizedBox(
+                               height: 231.h,
+                               child: ListView.builder(
+                                 shrinkWrap: true,
+                                 itemCount:
+                                 cubit.listFakeDataHotAuction.length,
+                                 scrollDirection: Axis.horizontal,
+                                 itemBuilder: (context, index) {
+                                   return NFTItemWidget(
+                                     name: cubit
+                                         .listFakeDataHotAuction[index].name,
+                                     price: cubit
+                                         .listFakeDataHotAuction[index].price,
+                                     propertiesNFT: TypePropertiesNFT.AUCTION,
+                                     typeNFT: cubit
+                                         .listFakeDataHotAuction[index]
+                                         .typeNFT,
+                                     hotAuction: TypeHotAuction.YES,
+                                   );
+                                 },
+                               ),
+                             ),
+                             SizedBox(
+                               height: 32.h,
+                             ),
+                             Row(
+                               mainAxisAlignment:
+                               MainAxisAlignment.spaceBetween,
+                               children: [
+                                 Text(
+                                   S.current.NFTs_collateral,
+                                   style: textNormalCustom(
+                                     Colors.white,
+                                     20,
+                                     FontWeight.w700,
+                                   ),
+                                 ),
+                                 InkWell(
+                                   onTap: () {},
+                                   child: Padding(
+                                     padding: EdgeInsets.only(
+                                       right: 16.w,
+                                     ),
+                                     child: const Image(
+                                       image: AssetImage(ImageAssets.img_push),
+                                     ),
+                                   ),
+                                 ),
+                               ],
+                             ),
+                             SizedBox(
+                               height: 20.h,
+                             ),
+                             SizedBox(
+                               height: 231.h,
+                               child: ListView.builder(
+                                 shrinkWrap: true,
+                                 itemCount:
+                                 cubit.listFakeDataCollateral.length,
+                                 scrollDirection: Axis.horizontal,
+                                 itemBuilder: (context, index) {
+                                   return NFTItemWidget(
+                                     name: cubit
+                                         .listFakeDataCollateral[index].name,
+                                     price: cubit
+                                         .listFakeDataCollateral[index].price,
+                                     propertiesNFT: TypePropertiesNFT.PAWN,
+                                   );
+                                 },
+                               ),
+                             ),
+                             SizedBox(
+                               height: 32.h,
+                             ),
+                             Row(
+                               mainAxisAlignment:
+                               MainAxisAlignment.spaceBetween,
+                               children: [
+                                 Text(
+                                   S.current.sale_items,
+                                   style: textNormalCustom(
+                                     Colors.white,
+                                     20,
+                                     FontWeight.w700,
+                                   ),
+                                 ),
+                                 InkWell(
+                                   onTap: () {},
+                                   child: Padding(
+                                     padding: EdgeInsets.only(
+                                       right: 16.w,
+                                     ),
+                                     child: const Image(
+                                       image: AssetImage(ImageAssets.img_push),
+                                     ),
+                                   ),
+                                 ),
+                               ],
+                             ),
+                             SizedBox(
+                               height: 20.h,
+                             ),
+                             SizedBox(
+                               height: 231.h,
+                               child: ListView.builder(
+                                 shrinkWrap: true,
+                                 itemCount:
+                                 cubit.listFakeDataCollateral.length,
+                                 scrollDirection: Axis.horizontal,
+                                 itemBuilder: (context, index) {
+                                   return NFTItemWidget(
+                                     name: cubit
+                                         .listFakeDataCollateral[index].name,
+                                     price: cubit
+                                         .listFakeDataCollateral[index].price,
+                                     propertiesNFT: TypePropertiesNFT.SALE,
+                                   );
+                                 },
+                               ),
+                             ),
+                             SizedBox(
+                               height: 32.h,
+                             ),
+                             Row(
+                               mainAxisAlignment:
+                               MainAxisAlignment.spaceBetween,
+                               children: [
+                                 Text(
+                                   S.current.hard_NFT,
+                                   style: textNormalCustom(
+                                     Colors.white,
+                                     20,
+                                     FontWeight.w700,
+                                   ),
+                                 ),
+                                 InkWell(
+                                   onTap: () {},
+                                   child: Padding(
+                                     padding: EdgeInsets.only(
+                                       right: 16.w,
+                                     ),
+                                     child: const Image(
+                                       image: AssetImage(ImageAssets.img_push),
+                                     ),
+                                   ),
+                                 ),
+                               ],
+                             ),
+                             SizedBox(
+                               height: 20.h,
+                             ),
+                             SizedBox(
+                               height: 231.h,
+                               child: ListView.builder(
+                                 shrinkWrap: true,
+                                 itemCount: cubit.listFakeDataHardNFT.length,
+                                 scrollDirection: Axis.horizontal,
+                                 itemBuilder: (context, index) {
+                                   return NFTItemWidget(
+                                     name:
+                                     cubit.listFakeDataHardNFT[index].name,
+                                     price: cubit
+                                         .listFakeDataHardNFT[index].price,
+                                     propertiesNFT: cubit
+                                         .listFakeDataHardNFT[index]
+                                         .propertiesNFT,
+                                     typeNFT: TypeNFT.HARD_NFT,
+                                     hotAuction: cubit
+                                         .listFakeDataHardNFT[index]
+                                         .hotAuction,
+                                   );
+                                 },
+                               ),
+                             ),
+                             SizedBox(
+                               height: 32.h,
+                             ),
+                             Text(
+                               S.current.explore_categories,
+                               style: textNormalCustom(
+                                 Colors.white,
+                                 20,
+                                 FontWeight.w700,
+                               ),
+                             ),
+                             SizedBox(
+                               height: 20.h,
+                             ),
+                             SizedBox(
+                               height: 130.h,
+                               child: ListView.builder(
+                                 shrinkWrap: true,
+                                 itemCount: cubit.categories.length,
+                                 scrollDirection: Axis.horizontal,
+                                 itemBuilder: (context, index) {
+                                   return Category(
+                                     title: cubit.categories[index],
+                                   );
+                                 },
+                               ),
+                             ),
+                             SizedBox(
+                               height: 32.h,
+                             ),
+                             SizedBox(
+                               height: 164.h,
+                             ),
+                           ],
+                         ),
+                       ),
+                     ),
+                   ),
+                 ),
+               ],
+             ),
+           ),
+         ),
+       );
+      },
     );
   }
 
@@ -364,63 +396,40 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
       ),
     );
   }
+
   Widget searchBar() {
-    return Container(
-      width: 259.w,
-      height: 38.h,
-      decoration: const BoxDecoration(
-        color: Color(0xff4F4F65),
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-      ),
-      child: Row(
-        children: [
-          SizedBox(width: 14.w,),
-          Image.asset(
-            ImageAssets.ic_search,
-          ),
-          SizedBox(
-            width: 10.7.w,
-          ),
-          Expanded(
-            child: TextFormField(
-              onChanged: (value) {
-              },
-              cursorColor: Colors.white,
+    return GestureDetector(
+      onTap: () {
+        cubit.emit(OnSearch());
+      },
+      child: Container(
+        width: 259.w,
+        height: 38.h,
+        decoration: const BoxDecoration(
+          color: Color(0xff4F4F65),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 14.w,
+            ),
+            Image.asset(
+              ImageAssets.ic_search,
+            ),
+            SizedBox(
+              width: 10.7.w,
+            ),
+            Text(
+              S.current.search,
               style: textNormal(
                 Colors.white54,
-                14,
+                16,
               ),
-              decoration: InputDecoration(
-                hintText: S.current.search,
-                hintStyle: textNormal(
-                  Colors.white54,
-                  16,
-                ),
-                border: InputBorder.none,
-              ),
-              // onFieldSubmitted: ,
-            ),
-          ),
-          StreamBuilder(
-            builder: (context, AsyncSnapshot<String> snapshot) {
-              return GestureDetector(
-                onTap: () {
-                },
-                child: snapshot.data?.isNotEmpty ?? false
-                    ? Image.asset(
-                  ImageAssets.ic_close,
-                  width: 20.w,
-                  height: 20.h,
-                )
-                    : SizedBox(
-                  height: 20.h,
-                  width: 20.w,
-                ),
-              );
-            },
-          ),
-        ],
+            )
+          ],
+        ),
       ),
     );
-}
+  }
 }

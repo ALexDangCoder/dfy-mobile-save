@@ -52,10 +52,12 @@ final spaceW25 = SizedBox(width: 25.w);
 final spaceW30 = SizedBox(width: 30.w);
 final spaceW60 = SizedBox(width: 60.w);
 final spaceW100 = SizedBox(width: 100.w);
+
 final divide = Divider(
   color: AppTheme.getInstance().divideColor(),
   thickness: 1,
 );
+
 TextStyle textNormal(Color? color, double? fontSize) {
   return GoogleFonts.sen(
     color: color ?? Colors.white,
@@ -71,12 +73,15 @@ TextStyle tokenDetailAmount({
   Color color = Colors.white,
   double fontSize = 24,
   FontWeight weight = FontWeight.w600,
+  FontStyle fontStyle = FontStyle.normal,
+  TextDecoration decoration = TextDecoration.none,
 }) {
   return GoogleFonts.sen(
     color: color,
     fontWeight: weight,
-    fontStyle: FontStyle.normal,
+    fontStyle: fontStyle,
     fontSize: fontSize,
+    decoration: decoration,
   );
 }
 
@@ -135,5 +140,16 @@ TextStyle richTextBlue = GoogleFonts.sen(
   fontWeight: FontWeight.w400,
   fontSize: 16,
   decoration: TextDecoration.underline,
+);
+
+TextStyle whiteTextWithOpacity = GoogleFonts.sen(
+  color: Colors.white.withOpacity(0.7),
+  fontWeight: FontWeight.w400,
+  fontSize: 14,
+);
+TextStyle unselectLabel = GoogleFonts.sen(
+  color: AppTheme.getInstance().whiteColor(),
+  fontWeight: FontWeight.w600,
+  fontSize: 14,
 );
 

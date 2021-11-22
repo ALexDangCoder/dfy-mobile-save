@@ -9,6 +9,7 @@ import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
+import 'package:Dfy/widgets/confirm_blockchain/components/form_sale_ft_pawn.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/information_wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -84,6 +85,26 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                       to: widget.toAddress,
                       amount: '${widget.amount} DFY',
                       typeForm: typeIsHaveAmount.HAVE_AMOUNT,
+                    ),
+                    const Divider(
+                      thickness: 1,
+                      color: Color.fromRGBO(255, 255, 255, 0.1),
+                    ),
+                    // SizedBox(
+                    //   height: 16.h,
+                    // ),
+                    FormSaleFtPawn(
+                      isPawnOrSale: IS_PAWN_OR_SALE.SALE,
+                      loanAmount: 4,
+                      loanToVl: 3,
+                      quantity: 5,
+                      pricePerOne: 5000.2,
+                      totalPayment: 123123213,
+                      interestRate: 5,
+                      ltvLiquidThreshold: 10,
+                      duration: 24,
+                      repaymentCurrent: 'DFY',
+                      recurringInterest: 'month',
                     ),
                     const Divider(
                       thickness: 1,

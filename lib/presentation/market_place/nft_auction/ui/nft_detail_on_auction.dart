@@ -1,8 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/nft_auction/ui/auction_tab_bar.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/place_bit_bts.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/tab_bar_controller.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
@@ -11,7 +11,6 @@ import 'package:Dfy/widgets/count_down_view/ui/nft_countdownn.dart';
 import 'package:Dfy/widgets/nft_detail/nft_detail.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,24 +19,29 @@ class OnAuction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseDetailNFT(
-      title: 'Naruto Dattebayo',
-      url:
-          'https://toigingiuvedep.vn/wp-content/uploads/2021/06/hinh-anh-naruto-chat-ngau-dep.jpg',
-      children: [
-        _priceContainer(),
-        _timeContainer(),
-        spaceH24,
-        _buildButtonPlaceBid(context),
-        spaceH20,
-        _buildButtonBuyOut(context),
-        spaceH18,
-        divide,
-        _buildTable(),
-        spaceH20,
-        divide,
-        const AuctionTabBar(),
-      ],
+    return Scaffold(
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: BaseDetailNFT(
+          title: 'Naruto Dattebayo',
+          url:
+              'https://toigingiuvedep.vn/wp-content/uploads/2021/06/hinh-anh-naruto-chat-ngau-dep.jpg',
+          children: [
+            _priceContainer(),
+            _timeContainer(),
+            spaceH24,
+            _buildButtonPlaceBid(context),
+            spaceH20,
+            _buildButtonBuyOut(context),
+            spaceH18,
+            divide,
+            _buildTable(),
+            spaceH20,
+            divide,
+            const AuctionTabBar(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -108,8 +112,9 @@ class OnAuction extends StatelessWidget {
           buildRow(
             title: S.current.contract,
             detail:
-                '0xffffadakakdwqiacmaciqwmcacmiacmaciwcmascmia'.handleString(),
+                '0xffffadakakdwqiacmaciqwmcacmiacmaciwcmascmia',
             type: TextType.RICH_BLUE,
+            isShowCopy: true,
           ),
           spaceH12,
           buildRow(
@@ -165,7 +170,7 @@ class OnAuction extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Reserve price',
+              S.current.reserve_price,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                 14,

@@ -12,6 +12,7 @@ enum TypeFormWithoutPrefix {
   IMAGE_FT_TEXT,
   DROP_DOWN_WITH_TEXT,
   IMAGE,
+  NONE,
 }
 
 class FormWithOutPrefix extends StatelessWidget {
@@ -23,6 +24,8 @@ class FormWithOutPrefix extends StatelessWidget {
     required this.txtController,
     this.imageAsset,
     this.quantityOfAll,
+    required this.isTokenOrQuantity,
+    this.nameToken,
   }) : super(key: key);
   final String hintText;
   final TypeFormWithoutPrefix typeForm;
@@ -30,6 +33,8 @@ class FormWithOutPrefix extends StatelessWidget {
   final TextEditingController txtController;
   final String? imageAsset;
   final int? quantityOfAll;
+  final String? nameToken;
+  final bool isTokenOrQuantity;
 
   @override
   Widget build(BuildContext context) {
@@ -74,14 +79,24 @@ class FormWithOutPrefix extends StatelessWidget {
                     width: 16,
                   ),
                   spaceW4,
-                  Text(
-                    '${S.current.of_all} $quantityOfAll',
-                    style: textNormalCustom(
-                      Colors.white,
-                      16,
-                      FontWeight.w400,
-                    ),
-                  )
+                  if (isTokenOrQuantity)
+                    Text(
+                      '$nameToken',
+                      style: textNormalCustom(
+                        Colors.white,
+                        16,
+                        FontWeight.w400,
+                      ),
+                    )
+                  else
+                    Text(
+                      '${S.current.of_all} $quantityOfAll',
+                      style: textNormalCustom(
+                        Colors.white,
+                        16,
+                        FontWeight.w400,
+                      ),
+                    )
                 ],
               ),
             ),
@@ -167,7 +182,41 @@ class FormWithOutPrefix extends StatelessWidget {
           ),
         ),
       );
-    } else {
+    } else if (typeForm == TypeFormWithoutPrefix.NONE) {
+      return Container(
+        width: 343.w,
+        height: 64.h,
+        padding: EdgeInsets.only(
+          left: 12.w,
+          right: 12.w,
+          top: 8.h,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(20),
+          ),
+          color: AppTheme.getInstance().itemBtsColors(),
+        ),
+        child: TextFormField(
+          cursorColor: Colors.white,
+          controller: txtController,
+          style: textNormal(
+            Colors.white,
+            16,
+          ),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: hintText,
+            hintStyle: textNormal(
+              Colors.grey,
+              16,
+            ),
+            suffixIcon: const Text(''),
+            ),
+          ),
+        );
+    }
+    else {
       // TODO handle UI WHEN SHOW DROPDOWN AND DROWDOWN WITH MONTH
       return const Text('CHUA CO CHUC NANG');
     }

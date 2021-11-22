@@ -161,7 +161,7 @@ class _NFTItemState extends State<NFTItemWidget> {
   Widget timeCountdown(TypeHotAuction? type) {
     if (type == TypeHotAuction.YES) {
       return Padding(
-        padding: EdgeInsets.only(top: 119.h, left: 45.w),
+        padding: EdgeInsets.only(top: 119.h, left: 35.5.w),
         child: Container(
           width: 85.w,
           height: 24.h,
