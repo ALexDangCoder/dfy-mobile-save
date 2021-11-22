@@ -136,11 +136,12 @@ abstract class AppColor {
   Color pendingTransactionColors();
 
   Color blueColor();
+
   Color timeBorderColor();
+
   Color titleTabColor();
 
   List<Color> listBackgroundMarketColor();
-
 }
 
 class LightApp extends AppColor {
@@ -316,7 +317,7 @@ class LightApp extends AppColor {
 
   @override
   Color borderItemColor() {
-    return  borderItemColors;
+    return borderItemColors;
   }
 
   @override
@@ -328,7 +329,7 @@ class LightApp extends AppColor {
   Color titleTabColor() {
     return purple;
   }
-
+}
 
 class DarkApp extends AppColor {
   @override
