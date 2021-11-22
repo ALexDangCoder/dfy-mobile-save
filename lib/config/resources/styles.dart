@@ -115,3 +115,9 @@ TextStyle whiteTextWithOpacity = GoogleFonts.sen(
   fontWeight: FontWeight.w400,
   fontSize: 14,
 );
+TextStyle unselectLabel = GoogleFonts.sen(
+  color: AppTheme.getInstance().whiteColor(),
+  fontWeight: FontWeight.w600,
+  fontSize: 14,
+);
+

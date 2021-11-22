@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/button/round_button.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +31,6 @@ class BaseNFTMarket extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 764.h,
-      //width: 375.w,
       decoration: BoxDecoration(
         color: AppTheme.getInstance().bgBtsColor(),
         borderRadius: BorderRadius.only(
@@ -144,28 +144,6 @@ class BaseNFTMarket extends StatelessWidget {
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget roundButton({
-    required String image,
-    bool whiteBackground = false,
-  }) {
-    return Container(
-      padding: EdgeInsets.all(4.h),
-      height: 32.h,
-      width: 32.h,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: whiteBackground
-            ? AppTheme.getInstance().whiteBackgroundButtonColor()
-            : AppTheme.getInstance().backgroundButtonColor(),
-      ),
-      child: Center(
-        child: SvgPicture.asset(
-          image,
-        ),
       ),
     );
   }

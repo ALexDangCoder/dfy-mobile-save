@@ -62,6 +62,7 @@ const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
+const unselectedTabLabel = Color(0xFF9997FF);
 
 
 ///=========== Using to make change app theme ================================
@@ -135,7 +136,10 @@ abstract class AppColor {
   Color backgroundButtonColor();
 
   Color whiteBackgroundButtonColor();
+
   Color timeBorderColor();
+
+  Color unselectedTabLabelColor();
 }
 
 class LightApp extends AppColor {
@@ -315,6 +319,11 @@ class LightApp extends AppColor {
   }
   Color timeBorderColor() {
     return borderColor;
+  }
+
+  @override
+  Color unselectedTabLabelColor() {
+    return unselectedTabLabel;
   }
 }
 
@@ -519,6 +528,12 @@ class DarkApp extends AppColor {
     Color timeBorderColor() {
     // TODO: implement timeBorderColor
     throw UnimplementedError();
+  }
+
+  @override
+  Color unselectedTabLabelColor() {
+    // TODO: implement unselectedTabLabelColor
+    return unselectedTabLabel;
   }
 }
 
