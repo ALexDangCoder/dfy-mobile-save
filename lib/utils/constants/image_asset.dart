@@ -62,6 +62,8 @@ class ImageAssets {
   static const String ic_import2 = '$baseImg/ic_import2.png';
   static const String ic_line_down = '$baseImg/ic_line_down.png';
   static const String ic_line_right = '$baseImg/ic_line_right.png';
+  static const String ic_percent = '$baseImg/percent.png';
+  static const String ic_drop_down = '$baseImg/dropdown.png';
   static const String icTabMarketSelect =
       '$baseImg/ic_tab_market_place_select.svg.svg';
   static const String icTabMarketUnselect =

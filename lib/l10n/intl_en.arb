@@ -212,5 +212,19 @@
   "reserve_price": "Reserve price",
   "price_step": "Price step",
   "your_balance_bid": "Your balance",
-  "current_bid": "Current bid"
+  "current_bid": "Current bid",
+  "private_warning": "Private key is not invalid",
+  "loan_to_vl" : "Loan to value:",
+  "loan_amount": "Loan amount:",
+  "interest_rate": "Interest rate (%APR):",
+  "ltv_liquid_thres" : "LTV Liquidation threshold:",
+  "duration": "Duration:",
+  "repayment_curr": "Repayment currency:",
+  "recurring_interest": "Recurring interest:",
+  "send_offer": "Send Offer",
+  "enter_msg": "Enter message",
+  "enter_loan_to_vl": "Enter Loan To Value",
+  "enter_loan_amount": "Enter Loan Amount",
+  "enter_interest_rate": "Enter Interest Rate",
+  "enter_duration": "Enter Duration"
 }

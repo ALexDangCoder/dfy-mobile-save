@@ -45,26 +45,26 @@ class _NFTListOnSaleState extends State<NFTListOnSale> {
           return GestureDetector(
             onTap: () {
               print('fuck');
-              MaterialPageRoute(
-                builder: (context) => BaseDetailNFT(
-                  title: products[index].nftName,
-                  url: fakeImage,
-                  children: [
-                    Container(),
-                  ],
-                ),
-              );
+              // MaterialPageRoute(
+              //   builder: (context) => BaseDetailNFT(
+              //     title: products[index].nftName,
+              //     url: fakeImage,
+              //     children: [
+              //       Container(),
+              //     ],
+              //   ),
+              // );
             },
             child: products[index],
           );
         },
-        staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+        staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
       ),
     );
   }
 }
 
-List<NftProduct> products = [
+List<NftProduct> products = const [
   NftProduct(
     nftName: 'Name of NFT',
     price: 10000,
@@ -92,5 +92,5 @@ List<NftProduct> products = [
     nftCategory: NFT_CATEGORY.PAWN,
     nftIsHard: NFT_IS_HARD.HARD_NFT,
     nftIsVidOrImg: NFT_IS_VID_OR_IMG.VIDEO_NFT,
-  )
+  ),
 ];
