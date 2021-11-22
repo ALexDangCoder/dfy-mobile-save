@@ -32,6 +32,8 @@ const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
 
 //custom color
+
+const borderItemColors = Color(0xff474666);
 const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
@@ -64,10 +66,11 @@ const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
-const borderItemColors = Color(0xff474666);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
+  Color borderItemColor();
+
   Color primaryColor();
 
   Color accentColor();
@@ -133,11 +136,12 @@ abstract class AppColor {
   Color pendingTransactionColors();
 
   Color blueColor();
+
   Color timeBorderColor();
+
   Color titleTabColor();
 
   List<Color> listBackgroundMarketColor();
-  Color borderItemColor();
 }
 
 class LightApp extends AppColor {
@@ -276,10 +280,11 @@ class LightApp extends AppColor {
     return Colors.white;
   }
 
-    @override
+  @override
   Color whiteColor() {
     return Colors.white;
   }
+
   @override
   Color currencyDetailTokenColor() {
     return Colors.white.withOpacity(0.7);
@@ -312,7 +317,7 @@ class LightApp extends AppColor {
 
   @override
   Color borderItemColor() {
-    return  borderItemColors;
+    return borderItemColors;
   }
 
   @override
