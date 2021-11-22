@@ -1,6 +1,37 @@
 part of 'marketplace_cubit.dart';
 
 @immutable
-abstract class MarketplaceState {}
+abstract class MarketplaceState extends Equatable{}
 
-class MarketplaceInitial extends MarketplaceState {}
+class MarketplaceInitial extends MarketplaceState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class SearchSuccess extends MarketplaceState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+
+}
+
+class SearchError extends MarketplaceState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+
+}
+
+class OnSearch extends MarketplaceState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+
+}
+class OffSearch extends MarketplaceState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+
+}

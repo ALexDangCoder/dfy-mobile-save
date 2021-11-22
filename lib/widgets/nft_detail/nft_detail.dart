@@ -1,7 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-
+import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -147,8 +147,8 @@ class BaseDetailNFT extends StatelessWidget {
                                   width: 32.w,
                                   decoration: BoxDecoration(
                                     color: AppTheme.getInstance()
-                                        .bgBtsColor()
-                                        .withOpacity(0.6),
+                                        .textThemeColor()
+                                        .withOpacity(0.1),
                                     shape: BoxShape.circle,
                                     image: const DecorationImage(
                                       image: AssetImage(
@@ -158,21 +158,28 @@ class BaseDetailNFT extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              spaceW20,
                               InkWell(
                                 onTap: () {},
                                 child: Container(
                                   height: 32.h,
                                   width: 32.w,
+                                  padding: EdgeInsets.only(
+                                    top: 6.h,
+                                    bottom: 6.h,
+                                    right: 6.w,
+                                    left: 6.w,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: AppTheme.getInstance()
-                                        .bgBtsColor()
-                                        .withOpacity(0.6),
+                                        .textThemeColor()
+                                        .withOpacity(0.1),
                                     shape: BoxShape.circle,
-                                    image: const DecorationImage(
-                                      image: AssetImage(
-                                        ImageAssets.ic_share_nft_detail,
-                                      ),
-                                    ),
+                                  ),
+                                  child: sizedSvgImage(
+                                    h: 20,
+                                    w: 20,
+                                    image: ImageAssets.ic_share_svg,
                                   ),
                                 ),
                               ),

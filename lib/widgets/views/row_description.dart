@@ -1,7 +1,13 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 enum TextType {
   RICH_BLUE,
@@ -13,6 +19,7 @@ Row buildRow({
   required String title,
   required String detail,
   required TextType type,
+  bool isShowCopy = false,
 }) =>
     Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,6 +55,37 @@ Row buildRow({
               ),
             ),
           )
+        ] else if (type == TextType.RICH_BLUE && isShowCopy) ...[
+          SizedBox(
+            width: 225.w,
+            child: Row(
+              children: [
+                RichText(
+                  maxLines: 1,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: detail.handleString(),
+                        style: richTextBlue,
+                      ),
+                    ],
+                  ),
+                ),
+                spaceW4,
+                InkWell(
+                  onTap: (){
+                    FlutterClipboard.copy(detail);
+                    Fluttertoast.showToast(
+                      msg: S.current.copy,
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.TOP,
+                    );
+                  },
+                  child: Image.asset(ImageAssets.ic_copy),
+                )
+              ],
+            ),
+          ),
         ] else if (type == TextType.RICH_BLUE) ...[
           SizedBox(
             width: 225.w,

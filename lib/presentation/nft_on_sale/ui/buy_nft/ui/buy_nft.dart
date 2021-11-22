@@ -48,52 +48,55 @@ class _BuyNFTState extends State<BuyNFT> {
         child: Column(
           children: [
             spaceH24,
-            Expanded(child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        S.current.quantity,
-                        style: textNormalCustom(
-                          Colors.white,
-                          14,
-                          FontWeight.w400,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          S.current.quantity,
+                          style: textNormalCustom(
+                            Colors.white,
+                            14,
+                            FontWeight.w400,
+                          ),
                         ),
-                      ),
-                      spaceH4,
-                      FormWithOutPrefix(
-                        hintText: S.current.enter_quantity,
-                        typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
-                        cubit: BuyNftCubit,
-                        txtController: txtQuantity,
-                        quantityOfAll: fakeQuantityFetch,
-                        imageAsset: ImageAssets.ic_symbol,
-                      ),
-                      spaceH20,
-                      pricePerOne(),
-                      spaceH12,
-                      divider,
-                      spaceH12,
-                      showTotalPayment(),
-                      spaceH4,
-                      Text(
-                        '${S.current.your_balance} $balanceDFYFetch DFY',
-                        style: textNormalCustom(
-                          Colors.white.withOpacity(0.7),
-                          14,
-                          FontWeight.w400,
+                        spaceH4,
+                        FormWithOutPrefix(
+                          hintText: S.current.enter_quantity,
+                          typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
+                          cubit: BuyNftCubit,
+                          txtController: txtQuantity,
+                          quantityOfAll: fakeQuantityFetch,
+                          imageAsset: ImageAssets.ic_symbol,
+                          isTokenOrQuantity: false,
                         ),
-                      ),
-                      SizedBox(
-                        height: 300.h,
-                      ),
-                    ],
-                  ),
-                ],
+                        spaceH20,
+                        pricePerOne(),
+                        spaceH12,
+                        divider,
+                        spaceH12,
+                        showTotalPayment(),
+                        spaceH4,
+                        Text(
+                          '${S.current.your_balance} $balanceDFYFetch DFY',
+                          style: textNormalCustom(
+                            Colors.white.withOpacity(0.7),
+                            14,
+                            FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 300.h,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),),
+            ),
             ButtonGold(
               title: '${S.current.buy} NFT',
               isEnable: true,
