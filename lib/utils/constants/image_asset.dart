@@ -127,7 +127,6 @@ class ImageAssets {
   static const String img_back = '$baseImg/img_back.png';
    static const String img_filter = '$baseImg/filter.png';
    static const String ic_filter = '$baseImg/ic_filter.png';
-  static const String img_search_empty = '$baseImg/search-empty-icon.png';
   static const String imgRectangle = '$baseImg/rectangle.png';
   ///SvgImage
   static const String ic_btn_send_token_svg =
