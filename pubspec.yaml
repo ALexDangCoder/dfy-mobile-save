@@ -51,7 +51,7 @@ dependencies:
   image_picker: ^0.8.4+3
   flutter_tab_indicator_styler: ^2.0.0
   # add this line to your dependencies
-
+  avatar_view: ^1.0.1
   #Library helpful
   intl: ^0.17.0
   event_bus: ^2.0.0

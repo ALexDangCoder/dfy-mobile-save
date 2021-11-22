@@ -2,14 +2,14 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
-import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components/form_address_ft_amount.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components/hide_customize_fee.dart';
-import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components/information_wallet.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/components/show_customize_fee.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
+import 'package:Dfy/widgets/confirm_blockchain/components/information_wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -73,7 +73,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
         title: '${S.current.send} DFY',
         child: Column(
           children: [
-            spaceH24,
+            // spaceH24,
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -83,6 +83,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                       from: widget.fromAddress,
                       to: widget.toAddress,
                       amount: '${widget.amount} DFY',
+                      typeForm: typeIsHaveAmount.HAVE_AMOUNT,
                     ),
                     const Divider(
                       thickness: 1,

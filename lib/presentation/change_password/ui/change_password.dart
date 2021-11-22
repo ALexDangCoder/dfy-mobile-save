@@ -3,10 +3,6 @@ import 'package:Dfy/presentation/change_password/bloc/change_password_cubit.dart
 import 'package:Dfy/presentation/change_password/ui/components/form_setup_password.dart';
 import 'package:Dfy/presentation/change_password/ui/components/header_change_password.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
-import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
-import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
-import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/success/successful_by_title.dart';
 import 'package:flutter/material.dart';
@@ -53,8 +49,8 @@ class _ChangePasswordState extends State<ChangePassword> {
         decoration: BoxDecoration(
           color: const Color.fromRGBO(62, 61, 92, 1),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.r),
-            topRight: Radius.circular(30.r),
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
           ),
         ),
         child: Column(
