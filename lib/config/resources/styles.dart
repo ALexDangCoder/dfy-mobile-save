@@ -61,6 +61,8 @@ TextStyle textNormal(Color? color, double? fontSize) {
   );
 }
 
+final divider = Divider(thickness: 1, color: Colors.white.withOpacity(0.1));
+
 TextStyle tokenDetailAmount({
   Color color = Colors.white,
   double fontSize = 24,
@@ -73,6 +75,7 @@ TextStyle tokenDetailAmount({
     fontSize: fontSize,
   );
 }
+
 TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
   return GoogleFonts.sen(
     color: color,

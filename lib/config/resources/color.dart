@@ -16,6 +16,7 @@ const backgroundBottomSheetColor = Color(0xff32324c);
 const formColor = Color(0xff6F6FC5);
 const subTitleTxtColor = Color(0xff9097A3);
 const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
+const backgroundMarketColor = [Color(0xFF3C3B54), Color(0xFF24203A)];
 const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
@@ -63,6 +64,7 @@ const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
+const borderItemColors = Color(0xff474666);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
@@ -133,6 +135,9 @@ abstract class AppColor {
   Color blueColor();
   Color timeBorderColor();
   Color titleTabColor();
+
+  List<Color> listBackgroundMarketColor();
+  Color borderItemColor();
 }
 
 class LightApp extends AppColor {
@@ -298,6 +303,16 @@ class LightApp extends AppColor {
   @override
   Color pendingTransactionColors() {
     return const Color(0XFFFFBD48);
+  }
+
+  @override
+  List<Color> listBackgroundMarketColor() {
+    return backgroundMarketColor;
+  }
+
+  @override
+  Color borderItemColor() {
+    return  borderItemColors;
   }
 
   @override
@@ -495,6 +510,18 @@ class DarkApp extends AppColor {
   @override
   Color failTransactionColors() {
     // TODO: implement failTransactionColors
+    throw UnimplementedError();
+  }
+
+  @override
+  List<Color> listBackgroundMarketColor() {
+    // TODO: implement listBackgroundMarketColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color borderItemColor() {
+    // TODO: implement borderItemColor
     throw UnimplementedError();
   }
 
