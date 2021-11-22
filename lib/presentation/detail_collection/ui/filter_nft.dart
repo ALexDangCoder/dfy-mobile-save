@@ -3,38 +3,39 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/hard_nft.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/not_on_market.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/on_auction.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/on_pawn.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/on_sale.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box_nft_fillter/soft_nft.dart';
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'check_box_nft_fillter/hard_nft.dart';
+import 'check_box_nft_fillter/not_on_market.dart';
+import 'check_box_nft_fillter/on_auction.dart';
+import 'check_box_nft_fillter/on_pawn.dart';
+import 'check_box_nft_fillter/on_sale.dart';
+import 'check_box_nft_fillter/soft_nft.dart';
+
 class FilterNFT extends StatefulWidget {
-  const FilterNFT({Key? key}) : super(key: key);
+  final DetailCollectionBloc collectionBloc;
+
+  const FilterNFT({Key? key, required this.collectionBloc}) : super(key: key);
 
   @override
   _FilterNFTState createState() => _FilterNFTState();
 }
 
 class _FilterNFTState extends State<FilterNFT> {
-  late final CollectionBloc collectionBloc;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    collectionBloc = CollectionBloc();
   }
 
   @override
   Widget build(BuildContext context) {
+    final collectionBloc = widget.collectionBloc;
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
       child: Container(

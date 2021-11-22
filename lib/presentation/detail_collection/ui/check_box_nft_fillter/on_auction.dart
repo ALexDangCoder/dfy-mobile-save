@@ -1,15 +1,15 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class IsOnPawn extends StatelessWidget {
+class IsOnAuction extends StatelessWidget {
   final String title;
-  final CollectionBloc collectionBloc;
+  final DetailCollectionBloc collectionBloc;
 
-  const IsOnPawn({
+  const IsOnAuction({
     Key? key,
     required this.title,
     required this.collectionBloc,
@@ -18,12 +18,11 @@ class IsOnPawn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 24.h,
       margin: EdgeInsets.only(left: 4,top: 12.h, bottom: 12.h),
       child: Row(
         children: [
           StreamBuilder(
-            stream: collectionBloc.isOnPawn,
+            stream: collectionBloc.isOnAuction,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Transform.scale(
                 scale: 1.34,
@@ -41,9 +40,9 @@ class IsOnPawn extends StatelessWidget {
                   ),
                   value: snapshot.data ?? false,
                   onChanged: (value) {
-                    collectionBloc.isOnPawn.sink.add(true);
+                    collectionBloc.isOnAuction.sink.add(true);
                     if (snapshot.data ?? false) {
-                      collectionBloc.isOnPawn.sink.add(false);
+                      collectionBloc.isOnAuction.sink.add(false);
                     }
                   },
                 ),
