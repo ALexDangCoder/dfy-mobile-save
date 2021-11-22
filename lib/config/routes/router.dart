@@ -2,7 +2,6 @@ import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/collection_list/ui/detail_collection.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/splash/splash_screen.dart';
-import 'package:Dfy/presentation/test/test.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +26,6 @@ class AppRouter {
     // final args = settings.arguments;
 
     switch (settings.name) {
-      case testScreen:
-        return MaterialPageRoute(builder: (ctx) => const TestScreen());
       case detailCollection:
         return MaterialPageRoute(builder: (ctx) => const DetailCollection());
       case collectionList:
