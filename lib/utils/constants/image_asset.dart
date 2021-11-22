@@ -140,6 +140,7 @@ class ImageAssets {
   static const String ic_token_dfy_svg = '$baseImg/ic_token_dfy_svg.svg';
   static const String ic_token_btc_svg = '$baseImg/ic_token_btc_svg.svg';
   static const String ic_token_bnb_svg = '$baseImg/ic_token_bnb_svg.svg';
+  static const String ic_share_svg = '$baseImg/Share.svg';
 
 
   static SvgPicture svgAssets(

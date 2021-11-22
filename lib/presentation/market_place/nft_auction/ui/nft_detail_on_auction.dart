@@ -20,24 +20,29 @@ class OnAuction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseDetailNFT(
-      title: 'Naruto Dattebayo',
-      url:
-          'https://toigingiuvedep.vn/wp-content/uploads/2021/06/hinh-anh-naruto-chat-ngau-dep.jpg',
-      children: [
-        _priceContainer(),
-        _timeContainer(),
-        spaceH24,
-        _buildButtonPlaceBid(context),
-        spaceH20,
-        _buildButtonBuyOut(context),
-        spaceH18,
-        divide,
-        _buildTable(),
-        spaceH20,
-        divide,
-        const AuctionTabBar(),
-      ],
+    return Scaffold(
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: BaseDetailNFT(
+          title: 'Naruto Dattebayo',
+          url:
+              'https://toigingiuvedep.vn/wp-content/uploads/2021/06/hinh-anh-naruto-chat-ngau-dep.jpg',
+          children: [
+            _priceContainer(),
+            _timeContainer(),
+            spaceH24,
+            _buildButtonPlaceBid(context),
+            spaceH20,
+            _buildButtonBuyOut(context),
+            spaceH18,
+            divide,
+            _buildTable(),
+            spaceH20,
+            divide,
+            const AuctionTabBar(),
+          ],
+        ),
+      ),
     );
   }
 
