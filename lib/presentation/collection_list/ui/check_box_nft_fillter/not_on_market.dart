@@ -18,8 +18,7 @@ class IsNotOnMarket extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 24.h,
-      margin: EdgeInsets.only(left: 4,top: 12.h, bottom: 12.h),
+      margin: EdgeInsets.only(left: 4, top: 12.h, bottom: 12.h),
       child: Row(
         children: [
           StreamBuilder(
@@ -50,11 +49,14 @@ class IsNotOnMarket extends StatelessWidget {
               );
             },
           ),
-          Text(
-            title,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16,
+          SizedBox(
+            width: 100.w,
+            child: Text(
+              title,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16,
+              ),
             ),
           ),
         ],

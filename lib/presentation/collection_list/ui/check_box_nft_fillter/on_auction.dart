@@ -18,7 +18,6 @@ class IsOnAuction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 24.h,
       margin: EdgeInsets.only(left: 4,top: 12.h, bottom: 12.h),
       child: Row(
         children: [

@@ -25,96 +25,100 @@ class _CollectionListState extends State<CollectionList> {
       designSize: const Size(375, 812),
       builder: () => Scaffold(
         backgroundColor: Colors.transparent,
-        body: Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: 764.h,
-            width: 375.w,
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().bgBtsColor(),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.h),
-                topRight: Radius.circular(30.h),
-              ),
+        body: Column(
+          children: [
+            SizedBox(
+              height: 48.h,
             ),
-            child: Column(
-              children: [
-                spaceH16,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(left: 16.w),
-                        width: 28.w,
-                        height: 28.h,
-                        child: Image.asset(ImageAssets.ic_back),
-                      ),
-                    ),
-                    Text(
-                      S.current.collection_list,
-                      style: textNormalCustom(null, 20, FontWeight.w700),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          backgroundColor: Colors.transparent,
-                          context: context,
-                          builder: (context) => Filter(),
-                        );
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 16.w),
-                        width: 28.w,
-                        height: 28.h,
-                        child: Image.asset(ImageAssets.ic_filter),
-                      ),
-                    ),
-                  ],
+            Container(
+              height: 764.h,
+              width: 375.w,
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().bgBtsColor(),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.h),
+                  topRight: Radius.circular(30.h),
                 ),
-                spaceH20,
-                line,
-                Expanded(
-                  child: GridView.builder(
-                    padding: EdgeInsets.only(
-                      top: 24.h,
-                      bottom: 24.h,
-                      right: 16.w,
-                      left: 16.w,
-                    ),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 15.w,
-                      mainAxisSpacing: 20.h,
-                      crossAxisCount: 2,
-                    ),
-                    itemCount: 300,
-                    itemBuilder: (context, index) {
-                      return InkWell(
+              ),
+              child: Column(
+                children: [
+                  spaceH16,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRouter.detailCollection,
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(left: 16.w),
+                          width: 28.w,
+                          height: 28.h,
+                          child: Image.asset(ImageAssets.ic_back),
+                        ),
+                      ),
+                      Text(
+                        S.current.collection_list,
+                        style: textNormalCustom(null, 20, FontWeight.w700),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context) => Filter(),
                           );
                         },
-                        child: const ItemCollection(
-                          items: '1025',
-                          text:
-                              'Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...',
-                          urlIcon: 'assets/images/pop_image.png',
-                          owners: '321',
-                          title: 'Artwork collection',
-                          urlBackGround: 'assets/images/pop_image.png',
+                        child: Container(
+                          margin: EdgeInsets.only(right: 16.w),
+                          width: 28.w,
+                          height: 28.h,
+                          child: Image.asset(ImageAssets.ic_filter),
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                )
-              ],
+                  spaceH20,
+                  line,
+                  Expanded(
+                    child: GridView.builder(
+                      padding: EdgeInsets.only(
+                        top: 24.h,
+                        bottom: 24.h,
+                        right: 16.w,
+                        left: 16.w,
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisSpacing: 15.w,
+                        mainAxisSpacing: 20.h,
+                        crossAxisCount: 2,
+                      ),
+                      itemCount: 300,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRouter.detailCollection,
+                            );
+                          },
+                          child: const ItemCollection(
+                            items: '1025',
+                            text:
+                                'Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...Velit magnis praesent sapien etiam. Mattis sit mae...',
+                            urlIcon: 'assets/images/pop_image.png',
+                            owners: '321',
+                            title: 'Artwork collection',
+                            urlBackGround: 'assets/images/pop_image.png',
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
