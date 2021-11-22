@@ -38,6 +38,7 @@ class _NFTItemState extends State<NFTItemWidget> {
       onTap: () {},
       child: Row(
         children: [
+
           Stack(
             children: [
               Container(

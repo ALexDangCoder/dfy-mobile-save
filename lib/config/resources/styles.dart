@@ -18,6 +18,8 @@ final spaceH8 = SizedBox(height: 8.h);
 final spaceH10 = SizedBox(height: 10.h);
 final spaceH12 = SizedBox(height: 12.h);
 final spaceH15 = SizedBox(height: 15.h);
+
+final spaceH14 = SizedBox(height: 14.h);
 final spaceH16 = SizedBox(height: 16.h);
 final spaceH18 = SizedBox(height: 18.h);
 final spaceH20 = SizedBox(height: 20.h);
@@ -97,6 +99,19 @@ TextStyle textNormalCustom(
     fontWeight: fontWeight ?? FontWeight.w500,
     fontStyle: FontStyle.normal,
     fontSize: fontSize ?? 14,
+  );
+}
+TextStyle textNormalCustomUnderline(
+    Color? color,
+    double? fontSize,
+    FontWeight? fontWeight,
+    ) {
+  return GoogleFonts.sen(
+    color: color ?? Colors.white,
+    fontWeight: fontWeight ?? FontWeight.w500,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize ?? 14,
+    decoration: TextDecoration.underline
   );
 }
 
