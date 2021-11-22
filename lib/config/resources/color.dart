@@ -21,6 +21,7 @@ const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
 ];
+const purple = Color(0xff9997FF);
 const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
@@ -31,6 +32,7 @@ const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
 
 //custom color
+const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
 const errorColor = Color(0xFFCDCDCD);
@@ -131,6 +133,8 @@ abstract class AppColor {
   Color pendingTransactionColors();
 
   Color blueColor();
+  Color timeBorderColor();
+  Color titleTabColor();
 
   List<Color> listBackgroundMarketColor();
   Color borderItemColor();
@@ -293,7 +297,6 @@ class LightApp extends AppColor {
 
   @override
   Color blueColor() {
-    // TODO: implement blueColor
     return const Color(0xFF46BCFF);
   }
 
@@ -310,6 +313,16 @@ class LightApp extends AppColor {
   @override
   Color borderItemColor() {
     return  borderItemColors;
+  }
+
+  @override
+  Color timeBorderColor() {
+    return borderColor;
+  }
+
+  @override
+  Color titleTabColor() {
+    return purple;
   }
 }
 
@@ -509,6 +522,18 @@ class DarkApp extends AppColor {
   @override
   Color borderItemColor() {
     // TODO: implement borderItemColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color timeBorderColor() {
+    // TODO: implement timeBorderColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color titleTabColor() {
+    // TODO: implement titleTabColor
     throw UnimplementedError();
   }
 }
