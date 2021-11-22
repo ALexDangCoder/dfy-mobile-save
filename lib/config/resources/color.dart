@@ -32,6 +32,8 @@ const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
 
 //custom color
+
+const borderItemColors = Color(0xff474666);
 const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
@@ -64,10 +66,13 @@ const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
-const borderItemColors = Color(0xff474666);
+const unselectedTabLabel = Color(0xFF9997FF);
+
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
+  Color borderItemColor();
+
   Color primaryColor();
 
   Color accentColor();
@@ -133,11 +138,18 @@ abstract class AppColor {
   Color pendingTransactionColors();
 
   Color blueColor();
+
+  Color backgroundButtonColor();
+
+  Color whiteBackgroundButtonColor();
+
   Color timeBorderColor();
+
+  Color unselectedTabLabelColor();
+
   Color titleTabColor();
 
   List<Color> listBackgroundMarketColor();
-  Color borderItemColor();
 }
 
 class LightApp extends AppColor {
@@ -276,10 +288,11 @@ class LightApp extends AppColor {
     return Colors.white;
   }
 
-    @override
+  @override
   Color whiteColor() {
     return Colors.white;
   }
+
   @override
   Color currencyDetailTokenColor() {
     return Colors.white.withOpacity(0.7);
@@ -306,13 +319,22 @@ class LightApp extends AppColor {
   }
 
   @override
+  Color backgroundButtonColor() {
+    return backgroundBottomSheet.withOpacity(0.6);
+  }
+
+  @override
+  Color whiteBackgroundButtonColor() {
+    // TODO: implement whiteBackgroundButtonColor
+    return Colors.white.withOpacity(0.1);
+  }
   List<Color> listBackgroundMarketColor() {
     return backgroundMarketColor;
   }
 
   @override
   Color borderItemColor() {
-    return  borderItemColors;
+    return borderItemColors;
   }
 
   @override
@@ -321,6 +343,10 @@ class LightApp extends AppColor {
   }
 
   @override
+  Color unselectedTabLabelColor() {
+    return unselectedTabLabel;
+  }
+
   Color titleTabColor() {
     return purple;
   }
@@ -514,12 +540,21 @@ class DarkApp extends AppColor {
   }
 
   @override
+  Color backgroundButtonColor() {
+    // TODO: implement backgroundButtonColor
+    throw UnimplementedError();
+  }
+    @override
   List<Color> listBackgroundMarketColor() {
     // TODO: implement listBackgroundMarketColor
     throw UnimplementedError();
   }
 
   @override
+  Color whiteBackgroundButtonColor() {
+    // TODO: implement whiteBackgroundButtonColor
+    throw UnimplementedError();
+  }
   Color borderItemColor() {
     // TODO: implement borderItemColor
     throw UnimplementedError();
@@ -531,6 +566,11 @@ class DarkApp extends AppColor {
     throw UnimplementedError();
   }
 
+  @override
+  Color unselectedTabLabelColor() {
+    // TODO: implement unselectedTabLabelColor
+    return unselectedTabLabel;
+  }
   @override
   Color titleTabColor() {
     // TODO: implement titleTabColor

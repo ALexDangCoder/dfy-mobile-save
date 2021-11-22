@@ -81,7 +81,7 @@ class _MyAppState extends State<MyApp> {
         ],
         // locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
         onGenerateRoute: AppRouter.generateRoute,
-        initialRoute: AppRouter.main,
+        initialRoute: AppRouter.splash,
       ),
     );
   }
