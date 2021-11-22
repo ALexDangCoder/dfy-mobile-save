@@ -3,9 +3,7 @@ import 'dart:developer';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/text_helper.dart';
-import 'package:Dfy/widgets/button/round_button.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_widget.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +28,6 @@ class _BiddingWidgetState extends State<BiddingWidget>
 
   @override
   void initState() {
-    // TODO: implement initState
     final int tabLen = tabList.length;
     _tabController = TabController(length: tabLen, vsync: this);
     super.initState();
@@ -59,92 +56,7 @@ class _BiddingWidgetState extends State<BiddingWidget>
               children: [
                 Container(),
                 Container(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    spaceH24,
-                    textRow(
-                      name: 'Evaluated by',
-                      value: 'The London Evaluation',
-                      clickAble: true,
-                    ),
-                    textRow(
-                        name: 'Evaluated time',
-                        value: DateTime.now().stringFromDateTime),
-                    textRow(
-                      name: 'Maximum amount',
-                      value: ' ${1200000.stringIntFormat} USDT',
-                      token: ImageAssets.ic_token_dfy_svg,
-                    ),
-                    textRow(name: 'Depreciation (% annually)', value: '20%'),
-                    textRow(name: 'Conclusion', value: 'Fast & furious'),
-                    Text(
-                      'Images and videos',
-                      style: tokenDetailAmount(
-                        color:
-                            AppTheme.getInstance().currencyDetailTokenColor(),
-                        weight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
-                    ),
-                    spaceH16,
-                    Stack(
-                      children: [
-                        StreamBuilder<String>(
-                          stream: widget.bloc.imageStream,
-                          initialData:
-                              'https://cdn11.bigcommerce.com/s-yrkef1j7/images/stencil/1280x1280/products/294/37821/QQ20190807220008__01299.1565241023.png?c=2',
-                          builder: (context, snapShot) {
-                            if (snapShot.hasData) {
-                              final String img = snapShot.data ?? '';
-                              return SizedBox(
-                                width: 350.w,
-                                height: 200.h,
-                                child: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30.r)),
-                                  child: Image.network(
-                                    img,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return const SizedBox.shrink();
-                            }
-                          },
-                        ),
-                        Positioned(
-                          top: (200.h - 32.h) / 2,
-                          left: 16.w,
-                          child: InkWell(
-                            onTap: () {},
-                            child:
-                                roundButton(image: ImageAssets.ic_btn_back_svg),
-                          ),
-                        ),
-                        Positioned(
-                          top: (200.h - 32.h) / 2,
-                          right: 16.w,
-                          child: InkWell(
-                            onTap: () {},
-                            child:
-                                roundButton(image: ImageAssets.ic_btn_next_svg),
-                          ),
-                        ),
-                      ],
-                    ),
-                    spaceH12,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: widget.bloc.listImg
-                          .map(
-                            (e) => smallImage(e),
-                          )
-                          .toList(),
-                    )
-                  ],
-                ),
+                EvaluationWidget(bloc: widget.bloc),
               ],
             ),
           ),
@@ -153,14 +65,21 @@ class _BiddingWidgetState extends State<BiddingWidget>
     );
   }
 
-  Widget smallImage(String img) {
+  Widget smallImage({required String img, required bool isCurrentImg}) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         widget.bloc.changeImage(img);
       },
-      child: SizedBox(
+      child: Container(
         width: 79.w,
         height: 64.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+          border: Border.all(
+            color: isCurrentImg ? const Color(0xFFE4AC1A) : Colors.transparent,
+            width: 2,
+          ),
+        ),
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(10.r)),
           child: Image.network(
