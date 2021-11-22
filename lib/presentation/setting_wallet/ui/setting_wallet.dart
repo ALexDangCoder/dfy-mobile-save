@@ -5,7 +5,9 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase.dart';
 import 'package:Dfy/presentation/import_account_login_bts/ui/import_account_login.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/nft_on_pawn/ui/send_offer.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/buy_nft/ui/buy_nft.dart';
+import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/components/deatail_nft_root_tab.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
@@ -16,10 +18,14 @@ import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/nft_detail/nft_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum typeSwitchForm { FINGER_FT_FACEID, APPLOCK }
+
+String fakeImage =
+    'https://image-us.24h.com.vn/upload/2-2019/images/2019-05-25/1558802221-860-vi-dau-sieu-pham-hoat-hinh-he-doraemon-vua-quen-vua-la-unnamed--8--1558666578-width739height559.png';
 
 class SettingWallet extends StatelessWidget {
   const SettingWallet({
@@ -59,9 +65,16 @@ class SettingWallet extends StatelessWidget {
                       //   isScrollControlled: true,
                       //   backgroundColor: Colors.transparent,
                       //   context: context,
-                        // builder: (_) {
-                        //   // return const NFTListOnSale();
-                        // },
+                      //   builder: (_) {
+                      //     // return BaseDetailNFT(
+                      //     //   title: 'name image',
+                      //     //   url: fakeImage,
+                      //     //   children: [
+                      //     //    DetailNftTab(),
+                      //     //   ],
+                      //     // );
+                      //     return SendOffer();
+                      //   },
                       // );
                     },
                     child: buttonForm(

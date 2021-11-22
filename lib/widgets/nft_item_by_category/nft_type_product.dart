@@ -45,90 +45,85 @@ class _NftProductState extends State<NftProduct> {
   // formatValue.format(DOUBLE), // HOW TO USE IT
   @override
   Widget build(BuildContext context) {
-    return
-        Stack(
+    return Stack(
+      children: [
+        Container(
+          height: 231.h,
+          width: 156.w,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: AppTheme.getInstance().selectDialogColor(),
+          ),
+          padding: EdgeInsets.only(
+            top: 8.h,
+            bottom: 16.h,
+            left: 8.w,
+            right: 8.w,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 231.h,
-                width: 156.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: AppTheme.getInstance().selectDialogColor(),
-                ),
-                padding: EdgeInsets.only(
-                  top: 8.h,
-                  bottom: 16.h,
-                  left: 8.w,
-                  right: 8.w,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      children: [
-                        //this container is IMAGE NFT
-                        imgNFT(),
-                        isHaveButtonPlayVideo(widget.nftIsVidOrImg),
-                      ],
-                    ),
-                    spaceH6,
-                    Text(
-                      widget.nftName,
-                      style: textNormalCustom(
-                        Colors.white,
-                        13,
-                        FontWeight.w600,
-                      ),
-                    ),
-                    spaceH2,
-                    txtTypeNft(nftCategory: widget.nftCategory),
-                    spaceH16,
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              const Image(
-                                image:
-                                AssetImage('assets/images/symbol.png'),
-                              ),
-                              SizedBox(
-                                width: 4.18.h,
-                              ),
-                              Text(
-                                formatValue.format(widget.price),
-                                style: const TextStyle(
-                                  color: Colors.yellow,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Text(
-                            '1 of 1',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+              Stack(
+                children: [
+                  //this container is IMAGE NFT
+                  imgNFT(),
+                  isHaveButtonPlayVideo(widget.nftIsVidOrImg),
+                ],
+              ),
+              spaceH6,
+              Text(
+                widget.nftName,
+                style: textNormalCustom(
+                  Colors.white,
+                  13,
+                  FontWeight.w600,
                 ),
               ),
-              //widget below will not appear if is not hard nft
-              isHardNft(widget.nftIsHard),
-              //widget below will not appear if is not auction type
-              txtCountDown(widget.nftCategory),
+              spaceH2,
+              txtTypeNft(nftCategory: widget.nftCategory),
+              spaceH16,
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Image(
+                          image: AssetImage('assets/images/symbol.png'),
+                        ),
+                        SizedBox(
+                          width: 4.18.h,
+                        ),
+                        Text(
+                          formatValue.format(widget.price),
+                          style: const TextStyle(
+                            color: Colors.yellow,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Text(
+                      '1 of 1',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
-          );
-
-
-
+          ),
+        ),
+        //widget below will not appear if is not hard nft
+        isHardNft(widget.nftIsHard),
+        //widget below will not appear if is not auction type
+        txtCountDown(widget.nftCategory),
+      ],
+    );
   }
 
   Widget txtCountDown(NFT_CATEGORY nftCategory) {
@@ -180,7 +175,9 @@ class _NftProductState extends State<NftProduct> {
   Widget isHardNft(NFT_IS_HARD nftIsHard) {
     if (nftIsHard == NFT_IS_HARD.HARD_NFT) {
       return Padding(
-        padding: EdgeInsets.only(left: 117.w,),
+        padding: EdgeInsets.only(
+          left: 117.w,
+        ),
         child: const Image(
           image: AssetImage(ImageAssets.img_hard_nft),
         ),
