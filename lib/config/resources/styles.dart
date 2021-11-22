@@ -111,7 +111,7 @@ TextStyle textNormalCustomUnderline(
     fontWeight: fontWeight ?? FontWeight.w500,
     fontStyle: FontStyle.normal,
     fontSize: fontSize ?? 14,
-    decoration: TextDecoration.underline
+    decoration: TextDecoration.underline,
   );
 }
 
