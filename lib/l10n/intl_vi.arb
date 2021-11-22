@@ -226,6 +226,7 @@
   "reserve_price": "Giá khởi điểm",
   "price_step": "Bước giá",
   "your_balance_bid": "Số dư của bạn",
+  "nft_on_auction": "NFT trên phiên đấu giá",
   "current_bid": "Giá hiện tại",
   "loan_to_vl": "Cho vay định giá:",
   "loan_amount": "Giá nợ:",
@@ -237,5 +238,6 @@
   "enter_loan_to_vl": "Nhập cho vay định giá",
   "enter_loan_amount": "Nhập giá nợ",
   "enter_interest_rate": "Nhập lãi suất",
-  "enter_duration": "Nhập khoảng thời gian"
+  "enter_duration": "Nhập khoảng thời gian",
+  "expected_loan": "Khoản vay dự kiến"
 }
