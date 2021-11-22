@@ -44,16 +44,6 @@ class _NFTListOnSaleState extends State<NFTListOnSale> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              print('fuck');
-              // MaterialPageRoute(
-              //   builder: (context) => BaseDetailNFT(
-              //     title: products[index].nftName,
-              //     url: fakeImage,
-              //     children: [
-              //       Container(),
-              //     ],
-              //   ),
-              // );
             },
             child: products[index],
           );

@@ -238,5 +238,6 @@
   "enter_loan_to_vl": "Nhập cho vay định giá",
   "enter_loan_amount": "Nhập giá nợ",
   "enter_interest_rate": "Nhập lãi suất",
-  "enter_duration": "Nhập khoảng thời gian"
+  "enter_duration": "Nhập khoảng thời gian",
+  "expected_loan": "Khoản vay dự kiến"
 }
