@@ -28,8 +28,10 @@ final spaceH35 = SizedBox(height: 35.h);
 final spaceH38 = SizedBox(height: 38.h);
 final spaceH40 = SizedBox(height: 40.h);
 final spaceH50 = SizedBox(height: 50.h);
+final spaceH56 = SizedBox(height: 56.h);
 final spaceH60 = SizedBox(height: 60.h);
 final spaceH70 = SizedBox(height: 70.h);
+final spaceH344 = SizedBox(height: 344.h);
 
 ///W
 final spaceW2 = SizedBox(width: 2.w);

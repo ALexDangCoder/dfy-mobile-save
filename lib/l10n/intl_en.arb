@@ -209,5 +209,9 @@
   "art_work": "Artwork",
   "sale": "Sale",
   "auction": "Auction",
-  "pawn": "Pawn"
+  "pawn": "Pawn",
+  "reserve_price": "Reserve price",
+  "price_step": "Price step",
+  "your_balance_bid": "Your balance",
+  "current_bid": "Current bid"
 }

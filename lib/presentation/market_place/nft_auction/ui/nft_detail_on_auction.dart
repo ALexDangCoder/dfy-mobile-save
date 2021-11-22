@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/nft_auction/ui/place_bit_bts.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/tab_bar_controller.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
@@ -23,54 +24,67 @@ class OnAuction extends StatelessWidget {
       url:
           'https://toigingiuvedep.vn/wp-content/uploads/2021/06/hinh-anh-naruto-chat-ngau-dep.jpg',
       children: [
-        priceContainer(),
-        timeContainer(),
+        _priceContainer(),
+        _timeContainer(),
         spaceH24,
-        ButtonGradient(
-          onPressed: () {},
-          gradient: RadialGradient(
-            center: const Alignment(0.5, -0.5),
-            radius: 4,
-            colors: AppTheme.getInstance().gradientButtonColor(),
-          ),
-          child: Text(
-            S.current.place_a_bid,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              16,
-              FontWeight.w700,
-            ),
-          ),
-        ),
+        _buildButtonPlaceBid(context),
         spaceH20,
-        ButtonTransparent(
-          child: Text(
-            S.current.place_a_bid,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              16,
-              FontWeight.w700,
-            ),
-          ),
-          onPressed: () {},
-        ),
+        _buildButtonBuyOut(context),
         spaceH18,
         divide,
-        buildTable(),
+        _buildTable(),
         spaceH20,
         divide,
-        Container(
-          padding: EdgeInsets.only(bottom: 16.h),
-          height: 393.h,
-          child: const AuctionTabBar(),
-        ),
+        const AuctionTabBar(),
       ],
     );
   }
 
-  Widget buildTable() => Column(
+  Widget _buildButtonPlaceBid(BuildContext context) {
+    return ButtonGradient(
+      onPressed: () {
+        showModalBottomSheet(
+          backgroundColor: Colors.transparent,
+          isScrollControlled: true,
+          context: context,
+          builder: (context) {
+            return const PlaceBid();
+          },
+        );
+      },
+      gradient: RadialGradient(
+        center: const Alignment(0.5, -0.5),
+        radius: 4,
+        colors: AppTheme.getInstance().gradientButtonColor(),
+      ),
+      child: Text(
+        S.current.place_a_bid,
+        style: textNormalCustom(
+          AppTheme.getInstance().textThemeColor(),
+          16,
+          FontWeight.w700,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButtonBuyOut(BuildContext context) {
+    return ButtonTransparent(
+      child: Text(
+        S.current.buy_out,
+        style: textNormalCustom(
+          AppTheme.getInstance().textThemeColor(),
+          16,
+          FontWeight.w700,
+        ),
+      ),
+      onPressed: () {},
+    );
+  }
+
+  Widget _buildTable() => Column(
         children: [
-          desColumn(
+          _desColumn(
             S.current.description,
             'Pharetra etiam libero erat in sit risus at vestibulum '
             'nulla. Cras enim nulla neque mauris. Mollis eu lorem '
@@ -115,7 +129,7 @@ class OnAuction extends StatelessWidget {
         ],
       );
 
-  Column desColumn(String title, String detail) => Column(
+  Column _desColumn(String title, String detail) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -139,7 +153,7 @@ class OnAuction extends StatelessWidget {
         ],
       );
 
-  Container priceContainer() => Container(
+  Container _priceContainer() => Container(
         width: 343.w,
         height: 64.h,
         padding: EdgeInsets.symmetric(vertical: 12.h),
@@ -191,7 +205,7 @@ class OnAuction extends StatelessWidget {
         ),
       );
 
-  SizedBox timeContainer() => SizedBox(
+  SizedBox _timeContainer() => SizedBox(
         width: 343.w,
         height: 116.h,
         child: Column(

@@ -56,7 +56,7 @@ class BaseBottomSheet extends StatelessWidget {
                   Flexible(
                     child: InkWell(
                       onTap: () {
-
+                        Navigator.pop(context);
                       },
                       child: Container(
                         margin: EdgeInsets.only(

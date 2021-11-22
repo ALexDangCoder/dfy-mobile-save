@@ -208,5 +208,10 @@
   "owner": "Chủ sở hữu",
   "nft_token_id": "NFT token ID",
   "history": "Lịch sử",
-  "bidding": "Đấu giá"
+  "bidding": "Đấu giá",
+  "reserve_price": "Giá khởi điểm",
+  "price_step": "Bước giá",
+  "your_balance_bid": "Số dư của bạn",
+  "current_bid": "giá hiện tại"
+
 }
