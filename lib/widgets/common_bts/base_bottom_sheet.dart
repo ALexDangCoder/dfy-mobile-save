@@ -32,9 +32,9 @@ class BaseBottomSheet extends StatelessWidget {
       width: 375.w,
       decoration: BoxDecoration(
         color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.r),
-          topRight: Radius.circular(30.r),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
         ),
       ),
       child: Column(
@@ -56,7 +56,7 @@ class BaseBottomSheet extends StatelessWidget {
                   Flexible(
                     child: InkWell(
                       onTap: () {
-
+                        Navigator.pop(context);
                       },
                       child: Container(
                         margin: EdgeInsets.only(

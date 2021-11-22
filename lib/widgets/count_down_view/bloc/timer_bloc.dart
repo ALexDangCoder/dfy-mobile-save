@@ -10,7 +10,7 @@ part 'timer_state.dart';
 class TimeBloc extends Bloc<TimeEvent, TimeState> {
   static const int _timeDuration = 12000;
 
-  StreamSubscription<int>? _timeSubsctiption;
+  StreamSubscription<int>? _timeSubscription;
 
   TimeBloc() : super(const InitialState(_timeDuration));
 
@@ -18,8 +18,8 @@ class TimeBloc extends Bloc<TimeEvent, TimeState> {
   Stream<TimeState> mapEventToState(TimeEvent event) async* {
     if (event is StartEvent) {
       yield RunningState(event.timeDuration);
-      await _timeSubsctiption?.cancel();
-      _timeSubsctiption = changeTime(event.timeDuration).listen((event) {
+      await _timeSubscription?.cancel();
+      _timeSubscription = changeTime(event.timeDuration).listen((event) {
         return add(RunEvent(event));
       });
     } else if (event is RunEvent) {
@@ -27,13 +27,13 @@ class TimeBloc extends Bloc<TimeEvent, TimeState> {
           ? RunningState(event.timeDuration)
           : const CompletedState();
     } else if (event is PauseEvent) {
-      _timeSubsctiption?.pause();
+      _timeSubscription?.pause();
       yield PauseState(state.timeDuration);
     } else if (event is ResumeEvent) {
-      _timeSubsctiption?.resume();
+      _timeSubscription?.resume();
       yield RunningState(state.timeDuration);
     } else if (event is ResetEvent) {
-      await _timeSubsctiption?.cancel();
+      await _timeSubscription?.cancel();
       yield const InitialState(_timeDuration);
     }
   }

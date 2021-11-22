@@ -4,10 +4,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum TextType {
-  RICH,
-  NORM,
-}
 
 class CardNFT extends StatefulWidget {
   const CardNFT({

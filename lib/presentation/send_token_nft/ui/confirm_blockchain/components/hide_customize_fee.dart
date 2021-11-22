@@ -1,12 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 class HideCustomizeFee extends StatelessWidget {
-  //todo show warning text
   const HideCustomizeFee({
     required this.nameToken,
     required this.sendTokenCubit,
@@ -21,9 +20,7 @@ class HideCustomizeFee extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 26.w, right: 26.w),
-      child: Column(
+    return Column(
         children: [
           ConstrainedBox(
             constraints: const BoxConstraints(
@@ -33,7 +30,7 @@ class HideCustomizeFee extends StatelessWidget {
               width: 343.w,
               height: 90.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(16.r)),
+                borderRadius: BorderRadius.all(Radius.circular(16)),
                 border:
                     Border.all(color: const Color.fromRGBO(255, 255, 255, 0.1)),
               ),
@@ -155,8 +152,8 @@ class HideCustomizeFee extends StatelessWidget {
             height: 275.h,
           ),
         ],
-      ),
-    );
+      );
+
   }
 
   Text btnShow() {

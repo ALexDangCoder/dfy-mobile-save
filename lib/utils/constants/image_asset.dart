@@ -62,6 +62,8 @@ class ImageAssets {
   static const String ic_import2 = '$baseImg/ic_import2.png';
   static const String ic_line_down = '$baseImg/ic_line_down.png';
   static const String ic_line_right = '$baseImg/ic_line_right.png';
+  static const String ic_percent = '$baseImg/percent.png';
+  static const String ic_drop_down = '$baseImg/dropdown.png';
   static const String icTabMarketSelect =
       '$baseImg/ic_tab_market_place_select.svg.svg';
   static const String icTabMarketUnselect =
@@ -77,6 +79,7 @@ class ImageAssets {
   static const String imgTabHome = '$baseImg/img_tab_home.png';
 
   static const String ic_to = '$baseImg/ic_to.png';
+  static const String ic_ckc = '$baseImg/Vector.png';
   static const String ic_key24 = '$baseImg/key.png';
   static const String ic_from = '$baseImg/ic_from.png';
   static const String codeS = '$baseImg/Code.png';
@@ -94,6 +97,7 @@ class ImageAssets {
   static const String plus = '$baseImg/Plus.png';
   static const String import = '$baseImg/Import.png';
   static const String face_id = '$baseImg/face_id.png';
+  //static const String ic_filter = '$baseImg/Filter.png';
 
   static const String symbol = '$baseImg/symbol.png';
 
@@ -106,6 +110,9 @@ class ImageAssets {
   static const String ic_plus = '$baseImg/Plus.png';
   static const String ic_symbol = 'assets/images/symbol.png';
   static const String image_example_pop_up = '$baseImg/pop_image.png';
+  static const String ic_book_mark = '$baseImg/Report.png';
+  static const String ic_share_nft_detail = '$baseImg/Share.png';
+  static const String img_place = '$baseImg/placeholder.jpg';
   static const String img_hard_nft = '$baseImg/hard_nft.png';
   static const String play_video = '$baseImg/play_video.png';
   static const String ic_clock2 = '$baseImg/ic_clock.png';
@@ -117,19 +124,31 @@ class ImageAssets {
   static const String img_collection = '$baseImg/img_collection.png';
   static const String img_search_empty = '$baseImg/img_search_empty.png';
 
+  static const String img_back = '$baseImg/img_back.png';
+   static const String img_filter = '$baseImg/filter.png';
+   static const String ic_filter = '$baseImg/ic_filter.png';
+  static const String img_search_empty = '$baseImg/search-empty-icon.png';
+  static const String imgRectangle = '$baseImg/rectangle.png';
   ///SvgImage
-  static const String ic_btn_send_token_svg = '$baseImg/ic_btn_send_token_svg.svg';
-  static const String ic_btn_receive_token_svg = '$baseImg/ic_btn_receive_token_svg.svg';
-  static const String ic_transaction_success_svg = '$baseImg/ic_transaction_success_svg.svg';
-  static const String ic_transaction_fail_svg = '$baseImg/ic_transaction_fail_svg.svg';
-  static const String ic_transaction_pending_svg = '$baseImg/ic_transaction_pending_svg.svg';
+  static const String ic_btn_send_token_svg =
+      '$baseImg/ic_btn_send_token_svg.svg';
+  static const String ic_btn_receive_token_svg =
+      '$baseImg/ic_btn_receive_token_svg.svg';
+  static const String ic_transaction_success_svg =
+      '$baseImg/ic_transaction_success_svg.svg';
+  static const String ic_transaction_fail_svg =
+      '$baseImg/ic_transaction_fail_svg.svg';
+  static const String ic_transaction_pending_svg =
+      '$baseImg/ic_transaction_pending_svg.svg';
 
   static const String ic_token_dfy_svg = '$baseImg/ic_token_dfy_svg.svg';
   static const String ic_token_btc_svg = '$baseImg/ic_token_btc_svg.svg';
   static const String ic_token_bnb_svg = '$baseImg/ic_token_bnb_svg.svg';
-
-
-
+  static const String ic_filter_svg = '$baseImg/ic_filter_svg.svg';
+  static const String ic_btn_back_svg = '$baseImg/ic_btn_back_svg.svg';
+  static const String ic_btn_next_svg = '$baseImg/ic_btn_next_svg.svg';
+  static const String ic_flag_svg = '$baseImg/ic_flag_svg.svg';
+  static const String ic_share_svg = '$baseImg/Share.svg';
 
 
   static SvgPicture svgAssets(
@@ -156,6 +175,7 @@ class ImageAssets {
       fit: fit ?? BoxFit.none,
     );
   }
+
   static const Map<String, List<double>> _svgImageSize = {
     icMenu: [18, 16],
     icBack: [6, 12.25],
