@@ -15,7 +15,6 @@ class AppRouter {
   static const splash = '/splash';
   static const main = '/main';
   static const setupPassWord = '/setupPassWord';
-  static const testScreen = '/testScreen';
   static const login = '/login';
   static const wallet = '/wallet';
   static const sendToken = '/sendToken';
@@ -36,7 +35,6 @@ class AppRouter {
         return MaterialPageRoute(builder: (ctx) => const CollectionList());
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
-
       case main:
         return MaterialPageRoute(
           builder: (ctx) {
