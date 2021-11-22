@@ -109,7 +109,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
       height: 64.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(22.r),
+          Radius.circular(22),
         ),
         border: Border.all(
           color: const Color.fromRGBO(228, 172, 26, 1),

@@ -2,6 +2,7 @@ import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/collection_list/ui/detail_collection.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/splash/splash_screen.dart';
+import 'package:Dfy/presentation/test/test.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +34,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (ctx) => const CollectionList());
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
+      case testScreen:
+        return MaterialPageRoute(builder: (ctx) => const TestScreen());
       case main:
         return MaterialPageRoute(
           builder: (ctx) {

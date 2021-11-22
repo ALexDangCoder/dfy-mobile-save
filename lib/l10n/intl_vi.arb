@@ -227,5 +227,22 @@
   "soft_nft": "NFT mềm",
   "not_on_market": "Không có trên thị trường",
   "on_pawn": "Cầm đồ",
-  "no_result_found": "Không có kết quả nào"
+  "no_result_found": "Không có kết quả nào",
+  "pawn": "Pawn",
+  "private_warning": "Private key không hợp lệ",
+  "day": "Ngày",
+  "hour": "Giờ",
+  "minute": "Phút",
+  "second": "Giây",
+  "place_a_bid": "Đấu giá",
+  "buy_out": "Mua lại",
+  "collection": "Bộ sưu tập",
+  "owner": "Chủ sở hữu",
+  "nft_token_id": "NFT token ID",
+  "history": "Lịch sử",
+  "bidding": "Đấu giá",
+  "reserve_price": "Giá khởi điểm",
+  "price_step": "Bước giá",
+  "your_balance_bid": "Số dư của bạn",
+  "current_bid": "giá hiện tại"
 }
