@@ -52,8 +52,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
         decoration: BoxDecoration(
           color: AppTheme.getInstance().bgBtsColor(),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.r),
-            topRight: Radius.circular(30.r),
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
           ),
         ),
         child: Column(
