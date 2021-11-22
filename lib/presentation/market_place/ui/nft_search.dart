@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/nft_item.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -10,20 +9,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchNFT extends StatefulWidget {
-  const SearchNFT({Key? key}) : super(key: key);
+  const SearchNFT({Key? key, required this.cubit}) : super(key: key);
+  final MarketplaceCubit cubit;
 
   @override
   _SearchNFTState createState() => _SearchNFTState();
 }
 
 class _SearchNFTState extends State<SearchNFT> {
-  late MarketplaceCubit cubit;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    cubit = MarketplaceCubit();
   }
 
   @override
@@ -56,7 +54,7 @@ class _SearchNFTState extends State<SearchNFT> {
                 color: AppTheme.getInstance().divideColor(),
               ),
               BlocBuilder<MarketplaceCubit, MarketplaceState>(
-                bloc: cubit,
+                bloc: widget.cubit,
                 builder: (context, state) {
                   if (state is SearchSuccess) {
                     return result();
@@ -99,7 +97,7 @@ class _SearchNFTState extends State<SearchNFT> {
         children: [
           GestureDetector(
             onTap: (){
-              Navigator.pop(context);
+              widget.cubit.emit(OffSearch());
             },
             child: const ImageIcon(
               AssetImage(ImageAssets.ic_back,),color: Colors.white,
@@ -112,9 +110,9 @@ class _SearchNFTState extends State<SearchNFT> {
             child: Container(
               width: 299.w,
               height: 38.h,
-              decoration: BoxDecoration(
-                color: AppTheme.getInstance().selectDialogColor(),
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
+              decoration: const BoxDecoration(
+                color: Color(0xff4F4F65),
+                borderRadius: BorderRadius.all(Radius.circular(12)),
               ),
               child: Row(
                 children: [
@@ -127,6 +125,7 @@ class _SearchNFTState extends State<SearchNFT> {
                   ),
                   Expanded(
                     child: TextFormField(
+                      autofocus: true,
                       cursorColor: Colors.white,
                       style: textNormal(
                         Colors.white,

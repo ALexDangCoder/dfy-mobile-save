@@ -22,3 +22,16 @@ class SearchError extends MarketplaceState {
   List<Object?> get props => throw UnimplementedError();
 
 }
+
+class OnSearch extends MarketplaceState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+
+}
+class OffSearch extends MarketplaceState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+
+}
