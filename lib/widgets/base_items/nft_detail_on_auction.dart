@@ -2,7 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/place_bit_bts.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/tab_bar_controller.dart';
+import 'package:Dfy/presentation/market_place/nft_auction/ui/auction_tab_bar.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';

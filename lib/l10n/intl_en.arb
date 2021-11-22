@@ -236,5 +236,6 @@
   "current_bid": "Current bid",
   "pawn": "Pawn",
   "another": "Another",
-  "no_result_found": "No result found"
+  "no_result_found": "No result found",
+  "nft_on_auction": "NFT on auction"
 }

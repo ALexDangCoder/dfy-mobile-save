@@ -233,5 +233,6 @@
   "reserve_price": "Giá khởi điểm",
   "price_step": "Bước giá",
   "your_balance_bid": "Số dư của bạn",
-  "current_bid": "giá hiện tại"
+  "current_bid": "giá hiện tại",
+  "nft_on_auction": "NFT trên phiên đấu giá"
 }

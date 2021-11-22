@@ -144,7 +144,7 @@ class ImageAssets {
   static const String ic_btn_back_svg = '$baseImg/ic_btn_back_svg.svg';
   static const String ic_btn_next_svg = '$baseImg/ic_btn_next_svg.svg';
   static const String ic_flag_svg = '$baseImg/ic_flag_svg.svg';
-  static const String ic_share_svg = '$baseImg/ic_share_svg.svg';
+  static const String ic_share_svg = '$baseImg/Share.svg';
 
 
   static SvgPicture svgAssets(
