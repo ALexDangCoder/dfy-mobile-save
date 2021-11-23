@@ -126,8 +126,11 @@ class _DetailCollectionState extends State<DetailCollection> {
                                 Expanded(
                                   child: TabBarView(
                                     children: [
-                                      NftsCollection(),
-                                      TradingHistoryCollection(),
+                                      NftsCollection(
+                                        detailCollectionBloc:
+                                            detailCollectionBloc,
+                                      ),
+                                      const TradingHistoryCollection(),
                                     ],
                                   ),
                                 )
