@@ -41,115 +41,119 @@ class _CollectionListState extends State<CollectionList> {
             SizedBox(
               height: 48.h,
             ),
-            Container(
-              height: 764.h,
-              width: 375.w,
-              decoration: BoxDecoration(
-                color: AppTheme.getInstance().bgBtsColor(),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.h),
-                  topRight: Radius.circular(30.h),
-                ),
-              ),
-              child: Column(
-                children: [
-                  spaceH16,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(left: 16.w),
-                          width: 28.w,
-                          height: 28.h,
-                          child: Image.asset(ImageAssets.ic_back),
-                        ),
-                      ),
-                      Text(
-                        S.current.collection_list,
-                        style: textNormalCustom(null, 20, FontWeight.w700),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => Filter(
-                              collectionBloc: collectionBloc,
-                            ),
-                          );
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(right: 16.w),
-                          width: 28.w,
-                          height: 28.h,
-                          child: Image.asset(ImageAssets.ic_filter),
-                        ),
-                      ),
-                    ],
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  height: 764.h,
+                  width: 375.w,
+                  decoration: BoxDecoration(
+                    color: AppTheme.getInstance().bgBtsColor(),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.h),
+                      topRight: Radius.circular(30.h),
+                    ),
                   ),
-                  spaceH20,
-                  line,
-                  StreamBuilder(
-                    stream: collectionBloc.list,
-                    builder: (context,
-                        AsyncSnapshot<List<CollectionRespone>> snapshot) {
-                      if (snapshot.hasData) {
-                        return Expanded(
-                          child: GridView.builder(
-                            padding: EdgeInsets.only(
-                              top: 24.h,
-                              bottom: 24.h,
-                              right: 16.w,
-                              left: 16.w,
+                  child: Column(
+                    children: [
+                      spaceH16,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(left: 16.w),
+                              width: 28.w,
+                              height: 28.h,
+                              child: Image.asset(ImageAssets.ic_back),
                             ),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: 15.w,
-                              mainAxisSpacing: 20.h,
-                              crossAxisCount: 2,
-                            ),
-                            itemCount: collectionBloc.list.value.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRouter.detailCollection,
-                                  );
-                                },
-                                child: ItemCollection(
-                                  items: '${snapshot.data?[index].item ?? 0}',
-                                  text: snapshot.data?[index].textbody ?? '',
-                                  urlIcon:
-                                      snapshot.data?[index].avatarIcon ?? 'assets/images/Boahancock.jpg',
-                                  owners: '${snapshot.data?[index].owners ?? 0}',
-                                  title: snapshot.data?[index].title ?? '',
-                                  urlBackGround:
-                                      snapshot.data?[index].avatarBack ?? 'assets/images/Boahancock.jpg',
+                          ),
+                          Text(
+                            S.current.collection_list,
+                            style: textNormalCustom(null, 20, FontWeight.w700),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (context) => Filter(
+                                  collectionBloc: collectionBloc,
                                 ),
                               );
                             },
-                          ),
-                        );
-                      } else {
-                        return Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height / 2 - 80,
-                            ),
-                            child: const CircularProgressIndicator(
-                              color: Colors.white,
+                            child: Container(
+                              margin: EdgeInsets.only(right: 16.w),
+                              width: 28.w,
+                              height: 28.h,
+                              child: Image.asset(ImageAssets.ic_filter),
                             ),
                           ),
-                        );
-                      }
-                    },
-                  )
-                ],
+                        ],
+                      ),
+                      spaceH20,
+                      line,
+                      StreamBuilder(
+                        stream: collectionBloc.list,
+                        builder: (context,
+                            AsyncSnapshot<List<CollectionRespone>> snapshot) {
+                          if (snapshot.hasData) {
+                            return Expanded(
+                              child: GridView.builder(
+                                padding: EdgeInsets.only(
+                                  top: 24.h,
+                                  bottom: 24.h,
+                                  right: 16.w,
+                                  left: 16.w,
+                                ),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: 15.w,
+                                  mainAxisSpacing: 20.h,
+                                  crossAxisCount: 2,
+                                ),
+                                itemCount: collectionBloc.list.value.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        AppRouter.detailCollection,
+                                      );
+                                    },
+                                    child: ItemCollection(
+                                      items: '${snapshot.data?[index].item ?? 0}',
+                                      text: snapshot.data?[index].textbody ?? '',
+                                      urlIcon:
+                                          snapshot.data?[index].avatarIcon ?? 'assets/images/Boahancock.jpg',
+                                      owners: '${snapshot.data?[index].owners ?? 0}',
+                                      title: snapshot.data?[index].title ?? '',
+                                      urlBackGround:
+                                          snapshot.data?[index].avatarBack ?? 'assets/images/Boahancock.jpg',
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          } else {
+                            return Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height / 2 - 80,
+                                ),
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
           ],

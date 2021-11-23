@@ -130,9 +130,14 @@ class _FilterNFTState extends State<FilterNFT> {
                 ),
               ),
             ),
-            ButtonLuxury(
-              title: S.current.apply,
-              isEnable: true,
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: ButtonLuxury(
+                title: S.current.apply,
+                isEnable: true,
+              ),
             ),
           ],
         ),
