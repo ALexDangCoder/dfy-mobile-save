@@ -1,4 +1,4 @@
-import 'package:Dfy/config/resources/styles.dart';
+
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
@@ -19,7 +19,7 @@ List<NftProduct> products = const [
   NftProduct(
     nftName: 'Name of NFT',
     price: 10000,
-    nftCategory: NFT_CATEGORY.SALE,
+    nftCategory: NFT_CATEGORY.AUCTION,
     nftIsHard: NFT_IS_HARD.HARD_NFT,
     nftIsVidOrImg: NFT_IS_VID_OR_IMG.VIDEO_NFT,
   ),
@@ -33,7 +33,7 @@ List<NftProduct> products = const [
   NftProduct(
     nftName: 'Name of NFT',
     price: 10000,
-    nftCategory: NFT_CATEGORY.PAWN,
+    nftCategory: NFT_CATEGORY.AUCTION,
     nftIsHard: NFT_IS_HARD.HARD_NFT,
     nftIsVidOrImg: NFT_IS_VID_OR_IMG.VIDEO_NFT,
   ),
@@ -44,39 +44,45 @@ class GridViewAuction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
-      title: S.current.nft_on_auction,
-      isImage: true,
-      text: ImageAssets.ic_close,
-      callback: () {
-        Navigator.pop(context);
-      },
-      child: Column(
-        children: [
-          spaceH24,
-          Expanded(
-            child: StaggeredGridView.countBuilder(
-              mainAxisSpacing: 20.h,
-              crossAxisSpacing: 26.w,
-              itemCount: 4,
-              crossAxisCount: 2,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const OnAuction(),
-                      ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: BaseBottomSheet(
+          title: S.current.nft_on_auction,
+          isImage: true,
+          text: ImageAssets.ic_close,
+          callback: () {
+            Navigator.pop(context);
+          },
+          child: Column(
+            children: [
+              Expanded(
+                child: StaggeredGridView.countBuilder(
+                  mainAxisSpacing: 20.h,
+                  crossAxisSpacing: 26.w,
+                  itemCount: 4,
+                  crossAxisCount: 2,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const OnAuction(),
+                          ),
+                        );
+                      },
+                      child: products[index],
                     );
                   },
-                  child: products[index],
-                );
-              },
-              staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
-            ),
+                  staggeredTileBuilder: (int index) =>
+                      const StaggeredTile.fit(1),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
