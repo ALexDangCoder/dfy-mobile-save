@@ -103,10 +103,21 @@ class _FilterBtsState extends State<FilterBts> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(height: 41.h,),
                           CheckBoxFilter(
                             nameCkcFilter: S.current.soft_nft,
                             typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                          )
+                          ),
+                          SizedBox(height: 53.h,),
+                          CheckBoxFilter(
+                            nameCkcFilter: S.current.on_pawn,
+                            typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                          ),
+                          SizedBox(height: 18.h,),
+                          CheckBoxFilter(
+                            nameCkcFilter: S.current.not_on_market,
+                            typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                          ),
                         ],
                       ),
                     )
@@ -127,13 +138,16 @@ class _FilterBtsState extends State<FilterBts> {
     );
   }
 
-  Text txtTitleFilter({required String title}) {
-    return Text(
-      title,
-      style: textNormalCustom(
-        Colors.white,
-        20,
-        FontWeight.w600,
+  SizedBox txtTitleFilter({required String title}) {
+    return SizedBox(
+      height: 29.h,
+      child: Text(
+        title,
+        style: textNormalCustom(
+          Colors.white,
+          20,
+          FontWeight.w600,
+        ),
       ),
     );
   }

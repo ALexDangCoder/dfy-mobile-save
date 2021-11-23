@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/place_bit_bts.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/components/deatail_nft_root_tab.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -31,7 +30,7 @@ class OnSale extends StatelessWidget {
             spaceH24,
             _buildButtonPlaceBid(context),
             spaceH20,
-            _buildButtonBuyOut(context),
+            // _buildButtonBuyOut(context),
             spaceH18,
             divide,
             _buildTable(),
