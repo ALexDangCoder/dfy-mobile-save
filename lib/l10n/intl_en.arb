@@ -248,5 +248,7 @@
   "another": "Another",
   "no_result_found": "No result found",
   "nft_on_auction": "NFT on auction",
-  "expected_loan": "Expected loan"
+  "expected_loan": "Expected loan",
+  "send_nft": "Send NFT",
+  "buy_nft": "Buy NFT"
 }

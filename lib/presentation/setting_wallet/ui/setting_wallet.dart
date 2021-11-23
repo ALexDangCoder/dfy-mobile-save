@@ -3,6 +3,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/import_account_login_bts/ui/import_account_login.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/nft_on_pawn/ui/send_offer.dart';
@@ -74,7 +75,12 @@ class SettingWallet extends StatelessWidget {
                           //   ],
                           // );
                           // return SendOffer();
-                          return NFTListOnSale();
+                          return ConfirmBlockchainCategory(
+                            typeConfirm: TYPE_CONFIRM.SEND_OFFER,
+                            addressFrom: '0xfff',
+                            addressTo: '0xff',
+                            // amount: 30000,
+                          );
                         },
                       );
                     },
