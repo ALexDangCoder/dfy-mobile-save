@@ -104,26 +104,31 @@ class ItemCollection extends StatelessWidget {
         ),
         Positioned(
           top: 38.h,
-          child: SizedBox(
+          child: Container(
             height: 40.h,
             width: 40.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(50.r),
+              ),
+              border: Border.all(
+                color: AppTheme.getInstance().borderItemColor(),
+                width: 3.w,
+              ),
+            ),
             child: Container(
+              clipBehavior: Clip.hardEdge,
               width: 37.w,
               height: 37.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(
                   Radius.circular(50.r),
                 ),
-                border: Border.all(
-                  color: AppTheme.getInstance().borderItemColor(),
-                  width: 3.w,
-                ),
                 image: DecorationImage(
-                  image: NetworkImage(
-                    urlIcon,
-                  ),
-                  fit: BoxFit.cover
-                ),
+                    image: NetworkImage(
+                      urlIcon,
+                    ),
+                    fit: BoxFit.cover),
               ),
             ),
           ),
