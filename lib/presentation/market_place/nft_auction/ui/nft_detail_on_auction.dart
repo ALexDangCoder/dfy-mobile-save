@@ -20,6 +20,7 @@ class OnAuction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Align(
         alignment: Alignment.bottomCenter,
         child: BaseDetailNFT(
@@ -164,7 +165,7 @@ class OnAuction extends StatelessWidget {
   Container _priceContainer() => Container(
         width: 343.w,
         height: 64.h,
-        padding: EdgeInsets.symmetric(vertical: 12.h),
+        padding: EdgeInsets.only(top: 12.h),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
