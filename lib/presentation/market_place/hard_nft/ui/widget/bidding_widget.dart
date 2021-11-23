@@ -37,7 +37,7 @@ class _BiddingWidgetState extends State<BiddingWidget>
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        maxHeight: 800.h,
+        maxHeight: 575.h,
       ),
       child: Column(
         children: [

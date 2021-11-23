@@ -51,7 +51,9 @@ class _EvaluationWidgetState extends State<EvaluationWidget>
           clickAble: true,
         ),
         textRow(
-            name: 'Evaluated time', value: DateTime.now().stringFromDateTime),
+          name: 'Evaluated time',
+          value: DateTime.now().stringFromDateTime,
+        ),
         textRow(
           name: 'Maximum amount',
           value: ' ${1200000.stringIntFormat} USDT',

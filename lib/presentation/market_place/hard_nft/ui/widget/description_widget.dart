@@ -60,7 +60,7 @@ class DescriptionWidget extends StatelessWidget {
     );
   }
 
-  static Widget textRow({
+  Widget textRow({
     required String name,
     required String value,
     Color? valueColor,
