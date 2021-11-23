@@ -32,6 +32,8 @@ class HardNFTBloc {
 
   final BehaviorSubject<bool> _showMoreSubject = BehaviorSubject();
 
+  final BehaviorSubject<int> _changeTabSubject = BehaviorSubject();
+
 
 
   Stream<String> get imageStream => _imageSubject.stream;
@@ -41,6 +43,8 @@ class HardNFTBloc {
   Stream<bool> get showNextStream => _showNextSubject.stream;
 
   Stream<bool> get showMoreStream => _showMoreSubject.stream;
+
+  Stream<int> get changeTabStream => _changeTabSubject.stream;
 
 
 
@@ -95,5 +99,9 @@ class HardNFTBloc {
   void showInformation(){
     showMore = !showMore;
     _showMoreSubject.sink.add(showMore);
+  }
+
+  void changeTab(int _index){
+    _changeTabSubject.sink.add(_index);
   }
 }

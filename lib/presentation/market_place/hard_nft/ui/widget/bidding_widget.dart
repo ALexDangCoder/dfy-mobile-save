@@ -41,6 +41,9 @@ class _BiddingWidgetState extends State<BiddingWidget>
         SizedBox(
           height: 55.h,
           child: TabBar(
+            onTap: (i) {
+              widget.bloc.changeTab(i);
+            },
             controller: _tabController,
             tabs: tabList,
             indicatorColor: AppTheme.getInstance().unselectedTabLabelColor(),
@@ -50,130 +53,38 @@ class _BiddingWidgetState extends State<BiddingWidget>
             labelStyle: unselectLabel,
           ),
         ),
-        SizedBox(
-          height: 1200,
-          child: TabBarView(
-            controller: _tabController,
-            children: listTabWithoutBidding(),
-          ),
+        StreamBuilder<int>(
+          stream: widget.bloc.changeTabStream,
+          initialData: 0,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final _index = snapshot.data ?? 0;
+              log('>>>>>>>>>>>>>>>>>>>>>>>>>> $_index');
+              switch (_index) {
+                case 0:
+                  return listTab()[0];
+                case 1:
+                  return listTab()[1];
+                case 2:
+                  return listTab()[2];
+                default:
+                  return listTab()[3];
+              }
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
         ),
       ],
     );
   }
 
-  Widget smallImage({required String img, required bool isCurrentImg}) {
-    return InkWell(
-      onTap: () {
-        widget.bloc.changeImage(img);
-      },
-      child: Container(
-        width: 79.w,
-        height: 64.h,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.r)),
-          border: Border.all(
-            color: isCurrentImg ? const Color(0xFFE4AC1A) : Colors.transparent,
-            width: 2,
-          ),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(10.r)),
-          child: Image.network(
-            img,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    );
-  }
-
-  List<Widget> listTabWithoutBidding(){
-    return [
-      Container(),
-      Container(),
-      EvaluationTab(bloc: widget.bloc),
-    ];
-  }
-
-  List<Widget> listTabWithBidding(){
+  List<Widget> listTab() {
     return [
       Container(),
       Container(),
       EvaluationTab(bloc: widget.bloc),
       BidingTab(bloc: widget.bloc),
     ];
-  }
-
-  Widget textRow({
-    required String name,
-    required String value,
-    Color? valueColor,
-    bool clickAble = false,
-    String? token,
-  }) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              name,
-              style: tokenDetailAmount(
-                color: AppTheme.getInstance().currencyDetailTokenColor(),
-                weight: FontWeight.w400,
-                fontSize: 14,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 24.w,
-          ),
-          if (clickAble)
-            Expanded(
-              flex: 3,
-              child: InkWell(
-                onTap: () {
-                  log('Evaluation');
-                },
-                child: Text(
-                  value,
-                  style: tokenDetailAmount(
-                    color: AppTheme.getInstance().whiteColor(),
-                    fontSize: 14,
-                    weight: FontWeight.w400,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              ),
-            )
-          else
-            Expanded(
-              flex: 3,
-              child: token == null
-                  ? Text(
-                      value,
-                      style: tokenDetailAmount(
-                        color: AppTheme.getInstance().whiteColor(),
-                        fontSize: 14,
-                        weight: FontWeight.w400,
-                      ),
-                    )
-                  : Row(
-                      children: [
-                        sizedSvgImage(w: 20, h: 20, image: token),
-                        Text(
-                          value,
-                          style: tokenDetailAmount(
-                            color: AppTheme.getInstance().whiteColor(),
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-            ),
-        ],
-      ),
-    );
   }
 }

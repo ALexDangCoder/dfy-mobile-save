@@ -23,8 +23,7 @@ class EvaluationTab extends StatefulWidget {
   _EvaluationTabState createState() => _EvaluationTabState();
 }
 
-class _EvaluationTabState extends State<EvaluationTab>
-    with AutomaticKeepAliveClientMixin {
+class _EvaluationTabState extends State<EvaluationTab> {
   late ItemScrollController scrollController;
 
   @override
@@ -43,7 +42,6 @@ class _EvaluationTabState extends State<EvaluationTab>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -376,7 +374,4 @@ class _EvaluationTabState extends State<EvaluationTab>
     );
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 }
