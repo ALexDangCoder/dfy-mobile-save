@@ -153,9 +153,14 @@ class _FilterState extends State<Filter> {
                 ),
               ),
             ),
-            ButtonLuxury(
-              title: S.current.apply,
-              isEnable: true,
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: ButtonLuxury(
+                title: S.current.apply,
+                isEnable: true,
+              ),
             ),
           ],
         ),
