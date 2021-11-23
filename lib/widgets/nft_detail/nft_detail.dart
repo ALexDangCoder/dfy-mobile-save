@@ -21,7 +21,6 @@ class BaseDetailNFT extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 46.h),
       height: 764.h,
       width: 375.w,
       decoration: BoxDecoration(

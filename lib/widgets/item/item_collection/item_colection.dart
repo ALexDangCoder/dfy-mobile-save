@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:avatar_view/avatar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -44,7 +43,7 @@ class ItemCollection extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Image.asset(
+              Image.network(
                 urlBackGround,
                 width: 164.w,
                 height: 58.h,
@@ -105,13 +104,32 @@ class ItemCollection extends StatelessWidget {
         ),
         Positioned(
           top: 38.h,
-          child: SizedBox(
+          child: Container(
             height: 40.h,
             width: 40.w,
-            child: AvatarView(
-              borderWidth: 3,
-              borderColor: AppTheme.getInstance().borderItemColor(),
-              imagePath: urlIcon,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(50.r),
+              ),
+              border: Border.all(
+                color: AppTheme.getInstance().borderItemColor(),
+                width: 3.w,
+              ),
+            ),
+            child: Container(
+              clipBehavior: Clip.hardEdge,
+              width: 37.w,
+              height: 37.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(50.r),
+                ),
+                image: DecorationImage(
+                    image: NetworkImage(
+                      urlIcon,
+                    ),
+                    fit: BoxFit.cover),
+              ),
             ),
           ),
         ),

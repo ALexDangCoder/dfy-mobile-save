@@ -3,9 +3,10 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/collection_list/ui/nav.dart';
-import 'package:Dfy/presentation/collection_list/ui/tab_bar/nfts.dart';
-import 'package:Dfy/presentation/collection_list/ui/tab_bar/trading_history.dart';
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
+import 'package:Dfy/presentation/detail_collection/ui/nav.dart';
+import 'package:Dfy/presentation/detail_collection/ui/tab_bar/nfts.dart';
+import 'package:Dfy/presentation/detail_collection/ui/tab_bar/trading_history.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +22,15 @@ class DetailCollection extends StatefulWidget {
 }
 
 class _DetailCollectionState extends State<DetailCollection> {
+  late final DetailCollectionBloc detailCollectionBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    detailCollectionBloc = DetailCollectionBloc();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -54,8 +64,7 @@ class _DetailCollectionState extends State<DetailCollection> {
                     ),
                     child: Column(
                       children: [
-
-                        const HeaderCollection(
+                        HeaderCollection(
                           owner: '0xFE5788e2...EB7144fd0',
                           category: 'Art',
                           title: 'Artwork collection',
@@ -65,6 +74,7 @@ class _DetailCollectionState extends State<DetailCollection> {
                               'Euismod amet, sed pulvinar mattis venenatis tristique pulvinar aliquam sit. Non orci quis eget cras erat elit ornare. Sit pharetra, arcu, sit quis quam vulputate. Ornare cursus sed id nibh nisi. Vulputate at dictum pharetra tortor aliquet ornare nisl nisl.',
                           contract: '0xFE5788e2...EB7144fd0',
                           nftStandard: 'ERC - 1155',
+                          collectionBloc: detailCollectionBloc,
                         ),
                         const NavCollection(
                           items: '1025',
@@ -116,8 +126,11 @@ class _DetailCollectionState extends State<DetailCollection> {
                                 Expanded(
                                   child: TabBarView(
                                     children: [
-                                      NftsCollection(),
-                                      TradingHistoryCollection(),
+                                      NftsCollection(
+                                        detailCollectionBloc:
+                                            detailCollectionBloc,
+                                      ),
+                                      const TradingHistoryCollection(),
                                     ],
                                   ),
                                 )

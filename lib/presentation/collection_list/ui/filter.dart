@@ -22,24 +22,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'check_box/art.dart';
 
 class Filter extends StatefulWidget {
-  const Filter({Key? key}) : super(key: key);
+  final CollectionBloc collectionBloc;
+
+  const Filter({
+    Key? key,
+    required this.collectionBloc,
+  }) : super(key: key);
 
   @override
   _FilterState createState() => _FilterState();
 }
 
 class _FilterState extends State<Filter> {
-  late final CollectionBloc collectionBloc;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    collectionBloc = CollectionBloc();
   }
 
   @override
   Widget build(BuildContext context) {
+    final collectionBloc = widget.collectionBloc;
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
       child: Container(
@@ -67,7 +70,6 @@ class _FilterState extends State<Filter> {
             Expanded(
               child: SingleChildScrollView(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Column(
@@ -151,9 +153,14 @@ class _FilterState extends State<Filter> {
                 ),
               ),
             ),
-            ButtonLuxury(
-              title: S.current.apply,
-              isEnable: true,
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: ButtonLuxury(
+                title: S.current.apply,
+                isEnable: true,
+              ),
             ),
           ],
         ),

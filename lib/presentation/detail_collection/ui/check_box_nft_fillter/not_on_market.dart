@@ -1,15 +1,15 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class IsOnSale extends StatelessWidget {
+class IsNotOnMarket extends StatelessWidget {
   final String title;
-  final CollectionBloc collectionBloc;
+  final DetailCollectionBloc collectionBloc;
 
-  const IsOnSale({
+  const IsNotOnMarket({
     Key? key,
     required this.title,
     required this.collectionBloc,
@@ -18,12 +18,11 @@ class IsOnSale extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 24.h,
-      margin: EdgeInsets.only(left: 4,top: 12.h, bottom: 12.h),
+      margin: EdgeInsets.only(left: 4, top: 12.h, bottom: 12.h),
       child: Row(
         children: [
           StreamBuilder(
-            stream: collectionBloc.isOnSale,
+            stream: collectionBloc.isNotOnMarket,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Transform.scale(
                 scale: 1.34,
@@ -41,20 +40,23 @@ class IsOnSale extends StatelessWidget {
                   ),
                   value: snapshot.data ?? false,
                   onChanged: (value) {
-                    collectionBloc.isOnSale.sink.add(true);
+                    collectionBloc.isNotOnMarket.sink.add(true);
                     if (snapshot.data ?? false) {
-                      collectionBloc.isOnSale.sink.add(false);
+                      collectionBloc.isNotOnMarket.sink.add(false);
                     }
                   },
                 ),
               );
             },
           ),
-          Text(
-            title,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16,
+          SizedBox(
+            //width: 100.w,
+            child: Text(
+              title,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16,
+              ),
             ),
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class NftsCollection extends StatefulWidget {
-  const NftsCollection({Key? key}) : super(key: key);
+  final DetailCollectionBloc detailCollectionBloc;
+
+  const NftsCollection({
+    Key? key,
+    required this.detailCollectionBloc,
+  }) : super(key: key);
 
   @override
   _NftsCollectionState createState() => _NftsCollectionState();
@@ -16,6 +22,7 @@ class NftsCollection extends StatefulWidget {
 class _NftsCollectionState extends State<NftsCollection> {
   @override
   Widget build(BuildContext context) {
+    final detailCollectionBloc = widget.detailCollectionBloc;
     return Column(
       children: [
         Center(
@@ -43,9 +50,8 @@ class _NftsCollectionState extends State<NftsCollection> {
                       //   controller: textSearch,
                       // maxLength: 20,
                       onChanged: (value) {
-                        // widget.bloc.textSearch.sink.add(value);
-                        //
-                        // widget.bloc.search();
+                        detailCollectionBloc.textSearch.sink.add(value);
+                        detailCollectionBloc.search();
                       },
                       cursorColor: Colors.white,
                       style: textNormal(
