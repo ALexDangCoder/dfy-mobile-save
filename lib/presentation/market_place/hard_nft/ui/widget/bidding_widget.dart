@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_widget.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/bidding_tab.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,13 +36,11 @@ class _BiddingWidgetState extends State<BiddingWidget>
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: 575.h,
-      ),
-      child: Column(
-        children: [
-          TabBar(
+    return Column(
+      children: [
+        SizedBox(
+          height: 55.h,
+          child: TabBar(
             controller: _tabController,
             tabs: tabList,
             indicatorColor: AppTheme.getInstance().unselectedTabLabelColor(),
@@ -50,18 +49,15 @@ class _BiddingWidgetState extends State<BiddingWidget>
             labelColor: AppTheme.getInstance().whiteColor(),
             labelStyle: unselectLabel,
           ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                Container(),
-                Container(),
-                EvaluationWidget(bloc: widget.bloc),
-              ],
-            ),
+        ),
+        SizedBox(
+          height: 1200,
+          child: TabBarView(
+            controller: _tabController,
+            children: listTabWithoutBidding(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -89,6 +85,23 @@ class _BiddingWidgetState extends State<BiddingWidget>
         ),
       ),
     );
+  }
+
+  List<Widget> listTabWithoutBidding(){
+    return [
+      Container(),
+      Container(),
+      EvaluationTab(bloc: widget.bloc),
+    ];
+  }
+
+  List<Widget> listTabWithBidding(){
+    return [
+      Container(),
+      Container(),
+      EvaluationTab(bloc: widget.bloc),
+      BidingTab(bloc: widget.bloc),
+    ];
   }
 
   Widget textRow({

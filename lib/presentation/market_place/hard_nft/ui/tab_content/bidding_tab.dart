@@ -1,12 +1,14 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
-class BidingWidget extends StatelessWidget {
-  const BidingWidget({Key? key}) : super(key: key);
+class BidingTab extends StatelessWidget {
+  final HardNFTBloc bloc;
+  const BidingTab({Key? key, required this.bloc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

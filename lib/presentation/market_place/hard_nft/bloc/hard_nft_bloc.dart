@@ -22,12 +22,15 @@ class HardNFTBloc {
   ///clear fake Data
   int currentIndexImage = 0;
   String currentImage = '';
+  bool showMore = false;
 
   final BehaviorSubject<String> _imageSubject = BehaviorSubject();
 
   final BehaviorSubject<bool> _showPreSubject = BehaviorSubject();
 
   final BehaviorSubject<bool> _showNextSubject = BehaviorSubject();
+
+  final BehaviorSubject<bool> _showMoreSubject = BehaviorSubject();
 
 
 
@@ -36,6 +39,9 @@ class HardNFTBloc {
   Stream<bool> get showPreStream => _showPreSubject.stream;
 
   Stream<bool> get showNextStream => _showNextSubject.stream;
+
+  Stream<bool> get showMoreStream => _showMoreSubject.stream;
+
 
 
 
@@ -84,5 +90,10 @@ class HardNFTBloc {
       _showPreSubject.sink.add(true);
       _showNextSubject.sink.add(true);
     }
+  }
+
+  void showInformation(){
+    showMore = !showMore;
+    _showMoreSubject.sink.add(showMore);
   }
 }

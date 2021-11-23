@@ -2,7 +2,10 @@ import 'dart:developer';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/information_widget.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/related_document_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
@@ -11,16 +14,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class EvaluationWidget extends StatefulWidget {
+class EvaluationTab extends StatefulWidget {
   final HardNFTBloc bloc;
 
-  const EvaluationWidget({Key? key, required this.bloc}) : super(key: key);
+  const EvaluationTab({Key? key, required this.bloc}) : super(key: key);
 
   @override
-  _EvaluationWidgetState createState() => _EvaluationWidgetState();
+  _EvaluationTabState createState() => _EvaluationTabState();
 }
 
-class _EvaluationWidgetState extends State<EvaluationWidget>
+class _EvaluationTabState extends State<EvaluationTab>
     with AutomaticKeepAliveClientMixin {
   late ItemScrollController scrollController;
 
@@ -110,7 +113,8 @@ class _EvaluationWidgetState extends State<EvaluationWidget>
                                     index: widget.bloc.currentIndexImage > 2
                                         ? widget.bloc.currentIndexImage - 1
                                         : 0,
-                                    duration: const Duration(milliseconds: 300),
+                                    duration:
+                                        const Duration(milliseconds: 300),
                                   );
                                 },
                                 child: roundButton(
@@ -172,6 +176,91 @@ class _EvaluationWidgetState extends State<EvaluationWidget>
                     ),
                   ),
                   spaceH12,
+                ],
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
+        StreamBuilder<bool>(
+          stream: widget.bloc.showMoreStream,
+          initialData: false,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final bool isShow = snapshot.data ?? false;
+              return Column(
+                children: [
+                  Visibility(
+                    visible: isShow,
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(
+                            left: 16.w,
+                            right: 16.w,
+                          ),
+                          child: const InformationWidget(
+                            object: 'test',
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(
+                            left: 16.w,
+                            right: 16.w,
+                          ),
+                          child: const RelatedDocument(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      widget.bloc.showInformation();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        right: 16.w,
+                        left: 16.w,
+                      ),
+                      height: 69.h,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: AppTheme.getInstance().divideColor(),
+                          ),
+                          top: BorderSide(
+                            color: AppTheme.getInstance().divideColor(),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          sizedSvgImage(
+                            w: 14,
+                            h: 14,
+                            image: isShow
+                                ? ImageAssets.ic_collapse_svg
+                                : ImageAssets.ic_expand_svg,
+                          ),
+                          SizedBox(
+                            width: 13.15.w,
+                          ),
+                          Text(
+                            isShow
+                                ? S.current.view_less
+                                : S.current.view_more,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().fillColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               );
             } else {

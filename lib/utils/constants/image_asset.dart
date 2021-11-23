@@ -148,6 +148,14 @@ class ImageAssets {
   static const String ic_btn_next_svg = '$baseImg/ic_btn_next_svg.svg';
   static const String ic_flag_svg = '$baseImg/ic_flag_svg.svg';
   static const String ic_share_svg = '$baseImg/Share.svg';
+  static const String ic_pdf_svg = '$baseImg/ic_pdf_svg.svg';
+  static const String ic_doc_svg = '$baseImg/ic_doc_svg.svg';
+  static const String ic_xls_svg = '$baseImg/ic_xls_svg.svg';
+  static const String ic_expand_svg = '$baseImg/ic_expand_svg.svg';
+  static const String ic_collapse_svg = '$baseImg/ic_collapse_svg.svg';
+
+
+
 
 
   static SvgPicture svgAssets(
