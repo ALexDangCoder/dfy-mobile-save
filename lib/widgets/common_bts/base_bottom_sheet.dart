@@ -39,14 +39,8 @@ class BaseBottomSheet extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Container(
+          SizedBox(
             height: 64.h,
-            padding: EdgeInsets.only(
-              left: 16.w,
-              right: 16.w,
-              top: 16.h,
-              bottom: 20.h,
-            ),
             child: SizedBox(
               height: 28.h,
               width: 343.w,

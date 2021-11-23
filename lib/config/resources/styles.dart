@@ -59,7 +59,7 @@ TextStyle textNormal(Color? color, double? fontSize) {
 TextStyle tokenDetailAmount({
   Color color = Colors.white,
   double fontSize = 24,
-  FontWeight weight = FontWeight.w600,
+  FontWeight weight = FontWeight.w400,
 }) {
   return GoogleFonts.sen(
     color: color,
