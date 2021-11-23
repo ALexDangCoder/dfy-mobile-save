@@ -191,10 +191,22 @@ class _WalletState extends State<WalletScreen>
                   ),
                   tabs: [
                     Tab(
-                      text: S.current.token,
+                      child: Text(
+                        S.current.token,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                     Tab(
-                      text: S.current.nft,
+                      child: Text(
+                        S.current.nft,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ],
                   indicatorSize: TabBarIndicatorSize.tab,
