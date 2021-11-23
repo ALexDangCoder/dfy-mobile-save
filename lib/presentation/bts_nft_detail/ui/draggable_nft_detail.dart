@@ -4,6 +4,7 @@ import 'package:Dfy/domain/model/nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
+import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -12,7 +13,6 @@ import 'package:Dfy/widgets/column_button/buil_column.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'detail_transition.dart';
 
 class NFTDetail extends StatefulWidget {
   const NFTDetail({
@@ -330,11 +330,6 @@ class _NFTDetailState extends State<NFTDetail> {
         );
       },
       child: Container(
-        padding: EdgeInsets.only(
-          top: 16.h,
-          right: 16.w,
-          left: 16.w,
-        ),
         height: 66.h,
         decoration: BoxDecoration(
           color: AppTheme.getInstance().bgBtsColor(),
@@ -344,35 +339,43 @@ class _NFTDetailState extends State<NFTDetail> {
             ),
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      text,
-                      style: textValueNFT,
-                    ),
-                    SizedBox(
-                      width: 6.w,
-                    ),
-                    Image.asset(ImageAssets.ic_tick_circle)
-                  ],
-                ),
-                Text(
-                  '1 of 1',
-                  style: textValueNFT,
-                ),
-              ],
-            ),
-            Text(
-              DateTime.now().toIso8601String(),
-              style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
-            )
-          ],
+        child: Container(
+          margin: EdgeInsets.only(
+            top: 12.h,
+            bottom: 12.h,
+            right: 16.w,
+            left: 16.w,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        text,
+                        style: textValueNFT,
+                      ),
+                      SizedBox(
+                        width: 6.w,
+                      ),
+                      Image.asset(ImageAssets.ic_tick_circle)
+                    ],
+                  ),
+                  Text(
+                    '1 of 1',
+                    style: textValueNFT,
+                  ),
+                ],
+              ),
+              Text(
+                DateTime.now().toIso8601String(),
+                style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
+              )
+            ],
+          ),
         ),
       ),
     );
