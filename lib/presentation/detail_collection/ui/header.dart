@@ -1,13 +1,15 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/collection_list/ui/filter_nft.dart';
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
+import 'package:Dfy/presentation/detail_collection/ui/filter_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:avatar_view/avatar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HeaderCollection extends StatefulWidget {
+  final DetailCollectionBloc collectionBloc;
   final String urlBackground;
   final String urlAvatar;
   final String title;
@@ -27,6 +29,7 @@ class HeaderCollection extends StatefulWidget {
     required this.contract,
     required this.nftStandard,
     required this.category,
+    required this.collectionBloc,
   }) : super(key: key);
 
   @override
@@ -50,6 +53,8 @@ class _HeaderCollectionState extends State<HeaderCollection> {
             SizedBox(
               height: 160.h,
               child: SingleChildScrollView(
+                // reverse: true,
+                primary: false,
                 child: Container(
                   margin: EdgeInsets.only(
                     right: 16.w,
@@ -213,7 +218,9 @@ class _HeaderCollectionState extends State<HeaderCollection> {
               showModalBottomSheet(
                 backgroundColor: Colors.transparent,
                 context: context,
-                builder: (context) => FilterNFT(),
+                builder: (context) => FilterNFT(
+                  collectionBloc: widget.collectionBloc,
+                ),
               );
             },
             child: SizedBox(

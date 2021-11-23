@@ -1,13 +1,13 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IsSortNft extends StatelessWidget {
   final String title;
-  final CollectionBloc collectionBloc;
+  final DetailCollectionBloc collectionBloc;
 
   const IsSortNft({
     Key? key,

@@ -1,6 +1,17 @@
+import 'package:Dfy/data/response/collection/collection_response.dart';
+import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/repository/collection_repository.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CollectionBloc {
+  CollectionBloc() {
+    getCollection();
+  }
+
+  //getlistcollection
+  BehaviorSubject<List<CollectionRespone>> list = BehaviorSubject();
+
   //filter collection
   BehaviorSubject<bool> isMyCollection = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isOthers = BehaviorSubject.seeded(false);
@@ -13,14 +24,20 @@ class CollectionBloc {
   BehaviorSubject<bool> isSports = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isMusic = BehaviorSubject.seeded(false);
 
-  // fillter nft
+  CollectionRepository get _collectionRepository => Get.find();
+  List<CollectionRespone> arg = [];
 
-  BehaviorSubject<bool> isHardNft = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isSoftNft = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOnSale = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOnPawn = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOnAuction = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isNotOnMarket = BehaviorSubject.seeded(false);
+  Future<void> getCollection() async {
+    final Result<List<CollectionRespone>> result =
+        await _collectionRepository.getCollection();
+    result.when(
+      success: (res) {
+        arg = res.toList();
+        list.sink.add(arg);
+      },
+      error: (error) {},
+    );
+  }
 
   void dispone() {
     isMyCollection.close();
@@ -33,11 +50,6 @@ class CollectionBloc {
     isCars.close();
     isSports.close();
     isMusic.close();
-    isHardNft.close();
-    isSoftNft.close();
-    isOnSale.close();
-    isOnPawn.close();
-    isOnAuction.close();
-    isNotOnMarket.close();
+    list.close();
   }
 }
