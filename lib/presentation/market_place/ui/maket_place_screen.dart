@@ -98,7 +98,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.outstanding_collection,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -151,7 +151,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.hot_auction,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -212,7 +212,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.NFTs_collateral,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -261,7 +261,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.sale_items,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -310,7 +310,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.hard_NFT,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -360,7 +360,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                 S.current.explore_categories,
                                 style: textNormalCustom(
                                   Colors.white,
-                                  20,
+                                  20.sp,
                                   FontWeight.w700,
                                 ),
                               ),
@@ -403,7 +403,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
 
   Widget header() {
     return Padding(
-      padding: EdgeInsets.only(top: 44.h, left: 16.h),
+      padding: EdgeInsets.only(top: 44.h, left: 16.w),
       child: SizedBox(
         height: 52.h,
         width: 343.w,
@@ -450,6 +450,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
             ),
             Image.asset(
               ImageAssets.ic_search,
+              height: 16.h,
+              width: 16.w,
             ),
             SizedBox(
               width: 10.7.w,
@@ -458,7 +460,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
               S.current.search,
               style: textNormal(
                 Colors.white54,
-                16,
+                16.sp,
               ),
             )
           ],

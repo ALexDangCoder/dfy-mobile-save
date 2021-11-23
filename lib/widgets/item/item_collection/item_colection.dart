@@ -57,7 +57,7 @@ class ItemCollection extends StatelessWidget {
                 ),
                 child: Text(
                   title,
-                  style: textNormalCustom(null, 14, FontWeight.w600),
+                  style: textNormalCustom(null, 14.sp, FontWeight.w600),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -72,8 +72,8 @@ class ItemCollection extends StatelessWidget {
                 child: Text(
                   '$items ${S.current.items} • $owners ${S.current.owner}',
                   style: textNormalCustom(
-                    Colors.white.withOpacity(0.7),
-                    12,
+                    AppTheme.getInstance().whiteWithOpacity(),
+                    12.sp,
                     FontWeight.w400,
                   ),
                   textAlign: TextAlign.center,
@@ -90,8 +90,8 @@ class ItemCollection extends StatelessWidget {
                 child: Text(
                   text,
                   style: textNormalCustom(
-                    Colors.white.withOpacity(0.7),
-                    12,
+                    AppTheme.getInstance().whiteWithOpacity(),
+                    12.sp,
                     FontWeight.w400,
                   ),
                   textAlign: TextAlign.center,
@@ -108,9 +108,7 @@ class ItemCollection extends StatelessWidget {
             height: 40.h,
             width: 40.w,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(50.r),
-              ),
+              shape: BoxShape.circle,
               border: Border.all(
                 color: AppTheme.getInstance().borderItemColor(),
                 width: 3.w,
@@ -121,9 +119,7 @@ class ItemCollection extends StatelessWidget {
               width: 37.w,
               height: 37.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(50.r),
-                ),
+                shape: BoxShape.circle,
                 image: DecorationImage(
                     image: NetworkImage(
                       urlIcon,

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
@@ -33,10 +34,10 @@ class ChooseAcc extends StatelessWidget {
                 return CustomRectTween(begin: begin!, end: end!);
               },
               child: Material(
-                color: const Color(0xff585782),
+                color: AppTheme.getInstance().selectDialogColor(),
                 elevation: 2,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(36),
+                  borderRadius: BorderRadius.circular(36.r),
                 ),
                 clipBehavior: Clip.hardEdge,
                 child: Column(
@@ -49,7 +50,9 @@ class ChooseAcc extends StatelessWidget {
                           margin: EdgeInsets.only(top: 24.h, left: 26.w),
                           child: Text(
                             S.current.choose_acc,
-                            style: textNormal(Colors.white, 20).copyWith(
+                            style: textNormal(
+                                    AppTheme.getInstance().whiteColor(), 20.sp)
+                                .copyWith(
                               fontWeight: FontWeight.w700,
                               fontStyle: FontStyle.normal,
                             ),
@@ -61,8 +64,12 @@ class ChooseAcc extends StatelessWidget {
                           },
                           child: Container(
                             margin: EdgeInsets.only(right: 26.w, top: 27.h),
-                            child: Image.asset(
-                              ImageAssets.ic_close,
+                            child: SizedBox(
+                              width: 24.w,
+                              height: 24.h,
+                              child: Image.asset(
+                                ImageAssets.ic_close,
+                              ),
                             ),
                           ),
                         ),
@@ -88,8 +95,13 @@ class ChooseAcc extends StatelessWidget {
                                     child: Row(
                                       children: [
                                         spaceW16,
-                                        Image.asset(
-                                          bloc.listWallet[index].urlImage ?? '',
+                                        SizedBox(
+                                          width: 44.w,
+                                          height: 44.h,
+                                          child: Image.asset(
+                                            bloc.listWallet[index].urlImage ??
+                                                '',
+                                          ),
                                         ),
                                         spaceW8,
                                         Column(
@@ -103,7 +115,9 @@ class ChooseAcc extends StatelessWidget {
                                                       .walletName ??
                                                   '',
                                               style: textNormal(
-                                                      Colors.white, 20)
+                                                      AppTheme.getInstance()
+                                                          .whiteColor(),
+                                                      20.sp)
                                                   .copyWith(
                                                 fontWeight: FontWeight.w600,
                                                 fontStyle: FontStyle.normal,
@@ -116,8 +130,9 @@ class ChooseAcc extends StatelessWidget {
                                                     '',
                                               ),
                                               style: textNormal(
-                                                Colors.white.withOpacity(0.5),
-                                                16,
+                                                AppTheme.getInstance()
+                                                    .whiteWithOpacityFireZero(),
+                                                16.sp,
                                               ).copyWith(
                                                 fontWeight: FontWeight.w400,
                                                 fontStyle: FontStyle.normal,
@@ -130,7 +145,7 @@ class ChooseAcc extends StatelessWidget {
                                   ),
                                   SizedBox(
                                     child: index == bloc.listWallet.length
-                                        ?null
+                                        ? null
                                         : line,
                                   )
                                 ],

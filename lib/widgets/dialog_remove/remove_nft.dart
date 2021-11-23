@@ -9,12 +9,14 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class RemoveNft extends StatelessWidget {
   final WalletCubit cubit;
   final int index;
+
   const RemoveNft({
-    Key? key, required this.cubit, required this.index,
+    Key? key,
+    required this.cubit,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -37,10 +39,10 @@ class RemoveNft extends StatelessWidget {
                       return CustomRectTween(begin: begin!, end: end!);
                     },
                     child: Material(
-                      color: const Color(0xff585782),
+                      color: AppTheme.getInstance().selectDialogColor(),
                       elevation: 2,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(36),
+                        borderRadius: BorderRadius.circular(36.r),
                       ),
                       child: SizedBox(
                         width: 312.w,
@@ -50,17 +52,17 @@ class RemoveNft extends StatelessWidget {
                             Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const SizedBox(
-                                  height: 93,
+                                SizedBox(
+                                  height: 93.h,
                                 ),
                                 Container(
                                   padding:
-                                  EdgeInsets.symmetric(horizontal: 34.w),
+                                      EdgeInsets.symmetric(horizontal: 34.w),
                                   child: Text(
                                     S.current.are_you_sure_collectible,
                                     style: textNormal(
                                       null,
-                                      20,
+                                      20.sp,
                                     ).copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -70,12 +72,12 @@ class RemoveNft extends StatelessWidget {
                                 spaceH12,
                                 Container(
                                   padding:
-                                  EdgeInsets.symmetric(horizontal: 34.w),
+                                      EdgeInsets.symmetric(horizontal: 34.w),
                                   child: Text(
                                     S.current.this_will_also,
                                     style: textNormal(
                                       null,
-                                      12,
+                                      12.sp,
                                     ).copyWith(
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -90,7 +92,8 @@ class RemoveNft extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   border: Border(
                                     top: BorderSide(
-                                      color: AppTheme.getInstance().divideColor(),
+                                      color:
+                                          AppTheme.getInstance().divideColor(),
                                       width: 1.w,
                                     ),
                                   ),
@@ -104,8 +107,7 @@ class RemoveNft extends StatelessWidget {
                                         },
                                         child: Text(
                                           S.current.cancel,
-                                          style:
-                                          textNormal(null, 20).copyWith(
+                                          style: textNormal(null, 20.sp).copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,
                                           ),
@@ -114,8 +116,9 @@ class RemoveNft extends StatelessWidget {
                                       ),
                                     ),
                                     VerticalDivider(
-                                 color: AppTheme.getInstance().divideColor(),
-                              ),
+                                      color:
+                                          AppTheme.getInstance().divideColor(),
+                                    ),
                                     Expanded(
                                       child: InkWell(
                                         onTap: () {
@@ -127,7 +130,7 @@ class RemoveNft extends StatelessWidget {
                                           S.current.remove,
                                           style: textNormal(
                                             const Color(0xffE4AC1A),
-                                            20,
+                                            20.sp,
                                           ).copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,

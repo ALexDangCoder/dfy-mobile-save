@@ -16,18 +16,20 @@ class ButtonLuxury extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 26.w, left: 26.w, bottom: 38),
+      margin: EdgeInsets.only(right: 26.w, left: 26.w, bottom: 38.h),
       decoration: BoxDecoration(
         gradient: RadialGradient(
           radius: 4,
           center: const Alignment(0.5, -0.5),
           colors: isEnable
               ? AppTheme.getInstance().gradientButtonColor()
-              : [AppTheme.getInstance().disableColor()
-            ,AppTheme.getInstance().disableColor()],
+              : [
+                  AppTheme.getInstance().disableColor(),
+                  AppTheme.getInstance().disableColor()
+                ],
         ),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(15),
+        borderRadius: BorderRadius.all(
+          Radius.circular(15.r),
         ),
       ),
       height: 48.h,
@@ -37,7 +39,7 @@ class ButtonLuxury extends StatelessWidget {
           title,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
-            16,
+            16.sp,
           ).copyWith(fontWeight: FontWeight.bold),
         ),
       ),

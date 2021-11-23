@@ -60,6 +60,7 @@ class _FilterState extends State<Filter> {
             ),
             SizedBox(
               height: 5.h,
+              width: 109.w,
               child: Center(
                 child: Image.asset(
                   ImageAssets.imgRectangle,
@@ -81,7 +82,7 @@ class _FilterState extends State<Filter> {
                             child: Text(
                               S.current.owner,
                               style:
-                                  textNormalCustom(null, 20, FontWeight.w600),
+                                  textNormalCustom(null, 20.sp, FontWeight.w600),
                             ),
                           ),
                           IsMyCollection(
@@ -94,7 +95,7 @@ class _FilterState extends State<Filter> {
                             child: Text(
                               S.current.category,
                               style:
-                                  textNormalCustom(null, 20, FontWeight.w600),
+                                  textNormalCustom(null, 20.sp, FontWeight.w600),
                             ),
                           ),
                           IsArt(
