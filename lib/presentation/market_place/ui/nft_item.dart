@@ -37,7 +37,10 @@ class _NFTItemState extends State<NFTItemWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        pageRouter(type: widget.propertiesNFT,typeNFT: widget.typeNFT,);
+        pageRouter(
+          type: widget.propertiesNFT,
+          typeNFT: widget.typeNFT,
+        );
       },
       child: Row(
         children: [
@@ -47,11 +50,16 @@ class _NFTItemState extends State<NFTItemWidget> {
                 height: 231.h,
                 width: 156.w,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                   color: AppTheme.getInstance().selectDialogColor(),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding: EdgeInsets.only(
+                    left: 8.w,
+                    top: 8.h,
+                    right: 8.w,
+                    bottom: 8.h,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -80,7 +88,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                           widget.name,
                           style: textNormalCustom(
                             Colors.white,
-                            13,
+                            13.sp,
                             FontWeight.w600,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -111,20 +119,20 @@ class _NFTItemState extends State<NFTItemWidget> {
                                   ),
                                   Text(
                                     formatValue.format(widget.price),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.yellow,
-                                      fontSize: 13,
+                                      fontSize: 13.sp,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            const Text(
+                            Text(
                               '1 of 1',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 13,
+                                fontSize: 13.sp,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -169,8 +177,8 @@ class _NFTItemState extends State<NFTItemWidget> {
           height: 24.h,
           decoration: BoxDecoration(
             color: const Color(0xFFFFCD28).withOpacity(0.7),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(12.5),
+            borderRadius: BorderRadius.all(
+              Radius.circular(12.5.r),
             ),
             border: Border.all(
               color: const Color(0xFFFF9E12),
@@ -195,7 +203,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                 '15:02:02',
                 style: textNormalCustom(
                   AppTheme.getInstance().whiteColor(),
-                  13,
+                  13.sp,
                   FontWeight.w600,
                 ),
               ),
@@ -232,7 +240,7 @@ class _NFTItemState extends State<NFTItemWidget> {
           'Pawn',
           style: textNormalCustom(
             AppTheme.getInstance().blueColor(),
-            13,
+            13.sp,
             FontWeight.w600,
           ),
         );
@@ -241,7 +249,7 @@ class _NFTItemState extends State<NFTItemWidget> {
           'Auction',
           style: textNormalCustom(
             AppTheme.getInstance().failTransactionColors(),
-            13,
+            13.sp,
             FontWeight.w600,
           ),
         );
@@ -250,7 +258,7 @@ class _NFTItemState extends State<NFTItemWidget> {
           'Sale',
           style: textNormalCustom(
             AppTheme.getInstance().successTransactionColors(),
-            13,
+            13.sp,
             FontWeight.w600,
           ),
         );
@@ -260,7 +268,7 @@ class _NFTItemState extends State<NFTItemWidget> {
   }
 
   void pageRouter({TypePropertiesNFT? type, TypeNFT? typeNFT}) {
-    if (type == TypePropertiesNFT.AUCTION ) {
+    if (type == TypePropertiesNFT.AUCTION) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -268,11 +276,7 @@ class _NFTItemState extends State<NFTItemWidget> {
         ),
       );
     }
-    if (type == TypePropertiesNFT.PAWN ) {
-
-    }
-    if (type == TypePropertiesNFT.SALE ) {
-
-    }
+    if (type == TypePropertiesNFT.PAWN) {}
+    if (type == TypePropertiesNFT.SALE) {}
   }
 }

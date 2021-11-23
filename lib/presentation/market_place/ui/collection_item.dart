@@ -37,8 +37,8 @@ class CollectionItem extends StatelessWidget {
                 width: 1.w,
               ),
               color: AppTheme.getInstance().borderItemColor(),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(20),
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.r),
               ),
             ),
             child: Stack(
@@ -58,9 +58,9 @@ class CollectionItem extends StatelessWidget {
                       ),
                       child: Text(
                         title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -73,7 +73,7 @@ class CollectionItem extends StatelessWidget {
                     height: 42.h,
                     width: 42.w,
                     child: AvatarView(
-                      borderWidth: 4,
+                      borderWidth: 4.r,
                       borderColor: AppTheme.getInstance().borderItemColor(),
                       imagePath: urlIcon,
                     ),
