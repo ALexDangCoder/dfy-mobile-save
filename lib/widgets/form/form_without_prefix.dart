@@ -48,8 +48,8 @@ class FormWithOutPrefix extends StatelessWidget {
           top: 8.h,
         ),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
@@ -113,8 +113,8 @@ class FormWithOutPrefix extends StatelessWidget {
           top: 8.h,
         ),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
@@ -156,8 +156,8 @@ class FormWithOutPrefix extends StatelessWidget {
           top: 8.h,
         ),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
@@ -192,8 +192,8 @@ class FormWithOutPrefix extends StatelessWidget {
           top: 8.h,
         ),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),

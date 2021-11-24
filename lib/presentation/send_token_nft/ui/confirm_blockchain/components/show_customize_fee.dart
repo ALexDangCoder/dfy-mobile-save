@@ -39,7 +39,7 @@ class ShowCustomizeFee extends StatelessWidget {
           width: 321.w,
           height: 343.h,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderRadius: BorderRadius.all(Radius.circular(16.r)),
             border: Border.all(color: const Color.fromRGBO(255, 255, 255, 0.1)),
           ),
           child: Column(
@@ -262,7 +262,8 @@ class ShowCustomizeFee extends StatelessWidget {
     );
   }
 
-  Container formType({
+  Container
+  formType({
     required TextEditingController txtController,
     required String numHandle,
   }) {
@@ -279,7 +280,7 @@ class ShowCustomizeFee extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(20),
+          Radius.circular(20.r),
         ),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
@@ -323,7 +324,7 @@ class ShowCustomizeFee extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(88, 87, 130, 1),
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(6.r),
       ),
       child: Text(
         S.current.reset,

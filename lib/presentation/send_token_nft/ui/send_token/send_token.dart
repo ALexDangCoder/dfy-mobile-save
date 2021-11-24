@@ -56,8 +56,8 @@ class _SendTokenState extends State<SendToken> {
         decoration: BoxDecoration(
           color: const Color.fromRGBO(62, 61, 92, 1),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
+            topLeft: Radius.circular(30.r),
+            topRight: Radius.circular(30.r),
           ),
         ),
         child: Column(
@@ -220,9 +220,9 @@ class _SendTokenState extends State<SendToken> {
           top: 12.h,
           bottom: 12.h,
         ),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
-            Radius.circular(20),
+            Radius.circular(20.r),
           ),
           color: Color(0xff32324c),
         ),
@@ -294,9 +294,9 @@ class _SendTokenState extends State<SendToken> {
           top: 12.h,
           bottom: 12.h,
         ),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
-            Radius.circular(20),
+            Radius.circular(20.r),
           ),
           color: Color(0xff32324c),
         ),
