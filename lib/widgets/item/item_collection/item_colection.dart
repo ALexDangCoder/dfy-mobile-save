@@ -121,10 +121,11 @@ class ItemCollection extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    image: NetworkImage(
-                      urlIcon,
-                    ),
-                    fit: BoxFit.cover),
+                  image: NetworkImage(
+                    urlIcon,
+                  ),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
