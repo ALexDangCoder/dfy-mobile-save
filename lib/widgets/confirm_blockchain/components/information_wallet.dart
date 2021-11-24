@@ -1,6 +1,9 @@
 import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+
+final formatValue = NumberFormat('###,###,###.###', 'en_US');
 
 class InformationWallet extends StatelessWidget {
   const InformationWallet({
@@ -87,7 +90,7 @@ class InformationWallet extends StatelessWidget {
                 ),
                 //hang 2
                 Text(
-                  '${S.current.balance}: $amount $nameToken',
+                  '${S.current.balance}: ${formatValue.format(amount)} $nameToken',
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 16,

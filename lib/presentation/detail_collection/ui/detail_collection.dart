@@ -1,18 +1,9 @@
-import 'package:Dfy/config/resources/color.dart';
-import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
-import 'package:Dfy/presentation/detail_collection/ui/nav.dart';
-import 'package:Dfy/presentation/detail_collection/ui/tab_bar/nfts.dart';
-import 'package:Dfy/presentation/detail_collection/ui/tab_bar/trading_history.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
-
-import 'header.dart';
+import 'header_collection.dart';
 
 class DetailCollection extends StatefulWidget {
   const DetailCollection({Key? key}) : super(key: key);
@@ -26,7 +17,6 @@ class _DetailCollectionState extends State<DetailCollection> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     detailCollectionBloc = DetailCollectionBloc();
   }
@@ -36,6 +26,7 @@ class _DetailCollectionState extends State<DetailCollection> {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: () => Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         body: GestureDetector(
           onTap: () {
@@ -49,108 +40,36 @@ class _DetailCollectionState extends State<DetailCollection> {
               SizedBox(
                 height: 48.h,
               ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                    height: 764.h,
-                    width: 375.w,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      color: AppTheme.getInstance().borderItemColor(),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30.r),
-                        topRight: Radius.circular(30.r),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        HeaderCollection(
-                          owner: '0xFE5788e2...EB7144fd0',
-                          category: 'Art',
-                          title: 'Artwork collection',
-                          urlBackground: 'assets/images/Boahancock.jpg',
-                          urlAvatar: 'assets/images/Boahancock.jpg',
-                          bodyText:
-                              'Euismod amet, sed pulvinar mattis venenatis tristique pulvinar aliquam sit. Non orci quis eget cras erat elit ornare. Sit pharetra, arcu, sit quis quam vulputate. Ornare cursus sed id nibh nisi. Vulputate at dictum pharetra tortor aliquet ornare nisl nisl.',
-                          contract: '0xFE5788e2...EB7144fd0',
-                          nftStandard: 'ERC - 1155',
-                          collectionBloc: detailCollectionBloc,
-                        ),
-                        const NavCollection(
-                          items: '1025',
-                          owners: '326',
-                          volumeTraded: '\$1,396,175',
-                        ),
-                        line,
-                        Expanded(
-                          child: DefaultTabController(
-                            length: 2,
-                            child: Column(
-                              children: [
-                                spaceH12,
-                                Center(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(12.r),
-                                      ),
-                                      color: backgroundBottomSheetColor,
-                                    ),
-                                    height: 35.h,
-                                    width: 253.w,
-                                    child: TabBar(
-                                      tabs: [
-                                        Tab(
-                                          child: Text(
-                                            S.current.nfts,
-                                            style: textNormalCustom(
-                                                null, 14.sp, FontWeight.bold),
-                                          ),
-                                        ),
-                                        Tab(
-                                          child: Text(
-                                            S.current.trading_history,
-                                            style: textNormalCustom(
-                                                null, 14.sp, FontWeight.bold),
-                                          ),
-                                        ),
-                                      ],
-                                      labelColor:
-                                          AppTheme.getInstance().whiteColor(),
-                                      unselectedLabelColor:
-                                          AppTheme.getInstance().whiteColor(),
-                                      indicator: RectangularIndicator(
-                                        bottomLeftRadius: 10.r,
-                                        bottomRightRadius: 10.r,
-                                        topLeftRadius: 10.r,
-                                        topRightRadius: 10.r,
-                                        color: formColor,
-                                        horizontalPadding: 3.w,
-                                        verticalPadding: 3.h,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                spaceH12,
-                                line,
-                                Expanded(
-                                  child: TabBarView(
-                                    children: [
-                                      NftsCollection(
-                                        detailCollectionBloc:
-                                            detailCollectionBloc,
-                                      ),
-                                      const TradingHistoryCollection(),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+              Container(
+                height: 764.h,
+                width: 375.w,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().borderItemColor(),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.r),
+                    topRight: Radius.circular(30.r),
                   ),
+                ),
+                child: HeaderCollection(
+                  owner: '0xFE5788e2...EB7144fd0',
+                  category: 'Art',
+                  title: 'Artwork collection',
+                  bodyText:
+                      'Euismod amet, sed pulvinar mattis venenatis tristique'
+                      ' pulvinar aliquam sit. Non orci quis eget cras erat'
+                      ' elit ornare. Sit pharetra, arcu, sit quis quam'
+                      ' vulputate. Ornare cursus sed id nibh nisi.'
+                      ' Vulputate at dictum pharetra tortor aliquet'
+                      ' ornare nisl nisl.',
+                  contract: '0xFE5788e2...EB7144fd0',
+                  nftStandard: 'ERC - 1155',
+                  detailCollectionBloc: detailCollectionBloc,
+                  urlBackground: 'https://tse1.mm.bing.net/th?id=OIP.'
+                      'OfaVuv27apRglGh0_CL9TQHaEK&pid=Api&P=0&w=340&h=192',
+                  urlAvatar: 'https://tse1.mm.bing.net/th?id=OIP'
+                      '.PrSmDPqBP53bKlJvK0-KIwHaEo&pid=Api&P=0&w=259&h=163',
+                  collectionBloc: detailCollectionBloc,
                 ),
               ),
             ],

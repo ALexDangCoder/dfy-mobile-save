@@ -79,7 +79,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                         child: Text(
                           widget.name,
                           style: textNormalCustom(
-                            Colors.white,
+                            null,
                             13.sp,
                             FontWeight.w600,
                           ),

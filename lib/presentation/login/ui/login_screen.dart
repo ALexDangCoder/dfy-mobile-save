@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text(
                         S.current.password_is_required,
                         style: textNormal(
-                          Colors.red,
+                          AppTheme.getInstance().redColor(),
                           12.sp,
                         ).copyWith(
                           fontWeight: FontWeight.w400,

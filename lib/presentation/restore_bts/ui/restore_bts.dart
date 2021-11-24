@@ -171,8 +171,8 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                       left: 8.w,
                                     ),
                                     decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(20),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20.r),
                                       ),
                                       color: AppTheme.getInstance()
                                           .itemBtsColors(),
@@ -409,7 +409,7 @@ class _RestoreBTSState extends State<RestoreBTS> {
                       children: [
                         Checkbox(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(6.r),
                           ),
                           fillColor: MaterialStateProperty.all(
                             AppTheme.getInstance().fillColor(),

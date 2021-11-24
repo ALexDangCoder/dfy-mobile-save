@@ -72,9 +72,9 @@ class _QRViewExampleState extends State<QRViewExample> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: const Icon(
+                  child:  Icon(
                     Icons.arrow_back_ios_outlined,
-                    color: Colors.white,
+                    color: AppTheme.getInstance().whiteColor(),
                   ),
                 ),
                 const SizedBox(
@@ -85,7 +85,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                 Text(
                   S.current.scan_qr_code,
                   style: textNormalCustom(
-                    Colors.white,
+                    AppTheme.getInstance().whiteColor(),
                     20,
                     FontWeight.w700,
                   ),
@@ -97,7 +97,7 @@ class _QRViewExampleState extends State<QRViewExample> {
             ),
             Divider(
               height: 1,
-              color: Colors.white.withOpacity(0.5),
+              color: AppTheme.getInstance().whiteWithOpacityFireZero(),
             )
           ],
         )

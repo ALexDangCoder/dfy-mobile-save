@@ -30,7 +30,7 @@ class HideCustomizeFee extends StatelessWidget {
               width: 343.w,
               height: 90.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
+                borderRadius: BorderRadius.all(Radius.circular(16.r)),
                 border:
                     Border.all(color: const Color.fromRGBO(255, 255, 255, 0.1)),
               ),
@@ -108,7 +108,7 @@ class HideCustomizeFee extends StatelessWidget {
                                             return Text(
                                               '${snapshot.data} $nameToken',
                                               style: textNormalCustom(
-                                                Colors.red,
+                                                AppTheme.getInstance().redColor(),
                                                 16,
                                                 FontWeight.w600,
                                               ),
@@ -121,7 +121,7 @@ class HideCustomizeFee extends StatelessWidget {
                                         Text(
                                           S.current.insufficient_balance,
                                           style: textNormalCustom(
-                                            Colors.red,
+                                            AppTheme.getInstance().redColor(),
                                             12,
                                             FontWeight.w400,
                                           ),

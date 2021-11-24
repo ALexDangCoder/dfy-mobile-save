@@ -185,7 +185,6 @@
   "nature": "Thiên nhiên",
   "car": "Ô tô",
   "nft_on_sale": "NFT giảm giá",
-  "on auction": "Đang đấu giá",
   "animals": "Động vật",
   "painting": "Tranh vẽ",
   "art_work": "Tranh điện tử",
@@ -256,5 +255,7 @@
   "maximum_amount": "Số lượng tối đa",
   "depreciation": "Khấu hau (%/năm)",
   "conclusion": "Kết luận",
-  "images_videos": "Ảnh và video"
+  "images_videos": "Ảnh và video",
+  "send_nft": "Gửi NFT",
+  "buy_nft": "Mua NFT"
 }
