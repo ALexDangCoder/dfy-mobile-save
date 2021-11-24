@@ -1,4 +1,5 @@
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/on_sale_detail.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/components/filter_bts.dart';
 import 'package:Dfy/widgets/nft_detail/nft_detail.dart';
 import 'package:Dfy/widgets/nft_item_by_category/nft_type_product.dart';
@@ -44,6 +45,14 @@ class _NFTListOnSaleState extends State<NFTListOnSale> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                backgroundColor: Colors.transparent,
+                builder: (context) {
+                  return const OnSale();
+                },
+              );
             },
             child: products[index],
           );

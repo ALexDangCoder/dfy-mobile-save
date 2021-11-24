@@ -13,6 +13,8 @@ import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_aucti
 import 'package:Dfy/presentation/market_place/ui/category.dart';
 import 'package:Dfy/presentation/market_place/ui/collection_item.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
+import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/on_sale_detail.dart';
+import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -297,7 +299,16 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return const NFTListOnSale();
+                                        },
+                                      );
+                                    },
                                     child: Padding(
                                       padding: EdgeInsets.only(
                                         right: 16.w,
@@ -324,12 +335,24 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       cubit.listFakeDataCollateral.length,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
-                                    return NFTItemWidget(
-                                      name: cubit
-                                          .listFakeDataCollateral[index].name,
-                                      price: cubit
-                                          .listFakeDataCollateral[index].price,
-                                      propertiesNFT: TypePropertiesNFT.SALE,
+                                    return InkWell(
+                                      onTap: (){
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (context) {
+                                            return const OnSale();
+                                          },
+                                        );
+                                      },
+                                      child: NFTItemWidget(
+                                        name: cubit
+                                            .listFakeDataCollateral[index].name,
+                                        price: cubit
+                                            .listFakeDataCollateral[index].price,
+                                        propertiesNFT: TypePropertiesNFT.SALE,
+                                      ),
                                     );
                                   },
                                 ),
