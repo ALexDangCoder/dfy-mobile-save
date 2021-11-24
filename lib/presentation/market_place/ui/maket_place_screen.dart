@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'nft_search.dart';
+import '../search/ui/nft_search.dart';
 
 enum TypePropertiesNFT { PAWN, AUCTION, SALE }
 enum TypeImage { IMAGE, VIDEO }
