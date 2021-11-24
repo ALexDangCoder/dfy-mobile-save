@@ -6,8 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 enum IS_PAWN_OR_SALE {
-  PAWN,
-  SALE,
+  SEND_OFFER,
+  BUY,
 }
 
 class FormSaleFtPawn extends StatelessWidget {
@@ -42,12 +42,12 @@ class FormSaleFtPawn extends StatelessWidget {
     final formatValue = NumberFormat('###,###,###.###', 'en_US');
 
     // formatValue.format(DOUBLE), // HOW TO USE IT
-    if (isPawnOrSale == IS_PAWN_OR_SALE.SALE) {
+    if (isPawnOrSale == IS_PAWN_OR_SALE.BUY) {
       return Container(
         margin: EdgeInsets.only(
           left: 10.w,
-          top: 24.h,
-          bottom: 20.h,
+          top: 19.h,
+          // bottom: 20.h,
         ),
         child: ConstrainedBox(
           constraints: BoxConstraints(

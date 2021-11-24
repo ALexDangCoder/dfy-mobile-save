@@ -4,7 +4,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum typeIsHaveAmount {
+enum TypeIsHaveAmount {
   HAVE_AMOUNT,
   NO_HAVE_AMOUNT,
 }
@@ -20,11 +20,11 @@ class FormAddFtAmount extends StatelessWidget {
   final String from;
   final String to;
   final String? amount;
-  final typeIsHaveAmount typeForm;
+  final TypeIsHaveAmount typeForm;
 
   @override
   Widget build(BuildContext context) {
-    if(typeForm == typeIsHaveAmount.HAVE_AMOUNT) {
+    if(typeForm == TypeIsHaveAmount.HAVE_AMOUNT) {
       return Container(
         margin: EdgeInsets.only(
           left: 10.w,
@@ -118,7 +118,12 @@ class FormAddFtAmount extends StatelessWidget {
           minWidth: 250.w,
           minHeight: 56.h,
         ),
-        child: SizedBox(
+        child: Container(
+          margin: EdgeInsets.only(
+            left: 10.w,
+            top: 24.h,
+            bottom: 20.h,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

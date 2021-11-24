@@ -16,8 +16,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 class BaseNFTMarket extends StatelessWidget {
   final String title;
   final Widget child;
+  final Widget body;
   final String image;
   final Function() filterFunc;
+  final Function() flagFunc;
+  final Function() shareFunc;
 
   const BaseNFTMarket({
     Key? key,
@@ -25,6 +28,10 @@ class BaseNFTMarket extends StatelessWidget {
     required this.child,
     required this.image,
     required this.filterFunc,
+    required this.flagFunc,
+    required this.shareFunc,
+
+    required this.body,
   }) : super(key: key);
 
   @override
@@ -76,65 +83,78 @@ class BaseNFTMarket extends StatelessWidget {
             ],
           ),
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 8.h,
-                      left: 16.w,
-                      right: 16.w,
-                    ),
+            child: NestedScrollView(
+              physics: const ScrollPhysics(),
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return [
+                  SliverToBoxAdapter(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                title,
-                                style: tokenDetailAmount(),
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 8.h,
+                            left: 16.w,
+                            right: 16.w,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      title,
+                                      style: tokenDetailAmount(),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 25.h,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      flagFunc();
+                                    },
+                                    child: roundButton(
+                                      image: ImageAssets.ic_flag_svg,
+                                      whiteBackground: true,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20.h,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      shareFunc();
+                                    },
+                                    child: roundButton(
+                                      image: ImageAssets.ic_share_svg,
+                                      whiteBackground: true,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            SizedBox(
-                              width: 25.h,
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: roundButton(
-                                image: ImageAssets.ic_flag_svg,
-                                whiteBackground: true,
+                              Text(
+                                '1 of 1 available',
+                                textAlign: TextAlign.left,
+                                style: tokenDetailAmount(
+                                  weight: FontWeight.w400,
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 20.h,
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: roundButton(
-                                image: ImageAssets.ic_share_svg,
-                                whiteBackground: true,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '1 of 1 available',
-                          textAlign: TextAlign.left,
-                          style: tokenDetailAmount(
-                            weight: FontWeight.w400,
-                            fontSize: 16,
+                              spaceH12,
+                              line,
+                            ],
                           ),
                         ),
-                        spaceH12,
-                        line,
+                        child,
                       ],
                     ),
                   ),
-                  child,
-                ],
-              ),
+                ];
+              },
+              body: body,
             ),
           )
         ],

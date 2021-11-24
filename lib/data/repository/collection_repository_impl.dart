@@ -12,7 +12,7 @@ class CollectionRepositoryImpl implements CollectionRepository {
   );
 
   @override
-  Future<Result<List<CollectionRespone>>> getCollection() {
+  Future<Result<List<CollectionResponse>>> getCollection() {
     return runCatchingAsync(() => _collectionService.getCollection(),);
   }
 }

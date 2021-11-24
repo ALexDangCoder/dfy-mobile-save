@@ -153,8 +153,8 @@ class _ImportBTSState extends State<ImportBTS> {
                                       left: 8.w,
                                     ),
                                     decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(20),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20.r),
                                       ),
                                       color: AppTheme.getInstance()
                                           .itemBtsColors(),

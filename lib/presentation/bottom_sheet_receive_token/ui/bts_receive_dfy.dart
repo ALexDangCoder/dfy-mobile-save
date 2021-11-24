@@ -295,12 +295,12 @@ class _ReceiveState extends State<Receive> {
             return CustomRectTween(begin: begin!, end: end!);
           },
           child: buildBlur(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(20.r),
             child: Material(
               color: Colors.white.withOpacity(0.6),
               elevation: 2,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(20.r),
               ),
               child: SizedBox(
                 width: 232.w,

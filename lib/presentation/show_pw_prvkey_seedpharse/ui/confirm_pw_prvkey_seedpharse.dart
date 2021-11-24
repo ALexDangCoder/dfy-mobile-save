@@ -131,8 +131,8 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
         bottom: 12.h,
       ),
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
         ),
         color: AppTheme.getInstance().itemBtsColors(),
       ),

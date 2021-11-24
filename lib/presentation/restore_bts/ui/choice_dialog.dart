@@ -30,8 +30,8 @@ class _CustomDialogState extends State<ChoiceDialog> {
       width: 343.w,
       decoration: BoxDecoration(
         color: AppTheme.getInstance().selectDialogColor(),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
         ),
       ),
       child: Column(

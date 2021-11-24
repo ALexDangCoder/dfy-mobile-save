@@ -84,7 +84,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                       from: widget.fromAddress,
                       to: widget.toAddress,
                       amount: '${widget.amount} DFY',
-                      typeForm: typeIsHaveAmount.HAVE_AMOUNT,
+                      typeForm: TypeIsHaveAmount.HAVE_AMOUNT,
                     ),
                     const Divider(
                       thickness: 1,
@@ -94,7 +94,7 @@ class _ConfirmBlockchainState extends State<ConfirmBlockchain> {
                     //   height: 16.h,
                     // ),
                     FormSaleFtPawn(
-                      isPawnOrSale: IS_PAWN_OR_SALE.SALE,
+                      isPawnOrSale: IS_PAWN_OR_SALE.BUY,
                       loanAmount: 4,
                       loanToVl: 3,
                       quantity: 5,
