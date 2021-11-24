@@ -12,7 +12,9 @@ import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/related_do
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
+import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/common_bts/base_nft_market.dart';
+import 'package:Dfy/widgets/count_down_view/ui/nft_countdownn.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,6 +29,17 @@ class HardNFTScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const int month = 2;
+    const List<Tab> tabWithoutBiding = <Tab>[
+      Tab(text: 'History'),
+      Tab(text: 'Owner'),
+      Tab(text: 'Evaluation'),
+    ];
+    const List<Tab> tabWithBiding = <Tab>[
+      Tab(text: 'History'),
+      Tab(text: 'Owner'),
+      Tab(text: 'Evaluation'),
+      Tab(text: 'Bidding'),
+    ];
     return BaseNFTMarket(
       filterFunc: filterFunc,
       title: 'Lamborghini Aventador Pink Ver 2021',
@@ -44,7 +57,7 @@ class HardNFTScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  isAuction? 'Reserve Price':'Expected loan',
+                  isAuction ? 'Reserve Price' : 'Expected loan',
                   style: whiteTextWithOpacity,
                 ),
                 Row(
@@ -71,40 +84,90 @@ class HardNFTScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  S.current.duration,
-                  style: whiteTextWithOpacity,
-                ),
-                Text(
-                  '$month ${(month <= 1) ? S.current.month : S.current.months}',
-                  style: tokenDetailAmount(fontSize: 16),
-                ),
-              ],
-            ),
-            spaceH24,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ButtonGradient(
-                  gradient: RadialGradient(
-                    center: const Alignment(0.5, -0.5),
-                    radius: 4,
-                    colors: AppTheme.getInstance().gradientButtonColor(),
+            if (isAuction)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Auction ends in: ',
+                    style: whiteTextWithOpacity,
                   ),
-                  onPressed: () {},
-                  child: Text(
-                    S.current.send_offer,
-                    style: tokenDetailAmount(
-                      fontSize: 16,
-                      weight: FontWeight.w700,
+                  spaceH12,
+                  const CountDownView(timeInMilliSecond: 12000),
+                  spaceH24,
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ButtonGradient(
+                      gradient: RadialGradient(
+                        center: const Alignment(0.5, -0.5),
+                        radius: 4,
+                        colors: AppTheme.getInstance().gradientButtonColor(),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        S.current.place_a_bid,
+                        style: tokenDetailAmount(
+                          fontSize: 16,
+                          weight: FontWeight.w700,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                  spaceH24,
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ButtonTransparent(
+                      onPressed: () {},
+                      child: Text(
+                        S.current.buy_out,
+                        style: tokenDetailAmount(
+                          fontSize: 16,
+                          weight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )
+            else
+              Column(
+                children: [
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ButtonGradient(
+                      gradient: RadialGradient(
+                        center: const Alignment(0.5, -0.5),
+                        radius: 4,
+                        colors: AppTheme.getInstance().gradientButtonColor(),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        S.current.send_offer,
+                        style: tokenDetailAmount(
+                          fontSize: 16,
+                          weight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                  spaceH24,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        S.current.duration,
+                        style: whiteTextWithOpacity,
+                      ),
+                      Text(
+                        '$month ${(month <= 1) ?
+                        S.current.month :
+                        S.current.months}',
+                        style: tokenDetailAmount(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             spaceH20,
             line,
             spaceH12,
@@ -112,6 +175,7 @@ class HardNFTScreen extends StatelessWidget {
             line,
             BiddingWidget(
               bloc: bloc,
+              tabList: isAuction ? tabWithBiding : tabWithoutBiding,
             ),
           ],
         ),

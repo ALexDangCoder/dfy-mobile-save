@@ -110,7 +110,7 @@ class TransactionDetail extends StatelessWidget {
                   context: context,
                   backgroundColor: Colors.transparent,
                   builder: (context) {
-                    return HardNFTScreen(bloc: HardNFTBloc(),isAuction: false,);
+                    return HardNFTScreen(bloc: HardNFTBloc(),isAuction: true,);
                   },
                 );
               },

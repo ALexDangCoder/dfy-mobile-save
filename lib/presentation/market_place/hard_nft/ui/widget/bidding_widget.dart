@@ -11,8 +11,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BiddingWidget extends StatefulWidget {
   final HardNFTBloc bloc;
+  final List<Tab> tabList;
 
-  const BiddingWidget({Key? key, required this.bloc}) : super(key: key);
+  const BiddingWidget({Key? key, required this.bloc, required this.tabList}) : super(key: key);
 
   @override
   _BiddingWidgetState createState() => _BiddingWidgetState();
@@ -20,16 +21,11 @@ class BiddingWidget extends StatefulWidget {
 
 class _BiddingWidgetState extends State<BiddingWidget>
     with TickerProviderStateMixin {
-  List<Tab> tabList = <Tab>[
-    const Tab(text: 'History'),
-    const Tab(text: 'Owner'),
-    const Tab(text: 'Evaluation'),
-  ];
   late TabController _tabController;
 
   @override
   void initState() {
-    final int tabLen = tabList.length;
+    final int tabLen = widget.tabList.length;
     _tabController = TabController(length: tabLen, vsync: this);
     super.initState();
   }
@@ -45,12 +41,13 @@ class _BiddingWidgetState extends State<BiddingWidget>
               widget.bloc.changeTab(i);
             },
             controller: _tabController,
-            tabs: tabList,
+            tabs: widget.tabList,
             indicatorColor: AppTheme.getInstance().unselectedTabLabelColor(),
             unselectedLabelColor:
                 AppTheme.getInstance().unselectedTabLabelColor(),
             labelColor: AppTheme.getInstance().whiteColor(),
             labelStyle: unselectLabel,
+            isScrollable: true,
           ),
         ),
         StreamBuilder<int>(
@@ -59,7 +56,6 @@ class _BiddingWidgetState extends State<BiddingWidget>
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final _index = snapshot.data ?? 0;
-              log('>>>>>>>>>>>>>>>>>>>>>>>>>> $_index');
               switch (_index) {
                 case 0:
                   return listTab()[0];
@@ -83,8 +79,8 @@ class _BiddingWidgetState extends State<BiddingWidget>
     return [
       Container(),
       Container(),
-      EvaluationTab(bloc: widget.bloc),
-      BidingTab(bloc: widget.bloc),
+      EvaluationTab(bloc: HardNFTBloc()),
+      BidingTab(bloc: HardNFTBloc()),
     ];
   }
 }
