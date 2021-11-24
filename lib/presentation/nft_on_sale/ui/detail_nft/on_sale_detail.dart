@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_on_sale/ui/buy_nft/ui/buy_nft.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/components/deatail_nft_root_tab.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -28,7 +29,7 @@ class OnSale extends StatelessWidget {
             _priceContainer(),
             _durationRow(),
             spaceH24,
-            _buildButtonPlaceBid(context),
+            _buildButtonBuyOut(context),
             spaceH20,
             // _buildButtonBuyOut(context),
             spaceH18,
@@ -44,16 +45,25 @@ class OnSale extends StatelessWidget {
   }
 }
 
-Widget _buildButtonPlaceBid(BuildContext context) {
+Widget _buildButtonBuyOut(BuildContext context) {
   return ButtonGradient(
-    onPressed: () {},
+    onPressed: () {
+      showModalBottomSheet(
+        backgroundColor: Colors.black,
+        isScrollControlled: true,
+        context: context,
+        builder: (_) {
+          return const BuyNFT();
+        },
+      );
+    },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
       radius: 4,
       colors: AppTheme.getInstance().gradientButtonColor(),
     ),
     child: Text(
-      S.current.place_a_bid,
+      S.current.buy_nft,
       style: textNormalCustom(
         AppTheme.getInstance().textThemeColor(),
         16,
@@ -63,19 +73,7 @@ Widget _buildButtonPlaceBid(BuildContext context) {
   );
 }
 
-Widget _buildButtonBuyOut(BuildContext context) {
-  return ButtonTransparent(
-    child: Text(
-      S.current.buy_out,
-      style: textNormalCustom(
-        AppTheme.getInstance().textThemeColor(),
-        16,
-        FontWeight.w700,
-      ),
-    ),
-    onPressed: () {},
-  );
-}
+
 
 Widget _buildTable() => Column(
       children: [

@@ -26,7 +26,7 @@ class _NFTListOnSaleState extends State<NFTListOnSale> {
     return BaseBottomSheet(
       callback: () {
         showModalBottomSheet(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.black,
           isScrollControlled: true,
           context: context,
           builder: (_) {
@@ -46,7 +46,7 @@ class _NFTListOnSaleState extends State<NFTListOnSale> {
           return GestureDetector(
             onTap: () {
               showModalBottomSheet(
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.black,
                 isScrollControlled: true,
                 context: context,
                 builder: (_) {
