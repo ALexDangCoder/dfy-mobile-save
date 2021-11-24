@@ -3,23 +3,36 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/collection.dart';
 import 'package:Dfy/domain/model/nft_item.dart';
 import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ResultCollectionSearch extends StatelessWidget {
   const ResultCollectionSearch({
-    Key? key, required this.collection,
-
+    Key? key,
+    required this.collection,
   }) : super(key: key);
 
   final Collection collection;
 
+
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CircleAvatar(
-        radius: 23.r,
-        backgroundImage: NetworkImage(collection.avatar),
+      leading: Container(
+         decoration: BoxDecoration(
+           shape: BoxShape.circle,
+         ),
+        clipBehavior: Clip.hardEdge,
+        child: CachedNetworkImage(
+          imageUrl: collection.avatar,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => CircularProgressIndicator(
+            color: AppTheme.getInstance().whiteColor(),
+          ),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        ),
       ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,9 +56,11 @@ class ResultCollectionSearch extends StatelessWidget {
     );
   }
 }
+
 class ResultNFTSearch extends StatelessWidget {
   const ResultNFTSearch({
-    Key? key, required this.nftItem,
+    Key? key,
+    required this.nftItem,
   }) : super(key: key);
 
   final NftItem nftItem;
@@ -77,9 +92,9 @@ class ResultNFTSearch extends StatelessWidget {
           propertyNFT(nftItem.propertiesNFT),
         ],
       ),
-
     );
   }
+
   Widget propertyNFT(TypePropertiesNFT? type) {
     switch (type) {
       case TypePropertiesNFT.PAWN:
@@ -113,5 +128,4 @@ class ResultNFTSearch extends StatelessWidget {
         return Container();
     }
   }
-
 }

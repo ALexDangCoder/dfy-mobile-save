@@ -57,11 +57,12 @@ class _HeaderCollectionState extends State<HeaderCollection> {
               fit: BoxFit.fill,
               width: 375.w,
               height: 145.h,
-              errorWidget: (context, url, error) => Center(
+              placeholder: (context, url) => Center(
                 child: CircularProgressIndicator(
                   color: AppTheme.getInstance().whiteColor(),
                 ),
               ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
               imageUrl: widget.urlBackground,
             ),
             Expanded(
@@ -176,11 +177,12 @@ class _HeaderCollectionState extends State<HeaderCollection> {
               child: CachedNetworkImage(
                 imageUrl: widget.urlAvatar,
                 fit: BoxFit.cover,
-                errorWidget: (context, url, error) => Center(
+                placeholder: (context, url) => Center(
                   child: CircularProgressIndicator(
                     color: AppTheme.getInstance().whiteColor(),
                   ),
                 ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
           ),
