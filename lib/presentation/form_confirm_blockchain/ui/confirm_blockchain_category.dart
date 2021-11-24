@@ -1,7 +1,13 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_hide_blockchain.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_blockchain.dart';
+import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_sale_ft_pawn.dart';
+import 'package:Dfy/widgets/confirm_blockchain/components/information_wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -18,9 +24,13 @@ final formatValue = NumberFormat('###,###,###.###', 'en_US');
 class ConfirmBlockchainCategory extends StatefulWidget {
   const ConfirmBlockchainCategory({
     Key? key,
+    required this.nameWallet,
+    required this.nameTokenWallet,
+    required this.balanceWallet,
     required this.typeConfirm,
     required this.addressFrom,
     required this.addressTo,
+    required this.imageWallet,
     this.nameToken,
     this.amount,
   }) : super(key: key);
@@ -32,6 +42,10 @@ class ConfirmBlockchainCategory extends StatefulWidget {
   final String addressFrom;
   final String addressTo;
   final double? amount;
+  final String nameWallet;
+  final String nameTokenWallet;
+  final double balanceWallet;
+  final String imageWallet;
 
   @override
   _ConfirmBlockchainCategoryState createState() =>
@@ -43,13 +57,29 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
   late TextEditingController _txtGasLimit;
   late TextEditingController _txtGasPrice;
   late String titleBts;
+  late InformationWallet _informationWallet;
+  late double gasFeeFirstFetch;
+  late double gasLimitFirstFetch;
+  late double gasPriceFirstFetch;
+  late FormFieldBlockchainCubit _cubitFormCustomizeGasFee;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _txtGasLimit = TextEditingController();
-    _txtGasPrice = TextEditingController();
+    gasPriceFirstFetch = 1.1;
+    gasLimitFirstFetch = 0.624;
+    _cubitFormCustomizeGasFee = FormFieldBlockchainCubit();
+    _txtGasLimit = TextEditingController(text: gasLimitFirstFetch.toString());
+    _txtGasPrice = TextEditingController(text: gasPriceFirstFetch.toString());
+    _informationWallet = InformationWallet(
+      nameWallet: widget.nameWallet,
+      fromAddress: widget.addressFrom,
+      amount: widget.balanceWallet,
+      nameToken: widget.nameTokenWallet,
+      imgWallet: widget.imageWallet,
+    );
+    gasFeeFirstFetch = 0.551;
     switch (widget.typeConfirm) {
       case TYPE_CONFIRM.SEND_NFT:
         titleBts = S.current.send_nft;
@@ -111,7 +141,11 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                       quantity: 5,
                       pricePerOne: 10000,
                       totalPayment: 50000,
-                    )
+                    ),
+                    const Divider(
+                      thickness: 1,
+                      color: Color.fromRGBO(255, 255, 255, 0.1),
+                    ),
                   ] else if (widget.typeConfirm == TYPE_CONFIRM.SEND_OFFER) ...[
                     const FormSaleFtPawn(
                       isPawnOrSale: IS_PAWN_OR_SALE.SEND_OFFER,
@@ -122,13 +156,44 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                       duration: 24,
                       repaymentCurrent: 'DFY',
                       // recurringInterest: ,
-                    )
-                  ] else ...[] //will not appear
-                  // else
-                  //   {}
+                    ),
+                    const Divider(
+                      thickness: 1,
+                      color: Color.fromRGBO(255, 255, 255, 0.1),
+                    ),
+                  ] else
+                    ...[],
+                  _informationWallet, //will not appear
+                  spaceH16,
+                  StreamBuilder<bool>(
+                    stream: _cubitFormCustomizeGasFee.isCustomizeGasFeeStream,
+                    builder: (context, snapshot) {
+                      return snapshot.data ?? false
+                          ? FormShowCfBlockchain(
+                              nameToken: widget.nameTokenWallet,
+                              balanceWallet: widget.balanceWallet,
+                              gasFeeFirstFetch: gasFeeFirstFetch,
+                              txtGasLimit: _txtGasLimit,
+                              txtGasPrice: _txtGasPrice,
+                              cubitFormCF: _cubitFormCustomizeGasFee,
+                              gasLimitFirstFetch: gasLimitFirstFetch,
+                              gasPriceFirstFetch: gasPriceFirstFetch,
+                            )
+                          : FormHideCfBlockchain(
+                              balance: widget.balanceWallet,
+                              gasFee: gasFeeFirstFetch,
+                              nameToken: widget.nameTokenWallet,
+                              cubit: _cubitFormCustomizeGasFee,
+                            );
+                    },
+                  ),
                 ],
               ),
             ),
+          ),
+          ButtonGold(
+            title: S.current.approve,
+            isEnable: true,
           )
         ],
       ),

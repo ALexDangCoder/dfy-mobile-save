@@ -1,44 +1,76 @@
+import 'dart:math';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
+import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+enum FORM_GAS_FEE {
+  LIMIT,
+  PRICE,
+}
+
 class FormFieldBlockChain extends StatelessWidget {
-  const FormFieldBlockChain({Key? key, required this.txtController})
-      : super(key: key);
+  const FormFieldBlockChain({
+    Key? key,
+    required this.txtController,
+    required this.formGasFee,
+    required this.cubit,
+    required this.numHandle,
+    required this.balanceFetchFirst,
+  }) : super(key: key);
   final TextEditingController txtController;
+  final FORM_GAS_FEE formGasFee;
+  final FormFieldBlockchainCubit cubit;
+
+  //numHandle depend on type form is gas limit or gas price
+  final String numHandle;
+  final double balanceFetchFirst;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 64.h,
-      padding: EdgeInsets.only(left: 16.w),
+      // padding: EdgeInsets.only(left: 16.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            S.current.gas_limit,
-            style: textNormalCustom(
-              Colors.white,
-              16.sp,
-              FontWeight.w400,
+          if (formGasFee == FORM_GAS_FEE.LIMIT)
+            Text(
+              S.current.gas_limit,
+              style: textNormalCustom(
+                Colors.white,
+                16.sp,
+                FontWeight.w400,
+              ),
+            )
+          else
+            Text(
+              S.current.gas_price,
+              style: textNormalCustom(
+                Colors.white,
+                16.sp,
+                FontWeight.w400,
+              ),
             ),
-          ),
-          Expanded(
-            child: Container(
-              width: 178.w,
-              padding: EdgeInsets.only(
-                left: 20.w,
-                right: 20.w,
-                top: 10.h,
+          Container(
+            width: 178.w,
+            padding: EdgeInsets.only(
+              left: 20.w,
+              right: 20.w,
+              top: 5.h,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.r),
               ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20.r),
-                ),
-                color: AppTheme.getInstance().itemBtsColors(),
-              ),
+              color: AppTheme.getInstance().itemBtsColors(),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 10.h),
               child: TextFormField(
                 textAlign: TextAlign.right,
                 keyboardType: TextInputType.number,
@@ -57,7 +89,19 @@ class FormFieldBlockChain extends StatelessWidget {
                   border: InputBorder.none,
                 ),
                 onChanged: (value) {
-                  //todo
+                  late double result;
+                  late double valueHandle;
+                  if (value.isEmpty) {
+                    valueHandle = 0;
+                  } else {
+                    valueHandle = double.parse(value);
+                  }
+                  result = (valueHandle * double.parse(numHandle)) / pow(10, 9);
+                  cubit.isEstimatingGasFee(Validator.toExact(result));
+                  cubit.isSufficientGasFee(
+                    gasFee: result,
+                    balance: balanceFetchFirst,
+                  );
                 },
               ),
             ),

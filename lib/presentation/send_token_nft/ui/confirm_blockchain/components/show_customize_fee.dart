@@ -262,7 +262,8 @@ class ShowCustomizeFee extends StatelessWidget {
     );
   }
 
-  Container formType({
+  Container
+  formType({
     required TextEditingController txtController,
     required String numHandle,
   }) {
