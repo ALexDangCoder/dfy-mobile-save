@@ -48,7 +48,7 @@ class CollectionResponse extends Equatable {
   );
 
   factory CollectionResponse.fromJson(Map<String, dynamic> json) =>
-      _$CollectionResponeFromJson(json);
+      _$CollectionResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$CollectionResponseToJson(this);
 

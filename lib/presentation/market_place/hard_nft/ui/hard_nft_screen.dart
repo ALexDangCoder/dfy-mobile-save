@@ -5,6 +5,10 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/bidding_tab.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/history_tab.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/owners_tab.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/widget/bidding_widget.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/widget/description_widget.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/information_widget.dart';
@@ -19,7 +23,7 @@ import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HardNFTScreen extends StatelessWidget {
+class HardNFTScreen extends StatefulWidget {
   final HardNFTBloc bloc;
   final bool isAuction;
 
@@ -27,28 +31,54 @@ class HardNFTScreen extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<HardNFTScreen> createState() => _HardNFTScreenState();
+}
+
+class _HardNFTScreenState extends State<HardNFTScreen>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+  late List<Tab> tabList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    tabList = widget.isAuction
+        ? <Tab>[
+            Tab(text: S.current.history),
+            Tab(text: S.current.owners),
+            Tab(text: S.current.evaluation),
+            Tab(text: S.current.bidding),
+          ]
+        : <Tab>[
+            Tab(text: S.current.history),
+            Tab(text: S.current.owner),
+            Tab(text: S.current.evaluation),
+          ];
+    _tabController = TabController(
+      length: tabList.length,
+      vsync: this,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     const int month = 2;
-    const List<Tab> tabWithoutBiding = <Tab>[
-      Tab(text: 'History'),
-      Tab(text: 'Owner'),
-      Tab(text: 'Evaluation'),
-    ];
-    const List<Tab> tabWithBiding = <Tab>[
-      Tab(text: 'History'),
-      Tab(text: 'Owner'),
-      Tab(text: 'Evaluation'),
-      Tab(text: 'Bidding'),
-    ];
     return BaseNFTMarket(
-      filterFunc: filterFunc,
       title: 'Lamborghini Aventador Pink Ver 2021',
       image:
           'https://phelieuminhhuy.com/wp-content/uploads/2015/07/7f3ce033-b9b2-4259-ba7c-f6e5bae431a9-1435911423691.jpg',
+      filterFunc: () {},
+      flagFunc: () {},
+      shareFunc: () {},
+      body: TabBarView(
+        controller: _tabController,
+        children:
+            widget.isAuction ? listTabWithBidding() : listTabWithoutBidding(),
+      ),
       child: Container(
-        padding: EdgeInsets.only(
-          left: 16.w,
-          right: 16.w,
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.w,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +87,9 @@ class HardNFTScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  isAuction ? 'Reserve Price' : 'Expected loan',
+                  widget.isAuction
+                      ? S.current.reserve_price
+                      : S.current.expected_loan,
                   style: whiteTextWithOpacity,
                 ),
                 Row(
@@ -84,12 +116,12 @@ class HardNFTScreen extends StatelessWidget {
                 ),
               ],
             ),
-            if (isAuction)
+            if (widget.isAuction)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Auction ends in: ',
+                    S.current.auction_end_in,
                     style: whiteTextWithOpacity,
                   ),
                   spaceH12,
@@ -159,9 +191,7 @@ class HardNFTScreen extends StatelessWidget {
                         style: whiteTextWithOpacity,
                       ),
                       Text(
-                        '$month ${(month <= 1) ?
-                        S.current.month :
-                        S.current.months}',
+                        '$month ${(month <= 1) ? S.current.month : S.current.months}',
                         style: tokenDetailAmount(fontSize: 16),
                       ),
                     ],
@@ -173,9 +203,22 @@ class HardNFTScreen extends StatelessWidget {
             spaceH12,
             const DescriptionWidget(),
             line,
-            BiddingWidget(
-              bloc: bloc,
-              tabList: isAuction ? tabWithBiding : tabWithoutBiding,
+            SizedBox(
+              height: 55.h,
+              child: TabBar(
+                onTap: (i) {
+                  widget.bloc.changeTab(i);
+                },
+                controller: _tabController,
+                tabs: tabList,
+                indicatorColor:
+                    AppTheme.getInstance().unselectedTabLabelColor(),
+                unselectedLabelColor:
+                    AppTheme.getInstance().unselectedTabLabelColor(),
+                labelColor: AppTheme.getInstance().whiteColor(),
+                labelStyle: unselectLabel,
+                isScrollable: true,
+              ),
             ),
           ],
         ),
@@ -183,7 +226,28 @@ class HardNFTScreen extends StatelessWidget {
     );
   }
 
-  void filterFunc() {
-    log('AAAAA');
+  List<Widget> listTabWithBidding() {
+    return [
+      HistoryTabContent(
+        object: S.current.history,
+      ),
+      OwnersTabContent(
+        object: S.current.owners,
+      ),
+      EvaluationTab(bloc: widget.bloc),
+      BidingTab(bloc: widget.bloc),
+    ];
+  }
+
+  List<Widget> listTabWithoutBidding() {
+    return [
+      HistoryTabContent(
+        object: S.current.history,
+      ),
+      OwnersTabContent(
+        object: S.current.owners,
+      ),
+      EvaluationTab(bloc: widget.bloc),
+    ];
   }
 }
