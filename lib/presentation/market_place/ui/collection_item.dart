@@ -1,7 +1,5 @@
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/generated/l10n.dart';
-import 'package:avatar_view/avatar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -46,11 +44,21 @@ class CollectionItem extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    Image.asset(
-                      urlBackGround,
+                    Container(
                       width: 222.w,
                       height: 77.h,
-                      fit: BoxFit.fill,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            urlBackGround,
+                          ),
+                          fit: BoxFit.fill,
+                        ),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.r),
+                          topRight: Radius.circular(20.r),
+                        ),
+                      ),
                     ),
                     Container(
                       padding: EdgeInsets.only(
@@ -68,14 +76,30 @@ class CollectionItem extends StatelessWidget {
                   ],
                 ),
                 Positioned(
-                  top: 51.h,
-                  child: SizedBox(
-                    height: 42.h,
-                    width: 42.w,
-                    child: AvatarView(
-                      borderWidth: 4.r,
-                      borderColor: AppTheme.getInstance().borderItemColor(),
-                      imagePath: urlIcon,
+                  top: 47.h,
+                  child: Container(
+                    height: 60.h,
+                    width: 60.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppTheme.getInstance().borderItemColor(),
+                        width: 4.w,
+                      ),
+                    ),
+                    child: Container(
+                      clipBehavior: Clip.hardEdge,
+                      width: 52.w,
+                      height: 52.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage(
+                            urlIcon,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                 ),

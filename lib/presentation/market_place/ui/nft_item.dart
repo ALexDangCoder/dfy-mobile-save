@@ -50,7 +50,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                 height: 231.h,
                 width: 156.w,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                   color: AppTheme.getInstance().selectDialogColor(),
                 ),
                 child: Padding(
