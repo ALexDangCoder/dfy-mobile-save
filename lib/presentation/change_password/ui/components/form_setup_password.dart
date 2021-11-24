@@ -21,9 +21,9 @@ Container formSetupPassWord({
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(20),
+          Radius.circular(20.r),
         ),
         color: Color(0xff32324c),
       ),
@@ -86,9 +86,9 @@ Container formSetupPassWord({
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(20),
+          Radius.circular(20.r),
         ),
         color: Color(0xff32324c),
       ),
@@ -150,9 +150,9 @@ Container formSetupPassWord({
         top: 12.h,
         bottom: 12.h,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(20),
+          Radius.circular(20.r),
         ),
         color: Color(0xff32324c),
       ),

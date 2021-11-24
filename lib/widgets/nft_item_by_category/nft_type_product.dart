@@ -51,7 +51,7 @@ class _NftProductState extends State<NftProduct> {
           height: 231.h,
           width: 156.w,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             color: AppTheme.getInstance().selectDialogColor(),
           ),
           padding: EdgeInsets.only(
@@ -136,8 +136,8 @@ class _NftProductState extends State<NftProduct> {
           height: 24.h,
           decoration: BoxDecoration(
             color: const Color.fromRGBO(228, 172, 26, 0.7),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(12.5),
+            borderRadius: BorderRadius.all(
+              Radius.circular(12.5.r),
             ),
             border: Border.all(
               color: const Color(0xFFFF9E12),

@@ -24,7 +24,7 @@ class BoxListPassWordPhraseCopy2 extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.getInstance().itemBtsColors(),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(20.r)),
       ),
       padding: EdgeInsets.only(top: 16.h, left: 13.w, right: 13.w),
       height: 222.h,

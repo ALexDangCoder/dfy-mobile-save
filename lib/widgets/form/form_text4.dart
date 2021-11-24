@@ -25,8 +25,8 @@ class FromText4 extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 15.5.w, vertical: 23.h),
       decoration: BoxDecoration(
         color: AppTheme.getInstance().itemBtsColors(),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
         ),
       ),
       child: Row(
