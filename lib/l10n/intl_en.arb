@@ -199,7 +199,7 @@
   "nfts": "NFTs",
   "trading_history": "Trading history",
   "items": "items",
-  "owners": "owners",
+  "owners": "Owners",
   "volume_traded": "volume traded",
   "search.": "Search",
   "category": "Category",
@@ -250,5 +250,15 @@
   "another": "Another",
   "no_result_found": "No result found",
   "nft_on_auction": "NFT on auction",
-  "expected_loan": "Expected loan"
+  "expected_loan": "Expected loan",
+  "evaluation" : "Evaluation",
+  "auction_end_in" : "Auction ends in:",
+  "evaluated_by" : "Evaluated by:",
+  "asset_type" : "Asset type:",
+  "authenticity_check" : "Authenticity check:",
+  "carat" : "Carat:",
+  "clarity" : "Clarity:",
+  "shape" : "Shape:",
+  "cut_grade" : "Cut grade:",
+  "information" : "Information"
 }
