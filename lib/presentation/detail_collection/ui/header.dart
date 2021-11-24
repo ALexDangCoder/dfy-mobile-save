@@ -70,7 +70,7 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                         widget.title,
                         style: textNormalCustom(
                           null,
-                          20,
+                          20.sp,
                           FontWeight.w600,
                         ),
                       ),
@@ -78,8 +78,8 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                       Text(
                         widget.bodyText,
                         style: textNormalCustom(
-                          Colors.white.withOpacity(0.7),
-                          14,
+                          AppTheme.getInstance().whiteWithOpacity(),
+                          14.sp,
                           null,
                         ),
                       ),
@@ -94,8 +94,8 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                                 Text(
                                   S.current.owner,
                                   style: textNormalCustom(
-                                    Colors.white.withOpacity(0.7),
-                                    14,
+                                    AppTheme.getInstance().whiteWithOpacity(),
+                                    14.sp,
                                     FontWeight.w400,
                                   ),
                                 ),
@@ -103,8 +103,8 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                                 Text(
                                   S.current.contract,
                                   style: textNormalCustom(
-                                    Colors.white.withOpacity(0.7),
-                                    14,
+                                    AppTheme.getInstance().whiteWithOpacity(),
+                                    14.sp,
                                     FontWeight.w400,
                                   ),
                                 ),
@@ -112,8 +112,8 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                                 Text(
                                   S.current.nft_standard,
                                   style: textNormalCustom(
-                                    Colors.white.withOpacity(0.7),
-                                    14,
+                                    AppTheme.getInstance().whiteWithOpacity(),
+                                    14.sp,
                                     FontWeight.w400,
                                   ),
                                 ),
@@ -121,8 +121,8 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                                 Text(
                                   S.current.category,
                                   style: textNormalCustom(
-                                    Colors.white.withOpacity(0.7),
-                                    14,
+                                    AppTheme.getInstance().whiteWithOpacity(),
+                                    14.sp,
                                     FontWeight.w400,
                                   ),
                                 ),
@@ -138,7 +138,7 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                                   widget.owner,
                                   style: textNormalCustomUnderline(
                                     null,
-                                    14,
+                                    14.sp,
                                     null,
                                   ),
                                 ),
@@ -147,7 +147,7 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                                   widget.contract,
                                   style: textNormalCustomUnderline(
                                     const Color(0xff46BCFF),
-                                    14,
+                                    14.sp,
                                     null,
                                   ),
                                 ),
@@ -156,7 +156,7 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                                   widget.nftStandard,
                                   style: textNormalCustom(
                                     null,
-                                    14,
+                                    14.sp,
                                     null,
                                   ),
                                 ),
@@ -165,7 +165,7 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                                   widget.category,
                                   style: textNormalCustom(
                                     null,
-                                    14,
+                                    14.sp,
                                     null,
                                   ),
                                 ),
@@ -184,13 +184,28 @@ class _HeaderCollectionState extends State<HeaderCollection> {
         ),
         Positioned(
           top: 105.h,
-          child: SizedBox(
+          child: Container(
             height: 80.h,
             width: 80.w,
-            child: AvatarView(
-              borderWidth: 6,
-              borderColor: AppTheme.getInstance().borderItemColor(),
-              imagePath: widget.urlAvatar,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppTheme.getInstance().borderItemColor(),
+                width: 6.w,
+              ),
+            ),
+            child: Container(
+              clipBehavior: Clip.hardEdge,
+              width: 74.w,
+              height: 74.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: AssetImage(
+                      widget.urlAvatar,
+                    ),
+                    fit: BoxFit.cover),
+              ),
             ),
           ),
         ),

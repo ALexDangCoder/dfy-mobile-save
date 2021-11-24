@@ -119,8 +119,8 @@ class ImageAssets {
   static const String ic_profile = '$baseImg/ic_profile.png';
   static const String img_push = '$baseImg/img_push.png';
   static const String img_categories = '$baseImg/category.png';
-  static const String img_nature = '$baseImg/nature_collect.png';
-  static const String img_art = '$baseImg/art_collect.png';
+  static const String img_nature = '$baseImg/img_nature.png';
+  static const String img_art = '$baseImg/img_nature.png';
   static const String img_collection = '$baseImg/img_collection.png';
   static const String img_search_empty = '$baseImg/img_search_empty.png';
 

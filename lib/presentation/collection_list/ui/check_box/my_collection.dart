@@ -26,14 +26,14 @@ class IsMyCollection extends StatelessWidget {
             stream: collectionBloc.isMyCollection,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Transform.scale(
-                scale: 1.34,
+                scale: 1.34.sp,
                 child: Checkbox(
                   fillColor: MaterialStateProperty.all(
                     AppTheme.getInstance().fillColor(),
                   ),
                   checkColor: AppTheme.getInstance().whiteColor(),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(6.r),
                   ),
                   side: BorderSide(
                     width: 1.w,
@@ -55,7 +55,7 @@ class IsMyCollection extends StatelessWidget {
             title,
             style: textNormal(
               AppTheme.getInstance().textThemeColor(),
-              16,
+              16.sp,
             ),
           ),
         ],

@@ -98,7 +98,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.outstanding_collection,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -113,8 +113,12 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       padding: EdgeInsets.only(
                                         right: 16.w,
                                       ),
-                                      child: const Image(
-                                        image: AssetImage(ImageAssets.img_push),
+                                      child: Image(
+                                        height: 32.h,
+                                        width: 32.w,
+                                        image: const AssetImage(
+                                          ImageAssets.img_push,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -151,7 +155,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.hot_auction,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -169,8 +173,12 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       padding: EdgeInsets.only(
                                         right: 16.w,
                                       ),
-                                      child: const Image(
-                                        image: AssetImage(ImageAssets.img_push),
+                                      child: Image(
+                                        height: 32.h,
+                                        width: 32.w,
+                                        image: const AssetImage(
+                                          ImageAssets.img_push,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -212,7 +220,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.NFTs_collateral,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -222,8 +230,12 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       padding: EdgeInsets.only(
                                         right: 16.w,
                                       ),
-                                      child: const Image(
-                                        image: AssetImage(ImageAssets.img_push),
+                                      child: Image(
+                                        height: 32.h,
+                                        width: 32.w,
+                                        image: const AssetImage(
+                                          ImageAssets.img_push,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -261,7 +273,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.sale_items,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -271,8 +283,12 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       padding: EdgeInsets.only(
                                         right: 16.w,
                                       ),
-                                      child: const Image(
-                                        image: AssetImage(ImageAssets.img_push),
+                                      child: Image(
+                                        height: 32.h,
+                                        width: 32.w,
+                                        image: const AssetImage(
+                                          ImageAssets.img_push,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -310,7 +326,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.hard_NFT,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -320,8 +336,12 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       padding: EdgeInsets.only(
                                         right: 16.w,
                                       ),
-                                      child: const Image(
-                                        image: AssetImage(ImageAssets.img_push),
+                                      child: Image(
+                                        height: 32.h,
+                                        width: 32.w,
+                                        image: const AssetImage(
+                                          ImageAssets.img_push,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -360,7 +380,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                 S.current.explore_categories,
                                 style: textNormalCustom(
                                   Colors.white,
-                                  20,
+                                  20.sp,
                                   FontWeight.w700,
                                 ),
                               ),
@@ -403,7 +423,11 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
 
   Widget header() {
     return Padding(
-      padding: EdgeInsets.only(top: 44.h, left: 16.h),
+      padding: EdgeInsets.only(
+        top: 44.h,
+        left: 16.h,
+        right: 16.w,
+      ),
       child: SizedBox(
         height: 52.h,
         width: 343.w,
@@ -439,9 +463,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
       child: Container(
         width: 259.w,
         height: 38.h,
-        decoration: const BoxDecoration(
-          color: Color(0xff4F4F65),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
+        decoration: BoxDecoration(
+          color: const Color(0xff4F4F65),
+          borderRadius: BorderRadius.all(Radius.circular(12.r)),
         ),
         child: Row(
           children: [
@@ -450,6 +474,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
             ),
             Image.asset(
               ImageAssets.ic_search,
+              width: 15.w,
+              height: 15.h,
             ),
             SizedBox(
               width: 10.7.w,
@@ -458,7 +484,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
               S.current.search,
               style: textNormal(
                 Colors.white54,
-                16,
+                16.sp,
               ),
             )
           ],

@@ -30,7 +30,7 @@ class NavCollection extends StatelessWidget {
                   items,
                   style: textNormalCustom(
                     null,
-                    14,
+                    14.sp,
                     FontWeight.w600,
                   ),
                 ),
@@ -39,7 +39,7 @@ class NavCollection extends StatelessWidget {
                   S.current.items,
                   style: textNormalCustom(
                     null,
-                    12,
+                    12.sp,
                     null,
                   ),
                 ),
@@ -53,7 +53,7 @@ class NavCollection extends StatelessWidget {
                   owners,
                   style: textNormalCustom(
                     null,
-                    14,
+                    14.sp,
                     FontWeight.w600,
                   ),
                 ),
@@ -62,7 +62,7 @@ class NavCollection extends StatelessWidget {
                   S.current.owners,
                   style: textNormalCustom(
                     null,
-                    12,
+                    12.sp,
                     null,
                   ),
                 ),
@@ -76,7 +76,7 @@ class NavCollection extends StatelessWidget {
                   volumeTraded,
                   style: textNormalCustom(
                     null,
-                    14,
+                    14.sp,
                     FontWeight.w600,
                   ),
                 ),
@@ -85,7 +85,7 @@ class NavCollection extends StatelessWidget {
                   S.current.volume_traded,
                   style: textNormalCustom(
                     null,
-                    12,
+                    12.sp,
                     null,
                   ),
                 ),
