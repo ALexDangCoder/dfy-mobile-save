@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
@@ -30,15 +31,19 @@ class _NftsCollectionState extends State<NftsCollection> {
             width: 343.w,
             height: 46.h,
             margin: EdgeInsets.only(top: 20.h),
-            padding: const EdgeInsets.only(right: 15, left: 15),
-            decoration: const BoxDecoration(
-              color: Color(0xff32324c),
-              borderRadius: BorderRadius.all(Radius.circular(12)),
+            padding: EdgeInsets.only(right: 15.w, left: 15.w),
+            decoration: BoxDecoration(
+              color: AppTheme.getInstance().backgroundBTSColor(),
+              borderRadius: BorderRadius.all(Radius.circular(12.r)),
             ),
             child: Row(
               children: [
-                Image.asset(
-                  ImageAssets.ic_search,
+                SizedBox(
+                  height: 24.h,
+                  width: 24.w,
+                  child: Image.asset(
+                    ImageAssets.ic_search,
+                  ),
                 ),
                 SizedBox(
                   width: 11.5.w,
@@ -53,33 +58,27 @@ class _NftsCollectionState extends State<NftsCollection> {
                         detailCollectionBloc.textSearch.sink.add(value);
                         detailCollectionBloc.search();
                       },
-                      cursorColor: Colors.white,
+                      cursorColor: AppTheme.getInstance().whiteColor(),
                       style: textNormal(
-                        Colors.white54,
-                        14,
+                        AppTheme.getInstance().whiteColor(),
+                        14.sp,
                       ),
                       decoration: InputDecoration(
                         counterText: '',
                         hintText: S.current.search,
                         hintStyle: textNormal(
-                          Colors.white.withOpacity(0.5),
-                          14,
+                          AppTheme.getInstance().whiteWithOpacityFireZero(),
+                          14.sp,
                         ),
                         border: InputBorder.none,
                       ),
-                      // onFieldSubmitted: ,
                     ),
                   ),
                 ),
                 StreamBuilder(
-                  //stream: widget.bloc.textSearch,
                   builder: (context, AsyncSnapshot<String> snapshot) {
                     return GestureDetector(
-                      onTap: () {
-                        // widget.bloc.textSearch.sink.add('');
-                        // textSearch.text = '';
-                        // widget.bloc.search();
-                      },
+                      onTap: () {},
                       child: snapshot.data?.isNotEmpty ?? false
                           ? Image.asset(
                               ImageAssets.ic_close,
@@ -126,15 +125,19 @@ class _NftsCollectionState extends State<NftsCollection> {
                   SizedBox(
                     height: 40.h,
                   ),
-                  Image.asset(
-                    ImageAssets.img_search_empty,
+                  SizedBox(
+                    width: 120.w,
+                    height: 117.23.h,
+                    child: Image.asset(
+                      ImageAssets.img_search_empty,
+                    ),
                   ),
                   spaceH16,
                   Text(
                     S.current.no_result_found,
                     style: textNormalCustom(
-                      Colors.white.withOpacity(0.7),
-                      20,
+                      AppTheme.getInstance().whiteWithOpacity(),
+                      20.sp,
                       FontWeight.bold,
                     ),
                   ),
@@ -147,8 +150,8 @@ class _NftsCollectionState extends State<NftsCollection> {
                   SizedBox(
                     height: 80.h,
                   ),
-                  const CircularProgressIndicator(
-                    color: Colors.white,
+                  CircularProgressIndicator(
+                    color: AppTheme.getInstance().whiteColor(),
                   )
                 ],
               );

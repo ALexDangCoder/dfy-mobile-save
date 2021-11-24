@@ -12,5 +12,5 @@ abstract class CollectionClient {
   factory CollectionClient(Dio dio, {String baseUrl}) = _CollectionClient;
 
   @GET('https://619b3a7c2782760017445466.mockapi.io/collection')
-  Future<List<CollectionRespone>> getCollection();
+  Future<List<CollectionResponse>> getCollection();
 }

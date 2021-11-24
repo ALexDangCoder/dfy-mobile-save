@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
@@ -45,7 +46,7 @@ void showCreateSuccessfully2({
                     ? S.current.success
                     : S.current.success_import,
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 20.sp,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
@@ -63,14 +64,18 @@ void showCreateSuccessfully2({
                       SizedBox(
                         height: 80.h,
                       ),
-                      Image.asset(ImageAssets.frameGreen),
+                      SizedBox(
+                        height: 228.h,
+                        width: 305.w,
+                        child: Image.asset(ImageAssets.frameGreen),
+                      ),
                       spaceH20,
                       Text(
                         S.current.congratulation,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppTheme.getInstance().whiteColor(),
                           fontWeight: FontWeight.bold,
-                          fontSize: 32,
+                          fontSize: 32.sp,
                         ),
                       ),
                       SizedBox(

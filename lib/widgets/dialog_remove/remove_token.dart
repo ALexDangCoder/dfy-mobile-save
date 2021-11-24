@@ -38,10 +38,10 @@ class RemoveToken extends StatelessWidget {
                       return CustomRectTween(begin: begin!, end: end!);
                     },
                     child: Material(
-                      color: const Color(0xff585782),
+                      color: AppTheme.getInstance().selectDialogColor(),
                       elevation: 2,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(36),
+                        borderRadius: BorderRadius.circular(36.r),
                       ),
                       child: SizedBox(
                         width: 312.w,
@@ -51,8 +51,8 @@ class RemoveToken extends StatelessWidget {
                             Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const SizedBox(
-                                  height: 93,
+                                 SizedBox(
+                                  height: 93.h,
                                 ),
                                 Container(
                                   padding:
@@ -61,7 +61,7 @@ class RemoveToken extends StatelessWidget {
                                     S.current.are_you_sure_token,
                                     style: textNormal(
                                       null,
-                                      20,
+                                      20.sp,
                                     ).copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -76,7 +76,7 @@ class RemoveToken extends StatelessWidget {
                                     S.current.this_will_also,
                                     style: textNormal(
                                       null,
-                                      12,
+                                      12.sp,
                                     ).copyWith(
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -106,7 +106,7 @@ class RemoveToken extends StatelessWidget {
                                         child: Text(
                                           S.current.cancel,
                                           style:
-                                              textNormal(null, 20).copyWith(
+                                              textNormal(null, 20.sp).copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,
                                           ),
@@ -133,8 +133,8 @@ class RemoveToken extends StatelessWidget {
                                         child: Text(
                                           S.current.remove,
                                           style: textNormal(
-                                            const Color(0xffE4AC1A),
-                                            20,
+                                            AppTheme.getInstance().fillColor(),
+                                            20.sp,
                                           ).copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,

@@ -4,6 +4,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class BaseDetailNFT extends StatelessWidget {
   const BaseDetailNFT({
@@ -79,13 +80,19 @@ class BaseDetailNFT extends StatelessWidget {
                   child: Container(
                     height: 32.h,
                     width: 32.w,
+                    padding: EdgeInsets.only(
+                      top: 4.h,
+                      bottom: 4.h,
+                      left: 4.w,
+                      right: 4.w,
+                    ),
                     decoration: BoxDecoration(
                       color:
                           AppTheme.getInstance().bgBtsColor().withOpacity(0.6),
                       shape: BoxShape.circle,
-                      image: const DecorationImage(
-                        image: AssetImage(ImageAssets.ic_filter),
-                      ),
+                    ),
+                    child: SvgPicture.asset(
+                      ImageAssets.ic_filter_svg,
                     ),
                   ),
                 ),

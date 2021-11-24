@@ -32,7 +32,7 @@ const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
 
 //custom color
-
+Color whiteOpacityZeroFire = Colors.white.withOpacity(0.5);
 const borderItemColors = Color(0xff474666);
 const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
@@ -68,9 +68,12 @@ const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
 const unselectedTabLabel = Color(0xFF9997FF);
 
-
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
+  Color backgroundBTSColor();
+
+  Color colorTextFieldZeroFire();
+
   Color borderItemColor();
 
   Color primaryColor();
@@ -110,6 +113,8 @@ abstract class AppColor {
   Color activeColor();
 
   Color whiteWithOpacity();
+
+  Color whiteWithOpacityFireZero();
 
   Color textThemeColor();
 
@@ -328,6 +333,7 @@ class LightApp extends AppColor {
     // TODO: implement whiteBackgroundButtonColor
     return Colors.white.withOpacity(0.1);
   }
+
   List<Color> listBackgroundMarketColor() {
     return backgroundMarketColor;
   }
@@ -349,6 +355,24 @@ class LightApp extends AppColor {
 
   Color titleTabColor() {
     return purple;
+  }
+
+  @override
+  Color whiteWithOpacityFireZero() {
+    // TODO: implement whiteWithOpacityFireZero
+    return whiteOpacityZeroFire;
+  }
+
+  @override
+  Color backgroundBTSColor() {
+    // TODO: implement backgroundBTSColor
+    return backgroundBottomSheetColor;
+  }
+
+  @override
+  Color colorTextFieldZeroFire() {
+    // TODO: implement colorTextFieldZeroFire
+   return colorTextField.withOpacity(0.5);
   }
 }
 
@@ -457,7 +481,7 @@ class DarkApp extends AppColor {
 
   @override
   Color whiteWithOpacity() {
-    // TODO: implement whiteWithOpacity
+    // TODO: implement listColorAddWalletSeedPhrase
     throw UnimplementedError();
   }
 
@@ -544,7 +568,8 @@ class DarkApp extends AppColor {
     // TODO: implement backgroundButtonColor
     throw UnimplementedError();
   }
-    @override
+
+  @override
   List<Color> listBackgroundMarketColor() {
     // TODO: implement listBackgroundMarketColor
     throw UnimplementedError();
@@ -555,6 +580,7 @@ class DarkApp extends AppColor {
     // TODO: implement whiteBackgroundButtonColor
     throw UnimplementedError();
   }
+
   Color borderItemColor() {
     // TODO: implement borderItemColor
     throw UnimplementedError();
@@ -571,9 +597,27 @@ class DarkApp extends AppColor {
     // TODO: implement unselectedTabLabelColor
     return unselectedTabLabel;
   }
+
   @override
   Color titleTabColor() {
     // TODO: implement titleTabColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color whiteWithOpacityFireZero() {
+    return whiteOpacityZeroFire;
+  }
+
+  @override
+  Color backgroundBTSColor() {
+    // TODO: implement backgroundBTSColor
+    return colorTextField.withOpacity(0.5);
+  }
+
+  @override
+  Color colorTextFieldZeroFire() {
+    // TODO: implement colorTextFieldZeroFire
     throw UnimplementedError();
   }
 }

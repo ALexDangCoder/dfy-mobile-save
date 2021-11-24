@@ -132,13 +132,7 @@ class BaseNFTMarket extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 16.w,
-                      right: 16.w,
-                    ),
-                    child: child,
-                  ),
+                  child,
                 ],
               ),
             ),

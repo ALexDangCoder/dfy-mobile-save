@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft_succesfully.dart';
@@ -75,7 +74,7 @@ class _BodyState extends State<Body> {
                                   S.current.invalid_address,
                                   style: textNormal(
                                     Colors.red,
-                                    14,
+                                    14.sp,
                                   ),
                                   textAlign: TextAlign.start,
                                 ),
@@ -88,8 +87,8 @@ class _BodyState extends State<Body> {
                       bloc: widget.bloc,
                       hint: S.current.enter_id,
                     ),
-                    const SizedBox(
-                      height: 429,
+                    SizedBox(
+                      height: 429.h,
                     ),
                   ],
                 ),

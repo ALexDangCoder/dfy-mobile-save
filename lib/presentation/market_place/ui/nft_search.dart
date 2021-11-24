@@ -17,7 +17,6 @@ class SearchNFT extends StatefulWidget {
 }
 
 class _SearchNFTState extends State<SearchNFT> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -63,8 +62,11 @@ class _SearchNFTState extends State<SearchNFT> {
                       padding: EdgeInsets.only(top: 150.h),
                       child: Column(
                         children: [
-                          const Image(
-                            image: AssetImage(ImageAssets.img_search_empty),
+                          Image(
+                            image:
+                                const AssetImage(ImageAssets.img_search_empty),
+                            height: 120.h,
+                            width: 120.w,
                           ),
                           SizedBox(
                             height: 17.7.h,
@@ -73,7 +75,7 @@ class _SearchNFTState extends State<SearchNFT> {
                             'No result found',
                             style: textNormal(
                               Colors.white54,
-                              20,
+                              20.sp,
                             ),
                           ),
                         ],
@@ -96,11 +98,15 @@ class _SearchNFTState extends State<SearchNFT> {
       child: Row(
         children: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               widget.cubit.emit(OffSearch());
             },
-            child: const ImageIcon(
-              AssetImage(ImageAssets.ic_back,),color: Colors.white,
+            child: ImageIcon(
+              const AssetImage(
+                ImageAssets.ic_back,
+              ),
+              color: Colors.white,
+              size: 24.sp,
             ),
           ),
           SizedBox(
@@ -110,15 +116,19 @@ class _SearchNFTState extends State<SearchNFT> {
             child: Container(
               width: 299.w,
               height: 38.h,
-              decoration: const BoxDecoration(
-                color: Color(0xff4F4F65),
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+              decoration:  BoxDecoration(
+                color: const Color(0xff4F4F65),
+                borderRadius: BorderRadius.all(Radius.circular(12.r)),
               ),
               child: Row(
                 children: [
-                  SizedBox(width: 14.w,),
+                  SizedBox(
+                    width: 14.w,
+                  ),
                   Image.asset(
                     ImageAssets.ic_search,
+                    height: 16.h,
+                    width: 16.w,
                   ),
                   SizedBox(
                     width: 10.7.w,
@@ -129,13 +139,13 @@ class _SearchNFTState extends State<SearchNFT> {
                       cursorColor: Colors.white,
                       style: textNormal(
                         Colors.white,
-                        14,
+                        14.sp,
                       ),
                       decoration: InputDecoration(
                         hintText: S.current.search,
                         hintStyle: textNormal(
                           Colors.white54,
-                          14,
+                          14.sp,
                         ),
                         border: InputBorder.none,
                       ),
@@ -152,14 +162,14 @@ class _SearchNFTState extends State<SearchNFT> {
                         },
                         child: snapshot.data?.isNotEmpty ?? false
                             ? Image.asset(
-                          ImageAssets.ic_close,
-                          width: 20.w,
-                          height: 20.h,
-                        )
+                                ImageAssets.ic_close,
+                                width: 20.w,
+                                height: 20.h,
+                              )
                             : SizedBox(
-                          height: 20.h,
-                          width: 20.w,
-                        ),
+                                height: 20.h,
+                                width: 20.w,
+                              ),
                       );
                     },
                   ),

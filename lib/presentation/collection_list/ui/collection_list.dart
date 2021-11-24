@@ -72,7 +72,8 @@ class _CollectionListState extends State<CollectionList> {
                           ),
                           Text(
                             S.current.collection_list,
-                            style: textNormalCustom(null, 20, FontWeight.w700),
+                            style:
+                                textNormalCustom(null, 20.sp, FontWeight.w700),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -98,7 +99,7 @@ class _CollectionListState extends State<CollectionList> {
                       StreamBuilder(
                         stream: collectionBloc.list,
                         builder: (context,
-                            AsyncSnapshot<List<CollectionRespone>> snapshot) {
+                            AsyncSnapshot<List<CollectionResponse>> snapshot) {
                           if (snapshot.hasData) {
                             return Expanded(
                               child: GridView.builder(
@@ -124,14 +125,19 @@ class _CollectionListState extends State<CollectionList> {
                                       );
                                     },
                                     child: ItemCollection(
-                                      items: '${snapshot.data?[index].item ?? 0}',
-                                      text: snapshot.data?[index].textbody ?? '',
+                                      items:
+                                          '${snapshot.data?[index].item ?? 0}',
+                                      text:
+                                          snapshot.data?[index].textbody ?? '',
                                       urlIcon:
-                                          snapshot.data?[index].avatarIcon ?? 'assets/images/Boahancock.jpg',
-                                      owners: '${snapshot.data?[index].owners ?? 0}',
+                                          snapshot.data?[index].avatarIcon ??
+                                              'assets/images/Boahancock.jpg',
+                                      owners:
+                                          '${snapshot.data?[index].owners ?? 0}',
                                       title: snapshot.data?[index].title ?? '',
                                       urlBackGround:
-                                          snapshot.data?[index].avatarBack ?? 'assets/images/Boahancock.jpg',
+                                          snapshot.data?[index].avatarBack ??
+                                              'assets/images/Boahancock.jpg',
                                     ),
                                   );
                                 },
@@ -141,10 +147,11 @@ class _CollectionListState extends State<CollectionList> {
                             return Center(
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height / 2 - 80,
+                                  top: MediaQuery.of(context).size.height / 2 -
+                                      80,
                                 ),
-                                child: const CircularProgressIndicator(
-                                  color: Colors.white,
+                                child: CircularProgressIndicator(
+                                  color: AppTheme.getInstance().whiteColor(),
                                 ),
                               ),
                             );

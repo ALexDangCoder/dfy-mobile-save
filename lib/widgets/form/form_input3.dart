@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
@@ -26,14 +27,20 @@ class FormInput3 extends StatelessWidget {
       width: 343.w,
       height: 64.h,
       padding: EdgeInsets.only(right: 15.w, left: 15.w),
-      decoration: const BoxDecoration(
-        color: Color(0xff32324c),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppTheme.getInstance().backgroundBTSColor(),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
+        ),
       ),
       child: Row(
         children: [
-          Image.asset(
-            urlIcon1,
+          SizedBox(
+            width: 24.w,
+            height: 24.h,
+            child: Image.asset(
+              urlIcon1,
+            ),
           ),
           SizedBox(
             width: 20.5.w,
@@ -48,17 +55,17 @@ class FormInput3 extends StatelessWidget {
                   bloc.tokenAddressTextNft.sink.add(value);
                 },
                 controller: controller,
-                cursorColor: Colors.white,
+                cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
-                  Colors.white,
-                  16,
+                  AppTheme.getInstance().whiteColor(),
+                  16.sp,
                 ),
                 decoration: InputDecoration(
                   counterText: '',
                   hintText: hint,
                   hintStyle: textNormal(
-                    Colors.white54,
-                    16,
+                    AppTheme.getInstance().whiteWithOpacityFireZero(),
+                    16.sp,
                   ),
                   border: InputBorder.none,
                 ),
@@ -81,8 +88,12 @@ class FormInput3 extends StatelessWidget {
                 () => controller.text = bloc.tokenAddressTextNft.value,
               );
             },
-            child: Image.asset(
-              urlIcon2,
+            child: SizedBox(
+              width: 24.w,
+              height: 24.h,
+              child: Image.asset(
+                urlIcon2,
+              ),
             ),
           ),
         ],

@@ -20,13 +20,13 @@ class Category extends StatelessWidget {
               Container(
                 height: 130.h,
                 width: 146.w,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
+                decoration:  BoxDecoration(
+                  image:  DecorationImage(
                     image: AssetImage(ImageAssets.img_categories),
                     fit: BoxFit.fill,
                   ),
                   borderRadius: BorderRadius.all(
-                    Radius.circular(20),
+                    Radius.circular(20.r),
                   ),
                 ),
               ),
@@ -39,7 +39,7 @@ class Category extends StatelessWidget {
                   title,
                   style: textNormalCustom(
                     Colors.white,
-                    16,
+                    16.sp,
                     FontWeight.w700,
                   ),
                 ),
