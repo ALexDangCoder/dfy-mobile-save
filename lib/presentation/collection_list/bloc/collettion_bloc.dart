@@ -10,7 +10,7 @@ class CollectionBloc {
   }
 
   //getlistcollection
-  BehaviorSubject<List<CollectionRespone>> list = BehaviorSubject();
+  BehaviorSubject<List<CollectionResponse>> list = BehaviorSubject();
 
   //filter collection
   BehaviorSubject<bool> isMyCollection = BehaviorSubject.seeded(false);
@@ -25,10 +25,10 @@ class CollectionBloc {
   BehaviorSubject<bool> isMusic = BehaviorSubject.seeded(false);
 
   CollectionRepository get _collectionRepository => Get.find();
-  List<CollectionRespone> arg = [];
+  List<CollectionResponse> arg = [];
 
   Future<void> getCollection() async {
-    final Result<List<CollectionRespone>> result =
+    final Result<List<CollectionResponse>> result =
         await _collectionRepository.getCollection();
     result.when(
       success: (res) {

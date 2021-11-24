@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/nft_auction/ui/bid_tab.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/history_tab.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/owner_tab.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class _DetailNftTabState extends State<DetailNftTab>
   final List<Widget> tabPage = const [
     HistoryTab(),
     OwnerTab(),
+    BidTab()
   ];
   final List<Tab> titTab = [
     Tab(
