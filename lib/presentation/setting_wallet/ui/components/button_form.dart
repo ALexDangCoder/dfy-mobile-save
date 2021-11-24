@@ -14,15 +14,17 @@ Container buttonForm({
     width: 343.w,
     height: 64.h,
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(20.r)),
+      borderRadius: BorderRadius.all(Radius.circular(20)),
       color: AppTheme.getInstance().itemBtsColors(),
     ),
     child: Row(
       children: [
         IconButton(onPressed: () {}, icon: Image.asset(prefixIcon)),
-        Text(
-          hintText,
-          style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+        Expanded(
+          child: Text(
+            hintText,
+            style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+          ),
         )
       ],
     ),
@@ -41,7 +43,7 @@ Container switchForm({
       width: 343.w,
       height: 64.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20.r)),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: Padding(
@@ -78,7 +80,7 @@ Container switchForm({
       width: 343.w,
       height: 64.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20.r)),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: Padding(

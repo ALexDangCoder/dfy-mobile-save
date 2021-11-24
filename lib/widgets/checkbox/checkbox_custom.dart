@@ -23,23 +23,26 @@ class CheckBoxCustom extends StatelessWidget {
           StreamBuilder(
             stream: bLocCreateSeedPhrase.isCheckBox1,
             builder: (context, AsyncSnapshot<bool> snapshot) {
-              return Checkbox(
-                fillColor: MaterialStateProperty.all(
-                  AppTheme.getInstance().fillColor(),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                value: snapshot.data ?? false,
-                onChanged: (value) {
-                  bLocCreateSeedPhrase.isCheckBox1.sink.add(true);
-                  if (snapshot.data ?? false) {
-                    bLocCreateSeedPhrase.isCheckBox1.sink.add(false);
-                  }
+              return Transform.scale(
+                scale: 1.sp,
+                child: Checkbox(
+                  fillColor: MaterialStateProperty.all(
+                    AppTheme.getInstance().fillColor(),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                  value: snapshot.data ?? false,
+                  onChanged: (value) {
+                    bLocCreateSeedPhrase.isCheckBox1.sink.add(true);
+                    if (snapshot.data ?? false) {
+                      bLocCreateSeedPhrase.isCheckBox1.sink.add(false);
+                    }
 
-                  bLocCreateSeedPhrase.isButton();
-                },
-                activeColor: AppTheme.getInstance().fillColor(),
+                    bLocCreateSeedPhrase.isButton();
+                  },
+                  activeColor: AppTheme.getInstance().fillColor(),
+                ),
               );
             },
           ),
@@ -48,7 +51,7 @@ class CheckBoxCustom extends StatelessWidget {
               title,
               style: textNormal(
                 AppTheme.getInstance().textThemeColor(),
-                14,
+                14.sp,
               ),
             ),
           )

@@ -68,7 +68,7 @@ class _EnterAddressState extends State<EnterAddress> {
                                 S.current.invalid_address,
                                 style: textNormal(
                                   Colors.red,
-                                  14,
+                                  14.sp,
                                 ),
                                 textAlign: TextAlign.start,
                               ),

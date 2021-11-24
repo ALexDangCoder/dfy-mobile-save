@@ -13,11 +13,15 @@ final spaceH3 = SizedBox(height: 3.h);
 final spaceH4 = SizedBox(height: 4.h);
 final spaceH5 = SizedBox(height: 5.h);
 final spaceH6 = SizedBox(height: 6.h);
+final spaceH7 = SizedBox(height: 7.h);
 final spaceH8 = SizedBox(height: 8.h);
 final spaceH10 = SizedBox(height: 10.h);
 final spaceH12 = SizedBox(height: 12.h);
 final spaceH15 = SizedBox(height: 15.h);
+
+final spaceH14 = SizedBox(height: 14.h);
 final spaceH16 = SizedBox(height: 16.h);
+final spaceH18 = SizedBox(height: 18.h);
 final spaceH20 = SizedBox(height: 20.h);
 final spaceH24 = SizedBox(height: 24.h);
 final spaceH25 = SizedBox(height: 25.h);
@@ -26,8 +30,10 @@ final spaceH35 = SizedBox(height: 35.h);
 final spaceH38 = SizedBox(height: 38.h);
 final spaceH40 = SizedBox(height: 40.h);
 final spaceH50 = SizedBox(height: 50.h);
+final spaceH56 = SizedBox(height: 56.h);
 final spaceH60 = SizedBox(height: 60.h);
 final spaceH70 = SizedBox(height: 70.h);
+final spaceH344 = SizedBox(height: 344.h);
 
 ///W
 final spaceW2 = SizedBox(width: 2.w);
@@ -47,6 +53,11 @@ final spaceW30 = SizedBox(width: 30.w);
 final spaceW60 = SizedBox(width: 60.w);
 final spaceW100 = SizedBox(width: 100.w);
 
+final divide = Divider(
+  color: AppTheme.getInstance().divideColor(),
+  thickness: 1,
+);
+
 TextStyle textNormal(Color? color, double? fontSize) {
   return GoogleFonts.sen(
     color: color ?? Colors.white,
@@ -56,18 +67,24 @@ TextStyle textNormal(Color? color, double? fontSize) {
   );
 }
 
+final divider = Divider(thickness: 1, color: Colors.white.withOpacity(0.1));
+
 TextStyle tokenDetailAmount({
   Color color = Colors.white,
   double fontSize = 24,
-  FontWeight weight = FontWeight.w400,
+  FontWeight weight = FontWeight.w600,
+  FontStyle fontStyle = FontStyle.normal,
+  TextDecoration decoration = TextDecoration.none,
 }) {
   return GoogleFonts.sen(
     color: color,
     fontWeight: weight,
-    fontStyle: FontStyle.normal,
+    fontStyle: fontStyle,
     fontSize: fontSize,
+    decoration: decoration,
   );
 }
+
 TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
   return GoogleFonts.sen(
     color: color,
@@ -89,6 +106,19 @@ TextStyle textNormalCustom(
     fontSize: fontSize ?? 14,
   );
 }
+TextStyle textNormalCustomUnderline(
+    Color? color,
+    double? fontSize,
+    FontWeight? fontWeight,
+    ) {
+  return GoogleFonts.sen(
+    color: color ?? Colors.white,
+    fontWeight: fontWeight ?? FontWeight.w500,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize ?? 14,
+    decoration: TextDecoration.underline,
+  );
+}
 
 TextStyle textFieldNFT = GoogleFonts.sen(
   color: AppTheme.getInstance().textThemeColor(),
@@ -100,9 +130,26 @@ TextStyle textValueNFT = GoogleFonts.sen(
   fontWeight: FontWeight.w400,
   fontSize: 16,
 );
-TextStyle richTextValueNFT = GoogleFonts.sen(
+TextStyle richTextBlue = GoogleFonts.sen(
   color: const Color(0xff46BCFF),
   fontWeight: FontWeight.w400,
   fontSize: 16,
   decoration: TextDecoration.underline,
+);TextStyle richTextWhite = GoogleFonts.sen(
+  color: AppTheme.getInstance().textThemeColor(),
+  fontWeight: FontWeight.w400,
+  fontSize: 16,
+  decoration: TextDecoration.underline,
 );
+
+TextStyle whiteTextWithOpacity = GoogleFonts.sen(
+  color: Colors.white.withOpacity(0.7),
+  fontWeight: FontWeight.w400,
+  fontSize: 14,
+);
+TextStyle unselectLabel = GoogleFonts.sen(
+  color: AppTheme.getInstance().whiteColor(),
+  fontWeight: FontWeight.w600,
+  fontSize: 14,
+);
+

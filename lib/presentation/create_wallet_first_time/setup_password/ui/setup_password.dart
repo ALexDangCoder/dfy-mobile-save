@@ -151,8 +151,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style: textNormal(AppTheme.getInstance().wrongColor(), 12)
-                          .copyWith(fontWeight: FontWeight.w400),
+                      style:
+                          textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                              .copyWith(fontWeight: FontWeight.w400),
                     );
                   },
                 ),
@@ -183,8 +184,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style: textNormal(AppTheme.getInstance().wrongColor(), 12)
-                          .copyWith(fontWeight: FontWeight.w400),
+                      style:
+                          textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                              .copyWith(fontWeight: FontWeight.w400),
                     );
                   },
                 ),
@@ -214,7 +216,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 builder: (context, snapshot) {
                   return Checkbox(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(6.r),
                     ),
                     fillColor:
                         MaterialStateProperty.all(const Color(0xffE4AC1A)),
@@ -262,8 +264,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
         bottom: 12.h,
       ),
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
         ),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
@@ -277,7 +279,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
             obscureText: snapshot.data ?? false,
             style: textNormal(
               Colors.white,
-              16,
+              16.sp,
             ),
             cursorColor: Colors.white,
             controller: password,
@@ -285,7 +287,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               hintText: hintText,
               hintStyle: textNormal(
                 Colors.grey,
-                14,
+                14.sp,
               ),
               suffixIcon: InkWell(
                 onTap: () {
@@ -328,8 +330,8 @@ class _SetupPassWordState extends State<SetupPassWord> {
         bottom: 12.h,
       ),
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
         ),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
@@ -341,7 +343,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               isValidPassCubit.checkHaveValueConfirmPW(value);
             },
             obscureText: snapshot.data ?? false,
-            style: textNormal(Colors.white, 16)
+            style: textNormal(Colors.white, 16.sp)
                 .copyWith(fontWeight: FontWeight.w400),
             cursorColor: Colors.white,
             controller: confirmPassword,
@@ -349,7 +351,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               hintText: hintText,
               hintStyle: textNormal(
                 Colors.grey,
-                14,
+                14.sp,
               ),
               suffixIcon: InkWell(
                 onTap: () {
@@ -391,7 +393,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         // height: 72.h,
         child: Text(
           S.current.please,
-          style: textNormal(const Color.fromRGBO(255, 255, 255, 1.0), 16)
+          style: textNormal(const Color.fromRGBO(255, 255, 255, 1.0), 16.sp)
               .copyWith(fontWeight: FontWeight.w400),
         ),
       ),
@@ -423,7 +425,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
           Text(
             S.current.create_new_wallet,
-            style: textNormal(Colors.white, 20)
+            style: textNormal(Colors.white, 20.sp)
                 .copyWith(fontWeight: FontWeight.w700),
           ),
           IconButton(

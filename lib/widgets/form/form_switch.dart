@@ -25,18 +25,21 @@ class FromSwitch extends StatelessWidget {
       width: 343.w,
       height: 64.h,
       margin: EdgeInsets.symmetric(horizontal: 16.w),
-      //padding: EdgeInsets.symmetric(horizontal: 15.5.w),
       decoration: BoxDecoration(
         color: AppTheme.getInstance().itemBtsColors(),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
         ),
       ),
       child: Center(
         child: ListTileSwitch(
-          switchScale: 1,
+          switchScale: 1.sp,
           value: isCheck,
-          leading: Image.asset(urlPrefixIcon),
+          leading: SizedBox(
+            width: 24.w,
+            height: 24.h,
+            child: Image.asset(urlPrefixIcon),
+          ),
           onChanged: (value) {
             bLocCreateSeedPhrase.isCheckAppLock.sink.add(value);
           },
@@ -45,8 +48,8 @@ class FromSwitch extends StatelessWidget {
           title: Text(
             title,
             style: textNormal(
-              Colors.white54,
-              16,
+              AppTheme.getInstance().whiteColor(),
+              16.sp,
             ),
           ),
         ),
