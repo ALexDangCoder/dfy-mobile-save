@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -20,10 +21,10 @@ void showTokenSuccessfully(BuildContext context) {
         width: 375.w,
         decoration: BoxDecoration(
           // shape: BoxShape.circle,
-          color: const Color(0xff3e3d5c),
+          color: AppTheme.getInstance().bgBtsColor(),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.h),
-            topRight: Radius.circular(30.h),
+            topLeft: Radius.circular(30.r),
+            topRight: Radius.circular(30.r),
           ),
         ),
         child: Column(
@@ -36,8 +37,8 @@ void showTokenSuccessfully(BuildContext context) {
               child: Text(
                 S.current.token_successfully,
                 style: textNormalCustom(
-                  Colors.white,
-                  20,
+                  AppTheme.getInstance().whiteColor(),
+                  20.sp,
                   FontWeight.bold,
                 ),
               ),
@@ -45,7 +46,6 @@ void showTokenSuccessfully(BuildContext context) {
             spaceH20,
             line,
             spaceH24,
-
             Expanded(
               child: SingleChildScrollView(
                 child: Center(
@@ -55,15 +55,19 @@ void showTokenSuccessfully(BuildContext context) {
                       SizedBox(
                         height: 56.h,
                       ),
-                      Image.asset(ImageAssets.frameGreen),
+                      SizedBox(
+                        height: 228.h,
+                        width: 305.w,
+                        child: Image.asset(ImageAssets.frameGreen),
+                      ),
                       SizedBox(
                         height: 22.h,
                       ),
                       Text(
                         S.current.congratulation,
                         style: textNormalCustom(
-                          Colors.white,
-                          32,
+                          AppTheme.getInstance().whiteColor(),
+                          32.sp,
                           FontWeight.bold,
                         ),
                       ),

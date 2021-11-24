@@ -1,10 +1,12 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/form/form_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
 
 class ChooseToken extends StatefulWidget {
@@ -20,7 +22,7 @@ class _ChooseTokenState extends State<ChooseToken> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xff3e3d5c),
+      color: AppTheme.getInstance().bgBtsColor(),
       child: Column(
         children: [
           spaceH12,
@@ -49,17 +51,21 @@ class _ChooseTokenState extends State<ChooseToken> {
                         }
                       },
                       child: SizedBox(
-                        height: 73,
-                        width: 322,
+                        height: 73.h,
+                        width: 322.w,
                         child: ListTileSwitch(
-                          switchScale: 1,
+                          switchScale: 1.sp,
                           value: widget
                                   .bloc.getListTokenModel.value[index].isShow ??
                               false,
-                          leading: Image.asset(
-                            widget.bloc.getListTokenModel.value[index]
-                                    .iconToken ??
-                                '',
+                          leading: SizedBox(
+                            width: 46.w,
+                            height: 46.h,
+                            child: Image.asset(
+                              widget.bloc.getListTokenModel.value[index]
+                                      .iconToken ??
+                                  '',
+                            ),
                           ),
                           onChanged: (value) {
                             widget.bloc.getListTokenModel.value[index].isShow =
@@ -75,7 +81,7 @@ class _ChooseTokenState extends State<ChooseToken> {
                                 .sortList(widget.bloc.getListTokenModel.value);
                             setState(() {});
                           },
-                          switchActiveColor: const Color(0xffE4AC1A),
+                          switchActiveColor: AppTheme.getInstance().fillColor(),
                           switchType: SwitchType.cupertino,
                           title: Row(
                             children: [
@@ -84,8 +90,8 @@ class _ChooseTokenState extends State<ChooseToken> {
                                         .nameToken ??
                                     '',
                                 style: textNormalCustom(
-                                  Colors.white,
-                                  16,
+                                AppTheme.getInstance().whiteColor(),
+                                  16.sp,
                                   FontWeight.w600,
                                 ),
                               ),
@@ -95,8 +101,8 @@ class _ChooseTokenState extends State<ChooseToken> {
                                         .nameTokenSymbol ??
                                     '',
                                 style: textNormalCustom(
-                                  const Color.fromRGBO(255, 255, 255, 0.7),
-                                  18,
+                                  AppTheme.getInstance().whiteWithOpacity(),
+                                  18.sp,
                                   FontWeight.w400,
                                 ),
                               ),
@@ -106,8 +112,8 @@ class _ChooseTokenState extends State<ChooseToken> {
                             '${widget.bloc.getListTokenModel.value[index].amountToken?.toStringAsFixed(5)}' +
                                 ' ${widget.bloc.getListTokenModel.value[index].nameTokenSymbol ?? ''} ',
                             style: textNormalCustom(
-                              const Color.fromRGBO(255, 255, 255, 0.5),
-                              16,
+                              AppTheme.getInstance().whiteWithOpacityFireZero(),
+                              16.sp,
                               FontWeight.w400,
                             ),
                           ),

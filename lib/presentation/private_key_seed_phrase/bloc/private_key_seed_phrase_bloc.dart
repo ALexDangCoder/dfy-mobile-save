@@ -122,7 +122,7 @@ class PrivateKeySeedPhraseBloc {
   String formatText(String text) {
     final String value =
         '${text.substring(0, 10)}'
-        '...${text.substring(text.length - 10, text.length)}';
+        '...${text.substring(text.length - 9, text.length)}';
     return value;
   }
 }

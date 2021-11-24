@@ -36,12 +36,32 @@ class OwnerTab extends StatelessWidget {
             ),
           ),
           spaceH7,
-          Text(
-            '1 of 20 on sale for 100 ETH each',
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              14,
-              FontWeight.w400,
+          RichText(
+            text: TextSpan(
+              text: '1 of 20 on sale for',
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor(),
+                14,
+                FontWeight.w400,
+              ),
+              children: [
+                TextSpan(
+                  text: ' 100 ETH ',
+                  style: textNormalCustom(
+                    AppTheme.getInstance().fillColor(),
+                    14,
+                    FontWeight.w400,
+                  ),
+                ),
+                TextSpan(
+                  text: 'each',
+                  style: textNormalCustom(
+                    AppTheme.getInstance().textThemeColor(),
+                    14,
+                    FontWeight.w400,
+                  ),
+                ),
+              ],
             ),
           )
         ],

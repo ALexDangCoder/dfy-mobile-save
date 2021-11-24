@@ -73,7 +73,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                                 image: AssetImage('assets/images/lambo.png'),
                                 fit: BoxFit.fill,
                               ),
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(10.r),
                             ),
                           ),
                           playVideo(widget.typeImage),

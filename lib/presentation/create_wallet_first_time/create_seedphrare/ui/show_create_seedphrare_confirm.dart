@@ -97,8 +97,8 @@ class _BodyState extends State<Body> {
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.h),
-              topRight: Radius.circular(30.h),
+              topLeft: Radius.circular(30.r),
+              topRight: Radius.circular(30.r),
             ),
           ),
           child: Column(
@@ -113,11 +113,11 @@ class _BodyState extends State<Body> {
                   children: [
                     GestureDetector(
                       child: Container(
-                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        margin: EdgeInsets.only(left: 10.w, right: 10.w),
                         child: Image.asset(
                           ImageAssets.ic_back,
-                          width: 20.w,
-                          height: 20,
+                          width: 24.w,
+                          height: 17.h,
                         ),
                       ),
                       onTap: () {
@@ -128,15 +128,17 @@ class _BodyState extends State<Body> {
                       S.current.create_new_wallet,
                       style: textNormalCustom(
                         Colors.white,
-                        20,
+                        20.sp,
                         FontWeight.bold,
                       ),
                     ),
                     GestureDetector(
                       child: Container(
-                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        margin: EdgeInsets.only(left: 10.w, right: 10.w),
                         child: Image.asset(
                           ImageAssets.ic_close,
+                          height: 24.h,
+                          width: 24.h,
                         ),
                       ),
                       onTap: () {
@@ -166,7 +168,7 @@ class _BodyState extends State<Body> {
                           S.current.tap_the_word,
                           style: textNormal(
                             AppTheme.getInstance().textThemeColor(),
-                            16,
+                            16.sp,
                           ),
                         ),
                       ),
@@ -182,7 +184,8 @@ class _BodyState extends State<Body> {
                             ) {
                               final listSeedPhrase = snapshot.data;
                               return Container(
-                                margin: EdgeInsets.only(right: 16.w, left: 16.w),
+                                margin:
+                                    EdgeInsets.only(right: 16.w, left: 16.w),
                                 child: BoxListPassWordPhrase(
                                   listTitle: listSeedPhrase ?? [],
                                   bLocCreateSeedPhrase: bLocCreateSeedPhrase,
@@ -202,7 +205,7 @@ class _BodyState extends State<Body> {
                                 child: snapshot.data ?? false
                                     ? Text(
                                         S.current.invalid_order,
-                                        style: textNormal(Colors.red, 14),
+                                        style: textNormal(Colors.red, 14.sp),
                                       )
                                     : null,
                               );

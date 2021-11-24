@@ -74,7 +74,7 @@ class _FilterNFTState extends State<FilterNFT> {
                             child: Text(
                               S.current.nft_type,
                               style:
-                                  textNormalCustom(null, 20, FontWeight.w600),
+                                  textNormalCustom(null, 20.sp, FontWeight.w600),
                             ),
                           ),
                           IsHardNft(
@@ -87,7 +87,7 @@ class _FilterNFTState extends State<FilterNFT> {
                             child: Text(
                               S.current.status,
                               style:
-                                  textNormalCustom(null, 20, FontWeight.w600),
+                                  textNormalCustom(null, 20.sp, FontWeight.w600),
                             ),
                           ),
                           IsOnSale(

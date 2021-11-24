@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'collection_response.g.dart';
 
 @JsonSerializable()
-class CollectionRespone extends Equatable {
+class CollectionResponse extends Equatable {
   @JsonKey(name: 'avatarBack')
   String avatarBack;
   @JsonKey(name: 'avatarIcon')
@@ -32,7 +32,7 @@ class CollectionRespone extends Equatable {
   @JsonKey(name: 'id')
   String id;
 
-  CollectionRespone(
+  CollectionResponse(
     this.avatarBack,
     this.avatarIcon,
     this.item,
@@ -47,10 +47,10 @@ class CollectionRespone extends Equatable {
     this.id,
   );
 
-  factory CollectionRespone.fromJson(Map<String, dynamic> json) =>
-      _$CollectionResponeFromJson(json);
+  factory CollectionResponse.fromJson(Map<String, dynamic> json) =>
+      _$CollectionResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CollectionResponeToJson(this);
+  Map<String, dynamic> toJson() => _$CollectionResponseToJson(this);
 
   @override
   // TODO: implement props

@@ -26,7 +26,7 @@ class DescriptionWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Description',
+          S.current.description,
           style: tokenDetailAmount(
             color: AppTheme.getInstance().currencyDetailTokenColor(),
             weight: FontWeight.w400,
@@ -43,11 +43,11 @@ class DescriptionWidget extends StatelessWidget {
           ),
         ),
         spaceH12,
-        textRow(name: 'Collection', value: 'Defi For You'),
-        textRow(name: 'Owner', value: address, isAddress: true),
-        textRow(name: 'Contract', value: address, showCopy: true),
-        textRow(name: 'NFT Token ID', value: '1452361'),
-        textRow(name: 'NFT standard', value: 'ERC - 1155'),
+        textRow(name: S.current.collection, value: 'Defi For You'),
+        textRow(name: S.current.owner, value: address, isAddress: true),
+        textRow(name: S.current.contract, value: address, showCopy: true),
+        textRow(name: S.current.nft_token_id, value: '1452361'),
+        textRow(name: S.current.nft_standard, value: 'ERC - 1155'),
         Text(
           'Block chain',
           style: tokenDetailAmount(
@@ -60,7 +60,7 @@ class DescriptionWidget extends StatelessWidget {
     );
   }
 
-  static Widget textRow({
+  Widget textRow({
     required String name,
     required String value,
     Color? valueColor,

@@ -21,7 +21,7 @@ class Category extends StatelessWidget {
                 height: 130.h,
                 width: 146.w,
                 decoration:  BoxDecoration(
-                  image: const DecorationImage(
+                  image:  DecorationImage(
                     image: AssetImage(ImageAssets.img_categories),
                     fit: BoxFit.fill,
                   ),
