@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -48,10 +49,10 @@ class _SelectAccState extends State<SelectAcc> {
       height: 764.h,
       width: 375.w,
       decoration: BoxDecoration(
-        color: const Color(0xff3e3d5c),
+        color: AppTheme.getInstance().bgBtsColor(),
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.h),
-          topRight: Radius.circular(30.h),
+          topLeft: Radius.circular(30.r),
+          topRight: Radius.circular(30.r),
         ),
       ),
       child: Column(
@@ -65,11 +66,11 @@ class _SelectAccState extends State<SelectAcc> {
               children: [
                 GestureDetector(
                   child: Container(
-                    margin: const EdgeInsets.only(left: 10, right: 10),
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
                     child: Image.asset(
                       ImageAssets.ic_back,
                       width: 20.w,
-                      height: 20,
+                      height: 20.h,
                     ),
                   ),
                   onTap: () {
@@ -82,7 +83,7 @@ class _SelectAccState extends State<SelectAcc> {
                     S.current.select_acc,
                     style: textNormalCustom(
                       Colors.white,
-                      20,
+                      20.sp,
                       FontWeight.bold,
                     ),
                   ),
@@ -147,8 +148,12 @@ class _SelectAccState extends State<SelectAcc> {
                               children: [
                                 Row(
                                   children: [
-                                    Image.asset(
-                                      snapshot.data?[index].url ?? '',
+                                    SizedBox(
+                                      height: 40.h,
+                                      width: 40.w,
+                                      child: Image.asset(
+                                        snapshot.data?[index].url ?? '',
+                                      ),
                                     ),
                                     spaceW8,
                                     Column(
@@ -162,8 +167,8 @@ class _SelectAccState extends State<SelectAcc> {
                                                       .nameWallet ??
                                                   '',
                                               style: textNormalCustom(
-                                                Colors.white,
-                                                16,
+                                                null,
+                                                16.sp,
                                                 FontWeight.w700,
                                               ),
                                             ),
@@ -175,21 +180,19 @@ class _SelectAccState extends State<SelectAcc> {
                                                     '',
                                               ),
                                               style: textNormalCustom(
-                                                Colors.white.withOpacity(
-                                                  0.5,
-                                                ),
-                                                14,
+                                                AppTheme.getInstance()
+                                                    .whiteWithOpacityFireZero(),
+                                                14.sp,
                                                 FontWeight.w400,
                                               ),
                                             ),
                                           ],
                                         ),
                                         Text(
-                                          '${snapshot.data?[index].amountWallet
-                                              ?.toStringAsFixed(5)} BNB',
+                                          '${snapshot.data?[index].amountWallet?.toStringAsFixed(5)} BNB',
                                           style: textNormalCustom(
-                                            Colors.white,
-                                            16,
+                                            null,
+                                            16.sp,
                                             FontWeight.w400,
                                           ),
                                         ),
@@ -208,25 +211,21 @@ class _SelectAccState extends State<SelectAcc> {
                                               padding:
                                                   EdgeInsets.only(top: 3.h),
                                               decoration: BoxDecoration(
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  Radius.circular(6),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(6.r),
                                                 ),
                                                 border: Border.all(
-                                                  color:
-                                                      Colors.white.withOpacity(
-                                                    0.5,
-                                                  ),
+                                                  color: AppTheme.getInstance()
+                                                      .whiteWithOpacityFireZero(),
                                                   width: 1.h,
                                                 ),
                                               ),
                                               child: Text(
                                                 S.current.import,
                                                 style: textNormal(
-                                                  Colors.white.withOpacity(
-                                                    0.5,
-                                                  ),
-                                                  11,
+                                                  AppTheme.getInstance()
+                                                      .whiteWithOpacityFireZero(),
+                                                  11.sp,
                                                 ),
                                                 textAlign: TextAlign.center,
                                               ),
@@ -243,6 +242,7 @@ class _SelectAccState extends State<SelectAcc> {
                                               ? Image.asset(
                                                   ImageAssets.ic_selected,
                                                   width: 24.w,
+                                                  height: 24.h,
                                                 )
                                               : SizedBox(
                                                   width: 24.w,

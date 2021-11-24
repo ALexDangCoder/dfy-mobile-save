@@ -58,8 +58,8 @@ class _DetailCollectionState extends State<DetailCollection> {
                     decoration: BoxDecoration(
                       color: AppTheme.getInstance().borderItemColor(),
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30.h),
-                        topRight: Radius.circular(30.h),
+                        topLeft: Radius.circular(30.r),
+                        topRight: Radius.circular(30.r),
                       ),
                     ),
                     child: Column(
@@ -90,9 +90,9 @@ class _DetailCollectionState extends State<DetailCollection> {
                                 spaceH12,
                                 Center(
                                   child: Container(
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                       borderRadius: BorderRadius.all(
-                                        Radius.circular(12),
+                                        Radius.circular(12.r),
                                       ),
                                       color: backgroundBottomSheetColor,
                                     ),
@@ -101,22 +101,32 @@ class _DetailCollectionState extends State<DetailCollection> {
                                     child: TabBar(
                                       tabs: [
                                         Tab(
-                                          text: S.current.nfts,
+                                          child: Text(
+                                            S.current.nfts,
+                                            style: textNormalCustom(
+                                                null, 14.sp, FontWeight.bold),
+                                          ),
                                         ),
                                         Tab(
-                                          text: S.current.trading_history,
+                                          child: Text(
+                                            S.current.trading_history,
+                                            style: textNormalCustom(
+                                                null, 14.sp, FontWeight.bold),
+                                          ),
                                         ),
                                       ],
-                                      labelColor: Colors.white,
-                                      unselectedLabelColor: Colors.white,
+                                      labelColor:
+                                          AppTheme.getInstance().whiteColor(),
+                                      unselectedLabelColor:
+                                          AppTheme.getInstance().whiteColor(),
                                       indicator: RectangularIndicator(
-                                        bottomLeftRadius: 10,
-                                        bottomRightRadius: 10,
-                                        topLeftRadius: 10,
-                                        topRightRadius: 10,
+                                        bottomLeftRadius: 10.r,
+                                        bottomRightRadius: 10.r,
+                                        topLeftRadius: 10.r,
+                                        topRightRadius: 10.r,
                                         color: formColor,
-                                        horizontalPadding: 3,
-                                        verticalPadding: 3,
+                                        horizontalPadding: 3.w,
+                                        verticalPadding: 3.h,
                                       ),
                                     ),
                                   ),
