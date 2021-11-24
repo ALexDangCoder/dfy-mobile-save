@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -23,7 +22,8 @@ class EvaluationTab extends StatefulWidget {
   _EvaluationTabState createState() => _EvaluationTabState();
 }
 
-class _EvaluationTabState extends State<EvaluationTab> with AutomaticKeepAliveClientMixin {
+class _EvaluationTabState extends State<EvaluationTab>
+    with AutomaticKeepAliveClientMixin {
   late ItemScrollController scrollController;
 
   @override
@@ -54,23 +54,23 @@ class _EvaluationTabState extends State<EvaluationTab> with AutomaticKeepAliveCl
               children: [
                 spaceH24,
                 textRow(
-                  name: 'Evaluated by',
+                  name: S.current.evaluated_by,
                   value: 'The London Evaluation',
                   clickAble: true,
                 ),
                 textRow(
-                  name: 'Evaluated time',
+                  name: S.current.evaluated_time,
                   value: DateTime.now().stringFromDateTime,
                 ),
                 textRow(
-                  name: 'Maximum amount',
+                  name: S.current.maximum_amount,
                   value: ' ${1200000.stringIntFormat} USDT',
                   token: ImageAssets.ic_token_dfy_svg,
                 ),
-                textRow(name: 'Depreciation (% annually)', value: '20%'),
-                textRow(name: 'Conclusion', value: 'Fast & furious'),
+                textRow(name: S.current.depreciation, value: '20%'),
+                textRow(name: S.current.conclusion, value: 'Fast & furious'),
                 Text(
-                  'Images and videos',
+                  S.current.images_videos,
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().currencyDetailTokenColor(),
                     weight: FontWeight.w400,
@@ -115,11 +115,15 @@ class _EvaluationTabState extends State<EvaluationTab> with AutomaticKeepAliveCl
                                         onTap: () {
                                           widget.bloc.preImage();
                                           scrollController.scrollTo(
-                                            index: widget.bloc.currentIndexImage > 2
-                                                ? widget.bloc.currentIndexImage - 1
-                                                : 0,
-                                            duration:
-                                                const Duration(milliseconds: 300),
+                                            index:
+                                                widget.bloc.currentIndexImage >
+                                                        2
+                                                    ? widget.bloc
+                                                            .currentIndexImage -
+                                                        1
+                                                    : 0,
+                                            duration: const Duration(
+                                                milliseconds: 300),
                                           );
                                         },
                                         child: roundButton(
@@ -143,11 +147,15 @@ class _EvaluationTabState extends State<EvaluationTab> with AutomaticKeepAliveCl
                                           onTap: () {
                                             widget.bloc.nextImage();
                                             scrollController.scrollTo(
-                                              index: widget.bloc.currentIndexImage > 2
-                                                  ? widget.bloc.currentIndexImage - 1
+                                              index: widget.bloc
+                                                          .currentIndexImage >
+                                                      2
+                                                  ? widget.bloc
+                                                          .currentIndexImage -
+                                                      1
                                                   : 0,
-                                              duration:
-                                                  const Duration(milliseconds: 300),
+                                              duration: const Duration(
+                                                  milliseconds: 300),
                                             );
                                           },
                                           child: roundButton(
@@ -171,7 +179,8 @@ class _EvaluationTabState extends State<EvaluationTab> with AutomaticKeepAliveCl
                                   children: [
                                     smallImage(
                                       img: widget.bloc.listImg[index],
-                                      isCurrentImg: widget.bloc.listImg[index] == img,
+                                      isCurrentImg:
+                                          widget.bloc.listImg[index] == img,
                                       index: index,
                                     ),
                                     spaceW8,
@@ -388,5 +397,4 @@ class _EvaluationTabState extends State<EvaluationTab> with AutomaticKeepAliveCl
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
-
 }

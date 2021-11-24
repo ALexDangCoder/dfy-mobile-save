@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -42,6 +40,7 @@ class _SearchNFTState extends State<SearchNFT> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -92,7 +91,7 @@ class _SearchNFTState extends State<SearchNFT> {
                               height: 17.7.h,
                             ),
                             Text(
-                              'No result found',
+                              S.current.no_result_found,
                               style: textNormal(
                                 Colors.white54,
                                 20.sp,
@@ -254,7 +253,7 @@ class _SearchNFTState extends State<SearchNFT> {
                       Padding(
                         padding: EdgeInsets.only(left: 17.w),
                         child: Text(
-                          'Collections',
+                          S.current.collection,
                           style: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             20.sp,
@@ -309,7 +308,7 @@ class _SearchNFTState extends State<SearchNFT> {
                         });
                       },
                       child: Text(
-                        'View all result',
+                        S.current.view_all_result,
                         style: textNormalCustom(
                           AppTheme.getInstance().fillColor(),
                           16.sp,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -9,10 +7,7 @@ import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/bidding_ta
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/history_tab.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/owners_tab.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/ui/widget/bidding_widget.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/widget/description_widget.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/information_widget.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/related_document_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
@@ -217,7 +212,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
                     AppTheme.getInstance().unselectedTabLabelColor(),
                 labelColor: AppTheme.getInstance().whiteColor(),
                 labelStyle: unselectLabel,
-                isScrollable: true,
+                isScrollable: widget.isAuction,
               ),
             ),
           ],
