@@ -12,29 +12,37 @@ part 'marketplace_state.dart';
 class MarketplaceCubit extends BaseCubit<MarketplaceState> {
   MarketplaceCubit() : super(MarketplaceInitial());
 
-  List<String> categories = [S.current.music,
+  List<String> categories = [
+    S.current.music,
     S.current.sports,
-    S.current.nature, S.current.car, S.current.another];
+    S.current.nature,
+    S.current.car,
+    S.current.another
+  ];
   List<Collection> listCollections = [
     Collection(
       background: ImageAssets.img_art,
       avatar: ImageAssets.img_collection,
       title: 'Artwork collection',
+      items: 100,
     ),
     Collection(
       background: ImageAssets.img_nature,
       avatar: ImageAssets.img_collection,
       title: 'Nature collection',
+      items: 100,
     ),
     Collection(
       background: ImageAssets.img_art,
       avatar: ImageAssets.img_collection,
       title: 'Vehicle collection',
+      items: 100,
     ),
     Collection(
       background: ImageAssets.img_nature,
       avatar: ImageAssets.img_collection,
       title: 'Technology collection',
+      items: 100,
     ),
   ];
 
@@ -151,4 +159,5 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
       typeImage: TypeImage.IMAGE,
     ),
   ];
+
 }

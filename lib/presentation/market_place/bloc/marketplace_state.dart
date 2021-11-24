@@ -6,32 +6,19 @@ abstract class MarketplaceState extends Equatable{}
 class MarketplaceInitial extends MarketplaceState {
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
-class SearchSuccess extends MarketplaceState {
-  @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
-
-}
-
-class SearchError extends MarketplaceState {
-  @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
-
-}
 
 class OnSearch extends MarketplaceState {
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 
 }
 class OffSearch extends MarketplaceState {
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 
 }

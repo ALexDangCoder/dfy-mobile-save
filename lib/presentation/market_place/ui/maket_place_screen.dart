@@ -1,19 +1,27 @@
+import 'dart:developer';
+import 'dart:math';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/hard_nft_screen.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/grid_view_auction.dart';
+import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
 import 'package:Dfy/presentation/market_place/ui/category.dart';
 import 'package:Dfy/presentation/market_place/ui/collection_item.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
+import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/on_sale_detail.dart';
+import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'nft_search.dart';
+import '../search/ui/nft_search.dart';
 
 enum TypePropertiesNFT { PAWN, AUCTION, SALE }
 enum TypeImage { IMAGE, VIDEO }
@@ -195,16 +203,29 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       cubit.listFakeDataHotAuction.length,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
-                                    return NFTItemWidget(
-                                      name: cubit
-                                          .listFakeDataHotAuction[index].name,
-                                      price: cubit
-                                          .listFakeDataHotAuction[index].price,
-                                      propertiesNFT: TypePropertiesNFT.AUCTION,
-                                      typeNFT: cubit
-                                          .listFakeDataHotAuction[index]
-                                          .typeNFT,
-                                      hotAuction: TypeHotAuction.YES,
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const OnAuction(),
+                                          ),
+                                        );
+                                      },
+                                      child: NFTItemWidget(
+                                        name: cubit
+                                            .listFakeDataHotAuction[index].name,
+                                        price: cubit
+                                            .listFakeDataHotAuction[index]
+                                            .price,
+                                        propertiesNFT:
+                                            TypePropertiesNFT.AUCTION,
+                                        typeNFT: cubit
+                                            .listFakeDataHotAuction[index]
+                                            .typeNFT,
+                                        hotAuction: TypeHotAuction.YES,
+                                      ),
                                     );
                                   },
                                 ),
@@ -278,7 +299,16 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return const NFTListOnSale();
+                                        },
+                                      );
+                                    },
                                     child: Padding(
                                       padding: EdgeInsets.only(
                                         right: 16.w,
@@ -305,12 +335,24 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       cubit.listFakeDataCollateral.length,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
-                                    return NFTItemWidget(
-                                      name: cubit
-                                          .listFakeDataCollateral[index].name,
-                                      price: cubit
-                                          .listFakeDataCollateral[index].price,
-                                      propertiesNFT: TypePropertiesNFT.SALE,
+                                    return InkWell(
+                                      onTap: (){
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (context) {
+                                            return const OnSale();
+                                          },
+                                        );
+                                      },
+                                      child: NFTItemWidget(
+                                        name: cubit
+                                            .listFakeDataCollateral[index].name,
+                                        price: cubit
+                                            .listFakeDataCollateral[index].price,
+                                        propertiesNFT: TypePropertiesNFT.SALE,
+                                      ),
                                     );
                                   },
                                 ),
@@ -357,18 +399,33 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   itemCount: cubit.listFakeDataHardNFT.length,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
-                                    return NFTItemWidget(
-                                      name:
-                                          cubit.listFakeDataHardNFT[index].name,
-                                      price: cubit
-                                          .listFakeDataHardNFT[index].price,
-                                      propertiesNFT: cubit
-                                          .listFakeDataHardNFT[index]
-                                          .propertiesNFT,
-                                      typeNFT: TypeNFT.HARD_NFT,
-                                      hotAuction: cubit
-                                          .listFakeDataHardNFT[index]
-                                          .hotAuction,
+                                    return InkWell(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (context) {
+                                            return HardNFTScreen(
+                                              bloc: HardNFTBloc(),
+                                              isAuction: Random().nextBool(),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: NFTItemWidget(
+                                        name: cubit
+                                            .listFakeDataHardNFT[index].name,
+                                        price: cubit
+                                            .listFakeDataHardNFT[index].price,
+                                        propertiesNFT: cubit
+                                            .listFakeDataHardNFT[index]
+                                            .propertiesNFT,
+                                        typeNFT: TypeNFT.HARD_NFT,
+                                        hotAuction: cubit
+                                            .listFakeDataHardNFT[index]
+                                            .hotAuction,
+                                      ),
                                     );
                                   },
                                 ),

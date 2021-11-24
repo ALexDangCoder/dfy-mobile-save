@@ -105,14 +105,6 @@ class TransactionDetail extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 log('On tap View on Bscscan');
-                showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  backgroundColor: Colors.transparent,
-                  builder: (context) {
-                    return HardNFTScreen(bloc: HardNFTBloc(),isAuction: true,);
-                  },
-                );
               },
               child: Text(
                 S.current.view_on_bscscan,
