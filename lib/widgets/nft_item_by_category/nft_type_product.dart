@@ -51,7 +51,7 @@ class _NftProductState extends State<NftProduct> {
           height: 231.h,
           width: 156.w,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             color: AppTheme.getInstance().selectDialogColor(),
           ),
           padding: EdgeInsets.only(
@@ -75,7 +75,7 @@ class _NftProductState extends State<NftProduct> {
                 widget.nftName,
                 style: textNormalCustom(
                   Colors.white,
-                  13,
+                  13.sp,
                   FontWeight.w600,
                 ),
               ),
@@ -96,19 +96,19 @@ class _NftProductState extends State<NftProduct> {
                         ),
                         Text(
                           formatValue.format(widget.price),
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.yellow,
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
                     ),
-                    const Text(
+                    Text(
                       '1 of 1',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 13,
+                        fontSize: 13.sp,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -136,27 +136,26 @@ class _NftProductState extends State<NftProduct> {
           height: 24.h,
           decoration: BoxDecoration(
             color: const Color.fromRGBO(228, 172, 26, 0.7),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(12.5),
+            borderRadius: BorderRadius.all(
+              Radius.circular(12.5.r),
             ),
             border: Border.all(
               color: const Color(0xFFFF9E12),
             ),
           ),
           child: Row(
-            children: [
-              const ImageIcon(
-                AssetImage(
-                  ImageAssets.ic_clock2,
-                ),
-                color: Colors.white,
+             children: [
+              Image.asset(
+                ImageAssets.ic_clock2,
+                width: 12.w,
+                height: 12.h,
               ),
               Expanded(
                 child: Text(
                   '15:02:22',
                   style: textNormalCustom(
                     Colors.white,
-                    13,
+                    13.sp,
                     FontWeight.w600,
                   ),
                 ),
@@ -178,8 +177,10 @@ class _NftProductState extends State<NftProduct> {
         padding: EdgeInsets.only(
           left: 117.w,
         ),
-        child: const Image(
-          image: AssetImage(ImageAssets.img_hard_nft),
+        child: Image.asset(
+          ImageAssets.img_hard_nft,
+          height: 27.41.h,
+          width: 20.08.w,
         ),
       );
     } else {
@@ -212,7 +213,7 @@ class _NftProductState extends State<NftProduct> {
           image: AssetImage('assets/images/lambo.png'),
           fit: BoxFit.fill,
         ),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(10.r),
       ),
     );
   }
@@ -222,17 +223,20 @@ class _NftProductState extends State<NftProduct> {
       case NFT_CATEGORY.SALE:
         return Text(
           S.current.sale,
-          style: textNormalCustom(const Color(0xff61C777), 13, FontWeight.w600),
+          style:
+              textNormalCustom(const Color(0xff61C777), 13.sp, FontWeight.w600),
         );
       case NFT_CATEGORY.AUCTION:
         return Text(
           S.current.auction,
-          style: textNormalCustom(const Color(0xffFF6C6C), 13, FontWeight.w600),
+          style:
+              textNormalCustom(const Color(0xffFF6C6C), 13.sp, FontWeight.w600),
         );
       default:
         return Text(
           S.current.pawn,
-          style: textNormalCustom(const Color(0xff46BCFF), 13, FontWeight.w600),
+          style:
+              textNormalCustom(const Color(0xff46BCFF), 13.sp, FontWeight.w600),
         );
     }
   }

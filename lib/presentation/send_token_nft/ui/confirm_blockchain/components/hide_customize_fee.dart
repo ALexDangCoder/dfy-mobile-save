@@ -108,7 +108,7 @@ class HideCustomizeFee extends StatelessWidget {
                                             return Text(
                                               '${snapshot.data} $nameToken',
                                               style: textNormalCustom(
-                                                Colors.red,
+                                                AppTheme.getInstance().redColor(),
                                                 16,
                                                 FontWeight.w600,
                                               ),
@@ -121,7 +121,7 @@ class HideCustomizeFee extends StatelessWidget {
                                         Text(
                                           S.current.insufficient_balance,
                                           style: textNormalCustom(
-                                            Colors.red,
+                                            AppTheme.getInstance().redColor(),
                                             12,
                                             FontWeight.w400,
                                           ),

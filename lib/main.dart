@@ -55,14 +55,14 @@ class _MyAppState extends State<MyApp> {
         title: Strings.app_name,
         theme: ThemeData(
           primaryColor: AppTheme.getInstance().primaryColor(),
-          cardColor: Colors.white,
+          cardColor: AppTheme.getInstance().whiteColor(),
           textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
-          appBarTheme: const AppBarTheme(
-            color: Colors.white,
+          appBarTheme:  AppBarTheme(
+            color:AppTheme.getInstance().whiteColor(),
             systemOverlayStyle: SystemUiOverlayStyle.dark,
           ),
           dividerColor: dividerColor,
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: AppTheme.getInstance().whiteColor(),
           textSelectionTheme: TextSelectionThemeData(
             cursorColor: AppTheme.getInstance().primaryColor(),
             selectionColor: AppTheme.getInstance().primaryColor(),
