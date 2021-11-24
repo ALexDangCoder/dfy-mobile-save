@@ -99,7 +99,7 @@ class _CollectionListState extends State<CollectionList> {
                       StreamBuilder(
                         stream: collectionBloc.list,
                         builder: (context,
-                            AsyncSnapshot<List<CollectionRespone>> snapshot) {
+                            AsyncSnapshot<List<CollectionResponse>> snapshot) {
                           if (snapshot.hasData) {
                             return Expanded(
                               child: GridView.builder(

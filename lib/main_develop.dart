@@ -6,4 +6,5 @@ import 'package:get/get.dart';
 Future<void> main() async {
   Get.put(AppConstants.fromJson(configDevEnv));
   await mainApp();
+  
 }

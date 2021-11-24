@@ -1,6 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
+import 'package:Dfy/presentation/detail_collection/ui/filter_nft.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/auction_tab_bar.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/place_bit_bts.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -24,6 +26,14 @@ class OnAuction extends StatelessWidget {
       body: Align(
         alignment: Alignment.bottomCenter,
         child: BaseDetailNFT(
+          callback: () {
+            showModalBottomSheet(
+              backgroundColor: Colors.transparent,
+              context: context,
+              builder: (context) =>
+                  FilterNFT(collectionBloc: DetailCollectionBloc()),
+            );
+          },
           title: 'Naruto Dattebayo',
           url:
               'https://toigingiuvedep.vn/wp-content/uploads/2021/06/hinh-anh-naruto-chat-ngau-dep.jpg',
@@ -112,8 +122,7 @@ class OnAuction extends StatelessWidget {
           spaceH12,
           buildRow(
             title: S.current.contract,
-            detail:
-                '0xffffadakakdwqiacmaciqwmcacmiacmaciwcmascmia',
+            detail: '0xffffadakakdwqiacmaciqwmcacmiacmaciwcmascmia',
             type: TextType.RICH_BLUE,
             isShowCopy: true,
           ),
