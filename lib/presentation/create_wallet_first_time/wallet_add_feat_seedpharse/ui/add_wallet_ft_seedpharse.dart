@@ -93,7 +93,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
           child: Text(
             S.current.pls_import_seed,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 20.sp,
               fontWeight: FontWeight.w600,
               color: const Color.fromRGBO(228, 172, 26, 1),
             ),
@@ -109,7 +109,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
       height: 64.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(22),
+          Radius.circular(22.r),
         ),
         border: Border.all(
           color: const Color.fromRGBO(228, 172, 26, 1),
@@ -131,7 +131,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                     S.current.add_wallet,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       color: const Color.fromRGBO(228, 172, 26, 1),
                     ),
                   ),
@@ -167,7 +167,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                 Text(
                   S.current.wallet,
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 20.sp,
                     fontWeight: FontWeight.w700,
                     color: const Color.fromRGBO(255, 255, 255, 1),
                   ),
@@ -178,7 +178,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                 Text(
                   S.current.smart_chain,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                     color: const Color.fromRGBO(189, 189, 189, 1),
                   ),

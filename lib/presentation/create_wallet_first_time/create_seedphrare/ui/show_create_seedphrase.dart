@@ -240,7 +240,7 @@ class _BodyState extends State<Body> {
                                 : Text(
                                     S.current.name_not_null,
                                     style: textNormal(
-                                      Colors.red,
+                                      AppTheme.getInstance().redColor(),
                                       14.sp,
                                     ),
                                     textAlign: TextAlign.start,

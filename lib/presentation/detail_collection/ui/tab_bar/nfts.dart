@@ -52,8 +52,6 @@ class _NftsCollectionState extends State<NftsCollection> {
                   child: Container(
                     margin: EdgeInsets.only(right: 5.w),
                     child: TextFormField(
-                      //   controller: textSearch,
-                      // maxLength: 20,
                       onChanged: (value) {
                         detailCollectionBloc.textSearch.sink.add(value);
                         detailCollectionBloc.search();
@@ -101,6 +99,7 @@ class _NftsCollectionState extends State<NftsCollection> {
             if (snapshot.data == null) {
               return Expanded(
                 child: StaggeredGridView.countBuilder(
+                  physics: const NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.only(
                     left: 21.w,
                     right: 21.w,

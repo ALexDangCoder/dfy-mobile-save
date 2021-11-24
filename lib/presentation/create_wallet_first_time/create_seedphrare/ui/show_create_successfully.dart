@@ -88,7 +88,7 @@ class _BodyState extends State<Body> {
                   : S.current.success_import,
               style: TextStyle(
                 fontSize: 20.sp,
-                color: Colors.white,
+                color: AppTheme.getInstance().whiteColor(),
                 fontWeight: FontWeight.bold,
               ),
             ),

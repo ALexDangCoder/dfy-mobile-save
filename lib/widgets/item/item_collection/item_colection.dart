@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -43,11 +44,16 @@ class ItemCollection extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Image.network(
-                urlBackGround,
+              CachedNetworkImage(
+                imageUrl: urlBackGround,
                 width: 164.w,
                 height: 58.h,
                 fit: BoxFit.cover,
+                errorWidget: (context, url, error) => Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.getInstance().whiteColor(),
+                  ),
+                ),
               ),
               Container(
                 padding: EdgeInsets.only(
@@ -118,13 +124,16 @@ class ItemCollection extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               width: 37.w,
               height: 37.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: NetworkImage(
-                    urlIcon,
+              ),
+              child: CachedNetworkImage(
+                imageUrl: urlIcon,
+                fit: BoxFit.cover,
+                errorWidget: (context, url, error) => Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.getInstance().whiteColor(),
                   ),
-                  fit: BoxFit.cover,
                 ),
               ),
             ),

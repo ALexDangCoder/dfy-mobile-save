@@ -65,8 +65,9 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                         child: Text(
                           S.current.enter_name,
                           style: textNormal(
-                                  AppTheme.getInstance().whiteColor(), 20.sp)
-                              .copyWith(
+                            AppTheme.getInstance().whiteColor(),
+                            20.sp,
+                          ).copyWith(
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal,
                           ),
@@ -169,7 +170,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                     child: Text(
                                       S.current.name_not_null,
                                       style: textNormal(
-                                        Colors.red,
+                                        AppTheme.getInstance().redColor(),
                                         14.sp,
                                       ),
                                       textAlign: TextAlign.start,

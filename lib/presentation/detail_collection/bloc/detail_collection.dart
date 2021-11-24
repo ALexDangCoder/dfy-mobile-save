@@ -9,6 +9,7 @@ class DetailCollectionBloc {
   BehaviorSubject<bool> isOnAuction = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isNotOnMarket = BehaviorSubject.seeded(false);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
+  BehaviorSubject<bool> isShowMoreStream = BehaviorSubject.seeded(false);
 
   void search() {
     textSearch.stream
@@ -18,10 +19,7 @@ class DetailCollectionBloc {
       ),
     )
         .listen((event) {
-      if (event.length == '') {
-        print(event);
-      }
-      print(event);
+      if (event.length == '') {}
     });
   }
 
