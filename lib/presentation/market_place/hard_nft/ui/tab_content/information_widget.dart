@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class InformationWidget extends StatelessWidget {
@@ -13,7 +14,7 @@ class InformationWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Information',
+          S.current.information,
           style: tokenDetailAmount(
             color: AppTheme.getInstance().whiteColor(),
             fontSize: 14,
@@ -21,13 +22,13 @@ class InformationWidget extends StatelessWidget {
         ),
         spaceH5,
         spaceH12,
-        textRow(name: 'Evaluated by', value: 'Annette Black'),
-        textRow(name: 'Asset type', value: 'Car'),
-        textRow(name: 'Authenticity check', value: 'Authenic'),
-        textRow(name: 'Carat', value: '400 ct'),
-        textRow(name: 'Clarity', value: 'Flawless'),
-        textRow(name: 'Shape', value: 'Oval'),
-        textRow(name: 'Cut grade', value: 'Oval'),
+        textRow(name: S.current.evaluated_by, value: 'Annette Black'),
+        textRow(name: S.current.asset_type, value: 'Car'),
+        textRow(name: S.current.authenticity_check, value: 'Authenic'),
+        textRow(name: S.current.carat, value: '400 ct'),
+        textRow(name: S.current.clarity, value: 'Flawless'),
+        textRow(name: S.current.shape, value: 'Oval'),
+        textRow(name: S.current.cut_grade, value: 'Oval'),
       ],
     );
   }
