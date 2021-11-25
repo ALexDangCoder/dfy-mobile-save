@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
             secondary: AppTheme.getInstance().accentColor(),
           ),
         ),
-        supportedLocales: S.delegate.supportedLocales,
+        ///supportedLocales: S.delegate.supportedLocales,
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,

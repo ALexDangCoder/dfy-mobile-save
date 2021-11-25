@@ -60,8 +60,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                   ),
                 ),
                 spaceH6,
-                Text(
-                  widget.bodyText,
+                Text(widget.bodyText,
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteWithOpacity(),
                     14.sp,
