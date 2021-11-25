@@ -15,22 +15,20 @@ class ResultCollectionSearch extends StatelessWidget {
 
   final Collection collection;
 
-
-
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Container(
-         decoration: BoxDecoration(
-           shape: BoxShape.circle,
-         ),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+        ),
         clipBehavior: Clip.hardEdge,
         child: CachedNetworkImage(
           imageUrl: collection.avatar,
           fit: BoxFit.cover,
-          // placeholder: (context, url) => CircularProgressIndicator(
-          //   color: AppTheme.getInstance().whiteColor(),
-          // ),
+          placeholder: (context, url) => CircularProgressIndicator(
+            color: AppTheme.getInstance().whiteColor(),
+          ),
           errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
       ),
