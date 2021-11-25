@@ -28,9 +28,9 @@ class ResultCollectionSearch extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: collection.avatar,
           fit: BoxFit.cover,
-          placeholder: (context, url) => CircularProgressIndicator(
-            color: AppTheme.getInstance().whiteColor(),
-          ),
+          // placeholder: (context, url) => CircularProgressIndicator(
+          //   color: AppTheme.getInstance().whiteColor(),
+          // ),
           errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
       ),
