@@ -20,151 +20,163 @@ class RemoveToken extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BackdropFilter(
-      filter: ImageFilter.blur(sigmaY: 1.0, sigmaX: 1.0),
-      child: Center(
-        child: SizedBox(
-          height: 355.h,
-          width: 312.w,
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Positioned(
-                top: 77.h,
-                child: Center(
-                  child: Hero(
-                    tag: '',
-                    createRectTween: (begin, end) {
-                      return CustomRectTween(begin: begin!, end: end!);
-                    },
-                    child: Material(
-                      color: AppTheme.getInstance().selectDialogColor(),
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(36.r),
-                      ),
-                      child: SizedBox(
-                        width: 312.w,
-                        height: 278.h,
-                        child: Column(
-                          children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                 SizedBox(
-                                  height: 93.h,
-                                ),
-                                Container(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 34.w),
-                                  child: Text(
-                                    S.current.are_you_sure_token,
-                                    style: textNormal(
-                                      null,
-                                      20.sp,
-                                    ).copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: BackdropFilter(
+        filter: ImageFilter.blur(sigmaY: 1.0, sigmaX: 1.0),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: 400.h,
+              maxWidth: 312.w,
+            ),
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Positioned(
+                  top: 77.h,
+                  child: Center(
+                    child: Hero(
+                      tag: '',
+                      createRectTween: (begin, end) {
+                        return CustomRectTween(begin: begin!, end: end!);
+                      },
+                      child: Material(
+                        color: AppTheme.getInstance().selectDialogColor(),
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(36.r),
+                        ),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: 312.w,
+                            minHeight: 278.h,
+                          ),
+                          child: Column(
+                            children: [
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(
+                                    height: 93.h,
                                   ),
-                                ),
-                                spaceH12,
-                                Container(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 34.w),
-                                  child: Text(
-                                    S.current.this_will_also,
-                                    style: textNormal(
-                                      null,
-                                      12.sp,
-                                    ).copyWith(
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                spaceH24,
-                              ],
-                            ),
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(
-                                      color: AppTheme.getInstance().divideColor(),
-                                      width: 1.w,
+                                  Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 34.w),
+                                    child: Text(
+                                      S.current.are_you_sure_token,
+                                      style: textNormal(
+                                        null,
+                                        20.sp,
+                                      ).copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
                                   ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          S.current.cancel,
-                                          style:
-                                              textNormal(null, 20.sp).copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
+                                  spaceH12,
+                                  Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 34.w),
+                                    child: Text(
+                                      S.current.this_will_also,
+                                      style: textNormal(
+                                        null,
+                                        12.sp,
+                                      ).copyWith(
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  spaceH24,
+                                ],
+                              ),
+                              SizedBox(
+                                height: 64.h,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                        color: AppTheme.getInstance()
+                                            .divideColor(),
+                                        width: 1.w,
                                       ),
                                     ),
-                                    VerticalDivider(
-                                 color: AppTheme.getInstance().divideColor(),
-                              ),
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: () {
-                                          cubit.listTokenDetailScreen
-                                              .removeAt(index);
-                                          cubit.totalBalance.add(
-                                            cubit.total(
-                                              cubit.listTokenStream.value,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            S.current.cancel,
+                                            style: textNormal(null, 20.sp)
+                                                .copyWith(
+                                              fontWeight: FontWeight.w700,
+                                              fontStyle: FontStyle.normal,
                                             ),
-                                          );
-                                          cubit.getListTokenItemRemove();
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          S.current.remove,
-                                          style: textNormal(
-                                            AppTheme.getInstance().fillColor(),
-                                            20.sp,
-                                          ).copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
+                                            textAlign: TextAlign.center,
                                           ),
-                                          textAlign: TextAlign.center,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      VerticalDivider(
+                                        width: 2.w,
+                                        color: AppTheme.getInstance()
+                                            .divideColor(),
+                                      ),
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () {
+                                            cubit.listTokenDetailScreen
+                                                .removeAt(index);
+                                            cubit.totalBalance.add(
+                                              cubit.total(
+                                                cubit.listTokenStream.value,
+                                              ),
+                                            );
+                                            cubit.getListTokenItemRemove();
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            S.current.remove,
+                                            style: textNormal(
+                                              AppTheme.getInstance()
+                                                  .fillColor(),
+                                              20.sp,
+                                            ).copyWith(
+                                              fontWeight: FontWeight.w700,
+                                              fontStyle: FontStyle.normal,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Positioned(
-                bottom: 193.h,
-                child: SizedBox(
-                  width: 162.w,
-                  height: 162.h,
-                  child: Image.asset(
-                    ImageAssets.img_delete,
+                Positioned(
+                  bottom: 238.h,
+                  child: SizedBox(
+                    width: 162.w,
+                    height: 162.h,
+                    child: Image.asset(
+                      ImageAssets.img_delete,
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

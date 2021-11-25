@@ -49,11 +49,11 @@ class ItemCollection extends StatelessWidget {
                 width: 164.w,
                 height: 58.h,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.getInstance().whiteColor(),
-                  ),
-                ),
+                // placeholder: (context, url) => Center(
+                //   child: CircularProgressIndicator(
+                //     color: AppTheme.getInstance().whiteColor(),
+                //   ),
+                // ),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               Container(
@@ -131,11 +131,11 @@ class ItemCollection extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlIcon,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.getInstance().whiteColor(),
-                  ),
-                ),
+                // placeholder: (context, url) => Center(
+                //   child: CircularProgressIndicator(
+                //     color: AppTheme.getInstance().whiteColor(),
+                //   ),
+                // ),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),

@@ -24,9 +24,11 @@ class RemoveNft extends StatelessWidget {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaY: 1.0, sigmaX: 1.0),
       child: Center(
-        child: SizedBox(
-          height: 355.h,
-          width: 312.w,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: 400.h,
+            maxWidth: 312.w,
+          ),
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
@@ -44,9 +46,11 @@ class RemoveNft extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(36.r),
                       ),
-                      child: SizedBox(
-                        width: 312.w,
-                        height: 278.h,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: 312.w,
+                          minHeight: 278.h,
+                        ),
                         child: Column(
                           children: [
                             Column(
@@ -87,7 +91,8 @@ class RemoveNft extends StatelessWidget {
                                 spaceH24,
                               ],
                             ),
-                            Expanded(
+                            SizedBox(
+                              height: 64.h,
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
@@ -107,7 +112,8 @@ class RemoveNft extends StatelessWidget {
                                         },
                                         child: Text(
                                           S.current.cancel,
-                                          style: textNormal(null, 20.sp).copyWith(
+                                          style:
+                                              textNormal(null, 20.sp).copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,
                                           ),
@@ -151,7 +157,7 @@ class RemoveNft extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: 193.h,
+                bottom: 238.h,
                 child: SizedBox(
                   width: 162.w,
                   height: 162.h,
