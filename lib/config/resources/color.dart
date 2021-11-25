@@ -17,6 +17,7 @@ const formColor = Color(0xff6F6FC5);
 const subTitleTxtColor = Color(0xff9097A3);
 const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
 const backgroundMarketColor = [Color(0xFF3C3B54), Color(0xFF24203A)];
+
 const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
@@ -71,6 +72,8 @@ const unselectedTabLabel = Color(0xFF9997FF);
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color backgroundBTSColor();
+
+  Color redColor();
 
   Color colorTextFieldZeroFire();
 
@@ -374,6 +377,11 @@ class LightApp extends AppColor {
     // TODO: implement colorTextFieldZeroFire
    return colorTextField.withOpacity(0.5);
   }
+
+  @override
+  Color redColor() {
+    return Colors.red;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -618,6 +626,12 @@ class DarkApp extends AppColor {
   @override
   Color colorTextFieldZeroFire() {
     // TODO: implement colorTextFieldZeroFire
+    throw UnimplementedError();
+  }
+
+  @override
+  Color redColor() {
+    // TODO: implement redColor
     throw UnimplementedError();
   }
 }

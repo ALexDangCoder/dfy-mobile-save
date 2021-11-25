@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft_succesfully.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -73,7 +74,7 @@ class _BodyState extends State<Body> {
                               : Text(
                                   S.current.invalid_address,
                                   style: textNormal(
-                                    Colors.red,
+                                    AppTheme.getInstance().redColor(),
                                     14.sp,
                                   ),
                                   textAlign: TextAlign.start,

@@ -136,40 +136,36 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: 20.5.w,
                             ),
                             Expanded(
-                              child: Container(
-                                padding: EdgeInsets.only(top: 20.h),
-                                height: 47.h,
-                                child: TextFormField(
-                                  onChanged: (value) {
-                                    if (value.isEmpty ||
-                                        controller.text.isEmpty) {
-                                      setState(() {
-                                        errorText = true;
-                                      });
-                                    } else {
-                                      errorText = false;
-                                    }
-                                  },
-                                  cursorColor:
-                                      AppTheme.getInstance().whiteColor(),
-                                  style: TextStyle(
-                                    fontSize: 18.sp,
-                                    color: AppTheme.getInstance().whiteColor(),
-                                  ),
-                                  controller: controller,
-                                  obscureText: _cubit.hidePass,
-                                  maxLength: 15,
-                                  decoration: InputDecoration(
-                                    counterText: '',
-                                    hintText: S.current.password,
-                                    hintStyle: textNormal(
-                                      AppTheme.getInstance().textThemeColor(),
-                                      18.sp,
-                                    ),
-                                    border: InputBorder.none,
-                                  ),
-                                  // onFieldSubmitted: ,
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  if (value.isEmpty ||
+                                      controller.text.isEmpty) {
+                                    setState(() {
+                                      errorText = true;
+                                    });
+                                  } else {
+                                    errorText = false;
+                                  }
+                                },
+                                cursorColor:
+                                    AppTheme.getInstance().whiteColor(),
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  color: AppTheme.getInstance().whiteColor(),
                                 ),
+                                controller: controller,
+                                obscureText: _cubit.hidePass,
+                                maxLength: 15,
+                                decoration: InputDecoration(
+                                  counterText: '',
+                                  hintText: S.current.password,
+                                  hintStyle: textNormal(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    18.sp,
+                                  ),
+                                  border: InputBorder.none,
+                                ),
+                                // onFieldSubmitted: ,
                               ),
                             ),
                             Padding(
@@ -214,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text(
                         S.current.password_is_required,
                         style: textNormal(
-                          Colors.red,
+                          AppTheme.getInstance().redColor(),
                           12.sp,
                         ).copyWith(
                           fontWeight: FontWeight.w400,
@@ -310,7 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 width: 54.w,
                                 image: const AssetImage(ImageAssets.faceID),
                               )
-                            :  Image(
+                            : Image(
                                 height: 54.h,
                                 width: 54.w,
                                 image: const AssetImage(ImageAssets.ic_finger),
@@ -397,7 +393,7 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          shape:  RoundedRectangleBorder(
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(
                 36.0.r,

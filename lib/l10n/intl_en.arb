@@ -218,7 +218,6 @@
   "soft_nft": "Soft NFT",
   "on_sale": "On sale",
   "on_pawn": "On pawn",
-  "on_auction": "On auction",
   "not_on_market": "Not on market",
   "nft_type": "NFT type",
   "collection" : "Collection",
@@ -262,5 +261,11 @@
   "expected_loan": "Expected loan",
   "send_nft": "Send NFT",
   "buy_nft": "Buy NFT",
+  "view_all_result" : "View all result",
+  "evaluated_time" : "Evaluated time",
+  "maximum_amount":"Maximum amount",
+  "depreciation":"Depreciation (% annually)",
+  "conclusion":"Conclusion",
+  "images_videos":"Images and videos",
   "nft_on_pawn": "NFT on pawn"
 }

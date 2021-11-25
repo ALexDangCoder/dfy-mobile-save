@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -205,7 +204,10 @@ class _BodyState extends State<Body> {
                                 child: snapshot.data ?? false
                                     ? Text(
                                         S.current.invalid_order,
-                                        style: textNormal(Colors.red, 14.sp),
+                                        style: textNormal(
+                                          AppTheme.getInstance().redColor(),
+                                          14.sp,
+                                        ),
                                       )
                                     : null,
                               );

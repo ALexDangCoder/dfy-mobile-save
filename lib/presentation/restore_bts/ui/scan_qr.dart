@@ -5,6 +5,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRViewExample extends StatefulWidget {
@@ -41,10 +42,10 @@ class _QRViewExampleState extends State<QRViewExample> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    final scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 251.0
-        : 300.0;
+    final scanArea = (MediaQuery.of(context).size.width < 400.w ||
+            MediaQuery.of(context).size.height < 400.w)
+        ? 251.0.w
+        : 300.0.w;
     return Stack(
       children: [
         QRView(
@@ -52,52 +53,50 @@ class _QRViewExampleState extends State<QRViewExample> {
           onQRViewCreated: _onQRViewCreated,
           overlay: QrScannerOverlayShape(
             borderColor: AppTheme.getInstance().bgBtsColor(),
-            borderRadius: 49,
-            borderLength: 80,
-            borderWidth: 5,
+            borderRadius: 49.r,
+            borderLength: 80.r,
+            borderWidth: 5.w,
             cutOutSize: scanArea,
           ),
         ),
         Column(
           children: [
-            const SizedBox(
-              height: 64,
+            SizedBox(
+              height: 64.h,
             ),
             Row(
               children: [
-                const SizedBox(
-                  width: 25,
+                SizedBox(
+                  width: 25.w,
                 ),
                 GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: const Icon(
+                  child: Icon(
                     Icons.arrow_back_ios_outlined,
-                    color: Colors.white,
+                    color: AppTheme.getInstance().whiteColor(),
                   ),
                 ),
-                const SizedBox(
-                  width: 86,
+                SizedBox(
+                  width: 86.w,
                 ),
                 // if (result != null)
 
                 Text(
                   S.current.scan_qr_code,
                   style: textNormalCustom(
-                    Colors.white,
-                    20,
+                    AppTheme.getInstance().whiteColor(),
+                    20.sp,
                     FontWeight.w700,
                   ),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            spaceH20,
             Divider(
-              height: 1,
-              color: Colors.white.withOpacity(0.5),
+              height: 1.h,
+              color: AppTheme.getInstance().whiteWithOpacityFireZero(),
             )
           ],
         )

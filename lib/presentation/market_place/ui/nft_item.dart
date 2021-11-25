@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
 import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -35,14 +34,7 @@ class _NFTItemState extends State<NFTItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        pageRouter(
-          type: widget.propertiesNFT,
-          typeNFT: widget.typeNFT,
-        );
-      },
-      child: Row(
+    return Row(
         children: [
           Stack(
             children: [
@@ -87,7 +79,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                         child: Text(
                           widget.name,
                           style: textNormalCustom(
-                            Colors.white,
+                            null,
                             13.sp,
                             FontWeight.w600,
                           ),
@@ -151,7 +143,6 @@ class _NFTItemState extends State<NFTItemWidget> {
             width: 12.w,
           ),
         ],
-      ),
     );
   }
 
@@ -265,18 +256,5 @@ class _NFTItemState extends State<NFTItemWidget> {
       default:
         return Container();
     }
-  }
-
-  void pageRouter({TypePropertiesNFT? type, TypeNFT? typeNFT}) {
-    if (type == TypePropertiesNFT.AUCTION) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const OnAuction(),
-        ),
-      );
-    }
-    if (type == TypePropertiesNFT.PAWN) {}
-    if (type == TypePropertiesNFT.SALE) {}
   }
 }
