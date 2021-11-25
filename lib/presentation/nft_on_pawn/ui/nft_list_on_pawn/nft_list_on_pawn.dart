@@ -18,45 +18,52 @@ class NftListOnPawn extends StatefulWidget {
 class _NftListOnPawnState extends State<NftListOnPawn> {
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
-      callback: () {
-        showModalBottomSheet(
-          backgroundColor: Colors.black,
-          isScrollControlled: true,
-          context: context,
-          builder: (_) {
-            return const FilterBts(); //use base filter nft_on_sale
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: BaseBottomSheet(
+          callback: () {
+            showModalBottomSheet(
+              backgroundColor: Colors.black,
+              isScrollControlled: true,
+              context: context,
+              builder: (_) {
+                return const FilterBts(); //use base filter nft_on_sale
+              },
+            );
           },
-        );
-      },
-      title: S.current.nft_on_pawn,
-      isImage: true,
-      text: ImageAssets.ic_filter,
-      child: StaggeredGridView.countBuilder(
-        mainAxisSpacing: 20.h,
-        crossAxisSpacing: 26.w,
-        itemCount: products.length,
-        crossAxisCount: 2,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                backgroundColor: Colors.black,
-                isScrollControlled: true,
-                context: context,
-                builder: (_) {
-                  return const OnPawn();
+          title: S.current.nft_on_pawn,
+          isImage: true,
+          text: ImageAssets.ic_filter,
+          child: StaggeredGridView.countBuilder(
+            mainAxisSpacing: 20.h,
+            crossAxisSpacing: 26.w,
+            itemCount: products.length,
+            crossAxisCount: 2,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    backgroundColor: Colors.black,
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (_) {
+                      return const OnPawn();
+                    },
+                  );
                 },
+                child: products[index],
               );
             },
-            child: products[index],
-          );
-        },
-        staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
+            staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
+          ),
+        ),
       ),
     );
   }
 }
+
 List<NftProduct> products = const [
   NftProduct(
     nftName: 'Name of NFT',

@@ -23,41 +23,47 @@ class _NFTListOnSaleState extends State<NFTListOnSale> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
-      callback: () {
-        showModalBottomSheet(
-          backgroundColor: Colors.black,
-          isScrollControlled: true,
-          context: context,
-          builder: (_) {
-            return const FilterBts();
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: BaseBottomSheet(
+          callback: () {
+            showModalBottomSheet(
+              backgroundColor: Colors.black,
+              isScrollControlled: true,
+              context: context,
+              builder: (_) {
+                return const FilterBts();
+              },
+            );
           },
-        );
-      },
-      isImage: true,
-      title: S.current.nft_on_sale,
-      text: ImageAssets.ic_filter,
-      child: StaggeredGridView.countBuilder(
-        mainAxisSpacing: 20.h,
-        crossAxisSpacing: 26.w,
-        itemCount: products.length,
-        crossAxisCount: 2,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                backgroundColor: Colors.black,
-                isScrollControlled: true,
-                context: context,
-                builder: (_) {
-                  return const OnSale();
+          isImage: true,
+          title: S.current.nft_on_sale,
+          text: ImageAssets.ic_filter,
+          child: StaggeredGridView.countBuilder(
+            mainAxisSpacing: 20.h,
+            crossAxisSpacing: 26.w,
+            itemCount: products.length,
+            crossAxisCount: 2,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    backgroundColor: Colors.black,
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (_) {
+                      return const OnSale();
+                    },
+                  );
                 },
+                child: products[index],
               );
             },
-            child: products[index],
-          );
-        },
-        staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
+            staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
+          ),
+        ),
       ),
     );
   }

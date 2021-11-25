@@ -267,5 +267,6 @@
   "depreciation":"Depreciation (% annually)",
   "conclusion":"Conclusion",
   "images_videos":"Images and videos",
-  "nft_on_pawn": "NFT on pawn"
+  "nft_on_pawn": "NFT on pawn",
+  "on_auction": "On auction"
 }
