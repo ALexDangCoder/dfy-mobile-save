@@ -72,7 +72,7 @@ final divider = Divider(thickness: 1, color: Colors.white.withOpacity(0.1));
 TextStyle tokenDetailAmount({
   Color color = Colors.white,
   double fontSize = 24,
-  FontWeight weight = FontWeight.w600,
+  FontWeight weight = FontWeight.w400,
   FontStyle fontStyle = FontStyle.normal,
   TextDecoration decoration = TextDecoration.none,
 }) {

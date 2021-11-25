@@ -161,6 +161,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                         ltvLiquidThreshold: 10,
                         duration: 24,
                         repaymentCurrent: 'DFY',
+                        recurringInterest: 'months',
                         // recurringInterest: ,
                       ),
                       const Divider(
