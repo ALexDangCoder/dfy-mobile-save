@@ -59,26 +59,7 @@ class SettingWallet extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (_) {
-                          return NftListOnPawn();
-                          // return SendOffer();
-                          // return const ConfirmBlockchainCategory(
-                          //   typeConfirm: TYPE_CONFIRM.SEND_NFT,
-                          //   addressFrom: '0xfff',
-                          //   addressTo: '0xff',
-                          //   amount: 1023123,
-                          //   imageWallet: ImageAssets.symbol,
-                          //   nameWallet: 'name wallet',
-                          //   nameTokenWallet: 'BNB',
-                          //   balanceWallet: 0.5551,
-                          //   // amount: 30000,
-                          // );
-                        },
-                      );
+
                     },
                     child: buttonForm(
                       hintText: 'Dapp',
