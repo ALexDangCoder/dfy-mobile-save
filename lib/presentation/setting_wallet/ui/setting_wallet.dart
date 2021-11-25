@@ -6,6 +6,7 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/s
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/import_account_login_bts/ui/import_account_login.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/nft_on_pawn/ui/nft_list_on_pawn/nft_list_on_pawn.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
@@ -63,7 +64,7 @@ class SettingWallet extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         context: context,
                         builder: (_) {
-                          return NFTListOnSale();
+                          return NftListOnPawn();
                           // return SendOffer();
                           // return const ConfirmBlockchainCategory(
                           //   typeConfirm: TYPE_CONFIRM.SEND_NFT,

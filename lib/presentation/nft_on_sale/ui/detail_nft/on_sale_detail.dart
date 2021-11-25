@@ -19,6 +19,7 @@ class OnSale extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Align(
         alignment: Alignment.bottomCenter,
         child: BaseDetailNFT(

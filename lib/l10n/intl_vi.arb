@@ -251,5 +251,6 @@
   "cut_grade" : "Cắt lớp:",
   "information" : "Thông tin",
   "send_nft": "Gửi NFT",
-  "buy_nft": "Mua NFT"
+  "buy_nft": "Mua NFT",
+  "nft_on_pawn": "NFT cầm đồ"
 }

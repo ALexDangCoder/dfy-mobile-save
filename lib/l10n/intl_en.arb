@@ -261,5 +261,6 @@
   "information" : "Information",
   "expected_loan": "Expected loan",
   "send_nft": "Send NFT",
-  "buy_nft": "Buy NFT"
+  "buy_nft": "Buy NFT",
+  "nft_on_pawn": "NFT on pawn"
 }
