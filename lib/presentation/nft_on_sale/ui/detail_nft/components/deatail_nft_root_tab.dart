@@ -20,7 +20,6 @@ class _DetailNftTabState extends State<DetailNftTab>
   final List<Widget> tabPage = const [
     HistoryTab(),
     OwnerTab(),
-    // BidTab()
   ];
   final List<Tab> titTab = [
     Tab(

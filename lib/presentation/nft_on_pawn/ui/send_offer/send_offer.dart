@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -207,9 +208,29 @@ class _SendOfferState extends State<SendOffer> {
             SizedBox(
               height: 40.h,
             ),
-            ButtonGold(
-              title: S.current.send_offer,
-              isEnable: true,
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) {
+                    return const ConfirmBlockchainCategory(
+                      nameWallet: 'Test Wallet',
+                      nameTokenWallet: 'BNB',
+                      balanceWallet: 0.551,
+                      typeConfirm: TYPE_CONFIRM.SEND_OFFER,
+                      addressFrom: '0xFE5788e2...EB7144fd0',
+                      addressTo: '0xf94138c9...43FE932eA',
+                      imageWallet: ImageAssets.symbol,
+                    );
+                  },
+                );
+              },
+              child: ButtonGold(
+                title: S.current.send_offer,
+                isEnable: true,
+              ),
             ),
           ],
         ),

@@ -13,6 +13,8 @@ import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_aucti
 import 'package:Dfy/presentation/market_place/ui/category.dart';
 import 'package:Dfy/presentation/market_place/ui/collection_item.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
+import 'package:Dfy/presentation/nft_on_pawn/ui/detail_nft_on_pawn/detail_nft_on_pawn.dart';
+import 'package:Dfy/presentation/nft_on_pawn/ui/nft_list_on_pawn/nft_list_on_pawn.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/on_sale_detail.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -246,7 +248,16 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                          const NftListOnPawn(),
+                                        ),
+                                      );
+
+                                    },
                                     child: Padding(
                                       padding: EdgeInsets.only(
                                         right: 16.w,
@@ -273,12 +284,23 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       cubit.listFakeDataCollateral.length,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
-                                    return NFTItemWidget(
-                                      name: cubit
-                                          .listFakeDataCollateral[index].name,
-                                      price: cubit
-                                          .listFakeDataCollateral[index].price,
-                                      propertiesNFT: TypePropertiesNFT.PAWN,
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                            const OnPawn(),
+                                          ),
+                                        );
+                                      },
+                                      child: NFTItemWidget(
+                                        name: cubit
+                                            .listFakeDataCollateral[index].name,
+                                        price: cubit
+                                            .listFakeDataCollateral[index].price,
+                                        propertiesNFT: TypePropertiesNFT.PAWN,
+                                      ),
                                     );
                                   },
                                 ),
@@ -300,13 +322,12 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        context: context,
-                                        backgroundColor: Colors.transparent,
-                                        builder: (context) {
-                                          return const NFTListOnSale();
-                                        },
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                          const NFTListOnSale(),
+                                        ),
                                       );
                                     },
                                     child: Padding(
@@ -337,13 +358,12 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   itemBuilder: (context, index) {
                                     return InkWell(
                                       onTap: (){
-                                        showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          context: context,
-                                          backgroundColor: Colors.transparent,
-                                          builder: (context) {
-                                            return const OnSale();
-                                          },
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                            const OnSale(),
+                                          ),
                                         );
                                       },
                                       child: NFTItemWidget(

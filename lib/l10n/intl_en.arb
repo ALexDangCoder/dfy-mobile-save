@@ -204,7 +204,6 @@
   "search.": "Search",
   "category": "Category",
   "hard_nft": "Hard NFT",
-  "on_auction": "On auction",
   "outstanding_collection": "Outstanding collection",
   "hot_auction": "Hot auction",
   "NFTs_collateral": "NFTs collateral",
@@ -267,5 +266,7 @@
   "maximum_amount":"Maximum amount",
   "depreciation":"Depreciation (% annually)",
   "conclusion":"Conclusion",
-  "images_videos":"Images and videos"
+  "images_videos":"Images and videos",
+  "nft_on_pawn": "NFT on pawn",
+  "on_auction": "On auction"
 }
