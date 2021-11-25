@@ -3,11 +3,8 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase.dart';
-import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/import_account_login_bts/ui/import_account_login.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/nft_on_pawn/ui/nft_list_on_pawn/nft_list_on_pawn.dart';
-import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
@@ -16,7 +13,6 @@ import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
-import 'package:Dfy/widgets/nft_detail/nft_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
