@@ -159,6 +159,22 @@ class _HardNFTScreenState extends State<HardNFTScreen>
             else
               Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        S.current.duration,
+                        style: whiteTextWithOpacity,
+                      ),
+                      Text(
+                        '$month ${(month <= 1) ?
+                        S.current.month :
+                        S.current.months}',
+                        style: tokenDetailAmount(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                  spaceH24,
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: ButtonGradient(
@@ -176,20 +192,6 @@ class _HardNFTScreenState extends State<HardNFTScreen>
                         ),
                       ),
                     ),
-                  ),
-                  spaceH24,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        S.current.duration,
-                        style: whiteTextWithOpacity,
-                      ),
-                      Text(
-                        '$month ${(month <= 1) ? S.current.month : S.current.months}',
-                        style: tokenDetailAmount(fontSize: 16),
-                      ),
-                    ],
                   ),
                 ],
               ),
