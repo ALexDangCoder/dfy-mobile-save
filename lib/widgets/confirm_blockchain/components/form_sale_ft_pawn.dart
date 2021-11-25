@@ -80,7 +80,7 @@ class FormSaleFtPawn extends StatelessWidget {
                     ),
                     spaceH16,
                     Text(
-                      '${S.current.total_payment}:',
+                      '${S.current.total_payment_normal}:',
                       style: textNormalCustom(
                         Colors.white.withOpacity(0.7),
                         16,

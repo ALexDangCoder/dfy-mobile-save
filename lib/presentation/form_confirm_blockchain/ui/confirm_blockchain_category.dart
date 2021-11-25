@@ -175,6 +175,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                     StreamBuilder<bool>(
                       stream: _cubitFormCustomizeGasFee.isCustomizeGasFeeStream,
                       builder: (context, snapshot) {
+                        // final initData = Future<String>.value();
                         return snapshot.data ?? false
                             ? FormShowCfBlockchain(
                                 nameToken: widget.nameTokenWallet,

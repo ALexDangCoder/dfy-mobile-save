@@ -28,7 +28,7 @@ class OnPawn extends StatelessWidget {
             _priceContainer(),
             _durationRow(),
             spaceH24,
-            _buildButtonBuyOut(context),
+            _buildButtonSendOffer(context),
             spaceH20,
             // _buildButtonBuyOut(context),
             spaceH18,
@@ -42,7 +42,7 @@ class OnPawn extends StatelessWidget {
       ),
     );
   }
-  Widget _buildButtonBuyOut(BuildContext context) {
+  Widget _buildButtonSendOffer(BuildContext context) {
     return ButtonGradient(
       onPressed: () {
         showModalBottomSheet(
@@ -60,7 +60,7 @@ class OnPawn extends StatelessWidget {
         colors: AppTheme.getInstance().gradientButtonColor(),
       ),
       child: Text(
-        S.current.buy_nft,
+        S.current.send_offer,
         style: textNormalCustom(
           AppTheme.getInstance().textThemeColor(),
           16,

@@ -67,9 +67,24 @@ class FormShowCfBlockchain extends StatelessWidget {
                                     stream: cubitFormCF
                                         .txtGasFeeWhenEstimatingStream,
                                     builder: (context, snapshot) {
-                                      return txtGasFeeNotWarning(
-                                        snapshot: snapshot.data ?? '',
-                                      );
+                                      // return txtGasFeeNotWarning(
+                                      //   snapshot: snapshot.data ??
+                                      //       gasFeeFirstFetch.toString(),
+                                      // );
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.none:
+                                          return txtGasFeeNotWarning(
+                                              snapshot: '${snapshot.data}');
+                                        case ConnectionState.waiting:
+                                          return txtGasFeeNotWarning(
+                                              snapshot: '${snapshot.data}');
+                                        case ConnectionState.active:
+                                          return txtGasFeeNotWarning(
+                                              snapshot: '${snapshot.data}');
+                                        case ConnectionState.done:
+                                          return txtGasFeeNotWarning(
+                                              snapshot: '${snapshot.data}');
+                                      }
                                     },
                                   )
                                 : StreamBuilder<String>(
@@ -77,9 +92,24 @@ class FormShowCfBlockchain extends StatelessWidget {
                                     stream: cubitFormCF
                                         .txtGasFeeWhenEstimatingStream,
                                     builder: (context, snapshot) {
-                                      return txtGasFeeWarning(
-                                        snapshot: snapshot.data ?? '',
-                                      );
+                                      // return txtGasFeeWarning(
+                                      //   snapshot: snapshot.data ??
+                                      //       gasFeeFirstFetch.toString(),
+                                      // );
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.none:
+                                          return txtGasFeeWarning(
+                                              snapshot: '${snapshot.data}');
+                                        case ConnectionState.waiting:
+                                          return txtGasFeeWarning(
+                                              snapshot: '${snapshot.data}');
+                                        case ConnectionState.active:
+                                          return txtGasFeeWarning(
+                                              snapshot: '${snapshot.data}');
+                                        case ConnectionState.done:
+                                          return txtGasFeeWarning(
+                                              snapshot: '${snapshot.data}');
+                                      }
                                     },
                                   );
                           },
