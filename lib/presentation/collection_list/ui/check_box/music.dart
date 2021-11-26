@@ -17,12 +17,10 @@ class IsMusic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 24.h,
-      margin: EdgeInsets.only(left: 4, top: 12.h, bottom: 12.h),
-      child: Row(
-        children: [
-          StreamBuilder(
+    return Row(
+      children: [
+        Expanded(
+          child: StreamBuilder(
             stream: collectionBloc.isMusic,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Transform.scale(
@@ -51,15 +49,27 @@ class IsMusic extends StatelessWidget {
               );
             },
           ),
-          Text(
-            title,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16.sp,
+        ),
+        Expanded(
+          flex: 3,
+          child: GestureDetector(
+            onTap: () {
+              if (collectionBloc.isMusic.value) {
+                collectionBloc.isMusic.sink.add(false);
+              } else {
+                collectionBloc.isMusic.sink.add(true);
+              }
+            },
+            child: Text(
+              title,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16.sp,
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

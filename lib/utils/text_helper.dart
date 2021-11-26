@@ -53,7 +53,7 @@ extension FormatString on String {
   }
 }
 
-extension FormatDateToString on DateTime {
+extension FormatDate on DateTime {
   String get stringFromDateTime {
     String result = '';
 

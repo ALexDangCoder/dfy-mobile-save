@@ -33,6 +33,7 @@ class FromSwitch extends StatelessWidget {
       ),
       child: Center(
         child: ListTileSwitch(
+          enabled: false,
           switchScale: 1,
           value: isCheck,
           leading: SizedBox(

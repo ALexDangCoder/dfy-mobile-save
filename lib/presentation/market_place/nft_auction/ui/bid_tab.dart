@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ class BidTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: 20,
       itemBuilder: (context, index) {
         return _buildItemBid(index);
@@ -24,7 +26,7 @@ class BidTab extends StatelessWidget {
     return BaseItem(
       child: Row(
         children: [
-          Flexible(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,7 +46,7 @@ class BidTab extends StatelessWidget {
                 ),
                 spaceH7,
                 Text(
-                  DateTime.now().toString(),
+                  DateTime.now().stringFromDateTime,
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),
                     14,

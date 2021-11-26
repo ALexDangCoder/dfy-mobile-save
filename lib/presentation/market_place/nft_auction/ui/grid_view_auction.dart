@@ -1,7 +1,6 @@
-
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/nft_item_by_category/nft_type_product.dart';
 import 'package:flutter/material.dart';
