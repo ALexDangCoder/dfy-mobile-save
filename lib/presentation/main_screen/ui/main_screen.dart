@@ -93,9 +93,10 @@ class _MainScreenState extends BaseState<MainScreen> {
     return WillPopScope(
       onWillPop: () async {
         if (_lastQuitTime == null ||
-            DateTime.now().difference(_lastQuitTime!).inSeconds > 2) {
+            DateTime.now().difference(_lastQuitTime!).inMilliseconds > 1000) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
+              duration: const Duration(milliseconds: 1000,),
               content: Text(
                 S.current.out_app,
               ),
@@ -105,7 +106,7 @@ class _MainScreenState extends BaseState<MainScreen> {
           return Future.value(false);
         } else {
            await SystemNavigator.pop();
-           return Future.value(false);
+           return Future.value(true);
         }
       },
       child: Scaffold(

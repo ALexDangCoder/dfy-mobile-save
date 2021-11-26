@@ -54,7 +54,8 @@ class _ChooseTokenState extends State<ChooseToken> {
                         height: 73.h,
                         width: 322.w,
                         child: ListTileSwitch(
-                          switchScale: 1.sp,
+                          enabled: false,
+                          switchScale: 1,
                           value: widget
                                   .bloc.getListTokenModel.value[index].isShow ??
                               false,
@@ -90,7 +91,7 @@ class _ChooseTokenState extends State<ChooseToken> {
                                         .nameToken ??
                                     '',
                                 style: textNormalCustom(
-                                AppTheme.getInstance().whiteColor(),
+                                  AppTheme.getInstance().whiteColor(),
                                   16.sp,
                                   FontWeight.w600,
                                 ),

@@ -15,15 +15,13 @@ class ResultCollectionSearch extends StatelessWidget {
 
   final Collection collection;
 
-
-
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Container(
-         decoration: BoxDecoration(
-           shape: BoxShape.circle,
-         ),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+        ),
         clipBehavior: Clip.hardEdge,
         child: CachedNetworkImage(
           imageUrl: collection.avatar,
