@@ -58,6 +58,7 @@ class FormShowCfBlockchain extends StatelessWidget {
                         //todo handle when insufficient gas fee
                         txtEstimateGasFee(),
                         StreamBuilder<bool>(
+                          initialData: gasFeeFirstFetch > balanceWallet,
                           stream: cubitFormCF.isSufficientGasFeeStream,
                           builder: (context, snapshot) {
                             return snapshot.data ??

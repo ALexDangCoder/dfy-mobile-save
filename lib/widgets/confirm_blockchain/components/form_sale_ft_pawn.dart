@@ -55,75 +55,51 @@ class FormSaleFtPawn extends StatelessWidget {
             minHeight: 92.h,
           ),
           child: SizedBox(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${S.current.quantity}:',
-                      style: textNormalCustom(
-                        Colors.white.withOpacity(0.7),
-                        16,
-                        FontWeight.w400,
-                      ),
-                    ),
-                    spaceH16,
-                    Text(
-                      '${S.current.price_per_1}:',
-                      style: textNormalCustom(
-                        Colors.white.withOpacity(0.7),
-                        16,
-                        FontWeight.w400,
-                      ),
-                    ),
-                    spaceH16,
-                    Text(
-                      '${S.current.total_payment_normal}:',
-                      style: textNormalCustom(
-                        Colors.white.withOpacity(0.7),
-                        16,
-                        FontWeight.w400,
-                      ),
-                    )
-                  ],
+                bothTxtFormAddFtAmount(
+                  txtLeft: '${S.current.quantity}:',
+                  txtRight: '$quantity',
+                  styleLeft: textNormalCustom(
+                    Colors.white.withOpacity(0.7),
+                    16,
+                    FontWeight.w400,
+                  ),
+                  styleRight: textNormalCustom(
+                    AppTheme.getInstance().whiteColor(),
+                    16,
+                    FontWeight.w400,
+                  ),
                 ),
-                spaceW16,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '$quantity',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 24.h,
-                    ),
-                    Text(
-                      formatValue.format(pricePerOne),
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 18.h,
-                    ),
-                    Text(
-                      '${formatValue.format(totalPayment)} DFY',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().fillColor(),
-                        20,
-                        FontWeight.w600,
-                      ),
-                    ),
-                  ],
+                spaceH16,
+                bothTxtFormAddFtAmount(
+                  txtLeft: '${S.current.price_per_1}:',
+                  txtRight: formatValue.format(pricePerOne),
+                  styleLeft: textNormalCustom(
+                    Colors.white.withOpacity(0.7),
+                    16,
+                    FontWeight.w400,
+                  ),
+                  styleRight: textNormalCustom(
+                    AppTheme.getInstance().whiteColor(),
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+                spaceH16,
+                bothTxtFormAddFtAmount(
+                  txtLeft: '${S.current.total_payment_normal}:',
+                  txtRight: '${formatValue.format(totalPayment)} DFY',
+                  styleLeft: textNormalCustom(
+                    Colors.white.withOpacity(0.7),
+                    16,
+                    FontWeight.w400,
+                  ),
+                  styleRight: textNormalCustom(
+                    AppTheme.getInstance().fillColor(),
+                    20,
+                    FontWeight.w600,
+                  ),
                 ),
               ],
             ),
@@ -142,161 +118,144 @@ class FormSaleFtPawn extends StatelessWidget {
             top: 24.h,
             bottom: 20.h,
           ),
-          child: Row(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${S.current.loan_to_vl}',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH16,
-                  Text(
-                    '${S.current.loan_amount}',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH16,
-                  Text(
-                    '${S.current.interest_rate}',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH16,
-                  Text(
-                    '${S.current.ltv_liquid_thres}',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH16,
-                  Text(
-                    '${S.current.duration}',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH16,
-                  Text(
-                    '${S.current.repayment_curr}',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH16,
-                  Text(
-                    '${S.current.recurring_interest}',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                ],
+              bothTxtFormAddFtAmount(
+                txtLeft: S.current.loan_to_vl,
+                txtRight: '$loanToVl%',
+                styleLeft: textNormalCustom(
+                  Colors.white.withOpacity(0.7),
+                  16,
+                  FontWeight.w400,
+                ),
+                styleRight: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
+                ),
               ),
-              spaceW16,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 4.h,),
-                  Text(
-                    '$loanToVl%',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 19.h,
-                  ),
-                  Text(
-                    '${formatValue.format(loanAmount)} DFY',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  Text(
-                    '${formatValue.format(interestRate)} %',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 23.h,
-                  ),
-                  Text(
-                    '${formatValue.format(ltvLiquidThreshold)} %',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Text(
-                    '${formatValue.format(duration)} months',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Text(
-                    '$repaymentCurrent',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Text(
-                    '$recurringInterest',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                ],
+              spaceH16,
+              bothTxtFormAddFtAmount(
+                txtLeft: S.current.loan_amount,
+                txtRight: '${formatValue.format(loanAmount)} DFY',
+                styleLeft: textNormalCustom(
+                  Colors.white.withOpacity(0.7),
+                  16,
+                  FontWeight.w400,
+                ),
+                styleRight: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+              spaceH16,
+              bothTxtFormAddFtAmount(
+                txtLeft: S.current.interest_rate,
+                txtRight: '${formatValue.format(interestRate)} %',
+                styleLeft: textNormalCustom(
+                  Colors.white.withOpacity(0.7),
+                  16,
+                  FontWeight.w400,
+                ),
+                styleRight: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+              spaceH16,
+              bothTxtFormAddFtAmount(
+                txtLeft: S.current.ltv_liquid_thres,
+                txtRight: '${formatValue.format(ltvLiquidThreshold)} %',
+                styleLeft: textNormalCustom(
+                  Colors.white.withOpacity(0.7),
+                  16,
+                  FontWeight.w400,
+                ),
+                styleRight: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+              spaceH16,
+              bothTxtFormAddFtAmount(
+                txtLeft: S.current.duration,
+                txtRight: '${formatValue.format(duration)} months',
+                styleLeft: textNormalCustom(
+                  Colors.white.withOpacity(0.7),
+                  16,
+                  FontWeight.w400,
+                ),
+                styleRight: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+              spaceH16,
+              bothTxtFormAddFtAmount(
+                txtLeft: S.current.repayment_curr,
+                txtRight: '$repaymentCurrent',
+                styleLeft: textNormalCustom(
+                  Colors.white.withOpacity(0.7),
+                  16,
+                  FontWeight.w400,
+                ),
+                styleRight: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+              spaceH16,
+              bothTxtFormAddFtAmount(
+                txtLeft: S.current.recurring_interest,
+                txtRight: '$recurringInterest',
+                styleLeft: textNormalCustom(
+                  Colors.white.withOpacity(0.7),
+                  16,
+                  FontWeight.w400,
+                ),
+                styleRight: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
+                ),
               ),
             ],
           ),
         ),
       );
     }
+  }
+
+  Row bothTxtFormAddFtAmount({
+    required String txtLeft,
+    required String txtRight,
+    required TextStyle styleLeft,
+    required TextStyle styleRight,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            txtLeft,
+            style: styleLeft,
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: Text(
+            txtRight,
+            style: styleRight,
+          ),
+        )
+      ],
+    );
   }
 }

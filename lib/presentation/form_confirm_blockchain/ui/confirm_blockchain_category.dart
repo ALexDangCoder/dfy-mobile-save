@@ -173,6 +173,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                     _informationWallet, //will not appear
                     spaceH16,
                     StreamBuilder<bool>(
+                      initialData: false,
                       stream: _cubitFormCustomizeGasFee.isCustomizeGasFeeStream,
                       builder: (context, snapshot) {
                         // final initData = Future<String>.value();

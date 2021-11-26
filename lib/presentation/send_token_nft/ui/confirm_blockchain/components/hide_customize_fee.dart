@@ -55,7 +55,7 @@ class HideCustomizeFee extends StatelessWidget {
                           ),
                         ),
                         StreamBuilder(
-                          // initialData: gasFee < balance,
+                          initialData: gasFee < balance,
                           stream: sendTokenCubit.isSufficientTokenStream,
                           builder: (context, AsyncSnapshot<bool> snapshot) {
                             return snapshot.data ?? gasFee < balance
