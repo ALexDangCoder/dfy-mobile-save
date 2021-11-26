@@ -27,7 +27,7 @@ class FormHideCfBlockchain extends StatelessWidget {
         top: 8.h,
         left: 16.w,
         right: 16.w,
-        bottom: 10.h,
+        bottom: 12.h,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(16.r)),
