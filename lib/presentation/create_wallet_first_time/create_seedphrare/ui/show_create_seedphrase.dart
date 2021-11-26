@@ -181,7 +181,7 @@ class _BodyState extends State<Body> {
                                 SizedBox(
                                   width: 20.5.w,
                                 ),
-                                Expanded(// TODO TEXT CHUA CENTER
+                                Expanded(
                                   child: Container(
                                     padding: EdgeInsets.only(right: 5.w),
                                     child: TextFormField(
@@ -277,7 +277,7 @@ class _BodyState extends State<Body> {
                                 height: 17.h,
                               ),
                               CheckBoxCustom(
-                                title: S.current.do_not,
+                                title: S.current.i_understand,
                                 bLocCreateSeedPhrase:
                                     widget.blocCreateSeedPhrase,
                               ),

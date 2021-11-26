@@ -29,7 +29,6 @@ class ItemCollection extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Container(
-          height: 181.h,
           width: 164.w,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
@@ -49,11 +48,6 @@ class ItemCollection extends StatelessWidget {
                 width: 164.w,
                 height: 58.h,
                 fit: BoxFit.cover,
-                // placeholder: (context, url) => Center(
-                //   child: CircularProgressIndicator(
-                //     color: AppTheme.getInstance().whiteColor(),
-                //   ),
-                // ),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               Container(
@@ -106,6 +100,7 @@ class ItemCollection extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
+              spaceH24,
             ],
           ),
         ),

@@ -10,6 +10,7 @@ import 'package:Dfy/widgets/item/item_collection/item_colection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'filter.dart';
 
@@ -102,19 +103,15 @@ class _CollectionListState extends State<CollectionList> {
                             AsyncSnapshot<List<CollectionResponse>> snapshot) {
                           if (snapshot.hasData) {
                             return Expanded(
-                              child: GridView.builder(
+                              child: StaggeredGridView.countBuilder(
                                 padding: EdgeInsets.only(
-                                  top: 24.h,
-                                  bottom: 24.h,
-                                  right: 16.w,
-                                  left: 16.w,
+                                  left: 21.w,
+                                  right: 21.w,
+                                  top: 20.h,
+                                  bottom: 20.h,
                                 ),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisSpacing: 15.w,
-                                  mainAxisSpacing: 20.h,
-                                  crossAxisCount: 2,
-                                ),
+                                mainAxisSpacing: 20.h,
+                                crossAxisSpacing: 26.w,
                                 itemCount: collectionBloc.list.value.length,
                                 itemBuilder: (context, index) {
                                   return InkWell(
@@ -141,6 +138,9 @@ class _CollectionListState extends State<CollectionList> {
                                     ),
                                   );
                                 },
+                                crossAxisCount: 2,
+                                staggeredTileBuilder: (int index) =>
+                                    const StaggeredTile.fit(1),
                               ),
                             );
                           } else {

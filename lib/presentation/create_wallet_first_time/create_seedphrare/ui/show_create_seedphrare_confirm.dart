@@ -234,7 +234,7 @@ class _BodyState extends State<Body> {
                         height: 41.h,
                       ),
                       CheckBoxCustom2(
-                        title: S.current.i_understand,
+                        title: S.current.do_not,
                         bLocCreateSeedPhrase: bLocCreateSeedPhrase,
                       ),
                       SizedBox(
