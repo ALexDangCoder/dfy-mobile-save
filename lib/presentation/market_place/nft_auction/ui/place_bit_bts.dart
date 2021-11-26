@@ -1,7 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/confirm_blockchain.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -141,10 +141,14 @@ class _PlaceBidState extends State<PlaceBid> {
               isScrollControlled: true,
               context: context,
               builder: (context) {
-                return const ConfirmBlockchain(
-                  fromAddress: '0xffafafkjafjwf',
-                  toAddress: '0xfafakjfwo',
-                  amount: 'afaf',
+                return const ConfirmBlockchainCategory(
+                  nameWallet: 'TestWallet',
+                  nameTokenWallet: 'BNB',
+                  balanceWallet: 0.64,
+                  typeConfirm: TYPE_CONFIRM.PLACE_BID,
+                  addressFrom: '0xfff',
+                  addressTo: '0xfff',
+                  imageWallet: ImageAssets.symbol,
                 );
               },
             );
