@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -73,7 +72,6 @@ class _EvaluationTabState extends State<EvaluationTab>
                   S.current.images_videos,
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().currencyDetailTokenColor(),
-                    weight: FontWeight.w400,
                     fontSize: 14,
                   ),
                 ),
@@ -81,7 +79,9 @@ class _EvaluationTabState extends State<EvaluationTab>
                 StreamBuilder<String>(
                   stream: widget.bloc.imageStream,
                   initialData:
-                      'https://cdn11.bigcommerce.com/s-yrkef1j7/images/stencil/1280x1280/products/294/37821/QQ20190807220008__01299.1565241023.png?c=2',
+                      'https://cdn11.bigcommerce.com/s-yrkef1j7/images/stencil/'
+                          '1280x1280/products/294/37821/QQ20190807220008__01'
+                          '299.1565241023.png?c=2',
                   builder: (context, snapShot) {
                     if (snapShot.hasData) {
                       final String img = snapShot.data ?? '';
@@ -338,7 +338,6 @@ class _EvaluationTabState extends State<EvaluationTab>
               name,
               style: tokenDetailAmount(
                 color: AppTheme.getInstance().currencyDetailTokenColor(),
-                weight: FontWeight.w400,
                 fontSize: 14,
               ),
             ),
@@ -350,15 +349,12 @@ class _EvaluationTabState extends State<EvaluationTab>
             Expanded(
               flex: 3,
               child: InkWell(
-                onTap: () {
-                  log('Evaluation');
-                },
+                onTap: () {},
                 child: Text(
                   value,
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().whiteColor(),
                     fontSize: 14,
-                    weight: FontWeight.w400,
                     decoration: TextDecoration.underline,
                   ),
                 ),
@@ -373,7 +369,6 @@ class _EvaluationTabState extends State<EvaluationTab>
                       style: tokenDetailAmount(
                         color: AppTheme.getInstance().whiteColor(),
                         fontSize: 14,
-                        weight: FontWeight.w400,
                       ),
                     )
                   : Row(

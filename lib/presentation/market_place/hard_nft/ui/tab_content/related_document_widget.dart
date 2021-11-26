@@ -68,7 +68,6 @@ class RelatedDocument extends StatelessWidget {
                 title,
                 style: tokenDetailAmount(
                   color: AppTheme.getInstance().whiteColor(),
-                  weight: FontWeight.w400,
                   fontSize: 16,
                 ),
               ),
@@ -76,7 +75,6 @@ class RelatedDocument extends StatelessWidget {
                 'Created on ${createDate.stringFromDateTime}',
                 style: tokenDetailAmount(
                   color: AppTheme.getInstance().currencyDetailTokenColor(),
-                  weight: FontWeight.w400,
                   fontSize: 12,
                 ),
               ),
