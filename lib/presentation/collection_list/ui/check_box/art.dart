@@ -17,12 +17,10 @@ class IsArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 24.h,
-      margin: EdgeInsets.only(left: 4,top: 12.h, bottom: 12.h),
-      child: Row(
-        children: [
-          StreamBuilder(
+    return Row(
+      children: [
+        Expanded(
+          child: StreamBuilder(
             stream: collectionBloc.isArt,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Transform.scale(
@@ -50,15 +48,27 @@ class IsArt extends StatelessWidget {
               );
             },
           ),
-          Text(
-            title,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16.sp,
+        ),
+        Expanded(
+          flex: 3,
+          child: GestureDetector(
+            onTap: () {
+              if (collectionBloc.isArt.value) {
+                collectionBloc.isArt.sink.add(false);
+              } else {
+                collectionBloc.isArt.sink.add(true);
+              }
+            },
+            child: Text(
+              title,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16.sp,
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

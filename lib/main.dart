@@ -54,6 +54,8 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: Strings.app_name,
         theme: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           primaryColor: AppTheme.getInstance().primaryColor(),
           cardColor: AppTheme.getInstance().whiteColor(),
           textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),

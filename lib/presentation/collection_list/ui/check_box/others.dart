@@ -17,12 +17,10 @@ class IsOthes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 24.h,
-      margin: EdgeInsets.only(left: 4, top: 12.h, bottom: 16.h),
-      child: Row(
-        children: [
-          StreamBuilder(
+    return Row(
+      children: [
+        Expanded(
+          child: StreamBuilder(
             stream: collectionBloc.isOthers,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Transform.scale(
@@ -51,15 +49,27 @@ class IsOthes extends StatelessWidget {
               );
             },
           ),
-          Text(
-            title,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16.sp,
+        ),
+        Expanded(
+          flex: 3,
+          child: GestureDetector(
+            onTap: () {
+              if (collectionBloc.isOthers.value) {
+                collectionBloc.isOthers.sink.add(false);
+              } else {
+                collectionBloc.isOthers.sink.add(true);
+              }
+            },
+            child: Text(
+              title,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16.sp,
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

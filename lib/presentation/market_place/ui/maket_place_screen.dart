@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math';
 
 import 'package:Dfy/config/resources/styles.dart';
@@ -10,6 +9,7 @@ import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/hard_nft_screen.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/grid_view_auction.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
+import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
 import 'package:Dfy/presentation/market_place/ui/category.dart';
 import 'package:Dfy/presentation/market_place/ui/collection_item.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
@@ -22,8 +22,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../search/ui/nft_search.dart';
 
 enum TypePropertiesNFT { PAWN, AUCTION, SALE }
 enum TypeImage { IMAGE, VIDEO }
@@ -87,20 +85,18 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                     color: AppTheme.getInstance().divideColor(),
                   ),
                   Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: 16.w,
-                      ),
-                      child: SizedBox(
-                        height: 699.h,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 24.h,
-                              ),
-                              Row(
+                    child: SizedBox(
+                      height: 699.h,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 24.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -134,10 +130,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              SizedBox(
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: SizedBox(
                                 height: 147.h,
                                 child: ListView.builder(
                                   shrinkWrap: true,
@@ -154,10 +153,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   },
                                 ),
                               ),
-                              SizedBox(
-                                height: 32.h,
-                              ),
-                              Row(
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -194,10 +196,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              SizedBox(
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: SizedBox(
                                 height: 231.h,
                                 child: ListView.builder(
                                   shrinkWrap: true,
@@ -211,7 +216,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const OnAuction(),
+                                                const OnAuction(
+                                                ),
                                           ),
                                         );
                                       },
@@ -232,10 +238,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   },
                                 ),
                               ),
-                              SizedBox(
-                                height: 32.h,
-                              ),
-                              Row(
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -253,10 +262,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                          const NftListOnPawn(),
+                                              const NftListOnPawn(),
                                         ),
                                       );
-
                                     },
                                     child: Padding(
                                       padding: EdgeInsets.only(
@@ -273,10 +281,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              SizedBox(
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: SizedBox(
                                 height: 231.h,
                                 child: ListView.builder(
                                   shrinkWrap: true,
@@ -290,7 +301,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                            const OnPawn(),
+                                                const OnPawn(),
                                           ),
                                         );
                                       },
@@ -298,17 +309,21 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                         name: cubit
                                             .listFakeDataCollateral[index].name,
                                         price: cubit
-                                            .listFakeDataCollateral[index].price,
+                                            .listFakeDataCollateral[index]
+                                            .price,
                                         propertiesNFT: TypePropertiesNFT.PAWN,
                                       ),
                                     );
                                   },
                                 ),
                               ),
-                              SizedBox(
-                                height: 32.h,
-                              ),
-                              Row(
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -326,7 +341,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                          const NFTListOnSale(),
+                                              const NFTListOnSale(),
                                         ),
                                       );
                                     },
@@ -345,10 +360,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              SizedBox(
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: SizedBox(
                                 height: 231.h,
                                 child: ListView.builder(
                                   shrinkWrap: true,
@@ -357,12 +375,12 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
                                     return InkWell(
-                                      onTap: (){
+                                      onTap: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                            const OnSale(),
+                                                const OnSale(),
                                           ),
                                         );
                                       },
@@ -370,17 +388,21 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                         name: cubit
                                             .listFakeDataCollateral[index].name,
                                         price: cubit
-                                            .listFakeDataCollateral[index].price,
+                                            .listFakeDataCollateral[index]
+                                            .price,
                                         propertiesNFT: TypePropertiesNFT.SALE,
                                       ),
                                     );
                                   },
                                 ),
                               ),
-                              SizedBox(
-                                height: 32.h,
-                              ),
-                              Row(
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -409,10 +431,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              SizedBox(
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: SizedBox(
                                 height: 231.h,
                                 child: ListView.builder(
                                   shrinkWrap: true,
@@ -450,10 +475,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   },
                                 ),
                               ),
-                              SizedBox(
-                                height: 32.h,
-                              ),
-                              Text(
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: Text(
                                 S.current.explore_categories,
                                 style: textNormalCustom(
                                   Colors.white,
@@ -461,10 +489,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   FontWeight.w700,
                                 ),
                               ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              SizedBox(
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: SizedBox(
                                 height: 130.h,
                                 child: ListView.builder(
                                   shrinkWrap: true,
@@ -477,14 +508,14 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                   },
                                 ),
                               ),
-                              SizedBox(
-                                height: 32.h,
-                              ),
-                              SizedBox(
-                                height: 164.h,
-                              ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            SizedBox(
+                              height: 164.h,
+                            ),
+                          ],
                         ),
                       ),
                     ),

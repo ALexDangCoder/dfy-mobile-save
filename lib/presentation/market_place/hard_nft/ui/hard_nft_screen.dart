@@ -2,12 +2,14 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/bidding_tab.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/history_tab.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/owners_tab.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/widget/description_widget.dart';
+import 'package:Dfy/presentation/nft_on_pawn/ui/send_offer/send_offer.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
@@ -66,6 +68,16 @@ class _HardNFTScreenState extends State<HardNFTScreen>
       filterFunc: () {},
       flagFunc: () {},
       shareFunc: () {},
+      tabBar: TabBar(
+        onTap: (i) {},
+        controller: _tabController,
+        tabs: tabList,
+        indicatorColor: AppTheme.getInstance().unselectedTabLabelColor(),
+        unselectedLabelColor: AppTheme.getInstance().unselectedTabLabelColor(),
+        labelColor: AppTheme.getInstance().whiteColor(),
+        labelStyle: unselectLabel,
+        isScrollable: widget.isAuction,
+      ),
       body: TabBarView(
         controller: _tabController,
         children:
@@ -167,9 +179,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
                         style: whiteTextWithOpacity,
                       ),
                       Text(
-                        '$month ${(month <= 1) ?
-                        S.current.month :
-                        S.current.months}',
+                        '$month ${(month <= 1) ? S.current.month : S.current.months}',
                         style: tokenDetailAmount(fontSize: 16),
                       ),
                     ],
@@ -183,7 +193,16 @@ class _HardNFTScreenState extends State<HardNFTScreen>
                         radius: 4,
                         colors: AppTheme.getInstance().gradientButtonColor(),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        showModalBottomSheet(
+                          backgroundColor: Colors.black,
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (_) {
+                            return const SendOffer();
+                          },
+                        );
+                      },
                       child: Text(
                         S.current.send_offer,
                         style: tokenDetailAmount(
@@ -200,23 +219,6 @@ class _HardNFTScreenState extends State<HardNFTScreen>
             spaceH12,
             const DescriptionWidget(),
             line,
-            SizedBox(
-              height: 55.h,
-              child: TabBar(
-                onTap: (i) {
-                  widget.bloc.changeTab(i);
-                },
-                controller: _tabController,
-                tabs: tabList,
-                indicatorColor:
-                    AppTheme.getInstance().unselectedTabLabelColor(),
-                unselectedLabelColor:
-                    AppTheme.getInstance().unselectedTabLabelColor(),
-                labelColor: AppTheme.getInstance().whiteColor(),
-                labelStyle: unselectLabel,
-                isScrollable: widget.isAuction,
-              ),
-            ),
           ],
         ),
       ),

@@ -17,47 +17,59 @@ class IsOnAuction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 4,top: 12.h, bottom: 12.h),
-      child: Row(
-        children: [
-          StreamBuilder(
+    return Row(
+      children: [
+        Expanded(
+          child: StreamBuilder(
             stream: collectionBloc.isOnAuction,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Transform.scale(
                 scale: 1.34.sp,
                 child: Checkbox(
-                  fillColor: MaterialStateProperty.all(
-                    AppTheme.getInstance().fillColor(),
-                  ),
-                  checkColor: AppTheme.getInstance().whiteColor(),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  side: BorderSide(
-                    width: 1.w,
-                    color: AppTheme.getInstance().whiteColor(),
-                  ),
-                  value: snapshot.data ?? false,
-                  onChanged: (value) {
-                    collectionBloc.isOnAuction.sink.add(true);
-                    if (snapshot.data ?? false) {
-                      collectionBloc.isOnAuction.sink.add(false);
-                    }
-                  },
+                    fillColor: MaterialStateProperty.all(
+                      AppTheme.getInstance().fillColor(),
+                    ),
+                    checkColor: AppTheme.getInstance().whiteColor(),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    side: BorderSide(
+                      width: 1.w,
+                      color: AppTheme.getInstance().whiteColor(),
+                    ),
+                    value: snapshot.data ?? false,
+                    onChanged: (value) {
+                      collectionBloc.isOnAuction.sink.add(true);
+                      if (snapshot.data ?? false) {
+                        collectionBloc.isOnAuction.sink.add(false);
+                      }
+                    },
+
                 ),
               );
             },
           ),
-          Text(
-            title,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16.sp,
+        ),
+        Expanded(
+          flex: 3,
+          child: GestureDetector(
+            onTap: () {
+              if (collectionBloc.isOnAuction.value) {
+                collectionBloc.isOnAuction.sink.add(false);
+              } else {
+                collectionBloc.isOnAuction.sink.add(true);
+              }
+            },
+            child: Text(
+              title,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16.sp,
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

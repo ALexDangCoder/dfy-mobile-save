@@ -337,6 +337,7 @@ class LightApp extends AppColor {
     return Colors.white.withOpacity(0.1);
   }
 
+  @override
   List<Color> listBackgroundMarketColor() {
     return backgroundMarketColor;
   }
