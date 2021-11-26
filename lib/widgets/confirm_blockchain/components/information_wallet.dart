@@ -25,7 +25,7 @@ class InformationWallet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 343.w,
-      height: 74.h,
+      // height: 74.h,
       decoration: BoxDecoration(
         // color: const Color.fromRGBO(255, 255, 255, 0.1),
         borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -63,23 +63,26 @@ class InformationWallet extends StatelessWidget {
                   padding: EdgeInsets.only(top: 14.h),
                   child: Row(
                     children: [
-                      Text(
-                        nameWallet,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                          color: const Color.fromRGBO(255, 255, 255, 1),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          nameWallet,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            color: const Color.fromRGBO(255, 255, 255, 1),
+                          ),
                         ),
                       ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        fromAddress,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                          color: const Color.fromRGBO(255, 255, 255, 0.5),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          fromAddress,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: const Color.fromRGBO(255, 255, 255, 0.5),
+                          ),
                         ),
                       )
                     ],

@@ -1,9 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
-import 'package:Dfy/presentation/send_token_nft/ui/confirm_blockchain/confirm_blockchain.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
@@ -140,10 +140,16 @@ class _SendTokenState extends State<SendToken> {
                         showModalBottomSheet(
                           backgroundColor: Colors.transparent,
                           isScrollControlled: true,
-                          builder: (context) => ConfirmBlockchain(
-                            toAddress: txtToAddressToken.text,
-                            fromAddress: fakeFromAddress,
-                            amount: txtAmount.text,
+                          builder: (context) => const ConfirmBlockchainCategory(
+                            nameWallet: 'TestWallet',
+                            nameTokenWallet: 'BNB',
+                            balanceWallet: 0.64,
+                            typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
+                            addressFrom: '0xfff',
+                            addressTo: '0xfff',
+                            imageWallet: ImageAssets.symbol,
+                            amount: 5000,
+                            nameToken: 'BNB',
                           ),
                           context: context,
                         );
