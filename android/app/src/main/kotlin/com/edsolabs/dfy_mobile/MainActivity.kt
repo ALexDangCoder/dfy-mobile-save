@@ -36,7 +36,9 @@ class MainActivity : FlutterFragmentActivity() {
                 "getConfig" -> {
                     getConfigWallet()
                 }
-                //todo 1
+                "earseWallet" -> {
+                    earseWallet()
+                }
                 "importWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
                     val content = call.argument<String>("content")
@@ -216,6 +218,12 @@ class MainActivity : FlutterFragmentActivity() {
         hasMap["isAppLock"] = true
         hasMap["isFaceID"] = true
         channel?.invokeMethod("getConfigCallback", hasMap)
+    }
+
+    private fun earseWallet() {
+        val hasMap = HashMap<String, Boolean>()
+        hasMap["isSuccess"] = true
+        channel?.invokeMethod("earseWalletCallback", hasMap)
     }
 
     private fun importWallet(type: String, content: String, password: String) {
