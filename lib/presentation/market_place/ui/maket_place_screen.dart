@@ -216,7 +216,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const OnAuction(),
+                                                const OnAuction(
+                                                ),
                                           ),
                                         );
                                       },
