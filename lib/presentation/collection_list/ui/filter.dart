@@ -69,104 +69,115 @@ class _FilterState extends State<Filter> {
             spaceH20,
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w),
-                      child: Text(
-                        S.current.owner,
-                        style: textNormalCustom(null, 20.sp, FontWeight.w600),
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 6.w,
+                    right: 16.w,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.w),
+                        child: Text(
+                          S.current.owner,
+                          style: textNormalCustom(null, 20.sp, FontWeight.w600),
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsMyCollection(
-                            title: S.current.my_collection,
-                            collectionBloc: collectionBloc,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: IsMyCollection(
+                              title: S.current.my_collection,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: IsOthes(
-                            title: S.current.others,
-                            collectionBloc: collectionBloc,
+                          Expanded(
+                            child: IsOthes(
+                              title: S.current.others,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w),
-                      child: Text(
-                        S.current.category,
-                        style: textNormalCustom(null, 20.sp, FontWeight.w600),
+                        ],
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsArt(
-                            title: S.current.art,
-                            collectionBloc: collectionBloc,
-                          ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.w),
+                        child: Text(
+                          S.current.category,
+                          style: textNormalCustom(null, 20.sp, FontWeight.w600),
                         ),
-                        Expanded(
-                          child: IsGame(
-                            title: S.current.game,
-                            collectionBloc: collectionBloc,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: IsArt(
+                              title: S.current.art,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsMusic(
-                            title: S.current.music,
-                            collectionBloc: collectionBloc,
+                          Expanded(
+                            child: IsGame(
+                              title: S.current.game,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: IsCollectibles(
-                            title: S.current.collectibles,
-                            collectionBloc: collectionBloc,
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: IsMusic(
+                              title: S.current.music,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsSport(
-                            title: S.current.sports,
-                            collectionBloc: collectionBloc,
+                          Expanded(
+                            child: IsCollectibles(
+                              title: S.current.collectibles,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: IsUltilities(
-                            title: S.current.ultilities,
-                            collectionBloc: collectionBloc,
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: IsSport(
+                              title: S.current.sports,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsCars(
-                            title: S.current.cars,
-                            collectionBloc: collectionBloc,
+                          Expanded(
+                            child: IsUltilities(
+                              title: S.current.ultilities,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: IsOthesCategory(
-                            title: S.current.others,
-                            collectionBloc: collectionBloc,
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: IsCars(
+                              title: S.current.cars,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          Expanded(
+                            child: IsOthesCategory(
+                              title: S.current.others,
+                              collectionBloc: collectionBloc,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
