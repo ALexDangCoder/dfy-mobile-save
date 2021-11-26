@@ -57,11 +57,11 @@ class _HeaderCollectionState extends State<HeaderCollection> {
               fit: BoxFit.fill,
               width: 375.w,
               height: 145.h,
-              placeholder: (context, url) => Center(
-                child: CircularProgressIndicator(
-                  color: AppTheme.getInstance().whiteColor(),
-                ),
-              ),
+              // placeholder: (context, url) => Center(
+              //   child: CircularProgressIndicator(
+              //     color: AppTheme.getInstance().whiteColor(),
+              //   ),
+              // ),
               errorWidget: (context, url, error) => const Icon(Icons.error),
               imageUrl: widget.urlBackground,
             ),
@@ -177,11 +177,11 @@ class _HeaderCollectionState extends State<HeaderCollection> {
               child: CachedNetworkImage(
                 imageUrl: widget.urlAvatar,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.getInstance().whiteColor(),
-                  ),
-                ),
+                // placeholder: (context, url) => Center(
+                //   child: CircularProgressIndicator(
+                //     color: AppTheme.getInstance().whiteColor(),
+                //   ),
+                // ),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),

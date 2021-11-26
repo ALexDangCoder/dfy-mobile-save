@@ -208,9 +208,9 @@ class _SelectAccState extends State<SelectAcc> {
                                           ? Container(
                                               width: 65.w,
                                               height: 22.h,
-                                              padding:
-                                                  EdgeInsets.only(top: 3.h),
-                                              decoration: BoxDecoration(
+                                              // padding:
+                                              //     EdgeInsets.only(top: 3.h),
+                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.all(
                                                   Radius.circular(6.r),
                                                 ),
