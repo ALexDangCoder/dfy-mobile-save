@@ -22,40 +22,54 @@ class IsOthesCategory extends StatelessWidget {
       margin: EdgeInsets.only(left: 4, top: 12.h, bottom: 12.h),
       child: Row(
         children: [
-          StreamBuilder(
-            stream: collectionBloc.isOthersCategory,
-            builder: (context, AsyncSnapshot<bool> snapshot) {
-              return Transform.scale(
-                scale: 1.34.sp,
-                child: Checkbox(
-                  fillColor: MaterialStateProperty.all(
-                    AppTheme.getInstance().fillColor(),
+          Expanded(
+            child: StreamBuilder(
+              stream: collectionBloc.isOthersCategory,
+              builder: (context, AsyncSnapshot<bool> snapshot) {
+                return Transform.scale(
+                  scale: 1.34.sp,
+                  child: Checkbox(
+                    fillColor: MaterialStateProperty.all(
+                      AppTheme.getInstance().fillColor(),
+                    ),
+                    checkColor: AppTheme.getInstance().whiteColor(),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    side: BorderSide(
+                      width: 1.w,
+                      color: AppTheme.getInstance().whiteColor(),
+                    ),
+                    value: snapshot.data ?? false,
+                    onChanged: (value) {
+                      collectionBloc.isOthersCategory.sink.add(true);
+                      if (snapshot.data ?? false) {
+                        collectionBloc.isOthersCategory.sink.add(false);
+                      }
+                    },
+                    activeColor: AppTheme.getInstance().whiteColor(),
                   ),
-                  checkColor: AppTheme.getInstance().whiteColor(),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  side: BorderSide(
-                    width: 1.w,
-                    color: AppTheme.getInstance().whiteColor(),
-                  ),
-                  value: snapshot.data ?? false,
-                  onChanged: (value) {
-                    collectionBloc.isOthersCategory.sink.add(true);
-                    if (snapshot.data ?? false) {
-                      collectionBloc.isOthersCategory.sink.add(false);
-                    }
-                  },
-                  activeColor: AppTheme.getInstance().whiteColor(),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-          Text(
-            title,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16.sp,
+          Expanded(
+            flex: 3,
+            child: GestureDetector(
+              onTap: () {
+                if (collectionBloc.isOthersCategory.value) {
+                  collectionBloc.isOthersCategory.sink.add(false);
+                } else {
+                  collectionBloc.isOthersCategory.sink.add(true);
+                }
+              },
+              child: Text(
+                title,
+                style: textNormal(
+                  AppTheme.getInstance().textThemeColor(),
+                  16.sp,
+                ),
+              ),
             ),
           ),
         ],
