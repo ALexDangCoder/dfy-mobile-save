@@ -43,7 +43,7 @@ class _CountDownViewState extends State<CountDownView> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+
         children: [
           Expanded(
             child: BlocBuilder<TimeBloc, TimeState>(
