@@ -24,34 +24,13 @@ class _AuctionTabBarState extends State<AuctionTabBar>
   ];
   final List<Tab> titTab = [
     Tab(
-      child: Text(
-        S.current.history,
-        style: textNormalCustom(
-          AppTheme.getInstance().titleTabColor(),
-          14,
-          FontWeight.w600,
-        ),
-      ),
+      text: S.current.history,
     ),
     Tab(
-      child: Text(
-        S.current.owner,
-        style: textNormalCustom(
-          AppTheme.getInstance().titleTabColor(),
-          14,
-          FontWeight.w600,
-        ),
-      ),
+      text: S.current.owner,
     ),
     Tab(
-      child: Text(
-        S.current.bidding,
-        style: textNormalCustom(
-          AppTheme.getInstance().titleTabColor(),
-          14,
-          FontWeight.w600,
-        ),
-      ),
+      text: S.current.bidding,
     ),
   ];
 
