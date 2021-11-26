@@ -22,39 +22,53 @@ class IsOnPawn extends StatelessWidget {
       margin: EdgeInsets.only(left: 4,top: 12.h, bottom: 12.h),
       child: Row(
         children: [
-          StreamBuilder(
-            stream: collectionBloc.isOnPawn,
-            builder: (context, AsyncSnapshot<bool> snapshot) {
-              return Transform.scale(
-                scale: 1.34.sp,
-                child: Checkbox(
-                  fillColor: MaterialStateProperty.all(
-                    AppTheme.getInstance().fillColor(),
+          Expanded(
+            child: StreamBuilder(
+              stream: collectionBloc.isOnPawn,
+              builder: (context, AsyncSnapshot<bool> snapshot) {
+                return Transform.scale(
+                  scale: 1.34.sp,
+                  child: Checkbox(
+                    fillColor: MaterialStateProperty.all(
+                      AppTheme.getInstance().fillColor(),
+                    ),
+                    checkColor: AppTheme.getInstance().whiteColor(),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    side: BorderSide(
+                      width: 1.w,
+                      color: AppTheme.getInstance().whiteColor(),
+                    ),
+                    value: snapshot.data ?? false,
+                    onChanged: (value) {
+                      collectionBloc.isOnPawn.sink.add(true);
+                      if (snapshot.data ?? false) {
+                        collectionBloc.isOnPawn.sink.add(false);
+                      }
+                    },
                   ),
-                  checkColor: AppTheme.getInstance().whiteColor(),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  side: BorderSide(
-                    width: 1.w,
-                    color: AppTheme.getInstance().whiteColor(),
-                  ),
-                  value: snapshot.data ?? false,
-                  onChanged: (value) {
-                    collectionBloc.isOnPawn.sink.add(true);
-                    if (snapshot.data ?? false) {
-                      collectionBloc.isOnPawn.sink.add(false);
-                    }
-                  },
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-          Text(
-            title,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16.sp,
+          Expanded(
+            flex: 3,
+            child: GestureDetector(
+              onTap: () {
+                if (collectionBloc.isOnPawn.value) {
+                  collectionBloc.isOnPawn.sink.add(false);
+                } else {
+                  collectionBloc.isOnPawn.sink.add(true);
+                }
+              },
+              child: Text(
+                title,
+                style: textNormal(
+                  AppTheme.getInstance().textThemeColor(),
+                  16.sp,
+                ),
+              ),
             ),
           ),
         ],

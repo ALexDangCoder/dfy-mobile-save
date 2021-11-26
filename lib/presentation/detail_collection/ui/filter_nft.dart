@@ -4,18 +4,17 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
+import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/hard_nft.dart';
+import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/not_on_market.dart';
+import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/on_auction.dart';
+import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/on_pawn.dart';
+import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/on_sale.dart';
+import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/soft_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'check_box_nft_fillter/hard_nft.dart';
-import 'check_box_nft_fillter/not_on_market.dart';
-import 'check_box_nft_fillter/on_auction.dart';
-import 'check_box_nft_fillter/on_pawn.dart';
-import 'check_box_nft_fillter/on_sale.dart';
-import 'check_box_nft_fillter/soft_nft.dart';
 
 class FilterNFT extends StatefulWidget {
   final DetailCollectionBloc collectionBloc;
@@ -62,69 +61,71 @@ class _FilterNFTState extends State<FilterNFT> {
             spaceH20,
             Expanded(
               child: SingleChildScrollView(
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 25.h,
-                            margin: EdgeInsets.only(left: 16.w),
-                            child: Text(
-                              S.current.nft_type,
-                              style:
-                                  textNormalCustom(null, 20.sp, FontWeight.w600),
-                            ),
-                          ),
-                          IsHardNft(
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: Text(
+                        S.current.nft_type,
+                        style: textNormalCustom(null, 20.sp, FontWeight.w600),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: IsHardNft(
                             title: S.current.hard_nft,
                             collectionBloc: collectionBloc,
                           ),
-                          Container(
-                            height: 25.h,
-                            margin: EdgeInsets.only(left: 16.w),
-                            child: Text(
-                              S.current.status,
-                              style:
-                                  textNormalCustom(null, 20.sp, FontWeight.w600),
-                            ),
-                          ),
-                          IsOnSale(
-                            title: S.current.on_sale,
-                            collectionBloc: collectionBloc,
-                          ),
-                          IsOnAuction(
-                            title: S.current.on_auction,
-                            collectionBloc: collectionBloc,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 25.h,
-                          ),
-                          IsSortNft(
+                        ),
+                        Expanded(
+                          child: IsSortNft(
                             title: S.current.soft_nft,
                             collectionBloc: collectionBloc,
                           ),
-                          SizedBox(
-                            height: 25.h,
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: Text(
+                        S.current.status,
+                        style: textNormalCustom(
+                            null, 20.sp, FontWeight.w600),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: IsOnSale(
+                            title: S.current.on_sale,
+                            collectionBloc: collectionBloc,
                           ),
-                          IsOnPawn(
+                        ),
+                        Expanded(
+                          child: IsOnPawn(
                             title: S.current.on_pawn,
                             collectionBloc: collectionBloc,
                           ),
-                          IsNotOnMarket(
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: IsOnAuction(
+                            title: S.current.on_auction,
+                            collectionBloc: collectionBloc,
+                          ),
+                        ),
+                        Expanded(
+                          child: IsNotOnMarket(
                             title: S.current.not_on_market,
                             collectionBloc: collectionBloc,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
