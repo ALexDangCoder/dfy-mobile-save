@@ -30,7 +30,7 @@ class _NftsCollectionState extends State<NftsCollection> {
           child: Container(
             width: 343.w,
             height: 46.h,
-            margin: EdgeInsets.only(top: 20.h),
+           margin: EdgeInsets.only(top: 20.h),
             padding: EdgeInsets.only(right: 15.w, left: 15.w),
             decoration: BoxDecoration(
               color: AppTheme.getInstance().backgroundBTSColor(),

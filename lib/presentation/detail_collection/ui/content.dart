@@ -60,7 +60,8 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                   ),
                 ),
                 spaceH6,
-                Text(widget.bodyText,
+                Text(
+                  widget.bodyText+widget.bodyText+widget.bodyText+widget.bodyText,
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteWithOpacity(),
                     14.sp,
@@ -74,14 +75,14 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       spaceH15,
-                      Row(
+                      Column(
                         children: [
-                          Expanded(
-                            flex: 3,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text(
                                   S.current.owner,
                                   style: textNormalCustom(
                                     AppTheme.getInstance().whiteWithOpacity(),
@@ -89,42 +90,10 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                                     FontWeight.w400,
                                   ),
                                 ),
-                                spaceH15,
-                                Text(
-                                  S.current.contract,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().whiteWithOpacity(),
-                                    14.sp,
-                                    FontWeight.w400,
-                                  ),
-                                ),
-                                spaceH15,
-                                Text(
-                                  S.current.nft_standard,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().whiteWithOpacity(),
-                                    14.sp,
-                                    FontWeight.w400,
-                                  ),
-                                ),
-                                spaceH15,
-                                Text(
-                                  S.current.category,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().whiteWithOpacity(),
-                                    14.sp,
-                                    FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 7,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: Text(
                                   widget.owner,
                                   style: textNormalCustomUnderline(
                                     null,
@@ -132,8 +101,27 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                                     null,
                                   ),
                                 ),
-                                spaceH15,
-                                Text(
+                              ),
+                            ],
+                          ),
+                          spaceH15,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  S.current.nft_standard,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().whiteWithOpacity(),
+                                    14.sp,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: Text(
                                   widget.contract,
                                   style: textNormalCustomUnderline(
                                     const Color(0xff46BCFF),
@@ -141,8 +129,27 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                                     null,
                                   ),
                                 ),
-                                spaceH15,
-                                Text(
+                              ),
+                            ],
+                          ),
+                          spaceH15,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  S.current.owner,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().whiteWithOpacity(),
+                                    14.sp,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: Text(
                                   widget.nftStandard,
                                   style: textNormalCustom(
                                     null,
@@ -150,8 +157,27 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                                     null,
                                   ),
                                 ),
-                                spaceH15,
-                                Text(
+                              ),
+                            ],
+                          ),
+                          spaceH15,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  S.current.category,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().whiteWithOpacity(),
+                                    14.sp,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: Text(
                                   widget.category,
                                   style: textNormalCustom(
                                     null,
@@ -159,9 +185,9 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                                     null,
                                   ),
                                 ),
-                              ],
-                            ),
-                          )
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                       spaceH20,
@@ -179,7 +205,6 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                       left: 16.w,
                     ),
                     height: 40.h,
-
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

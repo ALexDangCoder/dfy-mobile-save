@@ -87,51 +87,45 @@ class _HeaderCollectionState extends State<HeaderCollection> {
                   child: Column(
                     children: [
                       spaceH12,
-                      Center(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12.r),
-                            ),
-                            color: backgroundBottomSheetColor,
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12.r),
                           ),
-                          height: 35.h,
-                          width: 253.w,
-                          child: TabBar(
-                            tabs: [
-                              Tab(
-                                child: Text(
-                                  S.current.nfts,
-                                  style: textNormalCustom(
-                                    null,
-                                    14.sp,
-                                    FontWeight.bold,
-                                  ),
-                                ),
+                          color: backgroundBottomSheetColor,
+                        ),
+                        height: 35.h,
+                        child: TabBar(
+                          isScrollable: true,
+                          tabs: [
+                            Text(
+                               '         ${S.current.nfts}        ',
+                              style: textNormalCustom(
+                                null,
+                                14.sp,
+                                FontWeight.bold,
                               ),
-                              Tab(
-                                child: Text(
-                                  S.current.trading_history,
-                                  style: textNormalCustom(
-                                    null,
-                                    14.sp,
-                                    FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                            labelColor: AppTheme.getInstance().whiteColor(),
-                            unselectedLabelColor:
-                                AppTheme.getInstance().whiteColor(),
-                            indicator: RectangularIndicator(
-                              bottomLeftRadius: 10.r,
-                              bottomRightRadius: 10.r,
-                              topLeftRadius: 10.r,
-                              topRightRadius: 10.r,
-                              color: formColor,
-                              horizontalPadding: 3.w,
-                              verticalPadding: 3.h,
                             ),
+                            Text(
+                              S.current.trading_history,
+                              style: textNormalCustom(
+                                null,
+                                14.sp,
+                                FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                          labelColor: AppTheme.getInstance().whiteColor(),
+                          unselectedLabelColor:
+                              AppTheme.getInstance().whiteColor(),
+                          indicator: RectangularIndicator(
+                            bottomLeftRadius: 10.r,
+                            bottomRightRadius: 10.r,
+                            topLeftRadius: 10.r,
+                            topRightRadius: 10.r,
+                            color: formColor,
+                            horizontalPadding: 3.w,
+                            verticalPadding: 3.h,
                           ),
                         ),
                       ),
