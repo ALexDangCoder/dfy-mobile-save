@@ -1,4 +1,3 @@
-import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/bid_tab.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AuctionTabBar extends StatefulWidget {
   const AuctionTabBar({Key? key}) : super(key: key);
-
   @override
   _AuctionTabBarState createState() => _AuctionTabBarState();
 }
@@ -50,8 +48,8 @@ class _AuctionTabBarState extends State<AuctionTabBar>
           TabBar(
             controller: _tabController,
             labelColor: Colors.white,
-            unselectedLabelColor: const Color(0xFF9997FF),
-            indicatorColor: const Color(0xFF6F6FC5),
+            unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+            indicatorColor: AppTheme.getInstance().titleTabColor(),
             labelStyle: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,

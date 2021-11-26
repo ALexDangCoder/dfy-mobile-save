@@ -3,22 +3,20 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
-import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BaseNFTMarket extends StatelessWidget {
   final String title;
   final Widget child;
-  TabBar tabBar;
+  final TabBar tabBar;
   final Widget body;
   final String image;
   final Function() filterFunc;
   final Function() flagFunc;
   final Function() shareFunc;
 
-  BaseNFTMarket({
+  const BaseNFTMarket({
     Key? key,
     required this.tabBar,
     required this.title,
@@ -175,6 +173,9 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 16.w,
+      ),
       color: AppTheme.getInstance().bgBtsColor(),
       child: _tabBar,
     );

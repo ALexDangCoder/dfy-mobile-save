@@ -69,9 +69,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
       flagFunc: () {},
       shareFunc: () {},
       tabBar: TabBar(
-        onTap: (i) {
-          widget.bloc.changeTab(i);
-        },
+        onTap: (i) {},
         controller: _tabController,
         tabs: tabList,
         indicatorColor: AppTheme.getInstance().unselectedTabLabelColor(),

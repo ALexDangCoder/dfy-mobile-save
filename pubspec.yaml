@@ -103,6 +103,7 @@ dependencies:
   #gallery_saver: ^2.3.2
   qr_code_scanner: ^0.6.1
   sticky_headers: ^0.2.0
+  flutter_sticky_header: ^0.6.0
   #flutter_appavailability: ^0.0.21
 
 dev_dependencies:
