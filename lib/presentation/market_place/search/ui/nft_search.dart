@@ -242,7 +242,7 @@ class _SearchNFTState extends State<SearchNFT> {
                 final int item = snapshot.data ?? 3;
                 return ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxHeight: item * 72 + 72,
+                    maxHeight: item * 72.h + 72.h,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
