@@ -26,21 +26,26 @@ class NavCollection extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Text(
-                  items,
-                  style: textNormalCustom(
-                    null,
-                    14.sp,
-                    FontWeight.w600,
+                Expanded(
+                  child: Text(
+                    items,
+                    style: textNormalCustom(
+                      null,
+                      14.sp,
+                      FontWeight.w600,
+                    ),
                   ),
                 ),
                 spaceH2,
-                Text(
-                  S.current.items,
-                  style: textNormalCustom(
-                    null,
-                    12.sp,
-                    null,
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    S.current.items,
+                    style: textNormalCustom(
+                      null,
+                      12.sp,
+                      null,
+                    ),
                   ),
                 ),
               ],
@@ -49,21 +54,26 @@ class NavCollection extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Text(
-                  owners,
-                  style: textNormalCustom(
-                    null,
-                    14.sp,
-                    FontWeight.w600,
+                Expanded(
+                  child: Text(
+                    owners,
+                    style: textNormalCustom(
+                      null,
+                      14.sp,
+                      FontWeight.w600,
+                    ),
                   ),
                 ),
                 spaceH2,
-                Text(
-                  S.current.owners,
-                  style: textNormalCustom(
-                    null,
-                    12.sp,
-                    null,
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    S.current.owners,
+                    style: textNormalCustom(
+                      null,
+                      12.sp,
+                      null,
+                    ),
                   ),
                 ),
               ],
@@ -72,21 +82,27 @@ class NavCollection extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Text(
-                  volumeTraded,
-                  style: textNormalCustom(
-                    null,
-                    14.sp,
-                    FontWeight.w600,
+                Expanded(
+                  child: Text(
+                    volumeTraded,
+                    style: textNormalCustom(
+                      null,
+                      14.sp,
+                      FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 spaceH2,
-                Text(
-                  S.current.volume_traded,
-                  style: textNormalCustom(
-                    null,
-                    12.sp,
-                    null,
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    S.current.volume_traded,
+                    style: textNormalCustom(
+                      null,
+                      12.sp,
+                      null,
+                    ),
                   ),
                 ),
               ],
