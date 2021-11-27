@@ -134,7 +134,7 @@ class _BuyNFTState extends State<BuyNFT> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          S.current.total_payment,
+          S.current.total_payment_upper,
           style: textNormalCustom(
             Colors.white,
             16,

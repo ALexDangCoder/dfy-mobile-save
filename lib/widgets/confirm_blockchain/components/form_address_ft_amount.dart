@@ -24,7 +24,7 @@ class FormAddFtAmount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(typeForm == TypeIsHaveAmount.HAVE_AMOUNT) {
+    if (typeForm == TypeIsHaveAmount.HAVE_AMOUNT) {
       return Container(
         margin: EdgeInsets.only(
           left: 10.w,
@@ -37,75 +37,22 @@ class FormAddFtAmount extends StatelessWidget {
             minHeight: 93.h,
           ),
           child: SizedBox(
-            child: Row(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${S.current.from}:',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
-                      ),
-                    ),
-                    spaceH16,
-                    Text(
-                      '${S.current.to}:',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
-                      ),
-                    ),
-                    spaceH16,
-                    Text(
-                      '${S.current.amount}:',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
-                      ),
-                    )
-                  ],
+                bothTxtFormAddFtAmount(
+                  txtLeft: S.current.from,
+                  txtRight: from,
                 ),
-                spaceW25,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      from,
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 24.h,
-                    ),
-                    Text(
-                      to,
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 18.h,
-                    ),
-                    Text(
-                      amount ?? '',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().fillColor(),
-                        20,
-                        FontWeight.w600,
-                      ),
-                    ),
-                  ],
+                spaceH16,
+                bothTxtFormAddFtAmount(
+                  txtLeft: S.current.to,
+                  txtRight: to,
+                ),
+                spaceH16,
+                bothTxtFormAddFtAmount(
+                  txtLeft: S.current.amount,
+                  txtRight: amount.toString(),
                 ),
               ],
             ),
@@ -124,60 +71,47 @@ class FormAddFtAmount extends StatelessWidget {
             top: 24.h,
             bottom: 20.h,
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${S.current.from}:',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH16,
-                  Text(
-                    '${S.current.to}:',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-              spaceW25,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    from,
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 24.h,
-                  ),
-                  Text(
-                    to,
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
+              bothTxtFormAddFtAmount(txtLeft: S.current.from, txtRight: from,),
+              spaceH16,
+              bothTxtFormAddFtAmount(txtLeft: S.current.to, txtRight: to,),
             ],
           ),
         ),
       );
     }
+  }
+
+  Row bothTxtFormAddFtAmount({
+    required String txtLeft,
+    required String txtRight,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Text(
+            txtLeft,
+            style: textNormalCustom(
+              Colors.white.withOpacity(0.7),
+              16,
+              FontWeight.w400,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            txtRight,
+            style: textNormalCustom(
+              Colors.white,
+              16,
+              FontWeight.w400,
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

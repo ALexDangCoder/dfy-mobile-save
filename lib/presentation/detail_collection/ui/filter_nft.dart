@@ -61,73 +61,79 @@ class _FilterNFTState extends State<FilterNFT> {
             spaceH20,
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w),
-                      child: Text(
-                        S.current.nft_type,
-                        style: textNormalCustom(null, 20.sp, FontWeight.w600),
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 6.w,
+                    right: 16.w,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.w),
+                        child: Text(
+                          S.current.nft_type,
+                          style: textNormalCustom(null, 20.sp, FontWeight.w600),
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsHardNft(
-                            title: S.current.hard_nft,
-                            collectionBloc: collectionBloc,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: IsHardNft(
+                              title: S.current.hard_nft,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: IsSortNft(
-                            title: S.current.soft_nft,
-                            collectionBloc: collectionBloc,
+                          Expanded(
+                            child: IsSortNft(
+                              title: S.current.soft_nft,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w),
-                      child: Text(
-                        S.current.status,
-                        style: textNormalCustom(
-                            null, 20.sp, FontWeight.w600),
+                        ],
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsOnSale(
-                            title: S.current.on_sale,
-                            collectionBloc: collectionBloc,
-                          ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.w),
+                        child: Text(
+                          S.current.status,
+                          style: textNormalCustom(null, 20.sp, FontWeight.w600),
                         ),
-                        Expanded(
-                          child: IsOnPawn(
-                            title: S.current.on_pawn,
-                            collectionBloc: collectionBloc,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: IsOnSale(
+                              title: S.current.on_sale,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsOnAuction(
-                            title: S.current.on_auction,
-                            collectionBloc: collectionBloc,
+                          Expanded(
+                            child: IsOnPawn(
+                              title: S.current.on_pawn,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: IsNotOnMarket(
-                            title: S.current.not_on_market,
-                            collectionBloc: collectionBloc,
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: IsOnAuction(
+                              title: S.current.on_auction,
+                              collectionBloc: collectionBloc,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          Expanded(
+                            child: IsNotOnMarket(
+                              title: S.current.not_on_market,
+                              collectionBloc: collectionBloc,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

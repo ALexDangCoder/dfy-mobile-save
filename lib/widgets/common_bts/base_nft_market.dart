@@ -173,7 +173,9 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w,),
+      padding: EdgeInsets.symmetric(
+        horizontal: 16.w,
+      ),
       color: AppTheme.getInstance().bgBtsColor(),
       child: _tabBar,
     );
