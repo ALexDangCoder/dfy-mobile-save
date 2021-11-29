@@ -206,17 +206,13 @@ class _NFTDetailState extends State<NFTDetail> {
                         stream: bloc.lenStream,
                         builder: (ctx, snapshot) {
                           final len = snapshot.data!;
-                          return ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxHeight: len * 66.h,
-                            ),
-                            child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: len,
-                              itemBuilder: (ctx, index) {
-                                return itemTransition(index);
-                              },
-                            ),
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: len,
+                            itemBuilder: (ctx, index) {
+                              return itemTransition(index);
+                            },
                           );
                         },
                       ),
@@ -330,7 +326,7 @@ class _NFTDetailState extends State<NFTDetail> {
         );
       },
       child: Container(
-        height: 66.h,
+        height: 68.h,
         decoration: BoxDecoration(
           color: AppTheme.getInstance().bgBtsColor(),
           border: Border(
