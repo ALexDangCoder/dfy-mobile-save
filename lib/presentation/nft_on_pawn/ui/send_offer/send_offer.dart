@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -74,8 +75,8 @@ class _SendOfferState extends State<SendOffer> {
                           Text(
                             S.current.quantity,
                             style: textNormalCustom(
-                              Colors.white,
-                              14,
+                              AppTheme.getInstance().textThemeColor(),
+                              14.sp,
                               FontWeight.w400,
                             ),
                           ),
@@ -94,8 +95,8 @@ class _SendOfferState extends State<SendOffer> {
                           Text(
                             S.current.loan_to_vl,
                             style: textNormalCustom(
-                              Colors.white,
-                              14,
+                              AppTheme.getInstance().textThemeColor(),
+                              14.sp,
                               FontWeight.w400,
                             ),
                           ),
@@ -114,8 +115,8 @@ class _SendOfferState extends State<SendOffer> {
                           Text(
                             S.current.loan_amount,
                             style: textNormalCustom(
-                              Colors.white,
-                              14,
+                              AppTheme.getInstance().textThemeColor(),
+                              14.sp,
                               FontWeight.w400,
                             ),
                           ),
@@ -135,8 +136,8 @@ class _SendOfferState extends State<SendOffer> {
                           Text(
                             S.current.interest_rate,
                             style: textNormalCustom(
-                              Colors.white,
-                              14,
+                              AppTheme.getInstance().textThemeColor(),
+                              14.sp,
                               FontWeight.w400,
                             ),
                           ),
@@ -156,8 +157,8 @@ class _SendOfferState extends State<SendOffer> {
                           Text(
                             S.current.ltv_liquid_thres,
                             style: textNormalCustom(
-                              Colors.white,
-                              14,
+                              AppTheme.getInstance().textThemeColor(),
+                              14.sp,
                               FontWeight.w400,
                             ),
                           ),
@@ -176,8 +177,8 @@ class _SendOfferState extends State<SendOffer> {
                           Text(
                             S.current.repayment_curr,
                             style: textNormalCustom(
-                              Colors.white,
-                              14,
+                              AppTheme.getInstance().textThemeColor(),
+                              14.sp,
                               FontWeight.w400,
                             ),
                           ),
@@ -196,8 +197,8 @@ class _SendOfferState extends State<SendOffer> {
                           Text(
                             S.current.recurring_interest,
                             style: textNormalCustom(
-                              Colors.white,
-                              14,
+                              AppTheme.getInstance().textThemeColor(),
+                              14.sp,
                               FontWeight.w400,
                             ),
                           ),

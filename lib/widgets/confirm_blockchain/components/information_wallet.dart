@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,79 +29,76 @@ class InformationWallet extends StatelessWidget {
       // height: 74.h,
       decoration: BoxDecoration(
         // color: const Color.fromRGBO(255, 255, 255, 0.1),
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderRadius: BorderRadius.all(Radius.circular(16.r)),
         border: Border.all(color: const Color.fromRGBO(255, 255, 255, 0.1)),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: 12.w,
-              top: 16.h,
-              bottom: 18.h,
-            ),
-            child: circularImage(imgWallet),
-          ),
-          Column(
-            children: [
-              SizedBox(
-                width: 7.35.w,
-              ),
-              SizedBox(
-                height: 2.h,
-              ),
-              SizedBox(
-                width: 8.35.w,
-              ),
-            ],
-          ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //hang1
-                Padding(
-                  padding: EdgeInsets.only(top: 14.h),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          nameWallet,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            color: const Color.fromRGBO(255, 255, 255, 1),
+            flex: 2,
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: 12.w,
+                top: 16.h,
+                bottom: 18.h,
+              ),
+              child: circularImage(imgWallet),
+            ),
+          ),
+          spaceW8,
+          Expanded(
+            flex: 10,
+            child: Padding(
+              padding: EdgeInsets.only(top: 5.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //hang1
+                  Padding(
+                    padding: EdgeInsets.only(top: 14.h),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            nameWallet,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          fromAddress,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: const Color.fromRGBO(255, 255, 255, 0.5),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            fromAddress,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Color.fromRGBO(255, 255, 255, 0.5),
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                //hang 2
-                Text(
-                  '${S.current.balance}: ${formatValue.format(amount)} $nameToken',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    color: const Color.fromRGBO(255, 255, 255, 1),
+                  SizedBox(
+                    height: 2.h,
                   ),
-                )
-              ],
+                  //hang 2
+                  Text(
+                    '${S.current.balance}: ${formatValue.format(amount)} $nameToken',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                      color: const Color.fromRGBO(255, 255, 255, 1),
+                    ),
+                  )
+                ],
+              ),
             ),
           )
         ],

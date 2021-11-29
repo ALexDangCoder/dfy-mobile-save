@@ -74,7 +74,7 @@ class _NftProductState extends State<NftProduct> {
               Text(
                 widget.nftName,
                 style: textNormalCustom(
-                  Colors.white,
+                  AppTheme.getInstance().textThemeColor(),
                   13.sp,
                   FontWeight.w600,
                 ),
@@ -107,7 +107,7 @@ class _NftProductState extends State<NftProduct> {
                     Text(
                       '1 of 1',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppTheme.getInstance().failTransactionColors(),
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w600,
                       ),
@@ -144,7 +144,7 @@ class _NftProductState extends State<NftProduct> {
             ),
           ),
           child: Row(
-             children: [
+            children: [
               Image.asset(
                 ImageAssets.ic_clock2,
                 width: 12.w,
@@ -154,7 +154,7 @@ class _NftProductState extends State<NftProduct> {
                 child: Text(
                   '15:02:22',
                   style: textNormalCustom(
-                    Colors.white,
+                    AppTheme.getInstance().failTransactionColors(),
                     13.sp,
                     FontWeight.w600,
                   ),
@@ -223,14 +223,18 @@ class _NftProductState extends State<NftProduct> {
       case NFT_CATEGORY.SALE:
         return Text(
           S.current.sale,
-          style:
-              textNormalCustom(const Color(0xff61C777), 13.sp, FontWeight.w600),
+          style: textNormalCustom(
+              AppTheme.getInstance().successTransactionColors(),
+              13.sp,
+              FontWeight.w600),
         );
       case NFT_CATEGORY.AUCTION:
         return Text(
           S.current.auction,
-          style:
-              textNormalCustom(const Color(0xffFF6C6C), 13.sp, FontWeight.w600),
+          style: textNormalCustom(
+              AppTheme.getInstance().failTransactionColors(),
+              13.sp,
+              FontWeight.w600),
         );
       default:
         return Text(

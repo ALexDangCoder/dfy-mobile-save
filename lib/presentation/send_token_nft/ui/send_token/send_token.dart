@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
@@ -45,131 +46,131 @@ class _SendTokenState extends State<SendToken> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          final FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
+      onTap: () {
+        final FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: BaseBottomSheet(
+        isImage: true,
+        text: ImageAssets.ic_close,
+        title: '${S.current.send} DFY',
+        callback: () {
+          Navigator.pop(context);
         },
-        child: BaseBottomSheet(
-          isImage: true,
-          text: ImageAssets.ic_close,
-          title: '${S.current.send} DFY',
-          callback: () {
-            Navigator.pop(context);
-          },
-          isHaveLeftIcon: false,
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      left: 16.w,
-                      right: 16.w,
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 24.h,
-                        ),
-                        formShowFtAddress(
-                          // hintText: snapshot.data ?? '',
-                          hintText: '0xFE5788e2...EB7144fd0',
-                          readOnly: true,
-                          prefixImg: ImageAssets.ic_from,
-                          suffixImg: '',
-                        ),
-                        SizedBox(
-                          height: 16.h,
-                        ),
-                        formShowFtAddress(
-                          hintText: S.current.to_address,
-                          suffixImg: ImageAssets.ic_qr_code,
-                          prefixImg: ImageAssets.ic_to,
-                          callBack: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (ctx) => QRViewExample(
-                                  controller: txtToAddressToken,
-                                ),
+        isHaveLeftIcon: false,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 16.w,
+                    right: 16.w,
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 24.h,
+                      ),
+                      formShowFtAddress(
+                        // hintText: snapshot.data ?? '',
+                        hintText: '0xFE5788e2...EB7144fd0',
+                        readOnly: true,
+                        prefixImg: ImageAssets.ic_from,
+                        suffixImg: '',
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      formShowFtAddress(
+                        hintText: S.current.to_address,
+                        suffixImg: ImageAssets.ic_qr_code,
+                        prefixImg: ImageAssets.ic_to,
+                        callBack: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => QRViewExample(
+                                controller: txtToAddressToken,
                               ),
-                            ).then(
-                              (_) => tokenCubit.checkHaveVlAddressFormToken(
-                                txtToAddressToken.text,
-                                type: typeSend.SEND_TOKEN,
-                              ),
-                            );
-                          },
-                        ),
-                        txtWaringAddress(),
-                        SizedBox(
-                          height: 16.h,
-                        ),
-                        formAmountFtQuantity(
-                          hintText: S.current.amount,
-                          isAmount: true,
-                          isQuantity: false,
-                          prefixImg: ImageAssets.ic_token,
-                        ),
-                        txtWaringAmount(),
-                        SizedBox(
-                          height: 353.h,
-                        ),
-                      ],
-                    ),
+                            ),
+                          ).then(
+                            (_) => tokenCubit.checkHaveVlAddressFormToken(
+                              txtToAddressToken.text,
+                              type: typeSend.SEND_TOKEN,
+                            ),
+                          );
+                        },
+                      ),
+                      txtWaringAddress(),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      formAmountFtQuantity(
+                        hintText: S.current.amount,
+                        isAmount: true,
+                        isQuantity: false,
+                        prefixImg: ImageAssets.ic_token,
+                      ),
+                      txtWaringAmount(),
+                      SizedBox(
+                        height: 353.h,
+                      ),
+                    ],
                   ),
                 ),
               ),
-              StreamBuilder<bool>(
-                stream: tokenCubit.isShowCFBlockChainStream,
-                builder: (context, snapshot) {
-                  return GestureDetector(
-                    child: ButtonGold(
-                      title: S.current.continue_s,
-                      isEnable: snapshot.data ?? true,
-                    ),
-                    onTap: () {
-                      if (snapshot.data ?? false) {
-                        //show warning if appear error
-                        tokenCubit.checkValidAddress(txtToAddressToken.text);
-                        tokenCubit.checkValidAmount(txtAmount.text);
-                        //check validate before go to next screen
-                        if (tokenCubit.checkAddressFtAmount()) {
-                          showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            isScrollControlled: true,
-                            builder: (context) =>
-                                const ConfirmBlockchainCategory(
-                              nameWallet: 'TestWallet',
-                              nameTokenWallet: 'BNB',
-                              balanceWallet: 0.64,
-                              typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
-                              addressFrom: '0xfff',
-                              addressTo: '0xfff',
-                              imageWallet: ImageAssets.symbol,
-                              amount: 5000,
-                              nameToken: 'BNB',
-                            ),
-                            context: context,
-                          );
-                        } else {
-                          //nothing
-                        }
+            ),
+            StreamBuilder<bool>(
+              stream: tokenCubit.isShowCFBlockChainStream,
+              builder: (context, snapshot) {
+                return GestureDetector(
+                  child: ButtonGold(
+                    title: S.current.continue_s,
+                    isEnable: snapshot.data ?? true,
+                  ),
+                  onTap: () {
+                    if (snapshot.data ?? false) {
+                      //show warning if appear error
+                      tokenCubit.checkValidAddress(txtToAddressToken.text);
+                      tokenCubit.checkValidAmount(txtAmount.text);
+                      //check validate before go to next screen
+                      if (tokenCubit.checkAddressFtAmount()) {
+                        showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          isScrollControlled: true,
+                          builder: (context) => const ConfirmBlockchainCategory(
+                            nameWallet: 'TestWallet',
+                            nameTokenWallet: 'BNB',
+                            balanceWallet: 0.64,
+                            typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
+                            addressFrom: '0xfff',
+                            addressTo: '0xfff',
+                            imageWallet: ImageAssets.symbol,
+                            amount: 5000,
+                            nameToken: 'BNB',
+                          ),
+                          context: context,
+                        );
                       } else {
                         //nothing
                       }
-                    },
-                  );
-                },
-              ),
-              SizedBox(
-                height: 34.h,
-              ),
-            ],
-          ),
-        ));
+                    } else {
+                      //nothing
+                    }
+                  },
+                );
+              },
+            ),
+            SizedBox(
+              height: 34.h,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Container formShowFtAddress({
@@ -186,7 +187,7 @@ class _SendTokenState extends State<SendToken> {
         borderRadius: BorderRadius.all(
           Radius.circular(20.r),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: Center(
         child: TextFormField(
@@ -198,22 +199,23 @@ class _SendTokenState extends State<SendToken> {
           },
           controller: readOnly ? null : txtToAddressToken,
           readOnly: readOnly,
+          textAlignVertical: TextAlignVertical.center,
           style: textNormal(
-            Colors.white,
-            16,
+            AppTheme.getInstance().textThemeColor(),
+            16.sp,
           ),
-          cursorColor: Colors.white,
+          cursorColor: AppTheme.getInstance().textThemeColor(),
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: readOnly
                 ? textNormalCustom(
-                    Colors.white,
-                    16,
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
                     FontWeight.w400,
                   )
                 : textNormal(
-                    Colors.grey,
-                    14,
+                    AppTheme.getInstance().disableColor(),
+                    14.sp,
                   ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -223,14 +225,14 @@ class _SendTokenState extends State<SendToken> {
                     )
                   : ImageIcon(
                       AssetImage(suffixImg),
-                      color: Colors.white,
+                      color: AppTheme.getInstance().textThemeColor(),
                     ),
             ),
             prefixIcon: GestureDetector(
               onTap: callBack,
               child: ImageIcon(
                 AssetImage(prefixImg),
-                color: Colors.white,
+                color: AppTheme.getInstance().textThemeColor(),
               ),
             ),
             border: InputBorder.none,
@@ -249,72 +251,71 @@ class _SendTokenState extends State<SendToken> {
   }) {
     return Container(
       height: 64.h,
-        // width: 343.w,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.r),
-          ),
-          color: Color(0xff32324c),
+      // width: 343.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
         ),
-        child: Center(
-          child: TextFormField(
-            onChanged: (value) {
-              tokenCubit.checkHaveVLAmountFormToken(value);
-              tokenCubit.checkHaveVlAddressFormToken(
-                txtToAddressToken.text,
-                type: typeSend.SEND_TOKEN,
-              );
-            },
-            controller: txtAmount,
-            keyboardType: TextInputType.number,
-            textAlignVertical: TextAlignVertical.center,
-            style: textNormal(
-              Colors.white,
-              16,
+        color: AppTheme.getInstance().itemBtsColors(),
+      ),
+      child: Center(
+        child: TextFormField(
+          onChanged: (value) {
+            tokenCubit.checkHaveVLAmountFormToken(value);
+            tokenCubit.checkHaveVlAddressFormToken(
+              txtToAddressToken.text,
+              type: typeSend.SEND_TOKEN,
+            );
+          },
+          controller: txtAmount,
+          keyboardType: TextInputType.number,
+          textAlignVertical: TextAlignVertical.center,
+          style: textNormal(
+            AppTheme.getInstance().textThemeColor(),
+            16.sp,
+          ),
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+            hintText: hintText,
+            hintStyle: textNormal(
+              AppTheme.getInstance().disableColor(),
+              14.sp,
             ),
-            cursorColor: Colors.white,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: textNormal(
-                Colors.grey,
-                14,
-              ),
-              suffixIcon: InkWell(
-                onTap: callBack,
-                child: (isAmount && !isQuantity)
-                    ? Padding(
-                        padding: EdgeInsets.only(
-                          top: 10.h,
-                          right: 20.w,
-                        ),
-                        child: Text(
-                          S.current.max,
-                          style: textNormal(
-                                  const Color.fromRGBO(228, 172, 26, 1), 16)
-                              .copyWith(fontWeight: FontWeight.w600),
-                        ),
-                      )
-                    : Padding(
-                        padding: EdgeInsets.only(top: 15.h, right: 20.w),
-                        child: Text(
-                          '${S.current.of_all} 10',
-                          style: textNormal(
-                            const Color.fromRGBO(255, 255, 255, 1),
-                            16,
-                          ).copyWith(fontWeight: FontWeight.w400),
-                        ),
+            suffixIcon: InkWell(
+              onTap: callBack,
+              child: (isAmount && !isQuantity)
+                  ? Padding(
+                      padding: EdgeInsets.only(
+                        top: 15.h,
+                        right: 20.w,
                       ),
-              ),
-              prefixIcon: ImageIcon(
-                AssetImage(prefixImg),
-                color: Colors.white,
-              ),
-              border: InputBorder.none,
+                      child: Text(
+                        S.current.max,
+                        style: textNormal(
+                                const Color.fromRGBO(228, 172, 26, 1), 16)
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(top: 15.h, right: 20.w),
+                      child: Text(
+                        '${S.current.of_all} 10',
+                        style: textNormal(
+                          const Color.fromRGBO(255, 255, 255, 1),
+                          16,
+                        ).copyWith(fontWeight: FontWeight.w400),
+                      ),
+                    ),
             ),
+            prefixIcon: ImageIcon(
+              AssetImage(prefixImg),
+              color: AppTheme.getInstance().textThemeColor(),
+            ),
+            border: InputBorder.none,
           ),
         ),
-      );
-
+      ),
+    );
   }
 
   Widget txtWaringAddress() {
@@ -340,7 +341,7 @@ class _SendTokenState extends State<SendToken> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         const Color.fromRGBO(255, 108, 108, 1),
-                        12,
+                        12.sp,
                         FontWeight.w400,
                       ),
                     );
@@ -377,7 +378,7 @@ class _SendTokenState extends State<SendToken> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         const Color.fromRGBO(255, 108, 108, 1),
-                        12,
+                        12.sp,
                         FontWeight.w400,
                       ),
                     );
