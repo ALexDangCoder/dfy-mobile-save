@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -22,18 +24,21 @@ class SearchNFT extends StatefulWidget {
 class _SearchNFTState extends State<SearchNFT> {
   TextEditingController controller = TextEditingController();
   bool showAllResult = false;
-
+  late Timer _debounce;
   late SearchCubit searchCubit;
 
   @override
   void initState() {
     super.initState();
     searchCubit = SearchCubit();
+    _debounce =
+        Timer(const Duration(milliseconds: 1000),(){});
   }
 
   @override
   void dispose() {
     controller.dispose();
+    _debounce.cancel();
     super.dispose();
   }
 
@@ -171,8 +176,12 @@ class _SearchNFTState extends State<SearchNFT> {
                     child: TextFormField(
                       controller: controller,
                       onChanged: (value) {
-                        searchCubit.search(value);
                         searchCubit.show();
+                        if (_debounce.isActive) _debounce.cancel();
+                        _debounce =
+                            Timer(const Duration(milliseconds: 1500), () {
+                          searchCubit.search(value);
+                        });
                       },
                       onFieldSubmitted: (value) {
                         searchCubit.search(value);
@@ -194,32 +203,33 @@ class _SearchNFTState extends State<SearchNFT> {
                     ),
                   ),
                   StreamBuilder<bool>(
-                      stream: searchCubit.isVisible,
-                      builder: (context, snapshot) {
-                        return Visibility(
-                          visible: snapshot.data ?? false,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                controller.text = '';
-                                searchCubit.hide();
-                              });
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                right: 13.w,
+                    stream: searchCubit.isVisible,
+                    builder: (context, snapshot) {
+                      return Visibility(
+                        visible: snapshot.data ?? false,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              controller.text = '';
+                              searchCubit.hide();
+                            });
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              right: 13.w,
+                            ),
+                            child: ImageIcon(
+                              const AssetImage(
+                                ImageAssets.ic_close,
                               ),
-                              child: ImageIcon(
-                                const AssetImage(
-                                  ImageAssets.ic_close,
-                                ),
-                                color: AppTheme.getInstance().whiteColor(),
-                                size: 20.sp,
-                              ),
+                              color: AppTheme.getInstance().whiteColor(),
+                              size: 20.sp,
                             ),
                           ),
-                        );
-                      })
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -235,35 +245,36 @@ class _SearchNFTState extends State<SearchNFT> {
       width: 375.w,
       child: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: 24.h,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 17.w),
+              child: Text(
+                S.current.collection,
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  20.sp,
+                  FontWeight.w700,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 12.h,
+            ),
             StreamBuilder<int>(
               stream: searchCubit.lengthStream,
               builder: (context, snapshot) {
                 final int item = snapshot.data ?? 3;
                 return ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxHeight: item * 72.h + 72.h,
+                    maxHeight: item * 77.h + 3.h,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: 24.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 17.w),
-                        child: Text(
-                          S.current.collection,
-                          style: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            20.sp,
-                            FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 12.h,
-                      ),
                       Expanded(
                         child: ListView.separated(
                           physics: const NeverScrollableScrollPhysics(),
