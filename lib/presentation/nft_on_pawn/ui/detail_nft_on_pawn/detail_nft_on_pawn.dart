@@ -116,13 +116,13 @@ class _OnPawnState extends State<OnPawn> with SingleTickerProviderStateMixin {
   Widget _buildButtonSendOffer(BuildContext context) {
     return ButtonGradient(
       onPressed: () {
-        showModalBottomSheet(
-          backgroundColor: Colors.black,
-          isScrollControlled: true,
-          context: context,
-          builder: (_) {
-            return const SendOffer();
-          },
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) {
+              return const SendOffer();
+            },
+          ),
         );
       },
       gradient: RadialGradient(

@@ -5,6 +5,7 @@ import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,74 +41,71 @@ class _SendNftState extends State<SendNft> {
           currentFocus.unfocus();
         }
       },
-      child: Container(
-        width: 375.w,
-        height: 764.h,
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(62, 61, 92, 1),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
-        ),
+      child: BaseBottomSheet(
+        text: ImageAssets.ic_close,
+        isImage: true,
+        isHaveLeftIcon: false,
+        title: S.current.send_nft,
+        callback: () {
+          Navigator.pop(context);
+        },
         child: Column(
           children: [
-            header(nameSend: 'NFT'),
-            const Divider(
-              thickness: 1,
-              color: Color.fromRGBO(255, 255, 255, 0.1),
-            ),
-            SizedBox(
-              height: 24.h,
-            ),
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    formShowFtAddress(
-                      hintText: '0xf94138c9...43FE932eA',
-                      readOnly: true,
-                      prefixImg: ImageAssets.ic_from,
-                      suffixImg: '',
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    formShowFtAddress(
-                      hintText: S.current.to_address,
-                      suffixImg: ImageAssets.ic_qr_code,
-                      prefixImg: ImageAssets.ic_to,
-                      callBack: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => QRViewExample(
-                              controller: txtToAddressNft,
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 16.w,
+                    right: 16.w,
+                  ),
+                  child: Column(
+                    children: [
+                      spaceH24,
+                      formShowFtAddress(
+                        hintText: '0xf94138c9...43FE932eA',
+                        readOnly: true,
+                        prefixImg: ImageAssets.ic_from,
+                        suffixImg: '',
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      formShowFtAddress(
+                        hintText: S.current.to_address,
+                        suffixImg: ImageAssets.ic_qr_code,
+                        prefixImg: ImageAssets.ic_to,
+                        callBack: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => QRViewExample(
+                                controller: txtToAddressNft,
+                              ),
                             ),
-                          ),
-                        ).then(
-                          (_) => sendNftCubit.checkHaveVlAddressFormToken(
-                            txtToAddressNft.text,
-                            type: typeSend.SEND_NFT,
-                          ),
-                        );
-                      },
-                    ),
-                    txtWaringAddress(),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    formAmountFtQuantity(
-                      hintText: S.current.quantity,
-                      isAmount: true,
-                      isQuantity: true,
-                      prefixImg: ImageAssets.ic_quantity,
-                    ),
-                    txtWaringQuantity(),
-                    SizedBox(
-                      height: 353.h,
-                    ),
-                  ],
+                          ).then(
+                            (_) => sendNftCubit.checkHaveVlAddressFormToken(
+                              txtToAddressNft.text,
+                              type: typeSend.SEND_NFT,
+                            ),
+                          );
+                        },
+                      ),
+                      txtWaringAddress(),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      formAmountFtQuantity(
+                        hintText: S.current.quantity,
+                        isAmount: true,
+                        isQuantity: true,
+                        prefixImg: ImageAssets.ic_quantity,
+                      ),
+                      txtWaringQuantity(),
+                      SizedBox(
+                        height: 353.h,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -169,19 +167,14 @@ class _SendNftState extends State<SendNft> {
   }) {
     return Container(
       height: 64.h,
-      width: 323.w,
-      // padding: EdgeInsets.only(
-      //   top: 12.h,
-      //   bottom: 12.h,
-      // ),
+      // padding: EdgeInsets.only(top: 10.h),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
         color: Color(0xff32324c),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(top: 10.h),
+      child: Center(
         child: TextFormField(
           controller: readOnly ? null : txtToAddressNft,
           onChanged: (value) {
@@ -239,104 +232,70 @@ class _SendNftState extends State<SendNft> {
   }) {
     return Container(
       height: 64.h,
-      width: 323.w,
+      // width: 323.w,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
         color: Color(0xff32324c),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(top: 10.h),
-        child: TextFormField(
-          onChanged: (value) {
-            sendNftCubit.checkHaveVLQuantityFormNFT(value);
-            sendNftCubit.checkHaveVlAddressFormToken(
-              txtToAddressNft.text,
-              type: typeSend.SEND_NFT,
-            );
-          },
-          keyboardType: TextInputType.number,
-          textAlignVertical: TextAlignVertical.center,
-          controller: txtQuantity,
-          style: textNormal(
-            Colors.white,
-            16,
-          ),
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: textNormal(
-              Colors.grey,
-              14,
-            ),
-            suffixIcon: InkWell(
-              onTap: callBack,
-              child: (isAmount && !isQuantity)
-                  ? Padding(
-                      padding: EdgeInsets.only(
-                        top: 10.h,
-                        right: 20.w,
-                      ),
-                      child: Text(
-                        S.current.max,
-                        style: textNormal(
-                                const Color.fromRGBO(228, 172, 26, 1), 16)
-                            .copyWith(fontWeight: FontWeight.w600),
-                      ),
-                    )
-                  : Padding(
-                      padding: EdgeInsets.only(top: 20.h, right: 20.w),
-                      child: Text(
-                        '${S.current.of_all} $maxQuantityFirstFetch',
-                        style: textNormal(
-                          const Color.fromRGBO(255, 255, 255, 1),
-                          16,
-                        ).copyWith(fontWeight: FontWeight.w400),
-                      ),
-                    ),
-            ),
-            prefixIcon: Padding(
-              padding: EdgeInsets.only(top: 10.h),
-              child: ImageIcon(
-                AssetImage(prefixImg),
-                color: Colors.white,
-              ),
-            ),
-            border: InputBorder.none,
-          ),
+      child: TextFormField(
+        onChanged: (value) {
+          sendNftCubit.checkHaveVLQuantityFormNFT(value);
+          sendNftCubit.checkHaveVlAddressFormToken(
+            txtToAddressNft.text,
+            type: typeSend.SEND_NFT,
+          );
+        },
+        keyboardType: TextInputType.number,
+        textAlignVertical: TextAlignVertical.center,
+        controller: txtQuantity,
+        style: textNormal(
+          Colors.white,
+          16,
         ),
-      ),
-    );
-  }
-
-  Container header({required String nameSend}) {
-    return Container(
-      width: 343.w,
-      margin: EdgeInsets.only(
-        left: 16.w,
-        right: 16.w,
-        top: 16.h,
-      ),
-      child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            '${S.current.send} $nameSend',
-            style: textNormal(Colors.white, 20)
-                .copyWith(fontWeight: FontWeight.w700),
+        cursorColor: Colors.white,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: textNormal(
+            Colors.grey,
+            14,
           ),
-          SizedBox(
-            width: 100.w,
+          suffixIcon: InkWell(
+            onTap: callBack,
+            child: (isAmount && !isQuantity)
+                ? Padding(
+                    padding: EdgeInsets.only(
+                      top: 10.h,
+                      right: 20.w,
+                    ),
+                    child: Text(
+                      S.current.max,
+                      style: textNormal(
+                              const Color.fromRGBO(228, 172, 26, 1), 16)
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
+                  )
+                : Padding(
+                    padding: EdgeInsets.only(top: 20.h, right: 20.w),
+                    child: Text(
+                      '${S.current.of_all} $maxQuantityFirstFetch',
+                      style: textNormal(
+                        const Color.fromRGBO(255, 255, 255, 1),
+                        16,
+                      ).copyWith(fontWeight: FontWeight.w400),
+                    ),
+                  ),
           ),
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Image.asset(ImageAssets.ic_close),
+          prefixIcon: Padding(
+            padding: EdgeInsets.only(top: 10.h),
+            child: ImageIcon(
+              AssetImage(prefixImg),
+              color: Colors.white,
+            ),
           ),
-        ],
+          border: InputBorder.none,
+        ),
       ),
     );
   }
@@ -357,18 +316,19 @@ class _SendNftState extends State<SendNft> {
                 width: 323.w,
                 // height: 30.h,
                 child: StreamBuilder<String>(
-                    initialData: '',
-                    stream: sendNftCubit.txtInvalidAddressFormStream,
-                    builder: (context, snapshot) {
-                      return Text(
-                        snapshot.data ?? '',
-                        style: textNormalCustom(
-                          const Color.fromRGBO(255, 108, 108, 1),
-                          12,
-                          FontWeight.w400,
-                        ),
-                      );
-                    }),
+                  initialData: '',
+                  stream: sendNftCubit.txtInvalidAddressFormStream,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: textNormalCustom(
+                        const Color.fromRGBO(255, 108, 108, 1),
+                        12,
+                        FontWeight.w400,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),

@@ -40,64 +40,62 @@ class FormWithOutPrefix extends StatelessWidget {
   Widget build(BuildContext context) {
     if (typeForm == TypeFormWithoutPrefix.IMAGE_FT_TEXT) {
       return Container(
-        width: 343.w,
+        // width: 343.w,
         height: 64.h,
-        padding: EdgeInsets.only(
-          left: 12.w,
-          right: 12.w,
-          top: 8.h,
-        ),
+        padding: EdgeInsets.only(left: 12.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(20.r),
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
-        child: TextFormField(
-          cursorColor: Colors.white,
-          controller: txtController,
-          style: textNormal(
-            Colors.white,
-            16,
-          ),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: hintText,
-            hintStyle: textNormal(
-              Colors.grey,
+        child: Center(
+          child: TextFormField(
+            cursorColor: Colors.white,
+            controller: txtController,
+            style: textNormal(
+              Colors.white,
               16,
             ),
-            suffixIcon: SizedBox(
-              height: 20.h,
-              width: 78.w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  circularImage(
-                    imageAsset ?? '',
-                    height: 16,
-                    width: 16,
-                  ),
-                  spaceW4,
-                  if (isTokenOrQuantity)
-                    Text(
-                      '$nameToken',
-                      style: textNormalCustom(
-                        Colors.white,
-                        16,
-                        FontWeight.w400,
-                      ),
-                    )
-                  else
-                    Text(
-                      '${S.current.of_all} $quantityOfAll',
-                      style: textNormalCustom(
-                        Colors.white,
-                        16,
-                        FontWeight.w400,
-                      ),
-                    )
-                ],
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: hintText,
+              hintStyle: textNormal(
+                Colors.grey,
+                16,
+              ),
+              suffixIcon: SizedBox(
+                height: 20.h,
+                width: 78.w,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    circularImage(
+                      imageAsset ?? '',
+                      height: 16,
+                      width: 16,
+                    ),
+                    spaceW4,
+                    if (isTokenOrQuantity)
+                      Text(
+                        '$nameToken',
+                        style: textNormalCustom(
+                          Colors.white,
+                          16,
+                          FontWeight.w400,
+                        ),
+                      )
+                    else
+                      Text(
+                        '${S.current.of_all} $quantityOfAll',
+                        style: textNormalCustom(
+                          Colors.white,
+                          16,
+                          FontWeight.w400,
+                        ),
+                      )
+                  ],
+                ),
               ),
             ),
           ),
@@ -109,8 +107,6 @@ class FormWithOutPrefix extends StatelessWidget {
         height: 64.h,
         padding: EdgeInsets.only(
           left: 12.w,
-          right: 12.w,
-          top: 8.h,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
@@ -118,28 +114,30 @@ class FormWithOutPrefix extends StatelessWidget {
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
-        child: TextFormField(
-          cursorColor: Colors.white,
-          controller: txtController,
-          style: textNormal(
-            Colors.white,
-            16,
-          ),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: hintText,
-            hintStyle: textNormal(
-              Colors.grey,
+        child: Center(
+          child: TextFormField(
+            cursorColor: Colors.white,
+            controller: txtController,
+            style: textNormal(
+              Colors.white,
               16,
             ),
-            suffixIcon: Container(
-              padding: EdgeInsets.only(top: 10.h),
-              child: Text(
-                '${S.current.of_all} $quantityOfAll',
-                style: textNormalCustom(
-                  Colors.white,
-                  16,
-                  FontWeight.w400,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: hintText,
+              hintStyle: textNormal(
+                Colors.grey,
+                16,
+              ),
+              suffixIcon: Container(
+                padding: EdgeInsets.only(top: 10.h),
+                child: Text(
+                  '${S.current.of_all} $quantityOfAll',
+                  style: textNormalCustom(
+                    Colors.white,
+                    16,
+                    FontWeight.w400,
+                  ),
                 ),
               ),
             ),
@@ -152,8 +150,6 @@ class FormWithOutPrefix extends StatelessWidget {
         height: 64.h,
         padding: EdgeInsets.only(
           left: 12.w,
-          right: 12.w,
-          top: 8.h,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
@@ -161,23 +157,25 @@ class FormWithOutPrefix extends StatelessWidget {
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
-        child: TextFormField(
-          cursorColor: Colors.white,
-          controller: txtController,
-          style: textNormal(
-            Colors.white,
-            16,
-          ),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: hintText,
-            hintStyle: textNormal(
-              Colors.grey,
+        child: Center(
+          child: TextFormField(
+            cursorColor: Colors.white,
+            controller: txtController,
+            style: textNormal(
+              Colors.white,
               16,
             ),
-            suffixIcon: ImageIcon(
-              AssetImage(imageAsset ?? ''),
-              color: Colors.white,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: hintText,
+              hintStyle: textNormal(
+                Colors.grey,
+                16,
+              ),
+              suffixIcon: ImageIcon(
+                AssetImage(imageAsset ?? ''),
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -188,8 +186,6 @@ class FormWithOutPrefix extends StatelessWidget {
         height: 64.h,
         padding: EdgeInsets.only(
           left: 12.w,
-          right: 12.w,
-          top: 8.h,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
@@ -197,23 +193,25 @@ class FormWithOutPrefix extends StatelessWidget {
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
-        child: TextFormField(
-          cursorColor: Colors.white,
-          controller: txtController,
-          style: textNormal(
-            Colors.white,
-            16,
-          ),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: hintText,
-            hintStyle: textNormal(
-              Colors.grey,
+        child: Center(
+          child: TextFormField(
+            cursorColor: Colors.white,
+            controller: txtController,
+            style: textNormal(
+              Colors.white,
               16,
             ),
-            suffixIcon: const Text(''),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: hintText,
+              hintStyle: textNormal(
+                Colors.grey,
+                16,
+              ),
+              suffixIcon: const Text(''),
+              ),
             ),
-          ),
+        ),
         );
     }
     else {
