@@ -268,34 +268,23 @@ class _SearchNFTState extends State<SearchNFT> {
               stream: searchCubit.lengthStream,
               builder: (context, snapshot) {
                 final int item = snapshot.data ?? 3;
-                return ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: item * 77.h + 3.h,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: ListView.separated(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: item,
-                          itemBuilder: (context, index) {
-                            return ResultCollectionSearch(
-                              collection: searchCubit.collections[index],
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                              child: Divider(
-                                color: AppTheme.getInstance().divideColor(),
-                              ),
-                            );
-                          },
-                        ),
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: item,
+                  itemBuilder: (context, index) {
+                    return ResultCollectionSearch(
+                      collection: searchCubit.collections[index],
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                      child: Divider(
+                        color: AppTheme.getInstance().divideColor(),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 );
               },
             ),

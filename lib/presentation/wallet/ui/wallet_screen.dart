@@ -344,8 +344,7 @@ class _WalletState extends State<WalletScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          ///TODO Change height of Sized Box
-          height: 135.h,
+          height: 125.h,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
