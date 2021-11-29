@@ -52,21 +52,25 @@ class IsOnSale extends StatelessWidget {
         ),
         Expanded(
           flex: 3,
-          child: GestureDetector(
-            onTap: () {
-              if (collectionBloc.isOnSale.value) {
-                collectionBloc.isOnSale.sink.add(false);
-              } else {
-                collectionBloc.isOnSale.sink.add(true);
-              }
-            },
-            child: Text(
-              title,
-              style: textNormal(
-                AppTheme.getInstance().textThemeColor(),
-                16.sp,
+          child: Wrap(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (collectionBloc.isOnSale.value) {
+                    collectionBloc.isOnSale.sink.add(false);
+                  } else {
+                    collectionBloc.isOnSale.sink.add(true);
+                  }
+                },
+                child: Text(
+                  title,
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],

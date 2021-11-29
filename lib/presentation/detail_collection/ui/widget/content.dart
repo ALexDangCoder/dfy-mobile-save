@@ -111,7 +111,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                               Expanded(
                                 flex: 3,
                                 child: Text(
-                                  S.current.nft_standard,
+                                  S.current.contract,
                                   style: textNormalCustom(
                                     AppTheme.getInstance().whiteWithOpacity(),
                                     14.sp,
@@ -139,7 +139,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                               Expanded(
                                 flex: 3,
                                 child: Text(
-                                  S.current.owner,
+                                  S.current.nft_standard,
                                   style: textNormalCustom(
                                     AppTheme.getInstance().whiteWithOpacity(),
                                     14.sp,

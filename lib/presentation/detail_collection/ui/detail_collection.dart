@@ -12,8 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
-import 'body_collection.dart';
-import 'filter_nft.dart';
+import 'widget/body_collection.dart';
+import 'widget/filter_nft.dart';
 
 class DetailCollection extends StatefulWidget {
   const DetailCollection({Key? key}) : super(key: key);
@@ -64,7 +64,7 @@ class _DetailCollectionState extends State<DetailCollection>
               tabs: [
                 Tab(
                   child: Text(
-                    '         ${S.current.nfts}        ',
+                    '         ${S.current.nfts}         ',
                     style: textNormalCustom(
                       null,
                       14.sp,

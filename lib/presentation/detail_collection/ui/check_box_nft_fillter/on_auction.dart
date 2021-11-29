@@ -52,21 +52,25 @@ class IsOnAuction extends StatelessWidget {
         ),
         Expanded(
           flex: 3,
-          child: GestureDetector(
-            onTap: () {
-              if (collectionBloc.isOnAuction.value) {
-                collectionBloc.isOnAuction.sink.add(false);
-              } else {
-                collectionBloc.isOnAuction.sink.add(true);
-              }
-            },
-            child: Text(
-              title,
-              style: textNormal(
-                AppTheme.getInstance().textThemeColor(),
-                16.sp,
+          child: Wrap(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (collectionBloc.isOnAuction.value) {
+                    collectionBloc.isOnAuction.sink.add(false);
+                  } else {
+                    collectionBloc.isOnAuction.sink.add(true);
+                  }
+                },
+                child: Text(
+                  title,
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],

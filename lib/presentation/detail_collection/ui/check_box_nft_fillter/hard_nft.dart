@@ -51,21 +51,25 @@ class IsHardNft extends StatelessWidget {
         ),
         Expanded(
           flex: 3,
-          child: GestureDetector(
-            onTap: () {
-              if (collectionBloc.isHardNft.value) {
-                collectionBloc.isHardNft.sink.add(false);
-              } else {
-                collectionBloc.isHardNft.sink.add(true);
-              }
-            },
-            child: Text(
-              title,
-              style: textNormal(
-                AppTheme.getInstance().textThemeColor(),
-                16.sp,
+          child: Wrap(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (collectionBloc.isHardNft.value) {
+                    collectionBloc.isHardNft.sink.add(false);
+                  } else {
+                    collectionBloc.isHardNft.sink.add(true);
+                  }
+                },
+                child: Text(
+                  title,
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],

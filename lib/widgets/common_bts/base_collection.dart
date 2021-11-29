@@ -74,7 +74,6 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
   ) {
     return Column(
       children: [
-        // todo chuaw fix ui share chuaw fix filter
         Container(
           color: AppTheme.getInstance().bgBtsColor(),
           height: 59.h,
