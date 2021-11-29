@@ -2,7 +2,6 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/bidding_tab.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
@@ -64,7 +63,8 @@ class _HardNFTScreenState extends State<HardNFTScreen>
     return BaseNFTMarket(
       title: 'Lamborghini Aventador Pink Ver 2021',
       image:
-          'https://phelieuminhhuy.com/wp-content/uploads/2015/07/7f3ce033-b9b2-4259-ba7c-f6e5bae431a9-1435911423691.jpg',
+          'https://phelieuminhhuy.com/wp-content/uploads/2015/07/7f3ce033-'
+              'b9b2-4259-ba7c-f6e5bae431a9-1435911423691.jpg',
       filterFunc: () {},
       flagFunc: () {},
       shareFunc: () {},
@@ -90,6 +90,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            spaceH12,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -218,6 +219,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
             line,
             spaceH12,
             const DescriptionWidget(),
+            spaceH20,
             line,
           ],
         ),
