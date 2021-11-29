@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/buy_nft/bloc/buy_nft_cubit.dart';
@@ -68,8 +69,8 @@ class _BuyNFTState extends State<BuyNFT> {
                               Text(
                                 S.current.quantity,
                                 style: textNormalCustom(
-                                  Colors.white,
-                                  14,
+                                  AppTheme.getInstance().textThemeColor(),
+                                  14.sp,
                                   FontWeight.w400,
                                 ),
                               ),
@@ -148,8 +149,8 @@ class _BuyNFTState extends State<BuyNFT> {
         Text(
           S.current.total_payment_upper,
           style: textNormalCustom(
-            Colors.white,
-            16,
+            AppTheme.getInstance().textThemeColor(),
+            16.sp,
             FontWeight.w600,
           ),
         ),
@@ -166,8 +167,8 @@ class _BuyNFTState extends State<BuyNFT> {
                 Text(
                   '$pricePer1Fetch DFY',
                   style: textNormalCustom(
-                    Colors.white,
-                    20,
+                    AppTheme.getInstance().textThemeColor(),
+                    20.sp,
                     FontWeight.w600,
                   ),
                 ),
@@ -191,8 +192,8 @@ class _BuyNFTState extends State<BuyNFT> {
             child: Text(
               S.current.price_per_1,
               style: textNormalCustom(
-                Colors.white,
-                16,
+                AppTheme.getInstance().textThemeColor(),
+                16.sp,
                 FontWeight.w400,
               ),
             ),
@@ -210,8 +211,8 @@ class _BuyNFTState extends State<BuyNFT> {
                   Text(
                     '$pricePer1Fetch DFY',
                     style: textNormalCustom(
-                      Colors.white,
-                      16,
+                      AppTheme.getInstance().textThemeColor(),
+                      16.sp,
                       FontWeight.w600,
                     ),
                   ),
