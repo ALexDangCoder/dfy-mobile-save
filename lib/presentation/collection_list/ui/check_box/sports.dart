@@ -52,21 +52,25 @@ class IsSport extends StatelessWidget {
         ),
         Expanded(
           flex: 3,
-          child: GestureDetector(
-            onTap: () {
-              if (collectionBloc.isSports.value) {
-                collectionBloc.isSports.sink.add(false);
-              } else {
-                collectionBloc.isSports.sink.add(true);
-              }
-            },
-            child: Text(
-              title,
-              style: textNormal(
-                AppTheme.getInstance().textThemeColor(),
-                16.sp,
+          child: Wrap(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (collectionBloc.isSports.value) {
+                    collectionBloc.isSports.sink.add(false);
+                  } else {
+                    collectionBloc.isSports.sink.add(true);
+                  }
+                },
+                child: Text(
+                  title,
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],

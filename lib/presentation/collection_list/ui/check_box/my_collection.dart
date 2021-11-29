@@ -52,21 +52,25 @@ class IsMyCollection extends StatelessWidget {
         ),
         Expanded(
           flex: 3,
-          child: GestureDetector(
-            onTap: () {
-              if (collectionBloc.isMyCollection.value) {
-                collectionBloc.isMyCollection.sink.add(false);
-              } else {
-                collectionBloc.isMyCollection.sink.add(true);
-              }
-            },
-            child: Text(
-              title,
-              style: textNormal(
-                AppTheme.getInstance().textThemeColor(),
-                16.sp,
+          child: Wrap(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (collectionBloc.isMyCollection.value) {
+                    collectionBloc.isMyCollection.sink.add(false);
+                  } else {
+                    collectionBloc.isMyCollection.sink.add(true);
+                  }
+                },
+                child: Text(
+                  title,
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],
