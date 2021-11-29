@@ -12,9 +12,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AlertPopUp extends StatelessWidget {
   const AlertPopUp({
-    Key? key, required this.type,
+    Key? key,
+    required this.type,
   }) : super(key: key);
   final KeyType type;
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -74,14 +76,33 @@ class AlertPopUp extends StatelessWidget {
                               left: 3.w,
                               right: 3.w,
                             ),
-                            child: Text(
-                              S.current.your_current_wallet,
+                            child: RichText(
                               textAlign: TextAlign.center,
-                              style: textNormal(
-                                AppTheme.getInstance().whiteColor(),
-                                12,
-                              ).copyWith(
-                                fontWeight: FontWeight.bold,
+                              text: TextSpan(
+                                text: S.current.your_current_wallet,
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  12,
+                                  FontWeight.w400,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: S.current.removed_permanently,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      12,
+                                      FontWeight.w600,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: S.current.this_action,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      12,
+                                      FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -93,14 +114,33 @@ class AlertPopUp extends StatelessWidget {
                               left: 3.w,
                               right: 3.w,
                             ),
-                            child: Text(
-                              S.current.you_can_only,
+                            child: RichText(
                               textAlign: TextAlign.center,
-                              style: textNormal(
-                                AppTheme.getInstance().whiteColor(),
-                                12,
-                              ).copyWith(
-                                fontWeight: FontWeight.bold,
+                              text: TextSpan(
+                                text: S.current.you_can_only,
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  12,
+                                  FontWeight.w400,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: S.current.secret_private,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      12,
+                                      FontWeight.w600,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: S.current.dfy_secret_private,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      12,
+                                      FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -121,11 +161,11 @@ class AlertPopUp extends StatelessWidget {
                       child: Row(
                         children: [
                           Flexible(
-                            child: InkWell(
+                            child: GestureDetector(
                               onTap: () {
                                 Navigator.pop(context);
                               },
-                              child: Container(
+                              child: SizedBox(
                                 width: 156.w,
                                 child: Center(
                                   child: Text(
@@ -143,22 +183,26 @@ class AlertPopUp extends StatelessWidget {
                             color: AppTheme.getInstance().divideColor(),
                           ),
                           Flexible(
-                            child: InkWell(
-                              onTap: type == KeyType.IMPORT ? () {
-                                showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) => const RestoreBTS(),
-                                ).then((_) => Navigator.pop(context));
-                              } : () {
-                                showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) => const SetupPassWord(),
-                                ).then((_) => Navigator.pop(context));
-                              } ,
+                            child: GestureDetector(
+                              onTap: type == KeyType.IMPORT
+                                  ? () {
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) =>
+                                            const RestoreBTS(),
+                                      ).then((_) => Navigator.pop(context));
+                                    }
+                                  : () {
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) =>
+                                            const SetupPassWord(),
+                                      ).then((_) => Navigator.pop(context));
+                                    },
                               child: SizedBox(
                                 width: 156.w,
                                 child: Center(
