@@ -18,10 +18,6 @@ Container formSetupPassWord({
     return Container(
       height: 64.h,
       width: 343.w,
-      padding: EdgeInsets.only(
-        top: 12.h,
-        bottom: 12.h,
-      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(20.r),
@@ -31,48 +27,51 @@ Container formSetupPassWord({
       child: StreamBuilder<bool>(
         stream: cubit.showOldStream,
         builder: (context, snapshot) {
-          return TextFormField(
-            onChanged: (value) {
-              cubit.checkHaveValueOldPW(value);
-            },
-            obscureText: snapshot.data ?? true,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16.sp,
-            ),
-            cursorColor: AppTheme.getInstance().textThemeColor(),
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: textNormal(
-                AppTheme.getInstance().disableColor(),
-                14.sp,
+          return Center(
+            child: TextFormField(
+              onChanged: (value) {
+                cubit.checkHaveValueOldPW(value);
+              },
+              obscureText: snapshot.data ?? true,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16.sp,
               ),
-              suffixIcon: InkWell(
-                onTap: () {
-                  if (index == 0) {
-                    index = 1;
-                    cubit.showOldPW(0);
-                  } else {
-                    index = 0;
-                    cubit.showOldPW(1);
-                  }
-                },
-                child: snapshot.data ?? false
-                    ? ImageIcon(
-                        const AssetImage(ImageAssets.ic_show),
-                        color: AppTheme.getInstance().disableColor(),
-                      )
-                    : ImageIcon(
-                        const AssetImage(ImageAssets.ic_hide),
-                        color: AppTheme.getInstance().disableColor(),
-                      ),
+              textAlignVertical: TextAlignVertical.center,
+              cursorColor: AppTheme.getInstance().textThemeColor(),
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: textNormal(
+                  AppTheme.getInstance().disableColor(),
+                  14.sp,
+                ),
+                suffixIcon: InkWell(
+                  onTap: () {
+                    if (index == 0) {
+                      index = 1;
+                      cubit.showOldPW(0);
+                    } else {
+                      index = 0;
+                      cubit.showOldPW(1);
+                    }
+                  },
+                  child: snapshot.data ?? false
+                      ? ImageIcon(
+                          const AssetImage(ImageAssets.ic_show),
+                          color: AppTheme.getInstance().disableColor(),
+                        )
+                      : ImageIcon(
+                          const AssetImage(ImageAssets.ic_hide),
+                          color: AppTheme.getInstance().disableColor(),
+                        ),
+                ),
+                prefixIcon: ImageIcon(
+                  const AssetImage(ImageAssets.ic_lock),
+                  color: AppTheme.getInstance().textThemeColor(),
+                ),
+                border: InputBorder.none,
               ),
-              prefixIcon: ImageIcon(
-                const AssetImage(ImageAssets.ic_lock),
-                color: AppTheme.getInstance().textThemeColor(),
-              ),
-              border: InputBorder.none,
             ),
           );
         },
@@ -83,10 +82,6 @@ Container formSetupPassWord({
     return Container(
       height: 64.h,
       width: 343.w,
-      padding: EdgeInsets.only(
-        top: 12.h,
-        bottom: 12.h,
-      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(20.r),
@@ -96,47 +91,50 @@ Container formSetupPassWord({
       child: StreamBuilder<bool>(
         stream: cubit.showNewPWStream,
         builder: (context, snapshot) {
-          return TextFormField(
-            onChanged: (value) {
-              cubit.checkHaveValueNewPW(value);
-            },
-            obscureText: snapshot.data ?? true,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16.sp,
-            ),
-            cursorColor: AppTheme.getInstance().textThemeColor(),
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: textNormal(
-                AppTheme.getInstance().disableColor(),
-                14.sp,
+          return Center(
+            child: TextFormField(
+              textAlignVertical: TextAlignVertical.center,
+              onChanged: (value) {
+                cubit.checkHaveValueNewPW(value);
+              },
+              obscureText: snapshot.data ?? true,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16.sp,
               ),
-              suffixIcon: InkWell(
-                  onTap: () {
-                    if (index == 0) {
-                      index = 1;
-                      cubit.showNewPW(0);
-                    } else {
-                      index = 0;
-                      cubit.showNewPW(1);
-                    }
-                  },
-                  child: snapshot.data ?? false
-                      ? ImageIcon(
-                          const AssetImage(ImageAssets.ic_show),
-                          color: AppTheme.getInstance().disableColor(),
-                        )
-                      : ImageIcon(
-                          const AssetImage(ImageAssets.ic_hide),
-                          color: AppTheme.getInstance().disableColor(),
-                        ),),
-              prefixIcon: ImageIcon(
-                const AssetImage(ImageAssets.ic_lock),
-                color: AppTheme.getInstance().textThemeColor(),
+              cursorColor: AppTheme.getInstance().textThemeColor(),
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: textNormal(
+                  AppTheme.getInstance().disableColor(),
+                  14.sp,
+                ),
+                suffixIcon: InkWell(
+                    onTap: () {
+                      if (index == 0) {
+                        index = 1;
+                        cubit.showNewPW(0);
+                      } else {
+                        index = 0;
+                        cubit.showNewPW(1);
+                      }
+                    },
+                    child: snapshot.data ?? false
+                        ? ImageIcon(
+                            const AssetImage(ImageAssets.ic_show),
+                            color: AppTheme.getInstance().disableColor(),
+                          )
+                        : ImageIcon(
+                            const AssetImage(ImageAssets.ic_hide),
+                            color: AppTheme.getInstance().disableColor(),
+                          ),),
+                prefixIcon: ImageIcon(
+                  const AssetImage(ImageAssets.ic_lock),
+                  color: AppTheme.getInstance().textThemeColor(),
+                ),
+                border: InputBorder.none,
               ),
-              border: InputBorder.none,
             ),
           );
         },
@@ -147,10 +145,6 @@ Container formSetupPassWord({
     return Container(
       height: 64.h,
       width: 343.w,
-      padding: EdgeInsets.only(
-        top: 12.h,
-        bottom: 12.h,
-      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(20.r),
@@ -160,47 +154,50 @@ Container formSetupPassWord({
       child: StreamBuilder<bool>(
         stream: cubit.showCfPWStream,
         builder: (context, snapshot) {
-          return TextFormField(
-            onChanged: (value) {
-              cubit.checkHaveValueConfirmPW(value);
-            },
-            obscureText: snapshot.data ?? true,
-            style: textNormal(
-              AppTheme.getInstance().textThemeColor(),
-              16.sp,
-            ),
-            cursorColor: AppTheme.getInstance().textThemeColor(),
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: textNormal(
-                AppTheme.getInstance().disableColor(),
-                14.sp,
+          return Center(
+            child: TextFormField(
+              textAlignVertical: TextAlignVertical.center,
+              onChanged: (value) {
+                cubit.checkHaveValueConfirmPW(value);
+              },
+              obscureText: snapshot.data ?? true,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16.sp,
               ),
-              suffixIcon: InkWell(
-                  onTap: () {
-                    if (index == 0) {
-                      index = 1;
-                      cubit.showConfirmPW(0);
-                    } else {
-                      index = 0;
-                      cubit.showConfirmPW(1);
-                    }
-                  },
-                  child: snapshot.data ?? false
-                      ? ImageIcon(
-                          const AssetImage(ImageAssets.ic_show),
-                          color: AppTheme.getInstance().disableColor(),
-                        )
-                      : ImageIcon(
-                          const AssetImage(ImageAssets.ic_hide),
-                          color: AppTheme.getInstance().disableColor(),
-                        ),),
-              prefixIcon: ImageIcon(
-                const AssetImage(ImageAssets.ic_lock),
-                color: AppTheme.getInstance().textThemeColor(),
+              cursorColor: AppTheme.getInstance().textThemeColor(),
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: textNormal(
+                  AppTheme.getInstance().disableColor(),
+                  14.sp,
+                ),
+                suffixIcon: InkWell(
+                    onTap: () {
+                      if (index == 0) {
+                        index = 1;
+                        cubit.showConfirmPW(0);
+                      } else {
+                        index = 0;
+                        cubit.showConfirmPW(1);
+                      }
+                    },
+                    child: snapshot.data ?? false
+                        ? ImageIcon(
+                            const AssetImage(ImageAssets.ic_show),
+                            color: AppTheme.getInstance().disableColor(),
+                          )
+                        : ImageIcon(
+                            const AssetImage(ImageAssets.ic_hide),
+                            color: AppTheme.getInstance().disableColor(),
+                          ),),
+                prefixIcon: ImageIcon(
+                  const AssetImage(ImageAssets.ic_lock),
+                  color: AppTheme.getInstance().textThemeColor(),
+                ),
+                border: InputBorder.none,
               ),
-              border: InputBorder.none,
             ),
           );
         },

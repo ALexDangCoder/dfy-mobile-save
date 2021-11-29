@@ -51,6 +51,7 @@ class FormWithOutPrefix extends StatelessWidget {
         ),
         child: Center(
           child: TextFormField(
+            textAlignVertical: TextAlignVertical.center,
             cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: txtController,
             style: textNormal(
@@ -67,34 +68,37 @@ class FormWithOutPrefix extends StatelessWidget {
               suffixIcon: SizedBox(
                 height: 20.h,
                 width: 78.w,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    circularImage(
-                      imageAsset ?? '',
-                      height: 16,
-                      width: 16,
-                    ),
-                    spaceW4,
-                    if (isTokenOrQuantity)
-                      Text(
-                        '$nameToken',
-                        style: textNormalCustom(
-                          AppTheme.getInstance().textThemeColor(),
-                          16.sp,
-                          FontWeight.w400,
-                        ),
-                      )
-                    else
-                      Text(
-                        '${S.current.of_all} $quantityOfAll',
-                        style: textNormalCustom(
-                          AppTheme.getInstance().textThemeColor(),
-                          16.sp,
-                          FontWeight.w400,
-                        ),
-                      )
-                  ],
+                child: Padding(
+                  padding: EdgeInsets.only(right: 20.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      circularImage(
+                        imageAsset ?? '',
+                        height: 16,
+                        width: 16,
+                      ),
+                      spaceW4,
+                      if (isTokenOrQuantity)
+                        Text(
+                          '$nameToken',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().textThemeColor(),
+                            16.sp,
+                            FontWeight.w400,
+                          ),
+                        )
+                      else
+                        Text(
+                          '${S.current.of_all} $quantityOfAll',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().textThemeColor(),
+                            16.sp,
+                            FontWeight.w400,
+                          ),
+                        )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -116,6 +120,7 @@ class FormWithOutPrefix extends StatelessWidget {
         ),
         child: Center(
           child: TextFormField(
+            textAlignVertical: TextAlignVertical.center,
             cursorColor: Colors.white,
             controller: txtController,
             style: textNormal(
@@ -130,14 +135,15 @@ class FormWithOutPrefix extends StatelessWidget {
                 16.sp,
               ),
               suffixIcon: Container(
-                padding: EdgeInsets.only(top: 10.h),
+                padding: EdgeInsets.only(top: 15.h),
                 child: Text(
-                  '${S.current.of_all} $quantityOfAll',
-                  style: textNormalCustom(
-                    AppTheme.getInstance().textThemeColor(),
-                    16.sp,
-                    FontWeight.w400,
-                  ),
+                    '${S.current.of_all} $quantityOfAll',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().textThemeColor(),
+                      16.sp,
+                      FontWeight.w400,
+                    ),
+
                 ),
               ),
             ),
@@ -159,6 +165,7 @@ class FormWithOutPrefix extends StatelessWidget {
         ),
         child: Center(
           child: TextFormField(
+            textAlignVertical: TextAlignVertical.center,
             cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: txtController,
             style: textNormal(
@@ -195,6 +202,7 @@ class FormWithOutPrefix extends StatelessWidget {
         ),
         child: Center(
           child: TextFormField(
+            textAlignVertical: TextAlignVertical.center,
             cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: txtController,
             style: textNormal(

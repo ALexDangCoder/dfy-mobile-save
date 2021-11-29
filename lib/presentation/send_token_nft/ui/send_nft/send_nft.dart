@@ -190,6 +190,7 @@ class _SendNftState extends State<SendNft> {
           ),
           cursorColor: AppTheme.getInstance().textThemeColor(),
           // controller: controller,
+          textAlignVertical: TextAlignVertical.center,
           readOnly: readOnly,
           decoration: InputDecoration(
             hintText: hintText,
@@ -208,14 +209,9 @@ class _SendNftState extends State<SendNft> {
                       color: AppTheme.getInstance().textThemeColor(),
                     ),
             ),
-            prefixIcon: Padding(
-              padding: EdgeInsets.only(
-                top: 0.h,
-              ),
-              child: ImageIcon(
-                AssetImage(prefixImg),
-                color: AppTheme.getInstance().textThemeColor(),
-              ),
+            prefixIcon: ImageIcon(
+              AssetImage(prefixImg),
+              color: AppTheme.getInstance().textThemeColor(),
             ),
             border: InputBorder.none,
           ),
@@ -234,68 +230,63 @@ class _SendNftState extends State<SendNft> {
     return Container(
       height: 64.h,
       // width: 323.w,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(20),
+          Radius.circular(20.r),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
-      child: TextFormField(
-        onChanged: (value) {
-          sendNftCubit.checkHaveVLQuantityFormNFT(value);
-          sendNftCubit.checkHaveVlAddressFormToken(
-            txtToAddressNft.text,
-            type: typeSend.SEND_NFT,
-          );
-        },
-        keyboardType: TextInputType.number,
-        textAlignVertical: TextAlignVertical.center,
-        controller: txtQuantity,
-        style: textNormal(
-          AppTheme.getInstance().textThemeColor(),
-          16.sp,
-        ),
-        cursorColor: AppTheme.getInstance().textThemeColor(),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: textNormal(
-            AppTheme.getInstance().disableColor(),
-            14.sp,
+      child: Center(
+        child: TextFormField(
+          onChanged: (value) {
+            sendNftCubit.checkHaveVLQuantityFormNFT(value);
+            sendNftCubit.checkHaveVlAddressFormToken(
+              txtToAddressNft.text,
+              type: typeSend.SEND_NFT,
+            );
+          },
+          keyboardType: TextInputType.number,
+          textAlignVertical: TextAlignVertical.center,
+          controller: txtQuantity,
+          style: textNormal(
+            AppTheme.getInstance().textThemeColor(),
+            16.sp,
           ),
-          suffixIcon: InkWell(
-            onTap: callBack,
-            child: (isAmount && !isQuantity)
-                ? Padding(
-                    padding: EdgeInsets.only(
-                      top: 10.h,
-                      right: 20.w,
+          cursorColor: AppTheme.getInstance().textThemeColor(),
+          decoration: InputDecoration(
+            hintText: hintText,
+            hintStyle: textNormal(
+              AppTheme.getInstance().disableColor(),
+              14.sp,
+            ),
+            suffixIcon: InkWell(
+              onTap: callBack,
+              child: (isAmount && !isQuantity)
+                  ? Center(
+                      child: Text(
+                        S.current.max,
+                        style: textNormal(
+                                const Color.fromRGBO(228, 172, 26, 1), 16)
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(right: 20.w, top: 15.h),
+                      child: Text(
+                        '${S.current.of_all} $maxQuantityFirstFetch',
+                        style: textNormal(
+                          AppTheme.getInstance().textThemeColor(),
+                          16.sp,
+                        ).copyWith(fontWeight: FontWeight.w400),
+                      ),
                     ),
-                    child: Text(
-                      S.current.max,
-                      style: textNormal(
-                              const Color.fromRGBO(228, 172, 26, 1), 16)
-                          .copyWith(fontWeight: FontWeight.w600),
-                    ),
-                  )
-                : Padding(
-                    padding: EdgeInsets.only(top: 20.h, right: 20.w),
-                    child: Text(
-                      '${S.current.of_all} $maxQuantityFirstFetch',
-                      style: textNormal(
-                        AppTheme.getInstance().textThemeColor(),
-                        16.sp,
-                      ).copyWith(fontWeight: FontWeight.w400),
-                    ),
-                  ),
-          ),
-          prefixIcon: Padding(
-            padding: EdgeInsets.only(top: 10.h),
-            child: ImageIcon(
+            ),
+            prefixIcon: ImageIcon(
               AssetImage(prefixImg),
               color: AppTheme.getInstance().textThemeColor(),
             ),
+            border: InputBorder.none,
           ),
-          border: InputBorder.none,
         ),
       ),
     );
