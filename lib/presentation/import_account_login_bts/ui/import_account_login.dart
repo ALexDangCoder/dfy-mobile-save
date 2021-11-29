@@ -85,303 +85,294 @@ class _ImportBTSState extends State<ImportBTS> {
           },
           child: BaseBottomSheet(
             title: S.current.import_seed,
-            child: Column(
-              children: [
-                spaceH24,
-                StreamBuilder<List<String>>(
-                  initialData: listString,
-                  stream: importCubit.listStringStream,
-                  builder: (ctx, snapshot) {
-                    listString = snapshot.data!;
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            listString.first,
-                            style: textNormal(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
+            child: Container(
+              padding: EdgeInsets.only(left: 16.w, right: 16.w,),
+              child: Column(
+                children: [
+                  spaceH24,
+                  StreamBuilder<List<String>>(
+                    initialData: listString,
+                    stream: importCubit.listStringStream,
+                    builder: (ctx, snapshot) {
+                      listString = snapshot.data!;
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              listString.first,
+                              style: textNormal(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                        if (listString.length == 2)
-                          Text(
-                            listString[1],
-                            style: textNormal(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                            ),
-                          )
-                        else
                           SizedBox(
-                            height: 36.h,
+                            height: 8.h,
                           ),
-                        if (listString.length == 2)
-                          SizedBox(
-                            height: 44.h,
-                          )
-                        else
-                          const SizedBox(),
-                      ],
-                    );
-                  },
-                ),
-                Flexible(
-                  child: SingleChildScrollView(
-                    child: Stack(
-                      children: [
-                        Column(
-                          children: [
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    importCubit.boolSink.add(!isVisible);
-                                  },
-                                  child: Container(
-                                    height: 64.h,
-                                    width: 343.w,
-                                    padding: EdgeInsets.only(
-                                      top: 6.h,
-                                      bottom: 6.h,
-                                      right: 8.w,
-                                      left: 8.w,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(20.r),
+                          if (listString.length == 2)
+                            Text(
+                              listString[1],
+                              style: textNormal(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                              ),
+                            )
+                          else
+                            SizedBox(
+                              height: 36.h,
+                            ),
+                          if (listString.length == 2)
+                            SizedBox(
+                              height: 44.h,
+                            )
+                          else
+                            const SizedBox(),
+                        ],
+                      );
+                    },
+                  ),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      child: Stack(
+                        children: [
+                          Column(
+                            children: [
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      importCubit.boolSink.add(!isVisible);
+                                    },
+                                    child: Container(
+                                      height: 64.h,
+                                      width: 343.w,
+                                      padding: EdgeInsets.only(
+                                        top: 6.h,
+                                        bottom: 6.h,
+                                        right: 8.w,
+                                        left: 8.w,
                                       ),
-                                      color: AppTheme.getInstance()
-                                          .itemBtsColors(),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Flexible(
-                                          child: Image.asset(
-                                            ImageAssets.ic_security,
-                                            color: Colors.white,
-                                          ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20.r),
                                         ),
-                                        Flexible(
-                                          flex: 8,
-                                          child: StreamBuilder<String>(
-                                            stream: importCubit.stringStream,
-                                            initialData: strValue,
-                                            builder: (ctx, snapshot) {
-                                              strValue = snapshot.data!;
-                                              return Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  strValue,
-                                                  style: textNormal(
-                                                    AppTheme.getInstance()
-                                                        .textThemeColor(),
-                                                    16,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        const Flexible(
-                                          child: ImageIcon(
-                                            AssetImage(
-                                              ImageAssets.ic_line_down,
+                                        color: AppTheme.getInstance()
+                                            .itemBtsColors(),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Flexible(
+                                            child: Image.asset(
+                                              ImageAssets.ic_security,
+                                              color: Colors.white,
                                             ),
-                                            color: Colors.white,
                                           ),
-                                        ),
-                                      ],
+                                          Flexible(
+                                            flex: 8,
+                                            child: StreamBuilder<String>(
+                                              stream: importCubit.stringStream,
+                                              initialData: strValue,
+                                              builder: (ctx, snapshot) {
+                                                strValue = snapshot.data!;
+                                                return Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(
+                                                    strValue,
+                                                    style: textNormal(
+                                                      AppTheme.getInstance()
+                                                          .textThemeColor(),
+                                                      16,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          const Flexible(
+                                            child: ImageIcon(
+                                              AssetImage(
+                                                ImageAssets.ic_line_down,
+                                              ),
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                StreamBuilder<FormType>(
-                                  stream: importCubit.typeStream,
-                                  initialData: type,
-                                  builder: (ctx, snapshot) {
-                                    type = snapshot.data!;
-                                    return type == FormType.PASS_PHRASE
-                                        ? ItemForm(
-                                            prefix: ImageAssets.ic_key24,
-                                            hint: S.current.wallet_secret,
-                                            suffix: S.current.paste,
-                                            formType: FormType.PASS_PHRASE,
-                                            isShow: false,
-                                            importCubit: importCubit,
-                                            controller: seedPhraseController,
-                                            callback: () async {
-                                              final ClipboardData? data =
-                                                  await Clipboard.getData(
-                                                Clipboard.kTextPlain,
-                                              );
-                                              seedPhraseController.text =
-                                                  data?.text ?? '';
-                                            },
-                                          )
-                                        : ItemForm(
-                                            prefix: ImageAssets.ic_key24,
-                                            hint: S.current.private_key,
-                                            suffix: S.current.paste,
-                                            formType: FormType.PRIVATE_KEY,
-                                            isShow: false,
-                                            importCubit: importCubit,
-                                            controller: privateKeyController,
-                                            callback: () async {
-                                              final ClipboardData? data =
-                                                  await Clipboard.getData(
-                                                Clipboard.kTextPlain,
-                                              );
-                                              privateKeyController.text =
-                                                  data?.text ?? '';
-                                            },
-                                          );
-                                  },
-                                ),
-                                warningSeedPhrase(),
-                                SizedBox(
-                                  height: 24.h,
-                                ),
-                                StreamBuilder<FormType>(
-                                  stream: importCubit.typeStream,
-                                  initialData: type,
-                                  builder: (ctx, snapshot) {
-                                    type = snapshot.data!;
-                                    if (type == FormType.PRIVATE_KEY) {
-                                      return Column(
-                                        children: [
-                                          Text(
-                                            S.current.or_scan,
-                                            style: textNormal(
-                                              AppTheme.getInstance()
-                                                  .textThemeColor(),
-                                              16,
-                                            ).copyWith(
-                                              fontWeight: FontWeight.w600,
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  StreamBuilder<FormType>(
+                                    stream: importCubit.typeStream,
+                                    initialData: type,
+                                    builder: (ctx, snapshot) {
+                                      type = snapshot.data!;
+                                      return type == FormType.PASS_PHRASE
+                                          ? ItemForm(
+                                              prefix: ImageAssets.ic_key24,
+                                              hint: S.current.wallet_secret,
+                                              suffix: S.current.paste,
+                                              formType: FormType.PASS_PHRASE,
+                                              isShow: false,
+                                              importCubit: importCubit,
+                                              controller: seedPhraseController,
+                                              callback: () async {
+                                                final ClipboardData? data =
+                                                    await Clipboard.getData(
+                                                  Clipboard.kTextPlain,
+                                                );
+                                                seedPhraseController.text =
+                                                    data?.text ?? '';
+                                              },
+                                            )
+                                          : ItemForm(
+                                              prefix: ImageAssets.ic_key24,
+                                              hint: S.current.private_key,
+                                              suffix: S.current.paste,
+                                              formType: FormType.PRIVATE_KEY,
+                                              isShow: false,
+                                              importCubit: importCubit,
+                                              controller: privateKeyController,
+                                              callback: () async {
+                                                final ClipboardData? data =
+                                                    await Clipboard.getData(
+                                                  Clipboard.kTextPlain,
+                                                );
+                                                privateKeyController.text =
+                                                    data?.text ?? '';
+                                              },
+                                            );
+                                    },
+                                  ),
+                                  warningSeedPhrase(),
+                                  SizedBox(
+                                    height: 24.h,
+                                  ),
+                                  StreamBuilder<FormType>(
+                                    stream: importCubit.typeStream,
+                                    initialData: type,
+                                    builder: (ctx, snapshot) {
+                                      type = snapshot.data!;
+                                      if (type == FormType.PRIVATE_KEY) {
+                                        return Column(
+                                          children: [
+                                            Text(
+                                              S.current.or_scan,
+                                              style: textNormal(
+                                                AppTheme.getInstance()
+                                                    .textThemeColor(),
+                                                16,
+                                              ).copyWith(
+                                                fontWeight: FontWeight.w600,
+                                              ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            height: 12.h,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (ctx) =>
-                                                      QRViewExample(
-                                                    controller:
-                                                        privateKeyController,
+                                            SizedBox(
+                                              height: 12.h,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (ctx) =>
+                                                        QRViewExample(
+                                                      controller:
+                                                          privateKeyController,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                            child: Image.asset(
-                                              ImageAssets.ic_qr_code,
-                                            ),
-                                          )
-                                        ],
-                                      );
-                                    } else {
-                                      return SizedBox(
-                                        height: 50.h,
-                                      );
-                                    }
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 100.h,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        StreamBuilder<bool>(
-                          initialData: isVisible,
-                          stream: importCubit.boolStream,
-                          builder: (ctx, snapshot) {
-                            isVisible = snapshot.data!;
-                            return Visibility(
-                              visible: isVisible,
-                              child: Positioned(
-                                top: 72.h,
-                                child: ChoiceDialog(
-                                  cubit: importCubit,
-                                  controller1: seedPhraseController,
-                                  controller2: privateKeyController,
-                                ),
+                                                );
+                                              },
+                                              child: Image.asset(
+                                                ImageAssets.ic_qr_code,
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      } else {
+                                        return SizedBox(
+                                          height: 50.h,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 100.h,
+                                  ),
+                                ],
                               ),
-                            );
-                          },
-                        ),
-                      ],
+                            ],
+                          ),
+                          StreamBuilder<bool>(
+                            initialData: isVisible,
+                            stream: importCubit.boolStream,
+                            builder: (ctx, snapshot) {
+                              isVisible = snapshot.data!;
+                              return Visibility(
+                                visible: isVisible,
+                                child: Positioned(
+                                  top: 72.h,
+                                  child: ChoiceDialog(
+                                    cubit: importCubit,
+                                    controller1: seedPhraseController,
+                                    controller2: privateKeyController,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 150.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    left: 39.w,
-                    right: 39.w,
+                  SizedBox(
+                    height: 150.h,
                   ),
-                  child: StreamBuilder<bool>(
-                    initialData: isEnable,
-                    stream: importCubit.btnStream,
-                    builder: (ctx, snapshot) {
-                      isEnable = snapshot.data!;
-                      if (isEnable) {
-                        return ButtonGradient(
-                              onPressed: () {
-                                if (importCubit.type == FormType.PASS_PHRASE) {
-                                  importCubit.showTxtWarningSeed(
-                                    seedPhraseController.text,
-                                    importCubit.type,
-                                  );
-                                } else {
-                                  importCubit.showTxtWarningSeed(
-                                    privateKeyController.text,
-                                    importCubit.type,
-                                  );
-                                }
-                                if (importCubit.validateAll()) {
-                                  final flag = importCubit.strValue ==
-                                      S.current.seed_phrase;
-                                  importCubit.importWallet(
-                                    type: flag ? PASS_PHRASE : PRIVATE_KEY,
-                                    content: flag
-                                        ? seedPhraseController.text
-                                        : privateKeyController.text,
-                                  );
-                                }
-                              },
-                              gradient: RadialGradient(
-                                center: const Alignment(0.5, -0.5),
-                                radius: 4,
-                                colors: AppTheme.getInstance()
-                                    .gradientButtonColor(),
-                              ),
-                              child: Text(
-                                S.current.restore,
-                                style: textNormal(
-                                  AppTheme.getInstance().textThemeColor(),
-                                  20,
+                  Container(
+                    margin: EdgeInsets.only(
+                      left: 39.w,
+                      right: 39.w,
+                    ),
+                    child: StreamBuilder<bool>(
+                      initialData: isEnable,
+                      stream: importCubit.btnStream,
+                      builder: (ctx, snapshot) {
+                        isEnable = snapshot.data!;
+                        if (isEnable) {
+                          return ButtonGradient(
+                                onPressed: () {
+                                  if (importCubit.type == FormType.PASS_PHRASE) {
+                                    importCubit.showTxtWarningSeed(
+                                      seedPhraseController.text,
+                                      importCubit.type,
+                                    );
+                                  } else {
+                                    importCubit.showTxtWarningSeed(
+                                      privateKeyController.text,
+                                      importCubit.type,
+                                    );
+                                  }
+                                  if (importCubit.validateAll()) {
+                                    final flag = importCubit.strValue ==
+                                        S.current.seed_phrase;
+                                    importCubit.importWallet(
+                                      type: flag ? PASS_PHRASE : PRIVATE_KEY,
+                                      content: flag
+                                          ? seedPhraseController.text
+                                          : privateKeyController.text,
+                                    );
+                                  }
+                                },
+                                gradient: RadialGradient(
+                                  center: const Alignment(0.5, -0.5),
+                                  radius: 4,
+                                  colors: AppTheme.getInstance()
+                                      .gradientButtonColor(),
                                 ),
-                              ),
-                            );
-                      } else {
-                        return ErrorButton(
-                              child: Center(
                                 child: Text(
                                   S.current.restore,
                                   style: textNormal(
@@ -389,14 +380,26 @@ class _ImportBTSState extends State<ImportBTS> {
                                     20,
                                   ),
                                 ),
-                              ),
-                            );
-                      }
-                    },
+                              );
+                        } else {
+                          return ErrorButton(
+                                child: Center(
+                                  child: Text(
+                                    S.current.restore,
+                                    style: textNormal(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      20,
+                                    ),
+                                  ),
+                                ),
+                              );
+                        }
+                      },
+                    ),
                   ),
-                ),
-                spaceH38,
-              ],
+                  spaceH38,
+                ],
+              ),
             ),
           ),
         );

@@ -54,32 +54,35 @@ class GridViewAuction extends StatelessWidget {
           callback: () {
             Navigator.pop(context);
           },
-          child: Column(
-            children: [
-              Expanded(
-                child: StaggeredGridView.countBuilder(
-                  mainAxisSpacing: 20.h,
-                  crossAxisSpacing: 26.w,
-                  itemCount: 4,
-                  crossAxisCount: 2,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const OnAuction(),
-                          ),
-                        );
-                      },
-                      child: products[index],
-                    );
-                  },
-                  staggeredTileBuilder: (int index) =>
-                      const StaggeredTile.fit(1),
+          child: Container(
+            padding: EdgeInsets.only(left: 16.w, right: 16.w,),
+            child: Column(
+              children: [
+                Expanded(
+                  child: StaggeredGridView.countBuilder(
+                    mainAxisSpacing: 20.h,
+                    crossAxisSpacing: 26.w,
+                    itemCount: 4,
+                    crossAxisCount: 2,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const OnAuction(),
+                            ),
+                          );
+                        },
+                        child: products[index],
+                      );
+                    },
+                    staggeredTileBuilder: (int index) =>
+                        const StaggeredTile.fit(1),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -249,7 +249,7 @@ class FormSaleFtPawn extends StatelessWidget {
           ),
         ),
         Expanded(
-          flex: 3,
+          flex: 2,
           child: Text(
             txtRight,
             style: styleRight,

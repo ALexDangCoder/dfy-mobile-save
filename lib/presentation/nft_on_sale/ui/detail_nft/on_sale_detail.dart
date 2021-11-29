@@ -98,13 +98,13 @@ class _OnSaleState extends State<OnSale> with SingleTickerProviderStateMixin {
   Widget _buildButtonBuyOut(BuildContext context) {
     return ButtonGradient(
       onPressed: () {
-        showModalBottomSheet(
-          backgroundColor: Colors.black,
-          isScrollControlled: true,
-          context: context,
-          builder: (_) {
-            return const BuyNFT();
-          },
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) {
+              return const BuyNFT();
+            },
+          ),
         );
       },
       gradient: RadialGradient(

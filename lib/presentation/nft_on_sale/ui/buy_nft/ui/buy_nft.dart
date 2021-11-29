@@ -42,88 +42,100 @@ class _BuyNFTState extends State<BuyNFT> {
           currentFocus.unfocus();
         }
       },
-      child: BaseBottomSheet(
-        isImage: true,
-        text: ImageAssets.ic_close,
-        title: '${S.current.buy} NFT',
-        child: Column(
-          children: [
-            spaceH24,
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          S.current.quantity,
-                          style: textNormalCustom(
-                            Colors.white,
-                            14,
-                            FontWeight.w400,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Align(
+          alignment: Alignment.bottomCenter,
+          child: BaseBottomSheet(
+            isImage: true,
+            text: ImageAssets.ic_close,
+            title: '${S.current.buy} NFT',
+            child: Column(
+              children: [
+                spaceH24,
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
+                      ),
+                      child: Column(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                S.current.quantity,
+                                style: textNormalCustom(
+                                  Colors.white,
+                                  14,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                              spaceH4,
+                              FormWithOutPrefix(
+                                hintText: S.current.enter_quantity,
+                                typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
+                                cubit: BuyNftCubit,
+                                txtController: txtQuantity,
+                                quantityOfAll: fakeQuantityFetch,
+                                imageAsset: ImageAssets.ic_symbol,
+                                isTokenOrQuantity: false,
+                              ),
+                              spaceH20,
+                              pricePerOne(),
+                              spaceH12,
+                              divider,
+                              spaceH12,
+                              showTotalPayment(),
+                              spaceH4,
+                              Text(
+                                '${S.current.your_balance} $balanceDFYFetch DFY',
+                                style: textNormalCustom(
+                                  Colors.white.withOpacity(0.7),
+                                  14,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 300.h,
+                              ),
+                            ],
                           ),
-                        ),
-                        spaceH4,
-                        FormWithOutPrefix(
-                          hintText: S.current.enter_quantity,
-                          typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
-                          cubit: BuyNftCubit,
-                          txtController: txtQuantity,
-                          quantityOfAll: fakeQuantityFetch,
-                          imageAsset: ImageAssets.ic_symbol,
-                          isTokenOrQuantity: false,
-                        ),
-                        spaceH20,
-                        pricePerOne(),
-                        spaceH12,
-                        divider,
-                        spaceH12,
-                        showTotalPayment(),
-                        spaceH4,
-                        Text(
-                          '${S.current.your_balance} $balanceDFYFetch DFY',
-                          style: textNormalCustom(
-                            Colors.white.withOpacity(0.7),
-                            14,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 300.h,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  isScrollControlled: true,
-                  backgroundColor: Colors.transparent,
-                  builder: (BuildContext context) {
-                    return const ConfirmBlockchainCategory(
-                      nameWallet: 'Test wallet',
-                      nameTokenWallet: 'BNB',
-                      balanceWallet: 0.551,
-                      typeConfirm: TYPE_CONFIRM.BUY_NFT,
-                      addressFrom: '0xFE5788e2...EB7144fd0',
-                      addressTo: '0xf94138c9...43FE932eA',
-                      imageWallet: ImageAssets.symbol,
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (BuildContext context) {
+                        return const ConfirmBlockchainCategory(
+                          nameWallet: 'Test wallet',
+                          nameTokenWallet: 'BNB',
+                          balanceWallet: 0.551,
+                          typeConfirm: TYPE_CONFIRM.BUY_NFT,
+                          addressFrom: '0xFE5788e2...EB7144fd0',
+                          addressTo: '0xf94138c9...43FE932eA',
+                          imageWallet: ImageAssets.symbol,
+                        );
+                      },
+                      context: context,
                     );
                   },
-                  context: context,
-                );
-              },
-              child: ButtonGold(
-                title: '${S.current.buy} NFT',
-                isEnable: true,
-              ),
+                  child: ButtonGold(
+                    title: '${S.current.buy} NFT',
+                    isEnable: true,
+                  ),
+                ),
+                spaceH38,
+              ],
             ),
-            spaceH38,
-          ],
+          ),
         ),
       ),
     );

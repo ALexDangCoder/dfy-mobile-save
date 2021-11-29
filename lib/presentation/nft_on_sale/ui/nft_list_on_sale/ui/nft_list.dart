@@ -40,27 +40,33 @@ class _NFTListOnSaleState extends State<NFTListOnSale> {
           isImage: true,
           title: S.current.nft_on_sale,
           text: ImageAssets.ic_filter,
-          child: StaggeredGridView.countBuilder(
-            mainAxisSpacing: 20.h,
-            crossAxisSpacing: 26.w,
-            itemCount: products.length,
-            crossAxisCount: 2,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    backgroundColor: Colors.black,
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (_) {
-                      return const OnSale();
-                    },
-                  );
-                },
-                child: products[index],
-              );
-            },
-            staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
+          child: Container(
+            padding: EdgeInsets.only(
+              left: 16.w,
+              right: 16.w,
+            ),
+            child: StaggeredGridView.countBuilder(
+              mainAxisSpacing: 20.h,
+              crossAxisSpacing: 26.w,
+              itemCount: products.length,
+              crossAxisCount: 2,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      backgroundColor: Colors.black,
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (_) {
+                        return const OnSale();
+                      },
+                    );
+                  },
+                  child: products[index],
+                );
+              },
+              staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
+            ),
           ),
         ),
       ),
