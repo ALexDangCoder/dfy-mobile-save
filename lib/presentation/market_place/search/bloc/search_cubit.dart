@@ -49,13 +49,13 @@ class SearchCubit extends BaseCubit<SearchState> {
     ),
     Collection(
       background: 'http://placeimg.com/640/480',
-      avatar: 'https://cdn.fakercloud.com/avatars/supjoey_128.jpg',
+      avatar: 'https://cdn.fakercloud.com/avatars/aaronalfred_128.jpg',
       title: 'Kyat',
       items: 1000,
     ),
     Collection(
       background: 'http://placeimg.com/640/480',
-      avatar: 'https://cdn.fakercloud.com/avatars/rpatey_128.jpg',
+      avatar: 'https://cdn.fakercloud.com/avatars/aaronalfred_128.jpg',
       title: 'Zambian Kwacha',
       items: 1000,
     ),
