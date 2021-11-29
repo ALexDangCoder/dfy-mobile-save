@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -29,7 +28,6 @@ class DescriptionWidget extends StatelessWidget {
           S.current.description,
           style: tokenDetailAmount(
             color: AppTheme.getInstance().currencyDetailTokenColor(),
-            weight: FontWeight.w400,
             fontSize: 14,
           ),
         ),
@@ -38,7 +36,6 @@ class DescriptionWidget extends StatelessWidget {
           des,
           style: tokenDetailAmount(
             color: AppTheme.getInstance().currencyDetailTokenColor(),
-            weight: FontWeight.w400,
             fontSize: 14,
           ),
         ),
@@ -52,7 +49,6 @@ class DescriptionWidget extends StatelessWidget {
           'Block chain',
           style: tokenDetailAmount(
             color: AppTheme.getInstance().currencyDetailTokenColor(),
-            weight: FontWeight.w400,
             fontSize: 14,
           ),
         ),
@@ -76,7 +72,6 @@ class DescriptionWidget extends StatelessWidget {
               name,
               style: tokenDetailAmount(
                 color: AppTheme.getInstance().currencyDetailTokenColor(),
-                weight: FontWeight.w400,
                 fontSize: 14,
               ),
             ),
@@ -98,7 +93,6 @@ class DescriptionWidget extends StatelessWidget {
                       style: tokenDetailAmount(
                         color: AppTheme.getInstance().blueColor(),
                         fontSize: 14,
-                        weight: FontWeight.w400,
                         decoration: TextDecoration.underline,
                       ),
                     ),
@@ -133,7 +127,6 @@ class DescriptionWidget extends StatelessWidget {
                 style: tokenDetailAmount(
                   color: valueColor ?? AppTheme.getInstance().textThemeColor(),
                   fontSize: 14,
-                  weight: FontWeight.w400,
                   decoration: isAddress
                       ? TextDecoration.underline
                       : TextDecoration.none,
