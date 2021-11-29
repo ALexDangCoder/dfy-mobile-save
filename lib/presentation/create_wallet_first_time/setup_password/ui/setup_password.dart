@@ -278,15 +278,15 @@ class _SetupPassWordState extends State<SetupPassWord> {
             },
             obscureText: snapshot.data ?? false,
             style: textNormal(
-              Colors.white,
+              AppTheme.getInstance().textThemeColor(),
               16.sp,
             ),
-            cursorColor: Colors.white,
+            cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: password,
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: textNormal(
-                Colors.grey,
+                AppTheme.getInstance().disableColor(),
                 14.sp,
               ),
               suffixIcon: InkWell(
@@ -300,18 +300,18 @@ class _SetupPassWordState extends State<SetupPassWord> {
                   }
                 },
                 child: snapshot.data ?? false
-                    ? const ImageIcon(
-                        AssetImage(ImageAssets.ic_show),
-                        color: Colors.grey,
+                    ? ImageIcon(
+                        const AssetImage(ImageAssets.ic_show),
+                        color: AppTheme.getInstance().disableColor(),
                       )
-                    : const ImageIcon(
-                        AssetImage(ImageAssets.ic_hide),
-                        color: Colors.grey,
+                    : ImageIcon(
+                        const AssetImage(ImageAssets.ic_hide),
+                        color: AppTheme.getInstance().disableColor(),
                       ),
               ),
-              prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_lock),
-                color: Colors.white,
+              prefixIcon: ImageIcon(
+                const AssetImage(ImageAssets.ic_lock),
+                color: AppTheme.getInstance().textThemeColor(),
               ),
               border: InputBorder.none,
             ),
@@ -343,14 +343,14 @@ class _SetupPassWordState extends State<SetupPassWord> {
               isValidPassCubit.checkHaveValueConfirmPW(value);
             },
             obscureText: snapshot.data ?? false,
-            style: textNormal(Colors.white, 16.sp)
+            style: textNormal(AppTheme.getInstance().textThemeColor(), 16.sp)
                 .copyWith(fontWeight: FontWeight.w400),
-            cursorColor: Colors.white,
+            cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: confirmPassword,
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: textNormal(
-                Colors.grey,
+                AppTheme.getInstance().disableColor(),
                 14.sp,
               ),
               suffixIcon: InkWell(
@@ -364,18 +364,18 @@ class _SetupPassWordState extends State<SetupPassWord> {
                   }
                 },
                 child: snapshot.data ?? false
-                    ? const ImageIcon(
-                        AssetImage(ImageAssets.ic_show),
-                        color: Colors.grey,
+                    ? ImageIcon(
+                        const AssetImage(ImageAssets.ic_show),
+                        color: AppTheme.getInstance().disableColor(),
                       )
-                    : const ImageIcon(
-                        AssetImage(ImageAssets.ic_hide),
-                        color: Colors.grey,
+                    : ImageIcon(
+                        const AssetImage(ImageAssets.ic_hide),
+                        color: AppTheme.getInstance().disableColor(),
                       ),
               ),
-              prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_lock),
-                color: Colors.white,
+              prefixIcon: ImageIcon(
+                const AssetImage(ImageAssets.ic_lock),
+                color: AppTheme.getInstance().textThemeColor(),
               ),
               border: InputBorder.none,
             ),
@@ -393,7 +393,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         // height: 72.h,
         child: Text(
           S.current.please,
-          style: textNormal(const Color.fromRGBO(255, 255, 255, 1.0), 16.sp)
+          style: textNormal(AppTheme.getInstance().textThemeColor(), 16.sp)
               .copyWith(fontWeight: FontWeight.w400),
         ),
       ),
@@ -425,7 +425,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
           Text(
             S.current.create_new_wallet,
-            style: textNormal(Colors.white, 20.sp)
+            style: textNormal(AppTheme.getInstance().textThemeColor(), 20.sp)
                 .copyWith(fontWeight: FontWeight.w700),
           ),
           IconButton(

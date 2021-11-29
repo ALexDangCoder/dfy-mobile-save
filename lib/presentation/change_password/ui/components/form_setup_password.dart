@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/change_password/bloc/change_password_cubit.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -25,7 +26,7 @@ Container formSetupPassWord({
         borderRadius: BorderRadius.all(
           Radius.circular(20.r),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder<bool>(
         stream: cubit.showOldStream,
@@ -36,16 +37,16 @@ Container formSetupPassWord({
             },
             obscureText: snapshot.data ?? true,
             style: textNormal(
-              Colors.white,
-              16,
+              AppTheme.getInstance().textThemeColor(),
+              16.sp,
             ),
-            cursorColor: Colors.white,
+            cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: controller,
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: textNormal(
-                Colors.grey,
-                14,
+                AppTheme.getInstance().disableColor(),
+                14.sp,
               ),
               suffixIcon: InkWell(
                 onTap: () {
@@ -58,18 +59,18 @@ Container formSetupPassWord({
                   }
                 },
                 child: snapshot.data ?? false
-                    ? const ImageIcon(
-                        AssetImage(ImageAssets.ic_show),
-                        color: Colors.grey,
+                    ? ImageIcon(
+                        const AssetImage(ImageAssets.ic_show),
+                        color: AppTheme.getInstance().disableColor(),
                       )
-                    : const ImageIcon(
-                        AssetImage(ImageAssets.ic_hide),
-                        color: Colors.grey,
+                    : ImageIcon(
+                        const AssetImage(ImageAssets.ic_hide),
+                        color: AppTheme.getInstance().disableColor(),
                       ),
               ),
-              prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_lock),
-                color: Colors.white,
+              prefixIcon: ImageIcon(
+                const AssetImage(ImageAssets.ic_lock),
+                color: AppTheme.getInstance().textThemeColor(),
               ),
               border: InputBorder.none,
             ),
@@ -90,7 +91,7 @@ Container formSetupPassWord({
         borderRadius: BorderRadius.all(
           Radius.circular(20.r),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder<bool>(
         stream: cubit.showNewPWStream,
@@ -101,16 +102,16 @@ Container formSetupPassWord({
             },
             obscureText: snapshot.data ?? true,
             style: textNormal(
-              Colors.white,
-              16,
+              AppTheme.getInstance().textThemeColor(),
+              16.sp,
             ),
-            cursorColor: Colors.white,
+            cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: controller,
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: textNormal(
-                Colors.grey,
-                14,
+                AppTheme.getInstance().disableColor(),
+                14.sp,
               ),
               suffixIcon: InkWell(
                   onTap: () {
@@ -123,17 +124,17 @@ Container formSetupPassWord({
                     }
                   },
                   child: snapshot.data ?? false
-                      ? const ImageIcon(
-                          AssetImage(ImageAssets.ic_show),
-                          color: Colors.grey,
+                      ? ImageIcon(
+                          const AssetImage(ImageAssets.ic_show),
+                          color: AppTheme.getInstance().disableColor(),
                         )
-                      : const ImageIcon(
-                          AssetImage(ImageAssets.ic_hide),
-                          color: Colors.grey,
-                        )),
-              prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_lock),
-                color: Colors.white,
+                      : ImageIcon(
+                          const AssetImage(ImageAssets.ic_hide),
+                          color: AppTheme.getInstance().disableColor(),
+                        ),),
+              prefixIcon: ImageIcon(
+                const AssetImage(ImageAssets.ic_lock),
+                color: AppTheme.getInstance().textThemeColor(),
               ),
               border: InputBorder.none,
             ),
@@ -154,7 +155,7 @@ Container formSetupPassWord({
         borderRadius: BorderRadius.all(
           Radius.circular(20.r),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder<bool>(
         stream: cubit.showCfPWStream,
@@ -165,16 +166,16 @@ Container formSetupPassWord({
             },
             obscureText: snapshot.data ?? true,
             style: textNormal(
-              Colors.white,
-              16,
+              AppTheme.getInstance().textThemeColor(),
+              16.sp,
             ),
-            cursorColor: Colors.white,
+            cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: controller,
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: textNormal(
-                Colors.grey,
-                14,
+                AppTheme.getInstance().disableColor(),
+                14.sp,
               ),
               suffixIcon: InkWell(
                   onTap: () {
@@ -187,17 +188,17 @@ Container formSetupPassWord({
                     }
                   },
                   child: snapshot.data ?? false
-                      ? const ImageIcon(
-                          AssetImage(ImageAssets.ic_show),
-                          color: Colors.grey,
+                      ? ImageIcon(
+                          const AssetImage(ImageAssets.ic_show),
+                          color: AppTheme.getInstance().disableColor(),
                         )
-                      : const ImageIcon(
-                          AssetImage(ImageAssets.ic_hide),
-                          color: Colors.grey,
-                        )),
-              prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_lock),
-                color: Colors.white,
+                      : ImageIcon(
+                          const AssetImage(ImageAssets.ic_hide),
+                          color: AppTheme.getInstance().disableColor(),
+                        ),),
+              prefixIcon: ImageIcon(
+                const AssetImage(ImageAssets.ic_lock),
+                color: AppTheme.getInstance().textThemeColor(),
               ),
               border: InputBorder.none,
             ),

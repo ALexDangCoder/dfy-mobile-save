@@ -51,18 +51,18 @@ class FormWithOutPrefix extends StatelessWidget {
         ),
         child: Center(
           child: TextFormField(
-            cursorColor: Colors.white,
+            cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: txtController,
             style: textNormal(
-              Colors.white,
-              16,
+              AppTheme.getInstance().textThemeColor(),
+              16.sp,
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hintText,
               hintStyle: textNormal(
-                Colors.grey,
-                16,
+                AppTheme.getInstance().disableColor(),
+                16.sp,
               ),
               suffixIcon: SizedBox(
                 height: 20.h,
@@ -80,8 +80,8 @@ class FormWithOutPrefix extends StatelessWidget {
                       Text(
                         '$nameToken',
                         style: textNormalCustom(
-                          Colors.white,
-                          16,
+                          AppTheme.getInstance().textThemeColor(),
+                          16.sp,
                           FontWeight.w400,
                         ),
                       )
@@ -89,8 +89,8 @@ class FormWithOutPrefix extends StatelessWidget {
                       Text(
                         '${S.current.of_all} $quantityOfAll',
                         style: textNormalCustom(
-                          Colors.white,
-                          16,
+                          AppTheme.getInstance().textThemeColor(),
+                          16.sp,
                           FontWeight.w400,
                         ),
                       )
@@ -119,23 +119,23 @@ class FormWithOutPrefix extends StatelessWidget {
             cursorColor: Colors.white,
             controller: txtController,
             style: textNormal(
-              Colors.white,
-              16,
+              AppTheme.getInstance().textThemeColor(),
+              16.sp,
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hintText,
               hintStyle: textNormal(
-                Colors.grey,
-                16,
+                AppTheme.getInstance().disableColor(),
+                16.sp,
               ),
               suffixIcon: Container(
                 padding: EdgeInsets.only(top: 10.h),
                 child: Text(
                   '${S.current.of_all} $quantityOfAll',
                   style: textNormalCustom(
-                    Colors.white,
-                    16,
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
                     FontWeight.w400,
                   ),
                 ),
@@ -159,22 +159,22 @@ class FormWithOutPrefix extends StatelessWidget {
         ),
         child: Center(
           child: TextFormField(
-            cursorColor: Colors.white,
+            cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: txtController,
             style: textNormal(
-              Colors.white,
-              16,
+              AppTheme.getInstance().textThemeColor(),
+              16.sp,
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hintText,
               hintStyle: textNormal(
-                Colors.grey,
-                16,
+                AppTheme.getInstance().disableColor(),
+                16.sp,
               ),
               suffixIcon: ImageIcon(
                 AssetImage(imageAsset ?? ''),
-                color: Colors.white,
+                color: AppTheme.getInstance().textThemeColor(),
               ),
             ),
           ),
@@ -195,18 +195,18 @@ class FormWithOutPrefix extends StatelessWidget {
         ),
         child: Center(
           child: TextFormField(
-            cursorColor: Colors.white,
+            cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: txtController,
             style: textNormal(
-              Colors.white,
-              16,
+              AppTheme.getInstance().textThemeColor(),
+              16.sp,
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hintText,
               hintStyle: textNormal(
-                Colors.grey,
-                16,
+                AppTheme.getInstance().disableColor(),
+                16.sp,
               ),
               suffixIcon: const Text(''),
               ),

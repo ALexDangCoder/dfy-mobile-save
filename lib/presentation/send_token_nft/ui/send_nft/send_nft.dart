@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
@@ -168,11 +169,11 @@ class _SendNftState extends State<SendNft> {
     return Container(
       height: 64.h,
       // padding: EdgeInsets.only(top: 10.h),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(20),
+          Radius.circular(20.r),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: Center(
         child: TextFormField(
@@ -184,17 +185,17 @@ class _SendNftState extends State<SendNft> {
             );
           },
           style: textNormal(
-            Colors.white,
-            16,
+            AppTheme.getInstance().textThemeColor(),
+            16.sp,
           ),
-          cursorColor: Colors.white,
+          cursorColor: AppTheme.getInstance().textThemeColor(),
           // controller: controller,
           readOnly: readOnly,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: textNormal(
-              Colors.grey,
-              14,
+              AppTheme.getInstance().disableColor(),
+              14.sp,
             ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -204,7 +205,7 @@ class _SendNftState extends State<SendNft> {
                     )
                   : ImageIcon(
                       AssetImage(suffixImg),
-                      color: Colors.white,
+                      color: AppTheme.getInstance().textThemeColor(),
                     ),
             ),
             prefixIcon: Padding(
@@ -213,7 +214,7 @@ class _SendNftState extends State<SendNft> {
               ),
               child: ImageIcon(
                 AssetImage(prefixImg),
-                color: Colors.white,
+                color: AppTheme.getInstance().textThemeColor(),
               ),
             ),
             border: InputBorder.none,
@@ -251,15 +252,15 @@ class _SendNftState extends State<SendNft> {
         textAlignVertical: TextAlignVertical.center,
         controller: txtQuantity,
         style: textNormal(
-          Colors.white,
-          16,
+          AppTheme.getInstance().textThemeColor(),
+          16.sp,
         ),
-        cursorColor: Colors.white,
+        cursorColor: AppTheme.getInstance().textThemeColor(),
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: textNormal(
-            Colors.grey,
-            14,
+            AppTheme.getInstance().disableColor(),
+            14.sp,
           ),
           suffixIcon: InkWell(
             onTap: callBack,
@@ -281,8 +282,8 @@ class _SendNftState extends State<SendNft> {
                     child: Text(
                       '${S.current.of_all} $maxQuantityFirstFetch',
                       style: textNormal(
-                        const Color.fromRGBO(255, 255, 255, 1),
-                        16,
+                        AppTheme.getInstance().textThemeColor(),
+                        16.sp,
                       ).copyWith(fontWeight: FontWeight.w400),
                     ),
                   ),
@@ -291,7 +292,7 @@ class _SendNftState extends State<SendNft> {
             padding: EdgeInsets.only(top: 10.h),
             child: ImageIcon(
               AssetImage(prefixImg),
-              color: Colors.white,
+              color: AppTheme.getInstance().textThemeColor(),
             ),
           ),
           border: InputBorder.none,
@@ -322,8 +323,8 @@ class _SendNftState extends State<SendNft> {
                     return Text(
                       snapshot.data ?? '',
                       style: textNormalCustom(
-                        const Color.fromRGBO(255, 108, 108, 1),
-                        12,
+                        AppTheme.getInstance().failTransactionColors(),
+                        12.sp,
                         FontWeight.w400,
                       ),
                     );
@@ -359,8 +360,8 @@ class _SendNftState extends State<SendNft> {
                     return Text(
                       snapshot.data ?? '',
                       style: textNormalCustom(
-                        const Color.fromRGBO(255, 108, 108, 1),
-                        12,
+                        AppTheme.getInstance().failTransactionColors(),
+                        12.sp,
                         FontWeight.w400,
                       ),
                     );

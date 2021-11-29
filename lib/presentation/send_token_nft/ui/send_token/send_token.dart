@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
@@ -186,7 +187,7 @@ class _SendTokenState extends State<SendToken> {
         borderRadius: BorderRadius.all(
           Radius.circular(20.r),
         ),
-        color: Color(0xff32324c),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: Center(
         child: TextFormField(
@@ -199,21 +200,21 @@ class _SendTokenState extends State<SendToken> {
           controller: readOnly ? null : txtToAddressToken,
           readOnly: readOnly,
           style: textNormal(
-            Colors.white,
-            16,
+            AppTheme.getInstance().textThemeColor(),
+            16.sp,
           ),
-          cursorColor: Colors.white,
+          cursorColor: AppTheme.getInstance().textThemeColor(),
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: readOnly
                 ? textNormalCustom(
-                    Colors.white,
-                    16,
+              AppTheme.getInstance().textThemeColor(),
+                    16.sp,
                     FontWeight.w400,
                   )
                 : textNormal(
-                    Colors.grey,
-                    14,
+              AppTheme.getInstance().disableColor(),
+                    14.sp,
                   ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -223,14 +224,14 @@ class _SendTokenState extends State<SendToken> {
                     )
                   : ImageIcon(
                       AssetImage(suffixImg),
-                      color: Colors.white,
+                      color: AppTheme.getInstance().textThemeColor(),
                     ),
             ),
             prefixIcon: GestureDetector(
               onTap: callBack,
               child: ImageIcon(
                 AssetImage(prefixImg),
-                color: Colors.white,
+                color: AppTheme.getInstance().textThemeColor(),
               ),
             ),
             border: InputBorder.none,
@@ -254,7 +255,7 @@ class _SendTokenState extends State<SendToken> {
           borderRadius: BorderRadius.all(
             Radius.circular(20.r),
           ),
-          color: Color(0xff32324c),
+          color: AppTheme.getInstance().itemBtsColors(),
         ),
         child: Center(
           child: TextFormField(
@@ -269,15 +270,15 @@ class _SendTokenState extends State<SendToken> {
             keyboardType: TextInputType.number,
             textAlignVertical: TextAlignVertical.center,
             style: textNormal(
-              Colors.white,
-              16,
+              AppTheme.getInstance().textThemeColor(),
+              16.sp,
             ),
             cursorColor: Colors.white,
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: textNormal(
-                Colors.grey,
-                14,
+                AppTheme.getInstance().disableColor(),
+                14.sp,
               ),
               suffixIcon: InkWell(
                 onTap: callBack,
@@ -307,7 +308,7 @@ class _SendTokenState extends State<SendToken> {
               ),
               prefixIcon: ImageIcon(
                 AssetImage(prefixImg),
-                color: Colors.white,
+                color: AppTheme.getInstance().textThemeColor(),
               ),
               border: InputBorder.none,
             ),
@@ -340,7 +341,7 @@ class _SendTokenState extends State<SendToken> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         const Color.fromRGBO(255, 108, 108, 1),
-                        12,
+                        12.sp,
                         FontWeight.w400,
                       ),
                     );
@@ -377,7 +378,7 @@ class _SendTokenState extends State<SendToken> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         const Color.fromRGBO(255, 108, 108, 1),
-                        12,
+                        12.sp,
                         FontWeight.w400,
                       ),
                     );
