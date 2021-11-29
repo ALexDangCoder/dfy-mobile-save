@@ -19,7 +19,7 @@ class ResultCollectionSearch extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
         ),
         clipBehavior: Clip.hardEdge,

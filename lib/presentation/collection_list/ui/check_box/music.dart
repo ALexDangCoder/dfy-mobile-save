@@ -52,21 +52,25 @@ class IsMusic extends StatelessWidget {
         ),
         Expanded(
           flex: 3,
-          child: GestureDetector(
-            onTap: () {
-              if (collectionBloc.isMusic.value) {
-                collectionBloc.isMusic.sink.add(false);
-              } else {
-                collectionBloc.isMusic.sink.add(true);
-              }
-            },
-            child: Text(
-              title,
-              style: textNormal(
-                AppTheme.getInstance().textThemeColor(),
-                16.sp,
+          child: Wrap(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (collectionBloc.isMusic.value) {
+                    collectionBloc.isMusic.sink.add(false);
+                  } else {
+                    collectionBloc.isMusic.sink.add(true);
+                  }
+                },
+                child: Text(
+                  title,
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],

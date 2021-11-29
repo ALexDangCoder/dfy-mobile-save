@@ -52,21 +52,25 @@ class IsOthesCategory extends StatelessWidget {
         ),
         Expanded(
           flex: 3,
-          child: GestureDetector(
-            onTap: () {
-              if (collectionBloc.isOthersCategory.value) {
-                collectionBloc.isOthersCategory.sink.add(false);
-              } else {
-                collectionBloc.isOthersCategory.sink.add(true);
-              }
-            },
-            child: Text(
-              title,
-              style: textNormal(
-                AppTheme.getInstance().textThemeColor(),
-                16.sp,
+          child: Wrap(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (collectionBloc.isOthersCategory.value) {
+                    collectionBloc.isOthersCategory.sink.add(false);
+                  } else {
+                    collectionBloc.isOthersCategory.sink.add(true);
+                  }
+                },
+                child: Text(
+                  title,
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],
