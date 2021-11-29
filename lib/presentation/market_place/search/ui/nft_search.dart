@@ -194,32 +194,34 @@ class _SearchNFTState extends State<SearchNFT> {
                     ),
                   ),
                   StreamBuilder<bool>(
-                      stream: searchCubit.isVisible,
-                      builder: (context, snapshot) {
-                        return Visibility(
-                          visible: snapshot.data ?? false,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                controller.text = '';
-                                searchCubit.hide();
-                              });
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                right: 13.w,
+                    stream: searchCubit.isVisible,
+                    builder: (context, snapshot) {
+                      return Visibility(
+                        visible: snapshot.data ?? false,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              controller.text = '';
+                              searchCubit.hide();
+                              FocusScope.of(context).unfocus();
+                            });
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              right: 13.w,
+                            ),
+                            child: ImageIcon(
+                              const AssetImage(
+                                ImageAssets.ic_close,
                               ),
-                              child: ImageIcon(
-                                const AssetImage(
-                                  ImageAssets.ic_close,
-                                ),
-                                color: AppTheme.getInstance().whiteColor(),
-                                size: 20.sp,
-                              ),
+                              color: AppTheme.getInstance().whiteColor(),
+                              size: 20.sp,
                             ),
                           ),
-                        );
-                      })
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
