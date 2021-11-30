@@ -62,13 +62,13 @@ class _HardNFTScreenState extends State<HardNFTScreen>
     const int month = 2;
     return BaseNFTMarket(
       title: 'Lamborghini Aventador Pink Ver 2021',
-      image:
-          'https://phelieuminhhuy.com/wp-content/uploads/2015/07/7f3ce033-'
-              'b9b2-4259-ba7c-f6e5bae431a9-1435911423691.jpg',
+      image: 'https://phelieuminhhuy.com/wp-content/uploads/2015/07/7f3ce033-'
+          'b9b2-4259-ba7c-f6e5bae431a9-1435911423691.jpg',
       filterFunc: () {},
       flagFunc: () {},
       shareFunc: () {},
       tabBar: TabBar(
+        labelPadding: EdgeInsets.symmetric(horizontal: 2.w),
         onTap: (i) {},
         controller: _tabController,
         tabs: tabList,
@@ -76,7 +76,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
         unselectedLabelColor: AppTheme.getInstance().unselectedTabLabelColor(),
         labelColor: AppTheme.getInstance().whiteColor(),
         labelStyle: unselectLabel,
-        isScrollable: widget.isAuction,
+        // isScrollable: widget.isAuction,
       ),
       body: TabBarView(
         controller: _tabController,

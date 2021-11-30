@@ -33,7 +33,7 @@ class BidingTab extends StatelessWidget {
             height: 68.h,
             child: Row(
               children: [
-                Flexible(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -63,7 +63,7 @@ class BidingTab extends StatelessWidget {
                     ],
                   ),
                 ),
-                Flexible(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
