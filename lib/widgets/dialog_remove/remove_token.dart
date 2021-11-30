@@ -53,45 +53,39 @@ class RemoveToken extends StatelessWidget {
                             minHeight: 278.h,
                           ),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                    height: 93.h,
-                                  ),
-                                  Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 34.w),
-                                    child: Text(
-                                      S.current.are_you_sure_token,
-                                      style: textNormal(
-                                        null,
-                                        20.sp,
-                                      ).copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  spaceH12,
-                                  Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 34.w),
-                                    child: Text(
-                                      S.current.this_will_also,
-                                      style: textNormal(
-                                        null,
-                                        12.sp,
-                                      ).copyWith(
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  spaceH24,
-                                ],
+                              SizedBox(
+                                height: 93.h,
                               ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 34.w),
+                                child: Text(
+                                  S.current.are_you_sure_token,
+                                  style: textNormal(
+                                    null,
+                                    20.sp,
+                                  ).copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              spaceH12,
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 34.w),
+                                child: Text(
+                                  S.current.this_will_also,
+                                  style: textNormal(
+                                    null,
+                                    12.sp,
+                                  ).copyWith(
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              spaceH24,
                               SizedBox(
                                 height: 64.h,
                                 child: Container(
