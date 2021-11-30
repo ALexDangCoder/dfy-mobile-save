@@ -208,9 +208,7 @@ class _SelectAccState extends State<SelectAcc> {
                                           ? Container(
                                               width: 65.w,
                                               height: 22.h,
-                                              padding:
-                                                  EdgeInsets.only(top: 3.h),
-                                               decoration: BoxDecoration(
+                                              decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.all(
                                                   Radius.circular(6.r),
                                                 ),
@@ -220,14 +218,16 @@ class _SelectAccState extends State<SelectAcc> {
                                                   width: 1.h,
                                                 ),
                                               ),
-                                              child: Text(
-                                                S.current.import,
-                                                style: textNormal(
-                                                  AppTheme.getInstance()
-                                                      .whiteWithOpacityFireZero(),
-                                                  11.sp,
+                                              child: Align(
+                                                child: Text(
+                                                  S.current.import,
+                                                  style: textNormal(
+                                                    AppTheme.getInstance()
+                                                        .whiteWithOpacityFireZero(),
+                                                    11.sp,
+                                                  ),
+                                                  textAlign: TextAlign.center,
                                                 ),
-                                                textAlign: TextAlign.center,
                                               ),
                                             )
                                           : SizedBox(

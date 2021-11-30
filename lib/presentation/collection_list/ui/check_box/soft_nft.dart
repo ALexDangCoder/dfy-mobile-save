@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class IsMyCollection extends StatelessWidget {
+class IsSoftNft extends StatelessWidget {
   final String title;
   final CollectionBloc collectionBloc;
 
-  const IsMyCollection({
+  const IsSoftNft({
     Key? key,
     required this.title,
     required this.collectionBloc,
@@ -21,7 +21,7 @@ class IsMyCollection extends StatelessWidget {
       children: [
         Expanded(
           child: StreamBuilder(
-            stream: collectionBloc.isMyCollection,
+            stream: collectionBloc.isSoftNft,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Transform.scale(
                 scale: 1.34.sp,
@@ -39,9 +39,9 @@ class IsMyCollection extends StatelessWidget {
                   ),
                   value: snapshot.data ?? false,
                   onChanged: (value) {
-                    collectionBloc.isMyCollection.sink.add(true);
+                    collectionBloc.isSoftNft.sink.add(true);
                     if (snapshot.data ?? false) {
-                      collectionBloc.isMyCollection.sink.add(false);
+                      collectionBloc.isSoftNft.sink.add(false);
                     }
                   },
                   activeColor: AppTheme.getInstance().whiteColor(),
@@ -56,10 +56,10 @@ class IsMyCollection extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  if (collectionBloc.isMyCollection.value) {
-                    collectionBloc.isMyCollection.sink.add(false);
+                  if (collectionBloc.isSoftNft.value) {
+                    collectionBloc.isSoftNft.sink.add(false);
                   } else {
-                    collectionBloc.isMyCollection.sink.add(true);
+                    collectionBloc.isSoftNft.sink.add(true);
                   }
                 },
                 child: Text(

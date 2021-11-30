@@ -58,8 +58,7 @@ class RemoveNft extends StatelessWidget {
                               height: 93.h,
                             ),
                             Container(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: 34.w),
+                              padding: EdgeInsets.symmetric(horizontal: 34.w),
                               child: Text(
                                 S.current.are_you_sure_collectible,
                                 style: textNormal(
@@ -73,8 +72,7 @@ class RemoveNft extends StatelessWidget {
                             ),
                             spaceH12,
                             Container(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: 34.w),
+                              padding: EdgeInsets.symmetric(horizontal: 34.w),
                               child: Text(
                                 S.current.this_will_also,
                                 style: textNormal(
@@ -102,24 +100,34 @@ class RemoveNft extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          S.current.cancel,
-                                          style:
-                                              textNormal(null, 20.sp).copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
+                                      child: Container(
+                                        height: 64.h,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            right: BorderSide(
+                                              color: AppTheme.getInstance()
+                                                  .divideColor(),
+                                              width: 1.h,
+                                            ),
                                           ),
-                                          textAlign: TextAlign.center,
+                                        ),
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Center(
+                                            child: Text(
+                                              S.current.cancel,
+                                              style: textNormal(null, 20.sp)
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    VerticalDivider(
-                                      color:
-                                          AppTheme.getInstance().divideColor(),
                                     ),
                                     Expanded(
                                       child: InkWell(

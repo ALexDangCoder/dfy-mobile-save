@@ -78,15 +78,23 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
           color: AppTheme.getInstance().bgBtsColor(),
           height: 59.h,
           child: Center(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12.r),
-                ),
-                color: backgroundBottomSheetColor,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 305.w,
+                minWidth: 253.w,
               ),
-              height: 35.h,
-              child: _tabBar,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      12.r,
+                    ),
+                  ),
+                  color: backgroundBottomSheetColor,
+                ),
+                height: 35.h,
+                child: _tabBar,
+              ),
             ),
           ),
         ),
