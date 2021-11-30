@@ -76,7 +76,6 @@ class _HardNFTScreenState extends State<HardNFTScreen>
         unselectedLabelColor: AppTheme.getInstance().unselectedTabLabelColor(),
         labelColor: AppTheme.getInstance().whiteColor(),
         labelStyle: unselectLabel,
-        // isScrollable: widget.isAuction,
       ),
       body: TabBarView(
         controller: _tabController,
