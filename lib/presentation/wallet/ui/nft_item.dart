@@ -19,7 +19,6 @@ final NFT nft = NFT(
   '#357594',
 );
 
-
 class NFTItem extends StatefulWidget {
   const NFTItem({
     Key? key,
@@ -128,8 +127,9 @@ class _NFTItemState extends State<NFTItem> {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemCount: 6,
-                      itemBuilder: (BuildContext context, int index) =>
-                           CardNFT(objNFT: nft,),
+                      itemBuilder: (BuildContext context, int index) => CardNFT(
+                        objNFT: nft,
+                      ),
                     ),
                   ),
                 ),

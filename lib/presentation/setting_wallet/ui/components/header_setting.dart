@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -32,8 +33,8 @@ Container headerSetting({
         Text(
           S.current.setting,
           style: textNormalCustom(
-            Colors.white,
-            20,
+            AppTheme.getInstance().textThemeColor(),
+            20.sp,
             FontWeight.bold,
           ),
         ),
@@ -52,8 +53,8 @@ Container headerSetting({
           child: Text(
             S.current.lock,
             style: textNormalCustom(
-              const Color.fromRGBO(228, 172, 26, 1),
-              16,
+              AppTheme.getInstance().fillColor(),
+              16.sp,
               FontWeight.w700,
             ),
           ),

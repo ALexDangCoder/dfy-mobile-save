@@ -51,102 +51,102 @@ class RemoveAcc extends StatelessWidget {
                           minHeight: 278.h,
                         ),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(
-                                  height: 93.h,
-                                ),
-                                Container(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 34.w),
-                                  child: Text(
-                                    S.current.are_you_sure_acc,
-                                    style: textNormal(
-                                      null,
-                                      20.sp,
-                                    ).copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                spaceH12,
-                                Container(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 34.w),
-                                  child: Text(
-                                    S.current.this_will_also,
-                                    style: textNormal(
-                                      null,
-                                      12.sp,
-                                    ).copyWith(
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                spaceH24,
-                              ],
-                            ),
                             SizedBox(
+                              height: 93.h,
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 34.w),
+                              child: Text(
+                                S.current.are_you_sure_acc,
+                                style: textNormal(
+                                  null,
+                                  20.sp,
+                                ).copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            spaceH12,
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 34.w),
+                              child: Text(
+                                S.current.this_will_also,
+                                style: textNormal(
+                                  null,
+                                  12.sp,
+                                ).copyWith(
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            spaceH24,
+                            Container(
                               height: 64.h,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(
-                                      color:
-                                          AppTheme.getInstance().divideColor(),
-                                      width: 1.w,
-                                    ),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    color: AppTheme.getInstance().divideColor(),
+                                    width: 1.h,
                                   ),
                                 ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      height: 64.h,
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          right: BorderSide(
+                                            color: AppTheme.getInstance()
+                                                .divideColor(),
+                                            width: 1.h,
+                                          ),
+                                        ),
+                                      ),
                                       child: InkWell(
                                         onTap: () {
                                           Navigator.pop(context);
                                         },
-                                        child: Text(
-                                          S.current.cancel,
-                                          style:
-                                              textNormal(null, 20.sp).copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
+                                        child: Center(
+                                          child: Text(
+                                            S.current.cancel,
+                                            style: textNormal(null, 20.sp)
+                                                .copyWith(
+                                              fontWeight: FontWeight.w700,
+                                              fontStyle: FontStyle.normal,
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
-                                          textAlign: TextAlign.center,
                                         ),
                                       ),
                                     ),
-                                    VerticalDivider(
-                                      color:
-                                          AppTheme.getInstance().divideColor(),
-                                    ),
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: () {
-                                          bloc.listSelectAccBloc
-                                              .removeAt(index);
-                                          bloc.getList();
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          S.current.remove,
-                                          style: textNormal(
-                                            const Color(0xffE4AC1A),
-                                            20.sp,
-                                          ).copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
-                                          ),
-                                          textAlign: TextAlign.center,
+                                  ),
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () {
+                                        bloc.listSelectAccBloc.removeAt(index);
+                                        bloc.getList();
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        S.current.remove,
+                                        style: textNormal(
+                                          const Color(0xffE4AC1A),
+                                          20.sp,
+                                        ).copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontStyle: FontStyle.normal,
                                         ),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],

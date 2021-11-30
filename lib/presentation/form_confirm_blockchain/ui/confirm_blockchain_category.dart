@@ -184,40 +184,6 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                         txtGasLimit: _txtGasLimit,
                         txtGasPrice: _txtGasPrice,
                       ),
-                      // StreamBuilder<bool>(
-                      //   initialData: false,
-                      //   stream: _cubitFormCustomizeGasFee.isCustomizeGasFeeStream,
-                      //   builder: (context, snapshot) {
-                      //     // final initData = Future<String>.value();
-                      //     return FormShowFtHideCfBlockchain(
-                      //       nameToken: widget.nameTokenWallet,
-                      //       cubit: _cubitFormCustomizeGasFee,
-                      //       gasFeeFirstFetch: gasFeeFirstFetch,
-                      //       gasPriceFirstFetch: gasPriceFirstFetch,
-                      //       gasLimitFirstFetch: gasLimitFirstFetch,
-                      //       balanceWallet: widget.balanceWallet,
-                      //       txtGasLimit: _txtGasLimit,
-                      //       txtGasPrice: _txtGasPrice,
-                      //       isShowCustomizeFee: false,
-                      //     );
-                      //     // ? FormShowCfBlockchain(
-                      //     //     nameToken: widget.nameTokenWallet,
-                      //     //     balanceWallet: widget.balanceWallet,
-                      //     //     gasFeeFirstFetch: gasFeeFirstFetch,
-                      //     //     txtGasLimit: _txtGasLimit,
-                      //     //     txtGasPrice: _txtGasPrice,
-                      //     //     cubitFormCF: _cubitFormCustomizeGasFee,
-                      //     //     gasLimitFirstFetch: gasLimitFirstFetch,
-                      //     //     gasPriceFirstFetch: gasPriceFirstFetch,
-                      //     //   )
-                      //     // : FormHideCfBlockchain(
-                      //     //     balance: widget.balanceWallet,
-                      //     //     gasFee: gasFeeFirstFetch,
-                      //     //     nameToken: widget.nameTokenWallet,
-                      //     //     cubit: _cubitFormCustomizeGasFee,
-                      //     //   );
-                      //   },
-                      // ),
                     ],
                   ),
                 ),

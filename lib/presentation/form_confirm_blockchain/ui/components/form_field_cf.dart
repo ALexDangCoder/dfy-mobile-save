@@ -42,7 +42,7 @@ class FormFieldBlockChain extends StatelessWidget {
             Text(
               S.current.gas_limit,
               style: textNormalCustom(
-                Colors.white,
+                AppTheme.getInstance().textThemeColor(),
                 16.sp,
                 FontWeight.w400,
               ),
@@ -51,7 +51,7 @@ class FormFieldBlockChain extends StatelessWidget {
             Text(
               S.current.gas_price,
               style: textNormalCustom(
-                Colors.white,
+                AppTheme.getInstance().textThemeColor(),
                 16.sp,
                 FontWeight.w400,
               ),
@@ -61,7 +61,6 @@ class FormFieldBlockChain extends StatelessWidget {
             padding: EdgeInsets.only(
               left: 20.w,
               right: 20.w,
-              top: 5.h,
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
@@ -69,42 +68,43 @@ class FormFieldBlockChain extends StatelessWidget {
               ),
               color: AppTheme.getInstance().itemBtsColors(),
             ),
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 10.h),
+            child: Center(
               child: TextFormField(
-                textAlign: TextAlign.right,
-                keyboardType: TextInputType.number,
-                controller: txtController,
-                style: textNormalCustom(
-                  Colors.white,
-                  16.sp,
-                  FontWeight.w400,
-                ),
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                  hintStyle: textNormal(
-                    Colors.grey,
-                    16,
+                // textAlignVertical: TextAlignVertical.center,
+                  textAlign: TextAlign.right,
+                  keyboardType: TextInputType.number,
+                  controller: txtController,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                    FontWeight.w400,
                   ),
-                  border: InputBorder.none,
+                  cursorColor: AppTheme.getInstance().textThemeColor(),
+                  decoration: InputDecoration(
+                    hintStyle: textNormal(
+                      AppTheme.getInstance().disableColor(),
+                      16.sp,
+                    ),
+                    border: InputBorder.none,
+                  ),
+                  onChanged: (value) {
+                    late double result;
+                    late double valueHandle;
+                    if (value.isEmpty) {
+                      valueHandle = 0;
+                    } else {
+                      valueHandle = double.parse(value);
+                    }
+                    result = (valueHandle * double.parse(numHandle)) / pow(10, 9);
+                    cubit.isEstimatingGasFee(Validator.toExact(result));
+                    cubit.isSufficientGasFee(
+                      gasFee: result,
+                      balance: balanceFetchFirst,
+                    );
+                  },
                 ),
-                onChanged: (value) {
-                  late double result;
-                  late double valueHandle;
-                  if (value.isEmpty) {
-                    valueHandle = 0;
-                  } else {
-                    valueHandle = double.parse(value);
-                  }
-                  result = (valueHandle * double.parse(numHandle)) / pow(10, 9);
-                  cubit.isEstimatingGasFee(Validator.toExact(result));
-                  cubit.isSufficientGasFee(
-                    gasFee: result,
-                    balance: balanceFetchFirst,
-                  );
-                },
-              ),
             ),
+
           ),
         ],
       ),
