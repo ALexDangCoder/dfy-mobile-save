@@ -62,8 +62,14 @@ const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
 
+//color transaction submit
+const bgTranSubmit = Color(0xff585782);
+
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
+
+  Color bgTranSubmit();
+
   Color primaryColor();
 
   Color accentColor();
@@ -296,6 +302,11 @@ class LightApp extends AppColor {
   Color pendingTransactionColors() {
     return const Color(0XFFFFBD48);
   }
+
+  @override
+  Color bgTranSubmit() {
+    return const Color(0xff585782);
+  }
 }
 
 class DarkApp extends AppColor {
@@ -482,6 +493,12 @@ class DarkApp extends AppColor {
   @override
   Color failTransactionColors() {
     // TODO: implement failTransactionColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color bgTranSubmit() {
+    // TODO: implement bgTranSubmit
     throw UnimplementedError();
   }
 }

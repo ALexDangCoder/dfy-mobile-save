@@ -80,7 +80,7 @@
   "of_all": "trên",
   "failed": "Thất bại",
   "wallet": "Ví",
-  "quantity": "số lượng",
+  "quantity": "Số lượng",
   "pls_import_seed": "Nhập seedpharse của bạn",
   "smart_chain": "Smart chain",
   "address_required": "Địa chỉ là bắt buộc",
@@ -172,5 +172,7 @@
   "private_warning": "Private key không hợp lệ",
   "you_can_only": "You can ONLY recover this wallet with your ",
   "secret_private": "Secret Seed Phrase/Private Key. ",
-  "dfy_secret_private": "DeFi For You does not have your Secret Seed Phrase/Private Key."
+  "dfy_secret_private": "DeFi For You does not have your Secret Seed Phrase/Private Key.",
+  "tran_submit": "Giao dịch đã được gửi",
+  "waiting_for_cf": "Chờ đợi sự xác nhận"
 }

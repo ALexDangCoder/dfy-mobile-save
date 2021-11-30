@@ -71,7 +71,7 @@
   "to": "To",
   "to_address": "To Address",
   "of_all": "of",
-  "quantity": "quantity",
+  "quantity": "Quantity",
   "failed": "Failed",
   "wallet": "Wallet",
   "smart_chain": "Smart chain",
@@ -173,5 +173,7 @@
   "warning_private": "Private key must require",
   "seed_required": "Secret seed phrase must required",
   "private_required": "Private key must required",
-  "private_warning": "Private key is not invalid"
+  "private_warning": "Private key is not invalid",
+  "tran_submit": "Transaction submitted",
+  "waiting_for_cf": "Waiting for confirmation"
 }
