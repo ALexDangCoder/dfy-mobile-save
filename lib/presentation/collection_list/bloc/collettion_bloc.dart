@@ -13,8 +13,8 @@ class CollectionBloc {
   BehaviorSubject<List<CollectionResponse>> list = BehaviorSubject();
 
   //filter collection
-  BehaviorSubject<bool> isMyCollection = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOthers = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isHardNft = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isSoftNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isArt = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isGame = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCollectibles = BehaviorSubject.seeded(false);
@@ -40,8 +40,8 @@ class CollectionBloc {
   }
 
   void dispone() {
-    isMyCollection.close();
-    isOthers.close();
+    isHardNft.close();
+    isSoftNft.close();
     isArt.close();
     isGame.close();
     isCollectibles.close();

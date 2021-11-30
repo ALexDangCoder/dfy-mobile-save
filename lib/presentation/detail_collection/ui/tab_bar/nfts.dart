@@ -8,19 +8,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class NftsCollection extends StatefulWidget {
+class NFTSCollection extends StatefulWidget {
   final DetailCollectionBloc detailCollectionBloc;
 
-  const NftsCollection({
+  const NFTSCollection({
     Key? key,
     required this.detailCollectionBloc,
   }) : super(key: key);
 
   @override
-  _NftsCollectionState createState() => _NftsCollectionState();
+  _NFTSCollectionState createState() => _NFTSCollectionState();
 }
 
-class _NftsCollectionState extends State<NftsCollection> {
+class _NFTSCollectionState extends State<NFTSCollection> {
+  final TextEditingController textSearch = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final detailCollectionBloc = widget.detailCollectionBloc;
@@ -54,9 +62,10 @@ class _NftsCollectionState extends State<NftsCollection> {
                     child: Container(
                       margin: EdgeInsets.only(right: 5.w),
                       child: TextFormField(
+                        controller: textSearch,
                         onChanged: (value) {
                           detailCollectionBloc.textSearch.sink.add(value);
-                          detailCollectionBloc.search();
+                          //detailCollectionBloc.search();
                         },
                         cursorColor: AppTheme.getInstance().whiteColor(),
                         style: textNormal(
@@ -76,9 +85,14 @@ class _NftsCollectionState extends State<NftsCollection> {
                     ),
                   ),
                   StreamBuilder(
+                    stream: detailCollectionBloc.textSearch,
                     builder: (context, AsyncSnapshot<String> snapshot) {
                       return GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          detailCollectionBloc.textSearch.sink.add('');
+                          textSearch.text = '';
+                          detailCollectionBloc.search();
+                        },
                         child: snapshot.data?.isNotEmpty ?? false
                             ? Image.asset(
                                 ImageAssets.ic_close,

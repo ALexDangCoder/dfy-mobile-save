@@ -9,8 +9,8 @@ import 'package:Dfy/presentation/collection_list/ui/check_box/cars.dart';
 import 'package:Dfy/presentation/collection_list/ui/check_box/collectibles.dart';
 import 'package:Dfy/presentation/collection_list/ui/check_box/game.dart';
 import 'package:Dfy/presentation/collection_list/ui/check_box/music.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box/my_collection.dart';
-import 'package:Dfy/presentation/collection_list/ui/check_box/others.dart';
+import 'package:Dfy/presentation/collection_list/ui/check_box/hard_nft.dart';
+import 'package:Dfy/presentation/collection_list/ui/check_box/soft_nft.dart';
 import 'package:Dfy/presentation/collection_list/ui/check_box/others_category.dart';
 import 'package:Dfy/presentation/collection_list/ui/check_box/sports.dart';
 import 'package:Dfy/presentation/collection_list/ui/check_box/ultilities.dart';
@@ -80,7 +80,7 @@ class _FilterState extends State<Filter> {
                       Padding(
                         padding: EdgeInsets.only(left: 10.w),
                         child: Text(
-                          S.current.owner,
+                          S.current.collection_type,
                           style: textNormalCustom(null, 20.sp, FontWeight.w600),
                         ),
                       ),
@@ -88,14 +88,14 @@ class _FilterState extends State<Filter> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: IsMyCollection(
-                              title: S.current.my_collection,
+                            child: IsHardNft(
+                              title: S.current.hard_nft_collection,
                               collectionBloc: collectionBloc,
                             ),
                           ),
                           Expanded(
-                            child: IsOthes(
-                              title: S.current.others,
+                            child: IsSoftNft(
+                              title: S.current.soft_nft_collection,
                               collectionBloc: collectionBloc,
                             ),
                           ),

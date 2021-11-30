@@ -81,7 +81,7 @@ class _MyAppState extends State<MyApp> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        // locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
+       // locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
         onGenerateRoute: AppRouter.generateRoute,
         initialRoute: AppRouter.splash,
       ),

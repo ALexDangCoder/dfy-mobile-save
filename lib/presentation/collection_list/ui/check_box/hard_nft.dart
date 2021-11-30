@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class IsOthes extends StatelessWidget {
+class IsHardNft extends StatelessWidget {
   final String title;
   final CollectionBloc collectionBloc;
 
-  const IsOthes({
+  const IsHardNft({
     Key? key,
     required this.title,
     required this.collectionBloc,
@@ -21,7 +21,7 @@ class IsOthes extends StatelessWidget {
       children: [
         Expanded(
           child: StreamBuilder(
-            stream: collectionBloc.isOthers,
+            stream: collectionBloc.isHardNft,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Transform.scale(
                 scale: 1.34.sp,
@@ -39,9 +39,9 @@ class IsOthes extends StatelessWidget {
                   ),
                   value: snapshot.data ?? false,
                   onChanged: (value) {
-                    collectionBloc.isOthers.sink.add(true);
+                    collectionBloc.isHardNft.sink.add(true);
                     if (snapshot.data ?? false) {
-                      collectionBloc.isOthers.sink.add(false);
+                      collectionBloc.isHardNft.sink.add(false);
                     }
                   },
                   activeColor: AppTheme.getInstance().whiteColor(),
@@ -56,10 +56,10 @@ class IsOthes extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  if (collectionBloc.isOthers.value) {
-                    collectionBloc.isOthers.sink.add(false);
+                  if (collectionBloc.isHardNft.value) {
+                    collectionBloc.isHardNft.sink.add(false);
                   } else {
-                    collectionBloc.isOthers.sink.add(true);
+                    collectionBloc.isHardNft.sink.add(true);
                   }
                 },
                 child: Text(

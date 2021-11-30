@@ -18,95 +18,87 @@ class NavCollection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: 16.w,
+      ),
       height: 65.h,
-      margin: EdgeInsets.only(top: 14.h),
-      child: Row(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Text(
-                    items,
-                    style: textNormalCustom(
-                      null,
-                      14.sp,
-                      FontWeight.w600,
-                    ),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  items,
+                  style: textNormalCustom(
+                    null,
+                    14.sp,
+                    FontWeight.w600,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                spaceH2,
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    S.current.items,
-                    style: textNormalCustom(
-                      null,
-                      12.sp,
-                      null,
-                    ),
+              ),
+              Expanded(
+                child: Text(
+                  owners,
+                  style: textNormalCustom(
+                    null,
+                    14.sp,
+                    FontWeight.w600,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-              ],
-            ),
+              ),
+              Expanded(
+                child: Text(
+                  volumeTraded,
+                  style: textNormalCustom(
+                    null,
+                    14.sp,
+                    FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Text(
-                    owners,
-                    style: textNormalCustom(
-                      null,
-                      14.sp,
-                      FontWeight.w600,
-                    ),
+          spaceH2,
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  S.current.items,
+                  style: textNormalCustom(
+                    null,
+                    12.sp,
+                    null,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                spaceH2,
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    S.current.owners,
-                    style: textNormalCustom(
-                      null,
-                      12.sp,
-                      null,
-                    ),
+              ),
+              Expanded(
+                child: Text(
+                  S.current.owners,
+                  style: textNormalCustom(
+                    null,
+                    12.sp,
+                    null,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Text(
-                    volumeTraded,
-                    style: textNormalCustom(
-                      null,
-                      14.sp,
-                      FontWeight.w600,
-                    ),
-                    textAlign: TextAlign.center,
+              ),
+              Expanded(
+                child: Text(
+                  S.current.volume_traded,
+                  style: textNormalCustom(
+                    null,
+                    12.sp,
+                    null,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                spaceH2,
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    S.current.volume_traded,
-                    style: textNormalCustom(
-                      null,
-                      12.sp,
-                      null,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
