@@ -11,6 +11,7 @@ import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -51,22 +52,22 @@ class SettingWallet extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      // showModalBottomSheet(
-                      //   isScrollControlled: true,
-                      //   backgroundColor: Colors.transparent,
-                      //   context: context,
-                      //   builder: (_) {
-                      //     return const SendToken();
-                      //   },
-                      // );
-                    },
-                    child: buttonForm(
-                      hintText: 'Dapp',
-                      prefixIcon: ImageAssets.ic_global,
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     showModalBottomSheet(
+                  //       isScrollControlled: true,
+                  //       backgroundColor: Colors.transparent,
+                  //       context: context,
+                  //       builder: (_) {
+                  //         return const TransactionSubmit();
+                  //       },
+                  //     );
+                  //   },
+                  //   child: buttonForm(
+                  //     hintText: 'Dapp',
+                  //     prefixIcon: ImageAssets.ic_global,
+                  //   ),
+                  // ),
                   SizedBox(
                     height: 16.h,
                   ),
