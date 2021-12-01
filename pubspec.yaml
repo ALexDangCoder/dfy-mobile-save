@@ -103,6 +103,9 @@ dependencies:
   qr_code_scanner: ^0.6.1
   #flutter_appavailability: ^0.0.21
 
+  #web3
+  web3dart: ^2.3.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
