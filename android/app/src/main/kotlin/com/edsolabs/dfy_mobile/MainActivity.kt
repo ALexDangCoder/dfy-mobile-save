@@ -157,6 +157,12 @@ class MainActivity : FlutterFragmentActivity() {
                             ?: return@setMethodCallHandler
                     getTokens(walletAddress)
                 }
+                "getNFT" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    getNFT(walletAddress)
+                }
                 "signTransaction" -> {
                     val fromAddress =
                         call.argument<String>("fromAddress")
@@ -304,6 +310,21 @@ class MainActivity : FlutterFragmentActivity() {
         data2["tokenAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
         hasMap.add(data2)
         channel?.invokeMethod("getTokensCallback", hasMap)
+    }
+
+    private fun getNFT(
+        walletAddress: String
+    ) {
+        val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
+        val data1 = HashMap<String, Any>()
+        data1["nftName"] = "BTC"
+        data1["nftAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        hasMap.add(data1)
+        val data2 = HashMap<String, Any>()
+        data2["nftName"] = "BNB"
+        data2["nftAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        hasMap.add(data2)
+        channel?.invokeMethod("getNFTCallback", hasMap)
     }
 
     private fun signTransaction(
