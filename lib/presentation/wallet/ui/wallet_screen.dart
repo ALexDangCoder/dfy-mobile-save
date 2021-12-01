@@ -71,6 +71,7 @@ class _WalletState extends State<WalletScreen>
       cubit.addressWallet.value,
       password: 'aaa',
     );
+    cubit.getListWallets('aaaa');
   }
 
   @override

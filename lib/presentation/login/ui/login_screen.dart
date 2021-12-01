@@ -5,9 +5,9 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/alert_dialog/ui/alert_import_pop_up.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
-import 'package:Dfy/presentation/alert_dialog/ui/alert_import_pop_up.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
@@ -17,7 +17,6 @@ import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -314,7 +313,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return AlertPopUp(
+                                return const AlertPopUp(
                                   type: KeyType.CREATE,
                                 );
                               },
@@ -349,7 +348,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return AlertPopUp(
+                                return const AlertPopUp(
                                   type: KeyType.IMPORT,
                                 );
                               },

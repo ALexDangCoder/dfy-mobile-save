@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/token.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:equatable/equatable.dart';
@@ -24,7 +25,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   bool checkLogin = false;
   List<TokenModel> listStart = [];
-
+  List<Wallet> listWallet = [];
   BehaviorSubject<List<TokenModel>> listTokenStream =
       BehaviorSubject.seeded([]);
   BehaviorSubject<List<TokenModel>> listNFTStream = BehaviorSubject.seeded([]);
@@ -76,6 +77,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     final bool isSetShowedToken;
     final bool isImportNft;
     final bool isSetShowedNft;
+    late List<Object> obj;
 
     switch (methodCall.method) {
       case 'importTokenCallback':
@@ -105,6 +107,13 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'getListShowedNftCallback':
         objNFT = methodCall.arguments;
         break;
+      case 'getListWalletsCallback':
+        final List<dynamic> data = methodCall.arguments;
+        for (final element in data) {
+          listWallet.add(Wallet.fromJson(element));
+        }
+
+        break;
       default:
         break;
     }
@@ -117,6 +126,17 @@ class WalletCubit extends BaseCubit<WalletState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListShowedToken', data);
+    } on PlatformException {
+      log(e);
+    }
+  }
+
+  Future<void> getListWallets(String password) async {
+    try {
+      final data = {
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('getListWallets', data);
     } on PlatformException {
       log(e);
     }
