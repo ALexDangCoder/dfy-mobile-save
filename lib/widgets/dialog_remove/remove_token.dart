@@ -134,6 +134,11 @@ class RemoveToken extends StatelessWidget {
                                       Expanded(
                                         child: GestureDetector(
                                           onTap: () {
+                                            cubit.setShowedToken(
+                                              walletAddress: 'walletAddress',
+                                              isShow: false,
+                                              tokenAddress: 'tokenAddress',
+                                            );
                                             cubit.listTokenDetailScreen
                                                 .removeAt(index);
                                             cubit.totalBalance.add(

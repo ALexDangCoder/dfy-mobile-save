@@ -92,7 +92,7 @@ class RemoveNft extends StatelessWidget {
                                   border: Border(
                                     top: BorderSide(
                                       color:
-                                      AppTheme.getInstance().divideColor(),
+                                          AppTheme.getInstance().divideColor(),
                                       width: 1.w,
                                     ),
                                   ),
@@ -132,6 +132,11 @@ class RemoveNft extends StatelessWidget {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
+                                          cubit.setShowedNft(
+                                            walletAddress: 'walletAddress',
+                                            isShow: false,
+                                            nftAddress: 'tokenAddress',
+                                          );
                                           cubit.listNFT.removeAt(index);
                                           cubit.getListNFTItem();
                                           Navigator.pop(context);
