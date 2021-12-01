@@ -174,5 +174,18 @@
   "secret_private": "Secret Seed Phrase/Private Key. ",
   "dfy_secret_private": "DeFi For You does not have your Secret Seed Phrase/Private Key.",
   "tran_submit": "Giao dịch đã được gửi",
-  "waiting_for_cf": "Chờ đợi sự xác nhận"
+  "waiting_for_cf": "Chờ đợi sự xác nhận",
+  "send_nft": "Gửi NFT",
+  "buy_nft": "Mua NFT",
+  "send_offer": "Send Offer",
+  "place_a_bid": "Đấu giá",
+  "price_per_1": "Giá copy 1 cái",
+  "total_payment_normal": "Tổng tiền",
+  "loan_amount": "Giá nợ:",
+  "loan_to_vl": "Cho vay định giá:",
+  "interest_rate": "Lãi (%APR):",
+  "ltv_liquid_thres": "Ngưỡng thanh lý:",
+  "duration": "Thời hạn:",
+  "repayment_curr": "Tiền thanh toán:",
+  "recurring_interest": "Lãi định kỳ:"
 }
