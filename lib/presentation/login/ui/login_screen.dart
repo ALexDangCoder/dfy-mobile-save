@@ -106,8 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 64.h,
                     decoration: BoxDecoration(
                       color: AppTheme.getInstance().itemBtsColors(),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(20),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.r),
                       ),
                     ),
                     child: Padding(
@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: ImageIcon(
                                const AssetImage( ImageAssets.ic_lock),
                                 color: AppTheme.getInstance().whiteColor(),
-                                size: 24,
+                                size: 24.sp,
                               ),
                             ),
                             SizedBox(
@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 cursorColor:
                                     AppTheme.getInstance().whiteColor(),
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   color: AppTheme.getInstance().whiteColor(),
                                 ),
                                 controller: controller,
@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   hintText: S.current.password,
                                   hintStyle: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
-                                    18,
+                                    18.sp,
                                   ),
                                   border: InputBorder.none,
                                 ),
@@ -203,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         S.current.password_is_required,
                         style: textNormal(
                           Colors.red,
-                          12,
+                          12.sp,
                         ).copyWith(
                           fontWeight: FontWeight.w400,
                         ),
@@ -224,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     S.current.login,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -236,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     S.current.login,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -323,7 +323,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           S.current.new_wallet,
                           style: textNormal(
                             Colors.amber,
-                            18,
+                            18.sp,
                           ),
                         ),
                       ),
@@ -356,7 +356,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           S.current.import_seed_phrase,
                           style: textNormal(
                             Colors.amber,
-                            18,
+                            18.sp,
                           ),
                         ),
                       ),
@@ -377,10 +377,10 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          shape: const RoundedRectangleBorder(
+          shape:  RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(
-                36.0,
+                36.0.r,
               ),
             ),
           ),
@@ -391,7 +391,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 alert ?? S.current.password_is_not_correct,
                 style: textNormalCustom(
                   Colors.white,
-                  20,
+                  20.sp,
                   FontWeight.w700,
                 ),
               ),
@@ -402,7 +402,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 text ?? S.current.please_try_again,
                 style: textNormalCustom(
                   Colors.white,
-                  12,
+                  12.sp,
                   FontWeight.w400,
                 ),
               ),
@@ -419,7 +419,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   S.current.ok,
                   style: textNormalCustom(
                     AppTheme.getInstance().fillColor(),
-                    20,
+                    20.sp,
                     FontWeight.w700,
                   ),
                 ),

@@ -62,7 +62,7 @@ class AlertPopUp extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: textNormal(
                                 AppTheme.getInstance().wrongColor(),
-                                20,
+                                20.sp,
                               ).copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -82,7 +82,7 @@ class AlertPopUp extends StatelessWidget {
                                 text: S.current.your_current_wallet,
                                 style: textNormalCustom(
                                   AppTheme.getInstance().textThemeColor(),
-                                  12,
+                                  12.sp,
                                   FontWeight.w400,
                                 ),
                                 children: [
@@ -90,7 +90,7 @@ class AlertPopUp extends StatelessWidget {
                                     text: S.current.removed_permanently,
                                     style: textNormalCustom(
                                       AppTheme.getInstance().textThemeColor(),
-                                      12,
+                                      12.sp,
                                       FontWeight.w600,
                                     ),
                                   ),
@@ -98,7 +98,7 @@ class AlertPopUp extends StatelessWidget {
                                     text: S.current.this_action,
                                     style: textNormalCustom(
                                       AppTheme.getInstance().textThemeColor(),
-                                      12,
+                                      12.sp,
                                       FontWeight.w400,
                                     ),
                                   ),
@@ -120,7 +120,7 @@ class AlertPopUp extends StatelessWidget {
                                 text: S.current.you_can_only,
                                 style: textNormalCustom(
                                   AppTheme.getInstance().textThemeColor(),
-                                  12,
+                                  12.sp,
                                   FontWeight.w400,
                                 ),
                                 children: [
@@ -128,7 +128,7 @@ class AlertPopUp extends StatelessWidget {
                                     text: S.current.secret_private,
                                     style: textNormalCustom(
                                       AppTheme.getInstance().textThemeColor(),
-                                      12,
+                                      12.sp,
                                       FontWeight.w600,
                                     ),
                                   ),
@@ -136,7 +136,7 @@ class AlertPopUp extends StatelessWidget {
                                     text: S.current.dfy_secret_private,
                                     style: textNormalCustom(
                                       AppTheme.getInstance().textThemeColor(),
-                                      12,
+                                      12.sp,
                                       FontWeight.w400,
                                     ),
                                   ),
@@ -170,7 +170,7 @@ class AlertPopUp extends StatelessWidget {
                                 child: Center(
                                   child: Text(
                                     S.current.cancel,
-                                    style: textNormal(null, 20).copyWith(
+                                    style: textNormal(null, 20.sp).copyWith(
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,
                                     ),
@@ -210,7 +210,7 @@ class AlertPopUp extends StatelessWidget {
                                     S.current.continue_s,
                                     style: textNormal(
                                       AppTheme.getInstance().wrongColor(),
-                                      20,
+                                      20.sp,
                                     ).copyWith(
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,

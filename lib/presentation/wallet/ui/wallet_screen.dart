@@ -14,6 +14,7 @@ import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/createNFT.dart';
+import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/presentation/wallet/ui/import.dart';
 import 'package:Dfy/presentation/wallet/ui/nft_item.dart';
 import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
@@ -26,8 +27,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-
-import 'hero.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({
@@ -107,9 +106,9 @@ class _WalletState extends State<WalletScreen>
                     children: [
                       IconButton(
                         onPressed: () {},
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.menu,
-                          size: 24,
+                          size: 24.sp,
                           color: Colors.white,
                         ),
                       ),
@@ -123,7 +122,7 @@ class _WalletState extends State<WalletScreen>
                               S.current.wallet,
                               style: textNormalCustom(
                                 Colors.white,
-                                20,
+                                20.sp,
                                 FontWeight.w700,
                               ),
                             ),
@@ -131,7 +130,7 @@ class _WalletState extends State<WalletScreen>
                               S.current.smart_chain,
                               style: textNormalCustom(
                                 Colors.grey.shade400,
-                                14,
+                                14.sp,
                                 FontWeight.w400,
                               ),
                             ),
@@ -152,9 +151,9 @@ class _WalletState extends State<WalletScreen>
                             },
                           );
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.settings_outlined,
-                          size: 24,
+                          size: 24.sp,
                           color: Colors.white,
                         ),
                       ),
@@ -184,8 +183,8 @@ class _WalletState extends State<WalletScreen>
                   labelColor: Colors.white,
                   unselectedLabelColor: const Color(0xFF9997FF),
                   indicatorColor: const Color(0xFF6F6FC5),
-                  labelStyle: const TextStyle(
-                    fontSize: 14,
+                  labelStyle: TextStyle(
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
                   tabs: [
@@ -218,7 +217,7 @@ class _WalletState extends State<WalletScreen>
                                 return ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount:snapshot.data?.length ??0,
+                                  itemCount: snapshot.data?.length ?? 0,
                                   itemBuilder: (context, index) {
                                     return TokenItem(
                                       index: index,
@@ -340,9 +339,9 @@ class _WalletState extends State<WalletScreen>
                   onTap: () {
                     showSelectAcc(context, cubit, TypeScreen2.detail);
                   },
-                  child: const CircleAvatar(
-                    radius: 27,
-                    child: Image(
+                  child: CircleAvatar(
+                    radius: 27.r,
+                    child: const Image(
                       image: AssetImage(ImageAssets.ic_symbol),
                     ),
                   ),
@@ -364,7 +363,7 @@ class _WalletState extends State<WalletScreen>
                         snapshot.data ?? '',
                         style: textNormalCustom(
                           Colors.white,
-                          24,
+                          24.sp,
                           FontWeight.w700,
                         ),
                       );
@@ -387,10 +386,10 @@ class _WalletState extends State<WalletScreen>
                         ),
                       );
                     },
-                    child: const ImageIcon(
-                      AssetImage(ImageAssets.ic_edit),
+                    child: ImageIcon(
+                      const AssetImage(ImageAssets.ic_edit),
                       color: Colors.white,
-                      size: 24,
+                      size: 24.sp,
                     ),
                   ),
                 ],
@@ -400,20 +399,21 @@ class _WalletState extends State<WalletScreen>
               ),
               Center(
                 child: StreamBuilder(
-                    stream: cubit.totalBalance,
-                    builder: (context, AsyncSnapshot<double> snapshot) {
-                      return Text(
-                        formatUSD.format(
-                          snapshot.data ??
-                              cubit.total(cubit.getListTokenModel.value),
-                        ),
-                        style: textNormalCustom(
-                          const Color(0xFFE4AC1A),
-                          20,
-                          FontWeight.w600,
-                        ),
-                      );
-                    }),
+                  stream: cubit.totalBalance,
+                  builder: (context, AsyncSnapshot<double> snapshot) {
+                    return Text(
+                      formatUSD.format(
+                        snapshot.data ??
+                            cubit.total(cubit.getListTokenModel.value),
+                      ),
+                      style: textNormalCustom(
+                        const Color(0xFFE4AC1A),
+                        20.sp,
+                        FontWeight.w600,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
@@ -458,7 +458,7 @@ class _WalletState extends State<WalletScreen>
                           ),
                           style: textNormalCustom(
                             Colors.white,
-                            16,
+                            16.sp,
                             FontWeight.w400,
                           ),
                         ),
