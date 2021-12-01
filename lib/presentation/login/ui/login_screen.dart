@@ -7,7 +7,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
-import 'package:Dfy/presentation/login/ui/alert_import_pop_up.dart';
+import 'package:Dfy/presentation/alert_dialog/ui/alert_import_pop_up.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
@@ -55,12 +55,12 @@ class _LoginScreenState extends State<LoginScreen> {
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
     _cubit.getConfig();
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     _cubit.close();
     super.dispose();
-
   }
 
   @override
@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Padding(
                               padding: EdgeInsets.only(top: 12.h),
                               child: ImageIcon(
-                               const AssetImage( ImageAssets.ic_lock),
+                                const AssetImage(ImageAssets.ic_lock),
                                 color: AppTheme.getInstance().whiteColor(),
                                 size: 24,
                               ),
@@ -176,12 +176,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                                 child: _cubit.hidePass
                                     ? ImageIcon(
-                                  const AssetImage( ImageAssets.ic_show),
+                                        const AssetImage(ImageAssets.ic_show),
                                         color: AppTheme.getInstance()
                                             .suffixColor(),
                                       )
                                     : ImageIcon(
-                                  const AssetImage( ImageAssets.ic_hide),
+                                        const AssetImage(ImageAssets.ic_hide),
                                         color: AppTheme.getInstance()
                                             .suffixColor(),
                                       ),
@@ -313,7 +313,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp(type: KeyType.CREATE,);
+                                return AlertPopUp(
+                                  type: KeyType.CREATE,
+                                );
                               },
                               isNonBackground: false,
                             ),
@@ -346,7 +348,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp(type: KeyType.IMPORT,);
+                                return AlertPopUp(
+                                  type: KeyType.IMPORT,
+                                );
                               },
                               isNonBackground: false,
                             ),
