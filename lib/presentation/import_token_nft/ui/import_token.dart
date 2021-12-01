@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -32,11 +33,11 @@ void showImportToken(BuildContext context, WalletCubit bloc) {
         child: Container(
           height: 764.h,
           width: 375.w,
-          decoration: const BoxDecoration(
-            color: Color(0xff3e3d5c),
+          decoration: BoxDecoration(
+            color: AppTheme.getInstance().bgBtsColor(),
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
+              topLeft: Radius.circular(30.r),
+              topRight: Radius.circular(30.r),
             ),
           ),
           child: Column(
@@ -69,7 +70,7 @@ void showImportToken(BuildContext context, WalletCubit bloc) {
                       margin: EdgeInsets.only(left: 70.w),
                       child: Text(
                         S.current.import_token,
-                        style: textNormalCustom(null, 20, FontWeight.bold),
+                        style: textNormalCustom(null, 20.sp, FontWeight.bold),
                       ),
                     ),
                   ],
@@ -79,8 +80,8 @@ void showImportToken(BuildContext context, WalletCubit bloc) {
               spaceH12,
               Center(
                 child: Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(12.r)),
                     color: backgroundBottomSheetColor,
                   ),
                   height: 35.h,
@@ -88,22 +89,28 @@ void showImportToken(BuildContext context, WalletCubit bloc) {
                   child: TabBar(
                     tabs: [
                       Tab(
-                        text: S.current.enter_token,
+                        child: Text(
+                          S.current.enter_token,
+                          style: textNormalCustom(null, 14.sp, FontWeight.bold),
+                        ),
                       ),
                       Tab(
-                        text: S.current.choose_token,
+                        child: Text(
+                          S.current.choose_token,
+                          style: textNormalCustom(null, 14.sp, FontWeight.bold),
+                        ),
                       ),
                     ],
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Colors.white,
+                    labelColor:AppTheme.getInstance().whiteColor(),
+                    unselectedLabelColor: AppTheme.getInstance().whiteColor(),
                     indicator: RectangularIndicator(
-                      bottomLeftRadius: 10,
-                      bottomRightRadius: 10,
-                      topLeftRadius: 10,
-                      topRightRadius: 10,
+                      bottomLeftRadius: 10.r,
+                      bottomRightRadius: 10.r,
+                      topLeftRadius: 10.r,
+                      topRightRadius: 10.r,
                       color: formColor,
-                      horizontalPadding: 3,
-                      verticalPadding: 3,
+                      horizontalPadding: 3.w,
+                      verticalPadding: 3.h,
                     ),
                   ),
                 ),
@@ -135,7 +142,7 @@ void showImportToken(BuildContext context, WalletCubit bloc) {
       );
     },
   ).whenComplete(
-    () => {
+        () => {
       bloc.getListTokenItem(),
       bloc.totalBalance.add(
         bloc.total(bloc.listTokenStream.value),

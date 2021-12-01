@@ -23,17 +23,21 @@ class FromText2 extends StatelessWidget {
       height: 64.h,
       margin: EdgeInsets.symmetric(horizontal: 16.w),
       padding: EdgeInsets.symmetric(horizontal: 15.5.w),
-      decoration: const BoxDecoration(
-        color: Color(0xff32324c),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: const Color(0xff32324c),
+        borderRadius: BorderRadius.all(Radius.circular(20.r)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              Image.asset(
-                urlPrefixIcon,
+              SizedBox(
+                height: 24.h,
+                width: 24.w,
+                child: Image.asset(
+                  urlPrefixIcon,
+                ),
               ),
               SizedBox(
                 width: 20.5.w,
@@ -42,8 +46,7 @@ class FromText2 extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 2,
                 child: Text(
                   title,
-                  style: textNormal(Colors.grey, 16),
-
+                  style: textNormal(Colors.white.withOpacity(0.5), 16.sp),
                 ),
               ),
             ],
@@ -51,7 +54,6 @@ class FromText2 extends StatelessWidget {
           InkWell(
             onTap: () {
               FlutterClipboard.copy(title);
-
               toast_copy();
             },
             child: SizedBox(

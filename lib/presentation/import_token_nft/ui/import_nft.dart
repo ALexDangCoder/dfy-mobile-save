@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft_succesfully.dart';
@@ -117,8 +116,8 @@ class _BodyState extends State<Body> {
                     widget.bloc.setShowedNft(
                       isShow: true,
                       walletAddress: 'walletAddress',
-                      nftID: 1,
                       password: '',
+                      nftAddress: 'nftAddress',
                     );
                   },
                   child: ButtonGold(

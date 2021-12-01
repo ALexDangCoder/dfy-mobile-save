@@ -64,10 +64,10 @@ class FromText3 extends StatelessWidget {
             child: Container(
               child: urlSuffixIcon.isNotEmpty
                   ? Image.asset(
-                      urlSuffixIcon,
-                      height: 20.67.h,
-                      width: 20.14.w,
-                    )
+                urlSuffixIcon,
+                height: 20.67.h,
+                width: 20.14.w,
+              )
                   : null,
             ),
           ),

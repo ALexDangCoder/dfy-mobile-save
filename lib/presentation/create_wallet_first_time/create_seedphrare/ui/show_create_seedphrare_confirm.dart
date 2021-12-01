@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/item.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -19,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showCreateSeedPhrase2(
+void showCreateSeedPhraseConfirm(
   bool isCheckApp,
   BuildContext context,
   BLocCreateSeedPhrase bLocCreateSeedPhrase,
@@ -69,7 +68,7 @@ class _BodyState extends State<Body> {
       listener: (ctx, state) {
         if (state is SeedNavState) {
           if (widget.isCheckApp) {
-            showCreateSuccessfully2(
+            showCreateSuccessfullyHaveWallet(
               context: context,
               type: KeyType.CREATE,
               wallet: Wallet(
@@ -97,8 +96,8 @@ class _BodyState extends State<Body> {
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.h),
-              topRight: Radius.circular(30.h),
+              topLeft: Radius.circular(30.r),
+              topRight: Radius.circular(30.r),
             ),
           ),
           child: Column(
@@ -113,11 +112,11 @@ class _BodyState extends State<Body> {
                   children: [
                     GestureDetector(
                       child: Container(
-                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        margin: EdgeInsets.only(left: 10.w, right: 10.w),
                         child: Image.asset(
                           ImageAssets.ic_back,
-                          width: 20.w,
-                          height: 20,
+                          width: 24.w,
+                          height: 17.h,
                         ),
                       ),
                       onTap: () {
@@ -128,15 +127,17 @@ class _BodyState extends State<Body> {
                       S.current.create_new_wallet,
                       style: textNormalCustom(
                         Colors.white,
-                        20,
+                        20.sp,
                         FontWeight.bold,
                       ),
                     ),
                     GestureDetector(
                       child: Container(
-                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        margin: EdgeInsets.only(left: 10.w, right: 10.w),
                         child: Image.asset(
                           ImageAssets.ic_close,
+                          height: 24.h,
+                          width: 24.h,
                         ),
                       ),
                       onTap: () {
@@ -166,7 +167,7 @@ class _BodyState extends State<Body> {
                           S.current.tap_the_word,
                           style: textNormal(
                             AppTheme.getInstance().textThemeColor(),
-                            16,
+                            16.sp,
                           ),
                         ),
                       ),
@@ -182,7 +183,8 @@ class _BodyState extends State<Body> {
                             ) {
                               final listSeedPhrase = snapshot.data;
                               return Container(
-                                margin: EdgeInsets.only(right: 16.w, left: 16.w),
+                                margin:
+                                    EdgeInsets.only(right: 16.w, left: 16.w),
                                 child: BoxListPassWordPhrase(
                                   listTitle: listSeedPhrase ?? [],
                                   bLocCreateSeedPhrase: bLocCreateSeedPhrase,
@@ -202,7 +204,10 @@ class _BodyState extends State<Body> {
                                 child: snapshot.data ?? false
                                     ? Text(
                                         S.current.invalid_order,
-                                        style: textNormal(Colors.red, 14),
+                                        style: textNormal(
+                                          Colors.red,
+                                          14.sp,
+                                        ),
                                       )
                                     : null,
                               );
@@ -229,7 +234,7 @@ class _BodyState extends State<Body> {
                         height: 41.h,
                       ),
                       CheckBoxCustom2(
-                        title: S.current.i_understand,
+                        title: S.current.do_not,
                         bLocCreateSeedPhrase: bLocCreateSeedPhrase,
                       ),
                       SizedBox(

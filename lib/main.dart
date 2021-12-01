@@ -72,14 +72,14 @@ class _MyAppState extends State<MyApp> {
             secondary: AppTheme.getInstance().accentColor(),
           ),
         ),
-        supportedLocales: S.delegate.supportedLocales,
+        // supportedLocales: S.delegate.supportedLocales,
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        // locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
+        locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
         onGenerateRoute: AppRouter.generateRoute,
         initialRoute: AppRouter.splash,
       ),
@@ -143,7 +143,8 @@ class _MyAppState extends State<MyApp> {
         'password': 'password',
       };
       await trustWalletChannel.invokeMethod('checkPassword', data);
-    } on PlatformException {}
+    } on PlatformException {
+    }
   }
 
   Future<void> earseWallet() async {
