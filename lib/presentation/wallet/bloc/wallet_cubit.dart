@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/token.dart';
@@ -334,6 +333,15 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getAddressWallet() async {}
 
+  Future<void> getListWallets(String password) async {
+    try {
+      final data = {
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('getListWallets', data);
+    } on PlatformException {}
+  }
+
   String formatAddress(String address) {
     if (address.isEmpty) return address;
     final String formatAddressWallet =
@@ -540,6 +548,13 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'getListShowedNftCallback':
         objNFT = methodCall.arguments;
+        break;
+      case 'getListWalletsCallback':
+        final List<dynamic> data = methodCall.arguments;
+        for (final element in data) {
+          listWallet.add(Wallet.fromJson(element));
+        }
+
         break;
       default:
         break;

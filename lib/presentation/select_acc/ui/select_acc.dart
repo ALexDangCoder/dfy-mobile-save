@@ -99,7 +99,7 @@ class _SelectAccState extends State<SelectAcc> {
                 child: ListView.builder(
                   itemCount: snapshot.data?.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
+                    return InkWell(
                       onTap: () {
                         widget.bloc.addressWallet.sink
                             .add(snapshot.data?[index].addressWallet ?? '');
@@ -185,8 +185,7 @@ class _SelectAccState extends State<SelectAcc> {
                                           ],
                                         ),
                                         Text(
-                                          '${snapshot.data?[index].amountWallet
-                                              ?.toStringAsFixed(5)} BNB',
+                                          '${snapshot.data?[index].amountWallet?.toStringAsFixed(5)} BNB',
                                           style: textNormalCustom(
                                             Colors.white,
                                             16,
