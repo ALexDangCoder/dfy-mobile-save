@@ -280,11 +280,6 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-  // "walletAddress*: String
-  // receiveAddress*: String
-  // tokenID*: Int
-  // amount*: Int
-  // password: String"
 
   Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
     switch (methodCall.method) {
