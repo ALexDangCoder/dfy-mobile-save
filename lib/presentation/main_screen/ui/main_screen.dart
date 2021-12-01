@@ -10,6 +10,7 @@ import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/widgets/bottom_appbar.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 const int tabWalletIndex = 0;
@@ -92,9 +93,10 @@ class _MainScreenState extends BaseState<MainScreen> {
     return WillPopScope(
       onWillPop: () async {
         if (_lastQuitTime == null ||
-            DateTime.now().difference(_lastQuitTime!).inSeconds > 1) {
+            DateTime.now().difference(_lastQuitTime!).inMilliseconds > 1000) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
+              duration: const Duration(milliseconds: 1000,),
               content: Text(
                 S.current.out_app,
               ),
@@ -103,7 +105,8 @@ class _MainScreenState extends BaseState<MainScreen> {
           _lastQuitTime = DateTime.now();
           return Future.value(false);
         } else {
-          return Future.value(true);
+           await SystemNavigator.pop();
+           return Future.value(true);
         }
       },
       child: Scaffold(

@@ -63,191 +63,194 @@ class _ReceiveState extends State<Receive> {
   Widget build(BuildContext context) {
     return BaseBottomSheet(
       title: textTitle(widget.type),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 41.h,
-          ),
-          Container(
-            height: 370.h,
-            width: 311.w,
-            padding: EdgeInsets.only(
-              top: 16.h,
-              bottom: 12.h,
-              right: 40.w,
-              left: 40.w,
+      child: Container(
+        padding: EdgeInsets.only(left: 16.w, right: 16.w,),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 41.h,
             ),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().selectDialogColor(),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(36),
+            Container(
+              height: 370.h,
+              width: 311.w,
+              padding: EdgeInsets.only(
+                top: 16.h,
+                bottom: 12.h,
+                right: 40.w,
+                left: 40.w,
+              ),
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().selectDialogColor(),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(36),
+                ),
+              ),
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 125.w,
+                    height: 29.h,
+                    child: Image.asset(ImageAssets.defiText),
+                  ),
+                  SizedBox(
+                    height: 13.17.h,
+                  ),
+                  RepaintBoundary(
+                    key: globalKey,
+                    child: QrImage(
+                      data: '%${widget.walletAddress}%',
+                      size: 230.w,
+                      gapless: false,
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 11.h,
+                  ),
+                  SizedBox(
+                    height: 39.h,
+                    width: 232.w,
+                    child: Text(
+                      widget.walletAddress,
+                      textAlign: TextAlign.center,
+                      style: textNormalCustom(
+                        null,
+                        18,
+                        FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 125.w,
-                  height: 29.h,
-                  child: Image.asset(ImageAssets.defiText),
-                ),
-                SizedBox(
-                  height: 13.17.h,
-                ),
-                RepaintBoundary(
-                  key: globalKey,
-                  child: QrImage(
-                    data: '%${widget.walletAddress}%',
-                    size: 230.w,
-                    gapless: false,
-                    backgroundColor: Colors.white,
-                  ),
-                ),
-                SizedBox(
-                  height: 11.h,
-                ),
-                SizedBox(
-                  height: 39.h,
-                  width: 232.w,
-                  child: Text(
-                    widget.walletAddress,
-                    textAlign: TextAlign.center,
-                    style: textNormalCustom(
-                      null,
-                      18,
-                      FontWeight.w300,
+            SizedBox(
+              height: 20.h,
+            ),
+            StreamBuilder<String>(
+              stream: receiveCubit.amountStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  prize = snapshot.data;
+                } else {
+                  prize = '';
+                }
+                return Visibility(
+                  visible: prize!.isNotEmpty,
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      top: 12.h,
                     ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          StreamBuilder<String>(
-            stream: receiveCubit.amountStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                prize = snapshot.data;
-              } else {
-                prize = '';
-              }
-              return Visibility(
-                visible: prize!.isNotEmpty,
-                child: Container(
-                  margin: EdgeInsets.only(
-                    top: 12.h,
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        '${receiveCubit.value} BNB',
-                        style: textNormal(
-                          AppTheme.getInstance().fillColor(),
-                          24,
-                        ).copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        formatUSD.format(19990.3932212),
-                        style: textNormal(
-                          Colors.grey.withOpacity(0.5),
-                          16,
-                        ).copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-          SizedBox(
-            height: 24.h,
-          ),
-          Container(
-            padding: EdgeInsets.only(
-              left: 24.w,
-              right: 24.w,
-            ),
-            width: 311.w,
-            height: 78.h,
-            child: Row(
-              mainAxisAlignment: widget.type == TokenType.DFY
-                  ? MainAxisAlignment.spaceBetween
-                  : MainAxisAlignment.center,
-              children: [
-                _buildColumnButton(
-                  path: ImageAssets.ic_save,
-                  label: S.current.save,
-                  callback: () async {
-                    final RenderRepaintBoundary? boundary =
-                        globalKey.currentContext!.findRenderObject()
-                            as RenderRepaintBoundary?;
-                    final image = await boundary!.toImage();
-                    final ByteData? byteData =
-                        await image.toByteData(format: ImageByteFormat.png);
-                    if (byteData != null) {
-                      await ImageGallerySaver.saveImage(
-                        byteData.buffer.asUint8List(),
-                      );
-                      toast.showToast(
-                        child: popMenu(),
-                        toastDuration: const Duration(seconds: 2),
-                        gravity: ToastGravity.CENTER,
-                      );
-                    }
-                  },
-                ),
-                if (widget.type == TokenType.DFY)
-                  Flexible(
-                    child: _buildColumnButton(
-                      path: ImageAssets.ic_set_amount,
-                      label: S.current.set_amount,
-                      callback: () {
-                        Navigator.of(context).push(
-                          HeroDialogRoute(
-                            builder: (context) {
-                              return SetAmountPopUp(
-                                controller: amountController,
-                                cubit: receiveCubit,
-                              );
-                            },
-                            isNonBackground: false,
+                    child: Column(
+                      children: [
+                        Text(
+                          '${receiveCubit.value} BNB',
+                          style: textNormal(
+                            AppTheme.getInstance().fillColor(),
+                            24,
+                          ).copyWith(
+                            fontWeight: FontWeight.w600,
                           ),
-                        );
-                      },
+                        ),
+                        Text(
+                          formatUSD.format(19990.3932212),
+                          style: textNormal(
+                            Colors.grey.withOpacity(0.5),
+                            16,
+                          ).copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
-                  )
-                else
-                  spaceW60,
-                _buildColumnButton(
-                  path: ImageAssets.ic_share,
-                  label: S.current.share,
-                  callback: () async {
-                    final RenderRepaintBoundary? boundary =
-                        globalKey.currentContext!.findRenderObject()
-                            as RenderRepaintBoundary?;
-                    final image = await boundary!.toImage();
-                    final ByteData? byteData =
-                        await image.toByteData(format: ImageByteFormat.png);
-                    final Uint8List pngBytes = byteData!.buffer.asUint8List();
-
-                    final tempDir = await getTemporaryDirectory();
-                    final file =
-                        await File('${tempDir.path}/image.png').create();
-                    await file.writeAsBytes(pngBytes);
-                    await Share.shareFiles(
-                      ['${tempDir.path}/image.png'],
-                    );
-                  },
-                ),
-              ],
+                  ),
+                );
+              },
             ),
-          )
-        ],
+            SizedBox(
+              height: 24.h,
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                left: 24.w,
+                right: 24.w,
+              ),
+              width: 311.w,
+              height: 78.h,
+              child: Row(
+                mainAxisAlignment: widget.type == TokenType.DFY
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.center,
+                children: [
+                  _buildColumnButton(
+                    path: ImageAssets.ic_save,
+                    label: S.current.save,
+                    callback: () async {
+                      final RenderRepaintBoundary? boundary =
+                          globalKey.currentContext!.findRenderObject()
+                              as RenderRepaintBoundary?;
+                      final image = await boundary!.toImage();
+                      final ByteData? byteData =
+                          await image.toByteData(format: ImageByteFormat.png);
+                      if (byteData != null) {
+                        await ImageGallerySaver.saveImage(
+                          byteData.buffer.asUint8List(),
+                        );
+                        toast.showToast(
+                          child: popMenu(),
+                          toastDuration: const Duration(seconds: 2),
+                          gravity: ToastGravity.CENTER,
+                        );
+                      }
+                    },
+                  ),
+                  if (widget.type == TokenType.DFY)
+                    Flexible(
+                      child: _buildColumnButton(
+                        path: ImageAssets.ic_set_amount,
+                        label: S.current.set_amount,
+                        callback: () {
+                          Navigator.of(context).push(
+                            HeroDialogRoute(
+                              builder: (context) {
+                                return SetAmountPopUp(
+                                  controller: amountController,
+                                  cubit: receiveCubit,
+                                );
+                              },
+                              isNonBackground: false,
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  else
+                    spaceW60,
+                  _buildColumnButton(
+                    path: ImageAssets.ic_share,
+                    label: S.current.share,
+                    callback: () async {
+                      final RenderRepaintBoundary? boundary =
+                          globalKey.currentContext!.findRenderObject()
+                              as RenderRepaintBoundary?;
+                      final image = await boundary!.toImage();
+                      final ByteData? byteData =
+                          await image.toByteData(format: ImageByteFormat.png);
+                      final Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+                      final tempDir = await getTemporaryDirectory();
+                      final file =
+                          await File('${tempDir.path}/image.png').create();
+                      await file.writeAsBytes(pngBytes);
+                      await Share.shareFiles(
+                        ['${tempDir.path}/image.png'],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -295,12 +298,12 @@ class _ReceiveState extends State<Receive> {
             return CustomRectTween(begin: begin!, end: end!);
           },
           child: buildBlur(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(20.r),
             child: Material(
               color: Colors.white.withOpacity(0.6),
               elevation: 2,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(20.r),
               ),
               child: SizedBox(
                 width: 232.w,

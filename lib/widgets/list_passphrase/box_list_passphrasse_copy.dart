@@ -26,7 +26,7 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
       margin: EdgeInsets.only(right: 16.w, left: 16.w),
       decoration: BoxDecoration(
         color: AppTheme.getInstance().itemBtsColors(),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(20.r)),
       ),
       padding: EdgeInsets.only(top: 16.h, left: 13.w, right: 13.w),
       height: 222.h,
@@ -41,7 +41,7 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
                 S.current.your_seed,
                 style: textNormal(
                Colors.white,
-                  16,
+                  16.sp,
                 ),
               ),
               GestureDetector(

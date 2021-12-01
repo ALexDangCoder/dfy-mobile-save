@@ -20,9 +20,11 @@ Container buttonForm({
     child: Row(
       children: [
         IconButton(onPressed: () {}, icon: Image.asset(prefixIcon)),
-        Text(
-          hintText,
-          style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+        Expanded(
+          child: Text(
+            hintText,
+            style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+          ),
         )
       ],
     ),
@@ -47,6 +49,7 @@ Container switchForm({
       child: Padding(
         padding: EdgeInsets.only(top: 5.h),
         child: ListTileSwitch(
+          enabled: false,
           switchScale: 1,
           value: isCheck,
           onChanged: (bool value) =>
@@ -84,6 +87,7 @@ Container switchForm({
       child: Padding(
         padding: EdgeInsets.only(top: 5.h),
         child: ListTileSwitch(
+          enabled: false,
           switchScale: 1,
           value: isCheck,
           onChanged: (value) {

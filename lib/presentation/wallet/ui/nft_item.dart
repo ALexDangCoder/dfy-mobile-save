@@ -19,7 +19,6 @@ final NFT nft = NFT(
   '#357594',
 );
 
-
 class NFTItem extends StatefulWidget {
   const NFTItem({
     Key? key,
@@ -79,7 +78,7 @@ class _NFTItemState extends State<NFTItem> {
                   _customTileExpanded
                       ? const AssetImage(ImageAssets.ic_line_down)
                       : const AssetImage(ImageAssets.ic_line_right),
-                  size: 24,
+                  size: 24.sp,
                   color: Colors.white,
                 ),
               ),
@@ -101,7 +100,7 @@ class _NFTItemState extends State<NFTItem> {
                       widget.nameNFT,
                       style: textNormalCustom(
                         Colors.white,
-                        20,
+                        20.sp,
                         FontWeight.w600,
                       ),
                     ),
@@ -122,14 +121,15 @@ class _NFTItemState extends State<NFTItem> {
                     bottom: 16.h,
                   ),
                   child: SizedBox(
-                    height: 140,
+                    height: 140.h,
                     child: ListView.builder(
                       physics: const ClampingScrollPhysics(),
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemCount: 6,
-                      itemBuilder: (BuildContext context, int index) =>
-                           CardNFT(objNFT: nft,),
+                      itemBuilder: (BuildContext context, int index) => CardNFT(
+                        objNFT: nft,
+                      ),
                     ),
                   ),
                 ),

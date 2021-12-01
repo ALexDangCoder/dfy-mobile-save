@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -67,8 +68,8 @@ class _EnterAddressState extends State<EnterAddress> {
                             : Text(
                                 S.current.invalid_address,
                                 style: textNormal(
-                                  Colors.red,
-                                  14,
+                                  AppTheme.getInstance().redColor(),
+                                  14.sp,
                                 ),
                                 textAlign: TextAlign.start,
                               ),

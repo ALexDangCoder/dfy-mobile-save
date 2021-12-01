@@ -64,73 +64,76 @@ class _BodyState extends State<Body> {
               Navigator.pop(context);
             },
             text: ImageAssets.ic_close,
-            child: Column(
-              children: [
-                spaceH24,
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              HeroDialogRoute(
-                                builder: (context) {
-                                  return ChooseAcc(
-                                    bloc: widget.bloc,
-                                  );
-                                },
-                                isNonBackground: false,
-                              ),
-                            );
-                          },
-                          child: FromText4(
-                            titleCopy: widget.bloc.listWallet[index ?? 0]
-                                    .walletAddress ??
-                                '',
-                            title: widget.bloc.formatText(
-                              widget.bloc.listWallet[index ?? 0]
+            child: Container(
+              padding: EdgeInsets.only(left: 16.w, right: 16.w,),
+              child: Column(
+                children: [
+                  spaceH24,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                HeroDialogRoute(
+                                  builder: (context) {
+                                    return ChooseAcc(
+                                      bloc: widget.bloc,
+                                    );
+                                  },
+                                  isNonBackground: false,
+                                ),
+                              );
+                            },
+                            child: FromText4(
+                              titleCopy: widget.bloc.listWallet[index ?? 0]
                                       .walletAddress ??
                                   '',
-                            ),
-                            urlSuffixIcon: ImageAssets.ic_line_down,
-                            urlPrefixIcon: ImageAssets.ic_address,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 16.h,
-                        ),
-                        FromText3(
-                          titleCopy:
-                              widget.bloc.listWallet[index ?? 0].privateKey ??
-                                  '',
-                          title: widget.bloc.formatText(
-                            widget.bloc.listWallet[index ?? 0].privateKey ?? '',
-                          ),
-                          urlSuffixIcon: ImageAssets.ic_copy,
-                          urlPrefixIcon: ImageAssets.ic_key24,
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Column(
-                          children: [
-                            BoxListPassWordPhraseCopy2(
-                              listTitle: widget.bloc.stringToList(
-                                widget.bloc.listWallet[index ?? 0].seedPhrase ??
+                              title: widget.bloc.formatText(
+                                widget.bloc.listWallet[index ?? 0]
+                                        .walletAddress ??
                                     '',
                               ),
-                              text: widget
-                                      .bloc.listWallet[index ?? 0].seedPhrase ??
-                                  '',
+                              urlSuffixIcon: ImageAssets.ic_line_down,
+                              urlPrefixIcon: ImageAssets.ic_address,
                             ),
-                          ],
-                        )
-                      ],
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          FromText3(
+                            titleCopy:
+                                widget.bloc.listWallet[index ?? 0].privateKey ??
+                                    '',
+                            title: widget.bloc.formatText(
+                              widget.bloc.listWallet[index ?? 0].privateKey ?? '',
+                            ),
+                            urlSuffixIcon: ImageAssets.ic_copy,
+                            urlPrefixIcon: ImageAssets.ic_key24,
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Column(
+                            children: [
+                              BoxListPassWordPhraseCopy2(
+                                listTitle: widget.bloc.stringToList(
+                                  widget.bloc.listWallet[index ?? 0].seedPhrase ??
+                                      '',
+                                ),
+                                text: widget
+                                        .bloc.listWallet[index ?? 0].seedPhrase ??
+                                    '',
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         } else {

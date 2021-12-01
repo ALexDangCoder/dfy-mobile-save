@@ -6,10 +6,10 @@ import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.d
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
-import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/column_button/buil_column.dart';
+import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -169,29 +169,29 @@ class _NFTDetailState extends State<NFTDetail> {
                                 _buildRow(
                                   title: S.current.description,
                                   detail: nft.description,
-                                  type: TextType.NORM,
+                                  type: TextType.NORMAL,
                                 ),
                                 _buildRow(
                                   title: S.current.nft_standard,
                                   detail: nft.standard == Standard.ERC_721
                                       ? 'ERC-721'
                                       : 'ERC-1155',
-                                  type: TextType.NORM,
+                                  type: TextType.NORMAL,
                                 ),
                                 _buildRow(
                                   title: S.current.link,
                                   detail: nft.link,
-                                  type: TextType.RICH,
+                                  type: TextType.RICH_BLUE,
                                 ),
                                 _buildRow(
                                   title: S.current.contract,
                                   detail: nft.contract,
-                                  type: TextType.RICH,
+                                  type: TextType.RICH_BLUE,
                                 ),
                                 _buildRow(
                                   title: S.current.block_chain,
                                   detail: nft.blockChain,
-                                  type: TextType.NORM,
+                                  type: TextType.NORMAL,
                                 ),
                                 SizedBox(
                                   height: 24.h,
@@ -437,7 +437,7 @@ class _NFTDetailState extends State<NFTDetail> {
               ),
             ),
           ),
-          if (type == TextType.NORM)
+          if (type == TextType.NORMAL)
             SizedBox(
               width: 225.w,
               child: Align(
@@ -458,7 +458,7 @@ class _NFTDetailState extends State<NFTDetail> {
                   children: [
                     TextSpan(
                       text: detail,
-                      style: richTextValueNFT,
+                      style: richTextBlue,
                     ),
                   ],
                 ),

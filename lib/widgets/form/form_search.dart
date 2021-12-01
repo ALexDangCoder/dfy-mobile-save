@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +30,10 @@ class _FormSearchState extends State<FormSearch> {
       width: 336.w,
       height: 46.h,
       margin: EdgeInsets.symmetric(horizontal: 19.w),
-      padding: const EdgeInsets.only(right: 15, left: 15),
-      decoration: const BoxDecoration(
-        color: Color(0xff32324c),
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+      padding:  EdgeInsets.only(right: 15.w, left: 15.w),
+      decoration:  BoxDecoration(
+        color: AppTheme.getInstance().backgroundBTSColor(),
+        borderRadius: BorderRadius.all(Radius.circular(12.r)),
       ),
       child: Row(
         children: [
@@ -50,20 +51,19 @@ class _FormSearchState extends State<FormSearch> {
                 maxLength: 20,
                 onChanged: (value) {
                   widget.bloc.textSearch.sink.add(value);
-
                   widget.bloc.search();
                 },
-                cursorColor: Colors.white,
+                cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
-                  Colors.white54,
-                  16,
+                  AppTheme.getInstance().whiteColor(),
+                  16.sp,
                 ),
                 decoration: InputDecoration(
                   counterText: '',
                   hintText: widget.hint,
                   hintStyle: textNormal(
-                    Colors.white54,
-                    16,
+                    AppTheme.getInstance().whiteWithOpacityFireZero(),
+                    16.sp,
                   ),
                   border: InputBorder.none,
                 ),

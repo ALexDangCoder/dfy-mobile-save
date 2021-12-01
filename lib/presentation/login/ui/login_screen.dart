@@ -55,12 +55,12 @@ class _LoginScreenState extends State<LoginScreen> {
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
     _cubit.getConfig();
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     _cubit.close();
     super.dispose();
-
   }
 
   @override
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
             FocusScope.of(context).unfocus();
           },
           child: Container(
-            width: 375.sw,
+            width: 375.w,
             height: 812.h,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -89,14 +89,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 113.h,
                   ),
-                  const Image(
-                    image: AssetImage(ImageAssets.ic_symbol),
+                  Image(
+                    image: const AssetImage(ImageAssets.ic_symbol),
+                    height: 100.h,
+                    width: 100.w,
                   ),
                   SizedBox(
                     height: 28.h,
                   ),
-                  const Image(
-                    image: AssetImage(ImageAssets.centered),
+                  Image(
+                    image: const AssetImage(ImageAssets.centered),
+                    width: 237.w,
+                    height: 35.h,
                   ),
                   SizedBox(
                     height: 68.h,
@@ -106,8 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 64.h,
                     decoration: BoxDecoration(
                       color: AppTheme.getInstance().itemBtsColors(),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(20),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.r),
                       ),
                     ),
                     child: Padding(
@@ -123,9 +127,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             Padding(
                               padding: EdgeInsets.only(top: 12.h),
                               child: ImageIcon(
-                               const AssetImage( ImageAssets.ic_lock),
+                                const AssetImage(ImageAssets.ic_lock),
                                 color: AppTheme.getInstance().whiteColor(),
-                                size: 24,
+                                size: 24.sp,
                               ),
                             ),
                             SizedBox(
@@ -146,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 cursorColor:
                                     AppTheme.getInstance().whiteColor(),
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   color: AppTheme.getInstance().whiteColor(),
                                 ),
                                 controller: controller,
@@ -157,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   hintText: S.current.password,
                                   hintStyle: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
-                                    18,
+                                    18.sp,
                                   ),
                                   border: InputBorder.none,
                                 ),
@@ -176,14 +180,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                                 child: _cubit.hidePass
                                     ? ImageIcon(
-                                  const AssetImage( ImageAssets.ic_show),
+                                        const AssetImage(
+                                          ImageAssets.ic_show,
+                                        ),
                                         color: AppTheme.getInstance()
                                             .suffixColor(),
+                                        size: 24.sp,
                                       )
                                     : ImageIcon(
-                                  const AssetImage( ImageAssets.ic_hide),
+                                        const AssetImage(ImageAssets.ic_hide),
                                         color: AppTheme.getInstance()
                                             .suffixColor(),
+                                        size: 24.sp,
                                       ),
                               ),
                             ),
@@ -202,8 +210,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text(
                         S.current.password_is_required,
                         style: textNormal(
-                          Colors.red,
-                          12,
+                          AppTheme.getInstance().redColor(),
+                          12.sp,
                         ).copyWith(
                           fontWeight: FontWeight.w400,
                         ),
@@ -224,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     S.current.login,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -236,7 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     S.current.login,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20,
+                                      20.sp,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -293,11 +301,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           _cubit.authenticate();
                         },
                         child: Platform.isIOS
-                            ? const Image(
-                                image: AssetImage(ImageAssets.faceID),
+                            ? Image(
+                                height: 54.h,
+                                width: 54.w,
+                                image: const AssetImage(ImageAssets.faceID),
                               )
-                            : const Image(
-                                image: AssetImage(ImageAssets.ic_finger),
+                            : Image(
+                                height: 54.h,
+                                width: 54.w,
+                                image: const AssetImage(ImageAssets.ic_finger),
                               ),
                       ),
                     ),
@@ -313,7 +325,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp(type: KeyType.CREATE,);
+                                return const AlertPopUp(
+                                  type: KeyType.CREATE,
+                                );
                               },
                               isNonBackground: false,
                             ),
@@ -323,7 +337,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           S.current.new_wallet,
                           style: textNormal(
                             Colors.amber,
-                            18,
+                            18.sp,
                           ),
                         ),
                       ),
@@ -346,7 +360,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp(type: KeyType.IMPORT,);
+                                return const AlertPopUp(
+                                  type: KeyType.IMPORT,
+                                );
                               },
                               isNonBackground: false,
                             ),
@@ -356,7 +372,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           S.current.import_seed_phrase,
                           style: textNormal(
                             Colors.amber,
-                            18,
+                            18.sp,
                           ),
                         ),
                       ),
@@ -377,10 +393,10 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          shape: const RoundedRectangleBorder(
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(
-                36.0,
+                36.0.r,
               ),
             ),
           ),
@@ -391,7 +407,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 alert ?? S.current.password_is_not_correct,
                 style: textNormalCustom(
                   Colors.white,
-                  20,
+                  20.sp,
                   FontWeight.w700,
                 ),
               ),
@@ -402,7 +418,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 text ?? S.current.please_try_again,
                 style: textNormalCustom(
                   Colors.white,
-                  12,
+                  12.sp,
                   FontWeight.w400,
                 ),
               ),
@@ -419,7 +435,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   S.current.ok,
                   style: textNormalCustom(
                     AppTheme.getInstance().fillColor(),
-                    20,
+                    20.sp,
                     FontWeight.w700,
                   ),
                 ),

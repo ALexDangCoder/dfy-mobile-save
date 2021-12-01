@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrare_confirm.dart';
@@ -107,17 +108,17 @@ class _BodyState extends State<Body> {
                   Container(
                     height: 28.h,
                     width: 343.w,
-                    margin: EdgeInsets.only(right: 26.w, left: 26.w, top: 16.h),
+                    margin: EdgeInsets.only(right: 16.w, left: 16.w, top: 16.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
                           child: Container(
-                            margin: const EdgeInsets.only(left: 10, right: 10),
+                            margin: EdgeInsets.only(left: 10.w, right: 10.w),
                             child: Image.asset(
                               ImageAssets.ic_back,
-                              width: 20.w,
-                              height: 20,
+                              width: 24.w,
+                              height: 17.h,
                             ),
                           ),
                           onTap: () {
@@ -128,15 +129,17 @@ class _BodyState extends State<Body> {
                           S.current.create_new_wallet,
                           style: textNormalCustom(
                             Colors.white,
-                            20,
+                            20.sp,
                             FontWeight.bold,
                           ),
                         ),
                         GestureDetector(
                           child: Container(
-                            margin: const EdgeInsets.only(left: 10, right: 10),
+                            margin: EdgeInsets.only(left: 10.w, right: 10.w),
                             child: Image.asset(
                               ImageAssets.ic_close,
+                              height: 24.h,
+                              width: 24.h,
                             ),
                           ),
                           onTap: () {
@@ -163,10 +166,10 @@ class _BodyState extends State<Body> {
                             height: 64.h,
                             margin: EdgeInsets.symmetric(horizontal: 16.w),
                             padding: EdgeInsets.only(right: 15.w, left: 15.w),
-                            decoration: const BoxDecoration(
-                              color: Color(0xff32324c),
+                            decoration: BoxDecoration(
+                              color: AppTheme.getInstance().itemBtsColors(),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
+                                  BorderRadius.all(Radius.circular(20.r)),
                             ),
                             child: Row(
                               children: [
@@ -186,8 +189,8 @@ class _BodyState extends State<Body> {
                                       controller: nameWallet,
                                       cursorColor: Colors.white,
                                       style: textNormal(
-                                        Colors.white54,
-                                        16,
+                                        AppTheme.getInstance().whiteColor(),
+                                        16.sp,
                                       ),
                                       onChanged: (value) {
                                         widget.blocCreateSeedPhrase.isButton();
@@ -195,8 +198,9 @@ class _BodyState extends State<Body> {
                                       decoration: InputDecoration(
                                         hintText: S.current.name_wallet,
                                         hintStyle: textNormal(
-                                          Colors.white54,
-                                          16,
+                                          AppTheme.getInstance()
+                                              .whiteWithOpacityFireZero(),
+                                          16.sp,
                                         ),
                                         counterText: '',
                                         border: InputBorder.none,
@@ -236,8 +240,8 @@ class _BodyState extends State<Body> {
                                 : Text(
                                     S.current.name_not_null,
                                     style: textNormal(
-                                      Colors.red,
-                                      14,
+                                      AppTheme.getInstance().redColor(),
+                                      14.sp,
                                     ),
                                     textAlign: TextAlign.start,
                                   ),
@@ -273,7 +277,7 @@ class _BodyState extends State<Body> {
                                 height: 17.h,
                               ),
                               CheckBoxCustom(
-                                title: S.current.do_not,
+                                title: S.current.i_understand,
                                 bLocCreateSeedPhrase:
                                     widget.blocCreateSeedPhrase,
                               ),

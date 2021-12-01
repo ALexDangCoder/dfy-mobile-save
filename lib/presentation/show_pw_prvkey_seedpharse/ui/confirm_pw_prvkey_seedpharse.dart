@@ -43,76 +43,84 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
       callback: () {
         Navigator.pop(context);
       },
-      child: Column(
-        children: [
-          spaceH24,
-          formSetupPassWordConfirm(
-            hintText: S.current.enter_password,
-            controller: txtController,
-            isShow: true,
-          ),
-          showTextValidatePW(),
-          SizedBox(
-            height: 40.h,
-          ),
-          // cubit.isEnableBtnStream,
-          StreamBuilder<bool>(
-            stream: widget.cubit.isEnableBtnStream,
-            builder: (context, snapshot) {
-              return GestureDetector(
-                onTap: () {
-                  if (snapshot.data ?? false) {
-                    widget.cubit.checkValidate(
-                      txtController.text, rightPW: password,);
-                    if(widget.cubit.isValidPW) {
-                      showPrivateKeySeedPhrase(
-                        context,
-                        PrivateKeySeedPhraseBloc(),
+      child: Container(
+        padding: EdgeInsets.only(
+          left: 16.w,
+          right: 16.w,
+        ),
+        child: Column(
+          children: [
+            spaceH24,
+            formSetupPassWordConfirm(
+              hintText: S.current.enter_password,
+              controller: txtController,
+              isShow: true,
+            ),
+            showTextValidatePW(),
+            SizedBox(
+              height: 40.h,
+            ),
+            // cubit.isEnableBtnStream,
+            StreamBuilder<bool>(
+              stream: widget.cubit.isEnableBtnStream,
+              builder: (context, snapshot) {
+                return GestureDetector(
+                  onTap: () {
+                    if (snapshot.data ?? false) {
+                      widget.cubit.checkValidate(
+                        txtController.text,
+                        rightPW: password,
                       );
-                    } else {
-                      //nothing
-                    }
-                  }
-                },
-                child: ButtonGold(
-                  title: S.current.continue_s,
-                  isEnable: snapshot.data ?? false,
-                ),
-              );
-            },
-          ),
-          SizedBox(
-            height: 40.h,
-          ),
-
-          //todo handel scan finger or faceID
-          StreamBuilder<bool>(
-            stream: widget.cubit.isSuccessWhenScanStream,
-            builder: (context, snapshot) {
-              return Visibility(
-                child: GestureDetector(
-                  onTap: () async {
-                    await widget.cubit
-                        .authenticate(); //todo change stream not bloc
-                    if (snapshot.data == true) {
-                      showPrivateKeySeedPhrase(
-                          context, PrivateKeySeedPhraseBloc());
-                    } else {
-                      //nothing
+                      if (widget.cubit.isValidPW) {
+                        showPrivateKeySeedPhrase(
+                          context,
+                          PrivateKeySeedPhraseBloc(),
+                        );
+                      } else {
+                        //nothing
+                      }
                     }
                   },
-                  child: Platform.isIOS
-                      ? const Image(
-                    image: AssetImage(ImageAssets.ic_face_id),
-                  )
-                      : const Image(
-                    image: AssetImage(ImageAssets.ic_finger),
+                  child: ButtonGold(
+                    title: S.current.continue_s,
+                    isEnable: snapshot.data ?? false,
                   ),
-                ),
-              );
-            },
-          )
-        ],
+                );
+              },
+            ),
+            SizedBox(
+              height: 40.h,
+            ),
+
+            //todo handel scan finger or faceID
+            StreamBuilder<bool>(
+              stream: widget.cubit.isSuccessWhenScanStream,
+              builder: (context, snapshot) {
+                return Visibility(
+                  child: GestureDetector(
+                    onTap: () async {
+                      await widget.cubit
+                          .authenticate(); //todo change stream not bloc
+                      if (snapshot.data == true) {
+                        showPrivateKeySeedPhrase(
+                            context, PrivateKeySeedPhraseBloc());
+                      } else {
+                        //nothing
+                      }
+                    },
+                    child: Platform.isIOS
+                        ? const Image(
+                            image: AssetImage(ImageAssets.ic_face_id),
+                          )
+                        : const Image(
+                            image: AssetImage(ImageAssets.ic_finger),
+                          ),
+                  ),
+                );
+              },
+            )
+          ],
+        ),
       ),
     );
   }
@@ -131,62 +139,61 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
         bottom: 12.h,
       ),
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
         ),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder<bool>(
-        stream: widget.cubit.showPWStream,
-        builder: (context, snapshot) {
-          return TextFormField(
-            onChanged: (value) {
-              widget.cubit.isEnableButton(
-                value: value,
-              );
-            },
-            style: textNormal(
-              Colors.white,
-              16,
-            ),
-            obscureText: snapshot.data ?? true,
-            cursorColor: Colors.white,
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: textNormal(
-                Colors.grey,
-                14,
+          stream: widget.cubit.showPWStream,
+          builder: (context, snapshot) {
+            return TextFormField(
+              onChanged: (value) {
+                widget.cubit.isEnableButton(
+                  value: value,
+                );
+              },
+              style: textNormal(
+                Colors.white,
+                16,
               ),
-              suffixIcon: InkWell(
-                onTap: () {
-                  if (index == 0) {
-                    index = 1;
-                    widget.cubit.showPW(0);
-                  } else {
-                    index = 0;
-                    widget.cubit.showPW(1);
-                  }
-                },
-                child: snapshot.data ?? false
-                    ? const ImageIcon(
-                  AssetImage(ImageAssets.ic_show),
-                  color: Colors.grey,
-                )
-                    : const ImageIcon(
-                  AssetImage(ImageAssets.ic_hide),
-                  color: Colors.grey,
+              obscureText: snapshot.data ?? true,
+              cursorColor: Colors.white,
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: textNormal(
+                  Colors.grey,
+                  14,
                 ),
+                suffixIcon: InkWell(
+                  onTap: () {
+                    if (index == 0) {
+                      index = 1;
+                      widget.cubit.showPW(0);
+                    } else {
+                      index = 0;
+                      widget.cubit.showPW(1);
+                    }
+                  },
+                  child: snapshot.data ?? false
+                      ? const ImageIcon(
+                          AssetImage(ImageAssets.ic_show),
+                          color: Colors.grey,
+                        )
+                      : const ImageIcon(
+                          AssetImage(ImageAssets.ic_hide),
+                          color: Colors.grey,
+                        ),
+                ),
+                prefixIcon: const ImageIcon(
+                  AssetImage(ImageAssets.ic_lock),
+                  color: Colors.white,
+                ),
+                border: InputBorder.none,
               ),
-              prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_lock),
-                color: Colors.white,
-              ),
-              border: InputBorder.none,
-            ),
-          );
-        }
-      ),
+            );
+          }),
     );
   }
 

@@ -1,3 +1,5 @@
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
+import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/splash/splash_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -12,16 +14,22 @@ class AppRouter {
   static const splash = '/splash';
   static const main = '/main';
   static const setupPassWord = '/setupPassWord';
-  static const testScreen = '/testScreen';
   static const login = '/login';
   static const wallet = '/wallet';
   static const sendToken = '/sendToken';
   static const scanQR = '/scanQR';
+  static const collectionList = '/collection_list';
+
+  static const detailCollection = '/detail_collection';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
 
     switch (settings.name) {
+      case detailCollection:
+        return MaterialPageRoute(builder: (ctx) => const DetailCollection());
+      case collectionList:
+        return MaterialPageRoute(builder: (ctx) => const CollectionList());
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
       case main:

@@ -45,10 +45,10 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                 return CustomRectTween(begin: begin!, end: end!);
               },
               child: Material(
-                color: const Color(0xff585782),
+                color: AppTheme.getInstance().selectDialogColor(),
                 elevation: 2,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(36),
+                  borderRadius: BorderRadius.circular(36.r),
                 ),
                 child: SizedBox(
                   width: 312.w,
@@ -64,7 +64,10 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                         ),
                         child: Text(
                           S.current.enter_name,
-                          style: textNormal(Colors.white, 20).copyWith(
+                          style: textNormal(
+                            AppTheme.getInstance().whiteColor(),
+                            20.sp,
+                          ).copyWith(
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal,
                           ),
@@ -79,10 +82,10 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                             left: 15.w,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xff32324c).withOpacity(0.5),
-                            borderRadius: const BorderRadius.all(
+                            color: AppTheme.getInstance().bgBtsColor(),
+                            borderRadius: BorderRadius.all(
                               Radius.circular(
-                                20,
+                                20.r,
                               ),
                             ),
                           ),
@@ -102,10 +105,11 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                   child: TextFormField(
                                     controller: widget.textEditingController,
                                     maxLength: 20,
-                                    cursorColor: Colors.white,
+                                    cursorColor:
+                                        AppTheme.getInstance().whiteColor(),
                                     style: textNormal(
-                                      Colors.white54,
-                                      16,
+                                      AppTheme.getInstance().whiteColor(),
+                                      16.sp,
                                     ),
                                     onChanged: (value) {
                                       widget.bloc.getIsWalletName(value);
@@ -113,8 +117,9 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                     decoration: InputDecoration(
                                       hintText: S.current.name_wallet,
                                       hintStyle: textNormal(
-                                        Colors.white54,
-                                        16,
+                                        AppTheme.getInstance()
+                                            .whiteWithOpacityFireZero(),
+                                        16.sp,
                                       ),
                                       counterText: '',
                                       border: InputBorder.none,
@@ -165,8 +170,8 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                     child: Text(
                                       S.current.name_not_null,
                                       style: textNormal(
-                                        Colors.red,
-                                        14,
+                                        AppTheme.getInstance().redColor(),
+                                        14.sp,
                                       ),
                                       textAlign: TextAlign.start,
                                     ),
@@ -194,7 +199,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                   },
                                   child: Text(
                                     S.current.cancel,
-                                    style: textNormal(null, 20).copyWith(
+                                    style: textNormal(null, 20.sp).copyWith(
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,
                                     ),
@@ -202,8 +207,8 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                   ),
                                 ),
                               ),
-                               VerticalDivider(
-                                 color: AppTheme.getInstance().divideColor(),
+                              VerticalDivider(
+                                color: AppTheme.getInstance().divideColor(),
                               ),
                               StreamBuilder(
                                 stream: widget.bloc.isWalletName,
@@ -224,9 +229,11 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                         S.current.confirm,
                                         style: textNormal(
                                           snapshot.data ?? false
-                                              ? const Color(0xffE4AC1A)
-                                              : Colors.grey,
-                                          20,
+                                              ? AppTheme.getInstance()
+                                                  .fillColor()
+                                              : AppTheme.getInstance()
+                                                  .whiteWithOpacityFireZero(),
+                                          20.sp,
                                         ).copyWith(
                                           fontWeight: FontWeight.w700,
                                           fontStyle: FontStyle.normal,

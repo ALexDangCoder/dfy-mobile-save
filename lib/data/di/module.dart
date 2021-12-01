@@ -1,12 +1,17 @@
 import 'package:Dfy/data/di/flutter_transformer.dart';
+import 'package:Dfy/data/repository/collection_repository_impl.dart';
+import 'package:Dfy/data/services/collection_service.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/repository/collection_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 void configureDependencies() {
+  Get.put(CollectionClient(provideDio()));
+  Get.put<CollectionRepository>(CollectionRepositoryImpl(Get.find()));
 }
 
 int _connectTimeOut = 60000;

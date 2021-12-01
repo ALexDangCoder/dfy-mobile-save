@@ -54,15 +54,17 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: Strings.app_name,
         theme: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           primaryColor: AppTheme.getInstance().primaryColor(),
-          cardColor: Colors.white,
+          cardColor: AppTheme.getInstance().whiteColor(),
           textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
-          appBarTheme: const AppBarTheme(
-            color: Colors.white,
+          appBarTheme:  AppBarTheme(
+            color:AppTheme.getInstance().whiteColor(),
             systemOverlayStyle: SystemUiOverlayStyle.dark,
           ),
           dividerColor: dividerColor,
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: AppTheme.getInstance().whiteColor(),
           textSelectionTheme: TextSelectionThemeData(
             cursorColor: AppTheme.getInstance().primaryColor(),
             selectionColor: AppTheme.getInstance().primaryColor(),
@@ -72,14 +74,14 @@ class _MyAppState extends State<MyApp> {
             secondary: AppTheme.getInstance().accentColor(),
           ),
         ),
-        supportedLocales: S.delegate.supportedLocales,
+        ///supportedLocales: S.delegate.supportedLocales,
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        // locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
+       // locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
         onGenerateRoute: AppRouter.generateRoute,
         initialRoute: AppRouter.splash,
       ),
