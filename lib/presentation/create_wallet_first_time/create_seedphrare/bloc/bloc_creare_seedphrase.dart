@@ -27,18 +27,11 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
 
   final String passWord;
   List<String> listTitle1 = [];
-
-  Future<void> generateWallet({String password = ''}) async {
-    try {
-      final data = {
-        'password': password,
-      };
-      await trustWalletChannel.invokeMethod('generateWallet', data);
-    } on PlatformException {
-      //todo
-
-    }
-  }
+  final List<String> listContain = [];
+  String passPhrase = '';
+  String walletAddress = '';
+  String privateKey = '';
+  bool configSuccess = false;
 
   bool getIsSeedPhraseImport() {
     if (listTitle.value.isNotEmpty) {
@@ -61,8 +54,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
       isCheckButton.sink.add(false);
     }
   }
-
-  final List<String> listContain = [];
 
   void addListBoxSeedPhrase(String title) {
     listContain.add(title);
@@ -93,6 +84,32 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     isCheckBox2.sink.add(false);
   }
 
+  void isButton() {
+    if (Validator.validateNotNull(nameWallet.value) && isCheckBox1.value) {
+      isCheckButton1.sink.add(true);
+    } else {
+      isCheckButton1.sink.add(false);
+    }
+  }
+
+  void getStringToList(String passPhrase) {
+    listTitle1 = passPhrase.split(' ');
+    listTitle.sink.add(listTitle1);
+  }
+
+  void getCheck() {
+    String isData = '';
+    for (final String value in listSeedPhrase.value) {
+      isData += '$value ';
+    }
+
+    if ('$passPhrase ' == isData) {
+      isSeedPhraseImportFailed.sink.add(false);
+    } else {
+      isSeedPhraseImportFailed.sink.add(true);
+    }
+  }
+
   Future<void> storeWallet({
     String password = '',
     required String seedPhrase,
@@ -105,6 +122,18 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('storeWallet', data);
+    } on PlatformException {
+      //todo
+
+    }
+  }
+
+  Future<void> generateWallet({String password = ''}) async {
+    try {
+      final data = {
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('generateWallet', data);
     } on PlatformException {
       //todo
 
@@ -132,11 +161,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     }
   }
 
-  String passPhrase = '';
-  String walletAddress = '';
-  String privateKey = '';
-  bool configSuccess = false;
-
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'generateWalletCallback':
@@ -148,39 +172,15 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         break;
       case 'storeWalletCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
-        emit(SeedNavState());
+        if (isSuccess) {
+          emit(SeedNavState());
+        }
         break;
       case 'setConfigCallback':
         bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       default:
         break;
-    }
-  }
-
-  void isButton() {
-    if (Validator.validateNotNull(nameWallet.value) && isCheckBox1.value) {
-      isCheckButton1.sink.add(true);
-    } else {
-      isCheckButton1.sink.add(false);
-    }
-  }
-
-  void getStringToList(String passPhrase) {
-    listTitle1 = passPhrase.split(' ');
-    listTitle.sink.add(listTitle1);
-  }
-
-  void getCheck() {
-    String isData = '';
-    for (final String value in listSeedPhrase.value) {
-      isData += '$value ';
-    }
-
-    if ('$passPhrase ' == isData) {
-      isSeedPhraseImportFailed.sink.add(false);
-    } else {
-      isSeedPhraseImportFailed.sink.add(true);
     }
   }
 

@@ -64,7 +64,7 @@ class _ImportBTSState extends State<ImportBTS> {
       bloc: importCubit,
       listener: (ctx, state) {
         if (state is NavState) {
-          showCreateSuccessfully2(
+          showCreateSuccessfullyHaveWallet(
             context: context,
             wallet: Wallet(),
             type: KeyType.IMPORT,

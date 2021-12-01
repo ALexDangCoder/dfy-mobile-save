@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -31,6 +30,9 @@ class _EnterAddressState extends State<EnterAddress> {
     controller.addListener(() {
       widget.bloc.tokenAddressText.sink.add(controller.text);
     });
+    trustWalletChannel.setMethodCallHandler(
+      widget.bloc.nativeMethodCallBackTrustWallet,
+    );
   }
 
   @override
@@ -106,20 +108,18 @@ class _EnterAddressState extends State<EnterAddress> {
                       symbol: 'symbol',
                       decimal: 1,
                     );
-                    trustWalletChannel.setMethodCallHandler(
-                      widget.bloc.nativeMethodCallBackTrustWallet,
-                    );
+
                     widget.bloc.checkAddressNull();
                     if (widget.bloc.isTokenAddressText.value) {
-                     widget.bloc.addToken(TokenModel(
-                       price: 34213423,
-                       tokenId: 21,
-                       iconToken: 'assets/images/Ellipse 39.png',
-                       isShow: true,
-                       nameToken: 'DoanhCoin',
-                       nameTokenSymbol: 'DC',
-                       amountToken: 0,
-                     ),);
+                      // widget.bloc.addToken(TokenModel(
+                      //   price: 34213423,
+                      //   tokenId: 21,
+                      //   iconToken: 'assets/images/Ellipse 39.png',
+                      //   isShow: true,
+                      //   nameToken: 'DoanhCoin',
+                      //   nameTokenSymbol: 'DC',
+                      //   amountToken: 0,
+                      // ),);
                       showTokenSuccessfully(context);
                     }
                   },
