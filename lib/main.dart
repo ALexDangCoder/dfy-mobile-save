@@ -100,6 +100,9 @@ class _MyAppState extends State<MyApp> {
         break;
       case 'importWalletCallback':
         break;
+      case 'earseWalletCallback':
+        print(methodCall.arguments.toString());
+        break;
       case 'getListWalletsCallback':
         break;
       case 'generateWalletCallback':
@@ -124,6 +127,7 @@ class _MyAppState extends State<MyApp> {
   void callAllApi() {
     importWallet();
     getConfig();
+    earseWallet();
   }
 
   Future<void> getConfig() async {
@@ -141,6 +145,15 @@ class _MyAppState extends State<MyApp> {
       await trustWalletChannel.invokeMethod('checkPassword', data);
     } on PlatformException {
     }
+  }
+
+  Future<void> earseWallet() async {
+    try {
+      final data = {
+        'type': 'IMPORT',
+      };
+      await trustWalletChannel.invokeMethod('earseWallet', data);
+    } on PlatformException {}
   }
 
   Future<void> importWallet() async {

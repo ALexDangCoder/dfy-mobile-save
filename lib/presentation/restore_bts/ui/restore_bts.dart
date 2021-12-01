@@ -103,415 +103,409 @@ class _RestoreBTSState extends State<RestoreBTS> {
           },
           child: BaseBottomSheet(
             title: S.current.restore_account,
-            child: Column(
-              children: [
-                spaceH24,
-                StreamBuilder<List<String>>(
-                  initialData: listString,
-                  stream: restoreCubit.listStringStream,
-                  builder: (ctx, snapshot) {
-                    listString = snapshot.data!;
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            listString.first,
-                            style: textNormal(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                children: [
+                  spaceH24,
+                  StreamBuilder<List<String>>(
+                    initialData: listString,
+                    stream: restoreCubit.listStringStream,
+                    builder: (ctx, snapshot) {
+                      listString = snapshot.data!;
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              listString.first,
+                              style: textNormal(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                        if (listString.length == 2)
-                          Text(
-                            listString[1],
-                            style: textNormal(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                            ),
-                          )
-                        else
                           SizedBox(
-                            height: 36.h,
+                            height: 8.h,
                           ),
-                        if (listString.length == 2)
-                          SizedBox(
-                            height: 44.h,
-                          )
-                        else
-                          const SizedBox(),
-                      ],
-                    );
-                  },
-                ),
-                Flexible(
-                  child: SingleChildScrollView(
-                    child: Stack(
-                      children: [
-                        Column(
-                          children: [
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    restoreCubit.boolSink.add(!isVisible);
-                                  },
-                                  child: Container(
-                                    height: 64.h,
-                                    width: 343.w,
-                                    padding: EdgeInsets.only(
-                                      top: 6.h,
-                                      bottom: 6.h,
-                                      right: 8.w,
-                                      left: 8.w,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(20),
+                          if (listString.length == 2)
+                            Text(
+                              listString[1],
+                              style: textNormal(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                              ),
+                            )
+                          else
+                            SizedBox(
+                              height: 36.h,
+                            ),
+                          if (listString.length == 2)
+                            SizedBox(
+                              height: 44.h,
+                            )
+                          else
+                            const SizedBox(),
+                        ],
+                      );
+                    },
+                  ),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      child: Stack(
+                        children: [
+                          Column(
+                            children: [
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      restoreCubit.boolSink.add(!isVisible);
+                                    },
+                                    child: Container(
+                                      height: 64.h,
+                                      width: 343.w,
+                                      padding: EdgeInsets.only(
+                                        top: 6.h,
+                                        bottom: 6.h,
+                                        right: 8.w,
+                                        left: 8.w,
                                       ),
-                                      color: AppTheme.getInstance()
-                                          .itemBtsColors(),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Flexible(
-                                          child: Image.asset(
-                                            ImageAssets.ic_security,
-                                            color: Colors.white,
-                                          ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(20),
                                         ),
-                                        Flexible(
-                                          flex: 8,
-                                          child: StreamBuilder<String>(
-                                            stream: restoreCubit.stringStream,
-                                            initialData: strValue,
-                                            builder: (ctx, snapshot) {
-                                              strValue = snapshot.data!;
-                                              return Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  strValue,
-                                                  style: textNormal(
-                                                    AppTheme.getInstance()
-                                                        .textThemeColor(),
-                                                    16,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        const Flexible(
-                                          child: ImageIcon(
-                                            AssetImage(
-                                              ImageAssets.ic_line_down,
+                                        color: AppTheme.getInstance()
+                                            .itemBtsColors(),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Flexible(
+                                            child: Image.asset(
+                                              ImageAssets.ic_security,
+                                              color: Colors.white,
                                             ),
-                                            color: Colors.white,
                                           ),
-                                        ),
-                                      ],
+                                          Flexible(
+                                            flex: 8,
+                                            child: StreamBuilder<String>(
+                                              stream: restoreCubit.stringStream,
+                                              initialData: strValue,
+                                              builder: (ctx, snapshot) {
+                                                strValue = snapshot.data!;
+                                                return Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    strValue,
+                                                    style: textNormal(
+                                                      AppTheme.getInstance()
+                                                          .textThemeColor(),
+                                                      16,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          const Flexible(
+                                            child: ImageIcon(
+                                              AssetImage(
+                                                ImageAssets.ic_line_down,
+                                              ),
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                StreamBuilder<FormType>(
-                                  stream: restoreCubit.typeStream,
-                                  initialData: type,
-                                  builder: (ctx, snapshot) {
-                                    type = snapshot.data!;
-                                    return type == FormType.PASS_PHRASE
-                                        ? ItemForm(
-                                            prefix: ImageAssets.ic_key24,
-                                            hint: S.current.wallet_secret,
-                                            suffix: S.current.paste,
-                                            formType: FormType.PASS_PHRASE,
-                                            isShow: false,
-                                            cubit: restoreCubit,
-                                            controller: seedPhraseController,
-                                            callback: () async {
-                                              final ClipboardData? data =
-                                                  await Clipboard.getData(
-                                                Clipboard.kTextPlain,
-                                              );
-                                              seedPhraseController.text =
-                                                  data?.text ?? '';
-                                            },
-                                          )
-                                        : ItemForm(
-                                            prefix: ImageAssets.ic_key24,
-                                            hint: S.current.private_key,
-                                            suffix: S.current.paste,
-                                            formType: FormType.PRIVATE_KEY,
-                                            isShow: false,
-                                            cubit: restoreCubit,
-                                            controller: privateKeyController,
-                                            callback: () async {
-                                              final ClipboardData? data =
-                                                  await Clipboard.getData(
-                                                Clipboard.kTextPlain,
-                                              );
-                                              privateKeyController.text =
-                                                  data?.text ?? '';
-                                            },
-                                          );
-                                  },
-                                ),
-                                warningSeedPhrase(),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                StreamBuilder<bool>(
-                                  initialData: isShowNewPass,
-                                  stream: restoreCubit.newStream,
-                                  builder: (ctx, snapshot) {
-                                    isShowNewPass = snapshot.data!;
-                                    return ItemForm(
-                                      prefix: ImageAssets.ic_lock,
-                                      hint: S.current.new_pass,
-                                      suffix: isShowNewPass
-                                          ? ImageAssets.ic_show
-                                          : ImageAssets.ic_hide,
-                                      formType: FormType.PASSWORD,
-                                      isShow: isShowNewPass,
-                                      cubit: restoreCubit,
-                                      callback: () {
-                                        restoreCubit.newSink
-                                            .add(!isShowNewPass);
-                                      },
-                                      controller: passwordController,
-                                      passType: PassType.NEW,
-                                    );
-                                  },
-                                ),
-                                warningPassword(),
-                                SizedBox(
-                                  height: 16.h,
-                                ),
-                                StreamBuilder<bool>(
-                                  initialData: isShowConPass,
-                                  stream: restoreCubit.conStream,
-                                  builder: (ctx, snapshot) {
-                                    isShowConPass = snapshot.data!;
-                                    return ItemForm(
-                                      prefix: ImageAssets.ic_lock,
-                                      hint: S.current.con_pass,
-                                      suffix: isShowConPass
-                                          ? ImageAssets.ic_show
-                                          : ImageAssets.ic_hide,
-                                      formType: FormType.PASSWORD,
-                                      isShow: isShowConPass,
-                                      cubit: restoreCubit,
-                                      callback: () {
-                                        restoreCubit.conSink
-                                            .add(!isShowConPass);
-                                      },
-                                      controller: confirmPasswordController,
-                                      passType: PassType.CON,
-                                    );
-                                  },
-                                ),
-                                warningMatchPassword(),
-                                SizedBox(
-                                  height: 24.h,
-                                ),
-                                StreamBuilder<List<String>>(
-                                  stream: restoreCubit.listStringStream,
-                                  initialData: listString,
-                                  builder: (ctx, snapshot) {
-                                    listString = snapshot.data!;
-                                    if (listString.length == 1) {
-                                      return Column(
-                                        children: [
-                                          Text(
-                                            S.current.or_scan,
-                                            style: textNormal(
-                                              AppTheme.getInstance()
-                                                  .textThemeColor(),
-                                              16,
-                                            ).copyWith(
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 12.h,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (ctx) =>
-                                                      QRViewExample(
-                                                    controller:
-                                                        privateKeyController,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            child: Image.asset(
-                                              ImageAssets.ic_qr_code,
-                                            ),
-                                          )
-                                        ],
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  StreamBuilder<FormType>(
+                                    stream: restoreCubit.typeStream,
+                                    initialData: type,
+                                    builder: (ctx, snapshot) {
+                                      type = snapshot.data!;
+                                      return type == FormType.PASS_PHRASE
+                                          ? ItemForm(
+                                              prefix: ImageAssets.ic_key24,
+                                              hint: S.current.wallet_secret,
+                                              suffix: S.current.paste,
+                                              formType: FormType.PASS_PHRASE,
+                                              isShow: false,
+                                              cubit: restoreCubit,
+                                              controller: seedPhraseController,
+                                              callback: () async {
+                                                final ClipboardData? data =
+                                                    await Clipboard.getData(
+                                                  Clipboard.kTextPlain,
+                                                );
+                                                seedPhraseController.text =
+                                                    data?.text ?? '';
+                                              },
+                                            )
+                                          : ItemForm(
+                                              prefix: ImageAssets.ic_key24,
+                                              hint: S.current.private_key,
+                                              suffix: S.current.paste,
+                                              formType: FormType.PRIVATE_KEY,
+                                              isShow: false,
+                                              cubit: restoreCubit,
+                                              controller: privateKeyController,
+                                              callback: () async {
+                                                final ClipboardData? data =
+                                                    await Clipboard.getData(
+                                                  Clipboard.kTextPlain,
+                                                );
+                                                privateKeyController.text =
+                                                    data?.text ?? '';
+                                              },
+                                            );
+                                    },
+                                  ),
+                                  warningSeedPhrase(),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  StreamBuilder<bool>(
+                                    initialData: isShowNewPass,
+                                    stream: restoreCubit.newStream,
+                                    builder: (ctx, snapshot) {
+                                      isShowNewPass = snapshot.data!;
+                                      return ItemForm(
+                                        prefix: ImageAssets.ic_lock,
+                                        hint: S.current.new_pass,
+                                        suffix: isShowNewPass
+                                            ? ImageAssets.ic_show
+                                            : ImageAssets.ic_hide,
+                                        formType: FormType.PASSWORD,
+                                        isShow: isShowNewPass,
+                                        cubit: restoreCubit,
+                                        callback: () {
+                                          restoreCubit.newSink
+                                              .add(!isShowNewPass);
+                                        },
+                                        controller: passwordController,
+                                        passType: PassType.NEW,
                                       );
-                                    } else {
-                                      return const SizedBox();
-                                    }
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 100.h,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        StreamBuilder<bool>(
-                          initialData: isVisible,
-                          stream: restoreCubit.boolStream,
-                          builder: (ctx, snapshot) {
-                            isVisible = snapshot.data!;
-                            return Visibility(
-                              visible: isVisible,
-                              child: Positioned(
-                                top: 72.h,
-                                child: ChoiceDialog(
-                                  cubit: restoreCubit,
-                                  controller1: seedPhraseController,
-                                  controller2: privateKeyController,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 24.h,
-                ),
-                StreamBuilder<bool>(
-                  initialData: tickCheckBox,
-                  stream: restoreCubit.ckcStream,
-                  builder: (ctx, snapshot) {
-                    tickCheckBox = snapshot.data!;
-                    return Row(
-                      children: [
-                        Checkbox(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          fillColor: MaterialStateProperty.all(
-                            AppTheme.getInstance().fillColor(),
-                          ),
-                          activeColor: AppTheme.getInstance().activeColor(),
-                          onChanged: (bool? value) {
-                            restoreCubit.ckcSink.add(value ?? false);
-                            restoreCubit.checkCkcValue(value ?? false);
-                            if (value == true) {
-                              checkBox = 2;
-                            } else {
-                              checkBox = 1;
-                            }
-                          },
-                          value: tickCheckBox,
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 15.h,
-                              ),
-                              Text(
-                                S.current.understand_defi,
-                                textAlign: TextAlign.start,
-                                style: textNormal(
-                                  const Color.fromRGBO(255, 255, 255, 1),
-                                  14,
-                                ).copyWith(
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                    },
+                                  ),
+                                  warningPassword(),
+                                  SizedBox(
+                                    height: 16.h,
+                                  ),
+                                  StreamBuilder<bool>(
+                                    initialData: isShowConPass,
+                                    stream: restoreCubit.conStream,
+                                    builder: (ctx, snapshot) {
+                                      isShowConPass = snapshot.data!;
+                                      return ItemForm(
+                                        prefix: ImageAssets.ic_lock,
+                                        hint: S.current.con_pass,
+                                        suffix: isShowConPass
+                                            ? ImageAssets.ic_show
+                                            : ImageAssets.ic_hide,
+                                        formType: FormType.PASSWORD,
+                                        isShow: isShowConPass,
+                                        cubit: restoreCubit,
+                                        callback: () {
+                                          restoreCubit.conSink
+                                              .add(!isShowConPass);
+                                        },
+                                        controller: confirmPasswordController,
+                                        passType: PassType.CON,
+                                      );
+                                    },
+                                  ),
+                                  warningMatchPassword(),
+                                  SizedBox(
+                                    height: 24.h,
+                                  ),
+                                  StreamBuilder<List<String>>(
+                                    stream: restoreCubit.listStringStream,
+                                    initialData: listString,
+                                    builder: (ctx, snapshot) {
+                                      listString = snapshot.data!;
+                                      if (listString.length == 1) {
+                                        return Column(
+                                          children: [
+                                            Text(
+                                              S.current.or_scan,
+                                              style: textNormal(
+                                                AppTheme.getInstance()
+                                                    .textThemeColor(),
+                                                16,
+                                              ).copyWith(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 12.h,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (ctx) =>
+                                                        QRViewExample(
+                                                      controller:
+                                                          privateKeyController,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Image.asset(
+                                                ImageAssets.ic_qr_code,
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      } else {
+                                        return const SizedBox();
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 100.h,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                spaceH40,
-                Container(
-                  margin: EdgeInsets.only(
-                    left: 23.w,
-                    right: 23.w,
-                  ),
-                  child: StreamBuilder<bool>(
-                    initialData: isEnable,
-                    stream: restoreCubit.btnStream,
-                    builder: (ctx, snapshot) {
-                      isEnable = snapshot.data!;
-                      return isEnable
-                          ? ButtonGradient(
-                              onPressed: () {
-                                restoreCubit.showTxtWarningNewPW(
-                                  passwordController.text,
-                                );
-                                restoreCubit.showTxtWarningConfirmPW(
-                                  confirmPasswordController.text,
-                                  newPW: passwordController.text,
-                                );
-                                if (restoreCubit.type == FormType.PASS_PHRASE) {
-                                  restoreCubit.showTxtWarningSeed(
-                                    seedPhraseController.text,
-                                    restoreCubit.type,
-                                  );
-                                } else {
-                                  restoreCubit.showTxtWarningSeed(
-                                    privateKeyController.text,
-                                    restoreCubit.type,
-                                  );
-                                }
-                                if (restoreCubit.validateAll()) {
-                                  final flag = restoreCubit.strValue ==
-                                      S.current.seed_phrase;
-                                  restoreCubit.importWallet(
-                                    type: flag ? PASS_PHRASE : PRIVATE_KEY,
-                                    content: flag
-                                        ? seedPhraseController.text
-                                        : privateKeyController.text,
-                                    password: passwordController.text,
-                                  );
-                                }
-                              },
-                              gradient: RadialGradient(
-                                center: const Alignment(0.5, -0.5),
-                                radius: 4,
-                                colors: AppTheme.getInstance()
-                                    .gradientButtonColor(),
-                              ),
-                              child: Text(
-                                S.current.restore,
-                                style: textNormal(
-                                  AppTheme.getInstance().textThemeColor(),
-                                  20,
+                          StreamBuilder<bool>(
+                            initialData: isVisible,
+                            stream: restoreCubit.boolStream,
+                            builder: (ctx, snapshot) {
+                              isVisible = snapshot.data!;
+                              return Visibility(
+                                visible: isVisible,
+                                child: Positioned(
+                                  top: 72.h,
+                                  child: ChoiceDialog(
+                                    cubit: restoreCubit,
+                                    controller1: seedPhraseController,
+                                    controller2: privateKeyController,
+                                  ),
                                 ),
-                              ),
-                            )
-                          : ErrorButton(
-                              child: Center(
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 24.h,
+                  ),
+                  StreamBuilder<bool>(
+                    initialData: tickCheckBox,
+                    stream: restoreCubit.ckcStream,
+                    builder: (ctx, snapshot) {
+                      tickCheckBox = snapshot.data!;
+                      return Row(
+                        children: [
+                          Checkbox(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            fillColor: MaterialStateProperty.all(
+                              AppTheme.getInstance().fillColor(),
+                            ),
+                            activeColor: AppTheme.getInstance().activeColor(),
+                            onChanged: (bool? value) {
+                              restoreCubit.ckcSink.add(value ?? false);
+                              restoreCubit.checkCkcValue(value ?? false);
+                              if (value == true) {
+                                checkBox = 2;
+                              } else {
+                                checkBox = 1;
+                              }
+                            },
+                            value: tickCheckBox,
+                          ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 15.h,
+                                ),
+                                Text(
+                                  S.current.understand_defi,
+                                  textAlign: TextAlign.start,
+                                  style: textNormal(
+                                    const Color.fromRGBO(255, 255, 255, 1),
+                                    14,
+                                  ).copyWith(
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  spaceH40,
+                  Container(
+                    margin: EdgeInsets.only(
+                      left: 23.w,
+                      right: 23.w,
+                    ),
+                    child: StreamBuilder<bool>(
+                      initialData: isEnable,
+                      stream: restoreCubit.btnStream,
+                      builder: (ctx, snapshot) {
+                        isEnable = snapshot.data!;
+                        return isEnable
+                            ? ButtonGradient(
+                                onPressed: () {
+                                  restoreCubit.showTxtWarningNewPW(
+                                    passwordController.text,
+                                  );
+                                  restoreCubit.showTxtWarningConfirmPW(
+                                    confirmPasswordController.text,
+                                    newPW: passwordController.text,
+                                  );
+                                  if (restoreCubit.type ==
+                                      FormType.PASS_PHRASE) {
+                                    restoreCubit.showTxtWarningSeed(
+                                      seedPhraseController.text,
+                                      restoreCubit.type,
+                                    );
+                                  } else {
+                                    restoreCubit.showTxtWarningSeed(
+                                      privateKeyController.text,
+                                      restoreCubit.type,
+                                    );
+                                  }
+                                  if (restoreCubit.validateAll()) {
+                                    final flag = restoreCubit.strValue ==
+                                        S.current.seed_phrase;
+                                    restoreCubit.importWallet(
+                                      type: flag ? PASS_PHRASE : PRIVATE_KEY,
+                                      content: flag
+                                          ? seedPhraseController.text
+                                          : privateKeyController.text,
+                                      password: passwordController.text,
+                                    );
+                                  }
+                                },
+                                gradient: RadialGradient(
+                                  center: const Alignment(0.5, -0.5),
+                                  radius: 4,
+                                  colors: AppTheme.getInstance()
+                                      .gradientButtonColor(),
+                                ),
                                 child: Text(
                                   S.current.restore,
                                   style: textNormal(
@@ -519,13 +513,24 @@ class _RestoreBTSState extends State<RestoreBTS> {
                                     20,
                                   ),
                                 ),
-                              ),
-                            );
-                    },
+                              )
+                            : ErrorButton(
+                                child: Center(
+                                  child: Text(
+                                    S.current.restore,
+                                    style: textNormal(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      20,
+                                    ),
+                                  ),
+                                ),
+                              );
+                      },
+                    ),
                   ),
-                ),
-                spaceH38
-              ],
+                  spaceH38
+                ],
+              ),
             ),
           ),
         );
