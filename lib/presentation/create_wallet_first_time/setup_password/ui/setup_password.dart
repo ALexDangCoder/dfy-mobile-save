@@ -109,11 +109,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
                         newPW: password.text,
                       );
                       if (isValidPassCubit.validateAll()) {
-                        showCreateSeedPhrase1(
+                        showCreateSeedPhrase(
                           context,
                           false,
                           BLocCreateSeedPhrase(password.text),
-                          TypeScreen.tow,
+                          TypeScreen.two,
                         );
                       } else {
                         //will not change screen

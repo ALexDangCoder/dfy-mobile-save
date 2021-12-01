@@ -66,10 +66,8 @@ class _ChooseTokenState extends State<ChooseToken> {
                                 value;
                             widget.bloc.setShowedToken(
                               walletAddress: 'walletAddress',
-                              tokenID: widget.bloc.getListTokenModel
-                                      .value[index].tokenId ??
-                                  0,
                               isShow: value,
+                              tokenAddress: 'tokenAddress',
                             );
                             widget.bloc
                                 .sortList(widget.bloc.getListTokenModel.value);

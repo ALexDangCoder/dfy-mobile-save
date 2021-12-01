@@ -24,12 +24,16 @@ class FormInputNumber extends StatelessWidget {
       padding: EdgeInsets.only(right: 15.w, left: 15.w),
       decoration: BoxDecoration(
         color: AppTheme.getInstance().itemBtsColors(),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(20.r)),
       ),
       child: Row(
         children: [
-          Image.asset(
-            urlIcon1,
+          SizedBox(
+            width: 24.w,
+            height: 24.h,
+            child: Image.asset(
+              urlIcon1,
+            ),
           ),
           SizedBox(
             width: 20.5.w,
@@ -42,18 +46,18 @@ class FormInputNumber extends StatelessWidget {
                 onChanged: (value) {
                   bloc.tokenDecimal.sink.add(value);
                 },
-                cursorColor: Colors.white,
+                cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
-                  Colors.white54,
-                  16,
+                  AppTheme.getInstance().whiteColor(),
+                  16.sp,
                 ),
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   counterText: '',
                   hintText: hint,
                   hintStyle: textNormal(
-                    Colors.white54,
-                    16,
+                  Colors.white.withOpacity(0.5),
+                    16.sp,
                   ),
                   border: InputBorder.none,
                 ),

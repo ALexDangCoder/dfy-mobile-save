@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/toast/toast_copy.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,8 @@ class FromText extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 15.5.w, vertical: 23.h),
       decoration: BoxDecoration(
         color: AppTheme.getInstance().itemBtsColors(),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
         ),
       ),
       child: Row(
@@ -46,10 +47,10 @@ class FromText extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 child: Text(
-                  title,
+                  title.handleString(),
                   style: textNormal(
-                    Colors.grey,
-                    16,
+                    AppTheme.getInstance().whiteColor(),
+                    16.sp,
                   ),
                 ),
               ),
