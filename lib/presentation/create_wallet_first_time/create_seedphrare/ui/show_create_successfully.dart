@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -68,10 +69,10 @@ class _BodyState extends State<Body> {
       width: 375.w,
       decoration: BoxDecoration(
         // shape: BoxShape.circle,
-        color: const Color(0xff3e3d5c),
+        color: AppTheme.getInstance().bgBtsColor(),
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.h),
-          topRight: Radius.circular(30.h),
+          topLeft: Radius.circular(30.r),
+          topRight: Radius.circular(30.r),
         ),
       ),
       child: Column(
@@ -86,8 +87,8 @@ class _BodyState extends State<Body> {
                   ? S.current.success
                   : S.current.success_import,
               style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
+                fontSize: 20.sp,
+                color: AppTheme.getInstance().whiteColor(),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -99,16 +100,20 @@ class _BodyState extends State<Body> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Image.asset(ImageAssets.frameGreen),
+                  SizedBox(
+                    height: 228.h,
+                    width: 305.w,
+                    child: Image.asset(ImageAssets.frameGreen),
+                  ),
                   SizedBox(
                     height: 22.h,
                   ),
                   Text(
                     S.current.congratulation,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.getInstance().whiteColor(),
                       fontWeight: FontWeight.bold,
-                      fontSize: 32,
+                      fontSize: 32.sp,
                     ),
                   ),
                   SizedBox(

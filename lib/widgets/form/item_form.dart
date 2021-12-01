@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum FormType { PASS_PHRASE, PASSWORD, PRIVATE_KEY , AMOUNT}
+enum FormType { PASS_PHRASE, PASSWORD, PRIVATE_KEY, AMOUNT }
 enum PassType { NEW, CON }
 
 class ItemForm extends StatelessWidget {
@@ -21,7 +21,8 @@ class ItemForm extends StatelessWidget {
     required this.isShow,
     required this.controller,
     this.cubit,
-    this.passType, this.importCubit,
+    this.passType,
+    this.importCubit,
   }) : super(key: key);
   final String prefix;
   final String hint;
@@ -49,8 +50,8 @@ class ItemForm extends StatelessWidget {
             //right: 12.w,
           ),
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
+            borderRadius: BorderRadius.all(
+              Radius.circular(20.r),
             ),
             color: AppTheme.getInstance().itemBtsColors(),
           ),
@@ -105,8 +106,8 @@ class ItemForm extends StatelessWidget {
           //right: 10.w,
         ),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
@@ -159,8 +160,8 @@ class ItemForm extends StatelessWidget {
           right: 12.w,
         ),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
@@ -227,8 +228,8 @@ class ItemForm extends StatelessWidget {
           bottom: 12.h,
         ),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
@@ -241,11 +242,11 @@ class ItemForm extends StatelessWidget {
           ),
           onChanged: passType == PassType.CON
               ? (value) {
-            cubit?.checkHaveValueConfirmPW(value);
-          }
+                  cubit?.checkHaveValueConfirmPW(value);
+                }
               : (value) {
-            cubit?.checkHaveValuePW(value);
-          },
+                  cubit?.checkHaveValuePW(value);
+                },
           cursorColor: Colors.white,
           decoration: InputDecoration(
             hintText: hint,

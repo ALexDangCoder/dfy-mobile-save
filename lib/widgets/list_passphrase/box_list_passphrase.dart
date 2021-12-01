@@ -26,8 +26,8 @@ class BoxListPassWordPhrase extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: AppTheme.getInstance().itemBtsColors(),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
           ),
         ),
         padding: EdgeInsets.only(top: 16.h, left: 13.w, right: 13.w),

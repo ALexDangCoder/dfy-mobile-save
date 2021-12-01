@@ -72,14 +72,14 @@ class _MyAppState extends State<MyApp> {
             secondary: AppTheme.getInstance().accentColor(),
           ),
         ),
-        supportedLocales: S.delegate.supportedLocales,
+        // supportedLocales: S.delegate.supportedLocales,
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        // locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
+        locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
         onGenerateRoute: AppRouter.generateRoute,
         initialRoute: AppRouter.splash,
       ),
@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
   Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'checkPasswordCallback':
-         break;
+        break;
       case 'getConfigCallback':
         await PrefsService.saveAppLockConfig(
           methodCall.arguments['isAppLock'].toString(),
@@ -101,21 +101,21 @@ class _MyAppState extends State<MyApp> {
       case 'importWalletCallback':
         break;
       case 'getListWalletsCallback':
-         break;
+        break;
       case 'generateWalletCallback':
         break;
       case 'storeWalletCallback':
-         break;
+        break;
       case 'setConfigCallback':
         break;
       case 'getListShowedTokenCallback':
-          break;
+        break;
       case 'getListShowedNftCallback':
-          break;
+        break;
       case 'importTokenCallback':
-         break;
+        break;
       case 'getListSupportedTokenCallback':
-         break;
+        break;
       default:
         break;
     }
@@ -139,16 +139,16 @@ class _MyAppState extends State<MyApp> {
         'password': 'password',
       };
       await trustWalletChannel.invokeMethod('checkPassword', data);
-    } on PlatformException {}
+    } on PlatformException {
+    }
   }
 
   Future<void> importWallet() async {
     try {
       final data = {
         'type': 'PASS_PHRASE',
-        'content':
-            'party response give dove tooth master flip'
-                ' video permit game expire token',
+        'content': 'party response give dove tooth master flip'
+            ' video permit game expire token',
         'password': '123456',
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
