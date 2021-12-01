@@ -90,6 +90,8 @@ abstract class AppColor {
 
   Color txtLightColor();
 
+  Color redColor();
+
   Color sideBtnColor();
 
   Color disableColor();
@@ -307,6 +309,11 @@ class LightApp extends AppColor {
   Color bgTranSubmit() {
     return const Color(0xff585782);
   }
+
+  @override
+  Color redColor() {
+    return Colors.red;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -499,6 +506,12 @@ class DarkApp extends AppColor {
   @override
   Color bgTranSubmit() {
     // TODO: implement bgTranSubmit
+    throw UnimplementedError();
+  }
+
+  @override
+  Color redColor() {
+    // TODO: implement redColor
     throw UnimplementedError();
   }
 }

@@ -15,6 +15,7 @@ class BaseBottomSheet extends StatelessWidget {
   final String? text;
   final bool? isImage;
   final Function()? callback;
+  final bool isHaveLeftIcon;
 
   const BaseBottomSheet({
     Key? key,
@@ -23,6 +24,7 @@ class BaseBottomSheet extends StatelessWidget {
     this.text,
     this.callback,
     this.isImage,
+    this.isHaveLeftIcon = true,
   }) : super(key: key);
 
   @override
@@ -32,9 +34,9 @@ class BaseBottomSheet extends StatelessWidget {
       width: 375.w,
       decoration: BoxDecoration(
         color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.r),
-          topRight: Radius.circular(30.r),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
         ),
       ),
       child: Column(
@@ -47,20 +49,39 @@ class BaseBottomSheet extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(
-                          left: 11.w,
-                          right: 11.w,
+                  if (isHaveLeftIcon)
+                    Flexible(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(
+                            left: 11.w,
+                            right: 11.w,
+                          ),
+                          child: Image.asset(ImageAssets.ic_back),
                         ),
-                        child: Image.asset(ImageAssets.ic_back),
+                      ),
+                    )
+                  else
+                    Flexible(
+                      child: InkWell(
+                        onTap: () {
+                          // Navigator.pop(context);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(
+                            left: 11.w,
+                            right: 11.w,
+                          ),
+                          child: SizedBox(
+                            height: 28.h,
+                            width: 28.w,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
                   Flexible(
                     flex: 6,
                     child: Align(
@@ -79,13 +100,13 @@ class BaseBottomSheet extends StatelessWidget {
                         child: isImage ?? false
                             ? Image.asset(text ?? '')
                             : Text(
-                                text ?? '',
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().fillColor(),
-                                  16,
-                                  FontWeight.w700,
-                                ),
-                              ),
+                          text ?? '',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().fillColor(),
+                            16,
+                            FontWeight.w700,
+                          ),
+                        ),
                       ),
                     )
                   else
@@ -102,13 +123,7 @@ class BaseBottomSheet extends StatelessWidget {
             color: AppTheme.getInstance().divideColor(),
           ),
           Flexible(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 16.w,
-                right: 16.w,
-              ),
-              child: child,
-            ),
+            child: child,
           ),
         ],
       ),
