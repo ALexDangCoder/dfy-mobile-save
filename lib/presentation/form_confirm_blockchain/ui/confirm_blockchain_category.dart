@@ -1,10 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
-import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';

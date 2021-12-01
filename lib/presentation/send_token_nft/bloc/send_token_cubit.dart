@@ -29,25 +29,24 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   final BehaviorSubject<String> _formEstimateGasFee = BehaviorSubject<String>();
 
   //both stream below is manage confirm fee token screen
-  final BehaviorSubject<bool> _isCustomizeFee =
-  BehaviorSubject<bool>();
+  final BehaviorSubject<bool> _isCustomizeFee = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isSufficientToken = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isShowCFBlockChain =
-  BehaviorSubject<bool>.seeded(true);
+      BehaviorSubject<bool>.seeded(true);
 
   //stream below regex amount form and address
   final BehaviorSubject<bool> _isValidAddressForm =
-  BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _isValidAmountForm =
-  BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _isValidQuantityForm =
-  BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<String> _txtInvalidAddressForm =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtInvalidAmount =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtInvalidQuantityForm =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
 
   //stream
   Stream<String> get fromFieldStream => _formField.stream;
@@ -280,59 +279,37 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-
   Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
     switch (methodCall.method) {
-      case 'sendTokenCallback':
+      case 'signTransactionCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
+        final dynamic signedTransaction =
+            await methodCall.arguments['signedTransaction'];
         break;
       default:
         break;
     }
   }
 
-  Future<void> sendNft({
-    required String walletAddress,
+  Future<void> signTransaction({
+    required String fromAddress,
     required String receiveAddress,
-    required int nftID,
-    required int gasFee,
-    String? password,
+    required String chainID,
+    required int gasPrice,
+    required int gas,
+    required int maxGas,
   }) async {
     try {
       final data = {
-        'walletAddress': walletAddress,
+        'fromAddress': fromAddress,
         'receiveAddress': receiveAddress,
-        'nftID': nftID,
-        'gasFee': gasFee,
-        'password': password,
+        'chainID': chainID,
+        'gasPrice': gasPrice,
+        'gas': gas,
+        'maxGas': maxGas,
         //
       };
-      await trustWalletChannel.invokeMethod('sendToken', data);
-    } on PlatformException {
-      //todo
-    }
-  }
-
-  Future<void> sendToken({
-    required String walletAddress,
-    required String receiveAddress,
-    required int tokenID,
-    required int amount,
-    required int gasFee,
-    String? password,
-  }) async {
-    try {
-      final data = {
-        'walletAddress': walletAddress,
-        'receiveAddress': receiveAddress,
-        'amount': amount,
-        'tokenID': tokenID,
-        'password': password,
-        'gasFee': gasFee,
-        //todo wallet
-      };
-      //param invokeMethod is api
-      await trustWalletChannel.invokeMethod('sendToken', data);
+      await trustWalletChannel.invokeMethod('signTransaction', data);
     } on PlatformException {
       //todo
     }
