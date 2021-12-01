@@ -3,7 +3,7 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/home/ui/home_screen.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
-import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
+import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/presentation/pawn/ui/pawn_screen.dart';
 import 'package:Dfy/presentation/staking/ui/staking_screen.dart';
 import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';

@@ -1,4 +1,4 @@
-import 'package:Dfy/presentation/market_place/ui/maket_place_screen.dart';
+import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 
 class NftItem {
   final String name;
