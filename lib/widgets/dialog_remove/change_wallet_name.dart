@@ -82,7 +82,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                             left: 15.w,
                           ),
                           decoration: BoxDecoration(
-                            color: AppTheme.getInstance().backgroundBTSColor(),
+                            color: AppTheme.getInstance().bgBtsColor(),
                             borderRadius: BorderRadius.all(
                               Radius.circular(
                                 20.r,

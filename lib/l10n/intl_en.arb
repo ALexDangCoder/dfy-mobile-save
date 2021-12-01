@@ -204,7 +204,7 @@
   "nfts": "NFTs",
   "trading_history": "Trading history",
   "items": "items",
-  "owners": "owners",
+  "owners": "Owners",
   "volume_traded": "volume traded",
   "search.": "Search",
   "category": "Category",
@@ -273,5 +273,8 @@
   "conclusion": "Conclusion",
   "images_videos": "Images and videos",
   "nft_on_pawn": "NFT on pawn",
-  "on_auction": "On auction"
+  "on_auction": "On auction",
+  "collection_type": "Collection type",
+  "hard_nft_collection": "Hard NFT",
+  "soft_nft_collection": "Soft NFT"
 }
