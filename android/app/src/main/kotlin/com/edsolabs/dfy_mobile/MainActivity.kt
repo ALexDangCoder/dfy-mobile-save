@@ -318,7 +318,7 @@ class MainActivity : FlutterFragmentActivity() {
         hasMap["isSuccess"] = true
         hasMap["signedTransaction"] =
             "f86a8084d693a40082520894c37054b3b48c3317082e7ba872d7753d13da4986870348bca5a160008026a08b3246a86e33706d192a6dcf036e6d769df6eb5a3545e9647c5cc6cfaa64b6baa068454edce7412dd4d2130b9879af0d1dc106d715fe05c9e52d1494fe0a256b12".toByteArray()
-        channel?.invokeMethod("setShowedTokenCallback", hasMap)
+        channel?.invokeMethod("signTransactionCallback", hasMap)
     }
 
     private fun setShowedToken(
