@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/hard_nft/hard_nft_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/bidding_tab.dart';
@@ -21,10 +22,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HardNFTScreen extends StatefulWidget {
   final HardNFTBloc bloc;
-  final bool isAuction;
+  final HardNFTModel hardNFT;
 
-  const HardNFTScreen({Key? key, required this.bloc, required this.isAuction})
-      : super(key: key);
+  const HardNFTScreen({
+    Key? key,
+    required this.bloc,
+    required this.hardNFT,
+  }) : super(key: key);
 
   @override
   State<HardNFTScreen> createState() => _HardNFTScreenState();
@@ -39,7 +43,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    tabList = widget.isAuction
+    tabList = widget.hardNFT.isAuction
         ? <Tab>[
             Tab(text: S.current.history),
             Tab(text: S.current.owners),
@@ -61,9 +65,8 @@ class _HardNFTScreenState extends State<HardNFTScreen>
   Widget build(BuildContext context) {
     const int month = 2;
     return BaseNFTMarket(
-      title: 'Lamborghini Aventador Pink Ver 2021',
-      image: 'https://phelieuminhhuy.com/wp-content/uploads/2015/07/7f3ce033-'
-          'b9b2-4259-ba7c-f6e5bae431a9-1435911423691.jpg',
+      title: widget.hardNFT.name,
+      image: widget.hardNFT.image,
       filterFunc: () {},
       flagFunc: () {},
       shareFunc: () {},
@@ -79,8 +82,9 @@ class _HardNFTScreenState extends State<HardNFTScreen>
       ),
       body: TabBarView(
         controller: _tabController,
-        children:
-            widget.isAuction ? listTabWithBidding() : listTabWithoutBidding(),
+        children: widget.hardNFT.isAuction
+            ? listTabWithBidding()
+            : listTabWithoutBidding(),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(
@@ -94,7 +98,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.isAuction
+                  widget.hardNFT.isAuction
                       ? S.current.reserve_price
                       : S.current.expected_loan,
                   style: whiteTextWithOpacity,
@@ -107,7 +111,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
                       image: ImageAssets.ic_token_dfy_svg,
                     ),
                     Text(
-                      ' ${20000.stringIntFormat} DFY',
+                      ' ${(widget.hardNFT.isAuction ? widget.hardNFT.reservePrice : widget.hardNFT.loan).stringIntFormat} DFY',
                       style: tokenDetailAmount(fontSize: 20),
                     )
                   ],
@@ -123,7 +127,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
                 ),
               ],
             ),
-            if (widget.isAuction)
+            if (widget.hardNFT.isAuction)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -132,7 +136,11 @@ class _HardNFTScreenState extends State<HardNFTScreen>
                     style: whiteTextWithOpacity,
                   ),
                   spaceH12,
-                  const CountDownView(timeInMilliSecond: 12000),
+                  CountDownView(
+                    timeInMilliSecond: widget.hardNFT.endTime
+                        .difference(DateTime.now())
+                        .inSeconds,
+                  ),
                   spaceH24,
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -179,7 +187,8 @@ class _HardNFTScreenState extends State<HardNFTScreen>
                         style: whiteTextWithOpacity,
                       ),
                       Text(
-                        '$month ${(month <= 1) ? S.current.month : S.current.months}',
+                        '${widget.hardNFT.duration} '
+                        '${(widget.hardNFT.duration <= 1) ? S.current.month : S.current.months}',
                         style: tokenDetailAmount(fontSize: 16),
                       ),
                     ],
@@ -234,7 +243,10 @@ class _HardNFTScreenState extends State<HardNFTScreen>
       OwnersTabContent(
         object: S.current.owners,
       ),
-      EvaluationTab(bloc: widget.bloc),
+      EvaluationTab(
+        bloc: widget.bloc,
+        evaluationModel: widget.hardNFT.evaluation,
+      ),
       BidingTab(bloc: widget.bloc),
     ];
   }
@@ -247,7 +259,10 @@ class _HardNFTScreenState extends State<HardNFTScreen>
       OwnersTabContent(
         object: S.current.owners,
       ),
-      EvaluationTab(bloc: widget.bloc),
+      EvaluationTab(
+        bloc: widget.bloc,
+        evaluationModel: widget.hardNFT.evaluation,
+      ),
     ];
   }
 }

@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/hard_nft/evaluation_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/information_widget.dart';
@@ -14,8 +15,13 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class EvaluationTab extends StatefulWidget {
   final HardNFTBloc bloc;
+  final EvaluationModel evaluationModel;
 
-  const EvaluationTab({Key? key, required this.bloc}) : super(key: key);
+  const EvaluationTab({
+    Key? key,
+    required this.bloc,
+    required this.evaluationModel,
+  }) : super(key: key);
 
   @override
   _EvaluationTabState createState() => _EvaluationTabState();
@@ -54,20 +60,26 @@ class _EvaluationTabState extends State<EvaluationTab>
                 spaceH24,
                 textRow(
                   name: S.current.evaluated_by,
-                  value: 'The London Evaluation',
+                  value: widget.evaluationModel.by,
                   clickAble: true,
                 ),
                 textRow(
                   name: S.current.evaluated_time,
-                  value: DateTime.now().stringFromDateTime,
+                  value: widget.evaluationModel.time.stringFromDateTime,
                 ),
                 textRow(
                   name: S.current.maximum_amount,
                   value: ' ${1200000.stringIntFormat} USDT',
                   token: ImageAssets.ic_token_dfy_svg,
                 ),
-                textRow(name: S.current.depreciation, value: '20%'),
-                textRow(name: S.current.conclusion, value: 'Fast & furious'),
+                textRow(
+                  name: S.current.depreciation,
+                  value: '${widget.evaluationModel.depreciation} %',
+                ),
+                textRow(
+                  name: S.current.conclusion,
+                  value: widget.evaluationModel.conclusion,
+                ),
                 Text(
                   S.current.images_videos,
                   style: tokenDetailAmount(
@@ -78,10 +90,7 @@ class _EvaluationTabState extends State<EvaluationTab>
                 spaceH16,
                 StreamBuilder<String>(
                   stream: widget.bloc.imageStream,
-                  initialData:
-                      'https://cdn11.bigcommerce.com/s-yrkef1j7/images/stencil/'
-                          '1280x1280/products/294/37821/QQ20190807220008__01'
-                          '299.1565241023.png?c=2',
+                  initialData: widget.evaluationModel.images[0],
                   builder: (context, snapShot) {
                     if (snapShot.hasData) {
                       final String img = snapShot.data ?? '';
@@ -173,14 +182,15 @@ class _EvaluationTabState extends State<EvaluationTab>
                             child: ScrollablePositionedList.builder(
                               itemScrollController: scrollController,
                               scrollDirection: Axis.horizontal,
-                              itemCount: widget.bloc.listImg.length,
+                              itemCount: widget.evaluationModel.images.length,
                               itemBuilder: (context, index) {
                                 return Row(
                                   children: [
                                     smallImage(
-                                      img: widget.bloc.listImg[index],
-                                      isCurrentImg:
-                                          widget.bloc.listImg[index] == img,
+                                      img: widget.evaluationModel.images[index],
+                                      isCurrentImg: widget
+                                              .evaluationModel.images[index] ==
+                                          img,
                                       index: index,
                                     ),
                                     spaceW8,
