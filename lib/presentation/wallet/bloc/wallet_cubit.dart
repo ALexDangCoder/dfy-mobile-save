@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/model/account_model.dart';
@@ -48,151 +47,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
   BehaviorSubject<double> totalBalance = BehaviorSubject();
 
-  void getIsWalletName(String value) {
-    if (Validator.validateNotNull(value)) {
-      isWalletName.sink.add(true);
-    } else {
-      isWalletName.sink.add(false);
-    }
-  }
-
   String addressWalletCore = '';
-
-  Future<void> getAddressWallet() async {}
-
-  String formatAddress(String address) {
-    if (address.isEmpty) return address;
-    final String formatAddressWallet =
-        '${address.substring(0, 5)}...${address.substring(
-      address.length - 4,
-      address.length,
-    )}';
-    return formatAddressWallet;
-  }
-
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    Object objToken = {};
-    Object objNFT = {};
-    final bool isImportToken;
-    final bool isSetShowedToken;
-    final bool isImportNft;
-    final bool isSetShowedNft;
-    late List<Object> obj;
-
-    switch (methodCall.method) {
-      case 'importTokenCallback':
-        isImportToken = await methodCall.arguments['isSuccess'];
-
-        break;
-      case 'getListSupportedTokenCallback':
-        //[TokenObject]
-        final a = await methodCall.arguments['TokenObject'];
-
-        break;
-      case 'setShowedTokenCallback':
-        isSetShowedToken = await methodCall.arguments['isSuccess'];
-
-        break;
-      case 'importNftCallback':
-        isImportNft = await methodCall.arguments['isSuccess'];
-
-        break;
-      case 'setShowedNftCallback':
-        isSetShowedNft = await methodCall.arguments['isSuccess'];
-
-        break;
-      case 'getListShowedTokenCallback':
-        objToken = methodCall.arguments['TokenObject'];
-        break;
-      case 'getListShowedNftCallback':
-        objNFT = methodCall.arguments;
-        break;
-      case 'getListWalletsCallback':
-        final List<dynamic> data = methodCall.arguments;
-        for (final element in data) {
-          listWallet.add(Wallet.fromJson(element));
-        }
-
-        break;
-      default:
-        break;
-    }
-  }
-
-  Future<void> getListToken(String walletAddress, String password) async {
-    try {
-      final data = {
-        'walletAddress': walletAddress,
-        'password': password,
-      };
-      await trustWalletChannel.invokeMethod('getListShowedToken', data);
-    } on PlatformException {
-      log(e);
-    }
-  }
-
-  Future<void> getListWallets(String password) async {
-    try {
-      final data = {
-        'password': password,
-      };
-      await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {
-      log(e);
-    }
-  }
-
-// list
-  Future<void> getListNFT(
-    String walletAddress, {
-    required String password,
-  }) async {
-    try {
-      final data = {
-        'walletAddress': walletAddress,
-        'password': password,
-      };
-      await trustWalletChannel.invokeMethod('getListShowedNft', data);
-    } on PlatformException {
-      log(e);
-    }
-  }
-
-  void getListTokenItem() {
-    final List<TokenModel> listToken = [];
-    for (final TokenModel value in getListTokenModel.value) {
-      if (value.isShow ?? false) {
-        listToken.add(value);
-      }
-    }
-    listTokenDetailScreen.clear();
-    listTokenDetailScreen.addAll(listToken);
-    listTokenStream.sink.add(listTokenDetailScreen);
-  }
-
-  void addToken(TokenModel tokenModel) {
-    final List<TokenModel> listToken = getListTokenModel.value;
-    listToken.add(tokenModel);
-    getListTokenModel.sink.add(listToken);
-    sortList(getListTokenModel.value);
-  }
-
-  double total(List<TokenModel> list) {
-    double total = 0;
-    for (int i = 0; i < list.length; i++) {
-      total = total + list[i].price!;
-    }
-    return total;
-  }
-
-  void getListTokenItemRemove() {
-    listTokenStream.sink.add(listTokenDetailScreen);
-  }
-
-  void getList() {
-    list.sink.add(listSelectAccBloc);
-  }
-
   List<AccountModel> listSelectAccBloc = [
     AccountModel(
       isCheck: true,
@@ -323,19 +178,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       url: 'assets/images/Ellipse 39.png',
     ),
   ];
-
-  void click(int index) {
-    for (final AccountModel value in listSelectAccBloc) {
-      value.isCheck = false;
-    }
-    listSelectAccBloc[index].isCheck = true;
-    list.sink.add(listSelectAccBloc);
-  }
-
-  void getListNFTItem() {
-    listNFTStream.sink.add(listNFT);
-  }
-
   List<TokenModel> listNFT = [
     TokenModel(
       nameToken: 'DEFI FOR YOU2',
@@ -378,105 +220,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       iconToken: 'assets/images/Ellipse 39.png',
     ),
   ];
-
-  String formatNumber(double amount) {
-    return '${amount.toStringAsExponential(5).toString().substring(0, 5)}'
-        ',${amount.toStringAsExponential(5).toString().substring(5, 7)}';
-  }
-
-  void checkAddressNull2() {
-    if (tokenAddressTextNft.value == '') {
-      isNFT.sink.add(false);
-    } else {
-      isNFT.sink.add(true);
-    }
-  }
-
-  void getListSort() {
-    final List<TokenModel> list = [];
-    for (final TokenModel value in listTokenInitial) {
-      if (value.isShow ?? false) {
-        list.add(value);
-      }
-    }
-    final Comparator<TokenModel> amountTokenComparator =
-        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
-    list.sort(amountTokenComparator);
-    final List<TokenModel> list1 = [];
-    for (final TokenModel value in listTokenInitial) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-          list1.add(value);
-        }
-      }
-    }
-    list1.sort(amountTokenComparator);
-    list.addAll(list1);
-    for (final TokenModel value in listTokenInitial) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-        } else {
-          list.add(value);
-        }
-      }
-    }
-    listStart.addAll(list);
-    getListTokenModel.sink.add(list);
-  }
-
-  void sortList(List<TokenModel> listSort) {
-    final List<TokenModel> list = [];
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-        list.add(value);
-      }
-    }
-    final Comparator<TokenModel> amountTokenComparator =
-        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
-    list.sort(amountTokenComparator);
-    final List<TokenModel> list1 = [];
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-          list1.add(value);
-        }
-      }
-    }
-    list1.sort(amountTokenComparator);
-    list.addAll(list1);
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-        } else {
-          list.add(value);
-        }
-      }
-    }
-    getListTokenModel.sink.add(list);
-  }
-
-  void search() {
-    final List<TokenModel> result = [];
-    // listTokenShow1=listToken;
-    for (final TokenModel value in listTokenInitial) {
-      if (value.nameToken!.toLowerCase().contains(
-            textSearch.value.toLowerCase(),
-          )) {
-        result.add(value);
-      }
-    }
-    if (textSearch.value.isEmpty) {
-      getListTokenModel.sink.add(listStart);
-    }
-    if (textSearch.value.isNotEmpty) {
-      getListTokenModel.sink.add(result);
-    }
-  }
-
   List<TokenModel> listTokenDetailScreen = [];
   List<TokenModel> listTokenInitial = [
     TokenModel(
@@ -589,12 +332,242 @@ class WalletCubit extends BaseCubit<WalletState> {
     ),
   ];
 
+  Future<void> getAddressWallet() async {}
+
+  String formatAddress(String address) {
+    if (address.isEmpty) return address;
+    final String formatAddressWallet =
+        '${address.substring(0, 5)}...${address.substring(
+      address.length - 4,
+      address.length,
+    )}';
+    return formatAddressWallet;
+  }
+
+  void getListTokenItem() {
+    final List<TokenModel> listToken = [];
+    for (final TokenModel value in getListTokenModel.value) {
+      if (value.isShow ?? false) {
+        listToken.add(value);
+      }
+    }
+    listTokenDetailScreen.clear();
+    listTokenDetailScreen.addAll(listToken);
+    listTokenStream.sink.add(listTokenDetailScreen);
+  }
+
+  void addToken(TokenModel tokenModel) {
+    final List<TokenModel> listToken = getListTokenModel.value;
+    listToken.add(tokenModel);
+    getListTokenModel.sink.add(listToken);
+    sortList(getListTokenModel.value);
+  }
+
+  double total(List<TokenModel> list) {
+    double total = 0;
+    for (int i = 0; i < list.length; i++) {
+      total = total + list[i].price!;
+    }
+    return total;
+  }
+
+  void getListTokenItemRemove() {
+    listTokenStream.sink.add(listTokenDetailScreen);
+  }
+
+  void getList() {
+    list.sink.add(listSelectAccBloc);
+  }
+
+  void click(int index) {
+    for (final AccountModel value in listSelectAccBloc) {
+      value.isCheck = false;
+    }
+    listSelectAccBloc[index].isCheck = true;
+    list.sink.add(listSelectAccBloc);
+  }
+
+  void getListNFTItem() {
+    listNFTStream.sink.add(listNFT);
+  }
+
+  String formatNumber(double amount) {
+    return '${amount.toStringAsExponential(5).toString().substring(0, 5)}'
+        ',${amount.toStringAsExponential(5).toString().substring(5, 7)}';
+  }
+
+  void checkAddressNull2() {
+    if (tokenAddressTextNft.value == '') {
+      isNFT.sink.add(false);
+    } else {
+      isNFT.sink.add(true);
+    }
+  }
+
+  void getListSort() {
+    final List<TokenModel> list = [];
+    for (final TokenModel value in listTokenInitial) {
+      if (value.isShow ?? false) {
+        list.add(value);
+      }
+    }
+    final Comparator<TokenModel> amountTokenComparator =
+        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
+    list.sort(amountTokenComparator);
+    final List<TokenModel> list1 = [];
+    for (final TokenModel value in listTokenInitial) {
+      if (value.isShow ?? false) {
+      } else {
+        if ((value.amountToken ?? 0) > 0) {
+          list1.add(value);
+        }
+      }
+    }
+    list1.sort(amountTokenComparator);
+    list.addAll(list1);
+    for (final TokenModel value in listTokenInitial) {
+      if (value.isShow ?? false) {
+      } else {
+        if ((value.amountToken ?? 0) > 0) {
+        } else {
+          list.add(value);
+        }
+      }
+    }
+    listStart.addAll(list);
+    getListTokenModel.sink.add(list);
+  }
+
+  void sortList(List<TokenModel> listSort) {
+    final List<TokenModel> list = [];
+    for (final TokenModel value in listSort) {
+      if (value.isShow ?? false) {
+        list.add(value);
+      }
+    }
+    final Comparator<TokenModel> amountTokenComparator =
+        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
+    list.sort(amountTokenComparator);
+    final List<TokenModel> list1 = [];
+    for (final TokenModel value in listSort) {
+      if (value.isShow ?? false) {
+      } else {
+        if ((value.amountToken ?? 0) > 0) {
+          list1.add(value);
+        }
+      }
+    }
+    list1.sort(amountTokenComparator);
+    list.addAll(list1);
+    for (final TokenModel value in listSort) {
+      if (value.isShow ?? false) {
+      } else {
+        if ((value.amountToken ?? 0) > 0) {
+        } else {
+          list.add(value);
+        }
+      }
+    }
+    getListTokenModel.sink.add(list);
+  }
+
+  void search() {
+    final List<TokenModel> result = [];
+    // listTokenShow1=listToken;
+    for (final TokenModel value in listTokenInitial) {
+      if (value.nameToken!.toLowerCase().contains(
+            textSearch.value.toLowerCase(),
+          )) {
+        result.add(value);
+      }
+    }
+    if (textSearch.value.isEmpty) {
+      getListTokenModel.sink.add(listStart);
+    }
+    if (textSearch.value.isNotEmpty) {
+      getListTokenModel.sink.add(result);
+    }
+  }
+
   void checkAddressNull() {
     if (tokenAddressText.value == '') {
       isTokenAddressText.sink.add(false);
     } else {
       isTokenAddressText.sink.add(true);
     }
+  }
+
+  void getIsWalletName(String value) {
+    if (Validator.validateNotNull(value)) {
+      isWalletName.sink.add(true);
+    } else {
+      isWalletName.sink.add(false);
+    }
+  }
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    Object objToken = {};
+    Object objNFT = {};
+    final bool isImportToken;
+    final bool isSetShowedToken;
+    final bool isImportNft;
+    final bool isSetShowedNft;
+
+    switch (methodCall.method) {
+      case 'importTokenCallback':
+        isImportToken = await methodCall.arguments['isSuccess'];
+        print('isImportToken $isImportToken');
+        break;
+      case 'getListSupportedTokenCallback':
+        //[TokenObject]
+        final a = await methodCall.arguments['TokenObject'];
+        // log('$isImportToken');
+        break;
+      case 'setShowedTokenCallback':
+        isSetShowedToken = await methodCall.arguments['isSuccess'];
+        print(' isSetShowedToken $isSetShowedToken');
+        break;
+      case 'importNftCallback':
+        isImportNft = await methodCall.arguments['isSuccess'];
+        print('isImportNft $isImportNft');
+        break;
+      case 'setShowedNftCallback':
+        isSetShowedNft = await methodCall.arguments['isSuccess'];
+        print('isSetShowedNft $isSetShowedNft');
+        break;
+      case 'getListShowedTokenCallback':
+        objToken = methodCall.arguments['TokenObject'];
+        break;
+      case 'getListShowedNftCallback':
+        objNFT = methodCall.arguments;
+        break;
+      default:
+        break;
+    }
+  }
+
+  Future<void> getListToken(String walletAddress, String password) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('getListShowedToken', data);
+    } on PlatformException {}
+  }
+
+// list
+  Future<void> getListNFT(
+    String walletAddress, {
+    required String password,
+  }) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('getListShowedNft', data);
+    } on PlatformException {}
   }
 
   Future<void> importToken({
@@ -638,14 +611,14 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> setShowedToken({
     String password = '',
     required String walletAddress,
-    required int tokenID,
+    required String tokenAddress,
     required bool isShow,
   }) async {
     try {
       final data = {
         'password': password,
         'walletAddress': walletAddress,
-        'tokenID': tokenID,
+        'tokenAddress': tokenAddress,
         'isShow': isShow,
       };
       await trustWalletChannel.invokeMethod('setShowedToken', data);
@@ -678,7 +651,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> setShowedNft({
     String password = '',
     required String walletAddress,
-    required int nftID,
+    required String nftAddress,
     required bool isShow,
   }) async {
     try {
@@ -686,7 +659,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'password': password,
         'walletAddress': walletAddress,
         'isShow': isShow,
-        'nftID': nftID,
+        'nftAddress': nftAddress,
       };
       await trustWalletChannel.invokeMethod('setShowedNft', data);
     } on PlatformException {
