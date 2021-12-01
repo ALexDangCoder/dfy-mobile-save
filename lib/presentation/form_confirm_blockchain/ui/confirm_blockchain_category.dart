@@ -2,6 +2,10 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
+import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
+import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
+import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -119,7 +123,10 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.only(left: 16.w, right: 16.w,),
+                  padding: EdgeInsets.only(
+                    left: 16.w,
+                    right: 16.w,
+                  ),
                   child: Column(
                     children: [
                       if (widget.typeConfirm == TYPE_CONFIRM.SEND_TOKEN ||
@@ -189,9 +196,24 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 ),
               ),
             ),
-            ButtonGold(
-              title: S.current.approve,
-              isEnable: true,
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (_) {
+                    return TokenDetail(
+                        tokenData: 3,
+                        bloc: TokenDetailBloc(),
+                        tokenType: EnumTokenType.BNB, isSubmitting: true,);
+                  },
+                );
+              },
+              child: ButtonGold(
+                title: S.current.approve,
+                isEnable: true,
+              ),
             )
           ],
         ),
