@@ -1,6 +1,10 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+
+final formatValue = NumberFormat('###,###,###.###', 'en_US');
 
 class InformationWallet extends StatelessWidget {
   const InformationWallet({
@@ -20,22 +24,21 @@ class InformationWallet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 10.w,
-        right: 10.w,
+    return Container(
+      width: 343.w,
+      // height: 74.h,
+      decoration: BoxDecoration(
+        // color: const Color.fromRGBO(255, 255, 255, 0.1),
+        borderRadius: BorderRadius.all(Radius.circular(16.r)),
+        border: Border.all(color: const Color.fromRGBO(255, 255, 255, 0.1)),
       ),
-      child: Container(
-        width: 343.w,
-        height: 74.h,
-        decoration: BoxDecoration(
-          // color: const Color.fromRGBO(255, 255, 255, 0.1),
-          borderRadius: BorderRadius.all(Radius.circular(16.r)),
-          border: Border.all(color: const Color.fromRGBO(255, 255, 255, 0.1)),
-        ),
-        child: Row(
-          children: [
-            Padding(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Padding(
               padding: EdgeInsets.only(
                 left: 12.w,
                 top: 16.h,
@@ -43,20 +46,12 @@ class InformationWallet extends StatelessWidget {
               ),
               child: circularImage(imgWallet),
             ),
-            Column(
-              children: [
-                SizedBox(
-                  width: 7.35.w,
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                SizedBox(
-                  width: 8.35.w,
-                ),
-              ],
-            ),
-            Expanded(
+          ),
+          spaceW8,
+          Expanded(
+            flex: 10,
+            child: Padding(
+              padding: EdgeInsets.only(top: 5.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -65,23 +60,26 @@ class InformationWallet extends StatelessWidget {
                     padding: EdgeInsets.only(top: 14.h),
                     child: Row(
                       children: [
-                        Text(
-                          nameWallet,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            color: const Color.fromRGBO(255, 255, 255, 1),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            nameWallet,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                            ),
                           ),
                         ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Text(
-                          fromAddress,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: const Color.fromRGBO(255, 255, 255, 0.5),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            fromAddress,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Color.fromRGBO(255, 255, 255, 0.5),
+                            ),
                           ),
                         )
                       ],
@@ -92,7 +90,7 @@ class InformationWallet extends StatelessWidget {
                   ),
                   //hang 2
                   Text(
-                    '${S.current.balance}: $amount $nameToken',
+                    '${S.current.balance}: ${formatValue.format(amount)} $nameToken',
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
@@ -101,9 +99,9 @@ class InformationWallet extends StatelessWidget {
                   )
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -175,5 +175,18 @@
   "private_required": "Private key must required",
   "private_warning": "Private key is not invalid",
   "tran_submit": "Transaction submitted",
-  "waiting_for_cf": "Waiting for confirmation"
+  "waiting_for_cf": "Waiting for confirmation",
+  "send_nft": "Send NFT",
+  "buy_nft": "Buy NFT",
+  "send_offer": "Send Offer",
+  "place_a_bid": "Place a bid",
+  "price_per_1": "Price per 1 copy",
+  "total_payment_normal": "Total payment",
+  "loan_amount": "Loan amount:",
+  "loan_to_vl": "Loan to value:",
+  "interest_rate": "Interest rate (%APR):",
+  "ltv_liquid_thres": "LTV Liquidation threshold:",
+  "duration": "Duration:",
+  "repayment_curr": "Repayment currency:",
+  "recurring_interest": "Recurring interest:"
 }
