@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
   Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'checkPasswordCallback':
-         break;
+        break;
       case 'getConfigCallback':
         await PrefsService.saveAppLockConfig(
           methodCall.arguments['isAppLock'].toString(),
@@ -100,22 +100,25 @@ class _MyAppState extends State<MyApp> {
         break;
       case 'importWalletCallback':
         break;
+      case 'earseWalletCallback':
+        print(methodCall.arguments.toString());
+        break;
       case 'getListWalletsCallback':
-         break;
+        break;
       case 'generateWalletCallback':
         break;
       case 'storeWalletCallback':
-         break;
+        break;
       case 'setConfigCallback':
         break;
       case 'getListShowedTokenCallback':
-          break;
+        break;
       case 'getListShowedNftCallback':
-          break;
+        break;
       case 'importTokenCallback':
-         break;
+        break;
       case 'getListSupportedTokenCallback':
-         break;
+        break;
       default:
         break;
     }
@@ -124,6 +127,7 @@ class _MyAppState extends State<MyApp> {
   void callAllApi() {
     importWallet();
     getConfig();
+    earseWallet();
   }
 
   Future<void> getConfig() async {
@@ -142,13 +146,21 @@ class _MyAppState extends State<MyApp> {
     } on PlatformException {}
   }
 
+  Future<void> earseWallet() async {
+    try {
+      final data = {
+        'type': 'IMPORT',
+      };
+      await trustWalletChannel.invokeMethod('earseWallet', data);
+    } on PlatformException {}
+  }
+
   Future<void> importWallet() async {
     try {
       final data = {
         'type': 'PASS_PHRASE',
-        'content':
-            'party response give dove tooth master flip'
-                ' video permit game expire token',
+        'content': 'party response give dove tooth master flip'
+            ' video permit game expire token',
         'password': '123456',
       };
       await trustWalletChannel.invokeMethod('importWallet', data);

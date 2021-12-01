@@ -18,6 +18,10 @@ class MainActivity : FlutterFragmentActivity() {
 
     private val TYPE_WALLET_SEED_PHRASE = "PASS_PHRASE"
     private val TYPE_WALLET_PRIVATE_KEY = "PRIVATE_KEY"
+
+    private val TYPE_DELETE_WALLET_IMPORT = "IMPORT"
+    private val TYPE_DELETE_WALLET_CREATE = "CREATE"
+
     private val CHANNEL_TRUST_WALLET = "flutter/trust_wallet"
     private var channel: MethodChannel? = null
 
@@ -36,7 +40,8 @@ class MainActivity : FlutterFragmentActivity() {
                     getConfigWallet()
                 }
                 "earseWallet" -> {
-                    earseWallet()
+                    val type = call.argument<String>("type") ?: return@setMethodCallHandler
+                    earseWallet(type)
                 }
                 "importWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
@@ -164,9 +169,10 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getConfigCallback", hasMap)
     }
 
-    private fun earseWallet() {
-        val hasMap = HashMap<String, Boolean>()
+    private fun earseWallet(type: String) {
+        val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
+        hasMap["type"] = type
         channel?.invokeMethod("earseWalletCallback", hasMap)
     }
 
