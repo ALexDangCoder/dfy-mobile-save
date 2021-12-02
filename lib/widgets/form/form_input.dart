@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +28,11 @@ class FormInput extends StatelessWidget {
       height: 64.h,
       margin: EdgeInsets.symmetric(horizontal: 16.w),
       padding: EdgeInsets.only(right: 15.w, left: 15.w),
-      decoration: const BoxDecoration(
-        color: Color(0xff32324c),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: const Color(0xff32324c),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
+        ),
       ),
       child: Row(
         children: [
@@ -49,10 +52,10 @@ class FormInput extends StatelessWidget {
             child: TextFormField(
               maxLength: 100,
               controller: controller,
-              cursorColor: Colors.white,
+              cursorColor: AppTheme.getInstance().whiteColor(),
               style: textNormal(
-                Colors.white,
-                16,
+                AppTheme.getInstance().whiteColor(),
+                16.sp,
               ),
 
               onChanged: (value) {
@@ -63,8 +66,8 @@ class FormInput extends StatelessWidget {
                 counterText: '',
                 hintText: hint,
                 hintStyle: textNormal(
-                  Colors.white54,
-                  16,
+                  Colors.white.withOpacity(0.5),
+                  16.sp,
                 ),
                 border: InputBorder.none,
               ),
@@ -86,8 +89,12 @@ class FormInput extends StatelessWidget {
                 () => controller.text = bloc.tokenAddressText.value,
               );
             },
-            child: Image.asset(
-              urlIcon2,
+            child: SizedBox(
+              height: 24.h,
+              width: 24.w,
+              child: Image.asset(
+                urlIcon2,
+              ),
             ),
           ),
         ],

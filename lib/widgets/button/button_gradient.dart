@@ -14,19 +14,19 @@ class ButtonGradient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 298.w,
-      height: 64.h,
-      decoration: BoxDecoration(
-        gradient: gradient,
-        borderRadius: const BorderRadius.all(Radius.circular(22.0)),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () {
-            onPressed();
-          },
+    return GestureDetector(
+      onTap: (){
+        onPressed();
+      },
+      child: Container(
+        width: 298.w,
+        height: 64.h,
+        decoration: BoxDecoration(
+          gradient: gradient,
+          borderRadius: const BorderRadius.all(Radius.circular(22.0)),
+        ),
+        child: Material(
+          color: Colors.transparent,
           child: Center(
             child: child,
           ),

@@ -72,14 +72,14 @@ class _MyAppState extends State<MyApp> {
             secondary: AppTheme.getInstance().accentColor(),
           ),
         ),
-        supportedLocales: S.delegate.supportedLocales,
+        // supportedLocales: S.delegate.supportedLocales,
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        // locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
+        locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
         onGenerateRoute: AppRouter.generateRoute,
         initialRoute: AppRouter.splash,
       ),
@@ -99,6 +99,9 @@ class _MyAppState extends State<MyApp> {
         );
         break;
       case 'importWalletCallback':
+        break;
+      case 'earseWalletCallback':
+        print(methodCall.arguments.toString());
         break;
       case 'getListWalletsCallback':
         break;
@@ -124,6 +127,7 @@ class _MyAppState extends State<MyApp> {
   void callAllApi() {
     importWallet();
     getConfig();
+    earseWallet();
   }
 
   Future<void> getConfig() async {
@@ -139,6 +143,16 @@ class _MyAppState extends State<MyApp> {
         'password': 'password',
       };
       await trustWalletChannel.invokeMethod('checkPassword', data);
+    } on PlatformException {
+    }
+  }
+
+  Future<void> earseWallet() async {
+    try {
+      final data = {
+        'type': 'IMPORT',
+      };
+      await trustWalletChannel.invokeMethod('earseWallet', data);
     } on PlatformException {}
   }
 

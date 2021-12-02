@@ -9,12 +9,14 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class RemoveNft extends StatelessWidget {
   final WalletCubit cubit;
   final int index;
+
   const RemoveNft({
-    Key? key, required this.cubit, required this.index,
+    Key? key,
+    required this.cubit,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -22,9 +24,11 @@ class RemoveNft extends StatelessWidget {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaY: 1.0, sigmaX: 1.0),
       child: Center(
-        child: SizedBox(
-          height: 355.h,
-          width: 312.w,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: 410.h,
+            maxWidth: 312.w,
+          ),
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
@@ -37,60 +41,58 @@ class RemoveNft extends StatelessWidget {
                       return CustomRectTween(begin: begin!, end: end!);
                     },
                     child: Material(
-                      color: const Color(0xff585782),
+                      color: AppTheme.getInstance().selectDialogColor(),
                       elevation: 2,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(36),
+                        borderRadius: BorderRadius.circular(36.r),
                       ),
-                      child: SizedBox(
-                        width: 312.w,
-                        height: 278.h,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: 312.w,
+                          minHeight: 278.h,
+                        ),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(
-                                  height: 93,
-                                ),
-                                Container(
-                                  padding:
-                                  EdgeInsets.symmetric(horizontal: 34.w),
-                                  child: Text(
-                                    S.current.are_you_sure_collectible,
-                                    style: textNormal(
-                                      null,
-                                      20,
-                                    ).copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                spaceH12,
-                                Container(
-                                  padding:
-                                  EdgeInsets.symmetric(horizontal: 34.w),
-                                  child: Text(
-                                    S.current.this_will_also,
-                                    style: textNormal(
-                                      null,
-                                      12,
-                                    ).copyWith(
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                spaceH24,
-                              ],
+                            SizedBox(
+                              height: 93.h,
                             ),
-                            Expanded(
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 34.w),
+                              child: Text(
+                                S.current.are_you_sure_collectible,
+                                style: textNormal(
+                                  null,
+                                  20.sp,
+                                ).copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            spaceH12,
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 34.w),
+                              child: Text(
+                                S.current.this_will_also,
+                                style: textNormal(
+                                  null,
+                                  12.sp,
+                                ).copyWith(
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            spaceH24,
+                            SizedBox(
+                              height: 64.h,
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
                                     top: BorderSide(
-                                      color: AppTheme.getInstance().divideColor(),
+                                      color:
+                                          AppTheme.getInstance().divideColor(),
                                       width: 1.w,
                                     ),
                                   ),
@@ -98,27 +100,43 @@ class RemoveNft extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          S.current.cancel,
-                                          style:
-                                          textNormal(null, 20).copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
+                                      child: Container(
+                                        height: 64.h,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            right: BorderSide(
+                                              color: AppTheme.getInstance()
+                                                  .divideColor(),
+                                              width: 1.h,
+                                            ),
                                           ),
-                                          textAlign: TextAlign.center,
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Center(
+                                            child: Text(
+                                              S.current.cancel,
+                                              style: textNormal(null, 20.sp)
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                    VerticalDivider(
-                                 color: AppTheme.getInstance().divideColor(),
-                              ),
                                     Expanded(
-                                      child: InkWell(
+                                      child: GestureDetector(
                                         onTap: () {
+                                          cubit.setShowedNft(
+                                            walletAddress: 'walletAddress',
+                                            isShow: false,
+                                            nftAddress: 'tokenAddress',
+                                          );
                                           cubit.listNFT.removeAt(index);
                                           cubit.getListNFTItem();
                                           Navigator.pop(context);
@@ -127,7 +145,7 @@ class RemoveNft extends StatelessWidget {
                                           S.current.remove,
                                           style: textNormal(
                                             const Color(0xffE4AC1A),
-                                            20,
+                                            20.sp,
                                           ).copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontStyle: FontStyle.normal,
@@ -148,7 +166,7 @@ class RemoveNft extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: 193.h,
+                bottom: 248.h,
                 child: SizedBox(
                   width: 162.w,
                   height: 162.h,

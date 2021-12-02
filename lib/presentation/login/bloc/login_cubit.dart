@@ -26,15 +26,15 @@ class LoginCubit extends BaseCubit<LoginState> {
     bool loginSuccess = false;
     switch (methodCall.method) {
       case 'checkPasswordCallback':
-       loginSuccess = await methodCall.arguments['isCorrect'];
-       if (loginSuccess == true) {
-         emit(LoginSuccess());
-       } else {
-         emit(LoginError('Password was wrong...'));
-       }
+        loginSuccess = await methodCall.arguments['isCorrect'];
+        if (loginSuccess == true) {
+          emit(LoginSuccess());
+        } else {
+          emit(LoginError('Password was wrong...'));
+        }
         break;
       case 'importWalletCallback':
-           break;
+        break;
       default:
         break;
     }
@@ -59,10 +59,8 @@ class LoginCubit extends BaseCubit<LoginState> {
       final data = {
         'password': password,
       };
-      await  trustWalletChannel.invokeMethod('checkPassword', data);
-    } on PlatformException {
-
-    }
+      await trustWalletChannel.invokeMethod('checkPassword', data);
+    } on PlatformException {}
   }
 
   String authorized = 'Not Authorized';
