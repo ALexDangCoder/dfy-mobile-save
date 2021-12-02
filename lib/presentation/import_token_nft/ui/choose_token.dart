@@ -69,8 +69,7 @@ class _ChooseTokenState extends State<ChooseToken> {
                               isShow: value,
                               tokenAddress: 'tokenAddress',
                             );
-                            widget.bloc
-                                .sortList(widget.bloc.getListTokenModel.value);
+
                             setState(() {});
                           },
                           switchActiveColor: const Color(0xffE4AC1A),

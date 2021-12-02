@@ -1,3 +1,4 @@
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/routes/router.dart';
@@ -119,6 +120,9 @@ class _MyAppState extends State<MyApp> {
         break;
       case 'getListSupportedTokenCallback':
         break;
+      case 'signTransactionCallback':
+        print('signTransactionCallback ${methodCall.arguments}');
+        break;
       default:
         break;
     }
@@ -128,13 +132,16 @@ class _MyAppState extends State<MyApp> {
     importWallet();
     getConfig();
     earseWallet();
+    signTransaction();
   }
 
   Future<void> getConfig() async {
     try {
       final data = {};
       await trustWalletChannel.invokeMethod('getConfig', data);
-    } on PlatformException {}
+    } on PlatformException {
+
+    }
   }
 
   Future<void> createWallet() async {
@@ -144,6 +151,7 @@ class _MyAppState extends State<MyApp> {
       };
       await trustWalletChannel.invokeMethod('checkPassword', data);
     } on PlatformException {
+      //nothing
     }
   }
 
@@ -249,5 +257,21 @@ class _MyAppState extends State<MyApp> {
       };
       await trustWalletChannel.invokeMethod('getListSupportedToken', data);
     } on PlatformException {}
+  }
+
+  Future<void> signTransaction() async {
+    try {
+      final data = {
+        'fromAddress': '0xfff',
+        'toAddress': '0xfff',
+        'chainId': '97',
+        'gasPrice': 10.toDouble(),
+        'price': 10.toDouble(),
+        'maxGas': 100000000000.toDouble(),
+      };
+      await trustWalletChannel.invokeMethod('signTransaction', data);
+    } on PlatformException {
+
+    }
   }
 }

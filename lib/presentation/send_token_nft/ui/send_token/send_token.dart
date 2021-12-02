@@ -32,15 +32,8 @@ class _SendTokenState extends State<SendToken> {
     txtAmount = TextEditingController();
     tokenCubit = SendTokenCubit();
 
-    trustWalletChannel.setMethodCallHandler(tokenCubit.nativeMethodCallHandler);
-    tokenCubit.sendToken(
-      walletAddress: tokenCubit.walletAddressToken,
-      receiveAddress: tokenCubit.receiveAddressToken,
-      tokenID: tokenCubit.tokenIDToken ?? 0,
-      amount: tokenCubit.amountToken ?? 0,
-      password: '',
-      gasFee: 0,
-    );
+    trustWalletChannel
+        .setMethodCallHandler(tokenCubit.nativeMethodCallBackTrustWallet);
   }
 
   @override
@@ -141,7 +134,7 @@ class _SendTokenState extends State<SendToken> {
                         showModalBottomSheet(
                           backgroundColor: Colors.transparent,
                           isScrollControlled: true,
-                          builder: (context) => const ConfirmBlockchainCategory(
+                          builder: (context) =>  ConfirmBlockchainCategory(
                             nameWallet: 'TestWallet',
                             nameTokenWallet: 'BNB',
                             balanceWallet: 0.64,
@@ -151,6 +144,7 @@ class _SendTokenState extends State<SendToken> {
                             imageWallet: ImageAssets.symbol,
                             amount: 5000,
                             nameToken: 'BNB',
+                            cubitCategory: tokenCubit,
                           ),
                           context: context,
                         );

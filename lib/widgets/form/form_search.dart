@@ -30,9 +30,9 @@ class _FormSearchState extends State<FormSearch> {
       width: 336.w,
       height: 46.h,
       margin: EdgeInsets.symmetric(horizontal: 19.w),
-      padding:  EdgeInsets.only(right: 15.w, left: 15.w),
-      decoration:  BoxDecoration(
-        color:Color(0xff32324c),
+      padding: EdgeInsets.only(right: 15.w, left: 15.w),
+      decoration: BoxDecoration(
+        color: Color(0xff32324c),
         borderRadius: BorderRadius.all(Radius.circular(12.r)),
       ),
       child: Row(
@@ -51,7 +51,7 @@ class _FormSearchState extends State<FormSearch> {
                 maxLength: 20,
                 onChanged: (value) {
                   widget.bloc.textSearch.sink.add(value);
-                  widget.bloc.search();
+                  //widget.bloc.search();
                 },
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
@@ -78,18 +78,19 @@ class _FormSearchState extends State<FormSearch> {
                 onTap: () {
                   widget.bloc.textSearch.sink.add('');
                   textSearch.text = '';
-                  widget.bloc.search();
+                  //widget.bloc.search();
+                  //widget.bloc.sortList(widget.bloc.getListTokenModel.value);
                 },
                 child: snapshot.data?.isNotEmpty ?? false
                     ? Image.asset(
-                  ImageAssets.ic_close,
-                  width: 20.w,
-                  height: 20.h,
-                )
+                        ImageAssets.ic_close,
+                        width: 20.w,
+                        height: 20.h,
+                      )
                     : SizedBox(
-                  height: 20.h,
-                  width: 20.w,
-                ),
+                        height: 20.h,
+                        width: 20.w,
+                      ),
               );
             },
           ),

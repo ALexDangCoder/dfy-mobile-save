@@ -101,22 +101,21 @@ class RemoveToken extends StatelessWidget {
                                   child: Row(
                                     children: [
                                       Expanded(
-                                        child: Container(
-                                          height: 64.h,
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                              right: BorderSide(
-                                                color: AppTheme.getInstance()
-                                                    .divideColor(),
-                                                width: 1.h,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Container(
+                                            height: 64.h,
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                right: BorderSide(
+                                                  color: AppTheme.getInstance()
+                                                      .divideColor(),
+                                                  width: 1.h,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          child: GestureDetector
-                                            (
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                            },
                                             child: Center(
                                               child: Text(
                                                 S.current.cancel,
@@ -139,27 +138,32 @@ class RemoveToken extends StatelessWidget {
                                               isShow: false,
                                               tokenAddress: 'tokenAddress',
                                             );
-                                            cubit.listTokenDetailScreen
-                                                .removeAt(index);
-                                            cubit.totalBalance.add(
-                                              cubit.total(
-                                                cubit.listTokenStream.value,
-                                              ),
-                                            );
-                                            cubit.getListTokenItemRemove();
+                                            // cubit.listTokenDetailScreen
+                                            // //    .removeAt(index);
+                                            // cubit.totalBalance.add(
+                                            //   cubit.total(
+                                            //     cubit.listTokenStream.value,
+                                            //   ),
+                                            // );
+                                            //cubit.getListTokenItemRemove();
                                             Navigator.pop(context);
                                           },
-                                          child: Text(
-                                            S.current.remove,
-                                            style: textNormal(
-                                              AppTheme.getInstance()
-                                                  .fillColor(),
-                                              20.sp,
-                                            ).copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
+                                          child: SizedBox(
+                                            height: 64.h,
+                                            child: Center(
+                                              child: Text(
+                                                S.current.remove,
+                                                style: textNormal(
+                                                  AppTheme.getInstance()
+                                                      .fillColor(),
+                                                  20.sp,
+                                                ).copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontStyle: FontStyle.normal,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
                                             ),
-                                            textAlign: TextAlign.center,
                                           ),
                                         ),
                                       ),
