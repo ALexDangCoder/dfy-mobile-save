@@ -22,12 +22,6 @@ void showImportToken(BuildContext context, WalletCubit bloc) {
     context: context,
     backgroundColor: Colors.transparent,
     builder: (context) {
-      bloc.getListSupportedToken(
-        walletAddress: 'walletAddress',
-      );
-      trustWalletChannel.setMethodCallHandler(
-        bloc.nativeMethodCallBackTrustWallet,
-      );
       return DefaultTabController(
         length: 2,
         child: Container(
@@ -101,7 +95,7 @@ void showImportToken(BuildContext context, WalletCubit bloc) {
                         ),
                       ),
                     ],
-                    labelColor:AppTheme.getInstance().whiteColor(),
+                    labelColor: AppTheme.getInstance().whiteColor(),
                     unselectedLabelColor: AppTheme.getInstance().whiteColor(),
                     indicator: RectangularIndicator(
                       bottomLeftRadius: 10.r,
@@ -142,7 +136,7 @@ void showImportToken(BuildContext context, WalletCubit bloc) {
       );
     },
   ).whenComplete(
-        () => {
+    () => {
       bloc.getListTokenItem(),
       bloc.totalBalance.add(
         bloc.total(bloc.listTokenStream.value),

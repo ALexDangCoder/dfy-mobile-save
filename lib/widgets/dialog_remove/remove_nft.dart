@@ -92,7 +92,7 @@ class RemoveNft extends StatelessWidget {
                                   border: Border(
                                     top: BorderSide(
                                       color:
-                                      AppTheme.getInstance().divideColor(),
+                                          AppTheme.getInstance().divideColor(),
                                       width: 1.w,
                                     ),
                                   ),
@@ -100,21 +100,21 @@ class RemoveNft extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: Container(
-                                        height: 64.h,
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            right: BorderSide(
-                                              color: AppTheme.getInstance()
-                                                  .divideColor(),
-                                              width: 1.h,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          height: 64.h,
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              right: BorderSide(
+                                                color: AppTheme.getInstance()
+                                                    .divideColor(),
+                                                width: 1.h,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
                                           child: Center(
                                             child: Text(
                                               S.current.cancel,
@@ -132,20 +132,30 @@ class RemoveNft extends StatelessWidget {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
+                                          cubit.setShowedNft(
+                                            walletAddress: 'walletAddress',
+                                            isShow: false,
+                                            nftAddress: 'tokenAddress',
+                                          );
                                           cubit.listNFT.removeAt(index);
                                           cubit.getListNFTItem();
                                           Navigator.pop(context);
                                         },
-                                        child: Text(
-                                          S.current.remove,
-                                          style: textNormal(
-                                            const Color(0xffE4AC1A),
-                                            20.sp,
-                                          ).copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
+                                        child: SizedBox(
+                                          height: 64.h,
+                                          child: Center(
+                                            child: Text(
+                                              S.current.remove,
+                                              style: textNormal(
+                                                const Color(0xffE4AC1A),
+                                                20.sp,
+                                              ).copyWith(
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
                                           ),
-                                          textAlign: TextAlign.center,
                                         ),
                                       ),
                                     ),
