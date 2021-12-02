@@ -114,15 +114,21 @@ class _BodyState extends State<Body> {
                           if (value) {
                             showNFTSuccessfully(context);
                             widget.bloc.isImportNft.close();
+                            widget.bloc.tokenAddressTextNft.add('');
                           }
                         },
                       );
-                      if (widget.bloc.isImportNft.value) {
-                        _showDialog(
-                          text: S.current.please_try_again,
-                          alert: S.current.you_are_not,
-                        );
-                      }
+                      widget.bloc.isImportNftFail.listen(
+                        (value) {
+                          if (!value) {
+                            _showDialog(
+                              text: S.current.please_try_again,
+                              alert: S.current.you_are_not,
+                            );
+                            widget.bloc.isImportNftFail.close();
+                          }
+                        },
+                      );
                     }
                   },
                   child: ButtonGold(

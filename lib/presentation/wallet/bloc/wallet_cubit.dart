@@ -38,6 +38,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isImportToken = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isImportNftFail = BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isNFT = BehaviorSubject.seeded(true);
   BehaviorSubject<List<TokenModel>> getListTokenModel =
       BehaviorSubject.seeded([]);
@@ -531,8 +532,12 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'importNftCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
-        isImportNft.sink.add(isSuccess);
-
+        if (isSuccess) {
+          isImportNft.sink.add(isSuccess);
+        }
+        if (!isSuccess) {
+          isImportNftFail.sink.add(isSuccess);
+        }
         break;
       case 'setShowedNftCallback':
         isSetShowedNft = await methodCall.arguments['isSuccess'];
