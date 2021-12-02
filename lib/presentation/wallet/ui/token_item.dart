@@ -29,7 +29,8 @@ class TokenItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return MaterialButton(
+      padding: EdgeInsets.zero,
       onLongPress: () {
         Navigator.of(context).push(
           HeroDialogRoute(
@@ -43,7 +44,7 @@ class TokenItem extends StatelessWidget {
           ),
         );
       },
-      onTap: () {
+      onPressed: () {
         showModalBottomSheet(
           isScrollControlled: true,
           context: context,
