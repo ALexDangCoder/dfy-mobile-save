@@ -221,117 +221,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       iconToken: 'assets/images/Ellipse 39.png',
     ),
   ];
-  // List<TokenModel> listTokenDetailScreen = [];
-  // List<TokenModel> listTokenInitial = [
-  //   TokenModel(
-  //     price: 342.423,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: false,
-  //     nameToken: 'TBitcoin',
-  //     nameTokenSymbol: 'B3TC',
-  //     amountToken: 0,
-  //   ),
-  //   TokenModel(
-  //     price: 3421.2223,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: false,
-  //     nameToken: 'TBitcoin',
-  //     nameTokenSymbol: 'B3TC',
-  //     amountToken: 0,
-  //   ),
-  //   TokenModel(
-  //     price: 34213423,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: false,
-  //     nameToken: 'TBitcoin',
-  //     nameTokenSymbol: 'B3TC',
-  //     amountToken: 1,
-  //   ),
-  //   TokenModel(
-  //     price: 121,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: false,
-  //     nameToken: 'Bitcoin',
-  //     nameTokenSymbol: 'BTC',
-  //     amountToken: 0.2134,
-  //   ),
-  //   TokenModel(
-  //     price: 121,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: true,
-  //     nameToken: 'ABitcoin',
-  //     nameTokenSymbol: 'BTC',
-  //     amountToken: 0.324,
-  //   ),
-  //   TokenModel(
-  //     price: 121,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: false,
-  //     nameToken: 'CBitcoin',
-  //     nameTokenSymbol: 'BTC',
-  //     amountToken: 2.21321434,
-  //   ),
-  //   TokenModel(
-  //     price: 121,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: true,
-  //     nameToken: 'DBitcoin',
-  //     nameTokenSymbol: 'BTC',
-  //     amountToken: 0,
-  //   ),
-  //   TokenModel(
-  //     price: 121,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: true,
-  //     nameToken: 'WBitcoin',
-  //     nameTokenSymbol: 'BTC3',
-  //     amountToken: 021342344,
-  //   ),
-  //   TokenModel(
-  //     price: 121,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: false,
-  //     nameToken: 'QBitcoin',
-  //     nameTokenSymbol: 'BT3C',
-  //     amountToken: 0,
-  //   ),
-  //   TokenModel(
-  //     price: 121,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: true,
-  //     nameToken: 'UBitcoin',
-  //     nameTokenSymbol: 'B3TC',
-  //     amountToken: 0.213434,
-  //   ),
-  //   TokenModel(
-  //     price: 121,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: false,
-  //     nameToken: 'TBitcoin',
-  //     nameTokenSymbol: 'B3TC',
-  //     amountToken: 0.413423,
-  //   ),
-  //   TokenModel(
-  //     price: 121,
-  //     tokenId: 21,
-  //     iconToken: 'assets/images/Ellipse 39.png',
-  //     isShow: false,
-  //     nameToken: 'TBitcoin',
-  //     nameTokenSymbol: 'B3TC',
-  //     amountToken: 0,
-  //   ),
-  // ];
 
   Future<void> getAddressWallet() async {}
 
@@ -354,36 +243,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     return formatAddressWallet;
   }
 
-  // void getListTokenItem() {
-  //   final List<TokenModel> listToken = [];
-  //   for (final TokenModel value in getListTokenModel.value) {
-  //     if (value.isShow ?? false) {
-  //       listToken.add(value);
-  //     }
-  //   }
-  //   listTokenDetailScreen.clear();
-  //   listTokenDetailScreen.addAll(listToken);
-  //   listTokenStream.sink.add(listTokenDetailScreen);
-  // }
-
-  void addToken(TokenModel tokenModel) {
-    final List<TokenModel> listToken = getListTokenModel.value;
-    listToken.add(tokenModel);
-    getListTokenModel.sink.add(listToken);
-    sortList(getListTokenModel.value);
-  }
-
-  double total(List<TokenModel> list) {
+  double total(List<ModelToken> list) {
     double total = 0;
     for (int i = 0; i < list.length; i++) {
-      total = total + list[i].price!;
+      total = total + list[i].exchangeRate*list[i].balanceToken;
     }
+    totalBalance.add(total);
     return total;
   }
-
-  // void getListTokenItemRemove() {
-  //   listTokenStream.sink.add(listTokenDetailScreen);
-  // }
 
   void getList() {
     list.sink.add(listSelectAccBloc);
@@ -413,91 +280,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       isNFT.sink.add(true);
     }
   }
-
-  // void getListSort() {
-  //   final List<TokenModel> list = [];
-  //   for (final TokenModel value in listTokenInitial) {
-  //     if (value.isShow ?? false) {
-  //       list.add(value);
-  //     }
-  //   }
-  //   final Comparator<TokenModel> amountTokenComparator =
-  //       (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
-  //   list.sort(amountTokenComparator);
-  //   final List<TokenModel> list1 = [];
-  //   for (final TokenModel value in listTokenInitial) {
-  //     if (value.isShow ?? false) {
-  //     } else {
-  //       if ((value.amountToken ?? 0) > 0) {
-  //         list1.add(value);
-  //       }
-  //     }
-  //   }
-  //   list1.sort(amountTokenComparator);
-  //   list.addAll(list1);
-  //   for (final TokenModel value in listTokenInitial) {
-  //     if (value.isShow ?? false) {
-  //     } else {
-  //       if ((value.amountToken ?? 0) > 0) {
-  //       } else {
-  //         list.add(value);
-  //       }
-  //     }
-  //   }
-  //   listStart.addAll(list);
-  //   getListTokenModel.sink.add(list);
-  // }
-
-  void sortList(List<TokenModel> listSort) {
-    final List<TokenModel> list = [];
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-        list.add(value);
-      }
-    }
-    final Comparator<TokenModel> amountTokenComparator =
-        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
-    list.sort(amountTokenComparator);
-    final List<TokenModel> list1 = [];
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-          list1.add(value);
-        }
-      }
-    }
-    list1.sort(amountTokenComparator);
-    list.addAll(list1);
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-        } else {
-          list.add(value);
-        }
-      }
-    }
-    getListTokenModel.sink.add(list);
-  }
-
-  // void search() {
-  //   final List<TokenModel> result = [];
-  //   // listTokenShow1=listToken;
-  //   for (final TokenModel value in listTokenInitial) {
-  //     if (value.nameToken!.toLowerCase().contains(
-  //           textSearch.value.toLowerCase(),
-  //         )) {
-  //       result.add(value);
-  //     }
-  //   }
-  //   if (textSearch.value.isEmpty) {
-  //     getListTokenModel.sink.add(listStart);
-  //   }
-  //   if (textSearch.value.isNotEmpty) {
-  //     getListTokenModel.sink.add(result);
-  //   }
-  // }
 
   void checkAddressNull() {
     if (tokenAddressText.value == '') {
@@ -550,6 +332,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         for (final element in data) {
           listTokenFromWalletCore.add(ModelToken.fromWalletCore(element));
         }
+        total(listTokenFromWalletCore);
         listTokenStream.add(listTokenFromWalletCore);
         break;
       case 'getNFTCallback':
@@ -560,7 +343,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         for (final element in data) {
           listWallet.add(Wallet.fromJson(element));
         }
-
         break;
       default:
         break;

@@ -79,7 +79,7 @@ class _FormSearchState extends State<FormSearch> {
                   widget.bloc.textSearch.sink.add('');
                   textSearch.text = '';
                   //widget.bloc.search();
-                  widget.bloc.sortList(widget.bloc.getListTokenModel.value);
+                  //widget.bloc.sortList(widget.bloc.getListTokenModel.value);
                 },
                 child: snapshot.data?.isNotEmpty ?? false
                     ? Image.asset(

@@ -74,7 +74,7 @@ class _WalletState extends State<WalletScreen>
     cubit.getTokens(
       widget.wallet?.address ?? cubit.addressWallet.value,
     );
-    cubit.getListWallets('aaaa');
+    cubit.getListWallets('aa');
   }
 
   @override
@@ -228,14 +228,13 @@ class _WalletState extends State<WalletScreen>
                                       bloc: cubit,
                                       symbolUrl:
                                           snapshot.data![index].iconToken,
-                                      amount: snapshot.data?[index].balanceToken
-                                              .toString() ??
-                                          '',
+                                      amount:
+                                          snapshot.data![index].balanceToken,
                                       nameToken: snapshot
                                               .data?[index].nameShortToken ??
                                           '',
-                                      exchangeRate: snapshot
-                                              .data![index].exchangeRate,
+                                      exchangeRate:
+                                          snapshot.data![index].exchangeRate,
                                     );
                                   },
                                 );
@@ -405,8 +404,8 @@ class _WalletState extends State<WalletScreen>
                   builder: (context, AsyncSnapshot<double> snapshot) {
                     return Text(
                       formatUSD.format(
-                        snapshot.data ??
-                            cubit.total(cubit.getListTokenModel.value),
+                        snapshot.data ?? 1000000,
+                            //cubit.total(cubit.getListTokenModel.value),
                       ),
                       style: textNormalCustom(
                         const Color(0xFFE4AC1A),
