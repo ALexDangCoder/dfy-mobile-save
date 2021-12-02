@@ -19,7 +19,6 @@ final NFT nft = NFT(
   '#357594',
 );
 
-
 class NFTItem extends StatefulWidget {
   const NFTItem({
     Key? key,
@@ -42,7 +41,8 @@ class _NFTItemState extends State<NFTItem> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return MaterialButton(
+      padding: EdgeInsets.zero,
       onLongPress: () {
         Navigator.of(context).push(
           HeroDialogRoute(
@@ -56,6 +56,7 @@ class _NFTItemState extends State<NFTItem> {
           ),
         );
       },
+      onPressed: null,
       child: Column(
         children: [
           Visibility(
@@ -128,8 +129,9 @@ class _NFTItemState extends State<NFTItem> {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemCount: 6,
-                      itemBuilder: (BuildContext context, int index) =>
-                           CardNFT(objNFT: nft,),
+                      itemBuilder: (BuildContext context, int index) => CardNFT(
+                        objNFT: nft,
+                      ),
                     ),
                   ),
                 ),

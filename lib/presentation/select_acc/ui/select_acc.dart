@@ -99,8 +99,9 @@ class _SelectAccState extends State<SelectAcc> {
                 child: ListView.builder(
                   itemCount: snapshot.data?.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
+                    return MaterialButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
                         widget.bloc.addressWallet.sink
                             .add(snapshot.data?[index].addressWallet ?? '');
                         widget.bloc.walletName.sink
@@ -127,6 +128,7 @@ class _SelectAccState extends State<SelectAcc> {
                         );
                       },
                       child: Container(
+                        width: double.infinity,
                         decoration: BoxDecoration(
                           border: Border(
                             top: BorderSide(
@@ -135,7 +137,6 @@ class _SelectAccState extends State<SelectAcc> {
                           ),
                         ),
                         height: 74.h,
-                        width: 357.w,
                         padding: EdgeInsets.only(
                           left: 15.h,
                         ),
@@ -185,8 +186,7 @@ class _SelectAccState extends State<SelectAcc> {
                                           ],
                                         ),
                                         Text(
-                                          '${snapshot.data?[index].amountWallet
-                                              ?.toStringAsFixed(5)} BNB',
+                                          '${snapshot.data?[index].amountWallet?.toStringAsFixed(5)} BNB',
                                           style: textNormalCustom(
                                             Colors.white,
                                             16,
