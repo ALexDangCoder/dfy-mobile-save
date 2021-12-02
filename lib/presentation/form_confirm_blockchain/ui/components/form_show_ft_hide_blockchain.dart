@@ -187,7 +187,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                             txtGasPrice.text = gasPriceFirstFetch.toString();
                             txtGasLimit.text = gasLimitFirstFetch.toString();
                             cubit.isSufficientGasFeeSink
-                                .add(gasFeeFirstFetch > balanceWallet);
+                                .add(gasFeeFirstFetch < balanceWallet);
                             cubit.txtGasFeeWhenEstimatingSink
                                 .add(gasFeeFirstFetch.toString());
                           },

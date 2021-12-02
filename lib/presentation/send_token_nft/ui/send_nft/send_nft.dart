@@ -135,7 +135,7 @@ class _SendNftState extends State<SendNft> {
                             addressFrom: '0xfff',
                             addressTo: '0xfff',
                             imageWallet: ImageAssets.symbol,
-                            amount: 5000,
+                            quantity: 10,
                             nameToken: 'BNB', cubitCategory: null,
                           ),
                           context: context,

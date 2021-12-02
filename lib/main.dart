@@ -102,7 +102,7 @@ class _MyAppState extends State<MyApp> {
         break;
       case 'importWalletCallback':
         break;
-      case 'earseWa lletCallback':
+      case 'earseWalletCallback':
         print(methodCall.arguments.toString());
         break;
       case 'getListWalletsCallback':
@@ -140,7 +140,9 @@ class _MyAppState extends State<MyApp> {
     try {
       final data = {};
       await trustWalletChannel.invokeMethod('getConfig', data);
-    } on PlatformException {}
+    } on PlatformException {
+
+    }
   }
 
   Future<void> createWallet() async {
@@ -149,7 +151,9 @@ class _MyAppState extends State<MyApp> {
         'password': 'password',
       };
       await trustWalletChannel.invokeMethod('checkPassword', data);
-    } on PlatformException {}
+    } on PlatformException {
+      //nothing
+    }
   }
 
   Future<void> earseWallet() async {
@@ -267,6 +271,8 @@ class _MyAppState extends State<MyApp> {
         'maxGas': 100000000000.toDouble(),
       };
       await trustWalletChannel.invokeMethod('signTransaction', data);
-    } on PlatformException {}
+    } on PlatformException {
+
+    }
   }
 }

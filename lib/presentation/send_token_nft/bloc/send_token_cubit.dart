@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:Dfy/main.dart';
@@ -287,27 +288,22 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     switch (methodCall.method) {
       case 'signTransactionCallback':
         isSuccess = await methodCall.arguments['isSuccess'];
-        signedTransaction =
-            await methodCall.arguments['signedTransaction'];
-        if(isSuccess) {
-          print(signedTransaction);
-        } else {
-          print('false');
-        }
+        signedTransaction = await methodCall.arguments['signedTransaction'];
+        log(signedTransaction.toString());
+        log(isSuccess.toString());
         break;
       default:
         break;
     }
   }
 
-
   Future<void> signTransaction({
     required String fromAddress,
     required String toAddress,
     required String chainId,
-    required int gasPrice,
-    required int price,
-    required int maxGas,
+    required double gasPrice,
+    required double price,
+    required double maxGas,
   }) async {
     try {
       final data = {
@@ -317,7 +313,6 @@ class SendTokenCubit extends Cubit<SendTokenState> {
         'gasPrice': gasPrice,
         'price': price,
         'maxGas': maxGas,
-        //
       };
       await trustWalletChannel.invokeMethod('signTransaction', data);
     } on PlatformException {
