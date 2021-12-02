@@ -1,10 +1,15 @@
+import 'dart:developer';
+import 'dart:typed_data';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'hero.dart';
@@ -44,16 +49,19 @@ class TokenItem extends StatelessWidget {
           ),
         );
       },
-      onPressed: () {
-        showModalBottomSheet(
+      onPressed: () async {
+        final imageData = await rootBundle.load(ImageAssets.ic_tick_circle);
+        final Uint8List imgUnit = imageData.buffer.asUint8List();
+        await showModalBottomSheet(
           isScrollControlled: true,
           context: context,
           backgroundColor: Colors.transparent,
           builder: (context) {
             return TokenDetail(
-              tokenData: 123,
+              shortName: 'DFY',
+              img: imgUnit,
+              tokenAmout: 123,
               bloc: TokenDetailBloc(),
-              tokenType: EnumTokenType.DFY,
             );
           },
         );
