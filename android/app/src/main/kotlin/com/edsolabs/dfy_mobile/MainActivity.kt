@@ -9,7 +9,6 @@ import wallet.core.java.AnySigner
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.proto.Binance
-import java.math.BigInteger
 import kotlin.experimental.and
 
 class MainActivity : FlutterFragmentActivity() {
@@ -310,12 +309,17 @@ class MainActivity : FlutterFragmentActivity() {
     ) {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
         val data1 = HashMap<String, Any>()
-        data1["tokenName"] = "BTC"
+
+        data1["tokenFullName"] = "BitCoin"
+        data1["tokenShortName"] = "BTC"
         data1["tokenAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        data1["iconToken"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
         hasMap.add(data1)
         val data2 = HashMap<String, Any>()
-        data2["tokenName"] = "BNB"
+        data2["tokenFullName"] = "Binance"
+        data2["tokenShortName"] = "BNB"
         data2["tokenAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        data2["iconToken"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
         hasMap.add(data2)
         channel?.invokeMethod("getTokensCallback", hasMap)
     }
@@ -325,12 +329,14 @@ class MainActivity : FlutterFragmentActivity() {
     ) {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
         val data1 = HashMap<String, Any>()
-        data1["nftName"] = "BTC"
+        data1["nftName"] = "Defi for you"
         data1["nftAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        data1["iconNFT"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
         hasMap.add(data1)
         val data2 = HashMap<String, Any>()
-        data2["nftName"] = "BNB"
+        data2["nftName"] = "Defi for you"
         data2["nftAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        data2["iconNFT"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
         hasMap.add(data2)
         channel?.invokeMethod("getNFTCallback", hasMap)
     }
