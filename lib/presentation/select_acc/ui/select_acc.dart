@@ -186,7 +186,9 @@ class _SelectAccState extends State<SelectAcc> {
                                           ],
                                         ),
                                         Text(
-                                          '${snapshot.data?[index].amountWallet?.toStringAsFixed(5)} BNB',
+                                          '${snapshot.data?[index].
+                                          amountWallet?.
+                                          toStringAsFixed(5)} BNB',
                                           style: textNormalCustom(
                                             Colors.white,
                                             16,
