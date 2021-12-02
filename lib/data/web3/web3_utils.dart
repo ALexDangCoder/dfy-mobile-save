@@ -23,7 +23,7 @@ class Web3Utils {
 
   //get gas price
   Future<int> getGasPrice() async {
-    return 0;
+    return 10;
   }
 
   Future<int> getEstimateGasPrice() async {
