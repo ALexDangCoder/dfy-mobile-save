@@ -192,9 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
+                  spaceH4,
                   SizedBox(
                     width: 343.w,
                     child: Visibility(
@@ -374,7 +372,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
   void _showDialog({String? alert, String? text}) {
     showDialog(
       context: context,

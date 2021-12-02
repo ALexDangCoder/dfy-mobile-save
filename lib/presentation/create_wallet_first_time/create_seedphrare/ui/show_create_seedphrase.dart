@@ -231,6 +231,7 @@ class _BodyState extends State<Body> {
                               ],
                             ),
                           ),
+                          spaceH4,
                           SizedBox(
                             width: 343.w,
                             child: widget.blocCreateSeedPhrase.isWalletName()

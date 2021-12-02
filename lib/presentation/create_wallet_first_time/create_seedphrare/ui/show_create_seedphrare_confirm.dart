@@ -5,6 +5,7 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_fail.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully_have_wallet.dart';
@@ -66,25 +67,39 @@ class _BodyState extends State<Body> {
     return BlocConsumer<BLocCreateSeedPhrase, SeedState>(
       bloc: widget.bLocCreateSeedPhrase,
       listener: (ctx, state) {
-        if (state is SeedNavState) {
-          if (widget.isCheckApp) {
-            showCreateSuccessfullyHaveWallet(
+        if (widget.bLocCreateSeedPhrase.isSuccess) {
+          if (state is SeedNavState) {
+            if (widget.isCheckApp) {
+              showCreateSuccessfullyHaveWallet(
+                context: context,
+                type: KeyType.CREATE_HAVE_WALLET,
+                wallet: Wallet(
+                  name: bLocCreateSeedPhrase.nameWallet.value,
+                  address: bLocCreateSeedPhrase.walletAddress,
+                ),
+              );
+            } else {
+              showCreateSuccessfully(
+                type: KeyType.CREATE,
+                context: context,
+                bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
+                wallet: Wallet(
+                  name: bLocCreateSeedPhrase.nameWallet.value,
+                  address: bLocCreateSeedPhrase.walletAddress,
+                ),
+              );
+            }
+          }
+        } else {
+          if (widget.typeScreen == TypeScreen.one) {
+            showCreateFail(
               context: context,
               type: KeyType.CREATE,
-              wallet: Wallet(
-                name: bLocCreateSeedPhrase.nameWallet.value,
-                address: bLocCreateSeedPhrase.walletAddress,
-              ),
             );
           } else {
-            showCreateSuccessfully(
-              type: KeyType.CREATE,
+            showCreateFail(
               context: context,
-              bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
-              wallet: Wallet(
-                name: bLocCreateSeedPhrase.nameWallet.value,
-                address: bLocCreateSeedPhrase.walletAddress,
-              ),
+              type: KeyType.CREATE_HAVE_WALLET,
             );
           }
         }
@@ -192,6 +207,7 @@ class _BodyState extends State<Body> {
                               );
                             },
                           ),
+                          spaceH4,
                           StreamBuilder(
                             stream:
                                 bLocCreateSeedPhrase.isSeedPhraseImportFailed,

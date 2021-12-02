@@ -36,6 +36,8 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<bool> isTokenAddressText = BehaviorSubject.seeded(true);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isImportToken = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isNFT = BehaviorSubject.seeded(true);
   BehaviorSubject<List<TokenModel>> getListTokenModel =
       BehaviorSubject.seeded([]);
@@ -404,8 +406,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         ',${amount.toStringAsExponential(5).toString().substring(5, 7)}';
   }
 
-  void checkAddressNull2() {
-    if (tokenAddressTextNft.value == '') {
+  void checkAddressNullNFT() {
+    if (tokenAddressTextNft.value.isEmpty) {
       isNFT.sink.add(false);
     } else {
       isNFT.sink.add(true);
@@ -514,41 +516,29 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    Object objToken = {};
-    Object objNFT = {};
-    final bool isImportToken;
     final bool isSetShowedToken;
-    final bool isImportNft;
     final bool isSetShowedNft;
-
     switch (methodCall.method) {
       case 'importTokenCallback':
-        isImportToken = await methodCall.arguments['isSuccess'];
-        print('isImportToken $isImportToken');
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+        isImportToken.sink.add(isSuccess);
         break;
       case 'getListSupportedTokenCallback':
-        //[TokenObject]
         final a = await methodCall.arguments['TokenObject'];
-        // log('$isImportToken');
         break;
       case 'setShowedTokenCallback':
         isSetShowedToken = await methodCall.arguments['isSuccess'];
-        print(' isSetShowedToken $isSetShowedToken');
         break;
       case 'importNftCallback':
-        isImportNft = await methodCall.arguments['isSuccess'];
-        print('isImportNft $isImportNft');
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+        isImportNft.sink.add(isSuccess);
+
         break;
       case 'setShowedNftCallback':
         isSetShowedNft = await methodCall.arguments['isSuccess'];
-        print('isSetShowedNft $isSetShowedNft');
+
         break;
-      case 'getListShowedTokenCallback':
-        objToken = methodCall.arguments['TokenObject'];
-        break;
-      case 'getListShowedNftCallback':
-        objNFT = methodCall.arguments;
-        break;
+
       case 'getListWalletsCallback':
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {

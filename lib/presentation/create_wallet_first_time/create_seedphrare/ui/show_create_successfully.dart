@@ -15,7 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum KeyType { IMPORT, CREATE }
+enum KeyType { IMPORT, CREATE, IMPORT_HAVE_WALLET, CREATE_HAVE_WALLET }
 
 void showCreateSuccessfully({
   required BuildContext context,

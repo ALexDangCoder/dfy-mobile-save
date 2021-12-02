@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft_succesfully.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -11,8 +12,6 @@ import 'package:Dfy/widgets/form/form_input_number.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../main.dart';
 
 void showImportNft(BuildContext context, WalletCubit bloc) {
   showModalBottomSheet(
@@ -63,6 +62,7 @@ class _BodyState extends State<Body> {
                       urlIcon2: ImageAssets.ic_qr_code,
                       bloc: widget.bloc,
                     ),
+                    spaceH4,
                     StreamBuilder(
                       stream: widget.bloc.isNFT,
                       builder: (context, snapshot) {
@@ -97,32 +97,39 @@ class _BodyState extends State<Body> {
           ),
           Center(
             child: StreamBuilder(
-              stream: widget.bloc.isNFT,
+              stream: widget.bloc.tokenAddressTextNft,
               builder: (context, snapshot) {
                 return InkWell(
                   onTap: () {
-                    widget.bloc.importNft(
-                      walletAddress: 'walletAddress',
-                      nftAddress: 'tokenAddress',
-                      nftID: 1,
-                    );
-                    trustWalletChannel.setMethodCallHandler(
-                      widget.bloc.nativeMethodCallBackTrustWallet,
-                    );
-                    widget.bloc.checkAddressNull2();
+                    widget.bloc.checkAddressNullNFT();
                     if (widget.bloc.isNFT.value) {
-                      showNFTSuccessfully(context);
+                      widget.bloc.importNft(
+                        walletAddress: 'walletAddress',
+                        nftAddress: 'tokenAddress',
+                        nftID: 1,
+                        password: '',
+                      );
+                      widget.bloc.isImportNft.listen(
+                        (value) {
+                          if (value) {
+                            showNFTSuccessfully(context);
+                            widget.bloc.isImportNft.close();
+                          }
+                        },
+                      );
+                      if (widget.bloc.isImportNft.value) {
+                        _showDialog(
+                          text: S.current.please_try_again,
+                          alert: S.current.you_are_not,
+                        );
+                      }
                     }
-                    widget.bloc.setShowedNft(
-                      isShow: true,
-                      walletAddress: 'walletAddress',
-                      password: '',
-                      nftAddress: 'nftAddress',
-                    );
                   },
                   child: ButtonGold(
                     title: S.current.import,
-                    isEnable: widget.bloc.isNFT.value,
+                    isEnable: widget.bloc.tokenAddressTextNft.value.isEmpty
+                        ? false
+                        : true,
                   ),
                 );
               },
@@ -130,6 +137,71 @@ class _BodyState extends State<Body> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showDialog({String? alert, String? text}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                36.0.r,
+              ),
+            ),
+          ),
+          backgroundColor: AppTheme.getInstance().selectDialogColor(),
+          title: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Text(
+                  alert ?? S.current.password_is_not_correct,
+                  style: textNormalCustom(
+                    Colors.white,
+                    20.sp,
+                    FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              spaceH16,
+              Text(
+                text ?? S.current.please_try_again,
+                style: textNormalCustom(
+                  Colors.white,
+                  12.sp,
+                  FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            Divider(
+              height: 1.h,
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            Center(
+              child: TextButton(
+                child: Text(
+                  S.current.ok,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().fillColor(),
+                    20.sp,
+                    FontWeight.w700,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

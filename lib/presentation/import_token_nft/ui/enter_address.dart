@@ -59,6 +59,7 @@ class _EnterAddressState extends State<EnterAddress> {
                     urlIcon2: ImageAssets.ic_qr_code,
                     bloc: widget.bloc,
                   ),
+                  spaceH4,
                   StreamBuilder(
                     stream: widget.bloc.isTokenAddressText,
                     builder: (context, snapshot) {
@@ -111,16 +112,14 @@ class _EnterAddressState extends State<EnterAddress> {
 
                     widget.bloc.checkAddressNull();
                     if (widget.bloc.isTokenAddressText.value) {
-                      // widget.bloc.addToken(TokenModel(
-                      //   price: 34213423,
-                      //   tokenId: 21,
-                      //   iconToken: 'assets/images/Ellipse 39.png',
-                      //   isShow: true,
-                      //   nameToken: 'DoanhCoin',
-                      //   nameTokenSymbol: 'DC',
-                      //   amountToken: 0,
-                      // ),);
-                      showTokenSuccessfully(context);
+                      widget.bloc.isImportToken.listen(
+                        (value) {
+                          if (value) {
+                            showTokenSuccessfully(context);
+                          }
+                          widget.bloc.isImportToken.close();
+                        },
+                      );
                     }
                   },
                   child: ButtonGold(

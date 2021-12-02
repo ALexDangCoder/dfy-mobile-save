@@ -2,10 +2,8 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
-import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 
 import 'package:Dfy/widgets/button/button.dart';
@@ -13,9 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showCreateSuccessfullyHaveWallet({
+void showCreateFail({
   required BuildContext context,
-  required Wallet wallet,
   required KeyType type,
 }) {
   showModalBottomSheet(
@@ -41,9 +38,7 @@ void showCreateSuccessfullyHaveWallet({
             ),
             Center(
               child: Text(
-                type == KeyType.CREATE
-                    ? S.current.success
-                    : S.current.success_import,
+                S.current.create_new_wallet_failed,
                 style: TextStyle(
                   fontSize: 20.sp,
                   color: Colors.white,
@@ -66,15 +61,18 @@ void showCreateSuccessfullyHaveWallet({
                       SizedBox(
                         height: 228.h,
                         width: 305.w,
-                        child: Image.asset(ImageAssets.frameGreen),
+                        child: Image.asset(ImageAssets.img_fail),
                       ),
                       spaceH20,
-                      Text(
-                        S.current.congratulation,
-                        style: TextStyle(
-                          color: AppTheme.getInstance().whiteColor(),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32.sp,
+                      Center(
+                        child: Text(
+                          S.current.oopps_omething_went_wrong,
+                          style: TextStyle(
+                            color: AppTheme.getInstance().whiteColor(),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32.sp,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       SizedBox(
@@ -88,21 +86,17 @@ void showCreateSuccessfullyHaveWallet({
             Center(
               child: GestureDetector(
                 onTap: () {
-                  if (type == KeyType.CREATE_HAVE_WALLET) {
+                  if (type == KeyType.CREATE) {
                     Navigator.pop(context);
                     Navigator.pop(context);
                     Navigator.pop(context);
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainScreen(
-                          index: 1,
-                          wallet: wallet,
-                        ),
-                      ),
-                    );
-                  }
+                    Navigator.pop(context);
+                  } else if (type == KeyType.CREATE_HAVE_WALLET) {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  } else if (type == KeyType.IMPORT) {
+                  } else {}
                 },
                 child: ButtonGold(
                   title: S.current.complete,
