@@ -64,8 +64,6 @@ class ConfirmBlockchainCategory extends StatefulWidget {
 }
 
 class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
-
-
   //2 controllers below manage text field
   late TextEditingController _txtGasLimit;
   late TextEditingController _txtGasPrice;
@@ -151,22 +149,21 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                           to: widget.addressTo,
                           amount: formatValue.format(widget.amount),
                         )
-                      ] else if(widget.typeConfirm == TYPE_CONFIRM.SEND_NFT) ...[
+                      ] else if (widget.typeConfirm ==
+                          TYPE_CONFIRM.SEND_NFT) ...[
                         FormAddFtAmount(
                           typeForm: TypeIsHaveAmount.HAVE_QUANTITY,
                           from: widget.addressFrom,
                           to: widget.addressTo,
                           quantity: widget.quantity,
                         )
-                      ]
-                      else
-                        ...[
-                          FormAddFtAmount(
-                            typeForm: TypeIsHaveAmount.NO_HAVE_AMOUNT,
-                            from: widget.addressFrom,
-                            to: widget.addressTo,
-                          ),
-                        ],
+                      ] else ...[
+                        FormAddFtAmount(
+                          typeForm: TypeIsHaveAmount.NO_HAVE_AMOUNT,
+                          from: widget.addressFrom,
+                          to: widget.addressTo,
+                        ),
+                      ],
                       const Divider(
                         thickness: 1,
                         color: Color.fromRGBO(255, 255, 255, 0.1),
@@ -182,26 +179,25 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                           thickness: 1,
                           color: Color.fromRGBO(255, 255, 255, 0.1),
                         ),
+                      ] else if (widget.typeConfirm ==
+                          TYPE_CONFIRM.SEND_OFFER) ...[
+                        const FormSaleFtPawn(
+                          isPawnOrSale: IS_PAWN_OR_SALE.SEND_OFFER,
+                          loanToVl: 10,
+                          loanAmount: 10000,
+                          interestRate: 5,
+                          ltvLiquidThreshold: 10,
+                          duration: 24,
+                          repaymentCurrent: 'DFY',
+                          recurringInterest: 'months',
+                          // recurringInterest: ,
+                        ),
+                        const Divider(
+                          thickness: 1,
+                          color: Color.fromRGBO(255, 255, 255, 0.1),
+                        ),
                       ] else
-                        if (widget.typeConfirm ==
-                            TYPE_CONFIRM.SEND_OFFER) ...[
-                          const FormSaleFtPawn(
-                            isPawnOrSale: IS_PAWN_OR_SALE.SEND_OFFER,
-                            loanToVl: 10,
-                            loanAmount: 10000,
-                            interestRate: 5,
-                            ltvLiquidThreshold: 10,
-                            duration: 24,
-                            repaymentCurrent: 'DFY',
-                            recurringInterest: 'months',
-                            // recurringInterest: ,
-                          ),
-                          const Divider(
-                            thickness: 1,
-                            color: Color.fromRGBO(255, 255, 255, 0.1),
-                          ),
-                        ] else
-                          ...[],
+                        ...[],
                       _informationWallet, //will not appear
                       spaceH16,
                       FormShowFtHideCfBlockchain(
@@ -232,6 +228,18 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                       price: gasLimitFirstFetch,
                       maxGas: gasFeeFirstFetch,
                     );
+                    // showModalBottomSheet(
+                    //   backgroundColor: Colors.transparent,
+                    //   isScrollControlled: true,
+                    //   context: context,
+                    //   builder: (_) {
+                    //     return TokenDetail(
+                    //       tokenData: 32,
+                    //       bloc: TokenDetailBloc(),
+                    //       tokenType: EnumTokenType.BNB,
+                    //     );
+                    //   },
+                    // );
                     break;
                 }
               },
@@ -240,7 +248,6 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 isEnable: true,
               ),
             ),
-
           ],
         ),
       ),
