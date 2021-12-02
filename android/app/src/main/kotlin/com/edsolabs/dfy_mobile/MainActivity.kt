@@ -151,6 +151,39 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("password") ?: ""
                     setShowedNft(walletAddress, nftAddress, isShow, password)
                 }
+                "getTokens" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    getTokens(walletAddress)
+                }
+                "getNFT" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    getNFT(walletAddress)
+                }
+                "signTransaction" -> {
+                    val fromAddress =
+                        call.argument<String>("fromAddress")
+                            ?: return@setMethodCallHandler
+                    val toAddress =
+                        call.argument<String>("toAddress")
+                            ?: return@setMethodCallHandler
+                    val chainId =
+                        call.argument<String>("chainId")
+                            ?: return@setMethodCallHandler
+                    val gasPrice =
+                        call.argument<Long>("gasPrice")
+                            ?: return@setMethodCallHandler
+                    val price =
+                        call.argument<Long>("price")
+                            ?: return@setMethodCallHandler
+                    val maxGas =
+                        call.argument<Long>("maxGas")
+                            ?: return@setMethodCallHandler
+                    signTransaction(fromAddress, toAddress, chainId, gasPrice, price, maxGas)
+                }
             }
         }
     }
@@ -262,6 +295,51 @@ class MainActivity : FlutterFragmentActivity() {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
         channel?.invokeMethod("importTokenCallback", hasMap)
+    }
+
+    private fun getTokens(
+        walletAddress: String
+    ) {
+        val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
+        val data1 = HashMap<String, Any>()
+        data1["tokenName"] = "BTC"
+        data1["tokenAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        hasMap.add(data1)
+        val data2 = HashMap<String, Any>()
+        data2["tokenName"] = "BNB"
+        data2["tokenAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        hasMap.add(data2)
+        channel?.invokeMethod("getTokensCallback", hasMap)
+    }
+
+    private fun getNFT(
+        walletAddress: String
+    ) {
+        val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
+        val data1 = HashMap<String, Any>()
+        data1["nftName"] = "BTC"
+        data1["nftAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        hasMap.add(data1)
+        val data2 = HashMap<String, Any>()
+        data2["nftName"] = "BNB"
+        data2["nftAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        hasMap.add(data2)
+        channel?.invokeMethod("getNFTCallback", hasMap)
+    }
+
+    private fun signTransaction(
+        fromAddress: String,
+        toAddress: String,
+        chainId: String,
+        gasPrice: Long,
+        price: Long,
+        maxGas: Long
+    ) {
+        val hasMap = HashMap<String, Any>()
+        hasMap["isSuccess"] = true
+        hasMap["signedTransaction"] =
+            "f86a8084d693a40082520894c37054b3b48c3317082e7ba872d7753d13da4986870348bca5a160008026a08b3246a86e33706d192a6dcf036e6d769df6eb5a3545e9647c5cc6cfaa64b6baa068454edce7412dd4d2130b9879af0d1dc106d715fe05c9e52d1494fe0a256b12".toByteArray()
+        channel?.invokeMethod("signTransactionCallback", hasMap)
     }
 
     private fun setShowedToken(
