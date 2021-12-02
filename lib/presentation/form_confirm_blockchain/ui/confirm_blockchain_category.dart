@@ -1,14 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
-import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
-import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
-import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -76,9 +72,11 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
 
   @override
   void initState() {
-    gasPriceFirstFetch = 1000;
-    gasLimitFirstFetch = 2000;
     _cubitFormCustomizeGasFee = FormFieldBlockchainCubit();
+    Web3Utils().getGasPrice().then((value) => gasPriceFirstFetch = value);
+
+    gasPriceFirstFetch = 2000;
+    gasLimitFirstFetch = 2000;
     _txtGasLimit = TextEditingController(text: gasLimitFirstFetch.toString());
     _txtGasPrice = TextEditingController(text: gasPriceFirstFetch.toString());
     _informationWallet = InformationWallet(
@@ -216,7 +214,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               ),
             ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 switch (widget.typeConfirm) {
                   case TYPE_CONFIRM.SEND_TOKEN:
                     final cubit = widget.cubitCategory as SendTokenCubit;
@@ -228,18 +226,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                       price: gasLimitFirstFetch,
                       maxGas: gasFeeFirstFetch,
                     );
-                    // showModalBottomSheet(
-                    //   backgroundColor: Colors.transparent,
-                    //   isScrollControlled: true,
-                    //   context: context,
-                    //   builder: (_) {
-                    //     return TokenDetail(
-                    //       tokenData: 32,
-                    //       bloc: TokenDetailBloc(),
-                    //       tokenType: EnumTokenType.BNB,
-                    //     );
-                    //   },
-                    // );
+                    print(await Web3Utils().getGasPrice());
                     break;
                 }
               },
