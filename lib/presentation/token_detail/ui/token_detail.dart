@@ -12,6 +12,7 @@ import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/default_sub_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -19,12 +20,14 @@ class TokenDetail extends StatelessWidget {
   final int tokenData;
   final TokenDetailBloc bloc;
   final EnumTokenType tokenType;
+  final bool isSubmitting;
 
   const TokenDetail({
     Key? key,
     required this.tokenData,
     required this.bloc,
     required this.tokenType,
+    this.isSubmitting = false,
   }) : super(
           key: key,
         );
@@ -156,6 +159,32 @@ class TokenDetail extends StatelessWidget {
           TransactionList(title: title, bloc: bloc)
         ],
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () { },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("My title"),
+      content: Text("This is my message."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
