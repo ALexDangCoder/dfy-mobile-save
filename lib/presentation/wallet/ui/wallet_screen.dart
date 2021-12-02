@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/token.dart';
+import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -67,9 +68,11 @@ class _WalletState extends State<WalletScreen>
     fToast.init(context);
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
-    cubit.getListNFT(
-      cubit.addressWallet.value,
-      password: 'aaa',
+    cubit.getNFT(
+      widget.wallet?.address ?? cubit.addressWallet.value,
+    );
+    cubit.getTokens(
+      widget.wallet?.address ?? cubit.addressWallet.value,
     );
     cubit.getListWallets('aaaa');
   }
@@ -213,7 +216,7 @@ class _WalletState extends State<WalletScreen>
                               stream: cubit.listTokenStream,
                               builder: (
                                 context,
-                                AsyncSnapshot<List<TokenModel>> snapshot,
+                                AsyncSnapshot<List<ModelToken>> snapshot,
                               ) {
                                 return ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
@@ -224,17 +227,15 @@ class _WalletState extends State<WalletScreen>
                                       index: index,
                                       bloc: cubit,
                                       symbolUrl:
-                                          snapshot.data?[index].iconToken ??
-                                              'assets/images/Ellipse 39.png',
-                                      amount: snapshot.data?[index].amountToken
+                                          snapshot.data![index].iconToken,
+                                      amount: snapshot.data?[index].balanceToken
                                               .toString() ??
                                           '',
                                       nameToken: snapshot
-                                              .data?[index].nameTokenSymbol ??
+                                              .data?[index].nameShortToken ??
                                           '',
-                                      price: snapshot.data?[index].price
-                                              .toString() ??
-                                          '',
+                                      exchangeRate: snapshot
+                                              .data![index].exchangeRate,
                                     );
                                   },
                                 );

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
@@ -15,15 +17,15 @@ class TokenItem extends StatelessWidget {
     required this.symbolUrl,
     required this.amount,
     required this.nameToken,
-    required this.price,
+    required this.exchangeRate,
     required this.index,
     required this.bloc,
   }) : super(key: key);
 
-  final String symbolUrl;
+  final Uint8List? symbolUrl;
   final String amount;
   final String nameToken;
-  final String price;
+  final double exchangeRate;
   final int index;
   final WalletCubit bloc;
 
@@ -73,10 +75,10 @@ class TokenItem extends StatelessWidget {
                     top: 19.h,
                     left: 20.w,
                   ),
-                  child: Image(
+                  child: Image.memory(
+                    symbolUrl!,
                     width: 28.w,
-                    height: 28.h,
-                    image: AssetImage(symbolUrl),
+                    height: 28.w,
                   ),
                 ),
                 Padding(
@@ -97,7 +99,7 @@ class TokenItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '\$ $price',
+                        '\$ $exchangeRate*$amount',
                         style: textNormalCustom(
                           Colors.grey.shade400,
                           16,
