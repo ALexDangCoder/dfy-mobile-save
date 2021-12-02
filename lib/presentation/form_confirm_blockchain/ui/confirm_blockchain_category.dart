@@ -2,8 +2,10 @@ import 'dart:typed_data';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
+import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:Dfy/utils/enum_ext.dart';
@@ -36,6 +38,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     required this.addressFrom,
     required this.addressTo,
     required this.imageWallet,
+    required this.cubitCategory,
     this.nameToken,
     this.amount,
   }) : super(key: key);
@@ -51,6 +54,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
   final String nameTokenWallet;
   final double balanceWallet;
   final String imageWallet;
+  final dynamic cubitCategory;
 
   @override
   _ConfirmBlockchainCategoryState createState() =>
@@ -58,6 +62,8 @@ class ConfirmBlockchainCategory extends StatefulWidget {
 }
 
 class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
+
+
   //2 controllers below manage text field
   late TextEditingController _txtGasLimit;
   late TextEditingController _txtGasPrice;
@@ -71,8 +77,8 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
   @override
   void initState() {
     super.initState();
-    gasPriceFirstFetch = 1.1;
-    gasLimitFirstFetch = 0.624;
+    gasPriceFirstFetch = 1000;
+    gasLimitFirstFetch = 2000;
     _cubitFormCustomizeGasFee = FormFieldBlockchainCubit();
     _txtGasLimit = TextEditingController(text: gasLimitFirstFetch.toString());
     _txtGasPrice = TextEditingController(text: gasPriceFirstFetch.toString());
@@ -83,7 +89,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
       nameToken: widget.nameTokenWallet,
       imgWallet: widget.imageWallet,
     );
-    gasFeeFirstFetch = 0.551;
+    gasFeeFirstFetch = 3000;
     switch (widget.typeConfirm) {
       case TYPE_CONFIRM.SEND_NFT:
         titleBts = S.current.send_nft;
@@ -100,6 +106,12 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
       default:
         titleBts = S.current.place_a_bid;
         break;
+    }
+
+    if(widget.typeConfirm == TYPE_CONFIRM.SEND_TOKEN) {
+      final cubit = widget.cubitCategory as SendTokenCubit;
+      trustWalletChannel
+          .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     }
   }
 
@@ -198,24 +210,27 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               ),
             ),
             GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  backgroundColor: Colors.transparent,
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (_) {
-                    return TokenDetail(
-                        tokenData: 3,
-                        bloc: TokenDetailBloc(),
-                        tokenType: EnumTokenType.BNB, isSubmitting: true,);
-                  },
-                );
-              },
-              child: ButtonGold(
-                title: S.current.approve,
-                isEnable: true,
+                onTap: () {
+                  switch (widget.typeConfirm) {
+                    case TYPE_CONFIRM.SEND_TOKEN:
+                      final cubit = widget.cubitCategory as SendTokenCubit;
+                      cubit.signTransaction(
+                        fromAddress: widget.addressFrom,
+                        toAddress: widget.addressTo,
+                        chainId: widget.nameToken ?? '',
+                        gasPrice: gasPriceFirstFetch.toInt(),
+                        price: gasLimitFirstFetch.toInt(),
+                        maxGas: gasFeeFirstFetch.toInt(),
+                      );
+                      break;
+                  }
+                },
+                child: ButtonGold(
+                  title: S.current.approve,
+                  isEnable: true,
+                ),
               ),
-            )
+
           ],
         ),
       ),

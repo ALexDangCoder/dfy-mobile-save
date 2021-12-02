@@ -100,7 +100,7 @@ class _MyAppState extends State<MyApp> {
         break;
       case 'importWalletCallback':
         break;
-      case 'earseWalletCallback':
+      case 'earseWa lletCallback':
         print(methodCall.arguments.toString());
         break;
       case 'getListWalletsCallback':

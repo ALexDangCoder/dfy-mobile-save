@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
@@ -279,33 +281,41 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-  Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    bool isSuccess = false;
+    Uint8List signedTransaction;
     switch (methodCall.method) {
       case 'signTransactionCallback':
-        final bool isSuccess = await methodCall.arguments['isSuccess'];
-        final dynamic signedTransaction =
+        isSuccess = await methodCall.arguments['isSuccess'];
+        signedTransaction =
             await methodCall.arguments['signedTransaction'];
+        if(isSuccess) {
+          print(signedTransaction);
+        } else {
+          print('false');
+        }
         break;
       default:
         break;
     }
   }
 
+
   Future<void> signTransaction({
     required String fromAddress,
-    required String receiveAddress,
-    required String chainID,
+    required String toAddress,
+    required String chainId,
     required int gasPrice,
-    required int gas,
+    required int price,
     required int maxGas,
   }) async {
     try {
       final data = {
         'fromAddress': fromAddress,
-        'receiveAddress': receiveAddress,
-        'chainID': chainID,
+        'toAddress': toAddress,
+        'chainId': chainId,
         'gasPrice': gasPrice,
-        'gas': gas,
+        'price': price,
         'maxGas': maxGas,
         //
       };
