@@ -3,13 +3,14 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/bloc/receive_cubit.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
+import 'package:Dfy/presentation/receive_token/bloc/receive_cubit.dart';
 import 'package:Dfy/utils/animate/custom_rect_tween.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/form/item_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'bts_receive_dfy.dart';
 
 class SetAmountPopUp extends StatelessWidget {
   const SetAmountPopUp({

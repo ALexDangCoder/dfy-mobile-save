@@ -2,9 +2,9 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
+import 'package:Dfy/presentation/receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -384,13 +384,13 @@ class _NFTDetailState extends State<NFTDetail> {
         buildColumnButton(
           path: first,
           callback: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (context) => const Receive(
-                walletAddress: 'aaaaaaaaaaa',
-                type: TokenType.NFT,
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Receive(
+                  walletAddress: 'aaaaaaaaaaa',
+                  type: TokenType.NFT,
+                ),
               ),
             );
           },
