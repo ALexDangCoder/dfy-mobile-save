@@ -4,5 +4,6 @@ class TransactionHistory {
   String? status;
   double? amount;
 
-  TransactionHistory(this.name, this.dateTime, this.status, this.amount);
+  TransactionHistory(this.name,  this.status,this.dateTime, this.amount);
+  TransactionHistory.init();
 }

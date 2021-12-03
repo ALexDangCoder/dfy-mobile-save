@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:typed_data';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -35,7 +34,8 @@ class TokenDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bloc.checkData();
+    bloc.getHistory();
+    bloc.getTransaction();
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -165,7 +165,7 @@ class TokenDetail extends StatelessWidget {
                   ],
                 ),
               ),
-              TransactionList(title: token.nameShortToken, bloc: bloc)
+              TransactionList(shortName: token.nameShortToken, bloc: bloc)
             ],
           ),
         ),

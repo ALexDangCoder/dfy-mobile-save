@@ -56,7 +56,6 @@ extension FormatString on String {
 extension FormatDateToString on DateTime {
   String get stringFromDateTime {
     String result = '';
-
     try {
       result = DateFormat('HH:mm dd/MM/yyyy').format(this);
     } catch (e) {

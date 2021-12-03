@@ -1,49 +1,50 @@
+import 'dart:developer';
 import 'dart:math' hide log;
+
+import 'package:Dfy/data/web3/model/transaction.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/token_model.dart';
-import 'package:Dfy/domain/model/transaction.dart';
-import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
   final ModelToken modelToken;
   final String walletAddress;
+  final Web3Utils _client = Web3Utils();
 
-  TokenDetailBloc({required this.modelToken, required this.walletAddress,});
-
-  ///MOCK DATA
-  static const len_mock_data = 83;
-  final List<TransactionModel> mocObject = List.generate(
-    len_mock_data,
-    (index) => TransactionModel(
-      title: S.current.contract_interaction,
-      amount: Random().nextInt(9999),
-      status: TransactionStatus
-          .values[Random().nextInt(TransactionStatus.values.length)],
-      time: DateTime.now(),
-      txhId: '0xaaa042c0632f4d44c7cea978f22cd02e751a410e',
-      from: '0xaaa042c0632f4d44c7cea978f22cd02e751a410e',
-      to: '0xaaa042c0632f4d44c7cea978f22cd02e751a410e',
-      nonce: Random().nextInt(9999),
-      type: TransactionType.values[Random().nextInt(
-        TransactionType.values.length,
-      )],
-    ),
-  );
+  TokenDetailBloc({
+    required this.modelToken,
+    required this.walletAddress,
+  });
+  
 
   ///todoClearFakeData
   int dataListLen = 4;
-  List<TransactionModel> transactionList = [];
+  List<TransactionHistory> totalTransactionList = [];
+  List<TransactionHistory> currentTransactionList = [];
 
-  final BehaviorSubject<List<TransactionModel>> _transactionListSubject =
+  Future<void> getHistory() async {
+     final result = await  _client.getTransactionHistory(
+      ofAddress: walletAddress,
+      tokenAddress: modelToken.tokenAddress,
+    );
+     totalTransactionList = result;
+     log('>>>>>>>>>>>>>>>>>>>>>${result.length.toString()}');
+     checkData();
+  }
+
+  Future<void> getTransaction() async {
+    final result = await  _client.getHistoryDetail(txhId: 'a');
+    log('>>>>>>>>>>>>>>>>>>>>>>>>>> ${result.amount}');
+  }
+
+  final BehaviorSubject<List<TransactionHistory>> _transactionListSubject =
       BehaviorSubject();
 
   final BehaviorSubject<bool> _showMoreSubject = BehaviorSubject();
   final BehaviorSubject<bool> _isShowTransactionSubmit =
       BehaviorSubject<bool>.seeded(true);
 
-  Stream<List<TransactionModel>> get transactionListStream =>
+  Stream<List<TransactionHistory>> get transactionListStream =>
       _transactionListSubject.stream;
 
   Stream<bool> get showMoreStream => _showMoreSubject.stream;
@@ -53,36 +54,38 @@ class TokenDetailBloc {
 
   ///realData
   final BehaviorSubject<bool> _showLoadingSubject = BehaviorSubject();
+
   Stream<bool> get showLoadingStream => _showLoadingSubject.stream;
 
   ///Mock Func
 
   void checkData() {
-    if (mocObject.length <= dataListLen) {
-      _transactionListSubject.sink.add(mocObject);
+    if (totalTransactionList.length <= dataListLen) {
+      _transactionListSubject.sink.add(totalTransactionList);
       hideShowMore();
     } else {
-      transactionList = mocObject.sublist(0, dataListLen);
-      _transactionListSubject.sink.add(transactionList);
+      currentTransactionList = totalTransactionList.sublist(0, dataListLen);
+      _transactionListSubject.sink.add(currentTransactionList);
       _showMoreSubject.sink.add(true);
     }
   }
 
   void showMore() {
-    if (mocObject.length - transactionList.length > 10) {
-      transactionList.addAll(
-        mocObject.sublist(transactionList.length, transactionList.length + 10),
+    if (totalTransactionList.length - currentTransactionList.length > 10) {
+      currentTransactionList.addAll(
+        totalTransactionList.sublist(currentTransactionList.length, currentTransactionList.length + 10),
       );
     } else {
-      transactionList = mocObject;
+      currentTransactionList = totalTransactionList;
       hideShowMore();
     }
-    _transactionListSubject.sink.add(transactionList);
+    _transactionListSubject.sink.add(currentTransactionList);
   }
 
   void hideShowMore() {
     _showMoreSubject.sink.add(false);
   }
+
   ///showLoading
   Future<void> checkShowLoading() async {
     _showLoadingSubject.sink.add(true);
@@ -97,28 +100,4 @@ class TokenDetailBloc {
       tokenAddress: _tokenAddress,
     );
   }
-}
-
-extension StatusExtension on TransactionStatus {
-  String get statusImage {
-    switch (this) {
-      case TransactionStatus.SUCCESS:
-        return ImageAssets.ic_transaction_success_svg;
-      case TransactionStatus.FAILED:
-        return ImageAssets.ic_transaction_fail_svg;
-      case TransactionStatus.PENDING:
-        return ImageAssets.ic_transaction_pending_svg;
-    }
-  }
-}
-
-enum TransactionStatus {
-  SUCCESS,
-  FAILED,
-  PENDING,
-}
-
-enum TransactionType {
-  SEND,
-  RECEIVE,
 }
