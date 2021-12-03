@@ -49,7 +49,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       BehaviorSubject.seeded([]);
   BehaviorSubject<List<AccountModel>> list = BehaviorSubject.seeded([]);
   BehaviorSubject<String> addressWallet =
-      BehaviorSubject.seeded('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
+      BehaviorSubject();
   BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
   BehaviorSubject<double> totalBalance = BehaviorSubject();
@@ -267,7 +267,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       list[i].exchangeRate = 12;
       list[i].balanceToken = await client.getBalanceOfToken(
         ofAddress: addressWalletCore,
-        tokenAddress: list[i].tokenAddress ?? '',
+        tokenAddress: list[i].tokenAddress,
       );
     }
   }
@@ -314,6 +314,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           listWallet.add(Wallet.fromJson(element));
+          addressWalletCore = listWallet.first.address!;
+          addressWallet.add(addressWalletCore);
         }
         break;
       default:
