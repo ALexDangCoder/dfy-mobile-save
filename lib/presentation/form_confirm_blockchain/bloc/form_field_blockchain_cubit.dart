@@ -38,7 +38,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   Sink<String> get txtGasFeeWhenEstimatingSink => _txtGasFeeWhenEstimating.sink;
 
   Future<void> getGasPrice() async {
-    double result = await Web3Utils().getGasPrice();
+    final double result = await Web3Utils().getGasPrice();
     gasPriceSink.add(result);
   }
   //function
@@ -61,5 +61,6 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       isSufficientGasFeeSink.add(true);
     }
   }
+
 
 }

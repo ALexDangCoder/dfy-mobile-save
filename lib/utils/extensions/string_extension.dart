@@ -16,3 +16,11 @@ extension StringMoneyFormat on String {
     return result;
   }
 }
+
+extension FormatAddress on String {
+  String formatAddressWallet() {
+    final String result = '${substring(0, 5)}...${substring(
+      length - 4, length,)}';
+    return result;
+  }
+}
