@@ -3,14 +3,13 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
-import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
+import 'package:Dfy/presentation/receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
@@ -227,15 +226,7 @@ class _WalletState extends State<WalletScreen>
                                     return TokenItem(
                                       index: index,
                                       bloc: cubit,
-                                      symbolUrl:
-                                          snapshot.data![index].iconToken,
-                                      amount:
-                                          snapshot.data![index].balanceToken,
-                                      nameToken: snapshot
-                                              .data?[index].nameShortToken ??
-                                          '',
-                                      exchangeRate:
-                                          snapshot.data![index].exchangeRate,
+                                      modelToken: snapshot.data![index],
                                     );
                                   },
                                 );
