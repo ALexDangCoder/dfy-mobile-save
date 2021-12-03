@@ -103,7 +103,7 @@
   "name_not_null": "Tên ví là bắt buộc",
   "copy": "Copy thành công",
   "token_successfully": "Nhập Token thành công ",
-  "nft_successfully": "Nhập  thành công NFT",
+  "nft_successfully": "Nhập collectible thành công",
   "token_address": "Token địa chỉ",
   "token_symbol": "Biểu tượng token",
   "token_decimal": "Giá trị token ",
@@ -159,10 +159,10 @@
   "new_wallet": "Ví mới",
   "password_is_required": "Vui lòng điền mật khẩu",
   "only_desc": "Chỉ tài khoản đầu tiên trên ví này sẽ tự động tải. Các tài khoản đã nhập sẽ không được liên kết với tài khoản được tạo ban đầu của bạn",
-  "change_pw_success" : "Thay đổi thành công",
+  "change_pw_success": "Thay đổi thành công",
   "are_you_sure": "Bạn có chắc chắn muốn xóa ví của mình không?",
   "your_current_wallet": "Ví, tài khoản và tài sản hiện tại của bạn sẽ bị ",
-  "removed_permanently":  "xoá khỏi ứng dụng vĩnh viễn khỏi ứng dụng này. ",
+  "removed_permanently": "xoá khỏi ứng dụng vĩnh viễn khỏi ứng dụng này. ",
   "this_action": "Hành động này không thể được hoàn tác.",
   "amount_invalid": "Số lượng không hợp lệ",
   "quantity_invalid_of_all": "Số lượng không đủ",
@@ -187,5 +187,8 @@
   "ltv_liquid_thres": "Ngưỡng thanh lý:",
   "duration": "Thời hạn:",
   "repayment_curr": "Tiền thanh toán:",
-  "recurring_interest": "Lãi định kỳ:"
+  "recurring_interest": "Lãi định kỳ:",
+  "oopps_omething_went_wrong": "Oopps!\nĐã xảy ra sự cố",
+  "create_new_wallet_failed": "Tạo ví mới không thành công",
+  "you_are_not": "Bạn không phải là chủ sở hữu của bộ sưu tập này, vì vậy bạn không thể thêm nó"
 }
