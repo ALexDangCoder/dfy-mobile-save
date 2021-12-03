@@ -293,14 +293,15 @@ class _NFTDetailState extends State<NFTDetail> {
 
   Widget itemTransition(int index) {
     final objHistory = bloc.listHistory[index];
+    final objDetail = bloc.listDetailHistory;
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           context: context,
-          builder: (context) => const TransactionDetail(
-            detailTransaction: '158.2578',
+          builder: (context) => TransactionDetail(
+           obj: objDetail,
           ),
         );
       },
