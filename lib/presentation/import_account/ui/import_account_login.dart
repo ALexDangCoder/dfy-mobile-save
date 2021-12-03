@@ -3,11 +3,11 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully_have_wallet.dart';
 import 'package:Dfy/presentation/import_account/bloc/import_cubit.dart';
 import 'package:Dfy/presentation/import_account/bloc/import_state.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully_have_wallet.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -65,10 +65,16 @@ class _ImportAccountState extends State<ImportAccount> {
       bloc: importCubit,
       listener: (ctx, state) {
         if (state is NavState) {
-          showCreateSuccessfullyHaveWallet(
-            context: context,
-            wallet: Wallet(),
-            type: KeyType.IMPORT,
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return CreateSuccessfullyHaveWallet(
+                  type: KeyType.IMPORT,
+                  wallet: Wallet(),
+                );
+              },
+            ),
           );
         }
         if (state is ErrorState) {

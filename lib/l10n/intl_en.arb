@@ -101,7 +101,7 @@
   "show_qr_code": "Show QR code",
   "copy": "Copy Successfully",
   "token_successfully": "Import Token successfully",
-  "nft_successfully": "Import NFT successfully",
+  "nft_successfully": "Import collectible successfully",
   "token_address": "Token address",
   "invalid_address": "Invalid address",
   "token_symbol": "Token symbol",
@@ -158,12 +158,12 @@
   "transaction_fail": "Fail",
   "view_on_bscscan": "View on Bscscan",
   "detail_transaction": "Detail",
-  "change_pw_success" : "Change Successful",
+  "change_pw_success": "Change Successful",
   "only_desc": "Only the first account on this wallet will auto load. Imported accounts will not be associated with your originally created account Secret Seed Phrase.",
   "imported": "Imported accounts will not be associated with your originally created account Secret Seed Phrase.",
   "are_you_sure": "Are you sure you want to erase your wallet?",
   "your_current_wallet": "Your current wallet, accounts and assets will be ",
-  "removed_permanently":  "removed from this app permanently. ",
+  "removed_permanently": "removed from this app permanently. ",
   "this_action": "This action cannot be undone.",
   "you_can_only": "You can ONLY recover this wallet with your ",
   "amount_invalid": "Invalid amount",
@@ -188,5 +188,8 @@
   "ltv_liquid_thres": "LTV Liquidation threshold:",
   "duration": "Duration:",
   "repayment_curr": "Repayment currency:",
-  "recurring_interest": "Recurring interest:"
+  "recurring_interest": "Recurring interest:",
+  "oopps_omething_went_wrong": "Oopps! \nSomething went wrong",
+  "create_new_wallet_failed": "Create new wallet failed",
+  "you_are_not": "You are not the owner of this collectible, so you can not add it"
 }

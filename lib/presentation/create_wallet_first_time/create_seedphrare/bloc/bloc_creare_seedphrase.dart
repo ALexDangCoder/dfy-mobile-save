@@ -32,6 +32,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   String walletAddress = '';
   String privateKey = '';
   bool configSuccess = false;
+  bool isSuccess = false;
 
   bool getIsSeedPhraseImport() {
     if (listTitle.value.isNotEmpty) {
@@ -141,9 +142,9 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   }
 
   Future<void> setConfig({
-    required String password,
-    required bool isAppLock,
-    required bool isFaceID,
+     String? password,
+     bool? isAppLock,
+     bool? isFaceID,
   }) async {
     try {
       final data = {
@@ -171,12 +172,11 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         isCheckData.sink.add(true);
         break;
       case 'storeWalletCallback':
-        final bool isSuccess = await methodCall.arguments['isSuccess'];
-        if (isSuccess) {
-          emit(SeedNavState());
-        }
+        isSuccess = await methodCall.arguments['isSuccess'];
+        emit(SeedNavState());
         break;
       case 'setConfigCallback':
+        //todo
         bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       default:

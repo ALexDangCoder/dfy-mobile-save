@@ -326,7 +326,17 @@ class _WalletState extends State<WalletScreen>
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    showSelectAcc(context, cubit, TypeScreen2.detail);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return SelectAcc(
+                            bloc: cubit,
+                            typeScreen2: TypeScreen2.detail,
+                          );
+                        },
+                      ),
+                    );
                   },
                   child: CircleAvatar(
                     radius: 27.r,

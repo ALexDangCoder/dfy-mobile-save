@@ -153,6 +153,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                           ),
                         ),
                       ),
+                      spaceH4,
                       StreamBuilder(
                         stream: widget.bloc.isWalletName,
                         builder: (context, AsyncSnapshot<bool> snapshot) {
