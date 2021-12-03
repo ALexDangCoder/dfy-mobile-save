@@ -53,9 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
     trustWalletChannel
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
     _cubit.getConfig();
-    if(_cubit.isFaceID){
-      _cubit.authenticate();
-    }
+    _cubit.checkBiometrics();
   }
 
   @override
