@@ -2,8 +2,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase.dart';
 import 'package:Dfy/presentation/import_account/ui/import_account_login.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrase.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
@@ -71,10 +71,16 @@ class SettingWallet extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showSelectAcc(
+                      Navigator.push(
                         context,
-                        cubit,
-                        TypeScreen2.setting,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SelectAcc(
+                              bloc: cubit,
+                              typeScreen2: TypeScreen2.setting,
+                            );
+                          },
+                        ),
                       );
                     },
                     child: buttonForm(
@@ -87,11 +93,16 @@ class SettingWallet extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showCreateSeedPhrase(
+                      Navigator.push(
                         context,
-                        true,
-                        BLocCreateSeedPhrase(''),
-                        TypeScreen.one,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CreateSeedPhrase(
+                              blocCreateSeedPhrase: BLocCreateSeedPhrase(''),
+                              type: TypeScreen.one,
+                            );
+                          },
+                        ),
                       );
                     },
                     child: buttonForm(
