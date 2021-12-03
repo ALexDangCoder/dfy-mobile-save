@@ -11,6 +11,7 @@ class Web3Utils {
 
   factory Web3Utils() => _shared;
 
+
   //client
   final client = Web3Client(rpcURL, Client());
 

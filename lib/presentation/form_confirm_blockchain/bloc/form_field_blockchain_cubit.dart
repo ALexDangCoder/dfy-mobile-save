@@ -1,3 +1,4 @@
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,6 +11,8 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   final _isEnableBtn = BehaviorSubject<bool>();
   final _isCustomizeGasFee = BehaviorSubject<bool>.seeded(false);
   final _txtGasFeeWhenEstimating = BehaviorSubject<String>();
+  final _gasPrice = BehaviorSubject<double>();
+  //web3
 
   //stream
   Stream<bool> get isSufficientGasFeeStream => _isSufficientGasFee.stream;
@@ -18,11 +21,15 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
 
   Stream<bool> get isCustomizeGasFeeStream => _isCustomizeGasFee.stream;
 
+  Stream<double> get getGasPriceStream => _gasPrice.stream;
+
   Stream<String> get txtGasFeeWhenEstimatingStream =>
       _txtGasFeeWhenEstimating.stream;
 
   //sink
   Sink<bool> get isSufficientGasFeeSink => _isSufficientGasFee.sink;
+
+  Sink<double> get gasPriceSink => _gasPrice.sink;
 
   Sink<bool> get isEnableBtnSink => _isEnableBtn.sink;
 
@@ -30,6 +37,10 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
 
   Sink<String> get txtGasFeeWhenEstimatingSink => _txtGasFeeWhenEstimating.sink;
 
+  Future<void> getGasPrice() async {
+    final double result = await Web3Utils().getGasPrice();
+    gasPriceSink.add(result);
+  }
   //function
   void isShowCustomizeFee({required bool isShow}) {
     isCustomizeGasFeeSink.add(isShow);
@@ -50,5 +61,6 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       isSufficientGasFeeSink.add(true);
     }
   }
+
 
 }

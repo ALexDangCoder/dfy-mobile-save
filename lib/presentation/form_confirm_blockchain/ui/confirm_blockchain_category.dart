@@ -1,14 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
-import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
-import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
-import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -39,6 +35,8 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     required this.addressTo,
     required this.imageWallet,
     required this.cubitCategory,
+    required this.gasPriceFirstFetch,
+    required this.gasFeeFirstFetch,
     this.nameToken,
     this.amount,
     this.quantity,
@@ -55,6 +53,8 @@ class ConfirmBlockchainCategory extends StatefulWidget {
   final int? quantity;
   final String nameTokenWallet;
   final double balanceWallet;
+  final double gasPriceFirstFetch;
+  final double gasFeeFirstFetch;
   final String imageWallet;
   final dynamic cubitCategory;
 
@@ -64,25 +64,22 @@ class ConfirmBlockchainCategory extends StatefulWidget {
 }
 
 class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
-
-
   //2 controllers below manage text field
   late TextEditingController _txtGasLimit;
   late TextEditingController _txtGasPrice;
   late String titleBts;
   late InformationWallet _informationWallet;
-  late double gasFeeFirstFetch;
   late double gasLimitFirstFetch;
-  late double gasPriceFirstFetch;
   late FormFieldBlockchainCubit _cubitFormCustomizeGasFee;
 
   @override
   void initState() {
-    gasPriceFirstFetch = 1000;
-    gasLimitFirstFetch = 2000;
     _cubitFormCustomizeGasFee = FormFieldBlockchainCubit();
+
+    gasLimitFirstFetch = 2000;
     _txtGasLimit = TextEditingController(text: gasLimitFirstFetch.toString());
-    _txtGasPrice = TextEditingController(text: gasPriceFirstFetch.toString());
+    _txtGasPrice =
+        TextEditingController(text: widget.gasPriceFirstFetch.toString());
     _informationWallet = InformationWallet(
       nameWallet: widget.nameWallet,
       fromAddress: widget.addressFrom,
@@ -90,7 +87,6 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
       nameToken: widget.nameTokenWallet,
       imgWallet: widget.imageWallet,
     );
-    gasFeeFirstFetch = 3000;
     if (widget.typeConfirm == TYPE_CONFIRM.SEND_TOKEN) {
       final cubit = widget.cubitCategory as SendTokenCubit;
       trustWalletChannel
@@ -123,6 +119,8 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
 
   @override
   Widget build(BuildContext context) {
+    // final balanceWallet = ModalRoute.of(context)?.settings.arguments as double;
+
     return GestureDetector(
       onTap: () {
         final FocusScopeNode currentFocus = FocusScope.of(context);
@@ -130,118 +128,121 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
           currentFocus.unfocus();
         }
       },
-      child: BaseBottomSheet(
-        title: titleBts,
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                  ),
-                  child: Column(
-                    children: [
-                      if (widget.typeConfirm == TYPE_CONFIRM.SEND_TOKEN ||
-                          widget.typeConfirm == TYPE_CONFIRM.PLACE_BID) ...[
-                        FormAddFtAmount(
-                          typeForm: TypeIsHaveAmount.HAVE_AMOUNT,
-                          from: widget.addressFrom,
-                          to: widget.addressTo,
-                          amount: formatValue.format(widget.amount),
-                        )
-                      ] else if(widget.typeConfirm == TYPE_CONFIRM.SEND_NFT) ...[
-                        FormAddFtAmount(
-                          typeForm: TypeIsHaveAmount.HAVE_QUANTITY,
-                          from: widget.addressFrom,
-                          to: widget.addressTo,
-                          quantity: widget.quantity,
-                        )
-                      ]
-                      else
-                        ...[
-                          FormAddFtAmount(
-                            typeForm: TypeIsHaveAmount.NO_HAVE_AMOUNT,
-                            from: widget.addressFrom,
-                            to: widget.addressTo,
-                          ),
-                        ],
-                      const Divider(
-                        thickness: 1,
-                        color: Color.fromRGBO(255, 255, 255, 0.1),
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Align(
+          alignment: Alignment.bottomCenter,
+          child: BaseBottomSheet(
+            title: titleBts,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
                       ),
-                      if (widget.typeConfirm == TYPE_CONFIRM.BUY_NFT) ...[
-                        const FormSaleFtPawn(
-                          isPawnOrSale: IS_PAWN_OR_SALE.BUY,
-                          quantity: 5,
-                          pricePerOne: 10000,
-                          totalPayment: 50000,
-                        ),
-                        const Divider(
-                          thickness: 1,
-                          color: Color.fromRGBO(255, 255, 255, 0.1),
-                        ),
-                      ] else
-                        if (widget.typeConfirm ==
-                            TYPE_CONFIRM.SEND_OFFER) ...[
-                          const FormSaleFtPawn(
-                            isPawnOrSale: IS_PAWN_OR_SALE.SEND_OFFER,
-                            loanToVl: 10,
-                            loanAmount: 10000,
-                            interestRate: 5,
-                            ltvLiquidThreshold: 10,
-                            duration: 24,
-                            repaymentCurrent: 'DFY',
-                            recurringInterest: 'months',
-                            // recurringInterest: ,
-                          ),
+                      child: Column(
+                        children: [
+                          if (widget.typeConfirm == TYPE_CONFIRM.SEND_TOKEN ||
+                              widget.typeConfirm == TYPE_CONFIRM.PLACE_BID) ...[
+                            FormAddFtAmount(
+                              typeForm: TypeIsHaveAmount.HAVE_AMOUNT,
+                              from: widget.addressFrom,
+                              to: widget.addressTo,
+                              amount: formatValue.format(widget.amount),
+                            )
+                          ] else if (widget.typeConfirm ==
+                              TYPE_CONFIRM.SEND_NFT) ...[
+                            FormAddFtAmount(
+                              typeForm: TypeIsHaveAmount.HAVE_QUANTITY,
+                              from: widget.addressFrom,
+                              to: widget.addressTo,
+                              quantity: widget.quantity,
+                            )
+                          ] else ...[
+                            FormAddFtAmount(
+                              typeForm: TypeIsHaveAmount.NO_HAVE_AMOUNT,
+                              from: widget.addressFrom,
+                              to: widget.addressTo,
+                            ),
+                          ],
                           const Divider(
                             thickness: 1,
                             color: Color.fromRGBO(255, 255, 255, 0.1),
                           ),
-                        ] else
-                          ...[],
-                      _informationWallet, //will not appear
-                      spaceH16,
-                      FormShowFtHideCfBlockchain(
-                        nameToken: widget.nameTokenWallet,
-                        cubit: _cubitFormCustomizeGasFee,
-                        gasFeeFirstFetch: gasFeeFirstFetch,
-                        gasPriceFirstFetch: gasPriceFirstFetch,
-                        gasLimitFirstFetch: gasLimitFirstFetch,
-                        balanceWallet: widget.balanceWallet,
-                        txtGasLimit: _txtGasLimit,
-                        txtGasPrice: _txtGasPrice,
+                          if (widget.typeConfirm == TYPE_CONFIRM.BUY_NFT) ...[
+                            const FormSaleFtPawn(
+                              isPawnOrSale: IS_PAWN_OR_SALE.BUY,
+                              quantity: 5,
+                              pricePerOne: 10000,
+                              totalPayment: 50000,
+                            ),
+                            const Divider(
+                              thickness: 1,
+                              color: Color.fromRGBO(255, 255, 255, 0.1),
+                            ),
+                          ] else if (widget.typeConfirm ==
+                              TYPE_CONFIRM.SEND_OFFER) ...[
+                            const FormSaleFtPawn(
+                              isPawnOrSale: IS_PAWN_OR_SALE.SEND_OFFER,
+                              loanToVl: 10,
+                              loanAmount: 10000,
+                              interestRate: 5,
+                              ltvLiquidThreshold: 10,
+                              duration: 24,
+                              repaymentCurrent: 'DFY',
+                              recurringInterest: 'months',
+                              // recurringInterest: ,
+                            ),
+                            const Divider(
+                              thickness: 1,
+                              color: Color.fromRGBO(255, 255, 255, 0.1),
+                            ),
+                          ] else
+                            ...[],
+                          _informationWallet, //will not appear
+                          spaceH16,
+                          FormShowFtHideCfBlockchain(
+                            nameToken: widget.nameTokenWallet,
+                            cubit: _cubitFormCustomizeGasFee,
+                            gasFeeFirstFetch: widget.gasFeeFirstFetch,
+                            gasPriceFirstFetch: widget.gasPriceFirstFetch,
+                            gasLimitFirstFetch: gasLimitFirstFetch,
+                            balanceWallet: widget.balanceWallet,
+                            txtGasLimit: _txtGasLimit,
+                            txtGasPrice: _txtGasPrice,
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+                GestureDetector(
+                  onTap: () async {
+                    switch (widget.typeConfirm) {
+                      case TYPE_CONFIRM.SEND_TOKEN:
+                        final cubit = widget.cubitCategory as SendTokenCubit;
+                        cubit.signTransaction(
+                          fromAddress: widget.addressFrom,
+                          toAddress: widget.addressTo,
+                          chainId: widget.nameToken ?? '',
+                          gasPrice: widget.gasPriceFirstFetch,
+                          price: gasLimitFirstFetch,
+                          maxGas: widget.gasFeeFirstFetch,
+                        );
+                        break;
+                    }
+                  },
+                  child: ButtonGold(
+                    title: S.current.approve,
+                    isEnable: true,
+                  ),
+                ),
+              ],
             ),
-            GestureDetector(
-              onTap: () {
-                switch (widget.typeConfirm) {
-                  case TYPE_CONFIRM.SEND_TOKEN:
-                    final cubit = widget.cubitCategory as SendTokenCubit;
-                    cubit.signTransaction(
-                      fromAddress: widget.addressFrom,
-                      toAddress: widget.addressTo,
-                      chainId: widget.nameToken ?? '',
-                      gasPrice: gasPriceFirstFetch,
-                      price: gasLimitFirstFetch,
-                      maxGas: gasFeeFirstFetch,
-                    );
-                    break;
-                }
-              },
-              child: ButtonGold(
-                title: S.current.approve,
-                isEnable: true,
-              ),
-            ),
-
-          ],
+          ),
         ),
       ),
     );

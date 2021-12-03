@@ -1,9 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -29,6 +29,7 @@ class _SendNftState extends State<SendNft> {
   void initState() {
     super.initState();
     sendNftCubit = SendTokenCubit();
+    sendNftCubit.getGasPrice();
     txtToAddressNft = TextEditingController();
     txtQuantity = TextEditingController();
   }
@@ -84,7 +85,7 @@ class _SendNftState extends State<SendNft> {
                               ),
                             ),
                           ).then(
-                                (_) => sendNftCubit.checkHaveVlAddressFormToken(
+                            (_) => sendNftCubit.checkHaveVlAddressFormToken(
                               txtToAddressNft.text,
                               type: typeSend.SEND_NFT,
                             ),
@@ -127,7 +128,7 @@ class _SendNftState extends State<SendNft> {
                         showModalBottomSheet(
                           backgroundColor: Colors.transparent,
                           isScrollControlled: true,
-                          builder: (context) => const ConfirmBlockchainCategory(
+                          builder: (context) => ConfirmBlockchainCategory(
                             nameWallet: 'TestWallet',
                             nameTokenWallet: 'BNB',
                             balanceWallet: 0.64,
@@ -136,7 +137,10 @@ class _SendNftState extends State<SendNft> {
                             addressTo: '0xfff',
                             imageWallet: ImageAssets.symbol,
                             quantity: 10,
-                            nameToken: 'BNB', cubitCategory: null,
+                            nameToken: 'BNB',
+                            cubitCategory: null,
+                            gasPriceFirstFetch: sendNftCubit.gasPrice,
+                            gasFeeFirstFetch: 30,
                           ),
                           context: context,
                         );
@@ -202,12 +206,12 @@ class _SendNftState extends State<SendNft> {
               onTap: callBack,
               child: suffixImg == ''
                   ? const SizedBox(
-                width: 0,
-              )
+                      width: 0,
+                    )
                   : ImageIcon(
-                AssetImage(suffixImg),
-                color: AppTheme.getInstance().textThemeColor(),
-              ),
+                      AssetImage(suffixImg),
+                      color: AppTheme.getInstance().textThemeColor(),
+                    ),
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),
@@ -263,23 +267,24 @@ class _SendNftState extends State<SendNft> {
               onTap: callBack,
               child: (isAmount && !isQuantity)
                   ? Center(
-                child: Text(
-                  S.current.max,
-                  style: textNormal(
-                      const Color.fromRGBO(228, 172, 26, 1), 16)
-                      .copyWith(fontWeight: FontWeight.w600),
-                ),
-              )
+                      child: Text(
+                        S.current.max,
+                        style: textNormal(
+                          const Color.fromRGBO(228, 172, 26, 1),
+                          16,
+                        ).copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    )
                   : Padding(
-                padding: EdgeInsets.only(right: 20.w, top: 15.h),
-                child: Text(
-                  '${S.current.of_all} $maxQuantityFirstFetch',
-                  style: textNormal(
-                    AppTheme.getInstance().textThemeColor(),
-                    16.sp,
-                  ).copyWith(fontWeight: FontWeight.w400),
-                ),
-              ),
+                      padding: EdgeInsets.only(right: 20.w, top: 15.h),
+                      child: Text(
+                        '${S.current.of_all} $maxQuantityFirstFetch',
+                        style: textNormal(
+                          AppTheme.getInstance().textThemeColor(),
+                          16.sp,
+                        ).copyWith(fontWeight: FontWeight.w400),
+                      ),
+                    ),
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),
