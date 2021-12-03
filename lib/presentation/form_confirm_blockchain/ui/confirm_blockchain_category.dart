@@ -69,15 +69,13 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
   late TextEditingController _txtGasPrice;
   late String titleBts;
   late InformationWallet _informationWallet;
-  late double gasLimitFirstFetch;
   late FormFieldBlockchainCubit _cubitFormCustomizeGasFee;
 
   @override
   void initState() {
     _cubitFormCustomizeGasFee = FormFieldBlockchainCubit();
 
-    gasLimitFirstFetch = 2000;
-    _txtGasLimit = TextEditingController(text: gasLimitFirstFetch.toString());
+    _txtGasLimit = TextEditingController(text: widget.gasFeeFirstFetch.toString());
     _txtGasPrice =
         TextEditingController(text: widget.gasPriceFirstFetch.toString());
     _informationWallet = InformationWallet(
@@ -119,8 +117,6 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
 
   @override
   Widget build(BuildContext context) {
-    // final balanceWallet = ModalRoute.of(context)?.settings.arguments as double;
-
     return GestureDetector(
       onTap: () {
         final FocusScopeNode currentFocus = FocusScope.of(context);
@@ -209,7 +205,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                             cubit: _cubitFormCustomizeGasFee,
                             gasFeeFirstFetch: widget.gasFeeFirstFetch,
                             gasPriceFirstFetch: widget.gasPriceFirstFetch,
-                            gasLimitFirstFetch: gasLimitFirstFetch,
+                            gasLimitFirstFetch: widget.gasFeeFirstFetch,
                             balanceWallet: widget.balanceWallet,
                             txtGasLimit: _txtGasLimit,
                             txtGasPrice: _txtGasPrice,
@@ -220,7 +216,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () async {
+                  onTap: () {
                     switch (widget.typeConfirm) {
                       case TYPE_CONFIRM.SEND_TOKEN:
                         final cubit = widget.cubitCategory as SendTokenCubit;
@@ -229,9 +225,19 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                           toAddress: widget.addressTo,
                           chainId: widget.nameToken ?? '',
                           gasPrice: widget.gasPriceFirstFetch,
-                          price: gasLimitFirstFetch,
+                          price: double.parse(_txtGasLimit.text),
                           maxGas: widget.gasFeeFirstFetch,
                         );
+                        break;
+                      case TYPE_CONFIRM.SEND_NFT:
+                        break;
+                      case TYPE_CONFIRM.SEND_OFFER:
+                        break;
+                      case TYPE_CONFIRM.BUY_NFT:
+                        break;
+                      case TYPE_CONFIRM.PLACE_BID:
+                        break;
+                      default:
                         break;
                     }
                   },

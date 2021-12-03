@@ -1,14 +1,13 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 part 'send_token_state.dart';
 
@@ -315,8 +314,6 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       case 'signTransactionCallback':
         isSuccess = await methodCall.arguments['isSuccess'];
         signedTransaction = await methodCall.arguments['signedTransaction'];
-        log(signedTransaction.toString());
-        log(isSuccess.toString());
         break;
       default:
         break;
