@@ -102,8 +102,6 @@ dependencies:
   #gallery_saver: ^2.3.2
   qr_code_scanner: ^0.6.1
   #flutter_appavailability: ^0.0.21
-  web3dart: ^2.3.3
-  http: ^0.13.0
 
   #web3
   web3dart: ^2.3.3
