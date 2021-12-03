@@ -42,8 +42,13 @@ class MainActivity : FlutterFragmentActivity() {
                     getConfigWallet()
                 }
                 "earseWallet" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    earseWallet(walletAddress)
+                }
+                "earseAllWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
-                    earseWallet(type)
+                    earseAllWallet(type)
                 }
                 "importWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
@@ -193,8 +198,26 @@ class MainActivity : FlutterFragmentActivity() {
                         maxGas
                     )
                 }
+                "exportWallet" -> {
+                    val password =
+                        call.argument<String>("password")
+                            ?: return@setMethodCallHandler
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    exportWallet(
+                        password,
+                        walletAddress
+                    )
+                }
             }
         }
+    }
+
+    private fun exportWallet(password: String, walletAddress: String) {
+        val hasMap = HashMap<String, Any>()
+        hasMap["isSuccess"] = password.isNotEmpty()
+        channel?.invokeMethod("exportWalletCallBack", hasMap)
     }
 
     private fun checkPassWordWallet(password: String) {
@@ -211,10 +234,16 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getConfigCallback", hasMap)
     }
 
-    private fun earseWallet(type: String) {
+    private fun earseAllWallet(type: String) {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
         hasMap["type"] = type
+        channel?.invokeMethod("earseAllWalletCallback", hasMap)
+    }
+
+    private fun earseWallet(walletAddress: String) {
+        val hasMap = HashMap<String, Any>()
+        hasMap["isSuccess"] = true
         channel?.invokeMethod("earseWalletCallback", hasMap)
     }
 
