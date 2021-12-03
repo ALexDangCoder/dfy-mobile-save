@@ -231,19 +231,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                           price: double.parse(_txtGasLimit.text),
                           maxGas: widget.gasFeeFirstFetch,
                         );
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) {
-                            return TokenDetail(
-                              tokenData: 123,
-                              bloc: TokenDetailBloc(),
-                              tokenType: EnumTokenType.DFY,
-                              isSubmitting: true,
-                            );
-                          },
-                        );
+                        Navigator.pop(context,true);
                         break;
                       case TYPE_CONFIRM.SEND_NFT:
                         break;

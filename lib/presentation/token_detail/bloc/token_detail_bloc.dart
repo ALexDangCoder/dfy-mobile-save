@@ -51,6 +51,12 @@ class TokenDetailBloc {
   Stream<bool> get isShowTransactionSubmitStream =>
       _isShowTransactionSubmit.stream;
 
+  ///realData
+  final BehaviorSubject<bool> _showLoadingSubject = BehaviorSubject();
+  Stream<bool> get showLoadingStream => _showLoadingSubject.stream;
+
+  ///Mock Func
+
   void checkData() {
     if (mocObject.length <= dataListLen) {
       _transactionListSubject.sink.add(mocObject);
@@ -76,6 +82,12 @@ class TokenDetailBloc {
 
   void hideShowMore() {
     _showMoreSubject.sink.add(false);
+  }
+  ///showLoading
+  Future<void> checkShowLoading() async {
+    _showLoadingSubject.sink.add(true);
+    await Future.delayed(const Duration(seconds: 2));
+    _showLoadingSubject.sink.add(false);
   }
 
   ///GetTokenDetail

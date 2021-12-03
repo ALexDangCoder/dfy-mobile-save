@@ -151,7 +151,7 @@ class _SendTokenState extends State<SendToken> {
                           final estimateGasFee = tokenCubit.estimateGasFee;
                           //check validate before go to next screen
                           if (tokenCubit.checkAddressFtAmount()) {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (_) {

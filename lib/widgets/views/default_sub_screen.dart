@@ -16,60 +16,67 @@ class DefaultSubScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 764.h,
-      width: 375.w,
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.only(
-              top: 16.h,
-              left: 16.h,
-              right: 16.h,
-              bottom: 20.h,
+    return Scaffold(
+      backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: true,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 764.h,
+          width: 375.w,
+          decoration: BoxDecoration(
+            color: AppTheme.getInstance().bgBtsColor(),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 28.h,
-                  width: 28.h,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Image.asset(ImageAssets.ic_back),
-                  ),
+          ),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(
+                  top: 16.h,
+                  left: 16.h,
+                  right: 16.h,
+                  bottom: 20.h,
                 ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      title,
-                      style: titleText(
-                        color: AppTheme.getInstance().textThemeColor(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 28.h,
+                      width: 28.h,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Image.asset(ImageAssets.ic_back),
                       ),
                     ),
-                  ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          title,
+                          style: titleText(
+                            color: AppTheme.getInstance().textThemeColor(),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 28.h,
+                      width: 28.h,
+                    )
+                  ],
                 ),
-                SizedBox(
-                  height: 28.h,
-                  width: 28.h,
-                )
-              ],
-            ),
+              ),
+              Divider(
+                color: AppTheme.getInstance().divideColor(),
+              ),
+              Expanded(child: mainWidget),
+            ],
           ),
-          Divider(
-            color: AppTheme.getInstance().divideColor(),
-          ),
-          Expanded(child: mainWidget),
-        ],
+        ),
       ),
     );
   }
