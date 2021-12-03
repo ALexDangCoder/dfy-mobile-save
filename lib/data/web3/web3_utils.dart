@@ -58,7 +58,9 @@ class Web3Utils {
   }
 
   //Transaction History Detail
-  Future<TransactionHistoryDetail> getHistoryDetail() async {
+  Future<TransactionHistoryDetail> getHistoryDetail({
+    required String txhId,
+  }) async {
     return TransactionHistoryDetail(
       1000.0,
       0.005,
