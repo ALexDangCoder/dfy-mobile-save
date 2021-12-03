@@ -34,7 +34,7 @@ class TokenDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     bloc.checkData();
     return DefaultSubScreen(
-      title: token.nameShortToken ?? '',
+      title: token.nameShortToken,
       mainWidget: Column(
         children: [
           Container(
@@ -62,7 +62,7 @@ class TokenDetail extends StatelessWidget {
                 Text(
                   customCurrency(
                     amount: token.balanceToken.toString(),
-                    type: token.nameShortToken ?? '',
+                    type: token.nameShortToken,
                     digit: 8,
                   ),
                   style: tokenDetailAmount(
@@ -155,7 +155,7 @@ class TokenDetail extends StatelessWidget {
               ],
             ),
           ),
-          TransactionList(title: token.nameShortToken ?? '', bloc: bloc)
+          TransactionList(title: token.nameShortToken, bloc: bloc)
         ],
       ),
     );

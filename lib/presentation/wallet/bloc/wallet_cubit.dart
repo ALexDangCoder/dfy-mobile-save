@@ -267,7 +267,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       list[i].exchangeRate = 12;
       list[i].balanceToken = await client.getBalanceOfToken(
         ofAddress: addressWalletCore,
-        tokenAddress: list[i].tokenAddress ?? '',
+        tokenAddress: list[i].tokenAddress,
       );
     }
   }

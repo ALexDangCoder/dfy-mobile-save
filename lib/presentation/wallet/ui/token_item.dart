@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
@@ -7,7 +5,6 @@ import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,11 +15,13 @@ class TokenItem extends StatelessWidget {
     required this.index,
     required this.bloc,
     required this.modelToken,
+    required this.walletAddress,
   }) : super(key: key);
 
   final ModelToken modelToken;
   final int index;
   final WalletCubit bloc;
+  final String walletAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +49,11 @@ class TokenItem extends StatelessWidget {
           backgroundColor: Colors.transparent,
           builder: (context) {
             return TokenDetail(
-              tokenData: 123,
-              bloc: TokenDetailBloc(),
-              tokenType: EnumTokenType.DFY,
+              token: modelToken,
+              bloc: TokenDetailBloc(
+                walletAddress: walletAddress,
+                modelToken: modelToken,
+              ),
             );
           },
         );
@@ -89,7 +90,7 @@ class TokenItem extends StatelessWidget {
                     children: [
                       Text(
                         modelToken.balanceToken.toString() +
-                            (modelToken.nameShortToken ?? ''),
+                            (modelToken.nameShortToken),
                         style: textNormalCustom(
                           Colors.white,
                           20,
