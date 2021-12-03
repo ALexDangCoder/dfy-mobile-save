@@ -88,8 +88,8 @@ class TokenItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        modelToken.balanceToken.toString() +
-                            (modelToken.nameShortToken ?? ''),
+                        '${modelToken.balanceToken} '
+                            '${modelToken.nameShortToken}',
                         style: textNormalCustom(
                           Colors.white,
                           20,

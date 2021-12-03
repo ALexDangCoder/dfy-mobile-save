@@ -53,12 +53,8 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    cubit.addressWalletCore =
-        widget.wallet?.address ?? '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
-
-    cubit.addressWallet.sink.add(
-      widget.wallet?.address ?? '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
-    );
+    cubit.getListWallets('aa');
+    cubit.addressWalletCore = widget.wallet?.address ?? cubit.addressWalletCore;
     cubit.walletName.sink.add(widget.wallet?.name ?? 'Nguyen Van Hung');
     cubit.walletName.stream.listen((event) {
       changeName.text = event;
@@ -69,12 +65,11 @@ class _WalletState extends State<WalletScreen>
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     cubit.getNFT(
-      widget.wallet?.address ?? cubit.addressWallet.value,
+      widget.wallet?.address ?? cubit.addressWalletCore,
     );
     cubit.getTokens(
-      widget.wallet?.address ?? cubit.addressWallet.value,
+      widget.wallet?.address ?? cubit.addressWalletCore,
     );
-    cubit.getListWallets('aa');
   }
 
   @override
@@ -126,7 +121,7 @@ class _WalletState extends State<WalletScreen>
                               S.current.wallet,
                               style: textNormalCustom(
                                 Colors.white,
-                                20.sp,
+                                20,
                                 FontWeight.w700,
                               ),
                             ),
@@ -134,7 +129,7 @@ class _WalletState extends State<WalletScreen>
                               S.current.smart_chain,
                               style: textNormalCustom(
                                 Colors.grey.shade400,
-                                14.sp,
+                                14,
                                 FontWeight.w400,
                               ),
                             ),
@@ -187,9 +182,10 @@ class _WalletState extends State<WalletScreen>
                   labelColor: Colors.white,
                   unselectedLabelColor: const Color(0xFF9997FF),
                   indicatorColor: const Color(0xFF6F6FC5),
-                  labelStyle: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
+                  labelStyle: textNormalCustom(
+                    Colors.grey.shade400,
+                    14,
+                    FontWeight.w600,
                   ),
                   tabs: [
                     Tab(
@@ -268,7 +264,7 @@ class _WalletState extends State<WalletScreen>
                                           index: index,
                                           bloc: cubit,
                                           symbolUrl:
-                                              snapshot.data![index].iconNFT ,
+                                              snapshot.data![index].iconNFT,
                                           nameNFT:
                                               snapshot.data?[index].nftName ??
                                                   '',
@@ -355,7 +351,7 @@ class _WalletState extends State<WalletScreen>
                         snapshot.data ?? '',
                         style: textNormalCustom(
                           Colors.white,
-                          24.sp,
+                          24,
                           FontWeight.w700,
                         ),
                       );
@@ -390,17 +386,18 @@ class _WalletState extends State<WalletScreen>
                 height: 8.h,
               ),
               Center(
-                child: StreamBuilder(
+                child: StreamBuilder<double>(
                   stream: cubit.totalBalance,
+                  initialData: 0.0,
                   builder: (context, AsyncSnapshot<double> snapshot) {
                     return Text(
                       formatUSD.format(
-                        snapshot.data ?? 1000000,
-                            //cubit.total(cubit.getListTokenModel.value),
+                        snapshot.data ?? 0,
+                        //cubit.total(cubit.getListTokenModel.value),
                       ),
                       style: textNormalCustom(
                         const Color(0xFFE4AC1A),
-                        20.sp,
+                        20,
                         FontWeight.w600,
                       ),
                     );
@@ -450,7 +447,7 @@ class _WalletState extends State<WalletScreen>
                           ),
                           style: textNormalCustom(
                             Colors.white,
-                            16.sp,
+                            16,
                             FontWeight.w400,
                           ),
                         ),
