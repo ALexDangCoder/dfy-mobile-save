@@ -5,6 +5,9 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
+import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
+import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
+import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -227,6 +230,19 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                           gasPrice: widget.gasPriceFirstFetch,
                           price: double.parse(_txtGasLimit.text),
                           maxGas: widget.gasFeeFirstFetch,
+                        );
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) {
+                            return TokenDetail(
+                              tokenData: 123,
+                              bloc: TokenDetailBloc(),
+                              tokenType: EnumTokenType.DFY,
+                              isSubmitting: true,
+                            );
+                          },
                         );
                         break;
                       case TYPE_CONFIRM.SEND_NFT:

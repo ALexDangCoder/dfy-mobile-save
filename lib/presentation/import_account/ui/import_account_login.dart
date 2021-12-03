@@ -5,9 +5,8 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully_have_wallet.dart';
-import 'package:Dfy/presentation/import_account_login_bts/bloc/import_cubit.dart';
-import 'package:Dfy/presentation/import_account_login_bts/bloc/import_state.dart';
-import 'package:Dfy/presentation/import_account_login_bts/ui/choice_import_dialog.dart';
+import 'package:Dfy/presentation/import_account/bloc/import_cubit.dart';
+import 'package:Dfy/presentation/import_account/bloc/import_state.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
@@ -20,17 +19,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'choice_import_dialog.dart';
+
 const String PASS_PHRASE = 'PASS_PHRASE';
 const String PRIVATE_KEY = 'PRIVATE_KEY';
 
-class ImportBTS extends StatefulWidget {
-  const ImportBTS({Key? key}) : super(key: key);
+class ImportAccount extends StatefulWidget {
+  const ImportAccount({Key? key}) : super(key: key);
 
   @override
-  _ImportBTSState createState() => _ImportBTSState();
+  _ImportAccountState createState() => _ImportAccountState();
 }
 
-class _ImportBTSState extends State<ImportBTS> {
+class _ImportAccountState extends State<ImportAccount> {
   late final ImportCubit importCubit;
   List<String> listString = [S.current.only_desc];
   String strValue = S.current.seed_phrase;
@@ -88,48 +89,51 @@ class _ImportBTSState extends State<ImportBTS> {
             child: Column(
               children: [
                 spaceH24,
-                StreamBuilder<List<String>>(
-                  initialData: listString,
-                  stream: importCubit.listStringStream,
-                  builder: (ctx, snapshot) {
-                    listString = snapshot.data!;
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            listString.first,
-                            style: textNormal(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: StreamBuilder<List<String>>(
+                    initialData: listString,
+                    stream: importCubit.listStringStream,
+                    builder: (ctx, snapshot) {
+                      listString = snapshot.data!;
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              listString.first,
+                              style: textNormal(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                        if (listString.length == 2)
-                          Text(
-                            listString[1],
-                            style: textNormal(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                            ),
-                          )
-                        else
                           SizedBox(
-                            height: 36.h,
+                            height: 8.h,
                           ),
-                        if (listString.length == 2)
-                          SizedBox(
-                            height: 44.h,
-                          )
-                        else
-                          const SizedBox(),
-                      ],
-                    );
-                  },
+                          if (listString.length == 2)
+                            Text(
+                              listString[1],
+                              style: textNormal(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                              ),
+                            )
+                          else
+                            SizedBox(
+                              height: 36.h,
+                            ),
+                          if (listString.length == 2)
+                            SizedBox(
+                              height: 44.h,
+                            )
+                          else
+                            const SizedBox(),
+                        ],
+                      );
+                    },
+                  ),
                 ),
                 Flexible(
                   child: SingleChildScrollView(
@@ -342,55 +346,55 @@ class _ImportBTSState extends State<ImportBTS> {
                       isEnable = snapshot.data!;
                       if (isEnable) {
                         return ButtonGradient(
-                              onPressed: () {
-                                if (importCubit.type == FormType.PASS_PHRASE) {
-                                  importCubit.showTxtWarningSeed(
-                                    seedPhraseController.text,
-                                    importCubit.type,
-                                  );
-                                } else {
-                                  importCubit.showTxtWarningSeed(
-                                    privateKeyController.text,
-                                    importCubit.type,
-                                  );
-                                }
-                                if (importCubit.validateAll()) {
-                                  final flag = importCubit.strValue ==
-                                      S.current.seed_phrase;
-                                  importCubit.importWallet(
-                                    type: flag ? PASS_PHRASE : PRIVATE_KEY,
-                                    content: flag
-                                        ? seedPhraseController.text
-                                        : privateKeyController.text,
-                                  );
-                                }
-                              },
-                              gradient: RadialGradient(
-                                center: const Alignment(0.5, -0.5),
-                                radius: 4,
-                                colors: AppTheme.getInstance()
-                                    .gradientButtonColor(),
-                              ),
-                              child: Text(
-                                S.current.restore,
-                                style: textNormal(
-                                  AppTheme.getInstance().textThemeColor(),
-                                  20,
-                                ),
-                              ),
-                            );
+                          onPressed: () {
+                            if (importCubit.type == FormType.PASS_PHRASE) {
+                              importCubit.showTxtWarningSeed(
+                                seedPhraseController.text,
+                                importCubit.type,
+                              );
+                            } else {
+                              importCubit.showTxtWarningSeed(
+                                privateKeyController.text,
+                                importCubit.type,
+                              );
+                            }
+                            if (importCubit.validateAll()) {
+                              final flag =
+                                  importCubit.strValue == S.current.seed_phrase;
+                              importCubit.importWallet(
+                                type: flag ? PASS_PHRASE : PRIVATE_KEY,
+                                content: flag
+                                    ? seedPhraseController.text
+                                    : privateKeyController.text,
+                              );
+                            }
+                          },
+                          gradient: RadialGradient(
+                            center: const Alignment(0.5, -0.5),
+                            radius: 4,
+                            colors:
+                                AppTheme.getInstance().gradientButtonColor(),
+                          ),
+                          child: Text(
+                            S.current.restore,
+                            style: textNormal(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
+                            ),
+                          ),
+                        );
                       } else {
                         return ErrorButton(
-                              child: Center(
-                                child: Text(
-                                  S.current.restore,
-                                  style: textNormal(
-                                    AppTheme.getInstance().textThemeColor(),
-                                    20,
-                                  ),
-                                ),
+                          child: Center(
+                            child: Text(
+                              S.current.restore,
+                              style: textNormal(
+                                AppTheme.getInstance().textThemeColor(),
+                                20,
                               ),
-                            );
+                            ),
+                          ),
+                        );
                       }
                     },
                   ),

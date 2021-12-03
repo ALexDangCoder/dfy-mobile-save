@@ -5,6 +5,8 @@ import 'package:Dfy/presentation/receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/transaction_list.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
+import 'package:Dfy/utils/animate/custom_rect_tween.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/utils/text_helper.dart';
@@ -14,7 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TokenDetail extends StatelessWidget {
   final int tokenData;
@@ -163,11 +165,10 @@ class TokenDetail extends StatelessWidget {
   }
 
   showAlertDialog(BuildContext context) {
-
     // set up the button
     Widget okButton = FlatButton(
       child: Text("OK"),
-      onPressed: () { },
+      onPressed: () {},
     );
 
     // set up the AlertDialog
@@ -185,6 +186,43 @@ class TokenDetail extends StatelessWidget {
       builder: (BuildContext context) {
         return alert;
       },
+    );
+  }
+  Center popMenu() => Center(
+    child: Hero(
+      tag: '',
+      createRectTween: (begin, end) {
+        return CustomRectTween(begin: begin!, end: end!);
+      },
+      child: buildBlur(
+        borderRadius: BorderRadius.circular(20),
+        child: Material(
+          color: AppTheme.getInstance().bgBtsColor(),
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: const TransactionSubmit(),
+        ),
+      ),
+    ),
+  );
+
+  Widget buildBlur({
+    required Widget child,
+    BorderRadius borderRadius = BorderRadius.zero,
+    double sigmaX = 4,
+    double sigmaY = 4,
+  }) {
+    return ClipRRect(
+      borderRadius: borderRadius,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: sigmaX,
+          sigmaY: sigmaY,
+        ),
+        child: child,
+      ),
     );
   }
 }
