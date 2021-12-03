@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
@@ -89,8 +91,8 @@ class TokenItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        modelToken.balanceToken.toString() +
-                            (modelToken.nameShortToken),
+                        '${modelToken.balanceToken} '
+                            '${modelToken.nameShortToken}',
                         style: textNormalCustom(
                           Colors.white,
                           20,

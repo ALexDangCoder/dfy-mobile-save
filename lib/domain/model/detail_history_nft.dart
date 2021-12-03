@@ -6,7 +6,7 @@ class DetailHistoryNFT {
   final String txhID;
   final String from;
   final String to;
-  final String nonce;
+  final int nonce;
 
   DetailHistoryNFT(
     this.quantity,
