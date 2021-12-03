@@ -29,42 +29,21 @@ class _NFTDetailState extends State<NFTDetail> {
   late final NFTBloc bloc;
   late int initLen;
   late bool initShow;
-  final List<String> mockData = [
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-  ];
 
   @override
   void initState() {
     super.initState();
     bloc = NFTBloc();
-    if (mockData.length >= 3) {
+    bloc.getTransactionNFTHistory();
+    if (bloc.listHistory.length >= 3) {
       bloc.lenSink.add(3);
       initLen = 3;
       initShow = true;
       bloc.showSink.add(true);
     }
-    if (mockData.length < 3) {
-      initLen = mockData.length;
-      bloc.lenSink.add(mockData.length);
+    if (bloc.listHistory.length < 3) {
+      initLen = bloc.listHistory.length;
+      bloc.lenSink.add(bloc.listHistory.length);
       initShow = false;
       bloc.showSink.add(false);
     }
@@ -205,11 +184,10 @@ class _NFTDetailState extends State<NFTDetail> {
                         initialData: initLen,
                         stream: bloc.lenStream,
                         builder: (ctx, snapshot) {
-                          final len = snapshot.data!;
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: len,
+                            itemCount: bloc.listHistory.length,
                             itemBuilder: (ctx, index) {
                               return itemTransition(index);
                             },
@@ -225,12 +203,13 @@ class _NFTDetailState extends State<NFTDetail> {
                             visible: isShow,
                             child: InkWell(
                               onTap: () {
-                                if (mockData.length >= bloc.curLen + 10) {
+                                if (bloc.listHistory.length >=
+                                    bloc.curLen + 10) {
                                   bloc.lenSink.add(bloc.curLen + 10);
                                 } else {
-                                  bloc.lenSink.add(mockData.length);
+                                  bloc.lenSink.add(bloc.listHistory.length);
                                 }
-                                if (bloc.curLen == mockData.length) {
+                                if (bloc.curLen == bloc.listHistory.length) {
                                   bloc.showSink.add(false);
                                 }
                               },
@@ -313,7 +292,7 @@ class _NFTDetailState extends State<NFTDetail> {
   }
 
   Widget itemTransition(int index) {
-    final text = mockData[index];
+    final objHistory = bloc.listHistory[index];
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -351,23 +330,27 @@ class _NFTDetailState extends State<NFTDetail> {
                   Row(
                     children: [
                       Text(
-                        text,
+                        objHistory.name,
                         style: textValueNFT,
                       ),
                       SizedBox(
                         width: 6.w,
                       ),
-                      Image.asset(ImageAssets.ic_tick_circle)
+                      Image.asset(
+                        objHistory.status == 'success'
+                            ? ImageAssets.ic_tick_circle
+                            : ImageAssets.ic_fail,
+                      ),
                     ],
                   ),
                   Text(
-                    '1 of 1',
+                    '1 of ${objHistory.quantity}',
                     style: textValueNFT,
                   ),
                 ],
               ),
               Text(
-                DateTime.now().toIso8601String(),
+                objHistory.time,
                 style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
               )
             ],

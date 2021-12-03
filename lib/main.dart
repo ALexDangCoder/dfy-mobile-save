@@ -1,10 +1,10 @@
-
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/di/module.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/transaction_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +13,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
+import 'package:web3dart/web3dart.dart';
 
 MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
 
@@ -51,39 +53,43 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      builder: () => GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: Strings.app_name,
-        theme: ThemeData(
-          primaryColor: AppTheme.getInstance().primaryColor(),
-          cardColor: Colors.white,
-          textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
-          appBarTheme: const AppBarTheme(
-            color: Colors.white,
-            systemOverlayStyle: SystemUiOverlayStyle.dark,
+      builder: () =>
+          GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: Strings.app_name,
+            theme: ThemeData(
+              primaryColor: AppTheme.getInstance().primaryColor(),
+              cardColor: Colors.white,
+              textTheme: GoogleFonts.latoTextTheme(Theme
+                  .of(context)
+                  .textTheme),
+              appBarTheme: const AppBarTheme(
+                color: Colors.white,
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
+              ),
+              dividerColor: dividerColor,
+              scaffoldBackgroundColor: Colors.white,
+              textSelectionTheme: TextSelectionThemeData(
+                cursorColor: AppTheme.getInstance().primaryColor(),
+                selectionColor: AppTheme.getInstance().primaryColor(),
+                selectionHandleColor: AppTheme.getInstance().primaryColor(),
+              ),
+              colorScheme: ColorScheme.fromSwatch().copyWith(
+                secondary: AppTheme.getInstance().accentColor(),
+              ),
+            ),
+            // supportedLocales: S.delegate.supportedLocales,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            locale: Locale.fromSubtags(
+                languageCode: PrefsService.getLanguage()),
+            onGenerateRoute: AppRouter.generateRoute,
+            initialRoute: AppRouter.splash,
           ),
-          dividerColor: dividerColor,
-          scaffoldBackgroundColor: Colors.white,
-          textSelectionTheme: TextSelectionThemeData(
-            cursorColor: AppTheme.getInstance().primaryColor(),
-            selectionColor: AppTheme.getInstance().primaryColor(),
-            selectionHandleColor: AppTheme.getInstance().primaryColor(),
-          ),
-          colorScheme: ColorScheme.fromSwatch().copyWith(
-            secondary: AppTheme.getInstance().accentColor(),
-          ),
-        ),
-        // supportedLocales: S.delegate.supportedLocales,
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
-        onGenerateRoute: AppRouter.generateRoute,
-        initialRoute: AppRouter.splash,
-      ),
     );
   }
 
@@ -102,7 +108,6 @@ class _MyAppState extends State<MyApp> {
       case 'importWalletCallback':
         break;
       case 'earseWalletCallback':
-        print(methodCall.arguments.toString());
         break;
       case 'getListWalletsCallback':
         break;
@@ -122,6 +127,14 @@ class _MyAppState extends State<MyApp> {
         break;
       case 'signTransactionCallback':
         print('signTransactionCallback ${methodCall.arguments}');
+        TransactionModel dataTransaction = TransactionModel.fromJson(
+            methodCall.arguments);
+        const String rpcUrl = 'https://data-seed-prebsc-1-s1.binance.org:8545';
+        final client = Web3Client(rpcUrl, Client());
+        await client.sendRawTransaction(dataTransaction.signedTransaction);
+        client.dispose();
+        break;
+      case 'getTokensCallback':
         break;
       default:
         break;
@@ -129,9 +142,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void callAllApi() {
-    importWallet();
-    getConfig();
-    earseWallet();
     signTransaction();
   }
 
@@ -262,16 +272,25 @@ class _MyAppState extends State<MyApp> {
   Future<void> signTransaction() async {
     try {
       final data = {
-        'fromAddress': '0xfff',
-        'toAddress': '0xfff',
+        'fromAddress': '0xf5e281A56650bb992ebaB15B41583303fE9804e7',
+        'toAddress': '0xFC0f99Bb0105b164Ce317384E8415B953D4Ae115',
         'chainId': '97',
-        'gasPrice': 10.toDouble(),
-        'price': 10.toDouble(),
-        'maxGas': 100000000000.toDouble(),
+        'gasPrice': 10000000000.toDouble(),
+        'price': 1000000000000000.toDouble(),
+        'maxGas': 21000.toDouble(),
       };
       await trustWalletChannel.invokeMethod('signTransaction', data);
     } on PlatformException {
 
     }
+  }
+
+  Future<void> getTokens() async {
+    try {
+      final data = {
+        'walletAddress': '0xfff',
+      };
+      await trustWalletChannel.invokeMethod('getTokens', data);
+    } on PlatformException {}
   }
 }
