@@ -43,121 +43,127 @@ class _SendNftState extends State<SendNft> {
           currentFocus.unfocus();
         }
       },
-      child: BaseBottomSheet(
-        text: ImageAssets.ic_close,
-        isImage: true,
-        isHaveLeftIcon: false,
-        title: S.current.send_nft,
-        callback: () {
-          Navigator.pop(context);
-        },
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                  ),
-                  child: Column(
-                    children: [
-                      spaceH24,
-                      formShowFtAddress(
-                        hintText: '0xf94138c9...43FE932eA',
-                        readOnly: true,
-                        prefixImg: ImageAssets.ic_from,
-                        suffixImg: '',
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Align(
+          alignment: Alignment.bottomCenter,
+          child: BaseBottomSheet(
+            text: ImageAssets.ic_close,
+            isImage: true,
+            isHaveLeftIcon: false,
+            title: S.current.send_nft,
+            callback: () {
+              Navigator.pop(context);
+            },
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
                       ),
-                      SizedBox(
-                        height: 16.h,
+                      child: Column(
+                        children: [
+                          spaceH24,
+                          formShowFtAddress(
+                            hintText: '0xf94138c9...43FE932eA',
+                            readOnly: true,
+                            prefixImg: ImageAssets.ic_from,
+                            suffixImg: '',
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          formShowFtAddress(
+                            hintText: S.current.to_address,
+                            suffixImg: ImageAssets.ic_qr_code,
+                            prefixImg: ImageAssets.ic_to,
+                            callBack: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (ctx) => QRViewExample(
+                                    controller: txtToAddressNft,
+                                  ),
+                                ),
+                              ).then(
+                                (_) => sendNftCubit.checkHaveVlAddressFormToken(
+                                  txtToAddressNft.text,
+                                  type: typeSend.SEND_NFT,
+                                ),
+                              );
+                            },
+                          ),
+                          txtWaringAddress(),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          formAmountFtQuantity(
+                            hintText: S.current.quantity,
+                            isAmount: true,
+                            isQuantity: true,
+                            prefixImg: ImageAssets.ic_quantity,
+                          ),
+                          txtWaringQuantity(),
+                          SizedBox(
+                            height: 353.h,
+                          ),
+                        ],
                       ),
-                      formShowFtAddress(
-                        hintText: S.current.to_address,
-                        suffixImg: ImageAssets.ic_qr_code,
-                        prefixImg: ImageAssets.ic_to,
-                        callBack: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (ctx) => QRViewExample(
-                                controller: txtToAddressNft,
-                              ),
-                            ),
-                          ).then(
-                            (_) => sendNftCubit.checkHaveVlAddressFormToken(
-                              txtToAddressNft.text,
-                              type: typeSend.SEND_NFT,
-                            ),
-                          );
-                        },
-                      ),
-                      txtWaringAddress(),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      formAmountFtQuantity(
-                        hintText: S.current.quantity,
-                        isAmount: true,
-                        isQuantity: true,
-                        prefixImg: ImageAssets.ic_quantity,
-                      ),
-                      txtWaringQuantity(),
-                      SizedBox(
-                        height: 353.h,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-            StreamBuilder<bool>(
-              stream: sendNftCubit.isShowCFBlockChainStream,
-              builder: (context, snapshot) {
-                return GestureDetector(
-                  child: ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: snapshot.data ?? true,
-                  ),
-                  onTap: () {
-                    if (snapshot.data ?? false) {
-                      sendNftCubit.checkValidAddress(txtToAddressNft.text);
-                      sendNftCubit.checkValidQuantity(txtQuantity.text,
-                          quantityFirstFetch: maxQuantityFirstFetch);
-                      if (sendNftCubit.checkAddressFtQuantity()) {
-                        showModalBottomSheet(
-                          backgroundColor: Colors.transparent,
-                          isScrollControlled: true,
-                          builder: (context) => ConfirmBlockchainCategory(
-                            nameWallet: 'TestWallet',
-                            nameTokenWallet: 'BNB',
-                            balanceWallet: 0.64,
-                            typeConfirm: TYPE_CONFIRM.SEND_NFT,
-                            addressFrom: '0xfff',
-                            addressTo: '0xfff',
-                            imageWallet: ImageAssets.symbol,
-                            quantity: 10,
-                            nameToken: 'BNB',
-                            cubitCategory: null,
-                            gasPriceFirstFetch: sendNftCubit.gasPrice,
-                            gasFeeFirstFetch: 30,
-                          ),
-                          context: context,
-                        );
-                      } else {
-                        //nothing
-                      }
-                    } else {
-                      //nothing
-                    }
+                StreamBuilder<bool>(
+                  stream: sendNftCubit.isShowCFBlockChainStream,
+                  builder: (context, snapshot) {
+                    return GestureDetector(
+                      child: ButtonGold(
+                        title: S.current.continue_s,
+                        isEnable: snapshot.data ?? true,
+                      ),
+                      onTap: () {
+                        if (snapshot.data ?? false) {
+                          sendNftCubit.checkValidAddress(txtToAddressNft.text);
+                          sendNftCubit.checkValidQuantity(txtQuantity.text,
+                              quantityFirstFetch: maxQuantityFirstFetch);
+                          if (sendNftCubit.checkAddressFtQuantity()) {
+                            showModalBottomSheet(
+                              backgroundColor: Colors.transparent,
+                              isScrollControlled: true,
+                              builder: (context) => ConfirmBlockchainCategory(
+                                nameWallet: 'TestWallet',
+                                nameTokenWallet: 'BNB',
+                                balanceWallet: 0.64,
+                                typeConfirm: TYPE_CONFIRM.SEND_NFT,
+                                addressFrom: '0xfff',
+                                addressTo: '0xfff',
+                                imageWallet: ImageAssets.symbol,
+                                quantity: 10,
+                                nameToken: 'BNB',
+                                cubitCategory: null,
+                                gasPriceFirstFetch: sendNftCubit.gasPrice,
+                                gasFeeFirstFetch: 30,
+                              ),
+                              context: context,
+                            );
+                          } else {
+                            //nothing
+                          }
+                        } else {
+                          //nothing
+                        }
+                      },
+                    );
                   },
-                );
-              },
+                ),
+                SizedBox(
+                  height: 34.h,
+                ),
+              ],
             ),
-            SizedBox(
-              height: 34.h,
-            ),
-          ],
+          ),
         ),
       ),
     );
