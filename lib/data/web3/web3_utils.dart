@@ -1,5 +1,6 @@
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
+import 'package:Dfy/data/web3/model/transaction.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
@@ -10,7 +11,6 @@ class Web3Utils {
   static final Web3Utils _shared = Web3Utils._privateConstructor();
 
   factory Web3Utils() => _shared;
-
 
   //client
   final client = Web3Client(rpcURL, Client());
@@ -35,6 +35,25 @@ class Web3Utils {
   }) async {
     //TODO: Mockup data
     return 1000.0;
+  }
+
+  //Transaction History of a token
+  Future<List<TransactionHistory>> getTransactionHistory({
+    required String ofAddress,
+    required String tokenAddress,
+  }) async {
+    return [
+      TransactionHistory(
+          'Contract interaction', 'success', '2021-12-03 14:30', 100.0),
+      TransactionHistory(
+          'Contract interaction', 'success', '2021-12-03 14:30', 100.0),
+      TransactionHistory(
+          'Contract interaction', 'pending', '2021-12-03 14:30', 100.0),
+      TransactionHistory(
+          'Contract interaction', 'fail', '2021-12-03 14:30', 100.0),
+      TransactionHistory(
+          'Contract interaction', 'fail', '2021-12-03 14:30', 100.0),
+    ];
   }
 
   //get balance of an address
