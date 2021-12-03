@@ -27,6 +27,15 @@ class Web3Utils {
     return amount.getInWei / BigInt.from(10).pow(18);
   }
 
+  Future<double> getBalanceOfToken({
+    required String ofAddress,
+    required String tokenAddress,
+    String? password,
+  }) async {
+    //TODO: Mockup data
+    return 1000.0;
+  }
+
   //get balance of an address
   int getTokenBalance(String contractAddress) {
     return 0;
