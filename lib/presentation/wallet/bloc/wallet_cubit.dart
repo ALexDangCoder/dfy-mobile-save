@@ -260,15 +260,15 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   //Web3
-  Future<void> getBalanceOfToken(
-      String addressWallet, String addressToken,) async {
-    ///TODO: send addressWallet and AddressToken to web3 then web3 return balance of token
-  }
 
   Future<void> getExchangeRate(List<ModelToken> list) async {
     ///TODO: function get ExchangeRate
     for (int i = 0; i < list.length; i++) {
       list[i].exchangeRate = 12;
+      list[i].balanceToken = await client.getBalanceOfToken(
+        ofAddress: addressWalletCore,
+        tokenAddress: list[i].tokenAddress ?? '',
+      );
     }
   }
 
