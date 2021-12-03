@@ -4,7 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrare_confirm.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrare_confirm.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom.dart';
@@ -19,53 +19,58 @@ import '../../../../main.dart';
 
 enum TypeScreen { one, two }
 
-void showCreateSeedPhrase(
-  BuildContext context,
-  bool isCheckApp,
-  BLocCreateSeedPhrase blocCreateSeedPhrase,
-  TypeScreen type,
-) {
-  showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    backgroundColor: Colors.transparent,
-    builder: (context) {
-      if (blocCreateSeedPhrase.passPhrase.isEmpty) {
-        blocCreateSeedPhrase.generateWallet(
-          password: blocCreateSeedPhrase.passWord,
-        );
-      }
-      trustWalletChannel.setMethodCallHandler(
-        blocCreateSeedPhrase.nativeMethodCallBackTrustWallet,
-      );
+class CreateSeedPhrase extends StatelessWidget {
+  final BLocCreateSeedPhrase blocCreateSeedPhrase;
+  final TypeScreen type;
 
-      return Body(
-        blocCreateSeedPhrase: blocCreateSeedPhrase,
-        typeScreen: type,
-        isCheckApp: isCheckApp,
+  const CreateSeedPhrase({
+    Key? key,
+    required this.blocCreateSeedPhrase,
+    required this.type,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (blocCreateSeedPhrase.passPhrase.isEmpty) {
+      blocCreateSeedPhrase.generateWallet(
+        password: blocCreateSeedPhrase.passWord,
       );
-    },
-  ).whenComplete(
-    () => blocCreateSeedPhrase.isCheckBox1.sink.add(false),
-  );
+    }
+    trustWalletChannel.setMethodCallHandler(
+      blocCreateSeedPhrase.nativeMethodCallBackTrustWallet,
+    );
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 48.h,
+          ),
+          _Body(
+            blocCreateSeedPhrase: blocCreateSeedPhrase,
+            typeScreen: type,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-class Body extends StatefulWidget {
-  const Body({
+class _Body extends StatefulWidget {
+  const _Body({
     Key? key,
     required this.blocCreateSeedPhrase,
     required this.typeScreen,
-    required this.isCheckApp,
   }) : super(key: key);
   final BLocCreateSeedPhrase blocCreateSeedPhrase;
   final TypeScreen typeScreen;
-  final bool isCheckApp;
 
   @override
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<_Body> {
   late final TextEditingController nameWallet;
 
   @override
@@ -231,6 +236,7 @@ class _BodyState extends State<Body> {
                               ],
                             ),
                           ),
+                          spaceH4,
                           SizedBox(
                             width: 343.w,
                             child: widget.blocCreateSeedPhrase.isWalletName()
@@ -293,11 +299,24 @@ class _BodyState extends State<Body> {
                       onTap: () {
                         if (widget.blocCreateSeedPhrase.isCheckBox1.value &&
                             widget.blocCreateSeedPhrase.isWalletName()) {
-                          showCreateSeedPhraseConfirm(
-                            widget.isCheckApp,
+                          Navigator.push(
                             context,
-                            widget.blocCreateSeedPhrase,
-                            widget.typeScreen,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return CreateSeedPhraseConfirm(
+                                  typeScreen: widget.typeScreen,
+                                  bLocCreateSeedPhrase:
+                                      widget.blocCreateSeedPhrase,
+                                );
+                              },
+                            ),
+                          ).whenComplete(
+                            () => {
+                              widget.blocCreateSeedPhrase.resetPassPhrase(),
+                              widget.blocCreateSeedPhrase
+                                  .isSeedPhraseImportFailed.sink
+                                  .add(false),
+                            },
                           );
                         }
                       },
