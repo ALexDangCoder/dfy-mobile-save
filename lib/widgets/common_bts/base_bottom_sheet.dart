@@ -29,103 +29,109 @@ class BaseBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 764.h,
-      width: 375.w,
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 64.h,
-            child: SizedBox(
-              height: 28.h,
-              width: 343.w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (isHaveLeftIcon)
-                    Flexible(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            left: 11.w,
-                            right: 11.w,
-                          ),
-                          child: Image.asset(ImageAssets.ic_back),
-                        ),
-                      ),
-                    )
-                  else
-                    Flexible(
-                      child: InkWell(
-                        onTap: () {
-                          // Navigator.pop(context);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            left: 11.w,
-                            right: 11.w,
-                          ),
-                          child: SizedBox(
-                            height: 28.h,
-                            width: 28.w,
-                          ),
-                        ),
-                      ),
-                    ),
-                  Flexible(
-                    flex: 6,
-                    child: Align(
-                      child: Text(
-                        title,
-                        style: titleText(
-                          color: AppTheme.getInstance().textThemeColor(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (text != null)
-                    Flexible(
-                      child: InkWell(
-                        onTap: callback,
-                        child: isImage ?? false
-                            ? Image.asset(text ?? '')
-                            : Text(
-                          text ?? '',
-                          style: textNormalCustom(
-                            AppTheme.getInstance().fillColor(),
-                            16,
-                            FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    )
-                  else
-                    Container(
-                      margin: EdgeInsets.only(
-                        right: 11.w,
-                      ),
-                    )
-                ],
-              ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 764.h,
+          width: 375.w,
+          decoration: BoxDecoration(
+            color: AppTheme.getInstance().bgBtsColor(),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
             ),
           ),
-          Divider(
-            color: AppTheme.getInstance().divideColor(),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 64.h,
+                child: SizedBox(
+                  height: 28.h,
+                  width: 343.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (isHaveLeftIcon)
+                        Flexible(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                left: 11.w,
+                                right: 11.w,
+                              ),
+                              child: Image.asset(ImageAssets.ic_back),
+                            ),
+                          ),
+                        )
+                      else
+                        Flexible(
+                          child: InkWell(
+                            onTap: () {
+                              // Navigator.pop(context);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                left: 11.w,
+                                right: 11.w,
+                              ),
+                              child: SizedBox(
+                                height: 28.h,
+                                width: 28.w,
+                              ),
+                            ),
+                          ),
+                        ),
+                      Flexible(
+                        flex: 6,
+                        child: Align(
+                          child: Text(
+                            title,
+                            style: titleText(
+                              color: AppTheme.getInstance().textThemeColor(),
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (text != null)
+                        Flexible(
+                          child: InkWell(
+                            onTap: callback,
+                            child: isImage ?? false
+                                ? Image.asset(text ?? '')
+                                : Text(
+                              text ?? '',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().fillColor(),
+                                16,
+                                FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        )
+                      else
+                        Container(
+                          margin: EdgeInsets.only(
+                            right: 11.w,
+                          ),
+                        )
+                    ],
+                  ),
+                ),
+              ),
+              Divider(
+                color: AppTheme.getInstance().divideColor(),
+              ),
+              Flexible(
+                child: child,
+              ),
+            ],
           ),
-          Flexible(
-            child: child,
-          ),
-        ],
+        ),
       ),
     );
   }
