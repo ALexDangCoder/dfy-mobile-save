@@ -25,6 +25,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   late double balanceWallet;
   late double gasPrice;
   late double estimateGasFee;
+
   //Web3
   //handle token
   Future<void> getBalanceWallet({required String ofAddress}) async {
@@ -312,6 +313,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     Uint8List signedTransaction;
     switch (methodCall.method) {
       case 'signTransactionCallback':
+        // print(methodCall.arguments);
         isSuccess = await methodCall.arguments['isSuccess'];
         signedTransaction = await methodCall.arguments['signedTransaction'];
         break;
