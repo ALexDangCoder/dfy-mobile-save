@@ -167,7 +167,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                       children: [
                         spaceH16,
                         FormFieldBlockChain(
-                          txtController: txtGasPrice,
+                          txtController: txtGasLimit,
                           formGasFee: FORM_GAS_FEE.LIMIT,
                           cubit: cubit,
                           balanceFetchFirst: balanceWallet,
@@ -175,7 +175,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                         ),
                         spaceH16,
                         FormFieldBlockChain(
-                          txtController: txtGasLimit,
+                          txtController: txtGasPrice,
                           formGasFee: FORM_GAS_FEE.PRICE,
                           cubit: cubit,
                           balanceFetchFirst: balanceWallet,
