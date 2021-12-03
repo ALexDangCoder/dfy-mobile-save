@@ -2,7 +2,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/restore_bts/bloc/restore_state.dart';
+import 'package:Dfy/presentation/restore_account/bloc/restore_state.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:Dfy/widgets/form/item_form.dart';
 import 'package:flutter/services.dart';
