@@ -13,15 +13,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showImportNft(BuildContext context, WalletCubit bloc) {
-  showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    backgroundColor: Colors.transparent,
-    builder: (context) {
-      return Body(bloc: bloc);
-    },
-  );
+class ImportNft extends StatelessWidget {
+  const ImportNft({
+    Key? key,
+    required this.bloc,
+  }) : super(key: key);
+  final WalletCubit bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 48.h,
+          ),
+          Body(
+            bloc: bloc,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class Body extends StatefulWidget {
@@ -112,7 +127,14 @@ class _BodyState extends State<Body> {
                       widget.bloc.isImportNft.listen(
                         (value) {
                           if (value) {
-                            showNFTSuccessfully(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const NFTSuccessfully();
+                                },
+                              ),
+                            );
                             widget.bloc.isImportNft.close();
                             widget.bloc.tokenAddressTextNft.add('');
                           }

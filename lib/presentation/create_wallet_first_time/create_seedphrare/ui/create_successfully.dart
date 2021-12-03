@@ -17,24 +17,36 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum KeyType { IMPORT, CREATE, IMPORT_HAVE_WALLET, CREATE_HAVE_WALLET }
 
-void showCreateSuccessfully({
-  required BuildContext context,
-  required BLocCreateSeedPhrase bLocCreateSeedPhrase,
-  required Wallet wallet,
-  required KeyType type,
-}) {
-  showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    backgroundColor: Colors.transparent,
-    builder: (context) {
-      return Body(
-        bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-        type: type,
-        wallet: wallet,
-      );
-    },
-  );
+class CreateSuccessfully extends StatelessWidget {
+  const CreateSuccessfully({
+    Key? key,
+    required this.bLocCreateSeedPhrase,
+    required this.wallet,
+    required this.type,
+  }) : super(key: key);
+  final BLocCreateSeedPhrase bLocCreateSeedPhrase;
+  final Wallet wallet;
+  final KeyType type;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 48.h,
+          ),
+          Body(
+            bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+            type: type,
+            wallet: wallet,
+          )
+        ],
+      ),
+    );
+  }
 }
 
 class Body extends StatefulWidget {

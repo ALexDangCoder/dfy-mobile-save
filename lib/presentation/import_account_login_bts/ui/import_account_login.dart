@@ -3,8 +3,8 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully_have_wallet.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully_have_wallet.dart';
 import 'package:Dfy/presentation/import_account_login_bts/bloc/import_cubit.dart';
 import 'package:Dfy/presentation/import_account_login_bts/bloc/import_state.dart';
 import 'package:Dfy/presentation/import_account_login_bts/ui/choice_import_dialog.dart';
@@ -64,10 +64,16 @@ class _ImportBTSState extends State<ImportBTS> {
       bloc: importCubit,
       listener: (ctx, state) {
         if (state is NavState) {
-          showCreateSuccessfullyHaveWallet(
-            context: context,
-            wallet: Wallet(),
-            type: KeyType.IMPORT,
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return CreateSuccessfullyHaveWallet(
+                  type: KeyType.IMPORT,
+                  wallet: Wallet(),
+                );
+              },
+            ),
           );
         }
         if (state is ErrorState) {
@@ -342,55 +348,55 @@ class _ImportBTSState extends State<ImportBTS> {
                       isEnable = snapshot.data!;
                       if (isEnable) {
                         return ButtonGradient(
-                              onPressed: () {
-                                if (importCubit.type == FormType.PASS_PHRASE) {
-                                  importCubit.showTxtWarningSeed(
-                                    seedPhraseController.text,
-                                    importCubit.type,
-                                  );
-                                } else {
-                                  importCubit.showTxtWarningSeed(
-                                    privateKeyController.text,
-                                    importCubit.type,
-                                  );
-                                }
-                                if (importCubit.validateAll()) {
-                                  final flag = importCubit.strValue ==
-                                      S.current.seed_phrase;
-                                  importCubit.importWallet(
-                                    type: flag ? PASS_PHRASE : PRIVATE_KEY,
-                                    content: flag
-                                        ? seedPhraseController.text
-                                        : privateKeyController.text,
-                                  );
-                                }
-                              },
-                              gradient: RadialGradient(
-                                center: const Alignment(0.5, -0.5),
-                                radius: 4,
-                                colors: AppTheme.getInstance()
-                                    .gradientButtonColor(),
-                              ),
-                              child: Text(
-                                S.current.restore,
-                                style: textNormal(
-                                  AppTheme.getInstance().textThemeColor(),
-                                  20,
-                                ),
-                              ),
-                            );
+                          onPressed: () {
+                            if (importCubit.type == FormType.PASS_PHRASE) {
+                              importCubit.showTxtWarningSeed(
+                                seedPhraseController.text,
+                                importCubit.type,
+                              );
+                            } else {
+                              importCubit.showTxtWarningSeed(
+                                privateKeyController.text,
+                                importCubit.type,
+                              );
+                            }
+                            if (importCubit.validateAll()) {
+                              final flag =
+                                  importCubit.strValue == S.current.seed_phrase;
+                              importCubit.importWallet(
+                                type: flag ? PASS_PHRASE : PRIVATE_KEY,
+                                content: flag
+                                    ? seedPhraseController.text
+                                    : privateKeyController.text,
+                              );
+                            }
+                          },
+                          gradient: RadialGradient(
+                            center: const Alignment(0.5, -0.5),
+                            radius: 4,
+                            colors:
+                                AppTheme.getInstance().gradientButtonColor(),
+                          ),
+                          child: Text(
+                            S.current.restore,
+                            style: textNormal(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
+                            ),
+                          ),
+                        );
                       } else {
                         return ErrorButton(
-                              child: Center(
-                                child: Text(
-                                  S.current.restore,
-                                  style: textNormal(
-                                    AppTheme.getInstance().textThemeColor(),
-                                    20,
-                                  ),
-                                ),
+                          child: Center(
+                            child: Text(
+                              S.current.restore,
+                              style: textNormal(
+                                AppTheme.getInstance().textThemeColor(),
+                                20,
                               ),
-                            );
+                            ),
+                          ),
+                        );
                       }
                     },
                   ),

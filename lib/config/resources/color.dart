@@ -16,10 +16,13 @@ const backgroundBottomSheetColor = Color(0xff32324c);
 const formColor = Color(0xff6F6FC5);
 const subTitleTxtColor = Color(0xff9097A3);
 const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
+const backgroundMarketColor = [Color(0xFF3C3B54), Color(0xFF24203A)];
+
 const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
 ];
+const purple = Color(0xff9997FF);
 const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
@@ -30,6 +33,9 @@ const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
 
 //custom color
+Color whiteOpacityZeroFire = Colors.white.withOpacity(0.5);
+const borderItemColors = Color(0xff474666);
+const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
 const errorColor = Color(0xFFCDCDCD);
@@ -61,14 +67,22 @@ const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
+const unselectedTabLabel = Color(0xFF9997FF);
 
-//color transaction submit
+///=========== Using to make change app theme ================================
 const bgTranSubmit = Color(0xff585782);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
-
   Color bgTranSubmit();
+
+  Color backgroundBTSColor();
+
+  Color redColor();
+
+  Color colorTextFieldZeroFire();
+
+  Color borderItemColor();
 
   Color primaryColor();
 
@@ -90,8 +104,6 @@ abstract class AppColor {
 
   Color txtLightColor();
 
-  Color redColor();
-
   Color sideBtnColor();
 
   Color disableColor();
@@ -109,6 +121,8 @@ abstract class AppColor {
   Color activeColor();
 
   Color whiteWithOpacity();
+
+  Color whiteWithOpacityFireZero();
 
   Color textThemeColor();
 
@@ -137,6 +151,18 @@ abstract class AppColor {
   Color pendingTransactionColors();
 
   Color blueColor();
+
+  Color backgroundButtonColor();
+
+  Color whiteBackgroundButtonColor();
+
+  Color timeBorderColor();
+
+  Color unselectedTabLabelColor();
+
+  Color titleTabColor();
+
+  List<Color> listBackgroundMarketColor();
 }
 
 class LightApp extends AppColor {
@@ -275,10 +301,11 @@ class LightApp extends AppColor {
     return Colors.white;
   }
 
-    @override
+  @override
   Color whiteColor() {
     return Colors.white;
   }
+
   @override
   Color currencyDetailTokenColor() {
     return Colors.white.withOpacity(0.7);
@@ -296,7 +323,6 @@ class LightApp extends AppColor {
 
   @override
   Color blueColor() {
-    // TODO: implement blueColor
     return const Color(0xFF46BCFF);
   }
 
@@ -306,13 +332,67 @@ class LightApp extends AppColor {
   }
 
   @override
-  Color bgTranSubmit() {
-    return const Color(0xff585782);
+  Color backgroundButtonColor() {
+    return backgroundBottomSheet.withOpacity(0.6);
+  }
+
+  @override
+  Color whiteBackgroundButtonColor() {
+    // TODO: implement whiteBackgroundButtonColor
+    return Colors.white.withOpacity(0.1);
+  }
+
+  @override
+  List<Color> listBackgroundMarketColor() {
+    return backgroundMarketColor;
+  }
+
+  @override
+  Color borderItemColor() {
+    return borderItemColors;
+  }
+
+  @override
+  Color timeBorderColor() {
+    return borderColor;
+  }
+
+  @override
+  Color unselectedTabLabelColor() {
+    return unselectedTabLabel;
+  }
+
+  Color titleTabColor() {
+    return purple;
+  }
+
+  @override
+  Color whiteWithOpacityFireZero() {
+    // TODO: implement whiteWithOpacityFireZero
+    return whiteOpacityZeroFire;
+  }
+
+  @override
+  Color backgroundBTSColor() {
+    // TODO: implement backgroundBTSColor
+    return backgroundBottomSheetColor;
+  }
+
+  @override
+  Color colorTextFieldZeroFire() {
+    // TODO: implement colorTextFieldZeroFire
+    return colorTextField.withOpacity(0.5);
   }
 
   @override
   Color redColor() {
     return Colors.red;
+  }
+
+  @override
+  Color bgTranSubmit() {
+    // TODO: implement bgTranSubmit
+    throw UnimplementedError();
   }
 }
 
@@ -421,7 +501,7 @@ class DarkApp extends AppColor {
 
   @override
   Color whiteWithOpacity() {
-    // TODO: implement whiteWithOpacity
+    // TODO: implement listColorAddWalletSeedPhrase
     throw UnimplementedError();
   }
 
@@ -504,14 +584,72 @@ class DarkApp extends AppColor {
   }
 
   @override
-  Color bgTranSubmit() {
-    // TODO: implement bgTranSubmit
+  Color backgroundButtonColor() {
+    // TODO: implement backgroundButtonColor
+    throw UnimplementedError();
+  }
+
+  @override
+  List<Color> listBackgroundMarketColor() {
+    // TODO: implement listBackgroundMarketColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color whiteBackgroundButtonColor() {
+    // TODO: implement whiteBackgroundButtonColor
+    throw UnimplementedError();
+  }
+
+  Color borderItemColor() {
+    // TODO: implement borderItemColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color timeBorderColor() {
+    // TODO: implement timeBorderColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color unselectedTabLabelColor() {
+    // TODO: implement unselectedTabLabelColor
+    return unselectedTabLabel;
+  }
+
+  @override
+  Color titleTabColor() {
+    // TODO: implement titleTabColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color whiteWithOpacityFireZero() {
+    return whiteOpacityZeroFire;
+  }
+
+  @override
+  Color backgroundBTSColor() {
+    // TODO: implement backgroundBTSColor
+    return colorTextField.withOpacity(0.5);
+  }
+
+  @override
+  Color colorTextFieldZeroFire() {
+    // TODO: implement colorTextFieldZeroFire
     throw UnimplementedError();
   }
 
   @override
   Color redColor() {
     // TODO: implement redColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color bgTranSubmit() {
+    // TODO: implement bgTranSubmit
     throw UnimplementedError();
   }
 }

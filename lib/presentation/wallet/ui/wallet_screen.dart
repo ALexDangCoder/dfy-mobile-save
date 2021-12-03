@@ -338,7 +338,17 @@ class _WalletState extends State<WalletScreen>
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    showSelectAcc(context, cubit, TypeScreen2.detail);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return SelectAcc(
+                            bloc: cubit,
+                            typeScreen2: TypeScreen2.detail,
+                          );
+                        },
+                      ),
+                    );
                   },
                   child: CircleAvatar(
                     radius: 27.r,
@@ -405,7 +415,7 @@ class _WalletState extends State<WalletScreen>
                     return Text(
                       formatUSD.format(
                         snapshot.data ?? 1000000,
-                            //cubit.total(cubit.getListTokenModel.value),
+                        //cubit.total(cubit.getListTokenModel.value),
                       ),
                       style: textNormalCustom(
                         const Color(0xFFE4AC1A),

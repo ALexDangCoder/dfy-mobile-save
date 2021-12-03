@@ -3,14 +3,17 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TokenSuccessfully extends StatelessWidget {
-  const TokenSuccessfully({Key? key}) : super(key: key);
+class CreateFail extends StatelessWidget {
+  const CreateFail({Key? key, required this.type}) : super(key: key);
+  final KeyType type;
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +29,10 @@ class TokenSuccessfully extends StatelessWidget {
             height: 764.h,
             width: 375.w,
             decoration: BoxDecoration(
-              // shape: BoxShape.circle,
-              color: AppTheme.getInstance().bgBtsColor(),
+              color: const Color(0xff3e3d5c),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.r),
-                topRight: Radius.circular(30.r),
+                topLeft: Radius.circular(30.h),
+                topRight: Radius.circular(30.h),
               ),
             ),
             child: Column(
@@ -41,11 +43,11 @@ class TokenSuccessfully extends StatelessWidget {
                 ),
                 Center(
                   child: Text(
-                    S.current.token_successfully,
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      20.sp,
-                      FontWeight.bold,
+                    S.current.create_new_wallet_failed,
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -59,26 +61,27 @@ class TokenSuccessfully extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 56.h,
+                            height: 80.h,
                           ),
                           SizedBox(
                             height: 228.h,
                             width: 305.w,
-                            child: Image.asset(ImageAssets.frameGreen),
+                            child: Image.asset(ImageAssets.img_fail),
                           ),
-                          SizedBox(
-                            height: 22.h,
-                          ),
-                          Text(
-                            S.current.congratulation,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              32.sp,
-                              FontWeight.bold,
+                          spaceH20,
+                          Center(
+                            child: Text(
+                              S.current.oopps_omething_went_wrong,
+                              style: TextStyle(
+                                color: AppTheme.getInstance().whiteColor(),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 32.sp,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                           SizedBox(
-                            height: 231.h,
+                            height: 213.h,
                           ),
                         ],
                       ),
@@ -88,8 +91,17 @@ class TokenSuccessfully extends StatelessWidget {
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
+                      if (type == KeyType.CREATE) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      } else if (type == KeyType.CREATE_HAVE_WALLET) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      } else if (type == KeyType.IMPORT) {
+                      } else {}
                     },
                     child: ButtonGold(
                       title: S.current.complete,

@@ -79,10 +79,16 @@ class _EnterAddressState extends State<EnterAddress> {
                     },
                   ),
                   spaceH16,
-                  FromText2(
-                    title: S.current.token_symbol,
-                    urlPrefixIcon: ImageAssets.ic_token,
-                    urlSuffixIcon: '',
+                  StreamBuilder<String>(
+                    initialData: S.current.token_symbol,
+                    stream: widget.bloc.tokenSymbol,
+                    builder: (context, snapshot) {
+                      return FromText2(
+                        title: snapshot.data ?? S.current.token_symbol,
+                        urlPrefixIcon: ImageAssets.ic_token,
+                        urlSuffixIcon: '',
+                      );
+                    },
                   ),
                   spaceH16,
                   FromText2(
@@ -115,7 +121,14 @@ class _EnterAddressState extends State<EnterAddress> {
                       widget.bloc.isImportToken.listen(
                         (value) {
                           if (value) {
-                            showTokenSuccessfully(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const TokenSuccessfully();
+                                },
+                              ),
+                            );
                           }
                           widget.bloc.isImportToken.close();
                         },

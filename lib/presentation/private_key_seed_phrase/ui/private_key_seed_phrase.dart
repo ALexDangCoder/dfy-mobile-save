@@ -1,5 +1,3 @@
-import 'dart:ui';
-import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
@@ -12,21 +10,32 @@ import 'package:Dfy/widgets/form/form_text4.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase_copy2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showPrivateKeySeedPhrase(
-  BuildContext context,
-  PrivateKeySeedPhraseBloc bloc,
-) {
-  showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    backgroundColor: Colors.transparent,
-    builder: (context) {
-      return Body(bloc: bloc);
-    },
-  );
+class PrivateKeySeedPhrase extends StatelessWidget {
+  const PrivateKeySeedPhrase({
+    Key? key,
+    required this.bloc,
+  }) : super(key: key);
+  final PrivateKeySeedPhraseBloc bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 48.h,
+          ),
+          Body(
+            bloc: bloc,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class Body extends StatefulWidget {

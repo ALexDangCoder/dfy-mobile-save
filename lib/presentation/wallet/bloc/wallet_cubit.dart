@@ -1,4 +1,6 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/web3/model/token_info_model.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_model.dart';
@@ -21,6 +23,14 @@ class WalletCubit extends BaseCubit<WalletState> {
    // getListTokenItem();
     getListNFTItem();
   }
+  ///web3
+  Web3Utils client = Web3Utils();
+
+  Future<void> getTokenInfoByAddress({required String tokenAddress}) async {
+    final TokenInfoModel tokenInfoModel =
+    client.getTokenInfo(contractAddress: tokenAddress);
+
+  }
 
   bool checkLogin = false;
   List<TokenModel> listStart = [];
@@ -30,8 +40,8 @@ class WalletCubit extends BaseCubit<WalletState> {
       BehaviorSubject.seeded([]);
   BehaviorSubject<List<TokenModel>> listNFTStream = BehaviorSubject.seeded([]);
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenDecimal = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenSymbol = BehaviorSubject.seeded('');
+  BehaviorSubject<String> nftDecimal = BehaviorSubject.seeded('');
+  BehaviorSubject<String> tokenSymbol = BehaviorSubject();
   BehaviorSubject<String> tokenAddressTextNft = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenSymbolText = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenDecimalText = BehaviorSubject.seeded('');
