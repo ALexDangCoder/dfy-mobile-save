@@ -50,22 +50,22 @@ class SettingWallet extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     showModalBottomSheet(
-                  //       isScrollControlled: true,
-                  //       backgroundColor: Colors.transparent,
-                  //       context: context,
-                  //       builder: (_) {
-                  //         return const TransactionSubmit();
-                  //       },
-                  //     );
-                  //   },
-                  //   child: buttonForm(
-                  //     hintText: 'Dapp',
-                  //     prefixIcon: ImageAssets.ic_global,
-                  //   ),
-                  // ),
+                  GestureDetector(
+                    // onTap: () {
+                    //   showModalBottomSheet(
+                    //     isScrollControlled: true,
+                    //     backgroundColor: Colors.transparent,
+                    //     context: context,
+                    //     builder: (_) {
+                    //       return const TransactionSubmit();
+                    //     },
+                    //   );
+                    // },
+                    child: buttonForm(
+                      hintText: 'Dapp',
+                      prefixIcon: ImageAssets.ic_global,
+                    ),
+                  ),
                   SizedBox(
                     height: 16.h,
                   ),

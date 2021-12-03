@@ -1,13 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/presentation/wallet/ui/hero.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'hero.dart';
 
 class TokenItem extends StatelessWidget {
   const TokenItem({
@@ -15,20 +17,21 @@ class TokenItem extends StatelessWidget {
     required this.symbolUrl,
     required this.amount,
     required this.nameToken,
-    required this.price,
+    required this.exchangeRate,
     required this.index,
     required this.bloc,
   }) : super(key: key);
 
-  final String symbolUrl;
-  final String amount;
+  final Uint8List? symbolUrl;
+  final double amount;
   final String nameToken;
-  final String price;
+  final double exchangeRate;
   final int index;
   final WalletCubit bloc;
 
   @override
   Widget build(BuildContext context) {
+    final String price = (amount*exchangeRate).toString();
     return MaterialButton(
       padding: EdgeInsets.zero,
       onLongPress: () {
@@ -74,9 +77,9 @@ class TokenItem extends StatelessWidget {
                     left: 20.w,
                   ),
                   child: Image(
+                    image: const AssetImage(ImageAssets.symbol),
                     width: 28.w,
                     height: 28.h,
-                    image: AssetImage(symbolUrl),
                   ),
                 ),
                 Padding(

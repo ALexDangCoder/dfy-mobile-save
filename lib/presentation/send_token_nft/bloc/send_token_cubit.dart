@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:typed_data';
+
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
@@ -29,25 +32,24 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   final BehaviorSubject<String> _formEstimateGasFee = BehaviorSubject<String>();
 
   //both stream below is manage confirm fee token screen
-  final BehaviorSubject<bool> _isCustomizeFee =
-  BehaviorSubject<bool>();
+  final BehaviorSubject<bool> _isCustomizeFee = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isSufficientToken = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isShowCFBlockChain =
-  BehaviorSubject<bool>.seeded(true);
+      BehaviorSubject<bool>.seeded(true);
 
   //stream below regex amount form and address
   final BehaviorSubject<bool> _isValidAddressForm =
-  BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _isValidAmountForm =
-  BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _isValidQuantityForm =
-  BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<String> _txtInvalidAddressForm =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtInvalidAmount =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtInvalidQuantityForm =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
 
   //stream
   Stream<String> get fromFieldStream => _formField.stream;
@@ -280,64 +282,39 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-  // "walletAddress*: String
-  // receiveAddress*: String
-  // tokenID*: Int
-  // amount*: Int
-  // password: String"
-
-  Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    bool isSuccess = false;
+    Uint8List signedTransaction;
     switch (methodCall.method) {
-      case 'sendTokenCallback':
-        final bool isSuccess = await methodCall.arguments['isSuccess'];
+      case 'signTransactionCallback':
+        isSuccess = await methodCall.arguments['isSuccess'];
+        signedTransaction = await methodCall.arguments['signedTransaction'];
+        log(signedTransaction.toString());
+        log(isSuccess.toString());
         break;
       default:
         break;
     }
   }
 
-  Future<void> sendNft({
-    required String walletAddress,
-    required String receiveAddress,
-    required int nftID,
-    required int gasFee,
-    String? password,
+  Future<void> signTransaction({
+    required String fromAddress,
+    required String toAddress,
+    required String chainId,
+    required double gasPrice,
+    required double price,
+    required double maxGas,
   }) async {
     try {
       final data = {
-        'walletAddress': walletAddress,
-        'receiveAddress': receiveAddress,
-        'nftID': nftID,
-        'gasFee': gasFee,
-        'password': password,
-        //
+        'fromAddress': fromAddress,
+        'toAddress': toAddress,
+        'chainId': chainId,
+        'gasPrice': gasPrice,
+        'price': price,
+        'maxGas': maxGas,
       };
-      await trustWalletChannel.invokeMethod('sendToken', data);
-    } on PlatformException {
-      //todo
-    }
-  }
-
-  Future<void> sendToken({
-    required String walletAddress,
-    required String receiveAddress,
-    required int tokenID,
-    required int amount,
-    required int gasFee,
-    String? password,
-  }) async {
-    try {
-      final data = {
-        'walletAddress': walletAddress,
-        'receiveAddress': receiveAddress,
-        'amount': amount,
-        'tokenID': tokenID,
-        'password': password,
-        'gasFee': gasFee,
-        //todo wallet
-      };
-      //param invokeMethod is api
-      await trustWalletChannel.invokeMethod('sendToken', data);
+      await trustWalletChannel.invokeMethod('signTransaction', data);
     } on PlatformException {
       //todo
     }

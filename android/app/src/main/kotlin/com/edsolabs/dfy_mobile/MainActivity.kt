@@ -174,15 +174,22 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("chainId")
                             ?: return@setMethodCallHandler
                     val gasPrice =
-                        call.argument<Long>("gasPrice")
+                        call.argument<Double>("gasPrice")
                             ?: return@setMethodCallHandler
                     val price =
-                        call.argument<Long>("price")
+                        call.argument<Double>("price")
                             ?: return@setMethodCallHandler
                     val maxGas =
-                        call.argument<Long>("maxGas")
+                        call.argument<Double>("maxGas")
                             ?: return@setMethodCallHandler
-                    signTransaction(fromAddress, toAddress, chainId, gasPrice, price, maxGas)
+                    signTransaction(
+                        fromAddress,
+                        toAddress,
+                        chainId,
+                        gasPrice,
+                        price,
+                        maxGas
+                    )
                 }
             }
         }
@@ -302,12 +309,17 @@ class MainActivity : FlutterFragmentActivity() {
     ) {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
         val data1 = HashMap<String, Any>()
-        data1["tokenName"] = "BTC"
+
+        data1["tokenFullName"] = "BitCoin"
+        data1["tokenShortName"] = "BTC"
         data1["tokenAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        data1["iconToken"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
         hasMap.add(data1)
         val data2 = HashMap<String, Any>()
-        data2["tokenName"] = "BNB"
+        data2["tokenFullName"] = "Binance"
+        data2["tokenShortName"] = "BNB"
         data2["tokenAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        data2["iconToken"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
         hasMap.add(data2)
         channel?.invokeMethod("getTokensCallback", hasMap)
     }
@@ -317,12 +329,14 @@ class MainActivity : FlutterFragmentActivity() {
     ) {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
         val data1 = HashMap<String, Any>()
-        data1["nftName"] = "BTC"
+        data1["nftName"] = "Defi for you"
         data1["nftAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        data1["iconNFT"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
         hasMap.add(data1)
         val data2 = HashMap<String, Any>()
-        data2["nftName"] = "BNB"
+        data2["nftName"] = "Defi for you"
         data2["nftAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        data2["iconNFT"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
         hasMap.add(data2)
         channel?.invokeMethod("getNFTCallback", hasMap)
     }
@@ -331,14 +345,13 @@ class MainActivity : FlutterFragmentActivity() {
         fromAddress: String,
         toAddress: String,
         chainId: String,
-        gasPrice: Long,
-        price: Long,
-        maxGas: Long
+        gasPrice: Double,
+        price: Double,
+        maxGas: Double
     ) {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
-        hasMap["signedTransaction"] =
-            "f86a8084d693a40082520894c37054b3b48c3317082e7ba872d7753d13da4986870348bca5a160008026a08b3246a86e33706d192a6dcf036e6d769df6eb5a3545e9647c5cc6cfaa64b6baa068454edce7412dd4d2130b9879af0d1dc106d715fe05c9e52d1494fe0a256b12".toByteArray()
+        hasMap["signedTransaction"] = "signedTransaction"
         channel?.invokeMethod("signTransactionCallback", hasMap)
     }
 

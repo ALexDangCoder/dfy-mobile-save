@@ -124,10 +124,10 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                 top: 8.h,
                 right: 16.w,
                 child: StreamBuilder<bool>(
-                  initialData: gasFeeFirstFetch > balanceWallet,
+                  initialData: gasFeeFirstFetch < balanceWallet,
                   stream: cubit.isSufficientGasFeeStream,
                   builder: (context, snapshot) {
-                    return snapshot.data ?? gasFeeFirstFetch > balanceWallet
+                    return snapshot.data ?? gasFeeFirstFetch < balanceWallet
                         ? StreamBuilder<String>(
                       initialData: gasFeeFirstFetch.toString(),
                       stream: cubit.txtGasFeeWhenEstimatingStream,
@@ -187,7 +187,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                             txtGasPrice.text = gasPriceFirstFetch.toString();
                             txtGasLimit.text = gasLimitFirstFetch.toString();
                             cubit.isSufficientGasFeeSink
-                                .add(gasFeeFirstFetch > balanceWallet);
+                                .add(gasFeeFirstFetch < balanceWallet);
                             cubit.txtGasFeeWhenEstimatingSink
                                 .add(gasFeeFirstFetch.toString());
                           },
