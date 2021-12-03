@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
@@ -262,7 +263,7 @@ class _WalletState extends State<WalletScreen>
                               stream: cubit.listNFTStream,
                               builder: (
                                 context,
-                                AsyncSnapshot<List<TokenModel>> snapshot,
+                                AsyncSnapshot<List<NftModel>> snapshot,
                               ) {
                                 if (snapshot.hasData) {
                                   return SafeArea(
@@ -276,10 +277,9 @@ class _WalletState extends State<WalletScreen>
                                           index: index,
                                           bloc: cubit,
                                           symbolUrl:
-                                              snapshot.data?[index].iconToken ??
-                                                  '',
+                                              snapshot.data![index].iconNFT ,
                                           nameNFT:
-                                              snapshot.data?[index].nameToken ??
+                                              snapshot.data?[index].nftName ??
                                                   '',
                                         );
                                       },

@@ -5,8 +5,8 @@ class ModelToken {
   String? nameToken;
   String? nameShortToken;
   Uint8List? iconToken;
-  double balanceToken = 1024.124412;
-  double exchangeRate  = 656.24;
+  double balanceToken = 12313.3123123;
+  double exchangeRate = 0;
 
   ModelToken({
     this.tokenAddress,
