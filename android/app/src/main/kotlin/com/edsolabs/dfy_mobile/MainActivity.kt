@@ -351,7 +351,7 @@ class MainActivity : FlutterFragmentActivity() {
     ) {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
-        hasMap["signedTransaction"] = "signedTransaction"
+        hasMap["signedTransaction"] = "signedTransaction".toByteArray()
         channel?.invokeMethod("signTransactionCallback", hasMap)
     }
 
