@@ -8,7 +8,9 @@ import io.flutter.plugins.GeneratedPluginRegistrant
 import wallet.core.java.AnySigner
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
+import wallet.core.jni.PrivateKey
 import wallet.core.jni.proto.Binance
+import java.math.BigInteger
 import kotlin.experimental.and
 
 class MainActivity : FlutterFragmentActivity() {
@@ -341,20 +343,6 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getNFTCallback", hasMap)
     }
 
-    private fun signTransaction(
-        fromAddress: String,
-        toAddress: String,
-        chainId: String,
-        gasPrice: Double,
-        price: Double,
-        maxGas: Double
-    ) {
-        val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = true
-        hasMap["signedTransaction"] = "signedTransaction".toByteArray()
-        channel?.invokeMethod("signTransactionCallback", hasMap)
-    }
-
     private fun setShowedToken(
         walletAddress: String,
         tokenAddress: String,
@@ -396,6 +384,62 @@ class MainActivity : FlutterFragmentActivity() {
             AnySigner.sign(signerInput, CoinType.SMARTCHAIN, Binance.SigningOutput.parser())
         return ""
     }
+
+    private fun signTransaction(
+        fromAddress: String,
+        toAddress: String,
+        chainId: String,
+        gasPrice: Double,
+        price: Double,
+        maxGas: Double
+    ) {
+        val privateKey =
+            PrivateKey("c6183448b911c04db9dc0863018fca4e8fe19bbb7469342eb34b31c76232dee0".toHexBytes())
+        val publicKey = privateKey.getPublicKeySecp256k1(true)
+
+        val token = Binance.SendOrder.Token.newBuilder().apply {
+            this.denom = "BNB"
+            this.amount = 1
+        }.build()
+
+        val input = Binance.SendOrder.Input.newBuilder().apply {
+            this.address = ByteString.copyFromUtf8(
+                fromAddress
+            )
+            this.addAllCoins(listOf(token))
+        }
+
+        val output = Binance.SendOrder.Output.newBuilder().apply {
+            this.address = ByteString.copyFromUtf8(
+                toAddress
+            )
+            this.addAllCoins(listOf(token))
+        }
+
+        val signingInput = Binance.SigningInput.newBuilder().apply {
+            this.chainId = chainId
+            this.accountNumber = 0
+            this.sequence = 1
+            this.source = 0
+            this.privateKey = ByteString.copyFrom(privateKey.data())
+            this.memo = ""
+            this.sendOrder = Binance.SendOrder.newBuilder().apply {
+                this.addInputs(input)
+                this.addOutputs(output)
+            }.build()
+        }.build()
+
+        val sign: Binance.SigningOutput = AnySigner.sign(
+            signingInput,
+            CoinType.BINANCE, Binance.SigningOutput.parser()
+        )
+        val signBytes = sign.encoded.toByteArray()
+
+        val hasMap = HashMap<String, Any>()
+        hasMap["isSuccess"] = true
+        hasMap["signedTransaction"] = signBytes
+        channel?.invokeMethod("signTransactionCallback", hasMap)
+    }
 }
 
 private fun String.hexStringToByteArray(): ByteArray {
@@ -419,4 +463,12 @@ fun ByteArray.toHexString(withPrefix: Boolean = true): String {
         stringBuilder.append(String.format("%02x", element and 0xFF.toByte()))
     }
     return stringBuilder.toString()
+}
+
+private fun BigInteger.toByteString(): ByteString {
+    return ByteString.copyFrom(this.toByteArray())
+}
+
+fun String.toHexBytes(): ByteArray {
+    return Numeric.hexStringToByteArray(this)
 }
