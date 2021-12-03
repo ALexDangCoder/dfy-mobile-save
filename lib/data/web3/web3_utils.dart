@@ -2,6 +2,8 @@ import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/model/transaction.dart';
 import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
+import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
@@ -51,7 +53,7 @@ class Web3Utils {
       TransactionHistory(
           'Contract interaction', 'pending', '2021-12-03 14:30', 100.0),
       TransactionHistory(
-          'Contract interaction', 'fail', '2021-12-03 14:30', 100.0),
+          'Contract interaction', 'success', '2021-12-03 14:30', 100.0),
       TransactionHistory(
           'Contract interaction', 'fail', '2021-12-03 14:30', 100.0),
     ];
@@ -69,6 +71,31 @@ class Web3Utils {
       '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
       '0xf14aEdedE46Bf6763EbB5aA5C882364d29B167dD',
       300,
+    );
+  }
+
+  //NFT History
+  Future<List<HistoryNFT>> getNFTHistory() async {
+    return [
+      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
+      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'success', '7'),
+      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '5'),
+      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'success', '1'),
+      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
+    ];
+  }
+
+  //NFT History detail
+  Future<DetailHistoryNFT> getNFTHistoryDetail() async {
+    return DetailHistoryNFT(
+      2,
+      'success',
+      10.0,
+      '2021-12-03 14:30',
+      '0xc945bb101ac51f0bbb77c294fe21280e9de55c82da3160ad665548ef8662f35a',
+      '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+      '0xf14aEdedE46Bf6763EbB5aA5C882364d29B167dD',
+      2409,
     );
   }
 
