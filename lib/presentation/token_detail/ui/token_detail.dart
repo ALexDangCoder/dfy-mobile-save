@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
@@ -18,19 +19,13 @@ import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TokenDetail extends StatelessWidget {
-  final int tokenAmout;
-  final Uint8List img;
+  final ModelToken token;
   final TokenDetailBloc bloc;
-  final String shortName;
-  final bool isSubmitting;
 
   const TokenDetail({
     Key? key,
-    required this.tokenAmout,
-    required this.img,
-    required this.shortName,
     required this.bloc,
-    this.isSubmitting = false,
+    required this.token,
   }) : super(
           key: key,
         );
@@ -39,7 +34,7 @@ class TokenDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     bloc.checkData();
     return DefaultSubScreen(
-      title: shortName,
+      title: token.nameShortToken ?? '',
       mainWidget: Column(
         children: [
           Container(
@@ -61,13 +56,13 @@ class TokenDetail extends StatelessWidget {
                   child: SizedBox(
                     height: 54.h,
                     width: 54.h,
-                    child: Image.memory(img),
+                    child: Image.memory(token.iconToken),
                   ),
                 ),
                 Text(
                   customCurrency(
-                    amount: '5157.415478951',
-                    type: shortName,
+                    amount: token.balanceToken.toString(),
+                    type: token.nameShortToken ?? '',
                     digit: 8,
                   ),
                   style: tokenDetailAmount(
@@ -76,7 +71,7 @@ class TokenDetail extends StatelessWidget {
                 ),
                 Text(
                   customCurrency(
-                    amount: '5157.415478951',
+                    amount: (token.balanceToken * 0.2).toString(),
                     type: '\$',
                     digit: 2,
                   ),
@@ -160,40 +155,9 @@ class TokenDetail extends StatelessWidget {
               ],
             ),
           ),
-          TransactionList(title: shortName, bloc: bloc)
+          TransactionList(title: token.nameShortToken ?? '', bloc: bloc)
         ],
       ),
     );
-  }
-
-  showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {},
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("My title"),
-      content: Text("This is my message."),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(IntProperty('tokenData', tokenAmout));
   }
 }
