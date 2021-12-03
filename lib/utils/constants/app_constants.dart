@@ -38,6 +38,9 @@ const _dtFormat3 = 'dd/MM hh:mm a';
 const _dtFormat4 = 'yyyy-MM-dd';
 const _dtFormat5 = 'MMM dd, yyyy';
 
+//web3
+const rpcURL = 'https://data-seed-prebsc-1-s1.binance.org:8545';
+
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
   static const HOUR_FORMAT = _dtFormat2;

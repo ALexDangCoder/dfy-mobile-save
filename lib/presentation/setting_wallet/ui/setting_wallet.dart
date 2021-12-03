@@ -3,7 +3,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase.dart';
-import 'package:Dfy/presentation/import_account_login_bts/ui/import_account_login.dart';
+import 'package:Dfy/presentation/import_account/ui/import_account_login.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
@@ -50,22 +50,22 @@ class SettingWallet extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     showModalBottomSheet(
-                  //       isScrollControlled: true,
-                  //       backgroundColor: Colors.transparent,
-                  //       context: context,
-                  //       builder: (_) {
-                  //         return const TransactionSubmit();
-                  //       },
-                  //     );
-                  //   },
-                  //   child: buttonForm(
-                  //     hintText: 'Dapp',
-                  //     prefixIcon: ImageAssets.ic_global,
-                  //   ),
-                  // ),
+                  GestureDetector(
+                    // onTap: () {
+                    //   showModalBottomSheet(
+                    //     isScrollControlled: true,
+                    //     backgroundColor: Colors.transparent,
+                    //     context: context,
+                    //     builder: (_) {
+                    //       return const TransactionSubmit();
+                    //     },
+                    //   );
+                    // },
+                    child: buttonForm(
+                      hintText: 'Dapp',
+                      prefixIcon: ImageAssets.ic_global,
+                    ),
+                  ),
                   SizedBox(
                     height: 16.h,
                   ),
@@ -104,11 +104,11 @@ class SettingWallet extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        builder: (context) => const ImportBTS(),
-                        context: context,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ImportAccount(),
+                        ),
                       );
                     },
                     child: buttonForm(

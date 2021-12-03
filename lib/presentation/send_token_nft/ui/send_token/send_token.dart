@@ -3,9 +3,10 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
-import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
+import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,8 @@ class SendToken extends StatefulWidget {
 
 class _SendTokenState extends State<SendToken> {
   late SendTokenCubit tokenCubit;
-  final String fakeFromAddress = '0xFE5788e2...EB7144fd0';
+  final String fakeToAddress = '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
+  final String fakeFromAddress = '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37';
   late TextEditingController txtToAddressToken;
   late TextEditingController txtAmount;
 
@@ -31,16 +33,15 @@ class _SendTokenState extends State<SendToken> {
     txtToAddressToken = TextEditingController();
     txtAmount = TextEditingController();
     tokenCubit = SendTokenCubit();
-
-    trustWalletChannel.setMethodCallHandler(tokenCubit.nativeMethodCallHandler);
-    tokenCubit.sendToken(
-      walletAddress: tokenCubit.walletAddressToken,
-      receiveAddress: tokenCubit.receiveAddressToken,
-      tokenID: tokenCubit.tokenIDToken ?? 0,
-      amount: tokenCubit.amountToken ?? 0,
-      password: '',
-      gasFee: 0,
-    );
+    // tokenCubit.getEstimateGas(
+    //   from: fakeFromAddress,
+    //   to: fakeToAddress,
+    //   value: 1000,
+    // );
+    tokenCubit.getBalanceWallet(ofAddress: fakeFromAddress);
+    tokenCubit.getGasPrice();
+    trustWalletChannel
+        .setMethodCallHandler(tokenCubit.nativeMethodCallBackTrustWallet);
   }
 
   @override
@@ -97,7 +98,7 @@ class _SendTokenState extends State<SendToken> {
                               ),
                             ),
                           ).then(
-                            (_) => tokenCubit.checkHaveVlAddressFormToken(
+                                (_) => tokenCubit.checkHaveVlAddressFormToken(
                               txtToAddressToken.text,
                               type: typeSend.SEND_TOKEN,
                             ),
@@ -131,28 +132,42 @@ class _SendTokenState extends State<SendToken> {
                     title: S.current.continue_s,
                     isEnable: snapshot.data ?? true,
                   ),
-                  onTap: () {
+                  onTap: () async {
                     if (snapshot.data ?? false) {
                       //show warning if appear error
                       tokenCubit.checkValidAddress(txtToAddressToken.text);
                       tokenCubit.checkValidAmount(txtAmount.text);
+                      await tokenCubit.getEstimateGas(
+                        from: fakeFromAddress,
+                        to: fakeToAddress,
+                        value: double.parse(
+                          txtAmount.text,
+                        ),
+                      );
+                      final estimateGasFee = tokenCubit.estimateGasFee;
                       //check validate before go to next screen
                       if (tokenCubit.checkAddressFtAmount()) {
-                        showModalBottomSheet(
-                          backgroundColor: Colors.transparent,
-                          isScrollControlled: true,
-                          builder: (context) => const ConfirmBlockchainCategory(
-                            nameWallet: 'TestWallet',
-                            nameTokenWallet: 'BNB',
-                            balanceWallet: 0.64,
-                            typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
-                            addressFrom: '0xfff',
-                            addressTo: '0xfff',
-                            imageWallet: ImageAssets.symbol,
-                            amount: 5000,
-                            nameToken: 'BNB',
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) {
+                              return ConfirmBlockchainCategory(
+                                nameWallet: 'TestWallet',
+                                nameTokenWallet: 'BNB',
+                                balanceWallet: tokenCubit.balanceWallet,
+                                typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
+                                addressFrom:
+                                fakeFromAddress.formatAddressWallet(),
+                                addressTo: fakeToAddress.formatAddressWallet(),
+                                imageWallet: ImageAssets.symbol,
+                                amount: double.parse(txtAmount.text),
+                                nameToken: 'BNB',
+                                cubitCategory: tokenCubit,
+                                gasPriceFirstFetch: tokenCubit.gasPrice,
+                                gasFeeFirstFetch: estimateGasFee,
+                              );
+                            },
                           ),
-                          context: context,
                         );
                       } else {
                         //nothing
@@ -164,12 +179,12 @@ class _SendTokenState extends State<SendToken> {
                 );
               },
             ),
-            SizedBox(
-              height: 34.h,
-            ),
+            // SizedBox(
+            //   height: 34.h,
+            // ),
           ],
         ),
-      ),
+      )
     );
   }
 

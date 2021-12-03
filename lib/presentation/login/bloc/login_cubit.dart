@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/main.dart';
@@ -66,6 +65,17 @@ class LoginCubit extends BaseCubit<LoginState> {
   String authorized = 'Not Authorized';
   bool authenticated = false;
   final LocalAuthentication auth = LocalAuthentication();
+
+  Future<void> checkBiometrics() async {
+    final bool canCheckBiometrics = await auth.canCheckBiometrics;
+    //print(canCheckBiometrics);
+    final List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
+    //print(availableBiometrics);
+    if (canCheckBiometrics) {
+      await authenticate();
+    }
+  }
 
   Future<void> authenticate() async {
     emit(LoginLoading());

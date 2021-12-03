@@ -105,6 +105,10 @@ dependencies:
   web3dart: ^2.3.3
   http: ^0.13.0
 
+  #web3
+  web3dart: ^2.3.3
+  http: ^0.13.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

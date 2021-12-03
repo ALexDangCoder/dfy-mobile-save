@@ -138,14 +138,14 @@ class RemoveToken extends StatelessWidget {
                                               isShow: false,
                                               tokenAddress: 'tokenAddress',
                                             );
-                                            cubit.listTokenDetailScreen
-                                                .removeAt(index);
-                                            cubit.totalBalance.add(
-                                              cubit.total(
-                                                cubit.listTokenStream.value,
-                                              ),
-                                            );
-                                            cubit.getListTokenItemRemove();
+                                            // cubit.listTokenDetailScreen
+                                            // //    .removeAt(index);
+                                            // cubit.totalBalance.add(
+                                            //   cubit.total(
+                                            //     cubit.listTokenStream.value,
+                                            //   ),
+                                            // );
+                                            //cubit.getListTokenItemRemove();
                                             Navigator.pop(context);
                                           },
                                           child: SizedBox(

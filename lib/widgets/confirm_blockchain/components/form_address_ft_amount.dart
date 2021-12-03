@@ -6,12 +6,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum TypeIsHaveAmount {
   HAVE_AMOUNT,
+  HAVE_QUANTITY,
   NO_HAVE_AMOUNT,
 }
 
 class FormAddFtAmount extends StatelessWidget {
   const FormAddFtAmount({
     this.amount,
+    this.quantity,
     required this.typeForm,
     required this.from,
     required this.to,
@@ -20,6 +22,7 @@ class FormAddFtAmount extends StatelessWidget {
   final String from;
   final String to;
   final String? amount;
+  final int? quantity;
   final TypeIsHaveAmount typeForm;
 
   @override
@@ -59,7 +62,43 @@ class FormAddFtAmount extends StatelessWidget {
           ),
         ),
       );
-    } else {
+    } else if(typeForm == TypeIsHaveAmount.HAVE_QUANTITY) {
+      return Container(
+        margin: EdgeInsets.only(
+          left: 10.w,
+          top: 24.h,
+          bottom: 20.h,
+        ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: 250.w,
+            minHeight: 93.h,
+          ),
+          child: SizedBox(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                bothTxtFormAddFtAmount(
+                  txtLeft: S.current.from,
+                  txtRight: from,
+                ),
+                spaceH16,
+                bothTxtFormAddFtAmount(
+                  txtLeft: S.current.to,
+                  txtRight: to,
+                ),
+                spaceH16,
+                bothTxtFormAddFtAmount(
+                  txtLeft: S.current.quantity,
+                  txtRight: quantity.toString(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    else {
       return ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: 250.w,

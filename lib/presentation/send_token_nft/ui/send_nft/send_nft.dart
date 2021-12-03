@@ -1,9 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
-import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
-import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
+import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
+import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -29,6 +29,7 @@ class _SendNftState extends State<SendNft> {
   void initState() {
     super.initState();
     sendNftCubit = SendTokenCubit();
+    sendNftCubit.getGasPrice();
     txtToAddressNft = TextEditingController();
     txtQuantity = TextEditingController();
   }
@@ -42,118 +43,127 @@ class _SendNftState extends State<SendNft> {
           currentFocus.unfocus();
         }
       },
-      child: BaseBottomSheet(
-        text: ImageAssets.ic_close,
-        isImage: true,
-        isHaveLeftIcon: false,
-        title: S.current.send_nft,
-        callback: () {
-          Navigator.pop(context);
-        },
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                  ),
-                  child: Column(
-                    children: [
-                      spaceH24,
-                      formShowFtAddress(
-                        hintText: '0xf94138c9...43FE932eA',
-                        readOnly: true,
-                        prefixImg: ImageAssets.ic_from,
-                        suffixImg: '',
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Align(
+          alignment: Alignment.bottomCenter,
+          child: BaseBottomSheet(
+            text: ImageAssets.ic_close,
+            isImage: true,
+            isHaveLeftIcon: false,
+            title: S.current.send_nft,
+            callback: () {
+              Navigator.pop(context);
+            },
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
                       ),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      formShowFtAddress(
-                        hintText: S.current.to_address,
-                        suffixImg: ImageAssets.ic_qr_code,
-                        prefixImg: ImageAssets.ic_to,
-                        callBack: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (ctx) => QRViewExample(
-                                controller: txtToAddressNft,
-                              ),
-                            ),
-                          ).then(
+                      child: Column(
+                        children: [
+                          spaceH24,
+                          formShowFtAddress(
+                            hintText: '0xf94138c9...43FE932eA',
+                            readOnly: true,
+                            prefixImg: ImageAssets.ic_from,
+                            suffixImg: '',
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          formShowFtAddress(
+                            hintText: S.current.to_address,
+                            suffixImg: ImageAssets.ic_qr_code,
+                            prefixImg: ImageAssets.ic_to,
+                            callBack: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (ctx) => QRViewExample(
+                                    controller: txtToAddressNft,
+                                  ),
+                                ),
+                              ).then(
                                 (_) => sendNftCubit.checkHaveVlAddressFormToken(
-                              txtToAddressNft.text,
-                              type: typeSend.SEND_NFT,
-                            ),
-                          );
-                        },
+                                  txtToAddressNft.text,
+                                  type: typeSend.SEND_NFT,
+                                ),
+                              );
+                            },
+                          ),
+                          txtWaringAddress(),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          formAmountFtQuantity(
+                            hintText: S.current.quantity,
+                            isAmount: true,
+                            isQuantity: true,
+                            prefixImg: ImageAssets.ic_quantity,
+                          ),
+                          txtWaringQuantity(),
+                          SizedBox(
+                            height: 353.h,
+                          ),
+                        ],
                       ),
-                      txtWaringAddress(),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      formAmountFtQuantity(
-                        hintText: S.current.quantity,
-                        isAmount: true,
-                        isQuantity: true,
-                        prefixImg: ImageAssets.ic_quantity,
-                      ),
-                      txtWaringQuantity(),
-                      SizedBox(
-                        height: 353.h,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-            StreamBuilder<bool>(
-              stream: sendNftCubit.isShowCFBlockChainStream,
-              builder: (context, snapshot) {
-                return GestureDetector(
-                  child: ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: snapshot.data ?? true,
-                  ),
-                  onTap: () {
-                    if (snapshot.data ?? false) {
-                      sendNftCubit.checkValidAddress(txtToAddressNft.text);
-                      sendNftCubit.checkValidQuantity(txtQuantity.text,
-                          quantityFirstFetch: maxQuantityFirstFetch);
-                      if (sendNftCubit.checkAddressFtQuantity()) {
-                        showModalBottomSheet(
-                          backgroundColor: Colors.transparent,
-                          isScrollControlled: true,
-                          builder: (context) => const ConfirmBlockchainCategory(
-                            nameWallet: 'TestWallet',
-                            nameTokenWallet: 'BNB',
-                            balanceWallet: 0.64,
-                            typeConfirm: TYPE_CONFIRM.SEND_NFT,
-                            addressFrom: '0xfff',
-                            addressTo: '0xfff',
-                            imageWallet: ImageAssets.symbol,
-                            amount: 5000,
-                            nameToken: 'BNB',
-                          ),
-                          context: context,
-                        );
-                      } else {
-                        //nothing
-                      }
-                    } else {
-                      //nothing
-                    }
+                StreamBuilder<bool>(
+                  stream: sendNftCubit.isShowCFBlockChainStream,
+                  builder: (context, snapshot) {
+                    return GestureDetector(
+                      child: ButtonGold(
+                        title: S.current.continue_s,
+                        isEnable: snapshot.data ?? true,
+                      ),
+                      onTap: () {
+                        if (snapshot.data ?? false) {
+                          sendNftCubit.checkValidAddress(txtToAddressNft.text);
+                          sendNftCubit.checkValidQuantity(txtQuantity.text,
+                              quantityFirstFetch: maxQuantityFirstFetch);
+                          if (sendNftCubit.checkAddressFtQuantity()) {
+                            showModalBottomSheet(
+                              backgroundColor: Colors.transparent,
+                              isScrollControlled: true,
+                              builder: (context) => ConfirmBlockchainCategory(
+                                nameWallet: 'TestWallet',
+                                nameTokenWallet: 'BNB',
+                                balanceWallet: 0.64,
+                                typeConfirm: TYPE_CONFIRM.SEND_NFT,
+                                addressFrom: '0xfff',
+                                addressTo: '0xfff',
+                                imageWallet: ImageAssets.symbol,
+                                quantity: 10,
+                                nameToken: 'BNB',
+                                cubitCategory: null,
+                                gasPriceFirstFetch: sendNftCubit.gasPrice,
+                                gasFeeFirstFetch: 30,
+                              ),
+                              context: context,
+                            );
+                          } else {
+                            //nothing
+                          }
+                        } else {
+                          //nothing
+                        }
+                      },
+                    );
                   },
-                );
-              },
+                ),
+                SizedBox(
+                  height: 34.h,
+                ),
+              ],
             ),
-            SizedBox(
-              height: 34.h,
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -202,12 +212,12 @@ class _SendNftState extends State<SendNft> {
               onTap: callBack,
               child: suffixImg == ''
                   ? const SizedBox(
-                width: 0,
-              )
+                      width: 0,
+                    )
                   : ImageIcon(
-                AssetImage(suffixImg),
-                color: AppTheme.getInstance().textThemeColor(),
-              ),
+                      AssetImage(suffixImg),
+                      color: AppTheme.getInstance().textThemeColor(),
+                    ),
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),
@@ -263,23 +273,24 @@ class _SendNftState extends State<SendNft> {
               onTap: callBack,
               child: (isAmount && !isQuantity)
                   ? Center(
-                child: Text(
-                  S.current.max,
-                  style: textNormal(
-                      const Color.fromRGBO(228, 172, 26, 1), 16)
-                      .copyWith(fontWeight: FontWeight.w600),
-                ),
-              )
+                      child: Text(
+                        S.current.max,
+                        style: textNormal(
+                          const Color.fromRGBO(228, 172, 26, 1),
+                          16,
+                        ).copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    )
                   : Padding(
-                padding: EdgeInsets.only(right: 20.w, top: 15.h),
-                child: Text(
-                  '${S.current.of_all} $maxQuantityFirstFetch',
-                  style: textNormal(
-                    AppTheme.getInstance().textThemeColor(),
-                    16.sp,
-                  ).copyWith(fontWeight: FontWeight.w400),
-                ),
-              ),
+                      padding: EdgeInsets.only(right: 20.w, top: 15.h),
+                      child: Text(
+                        '${S.current.of_all} $maxQuantityFirstFetch',
+                        style: textNormal(
+                          AppTheme.getInstance().textThemeColor(),
+                          16.sp,
+                        ).copyWith(fontWeight: FontWeight.w400),
+                      ),
+                    ),
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),
