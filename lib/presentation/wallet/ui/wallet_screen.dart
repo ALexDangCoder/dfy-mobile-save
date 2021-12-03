@@ -104,7 +104,7 @@ class _WalletState extends State<WalletScreen>
                 ),
                 child: SizedBox(
                   height: 54.h,
-                  width: 323.sw,
+                  width: 323.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -126,7 +126,7 @@ class _WalletState extends State<WalletScreen>
                               S.current.wallet,
                               style: textNormalCustom(
                                 Colors.white,
-                                20.sp,
+                                20,
                                 FontWeight.w700,
                               ),
                             ),
@@ -134,7 +134,7 @@ class _WalletState extends State<WalletScreen>
                               S.current.smart_chain,
                               style: textNormalCustom(
                                 Colors.grey.shade400,
-                                14.sp,
+                                14,
                                 FontWeight.w400,
                               ),
                             ),
@@ -224,6 +224,7 @@ class _WalletState extends State<WalletScreen>
                                   itemCount: snapshot.data?.length ?? 0,
                                   itemBuilder: (context, index) {
                                     return TokenItem(
+                                      walletAddress: cubit.addressWalletCore,
                                       index: index,
                                       bloc: cubit,
                                       modelToken: snapshot.data![index],
@@ -355,7 +356,7 @@ class _WalletState extends State<WalletScreen>
                         snapshot.data ?? '',
                         style: textNormalCustom(
                           Colors.white,
-                          24.sp,
+                          24,
                           FontWeight.w700,
                         ),
                       );
@@ -395,12 +396,12 @@ class _WalletState extends State<WalletScreen>
                   builder: (context, AsyncSnapshot<double> snapshot) {
                     return Text(
                       formatUSD.format(
-                        snapshot.data ?? 1000000,
+                        snapshot.data ?? 10,
                             //cubit.total(cubit.getListTokenModel.value),
                       ),
                       style: textNormalCustom(
                         const Color(0xFFE4AC1A),
-                        20.sp,
+                        20,
                         FontWeight.w600,
                       ),
                     );
@@ -450,7 +451,7 @@ class _WalletState extends State<WalletScreen>
                           ),
                           style: textNormalCustom(
                             Colors.white,
-                            16.sp,
+                            16,
                             FontWeight.w400,
                           ),
                         ),

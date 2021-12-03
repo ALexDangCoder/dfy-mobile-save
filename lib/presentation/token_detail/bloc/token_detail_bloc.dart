@@ -1,10 +1,18 @@
 import 'dart:math' hide log;
+import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/domain/model/transaction.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
+  final ModelToken modelToken;
+  final String walletAddress;
+
+  TokenDetailBloc({required this.modelToken, required this.walletAddress,});
+
+  ///MOCK DATA
   static const len_mock_data = 83;
   final List<TransactionModel> mocObject = List.generate(
     len_mock_data,
@@ -25,7 +33,6 @@ class TokenDetailBloc {
   );
 
   ///todoClearFakeData
-
   int dataListLen = 4;
   List<TransactionModel> transactionList = [];
 
@@ -70,6 +77,14 @@ class TokenDetailBloc {
   void hideShowMore() {
     _showMoreSubject.sink.add(false);
   }
+
+  ///GetTokenDetail
+  Future<void> getBalance(String _tokenAddress) async {
+    modelToken.balanceToken = await Web3Utils().getBalanceOfToken(
+      ofAddress: walletAddress,
+      tokenAddress: _tokenAddress,
+    );
+  }
 }
 
 extension StatusExtension on TransactionStatus {
@@ -90,6 +105,7 @@ enum TransactionStatus {
   FAILED,
   PENDING,
 }
+
 enum TransactionType {
   SEND,
   RECEIVE,
