@@ -27,100 +27,103 @@ class TransactionDetail extends StatelessWidget {
     const isSuccess = true;
     return BaseBottomSheet(
       title: S.current.detail_transaction,
-      child: Column(
-        children: [
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  textRow(
-                    name: S.current.quantity,
-                    value: '1 of 1',
-                  ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: isSuccess
-                        ? textRow(
-                            name: S.current.status,
-                            value: S.current.transaction_success,
-                            valueColor: AppTheme.getInstance()
-                                .successTransactionColors(),
-                          )
-                        : textRow(
-                            name: S.current.status,
-                            value: S.current.transaction_fail,
-                            valueColor:
-                                AppTheme.getInstance().failTransactionColors(),
-                          ),
-                  ),
-                ],
-              ),
-              textRow(
-                name: S.current.gas_fee,
-                value: customCurrency(
-                  amount: gasFee,
-                  digit: 8,
-                  type: 'BNB',
-                ),
-              ),
-              textRow(
-                name: S.current.time,
-                value: _time.stringFromDateTime,
-              ),
-            ],
-          ),
-          Divider(
-            color: AppTheme.getInstance().divideColor(),
-          ),
-          Container(
-            padding: EdgeInsets.only(
-              top: 24.h,
-              bottom: 16.h,
-            ),
-            child: Column(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: Column(
+          children: [
+            Column(
               children: [
-                textRow(
-                  name: S.current.txh_id,
-                  value: txhID,
-                  showCopy: true,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    textRow(
+                      name: S.current.quantity,
+                      value: '1 of 1',
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: isSuccess
+                          ? textRow(
+                              name: S.current.status,
+                              value: S.current.transaction_success,
+                              valueColor: AppTheme.getInstance()
+                                  .successTransactionColors(),
+                            )
+                          : textRow(
+                              name: S.current.status,
+                              value: S.current.transaction_fail,
+                              valueColor:
+                                  AppTheme.getInstance().failTransactionColors(),
+                            ),
+                    ),
+                  ],
                 ),
                 textRow(
-                  name: S.current.from,
-                  value: txhID.formatAddress,
+                  name: S.current.gas_fee,
+                  value: customCurrency(
+                    amount: gasFee,
+                    digit: 8,
+                    type: 'BNB',
+                  ),
                 ),
                 textRow(
-                  name: S.current.to,
-                  value: txhID,
-                  showCopy: true,
+                  name: S.current.time,
+                  value: _time.stringFromDateTime,
                 ),
               ],
             ),
-          ),
-          Divider(
-            color: AppTheme.getInstance().divideColor(),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 16.h, bottom: 36.h),
-            child: textRow(
-              name: S.current.nonce,
-              value: '#$nonce',
+            Divider(
+              color: AppTheme.getInstance().divideColor(),
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              log('On tap View on Bscscan');
-            },
-            child: Text(
-              S.current.view_on_bscscan,
-              style: tokenDetailAmount(
-                fontSize: 16,
-                weight: FontWeight.w400,
-                color: AppTheme.getInstance().blueColor(),
+            Container(
+              padding: EdgeInsets.only(
+                top: 24.h,
+                bottom: 16.h,
+              ),
+              child: Column(
+                children: [
+                  textRow(
+                    name: S.current.txh_id,
+                    value: txhID,
+                    showCopy: true,
+                  ),
+                  textRow(
+                    name: S.current.from,
+                    value: txhID.formatAddress,
+                  ),
+                  textRow(
+                    name: S.current.to,
+                    value: txhID,
+                    showCopy: true,
+                  ),
+                ],
               ),
             ),
-          )
-        ],
+            Divider(
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 16.h, bottom: 36.h),
+              child: textRow(
+                name: S.current.nonce,
+                value: '#$nonce',
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                log('On tap View on Bscscan');
+              },
+              child: Text(
+                S.current.view_on_bscscan,
+                style: tokenDetailAmount(
+                  fontSize: 16,
+                  weight: FontWeight.w400,
+                  color: AppTheme.getInstance().blueColor(),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
