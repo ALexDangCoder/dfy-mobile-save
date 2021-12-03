@@ -258,18 +258,20 @@ class WalletCubit extends BaseCubit<WalletState> {
       isWalletName.sink.add(false);
     }
   }
+
   //Web3
-  Future<void> getBalanceOfToken(String addressWallet) async {
-    final double balance = await client.getBalanceOfBnb(
-      ofAddress: '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',);
-  }
 
   Future<void> getExchangeRate(List<ModelToken> list) async {
     ///TODO: function get ExchangeRate
-    for( int i = 0; i< list.length;i++) {
+    for (int i = 0; i < list.length; i++) {
       list[i].exchangeRate = 12;
+      list[i].balanceToken = await client.getBalanceOfToken(
+        ofAddress: addressWalletCore,
+        tokenAddress: list[i].tokenAddress ?? '',
+      );
     }
   }
+
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'importTokenCallback':
@@ -283,11 +285,11 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'setShowedTokenCallback':
         final bool isSetShowedToken = await methodCall.arguments['isSuccess'];
-       // print(' isSetShowedToken $isSetShowedToken');
+        // print(' isSetShowedToken $isSetShowedToken');
         break;
       case 'importNftCallback':
         final bool isImportNft = await methodCall.arguments['isSuccess'];
-       // print('isImportNft $isImportNft');
+        // print('isImportNft $isImportNft');
         break;
       case 'setShowedNftCallback':
         final bool isSetShowedNft = await methodCall.arguments['isSuccess'];
@@ -325,7 +327,9 @@ class WalletCubit extends BaseCubit<WalletState> {
         'walletAddress': walletAddress,
       };
       await trustWalletChannel.invokeMethod('getTokens', data);
-    } on PlatformException {log('');}
+    } on PlatformException {
+      log('');
+    }
   }
 
 // list
@@ -337,7 +341,9 @@ class WalletCubit extends BaseCubit<WalletState> {
         'walletAddress': walletAddress,
       };
       await trustWalletChannel.invokeMethod('getNFT', data);
-    } on PlatformException {log('');}
+    } on PlatformException {
+      log('');
+    }
   }
 
   Future<void> importToken({
@@ -373,7 +379,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('getListSupportedToken', data);
     } on PlatformException {
       log('');
-
     }
   }
 
@@ -393,7 +398,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('setShowedToken', data);
     } on PlatformException {
       log('');
-
     }
   }
 
@@ -413,7 +417,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('importNft', data);
     } on PlatformException {
       log('');
-
     }
   }
 
@@ -433,7 +436,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('setShowedNft', data);
     } on PlatformException {
       log('');
-
     }
   }
 }

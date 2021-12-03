@@ -226,15 +226,7 @@ class _WalletState extends State<WalletScreen>
                                     return TokenItem(
                                       index: index,
                                       bloc: cubit,
-                                      symbolUrl:
-                                          snapshot.data![index].iconToken,
-                                      amount:
-                                          snapshot.data![index].balanceToken,
-                                      nameToken: snapshot
-                                              .data?[index].nameShortToken ??
-                                          '',
-                                      exchangeRate:
-                                          snapshot.data![index].exchangeRate,
+                                      modelToken: snapshot.data![index],
                                     );
                                   },
                                 );
