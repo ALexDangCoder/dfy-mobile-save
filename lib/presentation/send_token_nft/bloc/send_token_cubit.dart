@@ -1,13 +1,13 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 part 'send_token_state.dart';
 
@@ -22,6 +22,30 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   bool _flagAddress = false;
   bool _flagAmount = false;
   bool _flagQuantity = false;
+  late double balanceWallet;
+  late double gasPrice;
+  late double estimateGasFee;
+
+  //Web3
+  //handle token
+  Future<void> getBalanceWallet({required String ofAddress}) async {
+    balanceWallet = await Web3Utils().getBalanceOfBnb(ofAddress: ofAddress);
+  }
+
+  Future<void> getGasPrice() async {
+    gasPrice = await Web3Utils().getGasPrice();
+  }
+
+  Future<void> getEstimateGas({
+    required String from,
+    required String to,
+    required double value,
+  }) async {
+    estimateGasFee =
+        await Web3Utils().getEstimateGasPrice(from: from, to: to, value: value);
+  }
+
+  //handle nft pending api
 
   //3 boolean below check if 3 forms have value
   bool _haveVLAddress = false;
@@ -282,15 +306,16 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
+  //web 3
+
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     bool isSuccess = false;
     Uint8List signedTransaction;
     switch (methodCall.method) {
       case 'signTransactionCallback':
+        // print(methodCall.arguments);
         isSuccess = await methodCall.arguments['isSuccess'];
         signedTransaction = await methodCall.arguments['signedTransaction'];
-        log(signedTransaction.toString());
-        log(isSuccess.toString());
         break;
       default:
         break;

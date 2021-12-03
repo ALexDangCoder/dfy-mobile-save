@@ -1,33 +1,31 @@
+import 'dart:typed_data';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
+import 'package:Dfy/presentation/receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/transaction_list.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/default_sub_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class TokenDetail extends StatelessWidget {
-  final int tokenData;
+  final ModelToken token;
   final TokenDetailBloc bloc;
-  final EnumTokenType tokenType;
-  final bool isSubmitting;
 
   const TokenDetail({
     Key? key,
-    required this.tokenData,
     required this.bloc,
-    required this.tokenType,
-    this.isSubmitting = false,
+    required this.token,
   }) : super(
           key: key,
         );
@@ -35,9 +33,8 @@ class TokenDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bloc.checkData();
-    final title = tokenType.nameToken;
     return DefaultSubScreen(
-      title: title,
+      title: token.nameShortToken,
       mainWidget: Column(
         children: [
           Container(
@@ -56,13 +53,16 @@ class TokenDetail extends StatelessWidget {
                     top: 24.h,
                     bottom: 8.h,
                   ),
-                  child:
-                      sizedSvgImage(w: 54, h: 54, image: tokenType.imageToken),
+                  child: SizedBox(
+                    height: 54.h,
+                    width: 54.h,
+                    child: Image.memory(token.iconToken),
+                  ),
                 ),
                 Text(
                   customCurrency(
-                    amount: '5157.415478951',
-                    type: title,
+                    amount: token.balanceToken.toString(),
+                    type: token.nameShortToken,
                     digit: 8,
                   ),
                   style: tokenDetailAmount(
@@ -71,13 +71,12 @@ class TokenDetail extends StatelessWidget {
                 ),
                 Text(
                   customCurrency(
-                    amount: '5157.415478951',
+                    amount: (token.balanceToken * 0.2).toString(),
                     type: '\$',
                     digit: 2,
                   ),
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().currencyDetailTokenColor(),
-                    weight: FontWeight.w400,
                     fontSize: 16,
                   ),
                 ),
@@ -156,35 +155,9 @@ class TokenDetail extends StatelessWidget {
               ],
             ),
           ),
-          TransactionList(title: title, bloc: bloc)
+          TransactionList(title: token.nameShortToken, bloc: bloc)
         ],
       ),
-    );
-  }
-
-  showAlertDialog(BuildContext context) {
-
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () { },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("My title"),
-      content: Text("This is my message."),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
     );
   }
 }

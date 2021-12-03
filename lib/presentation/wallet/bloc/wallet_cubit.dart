@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
+import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
@@ -17,11 +21,10 @@ part 'wallet_state.dart';
 
 class WalletCubit extends BaseCubit<WalletState> {
   WalletCubit() : super(WalletInitial()) {
-   // listTokenDetailScreen = listTokenInitial;
-   // getListSort();
+    // listTokenDetailScreen = listTokenInitial;
+    // getListSort();
     getList();
-   // getListTokenItem();
-    getListNFTItem();
+    // getListTokenItem();
   }
   ///web3
   Web3Utils client = Web3Utils();
@@ -32,13 +35,16 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   }
 
+
+
   bool checkLogin = false;
   List<TokenModel> listStart = [];
   List<Wallet> listWallet = [];
   List<ModelToken> listTokenFromWalletCore = [];
+  List<NftModel> listNftFromWalletCore = [];
   BehaviorSubject<List<ModelToken>> listTokenStream =
       BehaviorSubject.seeded([]);
-  BehaviorSubject<List<TokenModel>> listNFTStream = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<NftModel>> listNFTStream = BehaviorSubject.seeded([]);
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
   BehaviorSubject<String> nftDecimal = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenSymbol = BehaviorSubject();
@@ -56,7 +62,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       BehaviorSubject.seeded([]);
   BehaviorSubject<List<AccountModel>> list = BehaviorSubject.seeded([]);
   BehaviorSubject<String> addressWallet =
-      BehaviorSubject.seeded('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
+      BehaviorSubject();
   BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
   BehaviorSubject<double> totalBalance = BehaviorSubject();
@@ -192,48 +198,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       url: 'assets/images/Ellipse 39.png',
     ),
   ];
-  List<TokenModel> listNFT = [
-    TokenModel(
-      nameToken: 'DEFI FOR YOU2',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR2 YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 34YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR453 YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR23452345 YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-  ];
 
   Future<void> getAddressWallet() async {}
 
@@ -243,7 +207,9 @@ class WalletCubit extends BaseCubit<WalletState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {}
+    } on PlatformException {
+      log('');
+    }
   }
 
   String formatAddress(String address) {
@@ -259,7 +225,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   double total(List<ModelToken> list) {
     double total = 0;
     for (int i = 0; i < list.length; i++) {
-      total = total + list[i].exchangeRate*list[i].balanceToken;
+      total = total + list[i].exchangeRate * list[i].balanceToken;
     }
     totalBalance.add(total);
     return total;
@@ -277,13 +243,9 @@ class WalletCubit extends BaseCubit<WalletState> {
     list.sink.add(listSelectAccBloc);
   }
 
-  void getListNFTItem() {
-    listNFTStream.sink.add(listNFT);
-  }
-
   String formatNumber(double amount) {
-    return '${amount.toStringAsExponential(5).toString().substring(0, 5)}'
-        ',${amount.toStringAsExponential(5).toString().substring(5, 7)}';
+    return '${amount.toStringAsExponential(5).substring(0, 5)}'
+        ',${amount.toStringAsExponential(5).substring(5, 7)}';
   }
 
   void checkAddressNullNFT() {
@@ -310,9 +272,20 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  //Web3
+
+  Future<void> getExchangeRate(List<ModelToken> list) async {
+    ///TODO: function get ExchangeRate
+    for (int i = 0; i < list.length; i++) {
+      list[i].exchangeRate = 12;
+      list[i].balanceToken = await client.getBalanceOfToken(
+        ofAddress: addressWalletCore,
+        tokenAddress: list[i].tokenAddress,
+      );
+    }
+  }
+
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    final bool isSetShowedToken;
-    final bool isSetShowedNft;
     switch (methodCall.method) {
       case 'importTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
@@ -334,26 +307,31 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         break;
       case 'setShowedNftCallback':
-        isSetShowedNft = await methodCall.arguments['isSuccess'];
-        print('isSetShowedNft $isSetShowedNft');
+        final bool isSetShowedNft = await methodCall.arguments['isSuccess'];
         break;
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           listTokenFromWalletCore.add(ModelToken.fromWalletCore(element));
         }
+        await getExchangeRate(listTokenFromWalletCore);
         total(listTokenFromWalletCore);
         listTokenStream.add(listTokenFromWalletCore);
         break;
       case 'getNFTCallback':
-
-
+        final List<dynamic> data = methodCall.arguments;
+        for (final element in data) {
+          listNftFromWalletCore.add(NftModel.fromWalletCore(element));
+        }
+        listNFTStream.sink.add(listNftFromWalletCore);
         break;
 
       case 'getListWalletsCallback':
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           listWallet.add(Wallet.fromJson(element));
+          addressWalletCore = listWallet.first.address!;
+          addressWallet.add(addressWalletCore);
         }
         break;
       default:

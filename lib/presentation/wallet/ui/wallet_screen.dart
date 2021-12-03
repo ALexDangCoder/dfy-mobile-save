@@ -2,14 +2,14 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/domain/model/token.dart';
+import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
+import 'package:Dfy/presentation/receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
@@ -53,12 +53,8 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    cubit.addressWalletCore =
-        widget.wallet?.address ?? '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
-
-    cubit.addressWallet.sink.add(
-      widget.wallet?.address ?? '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
-    );
+    cubit.getListWallets('aa');
+    cubit.addressWalletCore = widget.wallet?.address ?? cubit.addressWalletCore;
     cubit.walletName.sink.add(widget.wallet?.name ?? 'Nguyen Van Hung');
     cubit.walletName.stream.listen((event) {
       changeName.text = event;
@@ -69,12 +65,11 @@ class _WalletState extends State<WalletScreen>
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     cubit.getNFT(
-      widget.wallet?.address ?? cubit.addressWallet.value,
+      widget.wallet?.address ?? cubit.addressWalletCore,
     );
     cubit.getTokens(
-      widget.wallet?.address ?? cubit.addressWallet.value,
+      widget.wallet?.address ?? cubit.addressWalletCore,
     );
-    cubit.getListWallets('aa');
   }
 
   @override
@@ -104,7 +99,7 @@ class _WalletState extends State<WalletScreen>
                 ),
                 child: SizedBox(
                   height: 54.h,
-                  width: 323.sw,
+                  width: 323.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -126,7 +121,7 @@ class _WalletState extends State<WalletScreen>
                               S.current.wallet,
                               style: textNormalCustom(
                                 Colors.white,
-                                20.sp,
+                                20,
                                 FontWeight.w700,
                               ),
                             ),
@@ -134,7 +129,7 @@ class _WalletState extends State<WalletScreen>
                               S.current.smart_chain,
                               style: textNormalCustom(
                                 Colors.grey.shade400,
-                                14.sp,
+                                14,
                                 FontWeight.w400,
                               ),
                             ),
@@ -187,9 +182,10 @@ class _WalletState extends State<WalletScreen>
                   labelColor: Colors.white,
                   unselectedLabelColor: const Color(0xFF9997FF),
                   indicatorColor: const Color(0xFF6F6FC5),
-                  labelStyle: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
+                  labelStyle: textNormalCustom(
+                    Colors.grey.shade400,
+                    14,
+                    FontWeight.w600,
                   ),
                   tabs: [
                     Tab(
@@ -224,17 +220,10 @@ class _WalletState extends State<WalletScreen>
                                   itemCount: snapshot.data?.length ?? 0,
                                   itemBuilder: (context, index) {
                                     return TokenItem(
+                                      walletAddress: cubit.addressWalletCore,
                                       index: index,
                                       bloc: cubit,
-                                      symbolUrl:
-                                          snapshot.data![index].iconToken,
-                                      amount:
-                                          snapshot.data![index].balanceToken,
-                                      nameToken: snapshot
-                                              .data?[index].nameShortToken ??
-                                          '',
-                                      exchangeRate:
-                                          snapshot.data![index].exchangeRate,
+                                      modelToken: snapshot.data![index],
                                     );
                                   },
                                 );
@@ -262,7 +251,7 @@ class _WalletState extends State<WalletScreen>
                               stream: cubit.listNFTStream,
                               builder: (
                                 context,
-                                AsyncSnapshot<List<TokenModel>> snapshot,
+                                AsyncSnapshot<List<NftModel>> snapshot,
                               ) {
                                 if (snapshot.hasData) {
                                   return SafeArea(
@@ -276,10 +265,9 @@ class _WalletState extends State<WalletScreen>
                                           index: index,
                                           bloc: cubit,
                                           symbolUrl:
-                                              snapshot.data?[index].iconToken ??
-                                                  '',
+                                              snapshot.data![index].iconNFT,
                                           nameNFT:
-                                              snapshot.data?[index].nameToken ??
+                                              snapshot.data?[index].nftName ??
                                                   '',
                                         );
                                       },
@@ -374,7 +362,7 @@ class _WalletState extends State<WalletScreen>
                         snapshot.data ?? '',
                         style: textNormalCustom(
                           Colors.white,
-                          24.sp,
+                          24,
                           FontWeight.w700,
                         ),
                       );
@@ -409,17 +397,18 @@ class _WalletState extends State<WalletScreen>
                 height: 8.h,
               ),
               Center(
-                child: StreamBuilder(
+                child: StreamBuilder<double>(
                   stream: cubit.totalBalance,
+                  initialData: 0.0,
                   builder: (context, AsyncSnapshot<double> snapshot) {
                     return Text(
                       formatUSD.format(
-                        snapshot.data ?? 1000000,
+                        snapshot.data ?? 0,
                         //cubit.total(cubit.getListTokenModel.value),
                       ),
                       style: textNormalCustom(
                         const Color(0xFFE4AC1A),
-                        20.sp,
+                        20,
                         FontWeight.w600,
                       ),
                     );
@@ -469,7 +458,7 @@ class _WalletState extends State<WalletScreen>
                           ),
                           style: textNormalCustom(
                             Colors.white,
-                            16.sp,
+                            16,
                             FontWeight.w400,
                           ),
                         ),

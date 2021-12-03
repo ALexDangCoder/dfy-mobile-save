@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/bloc/receive_state.dart';
+import 'package:Dfy/presentation/receive_token/bloc/receive_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

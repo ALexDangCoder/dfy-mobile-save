@@ -6,6 +6,7 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/c
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -46,23 +47,10 @@ class _SetupPassWordState extends State<SetupPassWord> {
           currentFocus.unfocus();
         }
       },
-      child: Container(
-        width: 375.w,
-        height: 764.h,
-        decoration: BoxDecoration(
-          color: AppTheme.getInstance().bgBtsColor(),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.r),
-            topRight: Radius.circular(30.r),
-          ),
-        ),
+      child: BaseBottomSheet(
+        title: S.current.create_new_wallet,
         child: Column(
           children: [
-            header(),
-            Divider(
-              thickness: 1,
-              color: AppTheme.getInstance().divideColor(),
-            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

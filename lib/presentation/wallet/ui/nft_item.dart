@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft.dart';
@@ -27,7 +29,7 @@ class NFTItem extends StatefulWidget {
     required this.bloc,
     required this.index,
   }) : super(key: key);
-  final String symbolUrl;
+  final Uint8List? symbolUrl;
   final String nameNFT;
   final WalletCubit bloc;
   final int index;

@@ -4,11 +4,10 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
-import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
-import 'package:Dfy/presentation/restore_bts/bloc/restore_state.dart';
-import 'package:Dfy/presentation/restore_bts/ui/choice_dialog.dart';
-import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
+import 'package:Dfy/presentation/restore_account/bloc/restore_cubit.dart';
+import 'package:Dfy/presentation/restore_account/bloc/restore_state.dart';
+import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -20,19 +19,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'choice_dialog.dart';
+
 const String PASS_PHRASE = 'PASS_PHRASE';
 const String PRIVATE_KEY = 'PRIVATE_KEY';
 
-class RestoreBTS extends StatefulWidget {
-  const RestoreBTS({
+class RestoreAcount extends StatefulWidget {
+  const RestoreAcount({
     Key? key,
   }) : super(key: key);
 
   @override
-  _RestoreBTSState createState() => _RestoreBTSState();
+  _RestoreAcountState createState() => _RestoreAcountState();
 }
 
-class _RestoreBTSState extends State<RestoreBTS> {
+class _RestoreAcountState extends State<RestoreAcount> {
   late final RestoreCubit restoreCubit;
   List<String> listString = [S.current.restore_with_seed, S.current.only_first];
   String strValue = S.current.seed_phrase;

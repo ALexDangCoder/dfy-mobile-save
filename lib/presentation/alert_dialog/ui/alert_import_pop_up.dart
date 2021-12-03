@@ -8,7 +8,7 @@ import 'package:Dfy/presentation/alert_dialog/bloc/alert_cubit.dart';
 import 'package:Dfy/presentation/alert_dialog/bloc/alert_state.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
-import 'package:Dfy/presentation/restore_bts/ui/restore_bts.dart';
+import 'package:Dfy/presentation/restore_account/ui/restore_bts.dart';
 import 'package:Dfy/utils/animate/custom_rect_tween.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,23 +48,19 @@ class _AlertPopUpState extends State<AlertPopUp> {
       listener: (context, state) {
         if (state is EraseSuccess) {
           if (state.type == IMPORT) {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (context) => const RestoreBTS(),
-            ).then(
-              (_) => Navigator.pop(context),
-            );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RestoreAcount(),
+              ),
+            ).then((_) => Navigator.pop(context));
           }
           if (state.type == CREATE) {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (context) => const SetupPassWord(),
-            ).then(
-              (_) => Navigator.pop(context),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SetupPassWord(),
+              ),
             );
           }
         }
@@ -220,7 +216,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
                           child: Row(
                             children: [
                               Flexible(
-                                child: GestureDetector(
+                                child: InkWell(
                                   onTap: () {
                                     Navigator.pop(context);
                                   },
@@ -240,9 +236,10 @@ class _AlertPopUpState extends State<AlertPopUp> {
                               ),
                               VerticalDivider(
                                 color: AppTheme.getInstance().divideColor(),
+                                thickness: 1,
                               ),
                               Flexible(
-                                child: GestureDetector(
+                                child: InkWell(
                                   onTap: type == KeyType.IMPORT
                                       ? () {
                                           alertCubit.earseWallet(IMPORT);
