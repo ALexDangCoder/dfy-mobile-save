@@ -22,7 +22,11 @@ class Web3Utils {
 
   //Token info
   TokenInfoModel getTokenInfo({required String contractAddress}) {
-    return TokenInfoModel();
+    return TokenInfoModel(
+      name: 'Doanh handsome',
+      decimal: 9,
+      tokenSymbol: 'BNB',
+    );
   }
 
   //get balance of BNB from an address

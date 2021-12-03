@@ -32,6 +32,14 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getTokenInfoByAddress({required String tokenAddress}) async {
     final TokenInfoModel tokenInfoModel =
         client.getTokenInfo(contractAddress: tokenAddress);
+    tokenSymbol.sink.add(tokenInfoModel.tokenSymbol ?? 'null');
+    tokenDecimal.sink.add('${tokenInfoModel.decimal ?? 0} ');
+    if (tokenInfoModel.tokenSymbol!.isNotEmpty) {
+      isTokenEnterAddress.sink.add(true);
+    }
+    if (tokenInfoModel.tokenSymbol!.isEmpty) {
+      isTokenEnterAddress.sink.add(false);
+    }
   }
 
   bool checkLogin = false;
@@ -44,10 +52,11 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<List<NftModel>> listNFTStream = BehaviorSubject.seeded([]);
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
   BehaviorSubject<String> nftDecimal = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenSymbol = BehaviorSubject();
   BehaviorSubject<String> tokenAddressTextNft = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenSymbolText = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenDecimalText = BehaviorSubject.seeded('');
+  BehaviorSubject<String> tokenSymbolText = BehaviorSubject();
+  BehaviorSubject<String> tokenDecimalText = BehaviorSubject();
+  BehaviorSubject<String> tokenSymbol = BehaviorSubject();
+  BehaviorSubject<String> tokenDecimal = BehaviorSubject();
   BehaviorSubject<bool> isTokenAddressText = BehaviorSubject.seeded(true);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject.seeded(false);
@@ -291,7 +300,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         final a = await methodCall.arguments['TokenObject'];
         break;
       case 'setShowedTokenCallback':
-       // isSetShowedToken = await methodCall.arguments['isSuccess'];
+        // isSetShowedToken = await methodCall.arguments['isSuccess'];
         break;
       case 'importNftCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];

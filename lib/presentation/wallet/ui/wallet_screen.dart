@@ -230,7 +230,6 @@ class _WalletState extends State<WalletScreen>
                               },
                             ),
                             ImportToken(
-                              walletCubit: cubit,
                               title: S.current.import_token,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 1,
@@ -281,7 +280,6 @@ class _WalletState extends State<WalletScreen>
                               },
                             ),
                             ImportToken(
-                              walletCubit: cubit,
                               title: S.current.import_nft,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 2,

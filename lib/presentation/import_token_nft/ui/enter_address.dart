@@ -37,7 +37,6 @@ class _EnterAddressState extends State<EnterAddress> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     controller.dispose();
   }
@@ -84,17 +83,23 @@ class _EnterAddressState extends State<EnterAddress> {
                     stream: widget.bloc.tokenSymbol,
                     builder: (context, snapshot) {
                       return FromText2(
-                        title: snapshot.data ?? S.current.token_symbol,
+                        title: snapshot.data ?? 'null',
                         urlPrefixIcon: ImageAssets.ic_token,
                         urlSuffixIcon: '',
                       );
                     },
                   ),
                   spaceH16,
-                  FromText2(
-                    title: S.current.token_decimal,
-                    urlPrefixIcon: ImageAssets.ic_group,
-                    urlSuffixIcon: '',
+                  StreamBuilder<String>(
+                    initialData: S.current.token_decimal,
+                    stream: widget.bloc.tokenDecimal,
+                    builder: (context, snapshot) {
+                      return FromText2(
+                        title: snapshot.data ?? 'null',
+                        urlPrefixIcon: ImageAssets.ic_group,
+                        urlSuffixIcon: '',
+                      );
+                    },
                   ),
                   SizedBox(
                     height: 289.h,
