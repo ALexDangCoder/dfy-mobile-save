@@ -54,136 +54,142 @@ class _SendTokenState extends State<SendToken> {
           currentFocus.unfocus();
         }
       },
-      child: BaseBottomSheet(
-        isImage: true,
-        text: ImageAssets.ic_close,
-        title: '${S.current.send} DFY',
-        callback: () {
-          Navigator.pop(context);
-        },
-        isHaveLeftIcon: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 24.h,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Align(
+          alignment: Alignment.bottomCenter,
+          child: BaseBottomSheet(
+            isImage: true,
+            text: ImageAssets.ic_close,
+            title: '${S.current.send} DFY',
+            callback: () {
+              Navigator.pop(context);
+            },
+            isHaveLeftIcon: false,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
                       ),
-                      formShowFtAddress(
-                        // hintText: snapshot.data ?? '',
-                        hintText: '0xFE5788e2...EB7144fd0',
-                        readOnly: true,
-                        prefixImg: ImageAssets.ic_from,
-                        suffixImg: '',
-                      ),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      formShowFtAddress(
-                        hintText: S.current.to_address,
-                        suffixImg: ImageAssets.ic_qr_code,
-                        prefixImg: ImageAssets.ic_to,
-                        callBack: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (ctx) => QRViewExample(
-                                controller: txtToAddressToken,
-                              ),
-                            ),
-                          ).then(
-                            (_) => tokenCubit.checkHaveVlAddressFormToken(
-                              txtToAddressToken.text,
-                              type: typeSend.SEND_TOKEN,
-                            ),
-                          );
-                        },
-                      ),
-                      txtWaringAddress(),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      formAmountFtQuantity(
-                        hintText: S.current.amount,
-                        isAmount: true,
-                        isQuantity: false,
-                        prefixImg: ImageAssets.ic_token,
-                      ),
-                      txtWaringAmount(),
-                      SizedBox(
-                        height: 353.h,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            StreamBuilder<bool>(
-              stream: tokenCubit.isShowCFBlockChainStream,
-              builder: (context, snapshot) {
-                return GestureDetector(
-                  child: ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: snapshot.data ?? true,
-                  ),
-                  onTap: () async {
-                    if (snapshot.data ?? false) {
-                      //show warning if appear error
-                      tokenCubit.checkValidAddress(txtToAddressToken.text);
-                      tokenCubit.checkValidAmount(txtAmount.text);
-                      await tokenCubit.getEstimateGas(
-                        from: fakeFromAddress,
-                        to: fakeToAddress,
-                        value: double.parse(
-                          txtAmount.text,
-                        ),
-                      );
-                      final estimateGasFee = tokenCubit.estimateGasFee;
-                      //check validate before go to next screen
-                      if (tokenCubit.checkAddressFtAmount()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) {
-                              return ConfirmBlockchainCategory(
-                                nameWallet: 'TestWallet',
-                                nameTokenWallet: 'BNB',
-                                balanceWallet: tokenCubit.balanceWallet,
-                                typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
-                                addressFrom:
-                                    fakeFromAddress.formatAddressWallet(),
-                                addressTo: fakeToAddress.formatAddressWallet(),
-                                imageWallet: ImageAssets.symbol,
-                                amount: double.parse(txtAmount.text),
-                                nameToken: 'BNB',
-                                cubitCategory: tokenCubit,
-                                gasPriceFirstFetch: tokenCubit.gasPrice,
-                                gasFeeFirstFetch: estimateGasFee,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 24.h,
+                          ),
+                          formShowFtAddress(
+                            // hintText: snapshot.data ?? '',
+                            hintText: '0xFE5788e2...EB7144fd0',
+                            readOnly: true,
+                            prefixImg: ImageAssets.ic_from,
+                            suffixImg: '',
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          formShowFtAddress(
+                            hintText: S.current.to_address,
+                            suffixImg: ImageAssets.ic_qr_code,
+                            prefixImg: ImageAssets.ic_to,
+                            callBack: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (ctx) => QRViewExample(
+                                    controller: txtToAddressToken,
+                                  ),
+                                ),
+                              ).then(
+                                (_) => tokenCubit.checkHaveVlAddressFormToken(
+                                  txtToAddressToken.text,
+                                  type: typeSend.SEND_TOKEN,
+                                ),
                               );
                             },
                           ),
-                        );
-                      } else {
-                        //nothing
-                      }
-                    } else {
-                      //nothing
-                    }
+                          txtWaringAddress(),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          formAmountFtQuantity(
+                            hintText: S.current.amount,
+                            isAmount: true,
+                            isQuantity: false,
+                            prefixImg: ImageAssets.ic_token,
+                          ),
+                          txtWaringAmount(),
+                          SizedBox(
+                            height: 353.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                StreamBuilder<bool>(
+                  stream: tokenCubit.isShowCFBlockChainStream,
+                  builder: (context, snapshot) {
+                    return GestureDetector(
+                      child: ButtonGold(
+                        title: S.current.continue_s,
+                        isEnable: snapshot.data ?? true,
+                      ),
+                      onTap: () async {
+                        if (snapshot.data ?? false) {
+                          //show warning if appear error
+                          tokenCubit.checkValidAddress(txtToAddressToken.text);
+                          tokenCubit.checkValidAmount(txtAmount.text);
+                          await tokenCubit.getEstimateGas(
+                            from: fakeFromAddress,
+                            to: fakeToAddress,
+                            value: double.parse(
+                              txtAmount.text,
+                            ),
+                          );
+                          final estimateGasFee = tokenCubit.estimateGasFee;
+                          //check validate before go to next screen
+                          if (tokenCubit.checkAddressFtAmount()) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) {
+                                  return ConfirmBlockchainCategory(
+                                    nameWallet: 'TestWallet',
+                                    nameTokenWallet: 'BNB',
+                                    balanceWallet: tokenCubit.balanceWallet,
+                                    typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
+                                    addressFrom:
+                                        fakeFromAddress.formatAddressWallet(),
+                                    addressTo: fakeToAddress.formatAddressWallet(),
+                                    imageWallet: ImageAssets.symbol,
+                                    amount: double.parse(txtAmount.text),
+                                    nameToken: 'BNB',
+                                    cubitCategory: tokenCubit,
+                                    gasPriceFirstFetch: tokenCubit.gasPrice,
+                                    gasFeeFirstFetch: estimateGasFee,
+                                  );
+                                },
+                              ),
+                            );
+                          } else {
+                            //nothing
+                          }
+                        } else {
+                          //nothing
+                        }
+                      },
+                    );
                   },
-                );
-              },
+                ),
+                SizedBox(
+                  height: 34.h,
+                ),
+              ],
             ),
-            SizedBox(
-              height: 34.h,
-            ),
-          ],
+          ),
         ),
       ),
     );

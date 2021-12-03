@@ -69,15 +69,13 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
   late TextEditingController _txtGasPrice;
   late String titleBts;
   late InformationWallet _informationWallet;
-  late double gasLimitFirstFetch;
   late FormFieldBlockchainCubit _cubitFormCustomizeGasFee;
 
   @override
   void initState() {
     _cubitFormCustomizeGasFee = FormFieldBlockchainCubit();
 
-    gasLimitFirstFetch = 2000;
-    _txtGasLimit = TextEditingController(text: gasLimitFirstFetch.toString());
+    _txtGasLimit = TextEditingController(text: widget.gasFeeFirstFetch.toString());
     _txtGasPrice =
         TextEditingController(text: widget.gasPriceFirstFetch.toString());
     _informationWallet = InformationWallet(
@@ -207,7 +205,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                             cubit: _cubitFormCustomizeGasFee,
                             gasFeeFirstFetch: widget.gasFeeFirstFetch,
                             gasPriceFirstFetch: widget.gasPriceFirstFetch,
-                            gasLimitFirstFetch: gasLimitFirstFetch,
+                            gasLimitFirstFetch: widget.gasFeeFirstFetch,
                             balanceWallet: widget.balanceWallet,
                             txtGasLimit: _txtGasLimit,
                             txtGasPrice: _txtGasPrice,
@@ -227,7 +225,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                           toAddress: widget.addressTo,
                           chainId: widget.nameToken ?? '',
                           gasPrice: widget.gasPriceFirstFetch,
-                          price: gasLimitFirstFetch,
+                          price: double.parse(_txtGasLimit.text),
                           maxGas: widget.gasFeeFirstFetch,
                         );
                         break;
