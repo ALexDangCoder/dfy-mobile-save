@@ -21,25 +21,14 @@ class PrivateKeySeedPhrase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.transparent,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 48.h,
-          ),
-          Body(
-            bloc: bloc,
-          ),
-        ],
-      ),
+    return _Body(
+      bloc: bloc,
     );
   }
 }
 
-class Body extends StatefulWidget {
-  const Body({
+class _Body extends StatefulWidget {
+  const _Body({
     Key? key,
     required this.bloc,
   }) : super(key: key);
@@ -50,7 +39,7 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<_Body> {
   late final TextEditingController nameWallet;
 
   @override

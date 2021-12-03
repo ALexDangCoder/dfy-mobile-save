@@ -39,7 +39,7 @@ class CreateSeedPhraseConfirm extends StatelessWidget {
           SizedBox(
             height: 48.h,
           ),
-          Body(
+          _Body(
             typeScreen: typeScreen,
             bLocCreateSeedPhrase: bLocCreateSeedPhrase,
           ),
@@ -49,8 +49,8 @@ class CreateSeedPhraseConfirm extends StatelessWidget {
   }
 }
 
-class Body extends StatefulWidget {
-  const Body({
+class _Body extends StatefulWidget {
+  const _Body({
     Key? key,
     required this.bLocCreateSeedPhrase,
     required this.typeScreen,
@@ -63,7 +63,7 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<_Body> {
   @override
   Widget build(BuildContext context) {
     final bLocCreateSeedPhrase = widget.bLocCreateSeedPhrase;

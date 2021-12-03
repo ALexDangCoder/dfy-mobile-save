@@ -38,7 +38,7 @@ class CreateSuccessfully extends StatelessWidget {
           SizedBox(
             height: 48.h,
           ),
-          Body(
+          _Body(
             bLocCreateSeedPhrase: bLocCreateSeedPhrase,
             type: type,
             wallet: wallet,
@@ -49,8 +49,8 @@ class CreateSuccessfully extends StatelessWidget {
   }
 }
 
-class Body extends StatefulWidget {
-  const Body({
+class _Body extends StatefulWidget {
+  const _Body({
     Key? key,
     required this.bLocCreateSeedPhrase,
     required this.wallet,
@@ -64,7 +64,7 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<_Body> {
   late final MainCubit cubit;
 
   @override

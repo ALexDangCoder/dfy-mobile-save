@@ -22,33 +22,22 @@ class ImportNft extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.transparent,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 48.h,
-          ),
-          Body(
-            bloc: bloc,
-          ),
-        ],
-      ),
+    return _Body(
+      bloc: bloc,
     );
   }
 }
 
-class Body extends StatefulWidget {
+class _Body extends StatefulWidget {
   final WalletCubit bloc;
 
-  const Body({Key? key, required this.bloc}) : super(key: key);
+  const _Body({Key? key, required this.bloc}) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<_Body> {
   final controller = TextEditingController();
 
   @override

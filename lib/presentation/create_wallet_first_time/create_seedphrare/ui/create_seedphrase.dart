@@ -47,7 +47,7 @@ class CreateSeedPhrase extends StatelessWidget {
           SizedBox(
             height: 48.h,
           ),
-          Body(
+          _Body(
             blocCreateSeedPhrase: blocCreateSeedPhrase,
             typeScreen: type,
           ),
@@ -57,8 +57,8 @@ class CreateSeedPhrase extends StatelessWidget {
   }
 }
 
-class Body extends StatefulWidget {
-  const Body({
+class _Body extends StatefulWidget {
+  const _Body({
     Key? key,
     required this.blocCreateSeedPhrase,
     required this.typeScreen,
@@ -70,7 +70,7 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<_Body> {
   late final TextEditingController nameWallet;
 
   @override

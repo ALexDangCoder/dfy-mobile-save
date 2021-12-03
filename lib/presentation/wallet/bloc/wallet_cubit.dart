@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
-import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
@@ -26,16 +25,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     getList();
     // getListTokenItem();
   }
+
   ///web3
   Web3Utils client = Web3Utils();
 
   Future<void> getTokenInfoByAddress({required String tokenAddress}) async {
     final TokenInfoModel tokenInfoModel =
-    client.getTokenInfo(contractAddress: tokenAddress);
-
+        client.getTokenInfo(contractAddress: tokenAddress);
   }
-
-
 
   bool checkLogin = false;
   List<TokenModel> listStart = [];
@@ -61,8 +58,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<List<TokenModel>> getListTokenModel =
       BehaviorSubject.seeded([]);
   BehaviorSubject<List<AccountModel>> list = BehaviorSubject.seeded([]);
-  BehaviorSubject<String> addressWallet =
-      BehaviorSubject();
+  BehaviorSubject<String> addressWallet = BehaviorSubject();
   BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
   BehaviorSubject<double> totalBalance = BehaviorSubject();
@@ -295,7 +291,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         final a = await methodCall.arguments['TokenObject'];
         break;
       case 'setShowedTokenCallback':
-        isSetShowedToken = await methodCall.arguments['isSuccess'];
+       // isSetShowedToken = await methodCall.arguments['isSuccess'];
         break;
       case 'importNftCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
