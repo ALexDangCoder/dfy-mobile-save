@@ -11,6 +11,7 @@ class Web3Utils {
 
   factory Web3Utils() => _shared;
 
+
   //client
   final client = Web3Client(rpcURL, Client());
 
@@ -25,6 +26,15 @@ class Web3Utils {
   Future<double> getBalanceOfBnb({required String ofAddress}) async {
     final amount = await client.getBalance(EthereumAddress.fromHex(ofAddress));
     return amount.getInWei / BigInt.from(10).pow(18);
+  }
+
+  Future<double> getBalanceOfToken({
+    required String ofAddress,
+    required String tokenAddress,
+    String? password,
+  }) async {
+    //TODO: Mockup data
+    return 1000.0;
   }
 
   //get balance of an address
