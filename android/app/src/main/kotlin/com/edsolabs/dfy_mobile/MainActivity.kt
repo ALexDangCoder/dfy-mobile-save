@@ -6,12 +6,10 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import wallet.core.java.AnySigner
-import wallet.core.jni.AnyAddress
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.PrivateKey
 import wallet.core.jni.proto.Binance
-import wallet.core.jni.proto.Ethereum
 import java.math.BigInteger
 import kotlin.experimental.and
 
@@ -386,7 +384,7 @@ class MainActivity : FlutterFragmentActivity() {
             AnySigner.sign(signerInput, CoinType.SMARTCHAIN, Binance.SigningOutput.parser())
         return ""
     }
-    
+
     private fun signTransaction(
         fromAddress: String,
         toAddress: String,
@@ -413,7 +411,7 @@ class MainActivity : FlutterFragmentActivity() {
 
         val output = Binance.SendOrder.Output.newBuilder().apply {
             this.address = ByteString.copyFromUtf8(
-               toAddress
+                toAddress
             )
             this.addAllCoins(listOf(token))
         }
