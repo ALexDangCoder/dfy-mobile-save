@@ -119,8 +119,6 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
 
   @override
   Widget build(BuildContext context) {
-    // final balanceWallet = ModalRoute.of(context)?.settings.arguments as double;
-
     return GestureDetector(
       onTap: () {
         final FocusScopeNode currentFocus = FocusScope.of(context);
@@ -220,7 +218,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () async {
+                  onTap: () {
                     switch (widget.typeConfirm) {
                       case TYPE_CONFIRM.SEND_TOKEN:
                         final cubit = widget.cubitCategory as SendTokenCubit;
@@ -232,6 +230,16 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                           price: gasLimitFirstFetch,
                           maxGas: widget.gasFeeFirstFetch,
                         );
+                        break;
+                      case TYPE_CONFIRM.SEND_NFT:
+                        break;
+                      case TYPE_CONFIRM.SEND_OFFER:
+                        break;
+                      case TYPE_CONFIRM.BUY_NFT:
+                        break;
+                      case TYPE_CONFIRM.PLACE_BID:
+                        break;
+                      default:
                         break;
                     }
                   },
