@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
+import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
+import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
@@ -14,19 +19,22 @@ part 'wallet_state.dart';
 
 class WalletCubit extends BaseCubit<WalletState> {
   WalletCubit() : super(WalletInitial()) {
-    listTokenDetailScreen = listTokenInitial;
-    getListSort();
+    // listTokenDetailScreen = listTokenInitial;
+    // getListSort();
     getList();
-    getListTokenItem();
-    getListNFTItem();
+    // getListTokenItem();
   }
+
+  Web3Utils client = Web3Utils();
 
   bool checkLogin = false;
   List<TokenModel> listStart = [];
   List<Wallet> listWallet = [];
-  BehaviorSubject<List<TokenModel>> listTokenStream =
+  List<ModelToken> listTokenFromWalletCore = [];
+  List<NftModel> listNftFromWalletCore = [];
+  BehaviorSubject<List<ModelToken>> listTokenStream =
       BehaviorSubject.seeded([]);
-  BehaviorSubject<List<TokenModel>> listNFTStream = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<NftModel>> listNFTStream = BehaviorSubject.seeded([]);
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenDecimal = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenSymbol = BehaviorSubject.seeded('');
@@ -177,159 +185,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       url: 'assets/images/Ellipse 39.png',
     ),
   ];
-  List<TokenModel> listNFT = [
-    TokenModel(
-      nameToken: 'DEFI FOR YOU2',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR2 YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 34YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR453 YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR23452345 YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-  ];
-  List<TokenModel> listTokenDetailScreen = [];
-  List<TokenModel> listTokenInitial = [
-    TokenModel(
-      price: 342.423,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'TBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 0,
-    ),
-    TokenModel(
-      price: 3421.2223,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'TBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 0,
-    ),
-    TokenModel(
-      price: 34213423,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'TBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 1,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'Bitcoin',
-      nameTokenSymbol: 'BTC',
-      amountToken: 0.2134,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: true,
-      nameToken: 'ABitcoin',
-      nameTokenSymbol: 'BTC',
-      amountToken: 0.324,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'CBitcoin',
-      nameTokenSymbol: 'BTC',
-      amountToken: 2.21321434,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: true,
-      nameToken: 'DBitcoin',
-      nameTokenSymbol: 'BTC',
-      amountToken: 0,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: true,
-      nameToken: 'WBitcoin',
-      nameTokenSymbol: 'BTC3',
-      amountToken: 021342344,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'QBitcoin',
-      nameTokenSymbol: 'BT3C',
-      amountToken: 0,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: true,
-      nameToken: 'UBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 0.213434,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'TBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 0.413423,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'TBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 0,
-    ),
-  ];
 
   Future<void> getAddressWallet() async {}
 
@@ -339,7 +194,9 @@ class WalletCubit extends BaseCubit<WalletState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {}
+    } on PlatformException {
+      log('');
+    }
   }
 
   String formatAddress(String address) {
@@ -352,35 +209,13 @@ class WalletCubit extends BaseCubit<WalletState> {
     return formatAddressWallet;
   }
 
-  void getListTokenItem() {
-    final List<TokenModel> listToken = [];
-    for (final TokenModel value in getListTokenModel.value) {
-      if (value.isShow ?? false) {
-        listToken.add(value);
-      }
-    }
-    listTokenDetailScreen.clear();
-    listTokenDetailScreen.addAll(listToken);
-    listTokenStream.sink.add(listTokenDetailScreen);
-  }
-
-  void addToken(TokenModel tokenModel) {
-    final List<TokenModel> listToken = getListTokenModel.value;
-    listToken.add(tokenModel);
-    getListTokenModel.sink.add(listToken);
-    sortList(getListTokenModel.value);
-  }
-
-  double total(List<TokenModel> list) {
+  double total(List<ModelToken> list) {
     double total = 0;
     for (int i = 0; i < list.length; i++) {
-      total = total + list[i].price!;
+      total = total + list[i].exchangeRate * list[i].balanceToken;
     }
+    totalBalance.add(total);
     return total;
-  }
-
-  void getListTokenItemRemove() {
-    listTokenStream.sink.add(listTokenDetailScreen);
   }
 
   void getList() {
@@ -395,13 +230,9 @@ class WalletCubit extends BaseCubit<WalletState> {
     list.sink.add(listSelectAccBloc);
   }
 
-  void getListNFTItem() {
-    listNFTStream.sink.add(listNFT);
-  }
-
   String formatNumber(double amount) {
-    return '${amount.toStringAsExponential(5).toString().substring(0, 5)}'
-        ',${amount.toStringAsExponential(5).toString().substring(5, 7)}';
+    return '${amount.toStringAsExponential(5).substring(0, 5)}'
+        ',${amount.toStringAsExponential(5).substring(5, 7)}';
   }
 
   void checkAddressNull2() {
@@ -409,91 +240,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       isNFT.sink.add(false);
     } else {
       isNFT.sink.add(true);
-    }
-  }
-
-  void getListSort() {
-    final List<TokenModel> list = [];
-    for (final TokenModel value in listTokenInitial) {
-      if (value.isShow ?? false) {
-        list.add(value);
-      }
-    }
-    final Comparator<TokenModel> amountTokenComparator =
-        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
-    list.sort(amountTokenComparator);
-    final List<TokenModel> list1 = [];
-    for (final TokenModel value in listTokenInitial) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-          list1.add(value);
-        }
-      }
-    }
-    list1.sort(amountTokenComparator);
-    list.addAll(list1);
-    for (final TokenModel value in listTokenInitial) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-        } else {
-          list.add(value);
-        }
-      }
-    }
-    listStart.addAll(list);
-    getListTokenModel.sink.add(list);
-  }
-
-  void sortList(List<TokenModel> listSort) {
-    final List<TokenModel> list = [];
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-        list.add(value);
-      }
-    }
-    final Comparator<TokenModel> amountTokenComparator =
-        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
-    list.sort(amountTokenComparator);
-    final List<TokenModel> list1 = [];
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-          list1.add(value);
-        }
-      }
-    }
-    list1.sort(amountTokenComparator);
-    list.addAll(list1);
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-        } else {
-          list.add(value);
-        }
-      }
-    }
-    getListTokenModel.sink.add(list);
-  }
-
-  void search() {
-    final List<TokenModel> result = [];
-    // listTokenShow1=listToken;
-    for (final TokenModel value in listTokenInitial) {
-      if (value.nameToken!.toLowerCase().contains(
-            textSearch.value.toLowerCase(),
-          )) {
-        result.add(value);
-      }
-    }
-    if (textSearch.value.isEmpty) {
-      getListTokenModel.sink.add(listStart);
-    }
-    if (textSearch.value.isNotEmpty) {
-      getListTokenModel.sink.add(result);
     }
   }
 
@@ -512,19 +258,23 @@ class WalletCubit extends BaseCubit<WalletState> {
       isWalletName.sink.add(false);
     }
   }
+  //Web3
+  Future<void> getBalanceOfToken(String addressWallet) async {
+    final double balance = await client.getBalanceOfBnb(
+      ofAddress: '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',);
+  }
 
+  Future<void> getExchangeRate(List<ModelToken> list) async {
+    ///TODO: function get ExchangeRate
+    for( int i = 0; i< list.length;i++) {
+      list[i].exchangeRate = 12;
+    }
+  }
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    Object objToken = {};
-    Object objNFT = {};
-    final bool isImportToken;
-    final bool isSetShowedToken;
-    final bool isImportNft;
-    final bool isSetShowedNft;
-
     switch (methodCall.method) {
       case 'importTokenCallback':
-        isImportToken = await methodCall.arguments['isSuccess'];
-        print('isImportToken $isImportToken');
+        final bool isImportToken = await methodCall.arguments['isSuccess'];
+        //print('isImportToken $isImportToken');
         break;
       case 'getListSupportedTokenCallback':
         //[TokenObject]
@@ -532,57 +282,62 @@ class WalletCubit extends BaseCubit<WalletState> {
         // log('$isImportToken');
         break;
       case 'setShowedTokenCallback':
-        isSetShowedToken = await methodCall.arguments['isSuccess'];
-        print(' isSetShowedToken $isSetShowedToken');
+        final bool isSetShowedToken = await methodCall.arguments['isSuccess'];
+       // print(' isSetShowedToken $isSetShowedToken');
         break;
       case 'importNftCallback':
-        isImportNft = await methodCall.arguments['isSuccess'];
-        print('isImportNft $isImportNft');
+        final bool isImportNft = await methodCall.arguments['isSuccess'];
+       // print('isImportNft $isImportNft');
         break;
       case 'setShowedNftCallback':
-        isSetShowedNft = await methodCall.arguments['isSuccess'];
-        print('isSetShowedNft $isSetShowedNft');
+        final bool isSetShowedNft = await methodCall.arguments['isSuccess'];
         break;
-      case 'getListShowedTokenCallback':
-        objToken = methodCall.arguments['TokenObject'];
+      case 'getTokensCallback':
+        final List<dynamic> data = methodCall.arguments;
+        for (final element in data) {
+          listTokenFromWalletCore.add(ModelToken.fromWalletCore(element));
+        }
+        await getExchangeRate(listTokenFromWalletCore);
+        total(listTokenFromWalletCore);
+        listTokenStream.add(listTokenFromWalletCore);
         break;
-      case 'getListShowedNftCallback':
-        objNFT = methodCall.arguments;
+      case 'getNFTCallback':
+        final List<dynamic> data = methodCall.arguments;
+        for (final element in data) {
+          listNftFromWalletCore.add(NftModel.fromWalletCore(element));
+        }
+        listNFTStream.sink.add(listNftFromWalletCore);
         break;
       case 'getListWalletsCallback':
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           listWallet.add(Wallet.fromJson(element));
         }
-
         break;
       default:
         break;
     }
   }
 
-  Future<void> getListToken(String walletAddress, String password) async {
+  Future<void> getTokens(String walletAddress) async {
     try {
       final data = {
         'walletAddress': walletAddress,
-        'password': password,
       };
-      await trustWalletChannel.invokeMethod('getListShowedToken', data);
-    } on PlatformException {}
+      await trustWalletChannel.invokeMethod('getTokens', data);
+    } on PlatformException {log('');}
   }
 
 // list
-  Future<void> getListNFT(
-    String walletAddress, {
-    required String password,
-  }) async {
+  Future<void> getNFT(
+    String walletAddress,
+  ) async {
     try {
       final data = {
         'walletAddress': walletAddress,
-        'password': password,
       };
-      await trustWalletChannel.invokeMethod('getListShowedNft', data);
-    } on PlatformException {}
+      await trustWalletChannel.invokeMethod('getNFT', data);
+    } on PlatformException {log('');}
   }
 
   Future<void> importToken({
@@ -602,8 +357,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       };
       await trustWalletChannel.invokeMethod('importToken', data);
     } on PlatformException {
-      //todo
-
+      log('');
     }
   }
 
@@ -618,7 +372,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       };
       await trustWalletChannel.invokeMethod('getListSupportedToken', data);
     } on PlatformException {
-      //todo
+      log('');
 
     }
   }
@@ -638,7 +392,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       };
       await trustWalletChannel.invokeMethod('setShowedToken', data);
     } on PlatformException {
-      //todo
+      log('');
 
     }
   }
@@ -658,7 +412,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       };
       await trustWalletChannel.invokeMethod('importNft', data);
     } on PlatformException {
-      //todo
+      log('');
 
     }
   }
@@ -678,7 +432,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       };
       await trustWalletChannel.invokeMethod('setShowedNft', data);
     } on PlatformException {
-      //todo
+      log('');
 
     }
   }
