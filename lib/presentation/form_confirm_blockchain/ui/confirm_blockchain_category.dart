@@ -5,6 +5,9 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
+import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
+import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
+import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -69,15 +72,13 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
   late TextEditingController _txtGasPrice;
   late String titleBts;
   late InformationWallet _informationWallet;
-  late double gasLimitFirstFetch;
   late FormFieldBlockchainCubit _cubitFormCustomizeGasFee;
 
   @override
   void initState() {
     _cubitFormCustomizeGasFee = FormFieldBlockchainCubit();
 
-    gasLimitFirstFetch = 2000;
-    _txtGasLimit = TextEditingController(text: gasLimitFirstFetch.toString());
+    _txtGasLimit = TextEditingController(text: widget.gasFeeFirstFetch.toString());
     _txtGasPrice =
         TextEditingController(text: widget.gasPriceFirstFetch.toString());
     _informationWallet = InformationWallet(
@@ -119,8 +120,6 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
 
   @override
   Widget build(BuildContext context) {
-    // final balanceWallet = ModalRoute.of(context)?.settings.arguments as double;
-
     return GestureDetector(
       onTap: () {
         final FocusScopeNode currentFocus = FocusScope.of(context);
@@ -209,7 +208,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                             cubit: _cubitFormCustomizeGasFee,
                             gasFeeFirstFetch: widget.gasFeeFirstFetch,
                             gasPriceFirstFetch: widget.gasPriceFirstFetch,
-                            gasLimitFirstFetch: gasLimitFirstFetch,
+                            gasLimitFirstFetch: widget.gasFeeFirstFetch,
                             balanceWallet: widget.balanceWallet,
                             txtGasLimit: _txtGasLimit,
                             txtGasPrice: _txtGasPrice,
@@ -220,7 +219,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () async {
+                  onTap: () {
                     switch (widget.typeConfirm) {
                       case TYPE_CONFIRM.SEND_TOKEN:
                         final cubit = widget.cubitCategory as SendTokenCubit;
@@ -229,9 +228,32 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                           toAddress: widget.addressTo,
                           chainId: widget.nameToken ?? '',
                           gasPrice: widget.gasPriceFirstFetch,
-                          price: gasLimitFirstFetch,
+                          price: double.parse(_txtGasLimit.text),
                           maxGas: widget.gasFeeFirstFetch,
                         );
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) {
+                            return TokenDetail(
+                              tokenData: 123,
+                              bloc: TokenDetailBloc(),
+                              tokenType: EnumTokenType.DFY,
+                              isSubmitting: true,
+                            );
+                          },
+                        );
+                        break;
+                      case TYPE_CONFIRM.SEND_NFT:
+                        break;
+                      case TYPE_CONFIRM.SEND_OFFER:
+                        break;
+                      case TYPE_CONFIRM.BUY_NFT:
+                        break;
+                      case TYPE_CONFIRM.PLACE_BID:
+                        break;
+                      default:
                         break;
                     }
                   },

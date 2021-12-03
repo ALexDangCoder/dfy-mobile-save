@@ -99,7 +99,7 @@ class _WalletState extends State<WalletScreen>
                 ),
                 child: SizedBox(
                   height: 54.h,
-                  width: 323.sw,
+                  width: 323.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -220,6 +220,7 @@ class _WalletState extends State<WalletScreen>
                                   itemCount: snapshot.data?.length ?? 0,
                                   itemBuilder: (context, index) {
                                     return TokenItem(
+                                      walletAddress: cubit.addressWalletCore,
                                       index: index,
                                       bloc: cubit,
                                       modelToken: snapshot.data![index],
