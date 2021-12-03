@@ -6,7 +6,6 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import wallet.core.java.AnySigner
-import wallet.core.jni.AnyAddress
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.PrivateKey
@@ -43,8 +42,13 @@ class MainActivity : FlutterFragmentActivity() {
                     getConfigWallet()
                 }
                 "earseWallet" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    earseWallet(walletAddress)
+                }
+                "earseAllWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
-                    earseWallet(type)
+                    earseAllWallet(type)
                 }
                 "importWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
@@ -230,10 +234,16 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getConfigCallback", hasMap)
     }
 
-    private fun earseWallet(type: String) {
+    private fun earseAllWallet(type: String) {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
         hasMap["type"] = type
+        channel?.invokeMethod("earseAllWalletCallback", hasMap)
+    }
+
+    private fun earseWallet(walletAddress: String) {
+        val hasMap = HashMap<String, Any>()
+        hasMap["isSuccess"] = true
         channel?.invokeMethod("earseWalletCallback", hasMap)
     }
 
