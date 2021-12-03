@@ -6,6 +6,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import wallet.core.java.AnySigner
+import wallet.core.jni.AnyAddress
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.PrivateKey
@@ -193,8 +194,26 @@ class MainActivity : FlutterFragmentActivity() {
                         maxGas
                     )
                 }
+                "exportWallet" -> {
+                    val password =
+                        call.argument<String>("password")
+                            ?: return@setMethodCallHandler
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    exportWallet(
+                        password,
+                        walletAddress
+                    )
+                }
             }
         }
+    }
+
+    private fun exportWallet(password: String, walletAddress: String) {
+        val hasMap = HashMap<String, Any>()
+        hasMap["isSuccess"] = password.isNotEmpty()
+        channel?.invokeMethod("exportWalletCallBack", hasMap)
     }
 
     private fun checkPassWordWallet(password: String) {
