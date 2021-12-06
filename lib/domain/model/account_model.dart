@@ -5,6 +5,7 @@ class AccountModel {
   double? amountWallet;
   bool? imported;
   bool? isCheck;
+  String? shortNameToken;
 
   AccountModel({
     this.url,
@@ -13,5 +14,6 @@ class AccountModel {
     this.amountWallet,
     this.imported,
     this.isCheck,
+    this.shortNameToken,
   });
 }

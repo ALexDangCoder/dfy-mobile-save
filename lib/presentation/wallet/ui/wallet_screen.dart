@@ -53,7 +53,7 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    cubit.getListWallets('aa');
+    cubit.getListWallets('pass');
     cubit.addressWalletCore = widget.wallet?.address ?? cubit.addressWalletCore;
     cubit.walletName.sink.add(widget.wallet?.name ?? 'Nguyen Van Hung');
     cubit.walletName.stream.listen((event) {
@@ -233,6 +233,8 @@ class _WalletState extends State<WalletScreen>
                               title: S.current.import_token,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 1,
+                              addressWallet: "cubit.addressWalletCore",
+                              cubit: cubit,
                             ),
                             SizedBox(
                               height: 102.h,
@@ -283,6 +285,8 @@ class _WalletState extends State<WalletScreen>
                               title: S.current.import_nft,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 2,
+                              addressWallet: cubit.addressWalletCore,
+                              cubit: cubit,
                             ),
                             CreateNFT(
                               title: S.current.create_nft,
@@ -334,6 +338,10 @@ class _WalletState extends State<WalletScreen>
                           );
                         },
                       ),
+                    ).whenComplete(
+                      () => {
+                        cubit.listSelectAccBloc.clear(),
+                      },
                     );
                   },
                   child: CircleAvatar(

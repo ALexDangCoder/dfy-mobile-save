@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
@@ -19,12 +19,7 @@ import 'package:rxdart/subjects.dart';
 part 'wallet_state.dart';
 
 class WalletCubit extends BaseCubit<WalletState> {
-  WalletCubit() : super(WalletInitial()) {
-    // listTokenDetailScreen = listTokenInitial;
-    // getListSort();
-    getList();
-    // getListTokenItem();
-  }
+  WalletCubit() : super(WalletInitial()) {}
 
   ///web3
   Web3Utils client = Web3Utils();
@@ -40,6 +35,46 @@ class WalletCubit extends BaseCubit<WalletState> {
     if (tokenInfoModel.tokenSymbol!.isEmpty) {
       isTokenEnterAddress.sink.add(false);
     }
+  }
+
+  Future<double> getWalletDetail({required String walletAddress}) async {
+    final double balanceOfBnb =
+        await client.getBalanceOfBnb(ofAddress: walletAddress);
+    return balanceOfBnb;
+  }
+
+  void getListWallet({
+    required String addressWallet,
+  }) async {
+    for (final Wallet value in listWallet) {
+      final double balanceOfBnb = await getWalletDetail(
+        walletAddress: value.address ?? '',
+      );
+      if (addressWallet == value.address) {
+        AccountModel acc = AccountModel(
+          isCheck: true,
+          shortNameToken: 'BNB',
+          addressWallet: value.address,
+          amountWallet: balanceOfBnb,
+          imported: false,
+          nameWallet: value.name,
+          url: 'assets/images/Ellipse 39.png',
+        );
+        listSelectAccBloc.add(acc);
+      } else {
+        AccountModel acc = AccountModel(
+          isCheck: false,
+          addressWallet: value.address,
+          amountWallet: balanceOfBnb,
+          imported: false,
+          shortNameToken: 'BNB',
+          nameWallet: value.name,
+          url: 'assets/images/Ellipse 39.png',
+        );
+        listSelectAccBloc.add(acc);
+      }
+    }
+    getListAcc();
   }
 
   bool checkLogin = false;
@@ -60,7 +95,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<bool> isTokenAddressText = BehaviorSubject.seeded(true);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isImportToken = BehaviorSubject.seeded(false);
+
   BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isImportNftFail = BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isNFT = BehaviorSubject.seeded(true);
@@ -73,136 +108,16 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<double> totalBalance = BehaviorSubject();
 
   String addressWalletCore = '';
-  List<AccountModel> listSelectAccBloc = [
-    AccountModel(
-      isCheck: true,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-  ];
+  List<AccountModel> listSelectAccBloc = [];
+
+  Future<void> earseWallet({required String walletAddress}) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+      };
+      await trustWalletChannel.invokeMethod('earseWallet', data);
+    } on PlatformException {}
+  }
 
   Future<void> getAddressWallet() async {}
 
@@ -212,9 +127,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {
-      log('');
-    }
+    } on PlatformException {}
   }
 
   String formatAddress(String address) {
@@ -236,7 +149,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     return total;
   }
 
-  void getList() {
+  void getListAcc() {
     list.sink.add(listSelectAccBloc);
   }
 
@@ -294,7 +207,13 @@ class WalletCubit extends BaseCubit<WalletState> {
     switch (methodCall.method) {
       case 'importTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
-        isImportToken.sink.add(isSuccess);
+        if (isSuccess) {
+          emit(NavigatorSucces());
+        }
+
+        break;
+      case 'earseWalletCallback':
+        bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       case 'getListSupportedTokenCallback':
         final a = await methodCall.arguments['TokenObject'];
@@ -338,6 +257,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           addressWalletCore = listWallet.first.address!;
           addressWallet.add(addressWalletCore);
         }
+
         break;
       default:
         break;

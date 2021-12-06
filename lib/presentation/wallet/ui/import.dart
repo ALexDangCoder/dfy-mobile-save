@@ -11,11 +11,15 @@ class ImportToken extends StatelessWidget {
     required this.title,
     required this.icon,
     required this.keyRouter,
+    required this.addressWallet,
+    required this.cubit,
   }) : super(key: key);
 
   final int keyRouter;
   final String title;
   final String icon;
+  final String addressWallet;
+  final WalletCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +31,8 @@ class ImportToken extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) {
                 return ImportTokenScreen(
-                  bloc: WalletCubit(),
+                  bloc: cubit,
+                  addressWallet: addressWallet,
                 );
               },
             ),
@@ -39,7 +44,7 @@ class ImportToken extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) {
                 return ImportNft(
-                  bloc: WalletCubit(),
+                  bloc: cubit,
                 );
               },
             ),
