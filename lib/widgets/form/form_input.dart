@@ -57,7 +57,9 @@ class FormInput extends StatelessWidget {
                 AppTheme.getInstance().whiteColor(),
                 16.sp,
               ),
-
+              onFieldSubmitted: (value) {
+                bloc.getTokenInfoByAddress(tokenAddress: value);
+              },
               onChanged: (value) {
                 bloc.checkAddressNull();
                 bloc.tokenAddressText.sink.add(value);

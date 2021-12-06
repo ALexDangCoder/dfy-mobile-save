@@ -41,6 +41,12 @@ class _AlertPopUpState extends State<AlertPopUp> {
   }
 
   @override
+  void dispose() {
+    alertCubit.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final type = widget.type;
     return BlocConsumer<AlertCubit, AlertState>(
@@ -242,10 +248,10 @@ class _AlertPopUpState extends State<AlertPopUp> {
                                 child: InkWell(
                                   onTap: type == KeyType.IMPORT
                                       ? () {
-                                          alertCubit.earseWallet(IMPORT);
+                                          alertCubit.earseAllWallet(IMPORT);
                                         }
                                       : () {
-                                          alertCubit.earseWallet(CREATE);
+                                          alertCubit.earseAllWallet(CREATE);
                                         },
                                   child: SizedBox(
                                     width: 156.w,

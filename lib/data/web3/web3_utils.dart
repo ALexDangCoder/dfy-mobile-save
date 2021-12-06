@@ -18,11 +18,17 @@ class Web3Utils {
   //client
   final client = Web3Client(rpcURL, Client());
 
-  //Token
+  //NFT info
+  Future<void> getNftInfo() async {}
 
   //Token info
   TokenInfoModel getTokenInfo({required String contractAddress}) {
-    return TokenInfoModel();
+    return TokenInfoModel(
+      'Binance Coin',
+      18,
+      'BNB',
+      'https://assets.coingecko.com/coins/images/825/thumb/binance-coin-logo.png?1547034615',
+    );
   }
 
   //get balance of BNB from an address
@@ -82,6 +88,9 @@ class Web3Utils {
       HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '5'),
       HistoryNFT('Contract interaction', '2021-12-03 14:30', 'success', '1'),
       HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
+      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
+      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
+      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
     ];
   }
 
@@ -132,7 +141,7 @@ class Web3Utils {
     required String walletAddress,
     String? password,
   }) async {
-    return TokenInfoModel();
+    return TokenInfoModel('', 0, '', '');
   }
 
   //NFT detail

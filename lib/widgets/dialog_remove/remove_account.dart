@@ -11,11 +11,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class RemoveAcc extends StatelessWidget {
   final WalletCubit bloc;
   final int index;
+  final String walletAddress;
 
   const RemoveAcc({
     Key? key,
     required this.bloc,
     required this.index,
+    required this.walletAddress,
   }) : super(key: key);
 
   @override
@@ -129,8 +131,10 @@ class RemoveAcc extends StatelessWidget {
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () {
+                                        bloc.earseWallet(
+                                            walletAddress: walletAddress,);
                                         bloc.listSelectAccBloc.removeAt(index);
-                                        bloc.getList();
+                                        bloc.getListAcc();
                                         Navigator.pop(context);
                                       },
                                       child: SizedBox(
