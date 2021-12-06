@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
@@ -13,18 +14,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TransactionDetail extends StatelessWidget {
-  final String detailTransaction;
+  final DetailHistoryNFT obj;
 
-  const TransactionDetail({Key? key, required this.detailTransaction})
+  const TransactionDetail({Key? key, required this.obj})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    const double gasFee = 0.0000454546;
-    final DateTime _time = DateTime.now();
-    const String txhID = '0xaaa042c0632f4d44c7cea978f22cd02e751a410e';
-    const int nonce = 351;
-    const isSuccess = true;
+    final double gasFee = obj.gasFee;
+    final String _time = obj.dateTime;
+    final String txhID = obj.txhID;
+    final int nonce = obj.nonce;
+    final isSuccess = obj.status;
     return BaseBottomSheet(
       title: S.current.detail_transaction,
       child: Padding(
@@ -38,11 +39,11 @@ class TransactionDetail extends StatelessWidget {
                   children: [
                     textRow(
                       name: S.current.quantity,
-                      value: '1 of 1',
+                      value: '1 of ${obj.quantity}',
                     ),
                     Container(
                       alignment: Alignment.topLeft,
-                      child: isSuccess
+                      child: isSuccess == 'success'
                           ? textRow(
                               name: S.current.status,
                               value: S.current.transaction_success,
@@ -68,7 +69,7 @@ class TransactionDetail extends StatelessWidget {
                 ),
                 textRow(
                   name: S.current.time,
-                  value: _time.stringFromDateTime,
+                  value: _time,
                 ),
               ],
             ),
