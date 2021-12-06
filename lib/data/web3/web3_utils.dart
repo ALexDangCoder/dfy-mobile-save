@@ -47,15 +47,15 @@ class Web3Utils {
   }) async {
     return [
       TransactionHistory(
-          'Contract interaction', 'success', '2021-12-03 14:30', 100.0),
+          'Contract interaction', 'success', '2021-12-03 14:30', 100.0,),
       TransactionHistory(
-          'Contract interaction', 'success', '2021-12-03 14:30', 100.0),
+          'Contract interaction', 'success', '2021-12-03 14:30', 100.0,),
       TransactionHistory(
-          'Contract interaction', 'pending', '2021-12-03 14:30', 100.0),
+          'Contract interaction', 'pending', '2021-12-03 14:30', 100.0,),
       TransactionHistory(
-          'Contract interaction', 'success', '2021-12-03 14:30', 100.0),
+          'Contract interaction', 'success', '2021-12-03 14:30', 100.0,),
       TransactionHistory(
-          'Contract interaction', 'fail', '2021-12-03 14:30', 100.0),
+          'Contract interaction', 'fail', '2021-12-03 14:30', 100.0,),
     ];
   }
 

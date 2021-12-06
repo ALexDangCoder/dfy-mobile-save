@@ -127,7 +127,7 @@ class _SendNftState extends State<SendNft> {
                         if (snapshot.data ?? false) {
                           sendNftCubit.checkValidAddress(txtToAddressNft.text);
                           sendNftCubit.checkValidQuantity(txtQuantity.text,
-                              quantityFirstFetch: maxQuantityFirstFetch);
+                              quantityFirstFetch: maxQuantityFirstFetch,);
                           if (sendNftCubit.checkAddressFtQuantity()) {
                             showModalBottomSheet(
                               backgroundColor: Colors.transparent,

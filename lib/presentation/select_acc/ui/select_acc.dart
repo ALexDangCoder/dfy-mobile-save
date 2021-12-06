@@ -95,7 +95,7 @@ class _SelectAccState extends State<SelectAcc> {
                           return GestureDetector(
                             onTap: () {
                               widget.bloc.addressWallet.sink.add(
-                                  snapshot.data?[index].addressWallet ?? '');
+                                  snapshot.data?[index].addressWallet ?? '',);
                               widget.bloc.walletName.sink
                                   .add(snapshot.data?[index].nameWallet ?? '');
                               widget.bloc.click(index);
@@ -203,7 +203,7 @@ class _SelectAccState extends State<SelectAcc> {
                                                     width: 65.w,
                                                     height: 22.h,
                                                     padding: EdgeInsets.only(
-                                                        top: 3.h),
+                                                        top: 3.h,),
                                                     decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.all(

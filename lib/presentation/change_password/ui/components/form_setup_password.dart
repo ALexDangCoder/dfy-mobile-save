@@ -65,7 +65,7 @@ Container formSetupPassWord({
                       : const ImageIcon(
                           AssetImage(ImageAssets.ic_hide),
                           color: Colors.grey,
-                        )),
+                        ),),
               prefixIcon: const ImageIcon(
                 AssetImage(ImageAssets.ic_lock),
                 color: Colors.white,
@@ -129,7 +129,7 @@ Container formSetupPassWord({
                       : const ImageIcon(
                     AssetImage(ImageAssets.ic_hide),
                     color: Colors.grey,
-                  )),
+                  ),),
               prefixIcon: const ImageIcon(
                 AssetImage(ImageAssets.ic_lock),
                 color: Colors.white,
@@ -193,7 +193,7 @@ Container formSetupPassWord({
                       : const ImageIcon(
                     AssetImage(ImageAssets.ic_hide),
                     color: Colors.grey,
-                  )),
+                  ),),
               prefixIcon: const ImageIcon(
                 AssetImage(ImageAssets.ic_lock),
                 color: Colors.white,

@@ -15,7 +15,7 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
   final BehaviorSubject<bool> _isSwitchFingerFtFaceIdOn =
       BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _isSwitchAppLockOn = BehaviorSubject<bool>.seeded(
-      PrefsService.getAppLockConfig() == 'true' ? true : false);
+      PrefsService.getAppLockConfig() == 'true' ? true : false,);
 
   //stream
   Stream<bool> get isSwitchFingerFtFaceIdOnStream =>

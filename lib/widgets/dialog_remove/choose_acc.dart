@@ -51,7 +51,7 @@ class ChooseAcc extends StatelessWidget {
                           child: Text(
                             S.current.choose_acc,
                             style: textNormal(
-                                AppTheme.getInstance().whiteColor(), 20.sp)
+                                AppTheme.getInstance().whiteColor(), 20.sp,)
                                 .copyWith(
                               fontWeight: FontWeight.w700,
                               fontStyle: FontStyle.normal,
@@ -117,7 +117,7 @@ class ChooseAcc extends StatelessWidget {
                                               style: textNormal(
                                                   AppTheme.getInstance()
                                                       .whiteColor(),
-                                                  20.sp)
+                                                  20.sp,)
                                                   .copyWith(
                                                 fontWeight: FontWeight.w600,
                                                 fontStyle: FontStyle.normal,

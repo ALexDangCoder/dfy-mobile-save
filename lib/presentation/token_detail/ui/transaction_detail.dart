@@ -170,7 +170,7 @@ class TransactionDetail extends StatelessWidget {
               color: valueColor ?? AppTheme.getInstance().textThemeColor(),
               fontSize: 14,
               weight: FontWeight.w400
-            ),
+            ,),
           ),
           if (showCopy)
             SizedBox(

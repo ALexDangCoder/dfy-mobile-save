@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/token_model.dart';
