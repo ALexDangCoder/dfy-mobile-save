@@ -138,16 +138,16 @@ class _WalletState extends State<WalletScreen>
                       ),
                       IconButton(
                         onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return SettingWallet(
-                                cubitSetting: SettingWalletCubit(),
-                                cubit: cubit,
-                              );
-                            },
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) {
+                                return SettingWallet(
+                                  cubitSetting: SettingWalletCubit(),
+                                  cubit: cubit,
+                                );
+                              },
+                            ),
                           );
                         },
                         icon: Icon(

@@ -132,13 +132,15 @@ class SettingWallet extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        builder: (context) => ConfirmPWShowPRVSeedPhr(
-                          cubit: ConfirmPwPrvKeySeedpharseCubit(),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) {
+                            return ConfirmPWShowPRVSeedPhr(
+                              cubit: ConfirmPwPrvKeySeedpharseCubit(),
+                            );
+                          },
                         ),
-                        context: context,
                       );
                     },
                     child: buttonForm(
@@ -155,11 +157,13 @@ class SettingWallet extends StatelessWidget {
                       prefixIcon: ImageAssets.ic_security,
                     ),
                     onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        builder: (context) => const ChangePassword(),
-                        context: context,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) {
+                            return const ChangePassword();
+                          },
+                        ),
                       );
                     },
                   ),
