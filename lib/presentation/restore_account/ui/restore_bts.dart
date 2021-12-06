@@ -4,7 +4,7 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/restore_account/bloc/restore_cubit.dart';
 import 'package:Dfy/presentation/restore_account/bloc/restore_state.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
@@ -77,15 +77,16 @@ class _RestoreAcountState extends State<RestoreAcount> {
       bloc: restoreCubit,
       listener: (ctx, state) {
         if (state is NavState) {
-          showModalBottomSheet(
-            isScrollControlled: true,
-            context: context,
-            backgroundColor: Colors.transparent,
-            builder: (context) => Body(
-              bLocCreateSeedPhrase:
-                  BLocCreateSeedPhrase(passwordController.text),
-              wallet: restoreCubit.wallet ?? Wallet(),
-              type: KeyType.IMPORT,
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return CreateSuccessfully(
+                  bLocCreateSeedPhrase:
+                      BLocCreateSeedPhrase(passwordController.text),
+                  wallet: restoreCubit.wallet ?? Wallet(),
+                  type: KeyType.IMPORT,
+                );
+              },
             ),
           );
         }

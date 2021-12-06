@@ -54,6 +54,7 @@ class ImageAssets {
   static const String faceID = '$baseImg/face_id_icon.png';
   static const String ic_finger = '$baseImg/finger_icon.png';
   static const String frameGreen = '$baseImg/Frame.png';
+  static const String img_fail = '$baseImg/img_fail.png';
   static const String ic_add = '$baseImg/ic_add.png';
   static const String ic_token = '$baseImg/ic_token.png';
   static const String ic_circle = '$baseImg/ic_circle.png';
@@ -77,6 +78,7 @@ class ImageAssets {
   static const String imgTabHome = '$baseImg/img_tab_home.png';
 
   static const String ic_to = '$baseImg/ic_to.png';
+  static const String ic_pending = '$baseImg/ic_pending.png';
   static const String ic_key24 = '$baseImg/key.png';
   static const String ic_from = '$baseImg/ic_from.png';
   static const String codeS = '$baseImg/Code.png';
@@ -108,18 +110,20 @@ class ImageAssets {
   static const String image_example_pop_up = '$baseImg/pop_image.png';
 
   ///SvgImage
-  static const String ic_btn_send_token_svg = '$baseImg/ic_btn_send_token_svg.svg';
-  static const String ic_btn_receive_token_svg = '$baseImg/ic_btn_receive_token_svg.svg';
-  static const String ic_transaction_success_svg = '$baseImg/ic_transaction_success_svg.svg';
-  static const String ic_transaction_fail_svg = '$baseImg/ic_transaction_fail_svg.svg';
-  static const String ic_transaction_pending_svg = '$baseImg/ic_transaction_pending_svg.svg';
+  static const String ic_btn_send_token_svg =
+      '$baseImg/ic_btn_send_token_svg.svg';
+  static const String ic_btn_receive_token_svg =
+      '$baseImg/ic_btn_receive_token_svg.svg';
+  static const String ic_transaction_success_svg =
+      '$baseImg/ic_transaction_success_svg.svg';
+  static const String ic_transaction_fail_svg =
+      '$baseImg/ic_transaction_fail_svg.svg';
+  static const String ic_transaction_pending_svg =
+      '$baseImg/ic_transaction_pending_svg.svg';
 
   static const String ic_token_dfy_svg = '$baseImg/ic_token_dfy_svg.svg';
   static const String ic_token_btc_svg = '$baseImg/ic_token_btc_svg.svg';
   static const String ic_token_bnb_svg = '$baseImg/ic_token_bnb_svg.svg';
-
-
-
 
   static SvgPicture svgAssets(
     String name, {
@@ -145,6 +149,7 @@ class ImageAssets {
       fit: fit ?? BoxFit.none,
     );
   }
+
   static const Map<String, List<double>> _svgImageSize = {
     icMenu: [18, 16],
     icBack: [6, 12.25],

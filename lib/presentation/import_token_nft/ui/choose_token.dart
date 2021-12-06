@@ -52,6 +52,7 @@ class _ChooseTokenState extends State<ChooseToken> {
                         height: 73,
                         width: 322,
                         child: ListTileSwitch(
+                          enabled: false,
                           switchScale: 1,
                           value: widget
                                   .bloc.getListTokenModel.value[index].isShow ??

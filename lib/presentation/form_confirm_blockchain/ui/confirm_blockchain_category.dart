@@ -231,6 +231,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                           price: double.parse(_txtGasLimit.text),
                           maxGas: widget.gasFeeFirstFetch,
                         );
+                        Navigator.pop(context,true);
                         break;
                       case TYPE_CONFIRM.SEND_NFT:
                         break;

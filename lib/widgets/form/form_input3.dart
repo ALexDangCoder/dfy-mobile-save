@@ -51,8 +51,8 @@ class FormInput3 extends StatelessWidget {
               child: TextFormField(
                 maxLength: 100,
                 onChanged: (value) {
-                  bloc.checkAddressNull2();
                   bloc.tokenAddressTextNft.sink.add(value);
+                  bloc.checkAddressNullNFT();
                 },
                 controller: controller,
                 cursorColor: AppTheme.getInstance().whiteColor(),
@@ -85,7 +85,7 @@ class FormInput3 extends StatelessWidget {
                   },
                 ),
               ).whenComplete(
-                    () => controller.text = bloc.tokenAddressTextNft.value,
+                () => controller.text = bloc.tokenAddressTextNft.value,
               );
             },
             child: SizedBox(
