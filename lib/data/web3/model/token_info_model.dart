@@ -1,13 +1,13 @@
 class TokenInfoModel {
   String? name;
   int? decimal;
-  String? symbol;
+  String? tokenSymbol;
   String? icon;
 
   TokenInfoModel(
     this.name,
     this.decimal,
-    this.symbol,
+    this.tokenSymbol,
     this.icon,
   );
 }

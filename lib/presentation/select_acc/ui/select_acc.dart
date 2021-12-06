@@ -26,6 +26,12 @@ class SelectAcc extends StatefulWidget {
 
 class _SelectAccState extends State<SelectAcc> {
   @override
+  void initState() {
+    super.initState();
+    widget.bloc.getListWallet(addressWallet: widget.bloc.addressWalletCore);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -87,177 +93,190 @@ class _SelectAccState extends State<SelectAcc> {
                   stream: widget.bloc.list,
                   builder:
                       (context, AsyncSnapshot<List<AccountModel>> snapshot) {
-                    return Expanded(
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: snapshot.data?.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              widget.bloc.addressWallet.sink.add(
-                                  snapshot.data?[index].addressWallet ?? '');
-                              widget.bloc.walletName.sink
-                                  .add(snapshot.data?[index].nameWallet ?? '');
-                              widget.bloc.click(index);
-                              if (widget.typeScreen2 == TypeScreen2.detail) {
-                                Navigator.pop(context);
-                              } else {
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              }
-                            },
-                            onLongPress: () {
-                              Navigator.of(context).push(
-                                HeroDialogRoute(
-                                  builder: (context) {
-                                    return RemoveAcc(
-                                      bloc: widget.bloc,
-                                      index: index,
-                                    );
-                                  },
-                                  isNonBackground: false,
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                    color: Colors.white.withOpacity(0.1),
+                    if (snapshot.hasData) {
+                      return Expanded(
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemCount: snapshot.data?.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                widget.bloc.addressWallet.sink.add(
+                                  snapshot.data?[index].addressWallet ?? '',
+                                );
+                                widget.bloc.walletName.sink.add(
+                                  snapshot.data?[index].nameWallet ?? '',
+                                );
+                                widget.bloc.click(index);
+                                if (widget.typeScreen2 == TypeScreen2.detail) {
+                                  Navigator.pop(context);
+                                } else {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                }
+                              },
+                              onLongPress: () {
+                                Navigator.of(context).push(
+                                  HeroDialogRoute(
+                                    builder: (context) {
+                                      return RemoveAcc(
+                                        bloc: widget.bloc,
+                                        index: index,
+                                        walletAddress: snapshot
+                                                .data?[index].addressWallet ??
+                                            '',
+                                      );
+                                    },
+                                    isNonBackground: false,
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(
+                                      color: Colors.white.withOpacity(0.1),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              height: 74.h,
-                              width: 357.w,
-                              padding: EdgeInsets.only(
-                                left: 15.h,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            height: 40.h,
-                                            width: 40.w,
-                                            child: Image.asset(
-                                              snapshot.data?[index].url ?? '',
+                                height: 74.h,
+                                width: 357.w,
+                                padding: EdgeInsets.only(
+                                  left: 15.h,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              height: 40.h,
+                                              width: 40.w,
+                                              child: Image.asset(
+                                                snapshot.data?[index].url ?? '',
+                                              ),
                                             ),
-                                          ),
-                                          spaceW8,
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    snapshot.data?[index]
-                                                            .nameWallet ??
-                                                        '',
-                                                    style: textNormalCustom(
-                                                      null,
-                                                      16.sp,
-                                                      FontWeight.w700,
-                                                    ),
-                                                  ),
-                                                  spaceW4,
-                                                  Text(
-                                                    widget.bloc.formatAddress(
+                                            spaceW8,
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
                                                       snapshot.data?[index]
-                                                              .addressWallet ??
+                                                              .nameWallet ??
                                                           '',
-                                                    ),
-                                                    style: textNormalCustom(
-                                                      AppTheme.getInstance()
-                                                          .whiteWithOpacityFireZero(),
-                                                      14.sp,
-                                                      FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Text(
-                                                '${snapshot.data?[index].amountWallet?.toStringAsFixed(5)} BNB',
-                                                style: textNormalCustom(
-                                                  null,
-                                                  16.sp,
-                                                  FontWeight.w400,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            child: snapshot.data?[index]
-                                                        .imported ??
-                                                    false
-                                                ? Container(
-                                                    width: 65.w,
-                                                    height: 22.h,
-                                                    padding: EdgeInsets.only(
-                                                        top: 3.h),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(6.r),
-                                                      ),
-                                                      border: Border.all(
-                                                        color: AppTheme
-                                                                .getInstance()
-                                                            .whiteWithOpacityFireZero(),
-                                                        width: 1.h,
+                                                      style: textNormalCustom(
+                                                        null,
+                                                        16.sp,
+                                                        FontWeight.w700,
                                                       ),
                                                     ),
-                                                    child: Text(
-                                                      S.current.import,
-                                                      style: textNormal(
+                                                    spaceW4,
+                                                    Text(
+                                                      widget.bloc.formatAddress(
+                                                        snapshot.data?[index]
+                                                                .addressWallet ??
+                                                            '',
+                                                      ),
+                                                      style: textNormalCustom(
                                                         AppTheme.getInstance()
                                                             .whiteWithOpacityFireZero(),
-                                                        11.sp,
+                                                        14.sp,
+                                                        FontWeight.w400,
                                                       ),
-                                                      textAlign:
-                                                          TextAlign.center,
                                                     ),
-                                                  )
-                                                : SizedBox(
-                                                    width: 65.w,
-                                                    height: 22.h,
+                                                  ],
+                                                ),
+                                                Text(
+                                                  '${snapshot.data?[index].amountWallet?.toStringAsFixed(5)} ${snapshot.data?[index].shortNameToken}',
+                                                  style: textNormalCustom(
+                                                    null,
+                                                    16.sp,
+                                                    FontWeight.w400,
                                                   ),
-                                          ),
-                                          spaceW10,
-                                          Container(
-                                            child:
-                                                snapshot.data?[index].isCheck ??
-                                                        false
-                                                    ? Image.asset(
-                                                        ImageAssets.ic_selected,
-                                                        width: 24.w,
-                                                        height: 24.h,
-                                                      )
-                                                    : SizedBox(
-                                                        width: 24.w,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              child: snapshot.data?[index]
+                                                          .imported ??
+                                                      false
+                                                  ? Container(
+                                                      width: 65.w,
+                                                      height: 22.h,
+                                                      padding: EdgeInsets.only(
+                                                          top: 3.h),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(6.r),
+                                                        ),
+                                                        border: Border.all(
+                                                          color: AppTheme
+                                                                  .getInstance()
+                                                              .whiteWithOpacityFireZero(),
+                                                          width: 1.h,
+                                                        ),
                                                       ),
-                                          ),
-                                          spaceW5,
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ],
+                                                      child: Text(
+                                                        S.current.import,
+                                                        style: textNormal(
+                                                          AppTheme.getInstance()
+                                                              .whiteWithOpacityFireZero(),
+                                                          11.sp,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    )
+                                                  : SizedBox(
+                                                      width: 65.w,
+                                                      height: 22.h,
+                                                    ),
+                                            ),
+                                            spaceW10,
+                                            Container(
+                                              child: snapshot.data?[index]
+                                                          .isCheck ??
+                                                      false
+                                                  ? Image.asset(
+                                                      ImageAssets.ic_selected,
+                                                      width: 24.w,
+                                                      height: 24.h,
+                                                    )
+                                                  : SizedBox(
+                                                      width: 24.w,
+                                                    ),
+                                            ),
+                                            spaceW5,
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      );
+                    }
                   },
                 ),
               ],

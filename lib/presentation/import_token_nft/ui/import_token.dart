@@ -19,8 +19,10 @@ class ImportTokenScreen extends StatelessWidget {
   const ImportTokenScreen({
     Key? key,
     required this.bloc,
+    required this.addressWallet,
   }) : super(key: key);
   final WalletCubit bloc;
+  final String addressWallet;
 
   @override
   Widget build(BuildContext context) {
@@ -145,11 +147,14 @@ class ImportTokenScreen extends StatelessWidget {
                         if (!currentFocus.hasPrimaryFocus) {
                           currentFocus.unfocus();
                         }
+                        bloc.getTokenInfoByAddress(
+                            tokenAddress: bloc.tokenAddressText.value);
                       },
                       child: TabBarView(
                         children: [
                           EnterAddress(
                             bloc: bloc,
+                            addressWallet: addressWallet,
                           ),
                           ChooseToken(bloc: bloc),
                         ],
