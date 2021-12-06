@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
@@ -18,8 +19,10 @@ class NFTDetail extends StatefulWidget {
   const NFTDetail({
     Key? key,
     required this.nft,
+    required this.listHistory,
   }) : super(key: key);
   final NFT nft;
+  final List<HistoryNFT> listHistory;
 
   @override
   _NFTDetailState createState() => _NFTDetailState();
@@ -34,16 +37,15 @@ class _NFTDetailState extends State<NFTDetail> {
   void initState() {
     super.initState();
     bloc = NFTBloc();
-    bloc.getTransactionNFTHistory();
-    if (bloc.listHistory.length >= 3) {
+    if (widget.listHistory.length >= 3) {
       bloc.lenSink.add(3);
       initLen = 3;
       initShow = true;
       bloc.showSink.add(true);
     }
-    if (bloc.listHistory.length < 3) {
-      initLen = bloc.listHistory.length;
-      bloc.lenSink.add(bloc.listHistory.length);
+    if (widget.listHistory.length < 3) {
+      initLen = widget.listHistory.length;
+      bloc.lenSink.add(widget.listHistory.length);
       initShow = false;
       bloc.showSink.add(false);
     }
@@ -184,10 +186,11 @@ class _NFTDetailState extends State<NFTDetail> {
                         initialData: initLen,
                         stream: bloc.lenStream,
                         builder: (ctx, snapshot) {
+                          final int len = snapshot.data ?? initLen;
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: bloc.listHistory.length,
+                            itemCount: len,
                             itemBuilder: (ctx, index) {
                               return itemTransition(index);
                             },
@@ -203,13 +206,13 @@ class _NFTDetailState extends State<NFTDetail> {
                             visible: isShow,
                             child: InkWell(
                               onTap: () {
-                                if (bloc.listHistory.length >=
+                                if (widget.listHistory.length >=
                                     bloc.curLen + 10) {
                                   bloc.lenSink.add(bloc.curLen + 10);
                                 } else {
-                                  bloc.lenSink.add(bloc.listHistory.length);
+                                  bloc.lenSink.add(widget.listHistory.length);
                                 }
-                                if (bloc.curLen == bloc.listHistory.length) {
+                                if (bloc.curLen == widget.listHistory.length) {
                                   bloc.showSink.add(false);
                                 }
                               },
@@ -292,16 +295,16 @@ class _NFTDetailState extends State<NFTDetail> {
   }
 
   Widget itemTransition(int index) {
-    final objHistory = bloc.listHistory[index];
+    final objHistory = widget.listHistory[index];
     final objDetail = bloc.listDetailHistory;
     return GestureDetector(
       onTap: () {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          context: context,
-          builder: (context) => TransactionDetail(
-           obj: objDetail,
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TransactionDetail(
+              obj: objDetail,
+            ),
           ),
         );
       },
@@ -338,9 +341,7 @@ class _NFTDetailState extends State<NFTDetail> {
                         width: 6.w,
                       ),
                       Image.asset(
-                        objHistory.status == 'success'
-                            ? ImageAssets.ic_tick_circle
-                            : ImageAssets.ic_fail,
+                        bloc.getImgStatus(objHistory.status),
                       ),
                     ],
                   ),

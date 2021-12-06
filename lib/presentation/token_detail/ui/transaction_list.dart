@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/transaction.dart';
+import 'package:Dfy/data/web3/model/transaction.dart';
+import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/transaction_detail.dart';
@@ -11,20 +12,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TransactionList extends StatelessWidget {
-  final String title;
+  final String shortName;
   final TokenDetailBloc bloc;
-  final int tokenData;
 
   const TransactionList({
     Key? key,
-    required this.title,
+    required this.shortName,
     required this.bloc,
-    this.tokenData = 1,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<TransactionModel>>(
+    return StreamBuilder<List<TransactionHistory>>(
       initialData: const [],
       stream: bloc.transactionListStream,
       builder: (context, snapshot) {
@@ -48,7 +47,7 @@ class TransactionList extends StatelessWidget {
                           return transactionRow(
                             context: context,
                             transaction:
-                                snapData?[index] ?? TransactionModel.init(),
+                                snapData?[index] ?? TransactionHistory.init(),
                           );
                         },
                       ),
@@ -136,7 +135,7 @@ class TransactionList extends StatelessWidget {
 
   Widget transactionRow({
     required BuildContext context,
-    required TransactionModel transaction,
+    required TransactionHistory transaction,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -153,8 +152,10 @@ class TransactionList extends StatelessWidget {
             context: context,
             backgroundColor: Colors.transparent,
             builder: (context) {
-              return TransactionDetail(
-                transaction: transaction,
+              return TransactionHistoryDetailScreen(
+                transaction: TransactionHistoryDetail.init(),
+                bloc: bloc,
+                status: transaction.status ?? '',
               );
             },
           );
@@ -172,7 +173,7 @@ class TransactionList extends StatelessWidget {
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    transaction.title,
+                    transaction.name ?? '',
                     style: tokenDetailAmount(
                       color: AppTheme.getInstance().whiteColor(),
                       fontSize: 16,
@@ -184,15 +185,14 @@ class TransactionList extends StatelessWidget {
                   sizedSvgImage(
                     w: 20,
                     h: 20,
-                    image: transaction.status.statusImage,
+                    image: getImgStatus(transaction.status ?? ''),
                   ),
                   Expanded(
                     child: Container(
                       alignment: Alignment.topRight,
                       child: transactionAmountText(
-                        status: transaction.status,
-                        amount: transaction.amount,
-                        type: transaction.type,
+                        status: transaction.status ?? '',
+                        amount: transaction.amount ?? 0,
                       ),
                     ),
                   ),
@@ -204,11 +204,11 @@ class TransactionList extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    transaction.time.stringFromDateTime,
+                    DateTime.parse(transaction.dateTime ?? '')
+                        .stringFromDateTime,
                     style: tokenDetailAmount(
                       color: AppTheme.getInstance().currencyDetailTokenColor(),
                       fontSize: 14,
-                      weight: FontWeight.w400,
                     ),
                   ),
                 ],
@@ -221,42 +221,47 @@ class TransactionList extends StatelessWidget {
   }
 
   Text transactionAmountText({
-    required int amount,
-    required TransactionType type,
-    required TransactionStatus status,
+    required double amount,
+    required String status,
   }) {
     switch (status) {
-      case TransactionStatus.FAILED:
+      case 'fail':
         return Text(
-          '0 $title',
+          '0 $shortName',
           style: tokenDetailAmount(
             color: AppTheme.getInstance().currencyDetailTokenColor(),
             fontSize: 16,
-            weight: FontWeight.w400,
           ),
         );
-      case TransactionStatus.SUCCESS:
+      case 'success':
         return Text(
-          type == TransactionType.RECEIVE
-              ? '+ $amount $title'
-              : '- $amount $title',
+          '$amount $shortName',
           style: tokenDetailAmount(
-            color: type == TransactionType.RECEIVE
+            color: (amount > 0)
                 ? AppTheme.getInstance().successTransactionColors()
                 : AppTheme.getInstance().currencyDetailTokenColor(),
             fontSize: 16,
-            weight: FontWeight.w400,
           ),
         );
-      case TransactionStatus.PENDING:
+      default:
         return Text(
-          '$amount $title',
+          '$amount $shortName',
           style: tokenDetailAmount(
             color: AppTheme.getInstance().currencyDetailTokenColor(),
             fontSize: 16,
-            weight: FontWeight.w400,
           ),
         );
+    }
+  }
+
+  String getImgStatus(String status) {
+    switch (status) {
+      case 'success':
+        return ImageAssets.ic_transaction_success_svg;
+      case 'fail':
+        return ImageAssets.ic_transaction_fail_svg;
+      default:
+        return ImageAssets.ic_transaction_pending_svg;
     }
   }
 }

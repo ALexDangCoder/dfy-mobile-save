@@ -1,24 +1,14 @@
-import 'dart:developer';
-
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
-import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NFTBloc {
   final BehaviorSubject<int> _lengthSubject = BehaviorSubject<int>();
   final BehaviorSubject<bool> _showSubject = BehaviorSubject<bool>();
-  final BehaviorSubject<List<HistoryNFT>> _historySubject =
-      BehaviorSubject<List<HistoryNFT>>();
-
-  Stream<List<HistoryNFT>> get historyStream => _historySubject.stream;
-
-  Sink<List<HistoryNFT>> get historySink => _historySubject.sink;
-
-  List<HistoryNFT> listHistory = [];
   DetailHistoryNFT listDetailHistory = DetailHistoryNFT(
-    0,
-    'Fail',
+    1,
+    'Success',
     0.0,
     '2021-12-03 14:30',
     '0xc945bb101ac51f0bbb77c294fe21280e9de55c82da3160ad665548ef8662f35a',
@@ -38,13 +28,21 @@ class NFTBloc {
   Sink<bool> get showSink => _showSubject.sink;
   final Web3Utils _client = Web3Utils();
 
-  Future<void> getTransactionNFTHistory() async {
-    listHistory = await _client.getNFTHistory();
-    historySink.add(listHistory);
+  Future<void> getDetailTransaction() async {
     listDetailHistory = await _client.getNFTHistoryDetail();
   }
-
+  String getImgStatus(String status) {
+    switch (status) {
+      case 'success':
+        return ImageAssets.ic_tick_circle;
+      case 'fail':
+        return ImageAssets.ic_fail;
+      default:
+        return ImageAssets.ic_pending;
+    }
+  }
   void dispose() {
+    _showSubject.close();
     _lengthSubject.close();
   }
 }
