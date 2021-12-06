@@ -51,7 +51,6 @@ class _FormSearchState extends State<FormSearch> {
                 maxLength: 20,
                 onChanged: (value) {
                   widget.bloc.textSearch.sink.add(value);
-
                   widget.bloc.search();
                 },
                 cursorColor: AppTheme.getInstance().whiteColor(),

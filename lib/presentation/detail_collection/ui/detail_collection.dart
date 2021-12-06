@@ -12,8 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
-import 'body_collection.dart';
-import 'filter_nft.dart';
+import 'widget/body_collection.dart';
+import 'widget/filter_nft.dart';
 
 class DetailCollection extends StatefulWidget {
   const DetailCollection({Key? key}) : super(key: key);
@@ -60,16 +60,17 @@ class _DetailCollectionState extends State<DetailCollection>
             },
             tabBar: TabBar(
               controller: _tabController,
-              isScrollable: true,
+              //  isScrollable: true,
               tabs: [
                 Tab(
                   child: Text(
-                    '         ${S.current.nfts}        ',
+                    S.current.nfts,
                     style: textNormalCustom(
                       null,
                       14.sp,
                       FontWeight.bold,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 Tab(
@@ -80,6 +81,7 @@ class _DetailCollectionState extends State<DetailCollection>
                       14.sp,
                       FontWeight.bold,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ],
@@ -98,7 +100,8 @@ class _DetailCollectionState extends State<DetailCollection>
             body: TabBarView(
               controller: _tabController,
               children: [
-                NftsCollection(
+                NFTSCollection(
+
                   detailCollectionBloc: detailCollectionBloc,
                 ),
                 const TradingHistoryCollection(),

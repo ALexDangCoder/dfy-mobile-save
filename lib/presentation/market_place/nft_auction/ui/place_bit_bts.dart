@@ -26,21 +26,24 @@ class _PlaceBidState extends State<PlaceBid> {
       callback: () {
         Navigator.pop(context);
       },
-      child: Column(
-        children: [
-          spaceH56,
-          _buildRow(S.current.reserve_price, '\$95,000'),
-          spaceH8,
-          _buildRow(S.current.price_step, '59x22'),
-          spaceH8,
-          _buildRow(S.current.your_balance_bid, '35,000 DFY'),
-          spaceH16,
-          _currentBid,
-          spaceH5,
-          _cardCurrentBid('35000 DFY', ImageAssets.ic_token_dfy_svg, 'DFY'),
-          spaceH344,
-          _spaceButton(context),
-        ],
+      child: Container(
+        padding: EdgeInsets.only(left: 16.w, right: 16.w,),
+        child: Column(
+          children: [
+            spaceH56,
+            _buildRow(S.current.reserve_price, '\$95,000'),
+            spaceH8,
+            _buildRow(S.current.price_step, '59x22'),
+            spaceH8,
+            _buildRow(S.current.your_balance_bid, '35,000 DFY'),
+            spaceH16,
+            _currentBid,
+            spaceH5,
+            _cardCurrentBid('35000 DFY', ImageAssets.ic_token_dfy_svg, 'DFY'),
+            spaceH344,
+            _spaceButton(context),
+          ],
+        ),
       ),
     );
   }
@@ -149,6 +152,7 @@ class _PlaceBidState extends State<PlaceBid> {
                   addressFrom: '0xfff',
                   addressTo: '0xfff',
                   imageWallet: ImageAssets.symbol,
+                  amount: 50000,
                 );
               },
             );

@@ -453,7 +453,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                           builder: (context) {
                                             return HardNFTScreen(
                                               bloc: HardNFTBloc(),
-                                              isAuction: Random().nextBool(),
+                                              isAuction: true,
                                             );
                                           },
                                         );

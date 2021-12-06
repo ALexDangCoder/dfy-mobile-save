@@ -74,20 +74,27 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
   ) {
     return Column(
       children: [
-        // todo chuaw fix ui share chuaw fix filter
         Container(
           color: AppTheme.getInstance().bgBtsColor(),
           height: 59.h,
           child: Center(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12.r),
-                ),
-                color: backgroundBottomSheetColor,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 305.w,
+                minWidth: 253.w,
               ),
-              height: 35.h,
-              child: _tabBar,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      12.r,
+                    ),
+                  ),
+                  color: backgroundBottomSheetColor,
+                ),
+                height: 35.h,
+                child: _tabBar,
+              ),
             ),
           ),
         ),

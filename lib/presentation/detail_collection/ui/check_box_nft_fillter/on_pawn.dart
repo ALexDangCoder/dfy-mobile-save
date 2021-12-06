@@ -52,21 +52,25 @@ class IsOnPawn extends StatelessWidget {
         ),
         Expanded(
           flex: 3,
-          child: GestureDetector(
-            onTap: () {
-              if (collectionBloc.isOnPawn.value) {
-                collectionBloc.isOnPawn.sink.add(false);
-              } else {
-                collectionBloc.isOnPawn.sink.add(true);
-              }
-            },
-            child: Text(
-              title,
-              style: textNormal(
-                AppTheme.getInstance().textThemeColor(),
-                16.sp,
+          child: Wrap(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (collectionBloc.isOnPawn.value) {
+                    collectionBloc.isOnPawn.sink.add(false);
+                  } else {
+                    collectionBloc.isOnPawn.sink.add(true);
+                  }
+                },
+                child: Text(
+                  title,
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],

@@ -214,8 +214,8 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
         Text(
           '$snapshot $nameToken',
           style: textNormalCustom(
-            Colors.red,
-            16,
+            AppTheme.getInstance().redColor(),
+            16.sp,
             FontWeight.w600,
           ),
         ),
@@ -223,8 +223,8 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
         Text(
           S.current.insufficient_balance,
           style: textNormalCustom(
-            Colors.red,
-            12,
+            AppTheme.getInstance().redColor(),
+            12.sp,
             FontWeight.w400,
           ),
         ),
@@ -241,20 +241,6 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
         FontWeight.w600,
       ),
     );
-    // return Column(
-    //   crossAxisAlignment: CrossAxisAlignment.end,
-    //   children: [
-    //     Text(
-    //       '$snapshot $nameToken',
-    //       style: textNormalCustom(
-    //         AppTheme.getInstance().whiteColor(),
-    //         16,
-    //         FontWeight.w600,
-    //       ),
-    //     ),
-    //     spaceH16,
-    //   ],
-    // );
   }
 
   Text txtEstimateGasFee() {
@@ -273,7 +259,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
       S.current.hide_customize_fee,
       style: textNormalCustom(
         const Color.fromRGBO(70, 188, 255, 1),
-        14,
+        14.sp,
         FontWeight.w400,
       ),
     );
@@ -283,14 +269,14 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(88, 87, 130, 1),
+        color: AppTheme.getInstance().selectDialogColor(),
         borderRadius: BorderRadius.circular(6.r),
       ),
       child: Text(
         S.current.reset,
         style: textNormalCustom(
-          Colors.white,
-          14,
+          AppTheme.getInstance().textThemeColor(),
+          14.sp,
           FontWeight.w400,
         ),
       ),
@@ -302,7 +288,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
       S.current.customize_fee,
       style: textNormalCustom(
         const Color.fromRGBO(70, 188, 255, 1),
-        14,
+        14.sp,
         FontWeight.w400,
       ),
     );

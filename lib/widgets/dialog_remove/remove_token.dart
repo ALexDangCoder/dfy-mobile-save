@@ -53,45 +53,39 @@ class RemoveToken extends StatelessWidget {
                             minHeight: 278.h,
                           ),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                    height: 93.h,
-                                  ),
-                                  Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 34.w),
-                                    child: Text(
-                                      S.current.are_you_sure_token,
-                                      style: textNormal(
-                                        null,
-                                        20.sp,
-                                      ).copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  spaceH12,
-                                  Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 34.w),
-                                    child: Text(
-                                      S.current.this_will_also,
-                                      style: textNormal(
-                                        null,
-                                        12.sp,
-                                      ).copyWith(
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  spaceH24,
-                                ],
+                              SizedBox(
+                                height: 93.h,
                               ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 34.w),
+                                child: Text(
+                                  S.current.are_you_sure_token,
+                                  style: textNormal(
+                                    null,
+                                    20.sp,
+                                  ).copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              spaceH12,
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 34.w),
+                                child: Text(
+                                  S.current.this_will_also,
+                                  style: textNormal(
+                                    null,
+                                    12.sp,
+                                  ).copyWith(
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              spaceH24,
                               SizedBox(
                                 height: 64.h,
                                 child: Container(
@@ -107,25 +101,34 @@ class RemoveToken extends StatelessWidget {
                                   child: Row(
                                     children: [
                                       Expanded(
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            S.current.cancel,
-                                            style: textNormal(null, 20.sp)
-                                                .copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
+                                        child: Container(
+                                          height: 64.h,
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              right: BorderSide(
+                                                color: AppTheme.getInstance()
+                                                    .divideColor(),
+                                                width: 1.h,
+                                              ),
                                             ),
-                                            textAlign: TextAlign.center,
+                                          ),
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Center(
+                                              child: Text(
+                                                S.current.cancel,
+                                                style: textNormal(null, 20.sp)
+                                                    .copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontStyle: FontStyle.normal,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      VerticalDivider(
-                                        width: 2.w,
-                                        color: AppTheme.getInstance()
-                                            .divideColor(),
                                       ),
                                       Expanded(
                                         child: InkWell(

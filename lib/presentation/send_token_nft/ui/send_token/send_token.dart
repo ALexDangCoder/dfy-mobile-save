@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
@@ -6,6 +7,7 @@ import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -50,75 +52,74 @@ class _SendTokenState extends State<SendToken> {
           currentFocus.unfocus();
         }
       },
-      child: Container(
-        width: 375.w,
-        height: 764.h,
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(62, 61, 92, 1),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.r),
-            topRight: Radius.circular(30.r),
-          ),
-        ),
+      child: BaseBottomSheet(
+        isImage: true,
+        text: ImageAssets.ic_close,
+        title: '${S.current.send} DFY',
+        callback: () {
+          Navigator.pop(context);
+        },
+        isHaveLeftIcon: false,
         child: Column(
           children: [
-            header(nameToken: 'DFY'),
-            const Divider(
-              thickness: 1,
-              color: Color.fromRGBO(255, 255, 255, 0.1),
-            ),
-            SizedBox(
-              height: 24.h,
-            ),
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    formShowFtAddress(
-                      // hintText: snapshot.data ?? '',
-                      hintText: '0xFE5788e2...EB7144fd0',
-                      readOnly: true,
-                      prefixImg: ImageAssets.ic_from,
-                      suffixImg: '',
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    formShowFtAddress(
-                      hintText: S.current.to_address,
-                      suffixImg: ImageAssets.ic_qr_code,
-                      prefixImg: ImageAssets.ic_to,
-                      callBack: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => QRViewExample(
-                              controller: txtToAddressToken,
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 16.w,
+                    right: 16.w,
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 24.h,
+                      ),
+                      formShowFtAddress(
+                        // hintText: snapshot.data ?? '',
+                        hintText: '0xFE5788e2...EB7144fd0',
+                        readOnly: true,
+                        prefixImg: ImageAssets.ic_from,
+                        suffixImg: '',
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      formShowFtAddress(
+                        hintText: S.current.to_address,
+                        suffixImg: ImageAssets.ic_qr_code,
+                        prefixImg: ImageAssets.ic_to,
+                        callBack: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => QRViewExample(
+                                controller: txtToAddressToken,
+                              ),
                             ),
-                          ),
-                        ).then(
-                          (_) => tokenCubit.checkHaveVlAddressFormToken(
-                            txtToAddressToken.text,
-                            type: typeSend.SEND_TOKEN,
-                          ),
-                        );
-                      },
-                    ),
-                    txtWaringAddress(),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    formAmountFtQuantity(
-                      hintText: S.current.amount,
-                      isAmount: true,
-                      isQuantity: false,
-                      prefixImg: ImageAssets.ic_token,
-                    ),
-                    txtWaringAmount(),
-                    SizedBox(
-                      height: 353.h,
-                    ),
-                  ],
+                          ).then(
+                            (_) => tokenCubit.checkHaveVlAddressFormToken(
+                              txtToAddressToken.text,
+                              type: typeSend.SEND_TOKEN,
+                            ),
+                          );
+                        },
+                      ),
+                      txtWaringAddress(),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      formAmountFtQuantity(
+                        hintText: S.current.amount,
+                        isAmount: true,
+                        isQuantity: false,
+                        prefixImg: ImageAssets.ic_token,
+                      ),
+                      txtWaringAmount(),
+                      SizedBox(
+                        height: 353.h,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -172,66 +173,23 @@ class _SendTokenState extends State<SendToken> {
     );
   }
 
-  //header
-  Container header({required String nameToken}) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 26.w,
-        right: 26.w,
-        top: 16.h,
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 121.w,
-          ),
-          Text(
-            '${S.current.send} $nameToken',
-            style: textNormalCustom(
-              Colors.white,
-              20,
-              FontWeight.w700,
-            ),
-          ),
-          SizedBox(
-            width: 94.w,
-          ),
-          Expanded(
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Image.asset(ImageAssets.ic_close),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  ConstrainedBox formShowFtAddress({
+  Container formShowFtAddress({
     required String hintText,
     bool readOnly = false,
     Function()? callBack,
     required String suffixImg,
     required String prefixImg,
   }) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 64.h,
+    return Container(
+      // width: 343.w,
+      height: 64.h,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
+        ),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
-      child: Container(
-        width: 343.w,
-        padding: EdgeInsets.only(
-          top: 12.h,
-          bottom: 12.h,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.r),
-          ),
-          color: Color(0xff32324c),
-        ),
+      child: Center(
         child: TextFormField(
           onChanged: (value) {
             tokenCubit.checkHaveVlAddressFormToken(
@@ -241,22 +199,23 @@ class _SendTokenState extends State<SendToken> {
           },
           controller: readOnly ? null : txtToAddressToken,
           readOnly: readOnly,
+          textAlignVertical: TextAlignVertical.center,
           style: textNormal(
-            Colors.white,
-            16,
+            AppTheme.getInstance().textThemeColor(),
+            16.sp,
           ),
-          cursorColor: Colors.white,
+          cursorColor: AppTheme.getInstance().textThemeColor(),
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: readOnly
                 ? textNormalCustom(
-                    Colors.white,
-                    16,
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
                     FontWeight.w400,
                   )
                 : textNormal(
-                    Colors.grey,
-                    14,
+                    AppTheme.getInstance().disableColor(),
+                    14.sp,
                   ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -266,14 +225,14 @@ class _SendTokenState extends State<SendToken> {
                     )
                   : ImageIcon(
                       AssetImage(suffixImg),
-                      color: Colors.white,
+                      color: AppTheme.getInstance().textThemeColor(),
                     ),
             ),
             prefixIcon: GestureDetector(
               onTap: callBack,
               child: ImageIcon(
                 AssetImage(prefixImg),
-                color: Colors.white,
+                color: AppTheme.getInstance().textThemeColor(),
               ),
             ),
             border: InputBorder.none,
@@ -283,29 +242,23 @@ class _SendTokenState extends State<SendToken> {
     );
   }
 
-  ConstrainedBox formAmountFtQuantity({
+  Container formAmountFtQuantity({
     required String hintText,
     required bool isAmount,
     required bool isQuantity,
     required String prefixImg,
     Function()? callBack,
   }) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 64.h,
+    return Container(
+      height: 64.h,
+      // width: 343.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
+        ),
+        color: AppTheme.getInstance().itemBtsColors(),
       ),
-      child: Container(
-        width: 343.w,
-        padding: EdgeInsets.only(
-          top: 12.h,
-          bottom: 12.h,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.r),
-          ),
-          color: Color(0xff32324c),
-        ),
+      child: Center(
         child: TextFormField(
           onChanged: (value) {
             tokenCubit.checkHaveVLAmountFormToken(value);
@@ -318,22 +271,22 @@ class _SendTokenState extends State<SendToken> {
           keyboardType: TextInputType.number,
           textAlignVertical: TextAlignVertical.center,
           style: textNormal(
-            Colors.white,
-            16,
+            AppTheme.getInstance().textThemeColor(),
+            16.sp,
           ),
           cursorColor: Colors.white,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: textNormal(
-              Colors.grey,
-              14,
+              AppTheme.getInstance().disableColor(),
+              14.sp,
             ),
             suffixIcon: InkWell(
               onTap: callBack,
               child: (isAmount && !isQuantity)
                   ? Padding(
                       padding: EdgeInsets.only(
-                        top: 10.h,
+                        top: 15.h,
                         right: 20.w,
                       ),
                       child: Text(
@@ -356,7 +309,7 @@ class _SendTokenState extends State<SendToken> {
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),
-              color: Colors.white,
+              color: AppTheme.getInstance().textThemeColor(),
             ),
             border: InputBorder.none,
           ),
@@ -388,7 +341,7 @@ class _SendTokenState extends State<SendToken> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         const Color.fromRGBO(255, 108, 108, 1),
-                        12,
+                        12.sp,
                         FontWeight.w400,
                       ),
                     );
@@ -425,7 +378,7 @@ class _SendTokenState extends State<SendToken> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         const Color.fromRGBO(255, 108, 108, 1),
-                        12,
+                        12.sp,
                         FontWeight.w400,
                       ),
                     );
