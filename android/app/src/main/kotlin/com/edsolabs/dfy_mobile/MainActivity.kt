@@ -28,8 +28,11 @@ class MainActivity : FlutterFragmentActivity() {
     private val TYPE_DELETE_WALLET_CREATE = "CREATE"
 
     private val CHANNEL_TRUST_WALLET = "flutter/trust_wallet"
+
     private var channel: MethodChannel? = null
     private val appPreference = AppPreference(context = this)
+    private val coinType: CoinType = CoinType.SMARTCHAIN
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
         channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL_TRUST_WALLET)
@@ -259,15 +262,14 @@ class MainActivity : FlutterFragmentActivity() {
         if (type == TYPE_WALLET_SEED_PHRASE) {
             //todo content is seed phrase
             val wallet = HDWallet(content, "")
-            val coinType: CoinType = CoinType.SMARTCHAIN
             address = wallet.getAddressForCoin(coinType)
             hasMap["walletAddress"] = address
         } else if (type == TYPE_WALLET_PRIVATE_KEY) {
             //todo content is private key
             val wallet = HDWallet(content, "")
-            val privateKey = wallet.getKeyForCoin(CoinType.SMARTCHAIN)
+            val privateKey = wallet.getKeyForCoin(coinType)
             val publicKeyFalse = privateKey.getPublicKeySecp256k1(false)
-            val anyAddress = AnyAddress(publicKeyFalse, CoinType.SMARTCHAIN)
+            val anyAddress = AnyAddress(publicKeyFalse,coinType)
             address = anyAddress.data().toHexString()
             hasMap["walletAddress"] = address
         } else {
@@ -296,11 +298,17 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun generateWallet(password: String) {
+        //todo check password
+        val wallet = HDWallet(128, "")
+        val seedPhrase = wallet.mnemonic()
+        val address = wallet.getAddressForCoin(coinType)
+        val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
+
         val hasMap = HashMap<String, String>()
-        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        hasMap["privateKey"] = "e507e499158b5b6e1a89ad1e65250f6c38a28d455c37cf23c41f4bdd82436e5a"
-        hasMap["passPhrase"] =
-            "party response give dove tooth master flip video permit game expire token"
+        hasMap["passPhrase"] = seedPhrase
+        hasMap["walletAddress"] = address
+        hasMap["privateKey"] = privateKey.toByteArray().toHexString(false)
+
         channel?.invokeMethod("generateWalletCallback", hasMap)
     }
 
