@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/transaction.dart';
+import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -13,11 +13,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class TransactionDetail extends StatelessWidget {
-  final TransactionModel transaction;
+class TransactionHistoryDetailScreen extends StatelessWidget {
+  final TokenDetailBloc bloc;
+  final String status;
+  final TransactionHistoryDetail transaction;
 
-  const TransactionDetail({
+  const TransactionHistoryDetailScreen({
     Key? key,
+    required this.bloc,
+    required this.status,
     required this.transaction,
   }) : super(key: key);
 
@@ -42,22 +46,23 @@ class TransactionDetail extends StatelessWidget {
                     children: [
                       textRow(
                         name: S.current.amount,
-                        value: transaction.amount.stringIntFormat,
+                        value: transaction.amount.toString(),
                       ),
-                      transactionStatsWidget(transaction.status),
+                      transactionStatsWidget(status),
                     ],
                   ),
                   textRow(
                     name: S.current.gas_fee,
                     value: customCurrency(
-                      amount: transaction.amount / 123654,
+                      amount: transaction.gasFee,
                       digit: 8,
                       type: 'BNB',
                     ),
                   ),
                   textRow(
                     name: S.current.time,
-                    value: transaction.time.stringFromDateTime,
+                    value: DateTime.parse(transaction.time ?? '')
+                        .stringFromDateTime,
                   ),
                 ],
               ),
@@ -74,16 +79,16 @@ class TransactionDetail extends StatelessWidget {
                 children: [
                   textRow(
                     name: S.current.txh_id,
-                    value: transaction.txhId,
+                    value: transaction.txhId ?? '',
                     showCopy: true,
                   ),
                   textRow(
                     name: S.current.from,
-                    value: transaction.from.formatAddress,
+                    value: transaction.from?.formatAddress ?? '',
                   ),
                   textRow(
                     name: S.current.to,
-                    value: transaction.to,
+                    value: transaction.from ?? '',
                     showCopy: true,
                   ),
                 ],
@@ -107,7 +112,6 @@ class TransactionDetail extends StatelessWidget {
                 S.current.view_on_bscscan,
                 style: tokenDetailAmount(
                   fontSize: 16,
-                  weight: FontWeight.w400,
                   color: AppTheme.getInstance().blueColor(),
                 ),
               ),
@@ -118,31 +122,25 @@ class TransactionDetail extends StatelessWidget {
     );
   }
 
-  Widget transactionStatsWidget(TransactionStatus status) {
+  Widget transactionStatsWidget(String status) {
     switch (status) {
-      case TransactionStatus.SUCCESS:
+      case 'success':
         return textRow(
           name: S.current.status,
           value: S.current.transaction_success,
           valueColor: AppTheme.getInstance().successTransactionColors(),
         );
-      case TransactionStatus.FAILED:
+      case 'fail':
         return textRow(
           name: S.current.status,
           value: S.current.transaction_fail,
           valueColor: AppTheme.getInstance().failTransactionColors(),
-        );
-      case TransactionStatus.PENDING:
-        return textRow(
-          name: S.current.status,
-          value: S.current.transaction_pending,
-          valueColor: AppTheme.getInstance().pendingTransactionColors(),
         );
       default:
         return textRow(
           name: S.current.status,
-          value: S.current.transaction_fail,
-          valueColor: AppTheme.getInstance().failTransactionColors(),
+          value: S.current.transaction_pending,
+          valueColor: AppTheme.getInstance().pendingTransactionColors(),
         );
     }
   }
@@ -169,7 +167,6 @@ class TransactionDetail extends StatelessWidget {
             style: tokenDetailAmount(
               color: valueColor ?? AppTheme.getInstance().textThemeColor(),
               fontSize: 14,
-              weight: FontWeight.w400
             ),
           ),
           if (showCopy)
