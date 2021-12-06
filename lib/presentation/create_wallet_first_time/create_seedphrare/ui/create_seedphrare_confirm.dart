@@ -5,9 +5,10 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully_have_wallet.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_fail.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully_have_wallet.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
@@ -18,73 +19,111 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showCreateSeedPhraseConfirm(
-  bool isCheckApp,
-  BuildContext context,
-  BLocCreateSeedPhrase bLocCreateSeedPhrase,
-  TypeScreen typeScreen,
-) {
-  showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    backgroundColor: Colors.transparent,
-    builder: (context) {
-      return Body(
-        isCheckApp: isCheckApp,
-        typeScreen: typeScreen,
-        bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-      );
-    },
-  ).whenComplete(
-    () => {
-      bLocCreateSeedPhrase.resetPassPhrase(),
-      bLocCreateSeedPhrase.isSeedPhraseImportFailed.sink.add(false),
-    },
-  );
-}
-
-class Body extends StatefulWidget {
-  const Body({
+class CreateSeedPhraseConfirm extends StatelessWidget {
+  const CreateSeedPhraseConfirm({
     Key? key,
     required this.bLocCreateSeedPhrase,
     required this.typeScreen,
-    required this.isCheckApp,
+  }) : super(key: key);
+  final BLocCreateSeedPhrase bLocCreateSeedPhrase;
+
+  final TypeScreen typeScreen;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 48.h,
+          ),
+          _Body(
+            typeScreen: typeScreen,
+            bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Body extends StatefulWidget {
+  const _Body({
+    Key? key,
+    required this.bLocCreateSeedPhrase,
+    required this.typeScreen,
   }) : super(key: key);
 
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
   final TypeScreen typeScreen;
-  final bool isCheckApp;
 
   @override
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<_Body> {
   @override
   Widget build(BuildContext context) {
     final bLocCreateSeedPhrase = widget.bLocCreateSeedPhrase;
     return BlocConsumer<BLocCreateSeedPhrase, SeedState>(
       bloc: widget.bLocCreateSeedPhrase,
       listener: (ctx, state) {
-        if (state is SeedNavState) {
-          if (widget.isCheckApp) {
-            showCreateSuccessfullyHaveWallet(
-              context: context,
-              type: KeyType.CREATE,
-              wallet: Wallet(
-                name: bLocCreateSeedPhrase.nameWallet.value,
-                address: bLocCreateSeedPhrase.walletAddress,
+        if (widget.bLocCreateSeedPhrase.isSuccess) {
+          if (state is SeedNavState) {
+            if (widget.typeScreen == TypeScreen.one) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CreateSuccessfullyHaveWallet(
+                      type: KeyType.CREATE_HAVE_WALLET,
+                      wallet: Wallet(
+                        name: bLocCreateSeedPhrase.nameWallet.value,
+                        address: bLocCreateSeedPhrase.walletAddress,
+                      ),
+                    );
+                  },
+                ),
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CreateSuccessfully(
+                      type: KeyType.CREATE,
+                      wallet: Wallet(
+                        name: bLocCreateSeedPhrase.nameWallet.value,
+                        address: bLocCreateSeedPhrase.walletAddress,
+                      ),
+                      bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
+                    );
+                  },
+                ),
+              );
+            }
+          }
+        } else {
+          if (widget.typeScreen == TypeScreen.one) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return const CreateFail(
+                    type: KeyType.CREATE,
+                  );
+                },
               ),
             );
           } else {
-            showCreateSuccessfully(
-              type: KeyType.CREATE,
-              context: context,
-              bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
-              wallet: Wallet(
-                name: bLocCreateSeedPhrase.nameWallet.value,
-                address: bLocCreateSeedPhrase.walletAddress,
-              ),
+            MaterialPageRoute(
+              builder: (context) {
+                return const CreateFail(
+                  type: KeyType.CREATE_HAVE_WALLET,
+                );
+              },
             );
           }
         }
@@ -192,6 +231,7 @@ class _BodyState extends State<Body> {
                               );
                             },
                           ),
+                          spaceH4,
                           StreamBuilder(
                             stream:
                                 bLocCreateSeedPhrase.isSeedPhraseImportFailed,

@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateNFT extends StatelessWidget {
+  final WalletCubit walletCubit;
 
-
-final WalletCubit walletCubit;
-  const CreateNFT({Key? key, required this.title, required this.icon, required this.walletCubit,})
-      : super(key: key);
-
-
+  const CreateNFT({
+    Key? key,
+    required this.title,
+    required this.icon,
+    required this.walletCubit,
+  }) : super(key: key);
 
   final String title;
   final String icon;
@@ -19,8 +20,17 @@ final WalletCubit walletCubit;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        showImportNft(context, walletCubit);
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return ImportNft(
+                bloc: walletCubit,
+              );
+            },
+          ),
+        );
       },
       child: Column(
         children: [
