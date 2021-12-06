@@ -88,6 +88,9 @@ class Web3Utils {
       HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '5'),
       HistoryNFT('Contract interaction', '2021-12-03 14:30', 'success', '1'),
       HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
+      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
+      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
+      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
     ];
   }
 

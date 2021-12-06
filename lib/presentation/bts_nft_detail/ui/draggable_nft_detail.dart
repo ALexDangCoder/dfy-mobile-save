@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
@@ -18,8 +19,10 @@ class NFTDetail extends StatefulWidget {
   const NFTDetail({
     Key? key,
     required this.nft,
+    required this.listHistory,
   }) : super(key: key);
   final NFT nft;
+  final List<HistoryNFT> listHistory;
 
   @override
   _NFTDetailState createState() => _NFTDetailState();
@@ -29,42 +32,20 @@ class _NFTDetailState extends State<NFTDetail> {
   late final NFTBloc bloc;
   late int initLen;
   late bool initShow;
-  final List<String> mockData = [
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-  ];
 
   @override
   void initState() {
     super.initState();
     bloc = NFTBloc();
-    if (mockData.length >= 3) {
+    if (widget.listHistory.length >= 3) {
       bloc.lenSink.add(3);
       initLen = 3;
       initShow = true;
       bloc.showSink.add(true);
     }
-    if (mockData.length < 3) {
-      initLen = mockData.length;
-      bloc.lenSink.add(mockData.length);
+    if (widget.listHistory.length < 3) {
+      initLen = widget.listHistory.length;
+      bloc.lenSink.add(widget.listHistory.length);
       initShow = false;
       bloc.showSink.add(false);
     }
@@ -205,7 +186,7 @@ class _NFTDetailState extends State<NFTDetail> {
                         initialData: initLen,
                         stream: bloc.lenStream,
                         builder: (ctx, snapshot) {
-                          final len = snapshot.data!;
+                          final int len = snapshot.data ?? initLen;
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -225,12 +206,13 @@ class _NFTDetailState extends State<NFTDetail> {
                             visible: isShow,
                             child: InkWell(
                               onTap: () {
-                                if (mockData.length >= bloc.curLen + 10) {
+                                if (widget.listHistory.length >=
+                                    bloc.curLen + 10) {
                                   bloc.lenSink.add(bloc.curLen + 10);
                                 } else {
-                                  bloc.lenSink.add(mockData.length);
+                                  bloc.lenSink.add(widget.listHistory.length);
                                 }
-                                if (bloc.curLen == mockData.length) {
+                                if (bloc.curLen == widget.listHistory.length) {
                                   bloc.showSink.add(false);
                                 }
                               },
@@ -313,15 +295,16 @@ class _NFTDetailState extends State<NFTDetail> {
   }
 
   Widget itemTransition(int index) {
-    final text = mockData[index];
+    final objHistory = widget.listHistory[index];
+    final objDetail = bloc.listDetailHistory;
     return GestureDetector(
       onTap: () {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          context: context,
-          builder: (context) => const TransactionDetail(
-            detailTransaction: '158.2578',
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TransactionDetail(
+              obj: objDetail,
+            ),
           ),
         );
       },
@@ -351,23 +334,25 @@ class _NFTDetailState extends State<NFTDetail> {
                   Row(
                     children: [
                       Text(
-                        text,
+                        objHistory.name,
                         style: textValueNFT,
                       ),
                       SizedBox(
                         width: 6.w,
                       ),
-                      Image.asset(ImageAssets.ic_tick_circle)
+                      Image.asset(
+                        bloc.getImgStatus(objHistory.status),
+                      ),
                     ],
                   ),
                   Text(
-                    '1 of 1',
+                    '1 of ${objHistory.quantity}',
                     style: textValueNFT,
                   ),
                 ],
               ),
               Text(
-                DateTime.now().toIso8601String(),
+                objHistory.time,
                 style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
               )
             ],

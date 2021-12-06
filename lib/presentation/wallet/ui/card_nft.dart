@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:Dfy/domain/model/nft.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/draggable_nft_detail.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,11 +24,21 @@ class CardNFT extends StatefulWidget {
 }
 
 class _CardNFTState extends State<CardNFT> {
+  late final WalletCubit cubit;
+
+  @override
+  void initState() {
+    cubit = WalletCubit();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        showBoth(context);
+      onTap: () async {
+        await cubit.getTransactionNFTHistory().then(
+              (_) => showBoth(context),
+            );
       },
       child: Row(
         children: [
@@ -78,6 +91,7 @@ class _CardNFTState extends State<CardNFT> {
         },
         child: NFTDetail(
           nft: widget.objNFT,
+          listHistory: cubit.listHistory,
         ),
       ),
     ).whenComplete(() => Navigator.pop(context));

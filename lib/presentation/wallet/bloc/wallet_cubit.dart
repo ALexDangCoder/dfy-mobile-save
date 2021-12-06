@@ -4,6 +4,7 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
+import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_model.dart';
@@ -62,6 +63,11 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
   BehaviorSubject<double> totalBalance = BehaviorSubject();
+
+  List<HistoryNFT> listHistory = [];
+  Future<void> getTransactionNFTHistory() async {
+    listHistory = await client.getNFTHistory();
+  }
 
   String addressWalletCore = '';
   List<AccountModel> listSelectAccBloc = [
