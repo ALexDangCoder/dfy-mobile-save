@@ -13,11 +13,13 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
   MarketplaceCubit() : super(MarketplaceInitial());
 
   List<String> categories = [
+    S.current.collectibles,
+    S.current.game,
+    S.current.art,
     S.current.music,
-    S.current.sports,
-    S.current.nature,
+    S.current.ultilities,
     S.current.car,
-    S.current.another
+    S.current.sports
   ];
   List<Collection> listCollections = [
     Collection(
