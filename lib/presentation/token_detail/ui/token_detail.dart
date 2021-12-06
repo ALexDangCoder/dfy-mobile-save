@@ -12,7 +12,6 @@ import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/default_sub_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,18 +29,18 @@ class TokenDetail extends StatelessWidget {
     required this.bloc,
     required this.token,
   }) : super(
-          key: key,
-        );
+    key: key,
+  );
 
   @override
   Widget build(BuildContext context) {
     bloc.getHistory();
-    return BaseBottomSheet(
-      title: token.nameShortToken,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Column(
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        DefaultSubScreen(
+          title: token.nameShortToken,
+          mainWidget: Column(
             children: [
               Container(
                 height: 308.h,
@@ -83,7 +82,7 @@ class TokenDetail extends StatelessWidget {
                       ),
                       style: tokenDetailAmount(
                         color:
-                            AppTheme.getInstance().currencyDetailTokenColor(),
+                        AppTheme.getInstance().currencyDetailTokenColor(),
                         fontSize: 16,
                       ),
                     ),
@@ -126,9 +125,9 @@ class TokenDetail extends StatelessWidget {
                                 builder: (context) {
                                   return const SendToken();
                                 },
-                              ).then(
-                                (value) => {log('>>>>>>>>>>>>>>>>>>> $value')},
-                              );
+                              ).then((value) => {
+                                log('>>>>>>>>>>>>>>>>>>> $value')
+                              },);
                             },
                             child: sizedSvgImage(
                               w: 48,
@@ -146,7 +145,7 @@ class TokenDetail extends StatelessWidget {
                         width: 210.h,
                         decoration: BoxDecoration(
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(16)),
+                          const BorderRadius.all(Radius.circular(16)),
                           border: Border.all(
                             color: AppTheme.getInstance().fillColor(),
                           ),
@@ -168,40 +167,43 @@ class TokenDetail extends StatelessWidget {
               TransactionList(shortName: token.nameShortToken, bloc: bloc)
             ],
           ),
-          StreamBuilder<bool>(
-            stream: bloc.showLoadingStream,
-            initialData: true,
-            builder: (context, snapshot) {
-              return Visibility(
-                visible: snapshot.data ?? false,
-                child: popMenu(),
-              );
-            },
-          ),
-        ],
-      ),
+        ),
+        StreamBuilder<bool>(
+          stream: bloc.showLoadingStream,
+          initialData: false,
+          builder: (context, snapshot) {
+            return Visibility(
+              visible: snapshot.data ?? false,
+              child: popMenu(),
+            );
+          },
+        ),
+      ],
     );
   }
 
-  Widget popMenu() => Center(
-        child: Hero(
-          tag: '',
-          createRectTween: (begin, end) {
-            return CustomRectTween(begin: begin!, end: end!);
-          },
-          child: buildBlur(
-            borderRadius: BorderRadius.circular(20.r),
-            child: Material(
-              color: AppTheme.getInstance().bgBtsColor(),
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.r),
-              ),
-              child: const TransactionSubmit(),
+  Widget popMenu() => Scaffold(
+    backgroundColor: Colors.white.withOpacity(0.15),
+    body: Center(
+      child: Hero(
+        tag: '',
+        createRectTween: (begin, end) {
+          return CustomRectTween(begin: begin!, end: end!);
+        },
+        child: buildBlur(
+          borderRadius: BorderRadius.circular(20.r),
+          child: Material(
+            color: AppTheme.getInstance().bgBtsColor(),
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.r),
             ),
+            child: const TransactionSubmit(),
           ),
         ),
-      );
+      ),
+    ),
+  );
 
   Widget buildBlur({
     required Widget child,
