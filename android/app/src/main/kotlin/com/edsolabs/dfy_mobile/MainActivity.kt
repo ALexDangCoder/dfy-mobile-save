@@ -1,11 +1,14 @@
 package com.edsolabs.dfy_mobile
 
+import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
+import com.edsolabs.dfy_mobile.data.model.WalletModel
 import com.google.protobuf.ByteString
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import wallet.core.java.AnySigner
+import wallet.core.jni.AnyAddress
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.PrivateKey
@@ -26,7 +29,7 @@ class MainActivity : FlutterFragmentActivity() {
 
     private val CHANNEL_TRUST_WALLET = "flutter/trust_wallet"
     private var channel: MethodChannel? = null
-
+    private val appPreference = AppPreference(context = this)
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
         channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL_TRUST_WALLET)
@@ -248,42 +251,47 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun importWallet(type: String, content: String, password: String) {
-        val hasMap = HashMap<String, String>()
-//        //todo validate content
-//        if (type == TYPE_WALLET_SEED_PHRASE) {
-//            //todo content is seed phrase
-//            val wallet = HDWallet(content, "")
-//            val coinType: CoinType = CoinType.SMARTCHAIN
-//            val address = wallet.getAddressForCoin(coinType)
-//            hasMap["walletAddress"] = address
-//        } else if (type == TYPE_WALLET_PRIVATE_KEY) {
-//            //todo content is private key
-//            val wallet = HDWallet(content, "")
-//            val privateKey = wallet.getKeyForCoin(CoinType.SMARTCHAIN)
-//            val publicKeyFalse = privateKey.getPublicKeySecp256k1(false)
-//            val anyAddress = AnyAddress(publicKeyFalse, CoinType.SMARTCHAIN)
-//            val address = anyAddress.data().toHexString()
-//            hasMap["walletAddress"] = address
-//// address = 0xa3dcd899c0f3832dfdfed9479a9d828c6a4eb2a7    it does not has EIP55 address
-//        } else {
-//            return
-//        }
-        //todo check count wallet -> walletName = wallet count + 1
-        hasMap["walletName"] = "walletName"
-        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+        //todo check password
+        val hasMap = HashMap<String, Any>()
+        val sttWallet = appPreference.sttWallet
+        var address = ""
+        //todo validate content
+        if (type == TYPE_WALLET_SEED_PHRASE) {
+            //todo content is seed phrase
+            val wallet = HDWallet(content, "")
+            val coinType: CoinType = CoinType.SMARTCHAIN
+            address = wallet.getAddressForCoin(coinType)
+            hasMap["walletAddress"] = address
+        } else if (type == TYPE_WALLET_PRIVATE_KEY) {
+            //todo content is private key
+            val wallet = HDWallet(content, "")
+            val privateKey = wallet.getKeyForCoin(CoinType.SMARTCHAIN)
+            val publicKeyFalse = privateKey.getPublicKeySecp256k1(false)
+            val anyAddress = AnyAddress(publicKeyFalse, CoinType.SMARTCHAIN)
+            address = anyAddress.data().toHexString()
+            hasMap["walletAddress"] = address
+        } else {
+            return
+        }
+        val walletName = "Account ${sttWallet + 1}"
+        appPreference.setSttWallet(sttWallet + 1)
+        hasMap["walletName"] = walletName
+        val listWallet = ArrayList<WalletModel>()
+        listWallet.addAll(appPreference.getListWallet())
+        listWallet.add(WalletModel(walletName, address))
+        appPreference.saveListWallet(listWallet)
         channel?.invokeMethod("importWalletCallback", hasMap)
     }
 
     private fun getListWallets(password: String) {
+        //todo check password
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
-        val data1 = HashMap<String, Any>()
-        data1["walletName"] = "walletName1"
-        data1["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        hasMap.add(data1)
-        val data2 = HashMap<String, Any>()
-        data2["walletName"] = "walletName2"
-        data2["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        hasMap.add(data2)
+        appPreference.getListWallet().forEach {
+            val data = HashMap<String, Any>()
+            data["walletName"] = it.walletName
+            data["walletAddress"] = it.walletAddress
+            hasMap.add(data)
+        }
         channel?.invokeMethod("getListWalletsCallback", hasMap)
     }
 
