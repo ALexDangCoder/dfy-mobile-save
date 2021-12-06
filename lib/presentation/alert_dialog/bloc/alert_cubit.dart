@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/alert_dialog/bloc/alert_state.dart';
 import 'package:flutter/services.dart';
@@ -10,8 +12,9 @@ class AlertCubit extends Cubit<AlertState> {
     bool isSuccess = false;
     String type;
     switch (methodCall.method) {
-      case 'earseWalletCallback':
+      case 'earseAllWalletCallback':
         isSuccess = await methodCall.arguments['isSuccess'];
+        log(isSuccess.toString());
         type = await methodCall.arguments['type'];
         if (isSuccess) {
           emit(EraseSuccess(type));
@@ -24,12 +27,15 @@ class AlertCubit extends Cubit<AlertState> {
     }
   }
 
-  Future<void> earseWallet(String type) async {
+  Future<void> earseAllWallet(String type) async {
     try {
       final data = {
         'type': type,
       };
-      await trustWalletChannel.invokeMethod('earseWallet', data);
+      await trustWalletChannel.invokeMethod('earseAllWallet', data);
     } on PlatformException {}
+  }
+  void dispose(){
+    super.close();
   }
 }
