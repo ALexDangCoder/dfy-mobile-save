@@ -61,7 +61,7 @@ class TokenDetail extends StatelessWidget {
                       child: SizedBox(
                         height: 54.h,
                         width: 54.h,
-                        child: Image.memory(token.iconToken),
+                        //child: ImageAssets(token.iconToken),
                       ),
                     ),
                     Text(

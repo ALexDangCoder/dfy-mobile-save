@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 class NftModel {
-  String? nftName;
-  String? nftAddress;
-  Uint8List? iconNFT;
+  String? nftName = '';
+  String? nftAddress = '';
+  String? iconNFT = '';
 
   NftModel({
     this.nftName,
@@ -13,6 +13,8 @@ class NftModel {
 
   NftModel.fromWalletCore(dynamic json)
       : nftName = json['nftName'].toString(),
-        iconNFT = json['iconNFT'],
+        iconNFT = json['iconNFT'].toString(),
         nftAddress = json['nftAddress'].toString();
+
+  NftModel.init();
 }

@@ -29,7 +29,7 @@ class NFTItem extends StatefulWidget {
     required this.bloc,
     required this.index,
   }) : super(key: key);
-  final Uint8List? symbolUrl;
+  final String? symbolUrl;
   final String nameNFT;
   final WalletCubit bloc;
   final int index;
