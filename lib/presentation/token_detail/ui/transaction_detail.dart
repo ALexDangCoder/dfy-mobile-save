@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/views/default_sub_screen.dart';
@@ -12,14 +13,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class TransactionDetail extends StatelessWidget {
+class TransactionHistoryDetailScreen extends StatelessWidget {
+  final TokenDetailBloc bloc;
   final String status;
   final TransactionHistoryDetail transaction;
 
-  const TransactionDetail({
+  const TransactionHistoryDetailScreen({
     Key? key,
-    required this.transaction,
+    required this.bloc,
     required this.status,
+    required this.transaction,
   }) : super(key: key);
 
   @override
@@ -162,8 +165,9 @@ class TransactionDetail extends StatelessWidget {
           Text(
             showCopy ? value.formatAddress : value,
             style: tokenDetailAmount(
-                color: valueColor ?? AppTheme.getInstance().textThemeColor(),
-                fontSize: 14),
+              color: valueColor ?? AppTheme.getInstance().textThemeColor(),
+              fontSize: 14,
+            ),
           ),
           if (showCopy)
             SizedBox(

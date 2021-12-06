@@ -35,7 +35,6 @@ class TokenDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bloc.getHistory();
-    bloc.getTransaction();
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -209,8 +208,8 @@ class TokenDetail extends StatelessWidget {
   Widget buildBlur({
     required Widget child,
     BorderRadius borderRadius = BorderRadius.zero,
-    double sigmaX = 4,
-    double sigmaY = 4,
+    double sigmaX = 5,
+    double sigmaY = 5,
   }) {
     return ClipRRect(
       borderRadius: borderRadius,

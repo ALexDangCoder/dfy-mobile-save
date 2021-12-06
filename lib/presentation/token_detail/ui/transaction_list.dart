@@ -1,8 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/transaction.dart';
+import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
+import 'package:Dfy/presentation/token_detail/ui/transaction_detail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -45,7 +47,7 @@ class TransactionList extends StatelessWidget {
                           return transactionRow(
                             context: context,
                             transaction:
-                                snapData? [index] ?? TransactionHistory.init(),
+                                snapData?[index] ?? TransactionHistory.init(),
                           );
                         },
                       ),
@@ -145,16 +147,18 @@ class TransactionList extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          // showModalBottomSheet(
-          //   isScrollControlled: true,
-          //   context: context,
-          //   backgroundColor: Colors.transparent,
-          //   builder: (context) {
-          //     return TransactionDetail(
-          //       transaction: transaction,
-          //     );
-          //   },
-          // );
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (context) {
+              return TransactionHistoryDetailScreen(
+                transaction: TransactionHistoryDetail.init(),
+                bloc: bloc,
+                status: transaction.status ?? '',
+              );
+            },
+          );
         },
         child: Container(
           height: 66.h,

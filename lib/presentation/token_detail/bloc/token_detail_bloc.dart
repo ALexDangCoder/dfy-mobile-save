@@ -1,9 +1,8 @@
-import 'dart:developer';
-import 'dart:math' hide log;
-
 import 'package:Dfy/data/web3/model/transaction.dart';
+import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/token_model.dart';
+import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
@@ -15,32 +14,16 @@ class TokenDetailBloc {
     required this.modelToken,
     required this.walletAddress,
   });
-  
 
-  ///todoClearFakeData
-  int dataListLen = 4;
+  int minLen = 4;
   List<TransactionHistory> totalTransactionList = [];
   List<TransactionHistory> currentTransactionList = [];
-
-  Future<void> getHistory() async {
-     final result = await  _client.getTransactionHistory(
-      ofAddress: walletAddress,
-      tokenAddress: modelToken.tokenAddress,
-    );
-     totalTransactionList = result;
-     log('>>>>>>>>>>>>>>>>>>>>>${result.length.toString()}');
-     checkData();
-  }
-
-  Future<void> getTransaction() async {
-    final result = await  _client.getHistoryDetail(txhId: 'a');
-    log('>>>>>>>>>>>>>>>>>>>>>>>>>> ${result.amount}');
-  }
 
   final BehaviorSubject<List<TransactionHistory>> _transactionListSubject =
       BehaviorSubject();
 
   final BehaviorSubject<bool> _showMoreSubject = BehaviorSubject();
+
   final BehaviorSubject<bool> _isShowTransactionSubmit =
       BehaviorSubject<bool>.seeded(true);
 
@@ -52,19 +35,40 @@ class TokenDetailBloc {
   Stream<bool> get isShowTransactionSubmitStream =>
       _isShowTransactionSubmit.stream;
 
-  ///realData
   final BehaviorSubject<bool> _showLoadingSubject = BehaviorSubject();
 
   Stream<bool> get showLoadingStream => _showLoadingSubject.stream;
 
-  ///Mock Func
+  final BehaviorSubject<TransactionHistoryDetail>
+      _transactionHistoryDetailSubject = BehaviorSubject();
 
+  Stream<TransactionHistoryDetail> get transactionHistoryStream =>
+      _transactionHistoryDetailSubject.stream;
+
+  ///Get functions
+  Future<TransactionHistoryDetail> getTransaction({
+    required String txhId,
+  }) async {
+    final result = await _client.getHistoryDetail(txhId: txhId);
+    return result;
+  }
+
+  Future<void> getHistory() async {
+    final result = await _client.getTransactionHistory(
+      ofAddress: walletAddress,
+      tokenAddress: modelToken.tokenAddress,
+    );
+    totalTransactionList = result;
+    checkData();
+  }
+
+  ///ShowTransactionHistory
   void checkData() {
-    if (totalTransactionList.length <= dataListLen) {
+    if (totalTransactionList.length <= minLen) {
       _transactionListSubject.sink.add(totalTransactionList);
       hideShowMore();
     } else {
-      currentTransactionList = totalTransactionList.sublist(0, dataListLen);
+      currentTransactionList = totalTransactionList.sublist(0, minLen);
       _transactionListSubject.sink.add(currentTransactionList);
       _showMoreSubject.sink.add(true);
     }
@@ -73,7 +77,8 @@ class TokenDetailBloc {
   void showMore() {
     if (totalTransactionList.length - currentTransactionList.length > 10) {
       currentTransactionList.addAll(
-        totalTransactionList.sublist(currentTransactionList.length, currentTransactionList.length + 10),
+        totalTransactionList.sublist(
+            currentTransactionList.length, currentTransactionList.length + 10),
       );
     } else {
       currentTransactionList = totalTransactionList;
