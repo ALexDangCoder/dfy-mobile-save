@@ -1,13 +1,13 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'hero.dart';
 
 class TokenItem extends StatelessWidget {
   const TokenItem({
@@ -61,7 +61,7 @@ class TokenItem extends StatelessWidget {
         children: [
           Divider(
             height: 1.h,
-            color: const Color(0xFF4b4a60),
+            color: AppTheme.getInstance().divideColor(),
           ),
           SizedBox(
             child: Row(

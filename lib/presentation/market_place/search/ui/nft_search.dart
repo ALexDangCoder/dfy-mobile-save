@@ -268,34 +268,23 @@ class _SearchNFTState extends State<SearchNFT> {
               stream: searchCubit.lengthStream,
               builder: (context, snapshot) {
                 final int item = snapshot.data ?? 3;
-                return ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: item * 77.h + 3.h,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: ListView.separated(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: item,
-                          itemBuilder: (context, index) {
-                            return ResultCollectionSearch(
-                              collection: searchCubit.collections[index],
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                              child: Divider(
-                                color: AppTheme.getInstance().divideColor(),
-                              ),
-                            );
-                          },
-                        ),
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: item,
+                  itemBuilder: (context, index) {
+                    return ResultCollectionSearch(
+                      collection: searchCubit.collections[index],
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                      child: Divider(
+                        color: AppTheme.getInstance().divideColor(),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 );
               },
             ),
@@ -335,51 +324,43 @@ class _SearchNFTState extends State<SearchNFT> {
               color: AppTheme.getInstance().divideColor(),
             ),
             SizedBox(
-              height: 280.h,
-              width: 375.w,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 24.h,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 17.w),
-                    child: Text(
-                      'NFTs',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        20.sp,
-                        FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 2,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            ResultNFTSearch(
-                              nftItem: searchCubit.listNFT[index],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                              child: Divider(
-                                color: AppTheme.getInstance().divideColor(),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ],
+              height: 24.h,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 17.w),
+              child: Text(
+                'NFTs',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  20.sp,
+                  FontWeight.w700,
+                ),
               ),
             ),
             SizedBox(
-              height: 100.h,
+              child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: 2,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      ResultNFTSearch(
+                        nftItem: searchCubit.listNFT[index],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                        child: Divider(
+                          color: AppTheme.getInstance().divideColor(),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+            SizedBox(
+              height: 150.h,
             ),
           ],
         ),

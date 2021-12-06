@@ -132,7 +132,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
                     style: whiteTextWithOpacity,
                   ),
                   spaceH12,
-                  const CountDownView(timeInMilliSecond: 12000),
+                  const CountDownView(timeInMilliSecond: 86400),
                   spaceH24,
                   Align(
                     alignment: Alignment.bottomCenter,

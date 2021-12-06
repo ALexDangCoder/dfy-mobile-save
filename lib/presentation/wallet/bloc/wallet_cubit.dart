@@ -105,6 +105,8 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'getListShowedNftCallback':
         objNFT = methodCall.arguments;
         break;
+      case 'getListWalletsCallback':
+        break;
       default:
         break;
     }
