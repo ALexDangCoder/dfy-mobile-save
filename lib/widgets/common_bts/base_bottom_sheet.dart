@@ -92,6 +92,7 @@ class BaseBottomSheet extends StatelessWidget {
                         child: Align(
                           child: Text(
                             title,
+                            textAlign: TextAlign.center,
                             style: titleText(
                               color: AppTheme.getInstance().textThemeColor(),
                             ),
@@ -117,7 +118,7 @@ class BaseBottomSheet extends StatelessWidget {
                       else
                         Container(
                           margin: EdgeInsets.only(
-                            right: 11.w,
+                            right: 39.w,
                           ),
                         )
                     ],
