@@ -74,6 +74,7 @@ class _WalletState extends State<WalletScreen>
 
   @override
   Widget build(BuildContext context) {
+    final String addressWallet = cubit.addressWalletCore;
     if (widget.index == 1) {
       return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -233,7 +234,7 @@ class _WalletState extends State<WalletScreen>
                               title: S.current.import_token,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 1,
-                              addressWallet: "cubit.addressWalletCore",
+                              addressWallet: addressWallet,
                               cubit: cubit,
                             ),
                             SizedBox(
@@ -263,6 +264,7 @@ class _WalletState extends State<WalletScreen>
                                       itemCount: snapshot.data?.length,
                                       itemBuilder: (context, index) {
                                         return NFTItem(
+                                          walletAddress: cubit.addressWalletCore,
                                           index: index,
                                           bloc: cubit,
                                           symbolUrl:
@@ -285,7 +287,7 @@ class _WalletState extends State<WalletScreen>
                               title: S.current.import_nft,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 2,
-                              addressWallet: cubit.addressWalletCore,
+                              addressWallet: addressWallet,
                               cubit: cubit,
                             ),
                             CreateNFT(

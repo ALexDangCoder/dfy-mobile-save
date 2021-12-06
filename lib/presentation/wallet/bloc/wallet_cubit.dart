@@ -1,5 +1,3 @@
-
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -30,6 +28,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         client.getTokenInfo(contractAddress: tokenAddress);
     tokenSymbol.sink.add(tokenInfoModel.tokenSymbol ?? 'null');
     tokenDecimal.sink.add('${tokenInfoModel.decimal ?? 0} ');
+    tokenFullName = tokenInfoModel.name ?? '';
+    iconToken = tokenInfoModel.icon ?? '';
     if (tokenInfoModel.tokenSymbol!.isNotEmpty) {
       isTokenEnterAddress.sink.add(true);
     }
@@ -78,6 +78,8 @@ class WalletCubit extends BaseCubit<WalletState> {
     getListAcc();
   }
 
+  String tokenFullName = '';
+  String iconToken = '';
   bool checkLogin = false;
   List<TokenModel> listStart = [];
   List<Wallet> listWallet = [];
@@ -109,6 +111,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<double> totalBalance = BehaviorSubject();
 
   List<HistoryNFT> listHistory = [];
+
   Future<void> getTransactionNFTHistory() async {
     listHistory = await client.getNFTHistory();
   }
@@ -216,10 +219,18 @@ class WalletCubit extends BaseCubit<WalletState> {
         if (isSuccess) {
           emit(NavigatorSucces());
         }
-
         break;
       case 'earseWalletCallback':
         bool isSuccess = await methodCall.arguments['isSuccess'];
+        break;
+      case 'exportWalletCallBack':
+        String walletAddress = await methodCall.arguments['isSuccess'];
+        String privateKey = await methodCall.arguments['isSuccess'];
+        String passPhrase = await methodCall.arguments['isSuccess'];
+        print(walletAddress);
+        print(privateKey);
+        print(passPhrase);
+
         break;
       case 'getListSupportedTokenCallback':
         final a = await methodCall.arguments['TokenObject'];
@@ -297,6 +308,8 @@ class WalletCubit extends BaseCubit<WalletState> {
     required String tokenAddress,
     required String symbol,
     required int decimal,
+    required String tokenFullName,
+    required String iconToken,
   }) async {
     try {
       final data = {
@@ -349,7 +362,31 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  //exportWallet
+  Future<void> exportWallet({
+    required String walletAddress,
+    required String password,
+  }) async {
+    try {
+      final data = {
+        'password': password,
+        'walletAddress': walletAddress,
+      };
+      await trustWalletChannel.invokeMethod('exportWallet', data);
+    } on PlatformException {
+      //todo
+
+    }
+  }
+
+//"walletAddress*: String
+// nftAddress*: String
+// nftName*: String
+// iconNFT*: String
+// nftID*: Int
+// password: String"
   Future<void> importNft({
+    //todo pram
     String password = '',
     required String walletAddress,
     required String nftAddress,

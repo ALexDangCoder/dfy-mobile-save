@@ -28,11 +28,13 @@ class NFTItem extends StatefulWidget {
     required this.nameNFT,
     required this.bloc,
     required this.index,
+    required this.walletAddress,
   }) : super(key: key);
   final Uint8List? symbolUrl;
   final String nameNFT;
   final WalletCubit bloc;
   final int index;
+  final String walletAddress;
 
   @override
   _NFTItemState createState() => _NFTItemState();
@@ -49,9 +51,12 @@ class _NFTItemState extends State<NFTItem> {
         Navigator.of(context).push(
           HeroDialogRoute(
             builder: (context) {
+              // todo nftAddress
               return RemoveNft(
+                walletAddress: widget.walletAddress,
                 index: widget.index,
                 cubit: widget.bloc,
+                nftAddress: '0xd07dc426200000415242343423424261d2461d2430',
               );
             },
             isNonBackground: false,

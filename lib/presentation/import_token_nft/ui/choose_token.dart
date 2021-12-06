@@ -70,7 +70,6 @@ class _ChooseTokenState extends State<ChooseToken> {
                               isShow: value,
                               tokenAddress: 'tokenAddress',
                             );
-
                             setState(() {});
                           },
                           switchActiveColor: const Color(0xffE4AC1A),

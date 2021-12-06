@@ -136,12 +136,17 @@ class _EnterAddressState extends State<EnterAddress> {
                     return InkWell(
                       onTap: () {
                         print('-=------------------${widget.addressWallet}');
+                        print('-=------------------${widget.bloc.iconToken}');
+                        print(
+                            '-=------------------${widget.bloc.tokenFullName}');
                         widget.bloc.importToken(
-                          walletAddress: widget.addressWallet,
-                          tokenAddress: widget.bloc.tokenAddressText.value,
-                          symbol: widget.bloc.tokenSymbol.value,
-                          decimal: int.parse(widget.bloc.tokenDecimal.value),
-                        );
+                            walletAddress: widget.addressWallet,
+                            tokenAddress: widget.bloc.tokenAddressText.value,
+                            symbol: widget.bloc.tokenSymbol.value,
+                            decimal: int.parse(widget.bloc.tokenDecimal.value),
+                            iconToken: widget.bloc.iconToken,
+                            tokenFullName: widget.bloc.tokenFullName,
+                            password: '');
                         widget.bloc.checkAddressNull();
                       },
                       child: ButtonGold(
