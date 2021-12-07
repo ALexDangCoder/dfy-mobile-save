@@ -12,7 +12,6 @@ class TransactionSubmit extends StatelessWidget {
     return Container(
       height: 101.h,
       width: 232.w,
-      // color: AppTheme.getInstance().bgTranSubmit(),
       decoration: BoxDecoration(
         color: AppTheme.getInstance().bgTranSubmit(),
         borderRadius: BorderRadius.all(Radius.circular(20.r)),

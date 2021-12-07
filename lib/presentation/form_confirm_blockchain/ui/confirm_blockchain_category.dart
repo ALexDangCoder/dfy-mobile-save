@@ -1,9 +1,12 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
+import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
+import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -39,6 +42,8 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     this.nameToken,
     this.amount,
     this.quantity,
+    this.tokenDetailBloc,
+    this.modelToken,
   }) : super(key: key);
 
   final TYPE_CONFIRM typeConfirm;
@@ -57,6 +62,10 @@ class ConfirmBlockchainCategory extends StatefulWidget {
   final String imageWallet;
   final dynamic cubitCategory;
 
+  //ConfirmSendTokenTokenDetail
+  final TokenDetailBloc? tokenDetailBloc;
+  final ModelToken? modelToken;
+
   @override
   _ConfirmBlockchainCategoryState createState() =>
       _ConfirmBlockchainCategoryState();
@@ -74,7 +83,8 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
   void initState() {
     _cubitFormCustomizeGasFee = FormFieldBlockchainCubit();
 
-    _txtGasLimit = TextEditingController(text: widget.gasFeeFirstFetch.toString());
+    _txtGasLimit =
+        TextEditingController(text: widget.gasFeeFirstFetch.toString());
     _txtGasPrice =
         TextEditingController(text: widget.gasPriceFirstFetch.toString());
     _informationWallet = InformationWallet(
@@ -227,7 +237,20 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                           price: double.parse(_txtGasLimit.text),
                           maxGas: widget.gasFeeFirstFetch,
                         );
-                        Navigator.pop(context,true);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TokenDetail(
+                              bloc: widget.tokenDetailBloc ??
+                                  TokenDetailBloc(
+                                    walletAddress: widget.addressFrom,
+                                  ),
+                              token: widget.modelToken ?? ModelToken.init(),
+                              walletAddress: widget.addressFrom,
+                              initLoading: true,
+                            ),
+                          ),
+                        );
                         break;
                       case TYPE_CONFIRM.SEND_NFT:
                         break;

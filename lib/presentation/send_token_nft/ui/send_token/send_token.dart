@@ -1,10 +1,12 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
+import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -13,7 +15,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendToken extends StatefulWidget {
-  const SendToken({Key? key}) : super(key: key);
+  final ModelToken tokenFromDetail;
+  final TokenDetailBloc blocFromDetail;
+
+  const SendToken({
+    Key? key,
+    required this.tokenFromDetail,
+    required this.blocFromDetail,
+  }) : super(key: key);
 
   @override
   _SendTokenState createState() => _SendTokenState();
@@ -152,13 +161,16 @@ class _SendTokenState extends State<SendToken> {
                           MaterialPageRoute(
                             builder: (_) {
                               return ConfirmBlockchainCategory(
+                                tokenDetailBloc: widget.blocFromDetail,
+                                modelToken: widget.tokenFromDetail,
                                 nameWallet: 'TestWallet',
                                 nameTokenWallet: 'BNB',
                                 balanceWallet: tokenCubit.balanceWallet,
                                 typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
                                 addressFrom:
                                 fakeFromAddress.formatAddressWallet(),
-                                addressTo: fakeToAddress.formatAddressWallet(),
+                                addressTo:
+                                fakeToAddress.formatAddressWallet(),
                                 imageWallet: ImageAssets.symbol,
                                 amount: double.parse(txtAmount.text),
                                 nameToken: 'BNB',

@@ -70,7 +70,7 @@ const divideColor = Color(0xFF8f8fad);
 const unselectedTabLabel = Color(0xFF9997FF);
 
 ///=========== Using to make change app theme ================================
-const bgTranSubmit = Color(0xff585782);
+const bgTranSubmitColor = Color(0xff585782);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
@@ -392,7 +392,7 @@ class LightApp extends AppColor {
   @override
   Color bgTranSubmit() {
     // TODO: implement bgTranSubmit
-    throw UnimplementedError();
+    return bgTranSubmitColor;
   }
 }
 
