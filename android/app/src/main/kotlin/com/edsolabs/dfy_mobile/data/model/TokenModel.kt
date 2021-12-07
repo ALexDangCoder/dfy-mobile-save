@@ -4,7 +4,7 @@ data class TokenModel(
     val walletAddress: String,
     val tokenAddress: String,
     val tokenFullName: String,
-    val iconToken: String,
+    val iconUrl: String,
     val symbol: String,
     val decimal: Int,
     var isShow: Boolean = true,
