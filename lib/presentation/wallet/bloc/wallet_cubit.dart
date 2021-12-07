@@ -8,6 +8,7 @@ import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:equatable/equatable.dart';
@@ -154,9 +155,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {
-
-    }
+    } on PlatformException {}
   }
 
   String formatAddress(String address) {
@@ -180,6 +179,12 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   void getListAcc() {
     list.sink.add(listSelectAccBloc);
+  }
+
+  void resetImportToken() {
+    tokenSymbol.sink.add(S.current.token_symbol);
+    tokenDecimal.sink.add(S.current.token_decimal);
+    emit(NavigatorReset());
   }
 
   void click(int index) {
@@ -236,8 +241,9 @@ class WalletCubit extends BaseCubit<WalletState> {
     switch (methodCall.method) {
       case 'importTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
+        print(isSuccess);
         if (isSuccess) {
-          emit(NavigatorSucces());
+          emit(NavigatorSuccessfully());
         }
         break;
       case 'earseWalletCallback':
@@ -262,9 +268,15 @@ class WalletCubit extends BaseCubit<WalletState> {
         final bool isSetShowedNft = await methodCall.arguments['isSuccess'];
         break;
       case 'getTokensCallback':
+        final List<ModelToken> checkShow = [];
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
-          listTokenFromWalletCore.add(ModelToken.fromWalletCore(element));
+          checkShow.add(ModelToken.fromWalletCore(element));
+        }
+        for(final element in checkShow){
+          if(element.isShowed){
+            listTokenFromWalletCore.add(element);
+          }
         }
         await getExchangeRate(listTokenFromWalletCore);
         total(listTokenFromWalletCore);

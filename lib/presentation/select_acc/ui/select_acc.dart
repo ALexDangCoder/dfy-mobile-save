@@ -17,8 +17,11 @@ class SelectAcc extends StatefulWidget {
   final WalletCubit bloc;
   final TypeScreen2 typeScreen2;
 
-  const SelectAcc({Key? key, required this.bloc, required this.typeScreen2})
-      : super(key: key);
+  const SelectAcc({
+    Key? key,
+    required this.bloc,
+    required this.typeScreen2,
+  }) : super(key: key);
 
   @override
   _SelectAccState createState() => _SelectAccState();

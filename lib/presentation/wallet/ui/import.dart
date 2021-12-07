@@ -36,6 +36,10 @@ class ImportToken extends StatelessWidget {
                 );
               },
             ),
+          ).whenComplete(
+            () => {
+              cubit.resetImportToken(),
+            },
           );
           break;
         case 2:
