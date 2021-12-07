@@ -8,7 +8,6 @@ class ModelToken {
   double balanceToken = 12313.3123123;
   double exchangeRate = 0;
 
-
   ModelToken({
     required this.tokenAddress,
     required this.nameToken,
