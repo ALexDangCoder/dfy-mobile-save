@@ -19,7 +19,18 @@ class Web3Utils {
   final client = Web3Client(rpcURL, Client());
 
   //NFT info
-  Future<void> getNftInfo() async {}
+  Future<NftInfo> getNftInfo() async {
+    return NftInfo(
+      contract: '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+      name: 'Name of NFT',
+      blockchain: 'Binance Smart Chain',
+      description:
+          'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
+      id: '124124',
+      link: 'https://goole.com',
+      standard: 'ERC-721',
+    );
+  }
 
   //Token info
   TokenInfoModel getTokenInfo({required String contractAddress}) {
@@ -53,15 +64,35 @@ class Web3Utils {
   }) async {
     return [
       TransactionHistory(
-          'Contract interaction', 'success', '2021-12-03 14:30', 100.0,),
+        'Contract interaction',
+        'success',
+        '2021-12-03 14:30',
+        100.0,
+      ),
       TransactionHistory(
-          'Contract interaction', 'success', '2021-12-03 14:30', 100.0,),
+        'Contract interaction',
+        'success',
+        '2021-12-03 14:30',
+        100.0,
+      ),
       TransactionHistory(
-          'Contract interaction', 'pending', '2021-12-03 14:30', 100.0,),
+        'Contract interaction',
+        'pending',
+        '2021-12-03 14:30',
+        100.0,
+      ),
       TransactionHistory(
-          'Contract interaction', 'success', '2021-12-03 14:30', 100.0,),
+        'Contract interaction',
+        'success',
+        '2021-12-03 14:30',
+        100.0,
+      ),
       TransactionHistory(
-          'Contract interaction', 'fail', '2021-12-03 14:30', 100.0,),
+        'Contract interaction',
+        'fail',
+        '2021-12-03 14:30',
+        100.0,
+      ),
     ];
   }
 
