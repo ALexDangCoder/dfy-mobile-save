@@ -4,7 +4,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChooseAcc extends StatelessWidget {
-  final PrivateKeySeedPhraseBloc bloc;
+  final ConfirmPwPrvKeySeedpharseCubit bloc;
 
   const ChooseAcc({
     Key? key,
@@ -51,8 +51,9 @@ class ChooseAcc extends StatelessWidget {
                           child: Text(
                             S.current.choose_acc,
                             style: textNormal(
-                                AppTheme.getInstance().whiteColor(), 20.sp,)
-                                .copyWith(
+                              AppTheme.getInstance().whiteColor(),
+                              20.sp,
+                            ).copyWith(
                               fontWeight: FontWeight.w700,
                               fontStyle: FontStyle.normal,
                             ),
@@ -106,19 +107,19 @@ class ChooseAcc extends StatelessWidget {
                                         spaceW8,
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                           children: [
                                             Text(
                                               bloc.listWallet[index]
-                                                  .walletName ??
+                                                      .walletName ??
                                                   '',
                                               style: textNormal(
-                                                  AppTheme.getInstance()
-                                                      .whiteColor(),
-                                                  20.sp,)
-                                                  .copyWith(
+                                                AppTheme.getInstance()
+                                                    .whiteColor(),
+                                                20.sp,
+                                              ).copyWith(
                                                 fontWeight: FontWeight.w600,
                                                 fontStyle: FontStyle.normal,
                                               ),
@@ -126,7 +127,7 @@ class ChooseAcc extends StatelessWidget {
                                             Text(
                                               bloc.formatText(
                                                 bloc.listWallet[index]
-                                                    .walletAddress ??
+                                                        .walletAddress ??
                                                     '',
                                               ),
                                               style: textNormal(
