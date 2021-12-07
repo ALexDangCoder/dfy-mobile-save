@@ -4,9 +4,9 @@ import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
-import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -184,8 +184,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   void resetImportToken() {
     tokenSymbol.sink.add(S.current.token_symbol);
     tokenDecimal.sink.add(S.current.token_decimal);
-    isTokenEnterAddress.sink.add(false);
-    isTokenAddressText.add(true);
     emit(NavigatorReset());
   }
 
@@ -275,10 +273,10 @@ class WalletCubit extends BaseCubit<WalletState> {
         for (final element in data) {
           checkShow.add(ModelToken.fromWalletCore(element));
         }
-        for (final element in checkShow) {
-          // if(element.isShowed){
-          //   listTokenFromWalletCore.add(element);
-          // }
+        for(final element in checkShow){
+          if(element.isShowed){
+            listTokenFromWalletCore.add(element);
+          }
         }
         await getExchangeRate(listTokenFromWalletCore);
         total(listTokenFromWalletCore);

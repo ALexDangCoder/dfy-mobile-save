@@ -1,4 +1,4 @@
-class TokenModel {
+class TokenInf {
   String? symbol;
   String? name;
   String? iconUrl;
@@ -11,7 +11,7 @@ class TokenModel {
   bool? isAcceptedRepayment;
   String? address;
 
-  TokenModel({
+  TokenInf({
     this.symbol,
     this.name = '',
     this.iconUrl,
