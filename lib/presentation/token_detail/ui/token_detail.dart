@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/token_model.dart';
@@ -6,8 +8,10 @@ import 'package:Dfy/presentation/receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/transaction_list.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
+import 'package:Dfy/widgets/blur_popup/blur_overlay.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,18 +23,45 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class TokenDetail extends StatelessWidget {
   final ModelToken token;
   final TokenDetailBloc bloc;
+  final String walletAddress;
+  final bool? initLoading;
 
   const TokenDetail({
     Key? key,
     required this.bloc,
     required this.token,
+    required this.walletAddress,
+    this.initLoading = false,
   }) : super(
           key: key,
         );
 
   @override
   Widget build(BuildContext context) {
-    bloc.getHistory(token.tokenAddress);
+    bloc.checkShowLoading();
+    log('Show loading: $initLoading');
+    return StreamBuilder<bool>(
+      stream: bloc.showLoadingStream,
+      initialData: initLoading,
+      builder: (context, snapshot) {
+        final isShow = snapshot.data ?? false;
+        if (isShow) {
+          bloc.getHistory(token.tokenAddress);
+          return Blur(
+            blur: 1,
+            colorOpacity: 0.1,
+            overlay: const TransactionSubmit(),
+            child: bottomSheet(context),
+          );
+        } else {
+          bloc.getHistory(token.tokenAddress);
+          return bottomSheet(context);
+        }
+      },
+    );
+  }
+
+  Widget bottomSheet(BuildContext context) {
     return BaseBottomSheet(
       title: token.nameShortToken,
       child: Column(
@@ -54,7 +85,7 @@ class TokenDetail extends StatelessWidget {
                   child: SizedBox(
                     height: 54.h,
                     width: 54.h,
-                    // child: Image.memory(token.iconToken),
+                     child: Image.network(token.iconToken),
                   ),
                 ),
                 Text(
@@ -74,8 +105,7 @@ class TokenDetail extends StatelessWidget {
                     digit: 2,
                   ),
                   style: tokenDetailAmount(
-                    color:
-                    AppTheme.getInstance().currencyDetailTokenColor(),
+                    color: AppTheme.getInstance().currencyDetailTokenColor(),
                     fontSize: 16,
                   ),
                 ),
@@ -96,8 +126,8 @@ class TokenDetail extends StatelessWidget {
                             context: context,
                             backgroundColor: Colors.transparent,
                             builder: (context) {
-                              return const Receive(
-                                walletAddress: 'afafafa',
+                              return Receive(
+                                walletAddress: walletAddress,
                                 type: TokenType.DFY,
                               );
                             },
@@ -116,10 +146,14 @@ class TokenDetail extends StatelessWidget {
                             context: context,
                             backgroundColor: Colors.transparent,
                             builder: (context) {
-                              return const SendToken();
+                              return SendToken(
+                                blocFromDetail: bloc,
+                                tokenFromDetail: token,
+                              );
                             },
-                          ).then((value) => {
-                          },);
+                          ).then(
+                            (value) => {},
+                          );
                         },
                         child: sizedSvgImage(
                           w: 48,
@@ -136,8 +170,7 @@ class TokenDetail extends StatelessWidget {
                     height: 48.h,
                     width: 210.h,
                     decoration: BoxDecoration(
-                      borderRadius:
-                      const BorderRadius.all(Radius.circular(16)),
+                      borderRadius: const BorderRadius.all(Radius.circular(16)),
                       border: Border.all(
                         color: AppTheme.getInstance().fillColor(),
                       ),
