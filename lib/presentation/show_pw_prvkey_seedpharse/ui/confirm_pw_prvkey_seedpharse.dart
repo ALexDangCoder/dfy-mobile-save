@@ -201,7 +201,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
                 border: InputBorder.none,
               ),
             );
-          }),
+          },),
     );
   }
 

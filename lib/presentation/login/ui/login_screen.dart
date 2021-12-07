@@ -296,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return AlertPopUp(
+                                return const AlertPopUp(
                                   type: KeyType.CREATE,
                                 );
                               },
@@ -331,7 +331,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return AlertPopUp(
+                                return const AlertPopUp(
                                   type: KeyType.IMPORT,
                                 );
                               },

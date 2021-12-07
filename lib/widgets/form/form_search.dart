@@ -32,7 +32,7 @@ class _FormSearchState extends State<FormSearch> {
       margin: EdgeInsets.symmetric(horizontal: 19.w),
       padding: EdgeInsets.only(right: 15.w, left: 15.w),
       decoration: BoxDecoration(
-        color: Color(0xff32324c),
+        color: const Color(0xff32324c),
         borderRadius: BorderRadius.all(Radius.circular(12.r)),
       ),
       child: Row(

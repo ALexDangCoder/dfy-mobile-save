@@ -185,7 +185,7 @@ class _SendTokenState extends State<SendToken> {
           ],
         ),
       )
-    );
+    ,);
   }
 
   Container formShowFtAddress({
@@ -307,7 +307,7 @@ class _SendTokenState extends State<SendToken> {
                       child: Text(
                         S.current.max,
                         style: textNormal(
-                                const Color.fromRGBO(228, 172, 26, 1), 16)
+                                const Color.fromRGBO(228, 172, 26, 1), 16,)
                             .copyWith(fontWeight: FontWeight.w600),
                       ),
                     )
