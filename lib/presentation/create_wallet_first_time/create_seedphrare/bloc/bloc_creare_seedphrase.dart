@@ -96,7 +96,12 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
 
   void getStringToList(String passPhrase) {
     listTitle1 = passPhrase.split(' ');
-    listTitle.sink.add(listTitle1);
+    List<int> indices = List<int>.generate(listTitle1.length, (i) => i);
+    indices.shuffle();
+    int newCount = listTitle1.length;
+    List<String> randomList =
+        indices.take(newCount).map((i) => listTitle1[i]).toList();
+    listTitle.sink.add(randomList);
   }
 
   void getCheck() {
@@ -104,7 +109,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     for (final String value in listSeedPhrase.value) {
       isData += '$value ';
     }
-
     if ('$passPhrase ' == isData) {
       isSeedPhraseImportFailed.sink.add(false);
     } else {
