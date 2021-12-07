@@ -4,7 +4,6 @@ import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,6 +46,7 @@ class TokenItem extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => TokenDetail(
+              walletAddress: walletAddress,
               token: modelToken,
               bloc: TokenDetailBloc(
                 walletAddress: walletAddress,
