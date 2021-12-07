@@ -274,9 +274,9 @@ class WalletCubit extends BaseCubit<WalletState> {
           checkShow.add(ModelToken.fromWalletCore(element));
         }
         for(final element in checkShow){
-          if(element.isShowed){
-            listTokenFromWalletCore.add(element);
-          }
+          // if(element.isShowed){
+          //   listTokenFromWalletCore.add(element);
+          // }
         }
         await getExchangeRate(listTokenFromWalletCore);
         total(listTokenFromWalletCore);

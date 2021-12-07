@@ -12,6 +12,7 @@ class MainCubit extends BaseCubit<MainState> {
 
   final BehaviorSubject<int> _index = BehaviorSubject<int>.seeded(0);
   final BehaviorSubject<int> _walletIndex = BehaviorSubject<int>();
+  List<TokenModel> items = [];
 
   Stream<int> get indexStream => _index.stream;
 
@@ -32,6 +33,7 @@ class MainCubit extends BaseCubit<MainState> {
     result.when(success: (res) {
       //todo success
       emit(GetListTokenSuccess(res));
+      items = res;
     }, error: (error) {
       updateStateError();
       //todo error

@@ -22,6 +22,8 @@ class TokenResponse extends Equatable {
   bool? isAcceptedRepayment;
   @JsonKey(name: 'address')
   String? address;
+  @JsonKey(name: 'iconUrl')
+  String? iconUrl;
 
   TokenResponse(
     this.id,
@@ -32,6 +34,7 @@ class TokenResponse extends Equatable {
     this.isAcceptedAsLoan,
     this.isAcceptedRepayment,
     this.address,
+    this.iconUrl,
   );
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) =>
@@ -45,6 +48,7 @@ class TokenResponse extends Equatable {
   TokenModel toDomain() => TokenModel(
         id: id,
         isWhitelistCollateral: isWhitelistCollateral,
+        iconUrl: iconUrl,
         isWhitelistSupply: isWhitelistSupply,
         usdExchange: usdExchange,
         isAcceptedAsCollateral: isAcceptedAsCollateral,

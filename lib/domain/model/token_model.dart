@@ -1,7 +1,7 @@
 class TokenModel {
   String? symbol;
   String? name;
-  String? imageUrl;
+  String? iconUrl;
   int? id;
   bool? isWhitelistCollateral;
   bool? isWhitelistSupply;
@@ -14,7 +14,7 @@ class TokenModel {
   TokenModel({
     this.symbol,
     this.name = '',
-    this.imageUrl = '',
+    this.iconUrl,
     this.id,
     this.isWhitelistCollateral,
     this.isWhitelistSupply,
