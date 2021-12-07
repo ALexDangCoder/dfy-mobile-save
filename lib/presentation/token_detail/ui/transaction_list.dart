@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/transaction.dart';
-import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/transaction_detail.dart';
@@ -147,17 +146,17 @@ class TransactionList extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          showModalBottomSheet(
-            isScrollControlled: true,
-            context: context,
-            backgroundColor: Colors.transparent,
-            builder: (context) {
-              return TransactionHistoryDetailScreen(
-                transaction: TransactionHistoryDetail.init(),
-                bloc: bloc,
-                status: transaction.status ?? '',
-              );
-            },
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return TransactionHistoryDetailScreen(
+                  bloc: bloc,
+                  thxID: 'a',
+                  status: transaction.status ?? '',
+                );
+              },
+            ),
           );
         },
         child: Container(

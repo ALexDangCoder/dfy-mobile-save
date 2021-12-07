@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
@@ -7,118 +5,129 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
-import 'package:Dfy/widgets/views/default_sub_screen.dart';
+import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TransactionHistoryDetailScreen extends StatelessWidget {
   final TokenDetailBloc bloc;
   final String status;
-  final TransactionHistoryDetail transaction;
+  final String thxID;
 
   const TransactionHistoryDetailScreen({
     Key? key,
     required this.bloc,
+    required this.thxID,
     required this.status,
-    required this.transaction,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return DefaultSubScreen(
-      title: S.current.detail_transaction,
-      mainWidget: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.h),
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.only(
-                top: 24.h,
-                bottom: 16.h,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
+    bloc.getTransaction(txhId: 'thxID');
+    return StreamBuilder<TransactionHistoryDetail>(
+      stream: bloc.transactionHistoryStream,
+      initialData: TransactionHistoryDetail.init(),
+      builder: (context, snapshot) {
+        final transaction = snapshot.data ?? TransactionHistoryDetail.init();
+        return BaseBottomSheet(
+          title: S.current.detail_transaction,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.h),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(
+                    top: 24.h,
+                    bottom: 16.h,
+                  ),
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      textRow(
-                        name: S.current.amount,
-                        value: transaction.amount.toString(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          textRow(
+                            name: S.current.amount,
+                            value: transaction.amount.toString(),
+                          ),
+                          transactionStatsWidget(status),
+                        ],
                       ),
-                      transactionStatsWidget(status),
+                      textRow(
+                        name: S.current.gas_fee,
+                        value: customCurrency(
+                          amount: transaction.gasFee,
+                          digit: 8,
+                          type: 'BNB',
+                        ),
+                      ),
+                      textRow(
+                        name: S.current.time,
+                        value: DateTime.parse(transaction.time ?? '')
+                            .stringFromDateTime,
+                      ),
                     ],
                   ),
-                  textRow(
-                    name: S.current.gas_fee,
-                    value: customCurrency(
-                      amount: transaction.gasFee,
-                      digit: 8,
-                      type: 'BNB',
+                ),
+                Divider(
+                  color: AppTheme.getInstance().divideColor(),
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                    top: 24.h,
+                    bottom: 16.h,
+                  ),
+                  child: Column(
+                    children: [
+                      textRow(
+                        name: S.current.txh_id,
+                        value: transaction.txhId ?? '',
+                        showCopy: true,
+                      ),
+                      textRow(
+                        name: S.current.from,
+                        value: transaction.from?.formatAddress ?? '',
+                      ),
+                      textRow(
+                        name: S.current.to,
+                        value: transaction.from ?? '',
+                        showCopy: true,
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(
+                  color: AppTheme.getInstance().divideColor(),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 16.h, bottom: 36.h),
+                  child: textRow(
+                    name: S.current.nonce,
+                    value: '#${transaction.nonce}',
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    final String url =
+                        'https://bscscan.com/tx/${transaction.txhId}';
+                    await launch(url);
+                  },
+                  child: Text(
+                    S.current.view_on_bscscan,
+                    style: tokenDetailAmount(
+                      fontSize: 16,
+                      color: AppTheme.getInstance().blueColor(),
                     ),
                   ),
-                  textRow(
-                    name: S.current.time,
-                    value: DateTime.parse(transaction.time ?? '')
-                        .stringFromDateTime,
-                  ),
-                ],
-              ),
+                )
+              ],
             ),
-            Divider(
-              color: AppTheme.getInstance().divideColor(),
-            ),
-            Container(
-              padding: EdgeInsets.only(
-                top: 24.h,
-                bottom: 16.h,
-              ),
-              child: Column(
-                children: [
-                  textRow(
-                    name: S.current.txh_id,
-                    value: transaction.txhId ?? '',
-                    showCopy: true,
-                  ),
-                  textRow(
-                    name: S.current.from,
-                    value: transaction.from?.formatAddress ?? '',
-                  ),
-                  textRow(
-                    name: S.current.to,
-                    value: transaction.from ?? '',
-                    showCopy: true,
-                  ),
-                ],
-              ),
-            ),
-            Divider(
-              color: AppTheme.getInstance().divideColor(),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 16.h, bottom: 36.h),
-              child: textRow(
-                name: S.current.nonce,
-                value: '#${transaction.nonce}',
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                log('On tap View on Bscscan');
-              },
-              child: Text(
-                S.current.view_on_bscscan,
-                style: tokenDetailAmount(
-                  fontSize: 16,
-                  color: AppTheme.getInstance().blueColor(),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
