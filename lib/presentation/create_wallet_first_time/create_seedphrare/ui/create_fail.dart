@@ -101,6 +101,9 @@ class CreateFail extends StatelessWidget {
                         Navigator.pop(context);
                         Navigator.pop(context);
                       } else if (type == KeyType.IMPORT) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        //Navigator.pop(context);
                       } else {}
                     },
                     child: ButtonGold(
