@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
@@ -45,19 +43,16 @@ class TokenItem extends StatelessWidget {
         );
       },
       onPressed: () {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          backgroundColor: Colors.transparent,
-          builder: (context) {
-            return TokenDetail(
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TokenDetail(
               token: modelToken,
               bloc: TokenDetailBloc(
                 walletAddress: walletAddress,
-                modelToken: modelToken,
               ),
-            );
-          },
+            ),
+          ),
         );
       },
       child: Column(
@@ -92,7 +87,7 @@ class TokenItem extends StatelessWidget {
                     children: [
                       Text(
                         '${modelToken.balanceToken} '
-                            '${modelToken.nameShortToken}',
+                        '${modelToken.nameShortToken}',
                         style: textNormalCustom(
                           Colors.white,
                           20,
