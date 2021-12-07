@@ -4,6 +4,7 @@ class ModelToken {
   String nameShortToken = '';
   String iconToken = '';
   double balanceToken = 12313.3123123;
+  bool isShowed = false;
   double exchangeRate = 0;
 
   ModelToken({
