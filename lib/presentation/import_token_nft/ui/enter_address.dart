@@ -34,7 +34,7 @@ class _EnterAddressState extends State<EnterAddress> {
     controller = TextEditingController();
     controller.addListener(() {
       widget.bloc.tokenAddressText.sink.add(controller.text);
-      if(controller.text==''){
+      if (controller.text == '') {
         widget.bloc.isTokenEnterAddress.sink.add(false);
         widget.bloc.tokenSymbol.sink.add(S.current.token_symbol);
         widget.bloc.tokenDecimal.sink.add(S.current.token_decimal);
