@@ -61,6 +61,7 @@ class ItemForm extends StatelessWidget {
               Colors.white,
               16,
             ),
+            textAlignVertical: TextAlignVertical.center,
             onChanged: (value) {
               cubit?.checkSeedField(value);
               importCubit?.checkSeedField(value);
@@ -114,6 +115,7 @@ class ItemForm extends StatelessWidget {
         child: TextFormField(
           controller: controller,
           obscureText: isShow,
+          textAlignVertical: TextAlignVertical.center,
           style: textNormal(
             Colors.white,
             16,
@@ -169,6 +171,7 @@ class ItemForm extends StatelessWidget {
           children: [
             Expanded(
               child: TextFormField(
+                textAlignVertical: TextAlignVertical.center,
                 controller: controller,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
@@ -236,6 +239,7 @@ class ItemForm extends StatelessWidget {
         child: TextFormField(
           controller: controller,
           obscureText: isShow,
+          textAlignVertical: TextAlignVertical.center,
           style: textNormal(
             Colors.white,
             16,
