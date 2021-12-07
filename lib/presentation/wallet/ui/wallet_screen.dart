@@ -22,6 +22,7 @@ import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
 import 'package:Dfy/presentation/wallet/ui/token_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/change_wallet_name.dart';
+import 'package:Dfy/widgets/pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -78,234 +79,238 @@ class _WalletState extends State<WalletScreen>
     if (widget.index == 1) {
       return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Container(
-          width: 375.w,
-          height: 812.h,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: listBackgroundColor,
-            ),
-          ),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 44.h,
+        body: PullToRefresh(
+          onRefresh: (){
+          },
+          child: Container(
+            width: 375.w,
+            height: 812.h,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: listBackgroundColor,
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 10.w,
-                  right: 10.w,
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 44.h,
                 ),
-                child: SizedBox(
-                  height: 54.h,
-                  width: 323.w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 10.w,
+                    right: 10.w,
+                  ),
+                  child: SizedBox(
+                    height: 54.h,
+                    width: 323.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.menu,
+                            size: 24.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: 10.h,
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                S.current.wallet,
+                                style: textNormalCustom(
+                                  Colors.white,
+                                  20,
+                                  FontWeight.w700,
+                                ),
+                              ),
+                              Text(
+                                S.current.smart_chain,
+                                style: textNormalCustom(
+                                  Colors.grey.shade400,
+                                  14,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) {
+                                  return SettingWallet(
+                                    cubitSetting: SettingWalletCubit(),
+                                    cubit: cubit,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          icon: Icon(
+                            Icons.settings_outlined,
+                            size: 24.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 14.h,
+                ),
+                Divider(
+                  height: 1.h,
+                  color: const Color(0xFF4b4a60),
+                ),
+                SizedBox(
+                  height: 24.h,
+                ),
+                header(),
+                SizedBox(
+                  height: 24.h,
+                ),
+                SizedBox(
+                  height: 44.h,
+                  width: 230.w,
+                  child: TabBar(
+                    controller: _tabController,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: const Color(0xFF9997FF),
+                    indicatorColor: const Color(0xFF6F6FC5),
+                    labelStyle: textNormalCustom(
+                      Colors.grey.shade400,
+                      14,
+                      FontWeight.w600,
+                    ),
+                    tabs: [
+                      Tab(
+                        text: S.current.token,
+                      ),
+                      Tab(
+                        text: S.current.nft,
+                      ),
+                    ],
+                    indicatorSize: TabBarIndicatorSize.tab,
+                  ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
                     children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.menu,
-                          size: 24.sp,
-                          color: Colors.white,
+                      SizedBox(
+                        height: 409.h,
+                        child: SingleChildScrollView(
+                          physics: const ScrollPhysics(),
+                          child: Column(
+                            children: [
+                              StreamBuilder(
+                                stream: cubit.listTokenStream,
+                                builder: (
+                                  context,
+                                  AsyncSnapshot<List<ModelToken>> snapshot,
+                                ) {
+                                  return ListView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data?.length ?? 0,
+                                    itemBuilder: (context, index) {
+                                      return TokenItem(
+                                        walletAddress: cubit.addressWalletCore,
+                                        index: index,
+                                        bloc: cubit,
+                                        modelToken: snapshot.data![index],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                              ImportToken(
+                                title: S.current.import_token,
+                                icon: ImageAssets.ic_import2,
+                                keyRouter: 1,
+                                addressWallet: addressWallet,
+                                cubit: cubit,
+                              ),
+                              SizedBox(
+                                height: 102.h,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 10.h,
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              S.current.wallet,
-                              style: textNormalCustom(
-                                Colors.white,
-                                20,
-                                FontWeight.w700,
+                      SizedBox(
+                        height: 409.h,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              StreamBuilder(
+                                stream: cubit.listNFTStream,
+                                builder: (
+                                  context,
+                                  AsyncSnapshot<List<NftModel>> snapshot,
+                                ) {
+                                  if (snapshot.hasData) {
+                                    return SafeArea(
+                                      child: ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: snapshot.data?.length,
+                                        itemBuilder: (context, index) {
+                                          return NFTItem(
+                                            walletAddress: cubit.addressWalletCore,
+                                            index: index,
+                                            bloc: cubit,
+                                            symbolUrl:
+                                                snapshot.data![index].iconNFT,
+                                            nameNFT:
+                                                snapshot.data?[index].nftName ??
+                                                    '',
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                },
                               ),
-                            ),
-                            Text(
-                              S.current.smart_chain,
-                              style: textNormalCustom(
-                                Colors.grey.shade400,
-                                14,
-                                FontWeight.w400,
+                              ImportToken(
+                                title: S.current.import_nft,
+                                icon: ImageAssets.ic_import2,
+                                keyRouter: 2,
+                                addressWallet: addressWallet,
+                                cubit: cubit,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) {
-                                return SettingWallet(
-                                  cubitSetting: SettingWalletCubit(),
-                                  cubit: cubit,
-                                );
-                              },
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.settings_outlined,
-                          size: 24.sp,
-                          color: Colors.white,
+                              CreateNFT(
+                                title: S.current.create_nft,
+                                icon: ImageAssets.ic_add,
+                                walletCubit: cubit,
+                              ),
+                              SizedBox(
+                                height: 102.h,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 14.h,
-              ),
-              Divider(
-                height: 1.h,
-                color: const Color(0xFF4b4a60),
-              ),
-              SizedBox(
-                height: 24.h,
-              ),
-              header(),
-              SizedBox(
-                height: 24.h,
-              ),
-              SizedBox(
-                height: 44.h,
-                width: 230.w,
-                child: TabBar(
-                  controller: _tabController,
-                  labelColor: Colors.white,
-                  unselectedLabelColor: const Color(0xFF9997FF),
-                  indicatorColor: const Color(0xFF6F6FC5),
-                  labelStyle: textNormalCustom(
-                    Colors.grey.shade400,
-                    14,
-                    FontWeight.w600,
-                  ),
-                  tabs: [
-                    Tab(
-                      text: S.current.token,
-                    ),
-                    Tab(
-                      text: S.current.nft,
-                    ),
-                  ],
-                  indicatorSize: TabBarIndicatorSize.tab,
-                ),
-              ),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    SizedBox(
-                      height: 409.h,
-                      child: SingleChildScrollView(
-                        physics: const ScrollPhysics(),
-                        child: Column(
-                          children: [
-                            StreamBuilder(
-                              stream: cubit.listTokenStream,
-                              builder: (
-                                context,
-                                AsyncSnapshot<List<ModelToken>> snapshot,
-                              ) {
-                                return ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data?.length ?? 0,
-                                  itemBuilder: (context, index) {
-                                    return TokenItem(
-                                      walletAddress: cubit.addressWalletCore,
-                                      index: index,
-                                      bloc: cubit,
-                                      modelToken: snapshot.data![index],
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            ImportToken(
-                              title: S.current.import_token,
-                              icon: ImageAssets.ic_import2,
-                              keyRouter: 1,
-                              addressWallet: addressWallet,
-                              cubit: cubit,
-                            ),
-                            SizedBox(
-                              height: 102.h,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 409.h,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            StreamBuilder(
-                              stream: cubit.listNFTStream,
-                              builder: (
-                                context,
-                                AsyncSnapshot<List<NftModel>> snapshot,
-                              ) {
-                                if (snapshot.hasData) {
-                                  return SafeArea(
-                                    child: ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: snapshot.data?.length,
-                                      itemBuilder: (context, index) {
-                                        return NFTItem(
-                                          walletAddress: cubit.addressWalletCore,
-                                          index: index,
-                                          bloc: cubit,
-                                          symbolUrl:
-                                              snapshot.data![index].iconNFT,
-                                          nameNFT:
-                                              snapshot.data?[index].nftName ??
-                                                  '',
-                                        );
-                                      },
-                                    ),
-                                  );
-                                } else {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                              },
-                            ),
-                            ImportToken(
-                              title: S.current.import_nft,
-                              icon: ImageAssets.ic_import2,
-                              keyRouter: 2,
-                              addressWallet: addressWallet,
-                              cubit: cubit,
-                            ),
-                            CreateNFT(
-                              title: S.current.create_nft,
-                              icon: ImageAssets.ic_add,
-                              walletCubit: cubit,
-                            ),
-                            SizedBox(
-                              height: 102.h,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
