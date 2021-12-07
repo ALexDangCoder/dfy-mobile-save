@@ -123,7 +123,6 @@ class _BodyState extends State<_Body> {
                       print(widget.bloc.nftEnterID.value);
                       print(widget.bloc.nftName);
                       print(widget.bloc.iconNFT);
-
                       widget.bloc.importNft(
                         walletAddress: widget.addressWallet,
                         nftAddress: widget.bloc.tokenAddressTextNft.value,

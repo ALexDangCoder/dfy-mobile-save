@@ -5,6 +5,7 @@ class ModelToken {
   String iconToken = '';
   double balanceToken = 12313.3123123;
   double exchangeRate = 0;
+  bool isShowed = false;
 
   ModelToken({
     required this.tokenAddress,
@@ -16,7 +17,8 @@ class ModelToken {
 
   ModelToken.fromWalletCore(dynamic json)
       : tokenAddress = json['tokenAddress'].toString(),
-        iconToken = json['iconToken'],
+        iconToken = json['iconUrl'],
         nameToken = json['tokenFullName'].toString(),
-        nameShortToken = json['tokenShortName'].toString();
+        nameShortToken = json['symbol'].toString(),
+        isShowed = json['isShow'];
 }

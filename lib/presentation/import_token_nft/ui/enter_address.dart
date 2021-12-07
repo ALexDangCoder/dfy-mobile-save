@@ -37,9 +37,6 @@ class _EnterAddressState extends State<EnterAddress> {
     controller.addListener(() {
       widget.bloc.tokenAddressText.sink.add(controller.text);
     });
-    trustWalletChannel.setMethodCallHandler(
-      widget.bloc.nativeMethodCallBackTrustWallet,
-    );
   }
 
   @override
@@ -53,7 +50,7 @@ class _EnterAddressState extends State<EnterAddress> {
     return BlocConsumer(
       bloc: widget.bloc,
       listener: (context, state) {
-        if (state is NavigatorSucces) {
+        if (state is NavigatorSuccessfully) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -61,7 +58,12 @@ class _EnterAddressState extends State<EnterAddress> {
                 return const TokenSuccessfully();
               },
             ),
-          );
+          ).whenComplete(() async {
+            widget.bloc.listTokenFromWalletCore.clear();
+            await widget.bloc.getTokens(widget.addressWallet);
+            widget.bloc.listTokenStream
+                .add(widget.bloc.listTokenFromWalletCore);
+          });
         }
       },
       builder: (context, _) {
@@ -149,15 +151,6 @@ class _EnterAddressState extends State<EnterAddress> {
                           tokenFullName: widget.bloc.tokenFullName,
                         );
                         widget.bloc.checkAddressNull();
-                        final ModelToken model = ModelToken(
-                          tokenAddress: widget.bloc.tokenAddressText.value,
-                          nameToken: widget.bloc.tokenSymbol.value,
-                          nameShortToken: widget.bloc.tokenSymbol.value,
-                          iconToken: widget.bloc.iconToken,
-                        );
-                        widget.bloc.listTokenFromWalletCore.add(model);
-                        widget.bloc.listTokenStream
-                            .add(widget.bloc.listTokenFromWalletCore);
                       },
                       child: ButtonGold(
                         title: S.current.import,

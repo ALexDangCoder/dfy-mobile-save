@@ -13,7 +13,12 @@ class WalletScreenState extends WalletState {
   List<Object?> get props => throw UnimplementedError();
 }
 
-class NavigatorSucces extends WalletState {
+class NavigatorSuccessfully extends WalletState {
+  @override
+  List<Object?> get props => [];
+}
+
+class NavigatorReset extends WalletState {
   @override
   List<Object?> get props => [];
 }
