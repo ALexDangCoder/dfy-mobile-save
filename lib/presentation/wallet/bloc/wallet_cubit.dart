@@ -38,6 +38,12 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  Future<void> getNftInfoByAddress({required String nftAddress}) async {
+    // final TokenInfoModel tokenInfoModel =
+    // client.getNftInfo();
+    //
+  }
+
   Future<double> getWalletDetail({required String walletAddress}) async {
     final double balanceOfBnb =
         await client.getBalanceOfBnb(ofAddress: walletAddress);
@@ -54,7 +60,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       if (addressWallet == value.address) {
         AccountModel acc = AccountModel(
           isCheck: true,
-          shortNameToken: 'BNB',
           addressWallet: value.address,
           amountWallet: balanceOfBnb,
           imported: false,
@@ -68,7 +73,6 @@ class WalletCubit extends BaseCubit<WalletState> {
           addressWallet: value.address,
           amountWallet: balanceOfBnb,
           imported: false,
-          shortNameToken: 'BNB',
           nameWallet: value.name,
           url: 'assets/images/Ellipse 39.png',
         );
@@ -89,7 +93,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       BehaviorSubject.seeded([]);
   BehaviorSubject<List<NftModel>> listNFTStream = BehaviorSubject.seeded([]);
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
-  BehaviorSubject<String> nftDecimal = BehaviorSubject.seeded('');
+  BehaviorSubject<String> nftEnterID = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenAddressTextNft = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenSymbolText = BehaviorSubject();
   BehaviorSubject<String> tokenDecimalText = BehaviorSubject();
@@ -233,7 +237,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
         break;
       case 'getListSupportedTokenCallback':
-        final a = await methodCall.arguments['TokenObject'];
+        //final a = await methodCall.arguments['TokenObject'];
         break;
       case 'setShowedTokenCallback':
         // isSetShowedToken = await methodCall.arguments['isSuccess'];
@@ -379,17 +383,13 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-//"walletAddress*: String
-// nftAddress*: String
-// nftName*: String
-// iconNFT*: String
-// nftID*: Int
-// password: String"
   Future<void> importNft({
     //todo pram
-    String password = '',
+    String? password,
     required String walletAddress,
     required String nftAddress,
+    required String nftName,
+    required String iconNFT,
     required int nftID,
   }) async {
     try {

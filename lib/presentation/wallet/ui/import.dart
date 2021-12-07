@@ -45,6 +45,7 @@ class ImportToken extends StatelessWidget {
               builder: (context) {
                 return ImportNft(
                   bloc: WalletCubit(),
+                  addressWallet: addressWallet,
                 );
               },
             ),

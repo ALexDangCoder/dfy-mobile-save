@@ -17,21 +17,29 @@ class ImportNft extends StatelessWidget {
   const ImportNft({
     Key? key,
     required this.bloc,
+    required this.addressWallet,
   }) : super(key: key);
   final WalletCubit bloc;
+  final String addressWallet;
 
   @override
   Widget build(BuildContext context) {
     return _Body(
       bloc: bloc,
+      addressWallet: addressWallet,
     );
   }
 }
 
 class _Body extends StatefulWidget {
   final WalletCubit bloc;
+  final String addressWallet;
 
-  const _Body({Key? key, required this.bloc}) : super(key: key);
+  const _Body({
+    Key? key,
+    required this.bloc,
+    required this.addressWallet,
+  }) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -108,10 +116,12 @@ class _BodyState extends State<_Body> {
                     widget.bloc.checkAddressNullNFT();
                     if (widget.bloc.isNFT.value) {
                       widget.bloc.importNft(
-                        walletAddress: 'walletAddress',
-                        nftAddress: 'tokenAddress',
-                        nftID: 1,
+                        walletAddress: widget.addressWallet,
+                        nftAddress:widget.bloc.tokenAddressTextNft.value,
+                        nftID: int.parse(widget.bloc.nftEnterID.value),
                         password: '',
+                        nftName: '',
+                        iconNFT: '',
                       );
                       widget.bloc.isImportNft.listen(
                         (value) {
