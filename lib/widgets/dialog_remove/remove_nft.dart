@@ -141,8 +141,10 @@ class RemoveNft extends StatelessWidget {
                                               isShow: false,
                                               nftAddress: nftAddress,
                                               password: '');
-                                          // cubit.listNFT.removeAt(index);
-                                          // cubit.getListNFTItem();
+                                          cubit.listNftFromWalletCore
+                                              .removeAt(index);
+                                          cubit.listNFTStream.sink
+                                              .add(cubit.listNftFromWalletCore);
                                           Navigator.pop(context);
                                         },
                                         child: SizedBox(
