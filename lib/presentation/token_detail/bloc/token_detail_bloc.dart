@@ -2,20 +2,18 @@ import 'package:Dfy/data/web3/model/transaction.dart';
 import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/token_model.dart';
-import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
-  final ModelToken modelToken;
   final String walletAddress;
   final Web3Utils _client = Web3Utils();
 
   TokenDetailBloc({
-    required this.modelToken,
     required this.walletAddress,
   });
 
   int minLen = 4;
+  late ModelToken modelToken;
   List<TransactionHistory> totalTransactionList = [];
   List<TransactionHistory> currentTransactionList = [];
 
@@ -46,17 +44,17 @@ class TokenDetailBloc {
       _transactionHistoryDetailSubject.stream;
 
   ///Get functions
-  Future<TransactionHistoryDetail> getTransaction({
+  Future<void> getTransaction({
     required String txhId,
   }) async {
     final result = await _client.getHistoryDetail(txhId: txhId);
-    return result;
+    _transactionHistoryDetailSubject.sink.add(result);
   }
 
-  Future<void> getHistory() async {
+  Future<void> getHistory(String _tokenAddress) async {
     final result = await _client.getTransactionHistory(
       ofAddress: walletAddress,
-      tokenAddress: modelToken.tokenAddress,
+      tokenAddress: _tokenAddress,
     );
     totalTransactionList = result;
     checkData();
@@ -66,7 +64,7 @@ class TokenDetailBloc {
   void checkData() {
     if (totalTransactionList.length <= minLen) {
       _transactionListSubject.sink.add(totalTransactionList);
-      hideShowMore();
+      _showMoreSubject.sink.add(false);
     } else {
       currentTransactionList = totalTransactionList.sublist(0, minLen);
       _transactionListSubject.sink.add(currentTransactionList);
@@ -82,13 +80,10 @@ class TokenDetailBloc {
       );
     } else {
       currentTransactionList = totalTransactionList;
-      hideShowMore();
+      _showMoreSubject.sink.add(false);
+
     }
     _transactionListSubject.sink.add(currentTransactionList);
-  }
-
-  void hideShowMore() {
-    _showMoreSubject.sink.add(false);
   }
 
   ///showLoading
