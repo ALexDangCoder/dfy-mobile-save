@@ -3,11 +3,8 @@ import 'package:Dfy/presentation/change_password/bloc/change_password_cubit.dart
 import 'package:Dfy/presentation/change_password/ui/components/form_setup_password.dart';
 import 'package:Dfy/presentation/change_password/ui/components/header_change_password.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
-import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
-import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
-import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/success/successful_by_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,126 +44,106 @@ class _ChangePasswordState extends State<ChangePassword> {
           currentFocus.unfocus();
         }
       },
-      child: Container(
-        width: 375.w,
-        height: 764.h,
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(62, 61, 92, 1),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.r),
-            topRight: Radius.circular(30.r),
-          ),
-        ),
-        child: Column(
-          children: [
-            headerChangePW(
-              callBack: () {
-                Navigator.pop(context);
-              },
-            ),
-            const Divider(
-              thickness: 1,
-              color: Color.fromRGBO(255, 255, 255, 0.1),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 24.h,
-                    ),
-                    formSetupPassWord(
-                      controller: _txtOldPW,
-                      hintText: S.current.old_password,
-                      oldPassWordFetch: oldPWFetchFromApi,
-                      cubit: _passwordCubit,
-                      type: typeForm.OLD,
-                    ),
-                    showTextValidateOldPassword(),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    formSetupPassWord(
-                      controller: _txtNewPW,
-                      hintText: S.current.new_pass,
-                      cubit: _passwordCubit,
-                      type: typeForm.NEW,
-                    ),
-                    showTextValidateNewPassword(),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    formSetupPassWord(
-                      controller: _txtConfirmPW,
-                      hintText: S.current.confirm_new_password,
-                      cubit: _passwordCubit,
-                      type: typeForm.CONFIRM,
-                    ),
-                    showTextValidateConfirmPassword(),
-                    SizedBox(
-                      height: 349.h,
-                    ),
-                  ],
-                ),
+      child: BaseBottomSheet(title: S.current.change_password, child: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 24.h,
+                  ),
+                  formSetupPassWord(
+                    controller: _txtOldPW,
+                    hintText: S.current.old_password,
+                    oldPassWordFetch: oldPWFetchFromApi,
+                    cubit: _passwordCubit,
+                    type: typeForm.OLD,
+                  ),
+                  showTextValidateOldPassword(),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  formSetupPassWord(
+                    controller: _txtNewPW,
+                    hintText: S.current.new_pass,
+                    cubit: _passwordCubit,
+                    type: typeForm.NEW,
+                  ),
+                  showTextValidateNewPassword(),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  formSetupPassWord(
+                    controller: _txtConfirmPW,
+                    hintText: S.current.confirm_new_password,
+                    cubit: _passwordCubit,
+                    type: typeForm.CONFIRM,
+                  ),
+                  showTextValidateConfirmPassword(),
+                  SizedBox(
+                    height: 349.h,
+                  ),
+                ],
               ),
             ),
-            //handle enable or disable btn
-            StreamBuilder<bool>(
-              stream: _passwordCubit.isEnableButtonStream,
-              builder: (context, snapshot) {
-                return GestureDetector(
-                  child: ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: snapshot.data ?? true,
-                  ),
-                  onTap: () {
-                    if (snapshot.data ?? false) {
-                      _passwordCubit.showTxtWarningOldPW(
-                        _txtOldPW.text,
-                        passwordOld: oldPWFetchFromApi,
-                      );
-                      _passwordCubit.showTxtWarningNewPW(_txtNewPW.text);
-                      _passwordCubit.showTxtWarningConfirmPW(
-                        _txtConfirmPW.text,
-                        newPassword: _txtNewPW.text,
-                      );
+          ),
+          //handle enable or disable btn
+          StreamBuilder<bool>(
+            stream: _passwordCubit.isEnableButtonStream,
+            builder: (context, snapshot) {
+              return GestureDetector(
+                child: ButtonGold(
+                  title: S.current.continue_s,
+                  isEnable: snapshot.data ?? true,
+                ),
+                onTap: () {
+                  if (snapshot.data ?? false) {
+                    _passwordCubit.showTxtWarningOldPW(
+                      _txtOldPW.text,
+                      passwordOld: oldPWFetchFromApi,
+                    );
+                    _passwordCubit.showTxtWarningNewPW(_txtNewPW.text);
+                    _passwordCubit.showTxtWarningConfirmPW(
+                      _txtConfirmPW.text,
+                      newPassword: _txtNewPW.text,
+                    );
 
-                      if (_passwordCubit.checkAllValidate(
-                        oldPWFetch: oldPWFetchFromApi,
-                        oldPW: _txtOldPW.text,
-                        newPW: _txtNewPW.text,
-                        confirmPW: _txtConfirmPW.text,
-                      )) {
-                        showSuccessfulByTitle(
-                          title: S.current.change_pw_success,
-                          callBack: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                builder: (context) => const MainScreen(
-                                  index: 2,
-                                ),
+                    if (_passwordCubit.checkAllValidate(
+                      oldPWFetch: oldPWFetchFromApi,
+                      oldPW: _txtOldPW.text,
+                      newPW: _txtNewPW.text,
+                      confirmPW: _txtConfirmPW.text,
+                    )) {
+                      showSuccessfulByTitle(
+                        title: S.current.change_pw_success,
+                        callBack: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => const MainScreen(
+                                index: 2,
                               ),
-                              (route) => route.isFirst,
-                            );
-                          },
-                          context: context,
-                        );
-                      } else {
-                        //nothing
-                      }
+                            ),
+                                (route) => route.isFirst,
+                          );
+                        },
+                        context: context,
+                      );
                     } else {
-                      // nothing
+                      //nothing
                     }
-                  },
-                );
-              },
-            ),
-            SizedBox(
-              height: 38.h,
-            ),
-          ],
-        ),
-      ),
+                  } else {
+                    // nothing
+                  }
+                },
+              );
+            },
+          ),
+          SizedBox(
+            height: 38.h,
+          ),
+        ],
+      ))
     );
   }
 
@@ -189,10 +166,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: const Color.fromRGBO(255, 108, 108, 1),
+                        color: Color.fromRGBO(255, 108, 108, 1),
                       ),
                     );
                   },
@@ -224,10 +201,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: const Color.fromRGBO(255, 108, 108, 1),
+                        color: Color.fromRGBO(255, 108, 108, 1),
                       ),
                     );
                   },
@@ -259,10 +236,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: const Color.fromRGBO(255, 108, 108, 1),
+                        color: Color.fromRGBO(255, 108, 108, 1),
                       ),
                     );
                   },

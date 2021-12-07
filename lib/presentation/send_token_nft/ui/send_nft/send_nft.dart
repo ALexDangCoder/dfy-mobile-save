@@ -126,27 +126,31 @@ class _SendNftState extends State<SendNft> {
                       onTap: () {
                         if (snapshot.data ?? false) {
                           sendNftCubit.checkValidAddress(txtToAddressNft.text);
-                          sendNftCubit.checkValidQuantity(txtQuantity.text,
-                              quantityFirstFetch: maxQuantityFirstFetch);
+                          sendNftCubit.checkValidQuantity(
+                            txtQuantity.text,
+                            quantityFirstFetch: maxQuantityFirstFetch,
+                          );
                           if (sendNftCubit.checkAddressFtQuantity()) {
-                            showModalBottomSheet(
-                              backgroundColor: Colors.transparent,
-                              isScrollControlled: true,
-                              builder: (context) => ConfirmBlockchainCategory(
-                                nameWallet: 'TestWallet',
-                                nameTokenWallet: 'BNB',
-                                balanceWallet: 0.64,
-                                typeConfirm: TYPE_CONFIRM.SEND_NFT,
-                                addressFrom: '0xfff',
-                                addressTo: '0xfff',
-                                imageWallet: ImageAssets.symbol,
-                                quantity: 10,
-                                nameToken: 'BNB',
-                                cubitCategory: null,
-                                gasPriceFirstFetch: sendNftCubit.gasPrice,
-                                gasFeeFirstFetch: 30,
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) {
+                                  return ConfirmBlockchainCategory(
+                                    nameWallet: 'TestWallet',
+                                    nameTokenWallet: 'BNB',
+                                    balanceWallet: 0.64,
+                                    typeConfirm: TYPE_CONFIRM.SEND_NFT,
+                                    addressFrom: '0xfff',
+                                    addressTo: '0xfff',
+                                    imageWallet: ImageAssets.symbol,
+                                    quantity: 10,
+                                    nameToken: 'BNB',
+                                    cubitCategory: null,
+                                    gasPriceFirstFetch: sendNftCubit.gasPrice,
+                                    gasFeeFirstFetch: 30,
+                                  );
+                                },
                               ),
-                              context: context,
                             );
                           } else {
                             //nothing

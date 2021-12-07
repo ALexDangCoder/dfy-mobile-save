@@ -61,7 +61,6 @@ class InformationWallet extends StatelessWidget {
                     child: Row(
                       children: [
                         Expanded(
-                          flex: 1,
                           child: Text(
                             nameWallet,
                             style: const TextStyle(
@@ -90,11 +89,12 @@ class InformationWallet extends StatelessWidget {
                   ),
                   //hang 2
                   Text(
-                    '${S.current.balance}: ${formatValue.format(amount)} $nameToken',
-                    style: TextStyle(
+                    '${S.current.balance}: ${formatValue.format(amount)}'
+                        ' $nameToken',
+                    style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
-                      color: const Color.fromRGBO(255, 255, 255, 1),
+                      color: Color.fromRGBO(255, 255, 255, 1),
                     ),
                   )
                 ],
