@@ -226,6 +226,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
                                   onTap: () {
                                     Navigator.pop(context);
                                   },
+                                  splashColor: Colors.transparent,
                                   child: SizedBox(
                                     width: 156.w,
                                     child: Center(
@@ -246,6 +247,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
                               ),
                               Flexible(
                                 child: InkWell(
+                                  splashColor: Colors.transparent,
                                   onTap: type == KeyType.IMPORT
                                       ? () {
                                           alertCubit.earseAllWallet(IMPORT);
