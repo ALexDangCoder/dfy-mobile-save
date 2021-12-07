@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
@@ -54,23 +55,33 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    cubit.getListWallets('pass');
-    cubit.addressWalletCore = widget.wallet?.address ?? cubit.addressWalletCore;
-    cubit.walletName.sink.add(widget.wallet?.name ?? 'Nguyen Van Hung');
-    cubit.walletName.stream.listen((event) {
-      changeName.text = event;
-    });
-    _tabController = TabController(length: 2, vsync: this);
-    fToast = FToast();
-    fToast.init(context);
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
-    cubit.getNFT(
-      widget.wallet?.address ?? cubit.addressWalletCore,
-    );
-    cubit.getTokens(
-      widget.wallet?.address ?? cubit.addressWalletCore,
-    );
+    if (widget.index == 1) {
+      cubit.getListWallets('pass');
+      cubit.addressWalletCore =
+          widget.wallet?.address ?? cubit.addressWalletCore;
+      cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
+      cubit.walletName.stream.listen((event) {
+        changeName.text = event;
+      });
+      _tabController = TabController(length: 2, vsync: this);
+      fToast = FToast();
+      fToast.init(context);
+      cubit.getNFT(
+        widget.wallet?.address ?? cubit.addressWalletCore,
+      );
+      cubit.getTokens(
+        widget.wallet?.address ?? cubit.addressWalletCore,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    cubit.close();
+    super.dispose();
   }
 
   @override
@@ -80,8 +91,8 @@ class _WalletState extends State<WalletScreen>
       return Scaffold(
         resizeToAvoidBottomInset: false,
         body: PullToRefresh(
-          onRefresh: (){
-          },
+          offset: 112.h,
+          onRefresh: () {cubit.getTokens(cubit.addressWalletCore);},
           child: Container(
             width: 375.w,
             height: 812.h,
@@ -220,7 +231,8 @@ class _WalletState extends State<WalletScreen>
                                   AsyncSnapshot<List<ModelToken>> snapshot,
                                 ) {
                                   return ListView.builder(
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: snapshot.data?.length ?? 0,
                                     itemBuilder: (context, index) {
@@ -268,7 +280,8 @@ class _WalletState extends State<WalletScreen>
                                         itemCount: snapshot.data?.length,
                                         itemBuilder: (context, index) {
                                           return NFTItem(
-                                            walletAddress: cubit.addressWalletCore,
+                                            walletAddress:
+                                                cubit.addressWalletCore,
                                             index: index,
                                             bloc: cubit,
                                             symbolUrl:
@@ -372,7 +385,7 @@ class _WalletState extends State<WalletScreen>
                     stream: cubit.walletName,
                     builder: (context, AsyncSnapshot<String> snapshot) {
                       return Text(
-                        snapshot.data ?? '',
+                        snapshot.data ?? cubit.nameWallet,
                         style: textNormalCustom(
                           Colors.white,
                           24,
@@ -417,7 +430,6 @@ class _WalletState extends State<WalletScreen>
                     return Text(
                       formatUSD.format(
                         snapshot.data ?? 0,
-                        //cubit.total(cubit.getListTokenModel.value),
                       ),
                       style: textNormalCustom(
                         const Color(0xFFE4AC1A),
@@ -488,7 +500,7 @@ class _WalletState extends State<WalletScreen>
                     context: context,
                     builder: (context) => Receive(
                       walletAddress: widget.wallet?.address ??
-                          '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
+                          cubit.addressWalletCore,
                       type: TokenType.QR,
                     ),
                   );

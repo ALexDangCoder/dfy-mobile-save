@@ -134,6 +134,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   String addressWalletCore = '';
+  String nameWallet = '';
   List<AccountModel> listSelectAccBloc = [];
 
   Future<void> earseWallet({required String walletAddress}) async {
@@ -265,7 +266,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         for (final element in data) {
           listTokenFromWalletCore.add(ModelToken.fromWalletCore(element));
         }
-        print('MotherF ${listTokenFromWalletCore.length}');
         await getExchangeRate(listTokenFromWalletCore);
         total(listTokenFromWalletCore);
         listTokenStream.add(listTokenFromWalletCore);
@@ -283,6 +283,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         for (final element in data) {
           listWallet.add(Wallet.fromJson(element));
           addressWalletCore = listWallet.first.address!;
+          nameWallet = listWallet.first.name!;
+          walletName.add(nameWallet);
           addressWallet.add(addressWalletCore);
         }
 

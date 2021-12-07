@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -148,6 +149,15 @@ class _EnterAddressState extends State<EnterAddress> {
                           tokenFullName: widget.bloc.tokenFullName,
                         );
                         widget.bloc.checkAddressNull();
+                        final ModelToken model = ModelToken(
+                          tokenAddress: widget.bloc.tokenAddressText.value,
+                          nameToken: widget.bloc.tokenSymbol.value,
+                          nameShortToken: widget.bloc.tokenSymbol.value,
+                          iconToken: widget.bloc.iconToken,
+                        );
+                        widget.bloc.listTokenFromWalletCore.add(model);
+                        widget.bloc.listTokenStream
+                            .add(widget.bloc.listTokenFromWalletCore);
                       },
                       child: ButtonGold(
                         title: S.current.import,

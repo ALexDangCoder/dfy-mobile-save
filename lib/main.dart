@@ -143,6 +143,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void callAllApi() {
+
   }
 
   Future<void> getConfig() async {
@@ -209,16 +210,6 @@ class _MyAppState extends State<MyApp> {
         'storeWallet': 'storeWallet',
       };
       await trustWalletChannel.invokeMethod('storeWallet', data);
-    } on PlatformException {}
-  }
-
-  Future<void> setConfig() async {
-    try {
-      final data = {
-        'isAppLock': true,
-        'isFaceID': false,
-      };
-      await trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {}
   }
 
