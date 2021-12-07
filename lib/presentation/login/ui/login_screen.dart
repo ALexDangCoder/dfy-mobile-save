@@ -127,8 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Expanded(
                             child: TextFormField(
                               onChanged: (value) {
-                                if (value.isEmpty ||
-                                    controller.text.isEmpty) {
+                                if (value.isEmpty || controller.text.isEmpty) {
                                   setState(() {
                                     errorText = true;
                                   });
@@ -136,8 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   errorText = false;
                                 }
                               },
-                              cursorColor:
-                                  AppTheme.getInstance().whiteColor(),
+                              cursorColor: AppTheme.getInstance().whiteColor(),
                               style: TextStyle(
                                 fontSize: 18,
                                 color: AppTheme.getInstance().whiteColor(),
@@ -168,13 +166,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: _cubit.hidePass
                                 ? ImageIcon(
                                     const AssetImage(ImageAssets.ic_show),
-                                    color: AppTheme.getInstance()
-                                        .suffixColor(),
+                                    color: AppTheme.getInstance().suffixColor(),
                                   )
                                 : ImageIcon(
                                     const AssetImage(ImageAssets.ic_hide),
-                                    color: AppTheme.getInstance()
-                                        .suffixColor(),
+                                    color: AppTheme.getInstance().suffixColor(),
                                   ),
                           ),
                         ],
@@ -202,23 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 36.h,
                   ),
-                  BlocConsumer<LoginCubit, LoginState>(
+                  BlocBuilder<LoginCubit, LoginState>(
                     bloc: _cubit,
-                    listener: (context,state){
-                      if (state is LoginSuccess) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => const MainScreen(
-                              index: 1,
-                            ),
-                          ),
-                              (route) => route.isFirst,
-                        );
-                      }
-                      if (state is LoginError) {
-                        _showDialog();
-                      }
-                    },
                     builder: (context, state) {
                       return GestureDetector(
                         child: enableLogin
@@ -248,7 +229,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                         onTap: () {
                           if (controller.value.text.isNotEmpty && !errorText) {
-                            _cubit.checkPasswordWallet(controller.value.text);
+                            _cubit
+                                .checkPasswordWallet(controller.value.text)
+                                .whenComplete(
+                                  () => {
+                                    if (state is LoginSuccess)
+                                      {
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MainScreen(
+                                              index: 1,
+                                            ),
+                                          ),
+                                          (route) => route.isFirst,
+                                        )
+                                      }
+                                    else if (state is LoginError)
+                                      {_showDialog()}
+                                  },
+                                );
                           }
                         },
                       );

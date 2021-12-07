@@ -60,7 +60,11 @@ class _EnterAddressState extends State<EnterAddress> {
                 return const TokenSuccessfully();
               },
             ),
-          );
+          ).whenComplete(() => {
+            widget.bloc.getTokens(widget.addressWallet),
+            widget.bloc.listTokenStream
+                .add(widget.bloc.listTokenFromWalletCore),
+          });
         }
       },
       builder: (context, _) {

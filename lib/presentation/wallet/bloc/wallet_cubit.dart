@@ -279,6 +279,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           listWallet.add(Wallet.fromJson(element));
           addressWalletCore = listWallet.first.address!;
           nameWallet = listWallet.first.name!;
+          walletName.add(nameWallet);
           addressWallet.add(addressWalletCore);
         }
 
