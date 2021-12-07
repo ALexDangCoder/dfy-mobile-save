@@ -78,7 +78,7 @@ class ItemForm extends StatelessWidget {
               suffixIcon: InkWell(
                 onTap: callback,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 12.h),
+                  padding: EdgeInsets.only(top: 14.h),
                   child: Text(
                     S.current.paste,
                     style: textNormal(AppTheme.getInstance().fillColor(), 16)
@@ -134,7 +134,7 @@ class ItemForm extends StatelessWidget {
             suffixIcon: InkWell(
               onTap: callback,
               child: Padding(
-                padding: EdgeInsets.only(top: 12.h),
+                padding: EdgeInsets.only(top: 14.h),
                 child: Text(
                   suffix,
                   style: textNormal(AppTheme.getInstance().fillColor(), 16)
