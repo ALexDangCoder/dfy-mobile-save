@@ -24,21 +24,8 @@ class MainCubit extends BaseCubit<MainState> {
 
   Sink<int> get walletSink => _walletIndex.sink;
 
-  TokenRepository get _tokenRepository => Get.find();
 
   Future<void> init({dynamic args}) async {}
-
-  Future<void> getListCategory() async {
-    final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
-    result.when(
-      success: (res) {
-        listToken = res;
-      },
-      error: (error) {
-        updateStateError();
-      },
-    );
-  }
 
   int checkAppLock() {
     if (PrefsService.getAppLockConfig() == 'true') {

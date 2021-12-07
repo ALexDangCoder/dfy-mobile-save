@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -7,12 +8,15 @@ import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
@@ -225,6 +229,18 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   //Web3
+  TokenRepository get _tokenRepository => Get.find();
+  Future<void> getListCategory() async {
+    final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
+    result.when(
+      success: (res) {
+        //todo: Import to wallet core
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
+  }
 
   Future<void> getExchangeRate(List<ModelToken> list) async {
     ///TODO: function get ExchangeRate
