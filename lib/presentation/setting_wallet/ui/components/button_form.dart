@@ -49,8 +49,14 @@ Container switchForm({
           enabled: false,
           switchScale: 1,
           value: isCheck,
-          onChanged: (bool value) =>
-              cubit.changeValueFingerFtFaceID(value: value),
+          onChanged: (bool value) {
+            print(value);
+            cubit.changeValueFingerFtFaceID(value: value);
+            cubit.setConfig(
+              isFaceID: value,
+              isAppLock: cubit.isSwitchAppLockOn.value,
+            );
+          },
           //todo
           leading: SizedBox(
             // height: 20,
@@ -88,7 +94,10 @@ Container switchForm({
           value: isCheck,
           onChanged: (value) {
             cubit.changeValueAppLock(value: value);
-            cubit.setIsAppLock(value: value);
+            cubit.setConfig(
+              isFaceID: cubit.isSwitchFingerFtFaceIdOn.value,
+              isAppLock: value,
+            );
           },
           leading: SizedBox(
             // height: 20,

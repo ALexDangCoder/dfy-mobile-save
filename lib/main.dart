@@ -150,7 +150,6 @@ class _MyAppState extends State<MyApp> {
       final data = {};
       await trustWalletChannel.invokeMethod('getConfig', data);
     } on PlatformException {
-
     }
   }
 
