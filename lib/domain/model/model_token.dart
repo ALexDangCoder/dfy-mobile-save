@@ -9,6 +9,7 @@ class ModelToken {
   String walletAddress = '';
 
   ModelToken({
+    required this.balanceToken,
     required this.tokenAddress,
     required this.nameToken,
     required this.nameShortToken,

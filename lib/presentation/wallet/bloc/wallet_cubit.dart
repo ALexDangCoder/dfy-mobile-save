@@ -35,7 +35,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     tokenSymbol.sink.add(tokenInfoModel.tokenSymbol ?? 'null');
     tokenDecimal.sink.add('${tokenInfoModel.decimal ?? 0} ');
     tokenFullName = tokenInfoModel.name ?? '';
-    // iconToken = tokenInfoModel.icon ?? '';
     if (tokenInfoModel.tokenSymbol!.isNotEmpty) {
       isTokenEnterAddress.sink.add(true);
     }
@@ -105,7 +104,8 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   String tokenFullName = '';
-  String iconToken = 'https://assets.coingecko.com/coins/images/825/thumb/binance-coin-logo.png?1547034615';
+  String iconToken =
+      'https://assets.coingecko.com/coins/images/825/thumb/binance-coin-logo.png?1547034615';
   bool checkLogin = false;
   List<TokenModel> listStart = [];
   List<Wallet> listWallet = [];
@@ -232,13 +232,39 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  //Web3
   TokenRepository get _tokenRepository => Get.find();
+
+  List<ModelToken> getListModelToken = [];
+
+  Future<void> getTokenInfoByAddressList({
+    required List<TokenInf> res,
+  }) async {
+    for (final value in res) {
+      final TokenInfoModel tokenInfoModel = await client.getTokenInfo(
+        contractAddress: '0x20f1de452e9057fe863b99d33cf82dbee0c45b14',
+        //todo addressContract BE
+        walletAddress: addressWalletCore,
+      );
+      getListModelToken.add(
+        ModelToken(
+          tokenAddress: value.address ?? '',
+          iconToken: value.iconUrl ?? '',
+          nameShortToken: value.symbol ?? '',
+          nameToken: tokenInfoModel.name ?? '',
+          balanceToken: tokenInfoModel.value ?? 0,
+        ),
+      );
+    }
+    print('--------------${getListModelToken.length}');
+  }
+
+  //Web3
   Future<void> getListCategory() async {
     final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
     result.when(
       success: (res) {
         //todo: Import to wallet core
+        getTokenInfoByAddressList(res: res);
       },
       error: (error) {
         updateStateError();
@@ -346,19 +372,14 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('getNFT', data);
     } on PlatformException {}
   }
-//"walletAddress*: String
-// tokenAddress*: String
-// tokenFullName*: String
-// iconUrl*: String
-// symbol*: String
-// decimal*: Int"
+
   Future<void> importToken({
     required String walletAddress,
     required String tokenAddress,
     required String symbol,
     required int decimal,
     required String tokenFullName,
-    required String iconUrl,
+    required String iconToken,
   }) async {
     try {
       final data = {
@@ -367,7 +388,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'symbol': symbol,
         'decimal': decimal,
         'tokenFullName': tokenFullName,
-        'iconUrl': iconUrl,
+        'iconToken': iconToken,
       };
       await trustWalletChannel.invokeMethod('importToken', data);
     } on PlatformException {

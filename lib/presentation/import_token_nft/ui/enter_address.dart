@@ -151,7 +151,7 @@ class _EnterAddressState extends State<EnterAddress> {
                           tokenAddress: widget.bloc.tokenAddressText.value,
                           symbol: widget.bloc.tokenSymbol.value,
                           decimal: int.parse(widget.bloc.tokenDecimal.value),
-                          iconUrl: widget.bloc.iconToken,
+                          iconToken: widget.bloc.iconToken,
                           tokenFullName: widget.bloc.tokenFullName,
                         );
                         widget.bloc.checkAddressNull();
