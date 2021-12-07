@@ -114,80 +114,70 @@ class _LoginScreenState extends State<LoginScreen> {
                         left: 19.w,
                         right: 19.w,
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 8.h),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.h),
-                              child: ImageIcon(
-                                const AssetImage(ImageAssets.ic_lock),
+                      child: Row(
+                        children: [
+                          ImageIcon(
+                            const AssetImage(ImageAssets.ic_lock),
+                            color: AppTheme.getInstance().whiteColor(),
+                            size: 24,
+                          ),
+                          SizedBox(
+                            width: 20.5.w,
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              onChanged: (value) {
+                                if (value.isEmpty ||
+                                    controller.text.isEmpty) {
+                                  setState(() {
+                                    errorText = true;
+                                  });
+                                } else {
+                                  errorText = false;
+                                }
+                              },
+                              cursorColor:
+                                  AppTheme.getInstance().whiteColor(),
+                              style: TextStyle(
+                                fontSize: 18,
                                 color: AppTheme.getInstance().whiteColor(),
-                                size: 24,
                               ),
-                            ),
-                            SizedBox(
-                              width: 20.5.w,
-                            ),
-                            Expanded(
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  if (value.isEmpty ||
-                                      controller.text.isEmpty) {
-                                    setState(() {
-                                      errorText = true;
-                                    });
-                                  } else {
-                                    errorText = false;
-                                  }
-                                },
-                                cursorColor:
-                                    AppTheme.getInstance().whiteColor(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: AppTheme.getInstance().whiteColor(),
+                              controller: controller,
+                              obscureText: _cubit.hidePass,
+                              maxLength: 15,
+                              decoration: InputDecoration(
+                                counterText: '',
+                                hintText: S.current.password,
+                                hintStyle: textNormal(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  18,
                                 ),
-                                controller: controller,
-                                obscureText: _cubit.hidePass,
-                                maxLength: 15,
-                                decoration: InputDecoration(
-                                  counterText: '',
-                                  hintText: S.current.password,
-                                  hintStyle: textNormal(
-                                    AppTheme.getInstance().textThemeColor(),
-                                    18,
+                                border: InputBorder.none,
+                              ),
+                              // onFieldSubmitted: ,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (mounted) {
+                                setState(() {
+                                  _cubit.hidePassword();
+                                });
+                              }
+                            },
+                            child: _cubit.hidePass
+                                ? ImageIcon(
+                                    const AssetImage(ImageAssets.ic_show),
+                                    color: AppTheme.getInstance()
+                                        .suffixColor(),
+                                  )
+                                : ImageIcon(
+                                    const AssetImage(ImageAssets.ic_hide),
+                                    color: AppTheme.getInstance()
+                                        .suffixColor(),
                                   ),
-                                  border: InputBorder.none,
-                                ),
-                                // onFieldSubmitted: ,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.h),
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (mounted) {
-                                    setState(() {
-                                      _cubit.hidePassword();
-                                    });
-                                  }
-                                },
-                                child: _cubit.hidePass
-                                    ? ImageIcon(
-                                        const AssetImage(ImageAssets.ic_show),
-                                        color: AppTheme.getInstance()
-                                            .suffixColor(),
-                                      )
-                                    : ImageIcon(
-                                        const AssetImage(ImageAssets.ic_hide),
-                                        color: AppTheme.getInstance()
-                                            .suffixColor(),
-                                      ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
