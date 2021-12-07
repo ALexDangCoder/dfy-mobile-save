@@ -155,9 +155,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val isShow =
                         call.argument<Boolean>("isShow")
                             ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: ""
-                    setShowedToken(walletAddress, tokenAddress, isShow, password)
+                    setShowedToken(walletAddress, tokenAddress, isShow)
                 }
                 "importNft" -> {
                     val walletAddress =
@@ -175,9 +173,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val nftID =
                         call.argument<Int>("nftID")
                             ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: ""
-                    importNft(walletAddress, nftAddress, nftName, iconNFT, nftID, password)
+                    importNft(walletAddress, nftAddress, nftName, iconNFT, nftID)
                 }
                 "setShowedNft" -> {
                     val walletAddress =
@@ -189,9 +185,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val isShow =
                         call.argument<Boolean>("isShow")
                             ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: ""
-                    setShowedNft(walletAddress, nftAddress, isShow, password)
+                    setShowedNft(walletAddress, nftAddress, isShow)
                 }
                 "getTokens" -> {
                     val walletAddress =
@@ -482,8 +476,7 @@ class MainActivity : FlutterFragmentActivity() {
     private fun setShowedToken(
         walletAddress: String,
         tokenAddress: String,
-        isShow: Boolean,
-        password: String
+        isShow: Boolean
     ) {
         //todo check password
         val hasMap = HashMap<String, Any>()
@@ -501,8 +494,7 @@ class MainActivity : FlutterFragmentActivity() {
         nftAddress: String,
         nftName: String,
         iconNFT: String,
-        nftID: Int,
-        password: String
+        nftID: Int
     ) {
         //todo check password
         val hasMap = HashMap<String, Any>()
@@ -525,8 +517,7 @@ class MainActivity : FlutterFragmentActivity() {
     private fun setShowedNft(
         walletAddress: String,
         nftAddress: String,
-        isShow: Boolean,
-        password: String
+        isShow: Boolean
     ) {
         //todo check password
         val hasMap = HashMap<String, Any>()
