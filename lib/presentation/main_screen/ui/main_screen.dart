@@ -65,7 +65,6 @@ class _MainScreenState extends BaseState<MainScreen> {
     super.initState();
     _handleEventBus();
     _cubit = MainCubit();
-    _cubit.getListCategory();
     _pages = [
       WalletScreen(
         index: widget.index ?? 1,
