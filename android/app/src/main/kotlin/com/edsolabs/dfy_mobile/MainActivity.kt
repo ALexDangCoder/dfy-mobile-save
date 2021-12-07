@@ -31,11 +31,12 @@ class MainActivity : FlutterFragmentActivity() {
     private val CHANNEL_TRUST_WALLET = "flutter/trust_wallet"
 
     private var channel: MethodChannel? = null
-    private val appPreference = AppPreference(context = this)
+    private lateinit var appPreference : AppPreference
     private val coinType: CoinType = CoinType.SMARTCHAIN
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
+        appPreference = AppPreference(context = this@MainActivity)
         channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL_TRUST_WALLET)
         channel?.setMethodCallHandler { call, _ ->
             when (call.method) {
@@ -43,7 +44,6 @@ class MainActivity : FlutterFragmentActivity() {
                     val password = call.argument<String>("password")
                         ?: return@setMethodCallHandler
                     checkPassWordWallet(password)
-
                 }
                 "getConfig" -> {
                     getConfigWallet()
@@ -61,18 +61,16 @@ class MainActivity : FlutterFragmentActivity() {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
                     val content = call.argument<String>("content")
                         ?: return@setMethodCallHandler
-                    val password = call.argument<String>("password")
-                        ?: ""
-                    importWallet(type, content, password)
+                    importWallet(type, content)
                 }
                 "getListWallets" -> {
                     val password = call.argument<String>("password")
                         ?: return@setMethodCallHandler
-                    getListWallets(password)
+                    getListWallets()
                 }
                 "generateWallet" -> {
-                    val password = call.argument<String>("password")
-                        ?: return@setMethodCallHandler
+                    val password =
+                        call.argument<String>("password") ?: return@setMethodCallHandler
                     generateWallet(password)
                 }
                 "storeWallet" -> {
@@ -80,9 +78,16 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("seedPhrase") ?: return@setMethodCallHandler
                     val walletName =
                         call.argument<String>("walletName") ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: ""
-                    storeWallet(seedPhrase, walletName, password)
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    val privateKey =
+                        call.argument<String>("privateKey") ?: return@setMethodCallHandler
+                    storeWallet(
+                        seedPhrase,
+                        walletName,
+                        walletAddress,
+                        privateKey
+                    )
                 }
                 "setConfig" -> {
                     val isAppLock =
@@ -289,8 +294,7 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("earseWalletCallback", hasMap)
     }
 
-    private fun importWallet(type: String, content: String, password: String) {
-        //todo check password
+    private fun importWallet(type: String, content: String) {
         val hasMap = HashMap<String, Any>()
         val sttWallet = appPreference.sttWallet
         val walletName = "Account ${sttWallet + 1}"
@@ -330,8 +334,7 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("importWalletCallback", hasMap)
     }
 
-    private fun getListWallets(password: String) {
-        //todo check password
+    private fun getListWallets() {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
         appPreference.getListWallet().forEach {
             val data = HashMap<String, Any>()
@@ -343,7 +346,6 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun generateWallet(password: String) {
-        //todo check password
         val wallet = HDWallet(128, "")
         val seedPhrase = wallet.mnemonic()
         val address = wallet.getAddressForCoin(coinType)
@@ -353,14 +355,29 @@ class MainActivity : FlutterFragmentActivity() {
         hasMap["passPhrase"] = seedPhrase
         hasMap["walletAddress"] = address
         hasMap["privateKey"] = privateKey.toByteArray().toHexString(false)
-
+        appPreference.password = password
         channel?.invokeMethod("generateWalletCallback", hasMap)
     }
 
-    private fun storeWallet(seedPhrase: String, walletName: String, password: String) {
+    private fun storeWallet(
+        seedPhrase: String,
+        walletName: String,
+        walletAddress: String,
+        privateKey: String
+    ) {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
-
+        val listWallet = ArrayList<WalletModel>()
+        listWallet.addAll(appPreference.getListWallet())
+        listWallet.add(
+            WalletModel(
+                walletName,
+                walletAddress,
+                seedPhrase,
+                privateKey
+            )
+        )
+        appPreference.saveListWallet(listWallet)
         channel?.invokeMethod("storeWalletCallback", hasMap)
     }
 
