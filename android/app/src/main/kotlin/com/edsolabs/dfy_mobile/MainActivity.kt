@@ -31,7 +31,7 @@ class MainActivity : FlutterFragmentActivity() {
     private val CHANNEL_TRUST_WALLET = "flutter/trust_wallet"
 
     private var channel: MethodChannel? = null
-    private lateinit var appPreference : AppPreference
+    private lateinit var appPreference: AppPreference
     private val coinType: CoinType = CoinType.SMARTCHAIN
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -44,6 +44,13 @@ class MainActivity : FlutterFragmentActivity() {
                     val password = call.argument<String>("password")
                         ?: return@setMethodCallHandler
                     checkPassWordWallet(password)
+                }
+                "changePassword" -> {
+                    val oldPassword = call.argument<String>("oldPassword")
+                        ?: return@setMethodCallHandler
+                    val changePassword = call.argument<String>("changePassword")
+                        ?: return@setMethodCallHandler
+                    changePassWordWallet(oldPassword, changePassword)
                 }
                 "getConfig" -> {
                     getConfigWallet()
@@ -129,16 +136,13 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("symbol") ?: return@setMethodCallHandler
                     val decimal =
                         call.argument<Int>("decimal") ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: ""
                     importToken(
                         walletAddress,
                         tokenAddress,
                         tokenFullName,
                         iconToken,
                         symbol,
-                        decimal,
-                        password
+                        decimal
                     )
                 }
                 "setShowedToken" -> {
@@ -263,6 +267,15 @@ class MainActivity : FlutterFragmentActivity() {
         val hasMap = HashMap<String, Any>()
         hasMap["isCorrect"] = password == appPreference.password
         channel?.invokeMethod("checkPasswordCallback", hasMap)
+    }
+
+    private fun changePassWordWallet(oldPassword: String, newPassword: String) {
+        val hasMap = HashMap<String, Any>()
+        hasMap["isSuccess"] = oldPassword == appPreference.password
+        if (appPreference.password == oldPassword) {
+            appPreference.password = newPassword
+        }
+        channel?.invokeMethod("changePasswordCallback", hasMap)
     }
 
     private fun getConfigWallet() {
@@ -410,10 +423,8 @@ class MainActivity : FlutterFragmentActivity() {
         tokenFullName: String,
         iconToken: String,
         symbol: String,
-        decimal: Int,
-        password: String
+        decimal: Int
     ) {
-        //todo check password
         val hasMap = HashMap<String, Any>()
         val listToken = ArrayList<TokenModel>()
         listToken.addAll(appPreference.getListToken())
