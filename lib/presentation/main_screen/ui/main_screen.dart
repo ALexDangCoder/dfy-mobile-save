@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/base/base_screen.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -63,6 +65,7 @@ class _MainScreenState extends BaseState<MainScreen> {
     super.initState();
     _handleEventBus();
     _cubit = MainCubit();
+    _cubit.getListCategory();
     _pages = [
       WalletScreen(
         index: widget.index ?? 1,

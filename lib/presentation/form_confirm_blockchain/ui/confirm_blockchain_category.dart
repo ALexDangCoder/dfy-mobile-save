@@ -1,5 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/domain/model/token_model.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';

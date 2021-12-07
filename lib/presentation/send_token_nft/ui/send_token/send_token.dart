@@ -1,6 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/token_model.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';

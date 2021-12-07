@@ -1,5 +1,5 @@
 {
   "type": "develop",
-  "base_url": "https://www.google.com/",
-  "base_image_url": "https://www.google.com/"
+  "base_url": "http://8wlg9.mocklab.io/",
+  "base_image_url": "http://8wlg9.mocklab.io"
 }

@@ -6,7 +6,7 @@ import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
-import 'package:Dfy/domain/model/token_model.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -274,9 +274,9 @@ class WalletCubit extends BaseCubit<WalletState> {
           checkShow.add(ModelToken.fromWalletCore(element));
         }
         for(final element in checkShow){
-          if(element.isShowed){
-            listTokenFromWalletCore.add(element);
-          }
+          // if(element.isShowed){
+          //   listTokenFromWalletCore.add(element);
+          // }
         }
         await getExchangeRate(listTokenFromWalletCore);
         total(listTokenFromWalletCore);
