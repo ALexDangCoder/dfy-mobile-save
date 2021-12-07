@@ -59,7 +59,9 @@ class LoginCubit extends BaseCubit<LoginState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('checkPassword', data);
-    } on PlatformException {}
+    } on PlatformException {
+      //nothing
+    }
   }
 
   String authorized = 'Not Authorized';

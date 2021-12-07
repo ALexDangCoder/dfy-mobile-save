@@ -77,7 +77,6 @@ class _BodyState extends State<_Body> {
   void initState() {
     super.initState();
     nameWallet = TextEditingController();
-    nameWallet.text = widget.blocCreateSeedPhrase.nameWallet.value;
     nameWallet.addListener(() {
       widget.blocCreateSeedPhrase.nameWallet.sink.add(nameWallet.text);
     });
@@ -89,6 +88,7 @@ class _BodyState extends State<_Body> {
       stream: widget.blocCreateSeedPhrase.isCheckData,
       builder: (context, snapshot) {
         if (snapshot.data == true) {
+          nameWallet.text = widget.blocCreateSeedPhrase.walletNameCore;
           return GestureDetector(
             onTap: () {
               final FocusScopeNode currentFocus = FocusScope.of(context);

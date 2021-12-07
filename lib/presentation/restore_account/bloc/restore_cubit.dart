@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -152,6 +154,7 @@ class RestoreCubit extends Cubit<RestoreState> {
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
+      emit(ErrorState());
       throw CommonException();
     }
   }
@@ -273,8 +276,12 @@ class RestoreCubit extends Cubit<RestoreState> {
         btnSink.add(false);
         ckcSink.add(false);
       } else {
-        final int len = value.split(' ').length;
-        if (len != 12 || len != 15 || len != 18 || len != 21 || len != 24) {
+        final int len = value.length;
+        if (len == 64 && !value.contains(' ')) {
+          privateField = true;
+          seedSink.add(false);
+        }
+        else{
           privateField = false;
           seedSink.add(true);
           txtWarningSeedSink.add(S.current.private_warning);
