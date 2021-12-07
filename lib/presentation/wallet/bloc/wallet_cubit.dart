@@ -184,6 +184,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   void resetImportToken() {
     tokenSymbol.sink.add(S.current.token_symbol);
     tokenDecimal.sink.add(S.current.token_decimal);
+    isTokenEnterAddress.sink.add(false);
     emit(NavigatorReset());
   }
 
