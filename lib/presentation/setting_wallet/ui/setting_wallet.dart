@@ -81,6 +81,10 @@ class SettingWallet extends StatelessWidget {
                             );
                           },
                         ),
+                      ).whenComplete(
+                        () => {
+                          cubit.listSelectAccBloc.clear(),
+                        },
                       );
                     },
                     child: buttonForm(

@@ -97,6 +97,7 @@ class RestoreCubit extends Cubit<RestoreState> {
   Stream<bool> get ckcStream => _ckcBoxSubject.stream;
 
   Sink<bool> get ckcSink => _ckcBoxSubject.sink;
+
   bool get ckcValue => _ckcBoxSubject.value;
 
   ///
@@ -250,7 +251,7 @@ class RestoreCubit extends Cubit<RestoreState> {
         seedSink.add(true);
         txtWarningSeedSink.add(S.current.seed_required);
         btnSink.add(false);
-      ckcSink.add(false);
+        ckcSink.add(false);
       } else {
         final int len = value.split(' ').length;
         if (len == 12 || len == 15 || len == 18 || len == 21 || len == 24) {
@@ -261,7 +262,7 @@ class RestoreCubit extends Cubit<RestoreState> {
           seedSink.add(true);
           txtWarningSeedSink.add(S.current.warning_seed);
           btnSink.add(false);
-      ckcSink.add(false);
+          ckcSink.add(false);
         }
       }
     } else {
@@ -270,7 +271,7 @@ class RestoreCubit extends Cubit<RestoreState> {
         seedSink.add(true);
         txtWarningSeedSink.add(S.current.private_required);
         btnSink.add(false);
-      ckcSink.add(false);
+        ckcSink.add(false);
       } else {
         final int len = value.split(' ').length;
         if (len != 12 || len != 15 || len != 18 || len != 21 || len != 24) {
@@ -278,7 +279,7 @@ class RestoreCubit extends Cubit<RestoreState> {
           seedSink.add(true);
           txtWarningSeedSink.add(S.current.private_warning);
           btnSink.add(false);
-      ckcSink.add(false);
+          ckcSink.add(false);
         }
       }
     }
@@ -338,6 +339,7 @@ class RestoreCubit extends Cubit<RestoreState> {
       }
     }
   }
+
   void checkCkcValue(value) {
     checkBoxValue = value;
     if ((haveValueSeed || haveValuePrivate) &&
@@ -350,6 +352,7 @@ class RestoreCubit extends Cubit<RestoreState> {
       ckcSink.add(false);
     }
   }
+
   /// check validate of seed phrase
   bool validateAll() {
     if ((seedField || privateField) &&

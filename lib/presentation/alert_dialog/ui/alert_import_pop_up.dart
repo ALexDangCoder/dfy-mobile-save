@@ -42,6 +42,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
 
   @override
   void dispose() {
+    alertCubit.dispose();
     super.dispose();
   }
 
@@ -56,7 +57,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const RestoreAcount(),
+                builder: (context) => const RestoreAccount(),
               ),
             ).then((_) => Navigator.pop(context));
           }
@@ -247,12 +248,10 @@ class _AlertPopUpState extends State<AlertPopUp> {
                                 child: InkWell(
                                   onTap: type == KeyType.IMPORT
                                       ? () {
-                                          alertCubit.earseWallet(IMPORT);
-                                          alertCubit.emit(EraseSuccess(IMPORT));
+                                          alertCubit.earseAllWallet(IMPORT);
                                         }
                                       : () {
-                                          alertCubit.earseWallet(CREATE);
-                                          alertCubit.emit(EraseSuccess(CREATE));
+                                          alertCubit.earseAllWallet(CREATE);
                                         },
                                   child: SizedBox(
                                     width: 156.w,

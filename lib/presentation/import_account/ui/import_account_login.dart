@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_fail.dart';
 import 'package:Dfy/presentation/import_account/bloc/import_cubit.dart';
 import 'package:Dfy/presentation/import_account/bloc/import_state.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
@@ -78,7 +79,13 @@ class _ImportAccountState extends State<ImportAccount> {
           );
         }
         if (state is ErrorState) {
-          Fluttertoast.showToast(msg: S.current.error);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return const CreateFail(type: KeyType.IMPORT_HAVE_WALLET);
+              },
+            ),
+          );
         }
       },
       builder: (ctx, _) {

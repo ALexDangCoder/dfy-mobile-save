@@ -258,12 +258,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               _showDialog();
                             }
                           }
-                          if (errorText) {
-                            _showDialog(
-                              alert: S.current.password_is_required,
-                              text: '',
-                            );
-                          }
                         },
                       );
                     },

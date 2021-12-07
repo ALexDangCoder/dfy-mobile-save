@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -20,12 +18,7 @@ import 'package:rxdart/subjects.dart';
 part 'wallet_state.dart';
 
 class WalletCubit extends BaseCubit<WalletState> {
-  WalletCubit() : super(WalletInitial()) {
-    // listTokenDetailScreen = listTokenInitial;
-    // getListSort();
-    getList();
-    // getListTokenItem();
-  }
+  WalletCubit() : super(WalletInitial()) {}
 
   ///web3
   Web3Utils client = Web3Utils();
@@ -33,8 +26,60 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getTokenInfoByAddress({required String tokenAddress}) async {
     final TokenInfoModel tokenInfoModel =
         client.getTokenInfo(contractAddress: tokenAddress);
+    tokenSymbol.sink.add(tokenInfoModel.tokenSymbol ?? 'null');
+    tokenDecimal.sink.add('${tokenInfoModel.decimal ?? 0} ');
+    tokenFullName = tokenInfoModel.name ?? '';
+    iconToken = tokenInfoModel.icon ?? '';
+    if (tokenInfoModel.tokenSymbol!.isNotEmpty) {
+      isTokenEnterAddress.sink.add(true);
+    }
+    if (tokenInfoModel.tokenSymbol!.isEmpty) {
+      isTokenEnterAddress.sink.add(false);
+    }
   }
 
+  Future<double> getWalletDetail({required String walletAddress}) async {
+    final double balanceOfBnb =
+        await client.getBalanceOfBnb(ofAddress: walletAddress);
+    return balanceOfBnb;
+  }
+
+  void getListWallet({
+    required String addressWallet,
+  }) async {
+    for (final Wallet value in listWallet) {
+      final double balanceOfBnb = await getWalletDetail(
+        walletAddress: value.address ?? '',
+      );
+      if (addressWallet == value.address) {
+        AccountModel acc = AccountModel(
+          isCheck: true,
+          shortNameToken: 'BNB',
+          addressWallet: value.address,
+          amountWallet: balanceOfBnb,
+          imported: false,
+          nameWallet: value.name,
+          url: 'assets/images/Ellipse 39.png',
+        );
+        listSelectAccBloc.add(acc);
+      } else {
+        AccountModel acc = AccountModel(
+          isCheck: false,
+          addressWallet: value.address,
+          amountWallet: balanceOfBnb,
+          imported: false,
+          shortNameToken: 'BNB',
+          nameWallet: value.name,
+          url: 'assets/images/Ellipse 39.png',
+        );
+        listSelectAccBloc.add(acc);
+      }
+    }
+    getListAcc();
+  }
+
+  String tokenFullName = '';
+  String iconToken = '';
   bool checkLogin = false;
   List<TokenModel> listStart = [];
   List<Wallet> listWallet = [];
@@ -45,14 +90,15 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<List<NftModel>> listNFTStream = BehaviorSubject.seeded([]);
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
   BehaviorSubject<String> nftDecimal = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenSymbol = BehaviorSubject();
   BehaviorSubject<String> tokenAddressTextNft = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenSymbolText = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenDecimalText = BehaviorSubject.seeded('');
+  BehaviorSubject<String> tokenSymbolText = BehaviorSubject();
+  BehaviorSubject<String> tokenDecimalText = BehaviorSubject();
+  BehaviorSubject<String> tokenSymbol = BehaviorSubject();
+  BehaviorSubject<String> tokenDecimal = BehaviorSubject();
   BehaviorSubject<bool> isTokenAddressText = BehaviorSubject.seeded(true);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isImportToken = BehaviorSubject.seeded(false);
+
   BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isImportNftFail = BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isNFT = BehaviorSubject.seeded(true);
@@ -65,141 +111,22 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<double> totalBalance = BehaviorSubject();
 
   List<HistoryNFT> listHistory = [];
+
   Future<void> getTransactionNFTHistory() async {
     listHistory = await client.getNFTHistory();
   }
 
   String addressWalletCore = '';
-  List<AccountModel> listSelectAccBloc = [
-    AccountModel(
-      isCheck: true,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-  ];
+  List<AccountModel> listSelectAccBloc = [];
+
+  Future<void> earseWallet({required String walletAddress}) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+      };
+      await trustWalletChannel.invokeMethod('earseWallet', data);
+    } on PlatformException {}
+  }
 
   Future<void> getAddressWallet() async {}
 
@@ -209,9 +136,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {
-      log('');
-    }
+    } on PlatformException {}
   }
 
   String formatAddress(String address) {
@@ -233,7 +158,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     return total;
   }
 
-  void getList() {
+  void getListAcc() {
     list.sink.add(listSelectAccBloc);
   }
 
@@ -291,13 +216,27 @@ class WalletCubit extends BaseCubit<WalletState> {
     switch (methodCall.method) {
       case 'importTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
-        isImportToken.sink.add(isSuccess);
+        if (isSuccess) {
+          emit(NavigatorSucces());
+        }
+        break;
+      case 'earseWalletCallback':
+        bool isSuccess = await methodCall.arguments['isSuccess'];
+        break;
+      case 'exportWalletCallBack':
+        String walletAddress = await methodCall.arguments['isSuccess'];
+        String privateKey = await methodCall.arguments['isSuccess'];
+        String passPhrase = await methodCall.arguments['isSuccess'];
+        print(walletAddress);
+        print(privateKey);
+        print(passPhrase);
+
         break;
       case 'getListSupportedTokenCallback':
         final a = await methodCall.arguments['TokenObject'];
         break;
       case 'setShowedTokenCallback':
-       // isSetShowedToken = await methodCall.arguments['isSuccess'];
+        // isSetShowedToken = await methodCall.arguments['isSuccess'];
         break;
       case 'importNftCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
@@ -335,6 +274,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           addressWalletCore = listWallet.first.address!;
           addressWallet.add(addressWalletCore);
         }
+
         break;
       default:
         break;
@@ -368,6 +308,8 @@ class WalletCubit extends BaseCubit<WalletState> {
     required String tokenAddress,
     required String symbol,
     required int decimal,
+    required String tokenFullName,
+    required String iconToken,
   }) async {
     try {
       final data = {
@@ -420,7 +362,31 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  //exportWallet
+  Future<void> exportWallet({
+    required String walletAddress,
+    required String password,
+  }) async {
+    try {
+      final data = {
+        'password': password,
+        'walletAddress': walletAddress,
+      };
+      await trustWalletChannel.invokeMethod('exportWallet', data);
+    } on PlatformException {
+      //todo
+
+    }
+  }
+
+//"walletAddress*: String
+// nftAddress*: String
+// nftName*: String
+// iconNFT*: String
+// nftID*: Int
+// password: String"
   Future<void> importNft({
+    //todo pram
     String password = '',
     required String walletAddress,
     required String nftAddress,

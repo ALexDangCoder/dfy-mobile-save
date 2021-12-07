@@ -46,15 +46,12 @@ class TokenItem extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) {
-              return TokenDetail(
-                token: modelToken,
-                bloc: TokenDetailBloc(
-                  walletAddress: walletAddress,
-                  modelToken: modelToken,
-                ),
-              );
-            },
+            builder: (context) => TokenDetail(
+              token: modelToken,
+              bloc: TokenDetailBloc(
+                walletAddress: walletAddress,
+              ),
+            ),
           ),
         );
       },
