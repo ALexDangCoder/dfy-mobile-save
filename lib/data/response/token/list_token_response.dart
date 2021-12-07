@@ -1,5 +1,5 @@
 import 'package:Dfy/data/response/token/token_response.dart';
-import 'package:Dfy/domain/model/token_model.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -28,5 +28,5 @@ class ListTokenResponse extends Equatable {
   @override
   List<Object?> get props => [];
 
-  List<TokenModel> toDomain() => data?.map((e) => e.toDomain()).toList() ?? [];
+  List<TokenInf> toDomain() => data?.map((e) => e.toDomain()).toList() ?? [];
 }

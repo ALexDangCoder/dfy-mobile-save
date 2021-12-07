@@ -1,4 +1,4 @@
-import 'package:Dfy/domain/model/token_model.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -45,7 +45,7 @@ class TokenResponse extends Equatable {
   @override
   List<Object?> get props => [];
 
-  TokenModel toDomain() => TokenModel(
+  TokenInf toDomain() => TokenInf(
         id: id,
         isWhitelistCollateral: isWhitelistCollateral,
         iconUrl: iconUrl,

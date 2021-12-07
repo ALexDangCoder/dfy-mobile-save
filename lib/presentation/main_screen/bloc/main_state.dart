@@ -1,4 +1,4 @@
-import 'package:Dfy/domain/model/token_model.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class MainState extends Equatable {
@@ -16,7 +16,7 @@ class Loading extends MainState {
 }
 
 class GetListTokenSuccess extends MainState {
-  List<TokenModel> items = [];
+  List<TokenInf> items = [];
 
   GetListTokenSuccess(this.items);
 
