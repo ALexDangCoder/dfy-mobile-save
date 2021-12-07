@@ -67,7 +67,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
               MaterialPageRoute(
                 builder: (context) => const SetupPassWord(),
               ),
-            );
+            ).then((_) => Navigator.pop(context));
           }
         }
         if (state is EraseFail) {

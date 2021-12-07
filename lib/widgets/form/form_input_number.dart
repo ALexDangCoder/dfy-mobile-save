@@ -44,7 +44,7 @@ class FormInputNumber extends StatelessWidget {
               child: TextFormField(
                 maxLength: 100,
                 onChanged: (value) {
-                  bloc.nftDecimal.sink.add(value);
+                  bloc.nftEnterID.sink.add(value);
                 },
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
