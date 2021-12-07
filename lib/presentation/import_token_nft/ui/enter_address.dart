@@ -145,12 +145,13 @@ class _EnterAddressState extends State<EnterAddress> {
                         print('-=------------------${widget.bloc.iconToken}');
                         print(
                             '-=------------------${widget.bloc.tokenFullName}');
+                        //todo icon BE
                         widget.bloc.importToken(
                           walletAddress: widget.addressWallet,
                           tokenAddress: widget.bloc.tokenAddressText.value,
                           symbol: widget.bloc.tokenSymbol.value,
                           decimal: int.parse(widget.bloc.tokenDecimal.value),
-                          iconToken: widget.bloc.iconToken,
+                          iconUrl: widget.bloc.iconToken,
                           tokenFullName: widget.bloc.tokenFullName,
                         );
                         widget.bloc.checkAddressNull();
