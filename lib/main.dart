@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
               cardColor: Colors.white,
               textTheme: GoogleFonts.latoTextTheme(Theme
                   .of(context)
-                  .textTheme),
+                  .textTheme,),
               appBarTheme: const AppBarTheme(
                 color: Colors.white,
                 systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -86,7 +86,7 @@ class _MyAppState extends State<MyApp> {
               GlobalCupertinoLocalizations.delegate,
             ],
             locale: Locale.fromSubtags(
-                languageCode: PrefsService.getLanguage()),
+                languageCode: PrefsService.getLanguage(),),
             onGenerateRoute: AppRouter.generateRoute,
             initialRoute: AppRouter.splash,
           ),
@@ -128,7 +128,7 @@ class _MyAppState extends State<MyApp> {
       case 'signTransactionCallback':
         print('signTransactionCallback ${methodCall.arguments}');
         TransactionModel dataTransaction = TransactionModel.fromJson(
-            methodCall.arguments);
+            methodCall.arguments,);
         const String rpcUrl = 'https://data-seed-prebsc-1-s1.binance.org:8545';
         final client = Web3Client(rpcUrl, Client());
         await client.sendRawTransaction(dataTransaction.signedTransaction);

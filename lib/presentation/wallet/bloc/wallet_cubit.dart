@@ -307,7 +307,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   Future<void> importToken({
-    String password = '',
     required String walletAddress,
     required String tokenAddress,
     required String symbol,
@@ -317,11 +316,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   }) async {
     try {
       final data = {
-        'password': password,
         'walletAddress': walletAddress,
         'tokenAddress': tokenAddress,
         'symbol': symbol,
         'decimal': decimal,
+        'tokenFullName': tokenFullName,
+        'iconToken': iconToken,
       };
       await trustWalletChannel.invokeMethod('importToken', data);
     } on PlatformException {
