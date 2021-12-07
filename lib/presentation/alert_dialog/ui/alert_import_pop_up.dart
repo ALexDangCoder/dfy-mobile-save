@@ -226,6 +226,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
                                   onTap: () {
                                     Navigator.pop(context);
                                   },
+                                  focusColor: Colors.transparent,
                                   splashColor: Colors.transparent,
                                   child: SizedBox(
                                     width: 156.w,
@@ -247,6 +248,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
                               ),
                               Flexible(
                                 child: InkWell(
+                                  focusColor: Colors.transparent,
                                   splashColor: Colors.transparent,
                                   onTap: type == KeyType.IMPORT
                                       ? () {
