@@ -48,6 +48,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         }
       },
       child: BaseBottomSheet(
+        isBackNewWallet: true,
         title: S.current.create_new_wallet,
         child: Column(
           children: [
