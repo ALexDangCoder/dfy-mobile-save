@@ -71,7 +71,7 @@ class TokenItem extends StatelessWidget {
                     left: 20.w,
                   ),
                   child: Image(
-                    image: AssetImage(modelToken.iconToken),
+                    image: NetworkImage(modelToken.iconToken),
                     width: 28.w,
                     height: 28.h,
                   ),
