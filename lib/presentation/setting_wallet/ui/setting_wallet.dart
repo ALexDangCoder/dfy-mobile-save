@@ -51,7 +51,7 @@ class _SettingWalletState extends State<SettingWallet> {
   @override
   Widget build(BuildContext context) {
     trustWalletChannel
-        .setMethodCallHandler(cubitSetting.nativeMethodCallBackTrustWallet);
+        .setMethodCallHandler(widget.cubitSetting.nativeMethodCallBackTrustWallet);
     return BaseBottomSheet(
       title: S.current.setting,
       text: S.current.lock,
