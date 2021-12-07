@@ -81,7 +81,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
           backgroundColor: Colors.transparent,
           context: context,
           builder: (context) {
-            return const RestoreAcount();
+            return const RestoreAccount();
           },
           isScrollControlled: true,
         );

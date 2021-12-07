@@ -57,7 +57,7 @@ class _AlertPopUpState extends State<AlertPopUp> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const RestoreAcount(),
+                builder: (context) => const RestoreAccount(),
               ),
             ).then((_) => Navigator.pop(context));
           }
