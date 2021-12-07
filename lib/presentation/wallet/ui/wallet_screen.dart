@@ -53,23 +53,31 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    cubit.getListWallets('pass');
-    cubit.addressWalletCore = widget.wallet?.address ?? cubit.addressWalletCore;
-    cubit.walletName.sink.add(widget.wallet?.name ?? 'Nguyen Van Hung');
-    cubit.walletName.stream.listen((event) {
-      changeName.text = event;
-    });
-    _tabController = TabController(length: 2, vsync: this);
-    fToast = FToast();
-    fToast.init(context);
-    trustWalletChannel
-        .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
-    cubit.getNFT(
-      widget.wallet?.address ?? cubit.addressWalletCore,
-    );
-    cubit.getTokens(
-      widget.wallet?.address ?? cubit.addressWalletCore,
-    );
+    if(widget.index == 1) {
+      trustWalletChannel
+          .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
+      cubit.getListWallets('pass');
+      cubit.addressWalletCore = widget.wallet?.address ?? cubit.addressWalletCore;
+      cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
+      cubit.walletName.stream.listen((event) {
+        changeName.text = event;
+      });
+      _tabController = TabController(length: 2, vsync: this);
+      fToast = FToast();
+      fToast.init(context);
+      cubit.getNFT(
+        widget.wallet?.address ?? cubit.addressWalletCore,
+      );
+      cubit.getTokens(
+        widget.wallet?.address ?? cubit.addressWalletCore,
+      );
+    }
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    cubit.close();
+    super.dispose();
   }
 
   @override
