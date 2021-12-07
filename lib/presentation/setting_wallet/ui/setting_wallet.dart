@@ -51,16 +51,6 @@ class SettingWallet extends StatelessWidget {
               child: Column(
                 children: [
                   GestureDetector(
-                    // onTap: () {
-                    //   showModalBottomSheet(
-                    //     isScrollControlled: true,
-                    //     backgroundColor: Colors.transparent,
-                    //     context: context,
-                    //     builder: (_) {
-                    //       return const TransactionSubmit();
-                    //     },
-                    //   );
-                    // },
                     child: buttonForm(
                       hintText: 'Dapp',
                       prefixIcon: ImageAssets.ic_global,
