@@ -1,5 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/domain/model/token_model.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';

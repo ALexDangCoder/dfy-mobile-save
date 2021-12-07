@@ -5,7 +5,7 @@ import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
-import 'package:Dfy/domain/model/token_model.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';

@@ -1,7 +1,7 @@
 import 'package:Dfy/data/web3/model/transaction.dart';
 import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
-import 'package:Dfy/domain/model/token_model.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
