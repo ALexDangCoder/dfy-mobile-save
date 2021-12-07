@@ -58,10 +58,13 @@ class _BodyState extends State<_Body> {
             child: GestureDetector(
               onTap: () {
                 final FocusScopeNode currentFocus = FocusScope.of(context);
-
                 if (!currentFocus.hasPrimaryFocus) {
                   currentFocus.unfocus();
                 }
+                widget.bloc.getNftInfoByAddress(
+                  nftAddress: widget.bloc.tokenAddressTextNft.value,
+                  enterId: int.parse(widget.bloc.nftEnterID.value),
+                );
               },
               child: SingleChildScrollView(
                 child: Column(
@@ -115,12 +118,18 @@ class _BodyState extends State<_Body> {
                   onTap: () {
                     widget.bloc.checkAddressNullNFT();
                     if (widget.bloc.isNFT.value) {
+                      print(widget.addressWallet);
+                      print(widget.bloc.tokenAddressTextNft.value);
+                      print(widget.bloc.nftEnterID.value);
+                      print(widget.bloc.nftName);
+                      print(widget.bloc.iconNFT);
+
                       widget.bloc.importNft(
                         walletAddress: widget.addressWallet,
                         nftAddress: widget.bloc.tokenAddressTextNft.value,
                         nftID: int.parse(widget.bloc.nftEnterID.value),
-                        nftName: '',
-                        iconNFT: '',
+                        nftName: widget.bloc.nftName,
+                        iconNFT: widget.bloc.iconNFT,
                       );
                       widget.bloc.isImportNft.listen(
                         (value) {

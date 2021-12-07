@@ -10,7 +10,7 @@ import '../../../../main.dart';
 class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BLocCreateSeedPhrase(this.passWord) : super(SeedInitialState());
 
-  BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('Account 1');
+  BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isCheckBox1 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckBox2 = BehaviorSubject.seeded(false);
 
@@ -29,6 +29,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   List<String> listTitle1 = [];
   final List<String> listContain = [];
   String passPhrase = '';
+  String walletNameCore = '';
   String walletAddress = '';
   String privateKey = '';
   bool configSuccess = false;
@@ -168,6 +169,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         privateKey = await methodCall.arguments['privateKey'];
         walletAddress = await methodCall.arguments['walletAddress'];
         passPhrase = await methodCall.arguments['passPhrase'];
+        walletNameCore = await methodCall.arguments['walletName'];
         getStringToList(passPhrase);
         isCheckData.sink.add(true);
         break;

@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
@@ -38,10 +39,22 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  Future<void> getNftInfoByAddress({required String nftAddress}) async {
-    // final TokenInfoModel tokenInfoModel =
-    // client.getNftInfo();
-    //
+  String nftName = '';
+  String iconNFT = '';
+
+  // contract: '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+  // name: 'Name of NFT',
+  // blockchain: 'Binance Smart Chain',
+  // description:
+  // 'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
+  // id: '124124',
+  // link: 'https://goole.com',
+  // standard: 'ERC-721',
+  Future<void> getNftInfoByAddress(
+      {required String nftAddress, int? enterId}) async {
+    final NftInfo nftInfoModel = await client.getNftInfo();
+    nftName = nftInfoModel.name ?? '';
+    iconNFT = nftInfoModel.link ?? '';
   }
 
   Future<double> getWalletDetail({required String walletAddress}) async {
@@ -140,7 +153,9 @@ class WalletCubit extends BaseCubit<WalletState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {}
+    } on PlatformException {
+
+    }
   }
 
   String formatAddress(String address) {
@@ -247,9 +262,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
-        // print('Mother fucker: $data');
         for (final element in data) {
-          print('hello');
           listTokenFromWalletCore.add(ModelToken.fromWalletCore(element));
         }
         print('MotherF ${listTokenFromWalletCore.length}');
