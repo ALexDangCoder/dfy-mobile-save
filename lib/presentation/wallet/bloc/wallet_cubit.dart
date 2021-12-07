@@ -256,9 +256,12 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
+        // print('Mother fucker: $data');
         for (final element in data) {
+          print('hello');
           listTokenFromWalletCore.add(ModelToken.fromWalletCore(element));
         }
+        print('MotherF ${listTokenFromWalletCore.length}');
         await getExchangeRate(listTokenFromWalletCore);
         total(listTokenFromWalletCore);
         listTokenStream.add(listTokenFromWalletCore);
@@ -307,7 +310,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   Future<void> importToken({
-    String password = '',
     required String walletAddress,
     required String tokenAddress,
     required String symbol,
@@ -317,11 +319,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   }) async {
     try {
       final data = {
-        'password': password,
         'walletAddress': walletAddress,
         'tokenAddress': tokenAddress,
         'symbol': symbol,
         'decimal': decimal,
+        'tokenFullName': tokenFullName,
+        'iconToken': iconToken,
       };
       await trustWalletChannel.invokeMethod('importToken', data);
     } on PlatformException {

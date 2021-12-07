@@ -57,7 +57,7 @@ class _SendTokenState extends State<SendToken> {
         isImage: true,
         text: ImageAssets.ic_close,
         title: '${S.current.send} DFY',
-        callback: () {
+        onRightClick: () {
           Navigator.pop(context);
         },
         isHaveLeftIcon: false,
