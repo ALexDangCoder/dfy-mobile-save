@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrase.dart';
@@ -29,6 +30,8 @@ class SettingWallet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    trustWalletChannel
+        .setMethodCallHandler(cubitSetting.nativeMethodCallBackTrustWallet);
     return BaseBottomSheet(
       title: S.current.setting,
       text: S.current.lock,
@@ -51,16 +54,6 @@ class SettingWallet extends StatelessWidget {
               child: Column(
                 children: [
                   GestureDetector(
-                    // onTap: () {
-                    //   showModalBottomSheet(
-                    //     isScrollControlled: true,
-                    //     backgroundColor: Colors.transparent,
-                    //     context: context,
-                    //     builder: (_) {
-                    //       return const TransactionSubmit();
-                    //     },
-                    //   );
-                    // },
                     child: buttonForm(
                       hintText: 'Dapp',
                       prefixIcon: ImageAssets.ic_global,
