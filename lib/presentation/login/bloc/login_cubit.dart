@@ -26,29 +26,31 @@ class LoginCubit extends BaseCubit<LoginState> {
     switch (methodCall.method) {
       case 'checkPasswordCallback':
         loginSuccess = await methodCall.arguments['isCorrect'];
+        print(">>>>"+loginSuccess.toString());
         if (loginSuccess == true) {
-          emit(LoginSuccess());
+          emit(LoginPasswordSuccess());
         } else {
-          emit(LoginError('Password was wrong...'));
+          emit(LoginPasswordError());
         }
         break;
-      case 'importWalletCallback':
+      case 'getConfigCallback':
+        isAppLock = await methodCall.arguments['isAppLock'];
+        print(isAppLock);
+        isFaceID = await methodCall.arguments['isFaceID'];
+        print(isFaceID);
         break;
       default:
         break;
     }
   }
 
-  void getConfig() {
-    if (PrefsService.getAppLockConfig() == 'true') {
-      isAppLock = true;
-    } else {
-      isAppLock = false;
-    }
-    if (PrefsService.getFaceIDConfig() == 'true') {
-      isFaceID = true;
-    } else {
-      isFaceID = false;
+  Future<void> getConfig() async {
+    try {
+      final data = {
+      };
+      await trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException {
+      //nothing
     }
   }
 

@@ -29,7 +29,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController controller;
-  late LoginCubit _cubit;
+  final LoginCubit _cubit = LoginCubit();
   bool enableLogin = false;
   bool errorText = false;
 
@@ -37,7 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     controller = TextEditingController();
-    _cubit = LoginCubit();
+    trustWalletChannel
+        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
     controller.addListener(() {
       if (mounted) {
         setState(() {
@@ -49,17 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     });
-    trustWalletChannel
-        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
     _cubit.getConfig();
     _cubit.checkBiometrics();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _cubit.close();
-    super.dispose();
   }
 
   @override
@@ -198,8 +190,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 36.h,
                   ),
-                  BlocBuilder<LoginCubit, LoginState>(
+                  BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
+                    listener: (context, state) {
+                      if (state is LoginPasswordSuccess) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const MainScreen(
+                              index: 1,
+                            ),
+                          ),
+                          (route) => route.isFirst,
+                        );
+                      }
+                      if (state is LoginPasswordError) {
+                        _showDialog();
+                      }
+                    },
                     builder: (context, state) {
                       return GestureDetector(
                         child: enableLogin
@@ -229,27 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                         onTap: () {
                           if (controller.value.text.isNotEmpty && !errorText) {
-                            _cubit
-                                .checkPasswordWallet(controller.value.text)
-                                .whenComplete(
-                                  () => {
-                                    if (state is LoginSuccess)
-                                      {
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MainScreen(
-                                              index: 1,
-                                            ),
-                                          ),
-                                          (route) => route.isFirst,
-                                        )
-                                      }
-                                    else if (state is LoginError)
-                                      {_showDialog()}
-                                  },
-                                );
+                            _cubit.checkPasswordWallet(controller.value.text);
                           }
                         },
                       );
