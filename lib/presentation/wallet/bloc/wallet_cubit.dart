@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
@@ -38,10 +39,22 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  Future<void> getNftInfoByAddress({required String nftAddress}) async {
-    // final TokenInfoModel tokenInfoModel =
-    // client.getNftInfo();
-    //
+  String nftName = '';
+  String iconNFT = '';
+
+  // contract: '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+  // name: 'Name of NFT',
+  // blockchain: 'Binance Smart Chain',
+  // description:
+  // 'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
+  // id: '124124',
+  // link: 'https://goole.com',
+  // standard: 'ERC-721',
+  Future<void> getNftInfoByAddress(
+      {required String nftAddress, int? enterId}) async {
+    final NftInfo nftInfoModel = await client.getNftInfo();
+    nftName = nftInfoModel.name ?? '';
+    iconNFT = nftInfoModel.link ?? '';
   }
 
   Future<double> getWalletDetail({required String walletAddress}) async {
@@ -140,7 +153,9 @@ class WalletCubit extends BaseCubit<WalletState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {}
+    } on PlatformException {
+
+    }
   }
 
   String formatAddress(String address) {
@@ -227,15 +242,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'earseWalletCallback':
         bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
-      case 'exportWalletCallBack':
-        String walletAddress = await methodCall.arguments['isSuccess'];
-        String privateKey = await methodCall.arguments['isSuccess'];
-        String passPhrase = await methodCall.arguments['isSuccess'];
-        print(walletAddress);
-        print(privateKey);
-        print(passPhrase);
-
-        break;
       case 'getListSupportedTokenCallback':
         //final a = await methodCall.arguments['TokenObject'];
         break;
@@ -256,9 +262,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
-        // print('Mother fucker: $data');
         for (final element in data) {
-          print('hello');
           listTokenFromWalletCore.add(ModelToken.fromWalletCore(element));
         }
         print('MotherF ${listTokenFromWalletCore.length}');
@@ -350,14 +354,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   Future<void> setShowedToken({
-    String password = '',
     required String walletAddress,
     required String tokenAddress,
     required bool isShow,
   }) async {
     try {
       final data = {
-        'password': password,
         'walletAddress': walletAddress,
         'tokenAddress': tokenAddress,
         'isShow': isShow,
@@ -369,26 +371,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  //exportWallet
-  Future<void> exportWallet({
-    required String walletAddress,
-    required String password,
-  }) async {
-    try {
-      final data = {
-        'password': password,
-        'walletAddress': walletAddress,
-      };
-      await trustWalletChannel.invokeMethod('exportWallet', data);
-    } on PlatformException {
-      //todo
-
-    }
-  }
-
   Future<void> importNft({
-    //todo pram
-    String? password,
     required String walletAddress,
     required String nftAddress,
     required String nftName,
@@ -397,9 +380,10 @@ class WalletCubit extends BaseCubit<WalletState> {
   }) async {
     try {
       final data = {
-        'password': password,
         'walletAddress': walletAddress,
         'nftAddress': nftAddress,
+        'nftName': nftName,
+        'iconNFT': iconNFT,
         'nftID': nftID,
       };
       await trustWalletChannel.invokeMethod('importNft', data);
@@ -410,14 +394,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   Future<void> setShowedNft({
-    String password = '',
     required String walletAddress,
     required String nftAddress,
     required bool isShow,
   }) async {
     try {
       final data = {
-        'password': password,
         'walletAddress': walletAddress,
         'isShow': isShow,
         'nftAddress': nftAddress,

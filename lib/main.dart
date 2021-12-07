@@ -217,7 +217,6 @@ class _MyAppState extends State<MyApp> {
       final data = {
         'isAppLock': true,
         'isFaceID': false,
-        'password': 'password',
       };
       await trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {}
