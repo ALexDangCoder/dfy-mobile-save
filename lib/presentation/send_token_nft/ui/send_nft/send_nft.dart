@@ -52,7 +52,7 @@ class _SendNftState extends State<SendNft> {
             isImage: true,
             isHaveLeftIcon: false,
             title: S.current.send_nft,
-            callback: () {
+            onRightClick: () {
               Navigator.pop(context);
             },
             child: Column(

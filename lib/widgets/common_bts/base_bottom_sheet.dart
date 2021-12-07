@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +15,8 @@ class BaseBottomSheet extends StatelessWidget {
   final Widget child;
   final String? text;
   final bool? isImage;
-  final Function()? callback;
+  final Function()? onRightClick;
+  final bool isBackNewWallet;
   final bool isHaveLeftIcon;
 
   const BaseBottomSheet({
@@ -22,9 +24,10 @@ class BaseBottomSheet extends StatelessWidget {
     required this.title,
     required this.child,
     this.text,
-    this.callback,
+    this.onRightClick,
     this.isImage,
     this.isHaveLeftIcon = true,
+    this.isBackNewWallet = false,
   }) : super(key: key);
 
   @override
@@ -57,9 +60,20 @@ class BaseBottomSheet extends StatelessWidget {
                       if (isHaveLeftIcon)
                         Flexible(
                           child: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
+                            onTap: isBackNewWallet
+                                ? () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const MainScreen(
+                                          index: 3,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                : () {
+                                    Navigator.pop(context);
+                                  },
                             child: Container(
                               margin: EdgeInsets.only(
                                 left: 11.w,
@@ -102,17 +116,17 @@ class BaseBottomSheet extends StatelessWidget {
                       if (text != null)
                         Flexible(
                           child: InkWell(
-                            onTap: callback,
+                            onTap: onRightClick,
                             child: isImage ?? false
                                 ? Image.asset(text ?? '')
                                 : Text(
-                              text ?? '',
-                              style: textNormalCustom(
-                                AppTheme.getInstance().fillColor(),
-                                16,
-                                FontWeight.w700,
-                              ),
-                            ),
+                                    text ?? '',
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().fillColor(),
+                                      16,
+                                      FontWeight.w700,
+                                    ),
+                                  ),
                           ),
                         )
                       else
