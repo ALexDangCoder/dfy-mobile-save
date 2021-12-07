@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/token_model.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
