@@ -455,13 +455,16 @@ class MainActivity : FlutterFragmentActivity() {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
         appPreference.getListToken().forEach {
             if (it.walletAddress == walletAddress) {
-                val data1 = HashMap<String, Any>()
-                data1["tokenFullName"] = it.tokenFullName
-                data1["tokenShortName"] = it.symbol
-                data1["tokenAddress"] = it.tokenAddress
-                data1["iconToken"] =
+                val data = HashMap<String, Any>()
+                data["walletAddress"] = it.walletAddress
+                data["tokenFullName"] = it.tokenFullName
+                data["symbol"] = it.symbol
+                data["tokenAddress"] = it.tokenAddress
+                data["iconUrl"] =
                     "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Bitcoin-BTC-icon.png"
-                hasMap.add(data1)
+                data["isShow"] = it.isShow
+                data["decimal"] = it.decimal
+                hasMap.add(data)
             }
         }
         channel?.invokeMethod("getTokensCallback", hasMap)
