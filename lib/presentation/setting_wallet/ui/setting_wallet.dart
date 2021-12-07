@@ -53,7 +53,7 @@ class _SettingWalletState extends State<SettingWallet> {
       title: S.current.setting,
       text: S.current.lock,
       isImage: false,
-      callback: () {
+      onRightClick: () {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const MainScreen(

@@ -58,7 +58,7 @@ class _BodyState extends State<_Body> {
           return BaseBottomSheet(
             title: S.current.prv_key_ft_seed_phr,
             isImage: true,
-            callback: () {
+            onRightClick: () {
               Navigator.pop(context);
               Navigator.pop(context);
             },
