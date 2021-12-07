@@ -69,7 +69,6 @@ class _BodyState extends State<_Body> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     cubit = MainCubit();
   }
@@ -177,7 +176,6 @@ class _BodyState extends State<_Body> {
                 );
 
                 widget.bLocCreateSeedPhrase.setConfig(
-                  password: widget.bLocCreateSeedPhrase.passWord,
                   isAppLock: widget.bLocCreateSeedPhrase.isCheckAppLock.value,
                   isFaceID: widget.bLocCreateSeedPhrase.isCheckTouchID.value,
                 );

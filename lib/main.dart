@@ -53,43 +53,43 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      builder: () =>
-          GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: Strings.app_name,
-            theme: ThemeData(
-              primaryColor: AppTheme.getInstance().primaryColor(),
-              cardColor: Colors.white,
-              textTheme: GoogleFonts.latoTextTheme(Theme
-                  .of(context)
-                  .textTheme,),
-              appBarTheme: const AppBarTheme(
-                color: Colors.white,
-                systemOverlayStyle: SystemUiOverlayStyle.dark,
-              ),
-              dividerColor: dividerColor,
-              scaffoldBackgroundColor: Colors.white,
-              textSelectionTheme: TextSelectionThemeData(
-                cursorColor: AppTheme.getInstance().primaryColor(),
-                selectionColor: AppTheme.getInstance().primaryColor(),
-                selectionHandleColor: AppTheme.getInstance().primaryColor(),
-              ),
-              colorScheme: ColorScheme.fromSwatch().copyWith(
-                secondary: AppTheme.getInstance().accentColor(),
-              ),
-            ),
-            // supportedLocales: S.delegate.supportedLocales,
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            locale: Locale.fromSubtags(
-                languageCode: PrefsService.getLanguage(),),
-            onGenerateRoute: AppRouter.generateRoute,
-            initialRoute: AppRouter.splash,
+      builder: () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: Strings.app_name,
+        theme: ThemeData(
+          primaryColor: AppTheme.getInstance().primaryColor(),
+          cardColor: Colors.white,
+          textTheme: GoogleFonts.latoTextTheme(
+            Theme.of(context).textTheme,
           ),
+          appBarTheme: const AppBarTheme(
+            color: Colors.white,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+          ),
+          dividerColor: dividerColor,
+          scaffoldBackgroundColor: Colors.white,
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: AppTheme.getInstance().primaryColor(),
+            selectionColor: AppTheme.getInstance().primaryColor(),
+            selectionHandleColor: AppTheme.getInstance().primaryColor(),
+          ),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            secondary: AppTheme.getInstance().accentColor(),
+          ),
+        ),
+        // supportedLocales: S.delegate.supportedLocales,
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: Locale.fromSubtags(
+          languageCode: PrefsService.getLanguage(),
+        ),
+        onGenerateRoute: AppRouter.generateRoute,
+        initialRoute: AppRouter.splash,
+      ),
     );
   }
 
@@ -128,7 +128,8 @@ class _MyAppState extends State<MyApp> {
       case 'signTransactionCallback':
         print('signTransactionCallback ${methodCall.arguments}');
         TransactionModel dataTransaction = TransactionModel.fromJson(
-            methodCall.arguments,);
+          methodCall.arguments,
+        );
         const String rpcUrl = 'https://data-seed-prebsc-1-s1.binance.org:8545';
         final client = Web3Client(rpcUrl, Client());
         await client.sendRawTransaction(dataTransaction.signedTransaction);
@@ -142,16 +143,14 @@ class _MyAppState extends State<MyApp> {
   }
 
   void callAllApi() {
-    signTransaction();
+
   }
 
   Future<void> getConfig() async {
     try {
       final data = {};
       await trustWalletChannel.invokeMethod('getConfig', data);
-    } on PlatformException {
-
-    }
+    } on PlatformException {}
   }
 
   Future<void> createWallet() async {
@@ -178,9 +177,8 @@ class _MyAppState extends State<MyApp> {
     try {
       final data = {
         'type': 'PASS_PHRASE',
-        'content': 'party response give dove tooth master flip'
-            ' video permit game expire token',
-        'password': '123456',
+        // 'content': 'alpha derive category enact use dinner over sister snap reform pulp enough',
+        'content': '1 1 1 1 1 1 1 1 1 1 1 1',
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {}
@@ -212,17 +210,6 @@ class _MyAppState extends State<MyApp> {
         'storeWallet': 'storeWallet',
       };
       await trustWalletChannel.invokeMethod('storeWallet', data);
-    } on PlatformException {}
-  }
-
-  Future<void> setConfig() async {
-    try {
-      final data = {
-        'isAppLock': true,
-        'isFaceID': false,
-        'password': 'password',
-      };
-      await trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {}
   }
 
@@ -280,9 +267,7 @@ class _MyAppState extends State<MyApp> {
         'maxGas': 21000.toDouble(),
       };
       await trustWalletChannel.invokeMethod('signTransaction', data);
-    } on PlatformException {
-
-    }
+    } on PlatformException {}
   }
 
   Future<void> getTokens() async {

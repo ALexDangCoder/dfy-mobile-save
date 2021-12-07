@@ -15,6 +15,7 @@ import wallet.core.jni.HDWallet
 import wallet.core.jni.PrivateKey
 import wallet.core.jni.proto.Binance
 import java.math.BigInteger
+import java.security.InvalidParameterException
 import kotlin.experimental.and
 
 class MainActivity : FlutterFragmentActivity() {
@@ -302,43 +303,50 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun importWallet(type: String, content: String) {
-        val hasMap = HashMap<String, Any>()
-        val sttWallet = appPreference.sttWallet
-        val walletName = "Account ${sttWallet + 1}"
-        //todo validate content
-        if (type == TYPE_WALLET_SEED_PHRASE) {
-            //todo content is seed phrase
-            val wallet = HDWallet(content, "")
-            val address = wallet.getAddressForCoin(coinType)
-            val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
-            hasMap["walletAddress"] = address
-            val listWallet = ArrayList<WalletModel>()
-            listWallet.addAll(appPreference.getListWallet())
-            listWallet.add(
-                WalletModel(
-                    walletName,
-                    address,
-                    content,
-                    privateKey.toByteArray().toHexString(false)
-                )
-            )
-            appPreference.saveListWallet(listWallet)
-
-        } else if (type == TYPE_WALLET_PRIVATE_KEY) {
-            //todo content is private key
-//            val wallet = HDWallet(content, "")
-//            val privateKey = wallet.getKeyForCoin(coinType)
-//            val publicKeyFalse = privateKey.getPublicKeySecp256k1(false)
-//            val anyAddress = AnyAddress(publicKeyFalse, coinType)
-//            address = anyAddress.data().toHexString()
-//            hasMap["walletAddress"] = address
-            return
-        } else {
-            return
+        when (type) {
+            TYPE_WALLET_SEED_PHRASE -> {
+                //todo content is seed phrase
+                val hasMap = HashMap<String, Any>()
+                try {
+                    val sttWallet = appPreference.sttWallet
+                    val walletName = "Account ${sttWallet + 1}"
+                    val wallet = HDWallet(content, "")
+                    val address = wallet.getAddressForCoin(coinType)
+                    val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
+                    hasMap["walletAddress"] = address
+                    val listWallet = ArrayList<WalletModel>()
+                    listWallet.addAll(appPreference.getListWallet())
+                    listWallet.add(
+                        WalletModel(
+                            walletName,
+                            address,
+                            content,
+                            privateKey.toByteArray().toHexString(false)
+                        )
+                    )
+                    appPreference.saveListWallet(listWallet)
+                    appPreference.setSttWallet(sttWallet + 1)
+                    hasMap["walletName"] = walletName
+                } catch (e: InvalidParameterException) {
+                    hasMap["walletAddress"] = ""
+                    hasMap["walletName"] = ""
+                }
+                channel?.invokeMethod("importWalletCallback", hasMap)
+            }
+            TYPE_WALLET_PRIVATE_KEY -> {
+                //todo content is private key
+                //            val wallet = HDWallet(content, "")
+                //            val privateKey = wallet.getKeyForCoin(coinType)
+                //            val publicKeyFalse = privateKey.getPublicKeySecp256k1(false)
+                //            val anyAddress = AnyAddress(publicKeyFalse, coinType)
+                //            address = anyAddress.data().toHexString()
+                //            hasMap["walletAddress"] = address
+                return
+            }
+            else -> {
+                return
+            }
         }
-        appPreference.setSttWallet(sttWallet + 1)
-        hasMap["walletName"] = walletName
-        channel?.invokeMethod("importWalletCallback", hasMap)
     }
 
     private fun getListWallets() {
@@ -357,12 +365,16 @@ class MainActivity : FlutterFragmentActivity() {
         val seedPhrase = wallet.mnemonic()
         val address = wallet.getAddressForCoin(coinType)
         val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
+        val sttWallet = appPreference.sttWallet
+        val walletName = "Account ${sttWallet + 1}"
 
         val hasMap = HashMap<String, String>()
+        hasMap["walletName"] = walletName
         hasMap["passPhrase"] = seedPhrase
         hasMap["walletAddress"] = address
         hasMap["privateKey"] = privateKey.toByteArray().toHexString(false)
         appPreference.password = password
+        appPreference.setSttWallet(sttWallet + 1)
         channel?.invokeMethod("generateWalletCallback", hasMap)
     }
 
@@ -443,13 +455,16 @@ class MainActivity : FlutterFragmentActivity() {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
         appPreference.getListToken().forEach {
             if (it.walletAddress == walletAddress) {
-                val data1 = HashMap<String, Any>()
-                data1["tokenFullName"] = it.tokenFullName
-                data1["tokenShortName"] = it.symbol
-                data1["tokenAddress"] = it.tokenAddress
-                data1["iconToken"] =
+                val data = HashMap<String, Any>()
+                data["walletAddress"] = it.walletAddress
+                data["tokenFullName"] = it.tokenFullName
+                data["symbol"] = it.symbol
+                data["tokenAddress"] = it.tokenAddress
+                data["iconUrl"] =
                     "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Bitcoin-BTC-icon.png"
-                hasMap.add(data1)
+                data["isShow"] = it.isShow
+                data["decimal"] = it.decimal
+                hasMap.add(data)
             }
         }
         channel?.invokeMethod("getTokensCallback", hasMap)
@@ -478,7 +493,6 @@ class MainActivity : FlutterFragmentActivity() {
         tokenAddress: String,
         isShow: Boolean
     ) {
-        //todo check password
         val hasMap = HashMap<String, Any>()
         val listToken = ArrayList<TokenModel>()
         listToken.addAll(appPreference.getListToken())
@@ -528,7 +542,6 @@ class MainActivity : FlutterFragmentActivity() {
         appPreference.saveListNft(listNft)
         hasMap["isSuccess"] = true
         channel?.invokeMethod("setShowedNftCallback", hasMap)
-
     }
 
     private fun signTransaction(

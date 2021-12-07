@@ -29,7 +29,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController controller;
-  late LoginCubit _cubit;
+  final LoginCubit _cubit = LoginCubit();
   bool enableLogin = false;
   bool errorText = false;
 
@@ -37,7 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     controller = TextEditingController();
-    _cubit = LoginCubit();
+    trustWalletChannel
+        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
     controller.addListener(() {
       if (mounted) {
         setState(() {
@@ -49,17 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     });
-    trustWalletChannel
-        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
     _cubit.getConfig();
     _cubit.checkBiometrics();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _cubit.close();
-    super.dispose();
   }
 
   @override
@@ -127,8 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Expanded(
                             child: TextFormField(
                               onChanged: (value) {
-                                if (value.isEmpty ||
-                                    controller.text.isEmpty) {
+                                if (value.isEmpty || controller.text.isEmpty) {
                                   setState(() {
                                     errorText = true;
                                   });
@@ -136,8 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   errorText = false;
                                 }
                               },
-                              cursorColor:
-                                  AppTheme.getInstance().whiteColor(),
+                              cursorColor: AppTheme.getInstance().whiteColor(),
                               style: TextStyle(
                                 fontSize: 18,
                                 color: AppTheme.getInstance().whiteColor(),
@@ -168,13 +158,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: _cubit.hidePass
                                 ? ImageIcon(
                                     const AssetImage(ImageAssets.ic_show),
-                                    color: AppTheme.getInstance()
-                                        .suffixColor(),
+                                    color: AppTheme.getInstance().suffixColor(),
                                   )
                                 : ImageIcon(
                                     const AssetImage(ImageAssets.ic_hide),
-                                    color: AppTheme.getInstance()
-                                        .suffixColor(),
+                                    color: AppTheme.getInstance().suffixColor(),
                                   ),
                           ),
                         ],
@@ -204,18 +192,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
-                    listener: (context,state){
-                      if (state is LoginSuccess) {
+                    listener: (context, state) {
+                      if (state is LoginPasswordSuccess) {
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) => const MainScreen(
                               index: 1,
                             ),
                           ),
-                              (route) => route.isFirst,
+                          (route) => route.isFirst,
                         );
                       }
-                      if (state is LoginError) {
+                      if (state is LoginPasswordError) {
                         _showDialog();
                       }
                     },

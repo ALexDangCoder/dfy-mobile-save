@@ -36,6 +36,10 @@ class ImportToken extends StatelessWidget {
                 );
               },
             ),
+          ).whenComplete(
+            () => {
+              cubit.resetImportToken(),
+            },
           );
           break;
         case 2:
@@ -44,7 +48,7 @@ class ImportToken extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) {
                 return ImportNft(
-                  bloc: WalletCubit(),
+                  bloc: cubit,
                   addressWallet: addressWallet,
                 );
               },

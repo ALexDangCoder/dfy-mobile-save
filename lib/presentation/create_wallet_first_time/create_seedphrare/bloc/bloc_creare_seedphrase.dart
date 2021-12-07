@@ -10,7 +10,7 @@ import '../../../../main.dart';
 class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BLocCreateSeedPhrase(this.passWord) : super(SeedInitialState());
 
-  BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('Account 1');
+  BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isCheckBox1 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckBox2 = BehaviorSubject.seeded(false);
 
@@ -29,6 +29,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   List<String> listTitle1 = [];
   final List<String> listContain = [];
   String passPhrase = '';
+  String walletNameCore = '';
   String walletAddress = '';
   String privateKey = '';
   bool configSuccess = false;
@@ -95,7 +96,12 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
 
   void getStringToList(String passPhrase) {
     listTitle1 = passPhrase.split(' ');
-    listTitle.sink.add(listTitle1);
+    List<int> indices = List<int>.generate(listTitle1.length, (i) => i);
+    indices.shuffle();
+    int newCount = listTitle1.length;
+    List<String> randomList =
+        indices.take(newCount).map((i) => listTitle1[i]).toList();
+    listTitle.sink.add(randomList);
   }
 
   void getCheck() {
@@ -103,7 +109,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     for (final String value in listSeedPhrase.value) {
       isData += '$value ';
     }
-
     if ('$passPhrase ' == isData) {
       isSeedPhraseImportFailed.sink.add(false);
     } else {
@@ -144,7 +149,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   }
 
   Future<void> setConfig({
-    String? password,
     required bool isAppLock,
     required bool? isFaceID,
   }) async {
@@ -152,7 +156,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
       final data = {
         'isAppLock': isAppLock,
         'isFaceID': isFaceID,
-        'password': password,
       };
       await PrefsService.saveFirstAppConfig('false');
       await PrefsService.saveAppLockConfig(isAppLock.toString());
@@ -170,6 +173,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         privateKey = await methodCall.arguments['privateKey'];
         walletAddress = await methodCall.arguments['walletAddress'];
         passPhrase = await methodCall.arguments['passPhrase'];
+        walletNameCore = await methodCall.arguments['walletName'];
         getStringToList(passPhrase);
         isCheckData.sink.add(true);
         break;

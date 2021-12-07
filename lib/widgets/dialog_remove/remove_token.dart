@@ -133,15 +133,31 @@ class RemoveToken extends StatelessWidget {
                                       Expanded(
                                         child: GestureDetector(
                                           onTap: () {
+                                            print(cubit.addressWallet.value);
+                                            print(cubit
+                                                .listTokenFromWalletCore[
+                                            index]
+                                                .tokenAddress,);
                                             cubit.setShowedToken(
-                                              walletAddress: 'walletAddress',
+                                              walletAddress:
+                                                  cubit.addressWallet.value,
+
                                               isShow: false,
-                                              tokenAddress: 'tokenAddress',
+                                              tokenAddress: cubit
+                                                  .listTokenFromWalletCore[
+                                                      index]
+                                                  .tokenAddress,
                                             );
                                             cubit.listTokenFromWalletCore
                                                 .removeAt(index);
                                             cubit.listTokenStream.sink.add(
-                                                cubit.listTokenFromWalletCore);
+                                              cubit.listTokenFromWalletCore,
+                                            );
+                                            cubit.totalBalance.add(
+                                              cubit.total(
+                                                cubit.listTokenFromWalletCore,
+                                              ),
+                                            );
                                             Navigator.pop(context);
                                           },
                                           child: SizedBox(

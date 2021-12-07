@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../main.dart';
 import 'import_token_succesfully.dart';
 
 class EnterAddress extends StatefulWidget {
@@ -35,10 +34,12 @@ class _EnterAddressState extends State<EnterAddress> {
     controller = TextEditingController();
     controller.addListener(() {
       widget.bloc.tokenAddressText.sink.add(controller.text);
+      if (controller.text == '') {
+        widget.bloc.isTokenEnterAddress.sink.add(false);
+        widget.bloc.tokenSymbol.sink.add(S.current.token_symbol);
+        widget.bloc.tokenDecimal.sink.add(S.current.token_decimal);
+      }
     });
-    trustWalletChannel.setMethodCallHandler(
-      widget.bloc.nativeMethodCallBackTrustWallet,
-    );
   }
 
   @override
@@ -52,7 +53,7 @@ class _EnterAddressState extends State<EnterAddress> {
     return BlocConsumer(
       bloc: widget.bloc,
       listener: (context, state) {
-        if (state is NavigatorSucces) {
+        if (state is NavigatorSuccessfully) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -60,7 +61,12 @@ class _EnterAddressState extends State<EnterAddress> {
                 return const TokenSuccessfully();
               },
             ),
-          );
+          ).whenComplete(() async {
+            widget.bloc.listTokenFromWalletCore.clear();
+            await widget.bloc.getTokens(widget.addressWallet);
+            widget.bloc.listTokenStream
+                .add(widget.bloc.listTokenFromWalletCore);
+          });
         }
       },
       builder: (context, _) {
