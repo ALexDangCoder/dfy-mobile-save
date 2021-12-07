@@ -202,8 +202,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 36.h,
                   ),
-                  BlocBuilder<LoginCubit, LoginState>(
+                  BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
+                    listener: (context,state){
+                      if (state is LoginSuccess) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const MainScreen(
+                              index: 1,
+                            ),
+                          ),
+                              (route) => route.isFirst,
+                        );
+                      }
+                      if (state is LoginError) {
+                        _showDialog();
+                      }
+                    },
                     builder: (context, state) {
                       return GestureDetector(
                         child: enableLogin
@@ -234,19 +249,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           if (controller.value.text.isNotEmpty && !errorText) {
                             _cubit.checkPasswordWallet(controller.value.text);
-                            if (state is LoginSuccess) {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                  builder: (context) => const MainScreen(
-                                    index: 1,
-                                  ),
-                                ),
-                                (route) => route.isFirst,
-                              );
-                            }
-                            if (state is LoginError) {
-                              _showDialog();
-                            }
                           }
                         },
                       );
