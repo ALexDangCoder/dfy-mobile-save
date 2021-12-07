@@ -227,15 +227,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'earseWalletCallback':
         bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
-      case 'exportWalletCallBack':
-        String walletAddress = await methodCall.arguments['isSuccess'];
-        String privateKey = await methodCall.arguments['isSuccess'];
-        String passPhrase = await methodCall.arguments['isSuccess'];
-        print(walletAddress);
-        print(privateKey);
-        print(passPhrase);
-
-        break;
       case 'getListSupportedTokenCallback':
         //final a = await methodCall.arguments['TokenObject'];
         break;
@@ -347,14 +338,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   Future<void> setShowedToken({
-    String password = '',
     required String walletAddress,
     required String tokenAddress,
     required bool isShow,
   }) async {
     try {
       final data = {
-        'password': password,
         'walletAddress': walletAddress,
         'tokenAddress': tokenAddress,
         'isShow': isShow,
@@ -366,26 +355,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  //exportWallet
-  Future<void> exportWallet({
-    required String walletAddress,
-    required String password,
-  }) async {
-    try {
-      final data = {
-        'password': password,
-        'walletAddress': walletAddress,
-      };
-      await trustWalletChannel.invokeMethod('exportWallet', data);
-    } on PlatformException {
-      //todo
-
-    }
-  }
-
   Future<void> importNft({
-    //todo pram
-    String? password,
     required String walletAddress,
     required String nftAddress,
     required String nftName,
@@ -394,9 +364,10 @@ class WalletCubit extends BaseCubit<WalletState> {
   }) async {
     try {
       final data = {
-        'password': password,
         'walletAddress': walletAddress,
         'nftAddress': nftAddress,
+        'nftName': nftName,
+        'iconNFT': iconNFT,
         'nftID': nftID,
       };
       await trustWalletChannel.invokeMethod('importNft', data);
@@ -407,14 +378,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   Future<void> setShowedNft({
-    String password = '',
     required String walletAddress,
     required String nftAddress,
     required bool isShow,
   }) async {
     try {
       final data = {
-        'password': password,
         'walletAddress': walletAddress,
         'isShow': isShow,
         'nftAddress': nftAddress,

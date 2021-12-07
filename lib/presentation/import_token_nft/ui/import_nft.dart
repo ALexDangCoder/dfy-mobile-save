@@ -117,9 +117,8 @@ class _BodyState extends State<_Body> {
                     if (widget.bloc.isNFT.value) {
                       widget.bloc.importNft(
                         walletAddress: widget.addressWallet,
-                        nftAddress:widget.bloc.tokenAddressTextNft.value,
+                        nftAddress: widget.bloc.tokenAddressTextNft.value,
                         nftID: int.parse(widget.bloc.nftEnterID.value),
-                        password: '',
                         nftName: '',
                         iconNFT: '',
                       );

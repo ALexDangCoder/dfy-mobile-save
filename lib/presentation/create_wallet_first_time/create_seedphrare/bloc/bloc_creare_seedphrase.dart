@@ -144,7 +144,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   }
 
   Future<void> setConfig({
-    String? password,
     required bool isAppLock,
     required bool? isFaceID,
   }) async {
@@ -152,7 +151,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
       final data = {
         'isAppLock': isAppLock,
         'isFaceID': isFaceID,
-        'password': password,
       };
       await PrefsService.saveFirstAppConfig('false');
       await PrefsService.saveAppLockConfig(isAppLock.toString());

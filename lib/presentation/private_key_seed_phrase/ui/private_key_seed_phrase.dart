@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/private_key_model.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -17,7 +18,7 @@ class PrivateKeySeedPhrase extends StatelessWidget {
     Key? key,
     required this.bloc,
   }) : super(key: key);
-  final PrivateKeySeedPhraseBloc bloc;
+  final ConfirmPwPrvKeySeedpharseCubit bloc;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class _Body extends StatefulWidget {
     required this.bloc,
   }) : super(key: key);
 
-  final PrivateKeySeedPhraseBloc bloc;
+  final ConfirmPwPrvKeySeedpharseCubit bloc;
 
   @override
   _BodyState createState() => _BodyState();
@@ -67,64 +68,74 @@ class _BodyState extends State<_Body> {
                 spaceH24,
                 Expanded(
                   child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              HeroDialogRoute(
-                                builder: (context) {
-                                  return ChooseAcc(
-                                    bloc: widget.bloc,
+                    child: StreamBuilder<List<PrivateKeyModel>>(
+                      stream: widget.bloc.listPrivateKey,
+                      initialData: const [],
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData ) {
+                          return Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    HeroDialogRoute(
+                                      builder: (context) {
+                                        return ChooseAcc(
+                                          bloc: widget.bloc,
+                                        );
+                                      },
+                                      isNonBackground: false,
+                                    ),
                                   );
                                 },
-                                isNonBackground: false,
+                                child: FromText4(
+                                  titleCopy: snapshot
+                                          .data?[index ?? 0].walletAddress ??
+                                      '',
+                                  title: widget.bloc.formatText(
+                                    snapshot.data?[index ?? 0].walletAddress ??
+                                        '',
+                                  ),
+                                  urlSuffixIcon: ImageAssets.ic_line_down,
+                                  urlPrefixIcon: ImageAssets.ic_address,
+                                ),
                               ),
-                            );
-                          },
-                          child: FromText4(
-                            titleCopy: widget.bloc.listWallet[index ?? 0]
-                                    .walletAddress ??
-                                '',
-                            title: widget.bloc.formatText(
-                              widget.bloc.listWallet[index ?? 0]
-                                      .walletAddress ??
-                                  '',
-                            ),
-                            urlSuffixIcon: ImageAssets.ic_line_down,
-                            urlPrefixIcon: ImageAssets.ic_address,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 16.h,
-                        ),
-                        FromText3(
-                          titleCopy:
-                              widget.bloc.listWallet[index ?? 0].privateKey ??
-                                  '',
-                          title: widget.bloc.formatText(
-                            widget.bloc.listWallet[index ?? 0].privateKey ?? '',
-                          ),
-                          urlSuffixIcon: ImageAssets.ic_copy,
-                          urlPrefixIcon: ImageAssets.ic_key24,
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Column(
-                          children: [
-                            BoxListPassWordPhraseCopy2(
-                              listTitle: widget.bloc.stringToList(
-                                widget.bloc.listWallet[index ?? 0].seedPhrase ??
-                                    '',
+                              SizedBox(
+                                height: 16.h,
                               ),
-                              text: widget
-                                      .bloc.listWallet[index ?? 0].seedPhrase ??
-                                  '',
-                            ),
-                          ],
-                        )
-                      ],
+                              FromText3(
+                                titleCopy:
+                                    snapshot.data?[index ?? 0].privateKey ?? '',
+                                title: widget.bloc.formatText(
+                                  snapshot.data?[index ?? 0].privateKey ?? '',
+                                ),
+                                urlSuffixIcon: ImageAssets.ic_copy,
+                                urlPrefixIcon: ImageAssets.ic_key24,
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              Column(
+                                children: [
+                                  BoxListPassWordPhraseCopy2(
+                                    listTitle: widget.bloc.stringToList(
+                                      snapshot.data?[index ?? 0].seedPhrase ??
+                                          '',
+                                    ),
+                                    text:
+                                        snapshot.data?[index ?? 0].seedPhrase ??
+                                            '',
+                                  ),
+                                ],
+                              )
+                            ],
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
                     ),
                   ),
                 ),
