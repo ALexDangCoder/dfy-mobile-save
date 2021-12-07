@@ -1,7 +1,9 @@
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'change_password_state.dart';
@@ -16,21 +18,62 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   bool _haveValueOldPW = false;
   bool _haveValueNewPW = false;
   bool _haveValueConfirmPW = false;
+  bool isSuccess = false;
 
   final BehaviorSubject<bool> _validatePW = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _changePWSuccess =
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _matchPW = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _matchOldPW = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _showOldPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _showNewPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _showCfPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _isEnableButton =
-  BehaviorSubject<bool>.seeded(true);
+      BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<String> _txtWarnOldPW =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnNewPW =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnCfPW =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
+
+  ///wallet core
+  Future<void> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    try {
+      final data = {
+        'oldPassword': oldPassword,
+        'newPassword': newPassword,
+      };
+      await trustWalletChannel.invokeMethod('changePassword', data);
+    } on PlatformException {
+      //nothing
+    }
+  }
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'changePasswordCallback':
+        isSuccess = await methodCall.arguments['isSuccess'];
+        print(methodCall.arguments);
+        try {
+          if (isSuccess) {
+            //
+          } else {
+            // matchOldPWSink.add(true);
+            // txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
+            // isEnableButtonSink.add(false);
+          }
+        } catch(e) {
+          print(e);
+        }
+        break;
+      default:
+        break;
+    }
+  }
 
   //stream
   Stream<bool> get validatePWStream => _validatePW.stream;
@@ -47,6 +90,8 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
 
   Stream<bool> get showCfPWStream => _showCfPW.stream;
 
+  Stream<bool> get changePWSuccessStream => _changePWSuccess.stream;
+
   Stream<String> get txtWarnOldPWStream => _txtWarnOldPW.stream;
 
   Stream<String> get txtWarnNewPWStream => _txtWarnNewPW.stream;
@@ -57,6 +102,8 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   Sink<bool> get validatePWSink => _validatePW.sink;
 
   Sink<bool> get matchPWSink => _matchPW.sink;
+
+  Sink<bool> get changePWSuccessSink => _changePWSuccess.sink;
 
   Sink<bool> get matchOldPWSink => _matchOldPW.sink;
 
@@ -252,11 +299,16 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   }
 
   //check 3 forms is validate -> change screen
-  bool checkAllValidate(
-      {required String oldPWFetch, required String oldPW, required String newPW,
-        required String confirmPW,}) {
-    if (oldPW == oldPWFetch && Validator.validateStructure(newPW) &&
-        Validator.validateStructure(confirmPW) && (newPW == confirmPW)) {
+  bool checkAllValidate({
+    required String oldPWFetch,
+    required String oldPW,
+    required String newPW,
+    required String confirmPW,
+  }) {
+    if (oldPW == oldPWFetch &&
+        Validator.validateStructure(newPW) &&
+        Validator.validateStructure(confirmPW) &&
+        (newPW == confirmPW)) {
       return true;
     } else {
       return false;

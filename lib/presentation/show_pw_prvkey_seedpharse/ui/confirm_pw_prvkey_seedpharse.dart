@@ -28,7 +28,6 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
   @override
   void initState() {
     txtController = TextEditingController();
-    print(Platform.isIOS);
     widget.cubit.getConfig();
     super.initState();
   }

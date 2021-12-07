@@ -166,8 +166,8 @@ class ImportCubit extends Cubit<ImportState> {
         txtWarningSeedSink.add(S.current.private_required);
         btnSink.add(false);
       } else {
-        final int len = value.split(' ').length;
-        if (len != 12 || len != 15 || len != 18 || len != 21 || len != 24) {
+        final int len = value.length;
+        if (len != 64 && !value.contains(' ')) {
           privateField = false;
           seedSink.add(true);
           txtWarningSeedSink.add(S.current.private_warning);
