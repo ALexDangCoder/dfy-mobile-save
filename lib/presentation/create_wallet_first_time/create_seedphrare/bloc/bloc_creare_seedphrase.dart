@@ -142,9 +142,9 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   }
 
   Future<void> setConfig({
-     String? password,
-     bool? isAppLock,
-     bool? isFaceID,
+    String? password,
+    bool? isAppLock,
+    bool? isFaceID,
   }) async {
     try {
       final data = {

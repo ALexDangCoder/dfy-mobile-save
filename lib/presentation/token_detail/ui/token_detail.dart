@@ -125,9 +125,9 @@ class TokenDetail extends StatelessWidget {
                                 builder: (context) {
                                   return const SendToken();
                                 },
-                              ).then((value) => {
-                                log('>>>>>>>>>>>>>>>>>>> $value')
-                              },);
+                              ).then(
+                                (value) => {log('>>>>>>>>>>>>>>>>>>> $value')},
+                              );
                             },
                             child: sizedSvgImage(
                               w: 48,

@@ -297,7 +297,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         final a = await methodCall.arguments['TokenObject'];
         break;
       case 'setShowedTokenCallback':
-       // isSetShowedToken = await methodCall.arguments['isSuccess'];
+        // isSetShowedToken = await methodCall.arguments['isSuccess'];
         break;
       case 'importNftCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
@@ -313,9 +313,12 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
+        // print('Mother fucker: $data');
         for (final element in data) {
+          print('hello');
           listTokenFromWalletCore.add(ModelToken.fromWalletCore(element));
         }
+        print('MotherF ${listTokenFromWalletCore.length}');
         await getExchangeRate(listTokenFromWalletCore);
         total(listTokenFromWalletCore);
         listTokenStream.add(listTokenFromWalletCore);
