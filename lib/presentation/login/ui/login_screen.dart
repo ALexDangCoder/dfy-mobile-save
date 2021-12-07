@@ -114,80 +114,70 @@ class _LoginScreenState extends State<LoginScreen> {
                         left: 19.w,
                         right: 19.w,
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 8.h),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.h),
-                              child: ImageIcon(
-                                const AssetImage(ImageAssets.ic_lock),
+                      child: Row(
+                        children: [
+                          ImageIcon(
+                            const AssetImage(ImageAssets.ic_lock),
+                            color: AppTheme.getInstance().whiteColor(),
+                            size: 24,
+                          ),
+                          SizedBox(
+                            width: 20.5.w,
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              onChanged: (value) {
+                                if (value.isEmpty ||
+                                    controller.text.isEmpty) {
+                                  setState(() {
+                                    errorText = true;
+                                  });
+                                } else {
+                                  errorText = false;
+                                }
+                              },
+                              cursorColor:
+                                  AppTheme.getInstance().whiteColor(),
+                              style: TextStyle(
+                                fontSize: 18,
                                 color: AppTheme.getInstance().whiteColor(),
-                                size: 24,
                               ),
-                            ),
-                            SizedBox(
-                              width: 20.5.w,
-                            ),
-                            Expanded(
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  if (value.isEmpty ||
-                                      controller.text.isEmpty) {
-                                    setState(() {
-                                      errorText = true;
-                                    });
-                                  } else {
-                                    errorText = false;
-                                  }
-                                },
-                                cursorColor:
-                                    AppTheme.getInstance().whiteColor(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: AppTheme.getInstance().whiteColor(),
+                              controller: controller,
+                              obscureText: _cubit.hidePass,
+                              maxLength: 15,
+                              decoration: InputDecoration(
+                                counterText: '',
+                                hintText: S.current.password,
+                                hintStyle: textNormal(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  18,
                                 ),
-                                controller: controller,
-                                obscureText: _cubit.hidePass,
-                                maxLength: 15,
-                                decoration: InputDecoration(
-                                  counterText: '',
-                                  hintText: S.current.password,
-                                  hintStyle: textNormal(
-                                    AppTheme.getInstance().textThemeColor(),
-                                    18,
+                                border: InputBorder.none,
+                              ),
+                              // onFieldSubmitted: ,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (mounted) {
+                                setState(() {
+                                  _cubit.hidePassword();
+                                });
+                              }
+                            },
+                            child: _cubit.hidePass
+                                ? ImageIcon(
+                                    const AssetImage(ImageAssets.ic_show),
+                                    color: AppTheme.getInstance()
+                                        .suffixColor(),
+                                  )
+                                : ImageIcon(
+                                    const AssetImage(ImageAssets.ic_hide),
+                                    color: AppTheme.getInstance()
+                                        .suffixColor(),
                                   ),
-                                  border: InputBorder.none,
-                                ),
-                                // onFieldSubmitted: ,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.h),
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (mounted) {
-                                    setState(() {
-                                      _cubit.hidePassword();
-                                    });
-                                  }
-                                },
-                                child: _cubit.hidePass
-                                    ? ImageIcon(
-                                        const AssetImage(ImageAssets.ic_show),
-                                        color: AppTheme.getInstance()
-                                            .suffixColor(),
-                                      )
-                                    : ImageIcon(
-                                        const AssetImage(ImageAssets.ic_hide),
-                                        color: AppTheme.getInstance()
-                                            .suffixColor(),
-                                      ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -212,8 +202,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 36.h,
                   ),
-                  BlocBuilder<LoginCubit, LoginState>(
+                  BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
+                    listener: (context,state){
+                      if (state is LoginSuccess) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const MainScreen(
+                              index: 1,
+                            ),
+                          ),
+                              (route) => route.isFirst,
+                        );
+                      }
+                      if (state is LoginError) {
+                        _showDialog();
+                      }
+                    },
                     builder: (context, state) {
                       return GestureDetector(
                         child: enableLogin
@@ -244,25 +249,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           if (controller.value.text.isNotEmpty && !errorText) {
                             _cubit.checkPasswordWallet(controller.value.text);
-                            if (state is LoginSuccess) {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                  builder: (context) => const MainScreen(
-                                    index: 1,
-                                  ),
-                                ),
-                                (route) => route.isFirst,
-                              );
-                            }
-                            if (state is LoginError) {
-                              _showDialog();
-                            }
-                          }
-                          if (errorText) {
-                            _showDialog(
-                              alert: S.current.password_is_required,
-                              text: '',
-                            );
                           }
                         },
                       );
@@ -312,7 +298,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return AlertPopUp(
+                                return const AlertPopUp(
                                   type: KeyType.CREATE,
                                 );
                               },
@@ -347,7 +333,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return AlertPopUp(
+                                return const AlertPopUp(
                                   type: KeyType.IMPORT,
                                 );
                               },

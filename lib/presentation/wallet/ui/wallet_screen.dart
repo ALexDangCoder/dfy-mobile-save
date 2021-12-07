@@ -53,7 +53,7 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    cubit.getListWallets('aa');
+    cubit.getListWallets('pass');
     cubit.addressWalletCore = widget.wallet?.address ?? cubit.addressWalletCore;
     cubit.walletName.sink.add(widget.wallet?.name ?? 'Nguyen Van Hung');
     cubit.walletName.stream.listen((event) {
@@ -74,6 +74,7 @@ class _WalletState extends State<WalletScreen>
 
   @override
   Widget build(BuildContext context) {
+    final String addressWallet = cubit.addressWalletCore;
     if (widget.index == 1) {
       return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -138,16 +139,16 @@ class _WalletState extends State<WalletScreen>
                       ),
                       IconButton(
                         onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return SettingWallet(
-                                cubitSetting: SettingWalletCubit(),
-                                cubit: cubit,
-                              );
-                            },
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) {
+                                return SettingWallet(
+                                  cubitSetting: SettingWalletCubit(),
+                                  cubit: cubit,
+                                );
+                              },
+                            ),
                           );
                         },
                         icon: Icon(
@@ -230,10 +231,11 @@ class _WalletState extends State<WalletScreen>
                               },
                             ),
                             ImportToken(
-                              walletCubit: cubit,
                               title: S.current.import_token,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 1,
+                              addressWallet: addressWallet,
+                              cubit: cubit,
                             ),
                             SizedBox(
                               height: 102.h,
@@ -262,6 +264,7 @@ class _WalletState extends State<WalletScreen>
                                       itemCount: snapshot.data?.length,
                                       itemBuilder: (context, index) {
                                         return NFTItem(
+                                          walletAddress: cubit.addressWalletCore,
                                           index: index,
                                           bloc: cubit,
                                           symbolUrl:
@@ -281,10 +284,11 @@ class _WalletState extends State<WalletScreen>
                               },
                             ),
                             ImportToken(
-                              walletCubit: cubit,
                               title: S.current.import_nft,
                               icon: ImageAssets.ic_import2,
                               keyRouter: 2,
+                              addressWallet: addressWallet,
+                              cubit: cubit,
                             ),
                             CreateNFT(
                               title: S.current.create_nft,
@@ -336,6 +340,10 @@ class _WalletState extends State<WalletScreen>
                           );
                         },
                       ),
+                    ).whenComplete(
+                      () => {
+                        cubit.listSelectAccBloc.clear(),
+                      },
                     );
                   },
                   child: CircleAvatar(

@@ -7,6 +7,7 @@ class RestoreInitial extends RestoreState {
   @override
   List<Object?> get props => [];
 }
+
 class NavState extends RestoreState {
   final Wallet wallet;
 
@@ -14,8 +15,10 @@ class NavState extends RestoreState {
   @override
   List<Object?> get props => [];
 }
+
 class ErrorState extends RestoreState {
   @override
   List<Object?> get props => [];
 }
+
 

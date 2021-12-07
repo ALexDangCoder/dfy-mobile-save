@@ -295,7 +295,8 @@ class _BodyState extends State<_Body> {
                         bLocCreateSeedPhrase.storeWallet(
                           seedPhrase: bLocCreateSeedPhrase.passPhrase,
                           walletName: bLocCreateSeedPhrase.nameWallet.value,
-                          password: bLocCreateSeedPhrase.passWord,
+                          walletAddress: bLocCreateSeedPhrase.walletAddress,
+                          privateKey: bLocCreateSeedPhrase.privateKey,
                         );
                       }
                     }

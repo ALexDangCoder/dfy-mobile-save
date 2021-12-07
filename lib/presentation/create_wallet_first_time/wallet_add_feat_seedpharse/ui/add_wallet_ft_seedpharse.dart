@@ -81,7 +81,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
           backgroundColor: Colors.transparent,
           context: context,
           builder: (context) {
-            return const RestoreAcount();
+            return const RestoreAccount();
           },
           isScrollControlled: true,
         );
@@ -92,10 +92,10 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
         child: Center(
           child: Text(
             S.current.pls_import_seed,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
-              color: const Color.fromRGBO(228, 172, 26, 1),
+              color: Color.fromRGBO(228, 172, 26, 1),
             ),
           ),
         ),
@@ -160,10 +160,10 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
               children: [
                 Text(
                   S.current.wallet,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
-                    color: const Color.fromRGBO(255, 255, 255, 1),
+                    color: Color.fromRGBO(255, 255, 255, 1),
                   ),
                 ),
                 SizedBox(
@@ -171,10 +171,10 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                 ),
                 Text(
                   S.current.smart_chain,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: const Color.fromRGBO(189, 189, 189, 1),
+                    color: Color.fromRGBO(189, 189, 189, 1),
                   ),
                 )
               ],

@@ -112,15 +112,17 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   }
 
   Future<void> storeWallet({
-    String password = '',
     required String seedPhrase,
+    required String privateKey,
     required String walletName,
+    required String walletAddress,
   }) async {
     try {
       final data = {
         'seedPhrase': seedPhrase,
         'walletName': walletName,
-        'password': password,
+        'privateKey': privateKey,
+        'walletAddress': walletAddress,
       };
       await trustWalletChannel.invokeMethod('storeWallet', data);
     } on PlatformException {
@@ -143,8 +145,8 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
 
   Future<void> setConfig({
     String? password,
-    bool? isAppLock,
-    bool? isFaceID,
+    required bool isAppLock,
+    required bool? isFaceID,
   }) async {
     try {
       final data = {

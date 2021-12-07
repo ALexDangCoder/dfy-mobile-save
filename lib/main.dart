@@ -53,39 +53,43 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      builder: () => GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: Strings.app_name,
-        theme: ThemeData(
-          primaryColor: AppTheme.getInstance().primaryColor(),
-          cardColor: Colors.white,
-          textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
-          appBarTheme: const AppBarTheme(
-            color: Colors.white,
-            systemOverlayStyle: SystemUiOverlayStyle.dark,
+      builder: () =>
+          GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: Strings.app_name,
+            theme: ThemeData(
+              primaryColor: AppTheme.getInstance().primaryColor(),
+              cardColor: Colors.white,
+              textTheme: GoogleFonts.latoTextTheme(Theme
+                  .of(context)
+                  .textTheme,),
+              appBarTheme: const AppBarTheme(
+                color: Colors.white,
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
+              ),
+              dividerColor: dividerColor,
+              scaffoldBackgroundColor: Colors.white,
+              textSelectionTheme: TextSelectionThemeData(
+                cursorColor: AppTheme.getInstance().primaryColor(),
+                selectionColor: AppTheme.getInstance().primaryColor(),
+                selectionHandleColor: AppTheme.getInstance().primaryColor(),
+              ),
+              colorScheme: ColorScheme.fromSwatch().copyWith(
+                secondary: AppTheme.getInstance().accentColor(),
+              ),
+            ),
+            // supportedLocales: S.delegate.supportedLocales,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            locale: Locale.fromSubtags(
+                languageCode: PrefsService.getLanguage(),),
+            onGenerateRoute: AppRouter.generateRoute,
+            initialRoute: AppRouter.splash,
           ),
-          dividerColor: dividerColor,
-          scaffoldBackgroundColor: Colors.white,
-          textSelectionTheme: TextSelectionThemeData(
-            cursorColor: AppTheme.getInstance().primaryColor(),
-            selectionColor: AppTheme.getInstance().primaryColor(),
-            selectionHandleColor: AppTheme.getInstance().primaryColor(),
-          ),
-          colorScheme: ColorScheme.fromSwatch().copyWith(
-            secondary: AppTheme.getInstance().accentColor(),
-          ),
-        ),
-        // supportedLocales: S.delegate.supportedLocales,
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: Locale.fromSubtags(languageCode: PrefsService.getLanguage()),
-        onGenerateRoute: AppRouter.generateRoute,
-        initialRoute: AppRouter.splash,
-      ),
     );
   }
 
@@ -123,8 +127,8 @@ class _MyAppState extends State<MyApp> {
         break;
       case 'signTransactionCallback':
         print('signTransactionCallback ${methodCall.arguments}');
-        TransactionModel dataTransaction =
-            TransactionModel.fromJson(methodCall.arguments);
+        TransactionModel dataTransaction = TransactionModel.fromJson(
+            methodCall.arguments,);
         const String rpcUrl = 'https://data-seed-prebsc-1-s1.binance.org:8545';
         final client = Web3Client(rpcUrl, Client());
         await client.sendRawTransaction(dataTransaction.signedTransaction);
@@ -138,14 +142,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   void callAllApi() {
-    // signTransaction();
+    signTransaction();
   }
 
   Future<void> getConfig() async {
     try {
       final data = {};
       await trustWalletChannel.invokeMethod('getConfig', data);
-    } on PlatformException {}
+    } on PlatformException {
+
+    }
   }
 
   Future<void> createWallet() async {
@@ -213,7 +219,7 @@ class _MyAppState extends State<MyApp> {
     try {
       final data = {
         'isAppLock': true,
-        'isFaceID': true,
+        'isFaceID': false,
         'password': 'password',
       };
       await trustWalletChannel.invokeMethod('setConfig', data);
@@ -274,7 +280,9 @@ class _MyAppState extends State<MyApp> {
         'maxGas': 21000.toDouble(),
       };
       await trustWalletChannel.invokeMethod('signTransaction', data);
-    } on PlatformException {}
+    } on PlatformException {
+
+    }
   }
 
   Future<void> getTokens() async {

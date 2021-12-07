@@ -61,6 +61,7 @@ class ItemForm extends StatelessWidget {
               Colors.white,
               16,
             ),
+            textAlignVertical: TextAlignVertical.center,
             onChanged: (value) {
               cubit?.checkSeedField(value);
               importCubit?.checkSeedField(value);
@@ -77,7 +78,7 @@ class ItemForm extends StatelessWidget {
               suffixIcon: InkWell(
                 onTap: callback,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 12.h),
+                  padding: EdgeInsets.only(top: 14.h),
                   child: Text(
                     S.current.paste,
                     style: textNormal(AppTheme.getInstance().fillColor(), 16)
@@ -114,6 +115,7 @@ class ItemForm extends StatelessWidget {
         child: TextFormField(
           controller: controller,
           obscureText: isShow,
+          textAlignVertical: TextAlignVertical.center,
           style: textNormal(
             Colors.white,
             16,
@@ -132,7 +134,7 @@ class ItemForm extends StatelessWidget {
             suffixIcon: InkWell(
               onTap: callback,
               child: Padding(
-                padding: EdgeInsets.only(top: 12.h),
+                padding: EdgeInsets.only(top: 14.h),
                 child: Text(
                   suffix,
                   style: textNormal(AppTheme.getInstance().fillColor(), 16)
@@ -169,6 +171,7 @@ class ItemForm extends StatelessWidget {
           children: [
             Expanded(
               child: TextFormField(
+                textAlignVertical: TextAlignVertical.center,
                 controller: controller,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
@@ -236,6 +239,7 @@ class ItemForm extends StatelessWidget {
         child: TextFormField(
           controller: controller,
           obscureText: isShow,
+          textAlignVertical: TextAlignVertical.center,
           style: textNormal(
             Colors.white,
             16,

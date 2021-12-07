@@ -6,19 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImportToken extends StatelessWidget {
-  final WalletCubit walletCubit;
-
   const ImportToken({
     Key? key,
     required this.title,
     required this.icon,
     required this.keyRouter,
-    required this.walletCubit,
+    required this.addressWallet,
+    required this.cubit,
   }) : super(key: key);
 
   final int keyRouter;
   final String title;
   final String icon;
+  final String addressWallet;
+  final WalletCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,8 @@ class ImportToken extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) {
                 return ImportTokenScreen(
-                  bloc: walletCubit,
+                  bloc: cubit,
+                  addressWallet: addressWallet,
                 );
               },
             ),
@@ -42,7 +44,8 @@ class ImportToken extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) {
                 return ImportNft(
-                  bloc: walletCubit,
+                  bloc: WalletCubit(),
+                  addressWallet: addressWallet,
                 );
               },
             ),

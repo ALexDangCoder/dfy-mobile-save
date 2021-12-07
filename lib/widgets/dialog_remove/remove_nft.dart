@@ -12,11 +12,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class RemoveNft extends StatelessWidget {
   final WalletCubit cubit;
   final int index;
+  final String walletAddress;
+  final String nftAddress;
 
   const RemoveNft({
     Key? key,
     required this.cubit,
     required this.index,
+    required this.walletAddress,
+    required this.nftAddress,
   }) : super(key: key);
 
   @override
@@ -133,12 +137,14 @@ class RemoveNft extends StatelessWidget {
                                       child: GestureDetector(
                                         onTap: () {
                                           cubit.setShowedNft(
-                                            walletAddress: 'walletAddress',
-                                            isShow: false,
-                                            nftAddress: 'tokenAddress',
-                                          );
-                                          //cubit.listNFT.removeAt(index);
-                                          //cubit.getListNFTItem();
+                                              walletAddress: walletAddress,
+                                              isShow: false,
+                                              nftAddress: nftAddress,
+                                              password: '');
+                                          cubit.listNftFromWalletCore
+                                              .removeAt(index);
+                                          cubit.listNFTStream.sink
+                                              .add(cubit.listNftFromWalletCore);
                                           Navigator.pop(context);
                                         },
                                         child: SizedBox(

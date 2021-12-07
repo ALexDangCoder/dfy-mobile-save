@@ -113,4 +113,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.trustwallet:wallet-core:2.6.30'
+    implementation 'com.github.takuji31.Koreference:koreference:2.0.0'
+    implementation 'com.github.takuji31.Koreference:koreference-gson:2.0.0'
+    implementation 'com.github.takuji31.Koreference:koreference-observable:2.0.0'
+    implementation "com.google.code.gson:gson:2.8.5"
+
 }

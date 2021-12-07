@@ -1,9 +1,10 @@
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:Dfy/generated/l10n.dart';
+
 part 'confirm_pw_prvkey_seedpharse_state.dart';
 
 class ConfirmPwPrvKeySeedpharseCubit

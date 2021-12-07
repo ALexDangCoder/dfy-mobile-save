@@ -59,7 +59,7 @@ void showSuccessfulByTitle({
                       spaceH20,
                       Text(
                         S.current.congratulation,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 32,

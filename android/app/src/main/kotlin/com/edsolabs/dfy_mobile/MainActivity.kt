@@ -1,5 +1,9 @@
 package com.edsolabs.dfy_mobile
 
+import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
+import com.edsolabs.dfy_mobile.data.model.NftModel
+import com.edsolabs.dfy_mobile.data.model.TokenModel
+import com.edsolabs.dfy_mobile.data.model.WalletModel
 import com.google.protobuf.ByteString
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -25,10 +29,14 @@ class MainActivity : FlutterFragmentActivity() {
     private val TYPE_DELETE_WALLET_CREATE = "CREATE"
 
     private val CHANNEL_TRUST_WALLET = "flutter/trust_wallet"
+
     private var channel: MethodChannel? = null
+    private lateinit var appPreference : AppPreference
+    private val coinType: CoinType = CoinType.SMARTCHAIN
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
+        appPreference = AppPreference(context = this@MainActivity)
         channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL_TRUST_WALLET)
         channel?.setMethodCallHandler { call, _ ->
             when (call.method) {
@@ -36,7 +44,6 @@ class MainActivity : FlutterFragmentActivity() {
                     val password = call.argument<String>("password")
                         ?: return@setMethodCallHandler
                     checkPassWordWallet(password)
-
                 }
                 "getConfig" -> {
                     getConfigWallet()
@@ -54,18 +61,16 @@ class MainActivity : FlutterFragmentActivity() {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
                     val content = call.argument<String>("content")
                         ?: return@setMethodCallHandler
-                    val password = call.argument<String>("password")
-                        ?: ""
-                    importWallet(type, content, password)
+                    importWallet(type, content)
                 }
                 "getListWallets" -> {
                     val password = call.argument<String>("password")
                         ?: return@setMethodCallHandler
-                    getListWallets(password)
+                    getListWallets()
                 }
                 "generateWallet" -> {
-                    val password = call.argument<String>("password")
-                        ?: return@setMethodCallHandler
+                    val password =
+                        call.argument<String>("password") ?: return@setMethodCallHandler
                     generateWallet(password)
                 }
                 "storeWallet" -> {
@@ -73,17 +78,24 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("seedPhrase") ?: return@setMethodCallHandler
                     val walletName =
                         call.argument<String>("walletName") ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: ""
-                    storeWallet(seedPhrase, walletName, password)
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    val privateKey =
+                        call.argument<String>("privateKey") ?: return@setMethodCallHandler
+                    storeWallet(
+                        seedPhrase,
+                        walletName,
+                        walletAddress,
+                        privateKey
+                    )
                 }
                 "setConfig" -> {
                     val isAppLock =
-                        call.argument<Boolean>("isAppLock") ?: false
+                        call.argument<Boolean>("isAppLock") ?: true
                     val isFaceID =
                         call.argument<Boolean>("isFaceID") ?: false
                     val password =
-                        call.argument<String>("password") ?: ""
+                        call.argument<String>("password") ?: return@setMethodCallHandler
                     setConfig(isAppLock, isFaceID, password)
                 }
                 "getListShowedToken" -> {
@@ -102,19 +114,32 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("password") ?: return@setMethodCallHandler
                     getListShowedNft(walletAddress, password)
                 }
+
                 "importToken" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
                     val tokenAddress =
                         call.argument<String>("tokenAddress") ?: return@setMethodCallHandler
+                    val tokenFullName =
+                        call.argument<String>("tokenFullName") ?: return@setMethodCallHandler
+                    val iconToken =
+                        call.argument<String>("iconToken") ?: return@setMethodCallHandler
                     val symbol =
                         call.argument<String>("symbol") ?: return@setMethodCallHandler
                     val decimal =
                         call.argument<Int>("decimal") ?: return@setMethodCallHandler
                     val password =
                         call.argument<String>("password") ?: ""
-                    importToken(walletAddress, tokenAddress, symbol, decimal, password)
+                    importToken(
+                        walletAddress,
+                        tokenAddress,
+                        tokenFullName,
+                        iconToken,
+                        symbol,
+                        decimal,
+                        password
+                    )
                 }
                 "setShowedToken" -> {
                     val walletAddress =
@@ -137,12 +162,18 @@ class MainActivity : FlutterFragmentActivity() {
                     val nftAddress =
                         call.argument<String>("nftAddress")
                             ?: return@setMethodCallHandler
+                    val nftName =
+                        call.argument<String>("nftName")
+                            ?: return@setMethodCallHandler
+                    val iconNFT =
+                        call.argument<String>("iconNFT")
+                            ?: return@setMethodCallHandler
                     val nftID =
                         call.argument<Int>("nftID")
                             ?: return@setMethodCallHandler
                     val password =
                         call.argument<String>("password") ?: ""
-                    importNft(walletAddress, nftAddress, nftID, password)
+                    importNft(walletAddress, nftAddress, nftName, iconNFT, nftID, password)
                 }
                 "setShowedNft" -> {
                     val walletAddress =
@@ -215,27 +246,36 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun exportWallet(password: String, walletAddress: String) {
-        val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = password.isNotEmpty()
-        channel?.invokeMethod("exportWalletCallBack", hasMap)
+        if (password == appPreference.password) {
+            val hasMap = HashMap<String, Any>()
+            appPreference.getListWallet().forEach {
+                if (it.walletAddress == walletAddress) {
+                    hasMap["walletAddress"] = it.walletAddress
+                    hasMap["privateKey"] = it.privateKey
+                    hasMap["passPhrase"] = it.seedPhrase
+                }
+            }
+            channel?.invokeMethod("exportWalletCallBack", hasMap)
+        }
     }
 
     private fun checkPassWordWallet(password: String) {
         val hasMap = HashMap<String, Any>()
-        hasMap["isCorrect"] = password.isNotEmpty()
+        hasMap["isCorrect"] = password == appPreference.password
         channel?.invokeMethod("checkPasswordCallback", hasMap)
     }
 
     private fun getConfigWallet() {
         val hasMap = HashMap<String, Boolean>()
-        hasMap["isAppLock"] = true
-        hasMap["isFaceID"] = true
-        hasMap["isWalletExist"] = true
+        hasMap["isAppLock"] = appPreference.isAppLock
+        hasMap["isFaceID"] = appPreference.isFaceID
+        hasMap["isWalletExist"] = appPreference.getListWallet().isNotEmpty()
         channel?.invokeMethod("getConfigCallback", hasMap)
     }
 
     private fun earseAllWallet(type: String) {
         val hasMap = HashMap<String, Any>()
+        appPreference.earseAllWallet()
         hasMap["isSuccess"] = true
         hasMap["type"] = type
         channel?.invokeMethod("earseAllWalletCallback", hasMap)
@@ -244,67 +284,109 @@ class MainActivity : FlutterFragmentActivity() {
     private fun earseWallet(walletAddress: String) {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
+        val listWallet = ArrayList<WalletModel>()
+        appPreference.getListWallet().forEachIndexed { index, walletModel ->
+            if (walletAddress != walletModel.walletAddress) {
+                listWallet.add(walletModel)
+            }
+        }
+        appPreference.saveListWallet(listWallet)
         channel?.invokeMethod("earseWalletCallback", hasMap)
     }
 
-    private fun importWallet(type: String, content: String, password: String) {
-        val hasMap = HashMap<String, String>()
-//        //todo validate content
-//        if (type == TYPE_WALLET_SEED_PHRASE) {
-//            //todo content is seed phrase
+    private fun importWallet(type: String, content: String) {
+        val hasMap = HashMap<String, Any>()
+        val sttWallet = appPreference.sttWallet
+        val walletName = "Account ${sttWallet + 1}"
+        //todo validate content
+        if (type == TYPE_WALLET_SEED_PHRASE) {
+            //todo content is seed phrase
+            val wallet = HDWallet(content, "")
+            val address = wallet.getAddressForCoin(coinType)
+            val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
+            hasMap["walletAddress"] = address
+            val listWallet = ArrayList<WalletModel>()
+            listWallet.addAll(appPreference.getListWallet())
+            listWallet.add(
+                WalletModel(
+                    walletName,
+                    address,
+                    content,
+                    privateKey.toByteArray().toHexString(false)
+                )
+            )
+            appPreference.saveListWallet(listWallet)
+
+        } else if (type == TYPE_WALLET_PRIVATE_KEY) {
+            //todo content is private key
 //            val wallet = HDWallet(content, "")
-//            val coinType: CoinType = CoinType.SMARTCHAIN
-//            val address = wallet.getAddressForCoin(coinType)
-//            hasMap["walletAddress"] = address
-//        } else if (type == TYPE_WALLET_PRIVATE_KEY) {
-//            //todo content is private key
-//            val wallet = HDWallet(content, "")
-//            val privateKey = wallet.getKeyForCoin(CoinType.SMARTCHAIN)
+//            val privateKey = wallet.getKeyForCoin(coinType)
 //            val publicKeyFalse = privateKey.getPublicKeySecp256k1(false)
-//            val anyAddress = AnyAddress(publicKeyFalse, CoinType.SMARTCHAIN)
-//            val address = anyAddress.data().toHexString()
+//            val anyAddress = AnyAddress(publicKeyFalse, coinType)
+//            address = anyAddress.data().toHexString()
 //            hasMap["walletAddress"] = address
-//// address = 0xa3dcd899c0f3832dfdfed9479a9d828c6a4eb2a7    it does not has EIP55 address
-//        } else {
-//            return
-//        }
-        //todo check count wallet -> walletName = wallet count + 1
-        hasMap["walletName"] = "walletName"
-        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
+            return
+        } else {
+            return
+        }
+        appPreference.setSttWallet(sttWallet + 1)
+        hasMap["walletName"] = walletName
         channel?.invokeMethod("importWalletCallback", hasMap)
     }
 
-    private fun getListWallets(password: String) {
+    private fun getListWallets() {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
-        val data1 = HashMap<String, Any>()
-        data1["walletName"] = "walletName1"
-        data1["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        hasMap.add(data1)
-        val data2 = HashMap<String, Any>()
-        data2["walletName"] = "walletName2"
-        data2["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        hasMap.add(data2)
+        appPreference.getListWallet().forEach {
+            val data = HashMap<String, Any>()
+            data["walletName"] = it.walletName
+            data["walletAddress"] = it.walletAddress
+            hasMap.add(data)
+        }
         channel?.invokeMethod("getListWalletsCallback", hasMap)
     }
 
     private fun generateWallet(password: String) {
+        val wallet = HDWallet(128, "")
+        val seedPhrase = wallet.mnemonic()
+        val address = wallet.getAddressForCoin(coinType)
+        val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
+
         val hasMap = HashMap<String, String>()
-        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        hasMap["privateKey"] = "e507e499158b5b6e1a89ad1e65250f6c38a28d455c37cf23c41f4bdd82436e5a"
-        hasMap["passPhrase"] =
-            "party response give dove tooth master flip video permit game expire token"
+        hasMap["passPhrase"] = seedPhrase
+        hasMap["walletAddress"] = address
+        hasMap["privateKey"] = privateKey.toByteArray().toHexString(false)
+        appPreference.password = password
         channel?.invokeMethod("generateWalletCallback", hasMap)
     }
 
-    private fun storeWallet(seedPhrase: String, walletName: String, storeWallet: String) {
+    private fun storeWallet(
+        seedPhrase: String,
+        walletName: String,
+        walletAddress: String,
+        privateKey: String
+    ) {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
+        val listWallet = ArrayList<WalletModel>()
+        listWallet.addAll(appPreference.getListWallet())
+        listWallet.add(
+            WalletModel(
+                walletName,
+                walletAddress,
+                seedPhrase,
+                privateKey
+            )
+        )
+        appPreference.saveListWallet(listWallet)
         channel?.invokeMethod("storeWalletCallback", hasMap)
     }
 
     private fun setConfig(appLock: Boolean, faceID: Boolean, password: String) {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
+        appPreference.isAppLock = appLock
+        appPreference.isFaceID = faceID
+        appPreference.password = password
         channel?.invokeMethod("setConfigCallback", hasMap)
     }
 
@@ -325,12 +407,27 @@ class MainActivity : FlutterFragmentActivity() {
     private fun importToken(
         walletAddress: String,
         tokenAddress: String,
+        tokenFullName: String,
+        iconToken: String,
         symbol: String,
         decimal: Int,
         password: String
     ) {
-        //todo
+        //todo check password
         val hasMap = HashMap<String, Any>()
+        val listToken = ArrayList<TokenModel>()
+        listToken.addAll(appPreference.getListToken())
+        listToken.add(
+            TokenModel(
+                walletAddress,
+                tokenAddress,
+                tokenFullName,
+                iconToken,
+                symbol,
+                decimal
+            )
+        )
+        appPreference.saveListToken(listToken)
         hasMap["isSuccess"] = true
         channel?.invokeMethod("importTokenCallback", hasMap)
     }
@@ -339,19 +436,17 @@ class MainActivity : FlutterFragmentActivity() {
         walletAddress: String
     ) {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
-        val data1 = HashMap<String, Any>()
-
-        data1["tokenFullName"] = "BitCoin"
-        data1["tokenShortName"] = "BTC"
-        data1["tokenAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        data1["iconToken"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
-        hasMap.add(data1)
-        val data2 = HashMap<String, Any>()
-        data2["tokenFullName"] = "Binance"
-        data2["tokenShortName"] = "BNB"
-        data2["tokenAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        data2["iconToken"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
-        hasMap.add(data2)
+        appPreference.getListToken().forEach {
+            if (it.walletAddress == walletAddress) {
+                val data1 = HashMap<String, Any>()
+                data1["tokenFullName"] = it.tokenFullName
+                data1["tokenShortName"] = it.symbol
+                data1["tokenAddress"] = it.tokenAddress
+                data1["iconToken"] =
+                    "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Bitcoin-BTC-icon.png"
+                hasMap.add(data1)
+            }
+        }
         channel?.invokeMethod("getTokensCallback", hasMap)
     }
 
@@ -359,32 +454,59 @@ class MainActivity : FlutterFragmentActivity() {
         walletAddress: String
     ) {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
-        val data1 = HashMap<String, Any>()
-        data1["nftName"] = "Defi for you"
-        data1["nftAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        data1["iconNFT"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
-        hasMap.add(data1)
-        val data2 = HashMap<String, Any>()
-        data2["nftName"] = "Defi for you"
-        data2["nftAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        data2["iconNFT"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15".toByteArray()
-        hasMap.add(data2)
+        appPreference.getListNft().forEach {
+            if (it.walletAddress == walletAddress) {
+                val data = HashMap<String, Any>()
+                data["walletAddress"] = it.walletAddress
+                data["nftAddress"] = it.nftAddress
+                data["nftName"] = it.nftName
+                data["iconNFT"] = it.iconNFT
+                data["nftID"] = it.nftID
+                hasMap.add(data)
+            }
+        }
         channel?.invokeMethod("getNFTCallback", hasMap)
     }
 
     private fun setShowedToken(
         walletAddress: String,
         tokenAddress: String,
-        show: Boolean,
+        isShow: Boolean,
         password: String
     ) {
+        //todo check password
         val hasMap = HashMap<String, Any>()
+        val listToken = ArrayList<TokenModel>()
+        listToken.addAll(appPreference.getListToken())
+        listToken.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress }?.isShow =
+            isShow
+        appPreference.saveListToken(listToken)
         hasMap["isSuccess"] = true
         channel?.invokeMethod("setShowedTokenCallback", hasMap)
     }
 
-    private fun importNft(walletAddress: String, nftAddress: String, nftID: Int, password: String) {
+    private fun importNft(
+        walletAddress: String,
+        nftAddress: String,
+        nftName: String,
+        iconNFT: String,
+        nftID: Int,
+        password: String
+    ) {
+        //todo check password
         val hasMap = HashMap<String, Any>()
+        val listNft = ArrayList<NftModel>()
+        listNft.addAll(appPreference.getListNft())
+        listNft.add(
+            NftModel(
+                walletAddress,
+                nftAddress,
+                nftName,
+                iconNFT,
+                nftID
+            )
+        )
+        appPreference.saveListNft(listNft)
         hasMap["isSuccess"] = true
         channel?.invokeMethod("importNftCallback", hasMap)
     }
@@ -392,26 +514,19 @@ class MainActivity : FlutterFragmentActivity() {
     private fun setShowedNft(
         walletAddress: String,
         nftAddress: String,
-        show: Boolean,
+        isShow: Boolean,
         password: String
     ) {
+        //todo check password
         val hasMap = HashMap<String, Any>()
+        val listNft = ArrayList<NftModel>()
+        listNft.addAll(appPreference.getListNft())
+        listNft.firstOrNull { it.walletAddress == walletAddress && it.nftAddress == nftAddress }?.isShow =
+            isShow
+        appPreference.saveListNft(listNft)
         hasMap["isSuccess"] = true
         channel?.invokeMethod("setShowedNftCallback", hasMap)
-    }
 
-    private fun genAddressBySeedPhrase(seedPhrase: String, coinType: CoinType): String {
-        val wallet = HDWallet(seedPhrase, "")
-        return wallet.getAddressForCoin(coinType)
-    }
-
-    private fun genAddressByPrivateKey(privateKey: String, coinType: CoinType): String {
-        val signerInput = Binance.SigningInput.newBuilder().apply {
-            this.privateKey = ByteString.copyFrom(privateKey.hexStringToByteArray())
-        }.build()
-        val signerOutput =
-            AnySigner.sign(signerInput, CoinType.SMARTCHAIN, Binance.SigningOutput.parser())
-        return ""
     }
 
     private fun signTransaction(

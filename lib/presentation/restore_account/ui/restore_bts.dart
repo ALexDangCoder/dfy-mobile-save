@@ -4,6 +4,7 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_fail.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/restore_account/bloc/restore_cubit.dart';
 import 'package:Dfy/presentation/restore_account/bloc/restore_state.dart';
@@ -24,16 +25,16 @@ import 'choice_dialog.dart';
 const String PASS_PHRASE = 'PASS_PHRASE';
 const String PRIVATE_KEY = 'PRIVATE_KEY';
 
-class RestoreAcount extends StatefulWidget {
-  const RestoreAcount({
+class RestoreAccount extends StatefulWidget {
+  const RestoreAccount({
     Key? key,
   }) : super(key: key);
 
   @override
-  _RestoreAcountState createState() => _RestoreAcountState();
+  _RestoreAccountState createState() => _RestoreAccountState();
 }
 
-class _RestoreAcountState extends State<RestoreAcount> {
+class _RestoreAccountState extends State<RestoreAccount> {
   late final RestoreCubit restoreCubit;
   List<String> listString = [S.current.restore_with_seed, S.current.only_first];
   String strValue = S.current.seed_phrase;
@@ -91,7 +92,13 @@ class _RestoreAcountState extends State<RestoreAcount> {
           );
         }
         if (state is ErrorState) {
-          Fluttertoast.showToast(msg: S.current.error);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return const CreateFail(type: KeyType.IMPORT);
+              },
+            ),
+          );
         }
       },
       builder: (ctx, _) {
@@ -105,6 +112,7 @@ class _RestoreAcountState extends State<RestoreAcount> {
           },
           child: BaseBottomSheet(
             title: S.current.restore_account,
+            isBackNewWallet: true,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(

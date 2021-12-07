@@ -2,8 +2,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/import_account/ui/import_account_login.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrase.dart';
+import 'package:Dfy/presentation/import_account/ui/import_account_login.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
@@ -33,7 +33,7 @@ class SettingWallet extends StatelessWidget {
       title: S.current.setting,
       text: S.current.lock,
       isImage: false,
-      callback: () {
+      onRightClick: () {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const MainScreen(
@@ -81,6 +81,10 @@ class SettingWallet extends StatelessWidget {
                             );
                           },
                         ),
+                      ).whenComplete(
+                        () => {
+                          cubit.listSelectAccBloc.clear(),
+                        },
                       );
                     },
                     child: buttonForm(
@@ -132,13 +136,15 @@ class SettingWallet extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        builder: (context) => ConfirmPWShowPRVSeedPhr(
-                          cubit: ConfirmPwPrvKeySeedpharseCubit(),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) {
+                            return ConfirmPWShowPRVSeedPhr(
+                              cubit: ConfirmPwPrvKeySeedpharseCubit(),
+                            );
+                          },
                         ),
-                        context: context,
                       );
                     },
                     child: buttonForm(
@@ -155,11 +161,13 @@ class SettingWallet extends StatelessWidget {
                       prefixIcon: ImageAssets.ic_security,
                     ),
                     onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        builder: (context) => const ChangePassword(),
-                        context: context,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) {
+                            return const ChangePassword();
+                          },
+                        ),
                       );
                     },
                   ),

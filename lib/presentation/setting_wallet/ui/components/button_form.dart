@@ -44,9 +44,10 @@ Container switchForm({
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(top: 5.h),
+      child: Center(
+        // padding: EdgeInsets.only(top: 5.h),
         child: ListTileSwitch(
+          enabled: false,
           switchScale: 1,
           value: isCheck,
           onChanged: (bool value) =>
@@ -81,9 +82,10 @@ Container switchForm({
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(top: 5.h),
+      child: Center(
+        // padding: EdgeInsets.only(top: 1.h),
         child: ListTileSwitch(
+          enabled: false,
           switchScale: 1,
           value: isCheck,
           onChanged: (value) {
