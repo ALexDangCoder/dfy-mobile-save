@@ -146,9 +146,10 @@ class ImportTokenScreen extends StatelessWidget {
 
                         if (!currentFocus.hasPrimaryFocus) {
                           currentFocus.unfocus();
+                          bloc.getTokenInfoByAddress(
+                            tokenAddress: bloc.tokenAddressText.value,
+                          );
                         }
-                        bloc.getTokenInfoByAddress(
-                            tokenAddress: bloc.tokenAddressText.value);
                       },
                       child: TabBarView(
                         children: [
