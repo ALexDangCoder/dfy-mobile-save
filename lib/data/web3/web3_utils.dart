@@ -1,3 +1,5 @@
+import 'package:Dfy/data/web3/abi/nft.g.dart';
+import 'package:Dfy/data/web3/abi/token.g.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/model/transaction.dart';
@@ -18,8 +20,31 @@ class Web3Utils {
   //client
   final client = Web3Client(rpcURL, Client());
 
+  Future<bool> importNFT({
+    required String contract,
+    required int id,
+  }) async {
+    final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
+    try {
+      await nft.tokenURI(BigInt.from(id));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> getCollectionInfo({required String contract}) async {
+    final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
+    final name = await nft.name();
+  }
+
   //NFT info
-  Future<NftInfo> getNftInfo() async {
+  Future<NftInfo> getNftInfo({
+    required String contract,
+    required int id,
+  }) async {
+    final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
+    final name = await nft.name();
     return NftInfo(
       contract: '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
       name: 'Name of NFT',
@@ -33,12 +58,26 @@ class Web3Utils {
   }
 
   //Token info
-  TokenInfoModel getTokenInfo({required String contractAddress}) {
+  Future<TokenInfoModel> getTokenInfo({
+    required String contractAddress,
+    String? walletAddress,
+  }) async {
+    final token = Token(
+        address: EthereumAddress.fromHex(contractAddress), client: client);
+    double value = 0.0;
+    final name = await token.name();
+    final decimal = await token.decimals();
+    final symbol = await token.symbol();
+    if (walletAddress != null) {
+      final balance =
+          await token.balanceOf(EthereumAddress.fromHex(walletAddress));
+      value = balance / BigInt.from(10).pow(18);
+    }
     return TokenInfoModel(
-      'Binance Coin',
-      18,
-      'BNB',
-      'https://assets.coingecko.com/coins/images/825/thumb/binance-coin-logo.png?1547034615',
+      name,
+      decimal,
+      symbol,
+      value,
     );
   }
 
@@ -54,7 +93,10 @@ class Web3Utils {
     String? password,
   }) async {
     //TODO: Mockup data
-    return 1000.0;
+    final token =
+        Token(address: EthereumAddress.fromHex(tokenAddress), client: client);
+    final balance = await token.balanceOf(EthereumAddress.fromHex(ofAddress));
+    return balance / BigInt.from(10).pow(18);
   }
 
   //Transaction History of a token
@@ -167,13 +209,13 @@ class Web3Utils {
   }
 
   //Token detail
-  Future<TokenInfoModel> getTokenDetail({
-    required String contractAddress,
-    required String walletAddress,
-    String? password,
-  }) async {
-    return TokenInfoModel('', 0, '', '');
-  }
+  // Future<TokenInfoModel> getTokenDetail({
+  //   required String contractAddress,
+  //   required String walletAddress,
+  //   String? password,
+  // }) async {
+  //   return TokenInfoModel('', 0, '', '');
+  // }
 
   //NFT detail
   Future<NftInfo> getNftDetail({
