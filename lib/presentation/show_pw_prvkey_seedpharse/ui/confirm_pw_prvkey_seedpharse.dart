@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
 import 'package:Dfy/presentation/private_key_seed_phrase/ui/private_key_seed_phrase.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -23,13 +22,12 @@ class ConfirmPWShowPRVSeedPhr extends StatefulWidget {
 }
 
 class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
-  String password = 'Huydepzai1102.';
+  String password = '1';
   late TextEditingController txtController;
 
   @override
   void initState() {
     txtController = TextEditingController();
-    print(Platform.isIOS);
     widget.cubit.getConfig();
     super.initState();
   }
@@ -72,7 +70,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
                         MaterialPageRoute(
                           builder: (context) {
                             return PrivateKeySeedPhrase(
-                              bloc: PrivateKeySeedPhraseBloc(),
+                              bloc: widget.cubit,
                             );
                           },
                         ),
@@ -108,7 +106,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
                         MaterialPageRoute(
                           builder: (context) {
                             return PrivateKeySeedPhrase(
-                              bloc: PrivateKeySeedPhraseBloc(),
+                              bloc: widget.cubit,
                             );
                           },
                         ),

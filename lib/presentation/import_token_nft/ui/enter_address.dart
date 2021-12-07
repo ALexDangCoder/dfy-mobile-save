@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/token_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -36,9 +37,6 @@ class _EnterAddressState extends State<EnterAddress> {
     controller.addListener(() {
       widget.bloc.tokenAddressText.sink.add(controller.text);
     });
-    trustWalletChannel.setMethodCallHandler(
-      widget.bloc.nativeMethodCallBackTrustWallet,
-    );
   }
 
   @override
@@ -52,7 +50,7 @@ class _EnterAddressState extends State<EnterAddress> {
     return BlocConsumer(
       bloc: widget.bloc,
       listener: (context, state) {
-        if (state is NavigatorSucces) {
+        if (state is NavigatorSuccessfully) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -60,7 +58,12 @@ class _EnterAddressState extends State<EnterAddress> {
                 return const TokenSuccessfully();
               },
             ),
-          );
+          ).whenComplete(() async {
+            widget.bloc.listTokenFromWalletCore.clear();
+            await widget.bloc.getTokens(widget.addressWallet);
+            widget.bloc.listTokenStream
+                .add(widget.bloc.listTokenFromWalletCore);
+          });
         }
       },
       builder: (context, _) {

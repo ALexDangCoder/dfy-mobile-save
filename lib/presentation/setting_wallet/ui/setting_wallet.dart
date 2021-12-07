@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrase.dart';
@@ -16,9 +17,11 @@ import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../main.dart';
+
 enum typeSwitchForm { FINGER_FT_FACEID, APPLOCK }
 
-class SettingWallet extends StatelessWidget {
+class SettingWallet extends StatefulWidget {
   const SettingWallet({
     required this.cubit,
     Key? key,
@@ -28,7 +31,27 @@ class SettingWallet extends StatelessWidget {
   final WalletCubit cubit;
 
   @override
+  State<SettingWallet> createState() => _SettingWalletState();
+}
+
+class _SettingWalletState extends State<SettingWallet> {
+  late final ConfirmPwPrvKeySeedpharseCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = ConfirmPwPrvKeySeedpharseCubit();
+    trustWalletChannel.setMethodCallHandler(
+      cubit.nativeMethodCallBackTrustWallet,
+    );
+    cubit.getListWallets();
+    cubit.getListPrivateKeyAndSeedphrase();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    trustWalletChannel
+        .setMethodCallHandler(widget.cubitSetting.nativeMethodCallBackTrustWallet);
     return BaseBottomSheet(
       title: S.current.setting,
       text: S.current.lock,
@@ -51,16 +74,6 @@ class SettingWallet extends StatelessWidget {
               child: Column(
                 children: [
                   GestureDetector(
-                    // onTap: () {
-                    //   showModalBottomSheet(
-                    //     isScrollControlled: true,
-                    //     backgroundColor: Colors.transparent,
-                    //     context: context,
-                    //     builder: (_) {
-                    //       return const TransactionSubmit();
-                    //     },
-                    //   );
-                    // },
                     child: buttonForm(
                       hintText: 'Dapp',
                       prefixIcon: ImageAssets.ic_global,
@@ -76,14 +89,14 @@ class SettingWallet extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) {
                             return SelectAcc(
-                              bloc: cubit,
+                              bloc: widget.cubit,
                               typeScreen2: TypeScreen2.setting,
                             );
                           },
                         ),
                       ).whenComplete(
                         () => {
-                          cubit.listSelectAccBloc.clear(),
+                          widget.cubit.listSelectAccBloc.clear(),
                         },
                       );
                     },
@@ -141,7 +154,7 @@ class SettingWallet extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (_) {
                             return ConfirmPWShowPRVSeedPhr(
-                              cubit: ConfirmPwPrvKeySeedpharseCubit(),
+                              cubit: cubit,
                             );
                           },
                         ),
@@ -175,13 +188,13 @@ class SettingWallet extends StatelessWidget {
                     height: 16.h,
                   ),
                   StreamBuilder<bool>(
-                    stream: cubitSetting.isSwitchFingerFtFaceIdOnStream,
+                    stream: widget.cubitSetting.isSwitchFingerFtFaceIdOnStream,
                     builder: (context, snapshot) {
                       return switchForm(
                         prefixImg: ImageAssets.ic_face_id,
                         isCheck: snapshot.data ?? false,
                         hintText: S.current.face_touch_id,
-                        cubit: cubitSetting,
+                        cubit: widget.cubitSetting,
                         type: typeSwitchForm.FINGER_FT_FACEID,
                       );
                     },
@@ -190,14 +203,14 @@ class SettingWallet extends StatelessWidget {
                     height: 16.h,
                   ),
                   StreamBuilder<bool>(
-                    stream: cubitSetting.isSwitchAppLockOnStream,
+                    stream: widget.cubitSetting.isSwitchAppLockOnStream,
                     builder: (context, snapshot) {
                       return switchForm(
                         prefixImg: ImageAssets.ic_lock,
                         isCheck: snapshot.data ?? true,
                         hintText: S.current.app_wallet_lock,
                         type: typeSwitchForm.APPLOCK,
-                        cubit: cubitSetting,
+                        cubit: widget.cubitSetting,
                       );
                     },
                   ),
