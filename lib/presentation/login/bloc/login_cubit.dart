@@ -72,7 +72,7 @@ class LoginCubit extends BaseCubit<LoginState> {
     final List<BiometricType> availableBiometrics =
         await auth.getAvailableBiometrics();
     //print(availableBiometrics);
-    if (canCheckBiometrics) {
+    if (canCheckBiometrics && isFaceID) {
       await authenticate();
     }
   }

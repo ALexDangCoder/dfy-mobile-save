@@ -91,6 +91,7 @@ class _WalletState extends State<WalletScreen>
       return Scaffold(
         resizeToAvoidBottomInset: false,
         body: PullToRefresh(
+          offset: 112.h,
           onRefresh: () {cubit.getTokens(cubit.addressWalletCore);},
           child: Container(
             width: 375.w,

@@ -31,7 +31,7 @@ class ImportToken extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) {
                 return ImportTokenScreen(
-                  bloc: WalletCubit(),
+                  bloc: cubit,
                   addressWallet: addressWallet,
                 );
               },
@@ -44,7 +44,7 @@ class ImportToken extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) {
                 return ImportNft(
-                  bloc: WalletCubit(),
+                  bloc: cubit,
                   addressWallet: addressWallet,
                 );
               },
