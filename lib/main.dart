@@ -143,7 +143,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void callAllApi() {
-    signTransaction();
   }
 
   Future<void> getConfig() async {
@@ -177,9 +176,8 @@ class _MyAppState extends State<MyApp> {
     try {
       final data = {
         'type': 'PASS_PHRASE',
-        'content': 'party response give dove tooth master flip'
-            ' video permit game expire token',
-        'password': '123456',
+        // 'content': 'alpha derive category enact use dinner over sister snap reform pulp enough',
+        'content': '1 1 1 1 1 1 1 1 1 1 1 1',
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {}
