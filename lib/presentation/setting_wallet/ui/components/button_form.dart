@@ -47,6 +47,7 @@ Container switchForm({
       child: Padding(
         padding: EdgeInsets.only(top: 5.h),
         child: ListTileSwitch(
+          enabled: false,
           switchScale: 1,
           value: isCheck,
           onChanged: (bool value) =>
@@ -84,6 +85,7 @@ Container switchForm({
       child: Padding(
         padding: EdgeInsets.only(top: 5.h),
         child: ListTileSwitch(
+          enabled: false,
           switchScale: 1,
           value: isCheck,
           onChanged: (value) {
