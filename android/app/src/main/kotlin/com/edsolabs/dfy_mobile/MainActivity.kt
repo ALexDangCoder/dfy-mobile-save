@@ -556,10 +556,12 @@ class MainActivity : FlutterFragmentActivity() {
             if (it.walletAddress == walletAddress) {
                 val data = HashMap<String, Any>()
                 data["walletAddress"] = it.walletAddress
+                data["collectionAddress"] = it.collectionAddress
                 data["nftAddress"] = it.nftAddress
                 data["nftName"] = it.nftName
                 data["iconNFT"] = it.iconNFT
                 data["nftID"] = it.nftID
+                data["isShow"] = it.isShow
                 hasMap.add(data)
             }
         }
