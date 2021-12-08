@@ -83,9 +83,7 @@ class MainActivity : FlutterFragmentActivity() {
                     getListWallets()
                 }
                 "generateWallet" -> {
-                    val password =
-                        call.argument<String>("password") ?: return@setMethodCallHandler
-                    generateWallet(password)
+                    generateWallet()
                 }
                 "storeWallet" -> {
                     val seedPhrase =
@@ -252,10 +250,12 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun savePassWordWallet(password: String) {
-        val hasMap = HashMap<String, Any>()
-        appPreference.password = password
-        hasMap["isSuccess"] = true
-        channel?.invokeMethod("savePasswordCallback", hasMap)
+        if (password.isNotEmpty()) {
+            val hasMap = HashMap<String, Any>()
+            appPreference.password = password
+            hasMap["isSuccess"] = true
+            channel?.invokeMethod("savePasswordCallback", hasMap)
+        }
     }
 
     private fun changePassWordWallet(oldPassword: String, newPassword: String) {
@@ -372,7 +372,7 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getListWalletsCallback", hasMap)
     }
 
-    private fun generateWallet(password: String) {
+    private fun generateWallet() {
         val wallet = HDWallet(128, "")
         val seedPhrase = wallet.mnemonic()
         val address = wallet.getAddressForCoin(coinType)
@@ -384,7 +384,6 @@ class MainActivity : FlutterFragmentActivity() {
         hasMap["passPhrase"] = seedPhrase
         hasMap["walletAddress"] = address
         hasMap["privateKey"] = privateKey.toByteArray().toHexString(false)
-        appPreference.password = password
         channel?.invokeMethod("generateWalletCallback", hasMap)
     }
 
