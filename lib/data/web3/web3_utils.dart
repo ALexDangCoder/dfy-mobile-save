@@ -93,10 +93,15 @@ class Web3Utils {
     required String contractAddress,
     String? walletAddress,
   }) async {
-    final token = Token(
-      address: EthereumAddress.fromHex(contractAddress),
-      client: client,
-    );
+    Token token;
+    try {
+      token = Token(
+        address: EthereumAddress.fromHex(contractAddress),
+        client: client,
+      );
+    } catch (e) {
+      return null;
+    }
     double value = 0.0;
     String name;
     String symbol;
