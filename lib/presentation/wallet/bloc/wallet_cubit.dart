@@ -261,27 +261,26 @@ class WalletCubit extends BaseCubit<WalletState> {
       yield listTokenInf[i];
     }
   }
+  Stream<ModelToken> getTokenRealtime(List<ModelToken> listModelToken) async* {
+    for (int i = 0; i < listModelToken.length; i++) {
+      yield listModelToken[i];
+    }
+  }
 
   Future<void> getTokenInfoByAddressList({
     required List<TokenInf> res,
   }) async {
     final List<ModelToken> listJson = [];
     await for (final value in getListTokenRealtime(res)) {
-      final TokenInfoModel? tokenInfoModel = await client.getTokenInfo(
-        contractAddress: value.address!,
-        //todo addressContract BE
-        walletAddress: addressWalletCore,
-      );
       getListModelToken.add(
         ModelToken(
           tokenAddress: value.address ?? '',
           iconToken: value.iconUrl ?? '',
           nameShortToken: value.symbol ?? '',
-          nameToken: tokenInfoModel?.name ?? '',
-          balanceToken: tokenInfoModel?.value ?? 0,
+          nameToken: value.name ?? '',
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
-          decimal: tokenInfoModel?.decimal!.toDouble() ?? 0.0,
+          decimal: 18.0,
         ),
       );
       listJson.add(
@@ -289,11 +288,10 @@ class WalletCubit extends BaseCubit<WalletState> {
           tokenAddress: value.address ?? '',
           iconToken: value.iconUrl ?? '',
           nameShortToken: value.symbol ?? '',
-          nameToken: tokenInfoModel?.name ?? '',
-          balanceToken: tokenInfoModel?.value ?? 0,
+          nameToken: value.name ?? '',
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
-          decimal: tokenInfoModel?.decimal!.toDouble() ?? 0.0,
+          decimal: 18.0,
         ),
       );
     }
@@ -301,14 +299,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     await importListToken(json);
   }
 
-  void getExchangeRate(
+  Future<void> getExchangeRate (
     List<ModelToken> listShow,
     List<ModelToken> listCheck,
-  ) {
-    for (int i = 0; i < listShow.length; i++) {
-      for (int j = 0; j < listCheck.length; j++) {
-        if (listShow[i].nameShortToken == listCheck[j].nameShortToken) {
-          listShow[i].exchangeRate = listCheck[j].exchangeRate;
+  ) async {
+    await for (final valueShow in getTokenRealtime(listShow)) {
+      await  for (final valueCheck in getTokenRealtime(listCheck)) {
+        if (valueShow.nameShortToken == valueCheck.nameShortToken) {
+          valueShow.exchangeRate = valueCheck.exchangeRate;
         }
       }
     }
@@ -367,9 +365,11 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         await getBalanceOFToken(listTokenFromWalletCore);
         listTokenStream.add(listTokenFromWalletCore);
-        await getListCategory();
-        getExchangeRate(listTokenFromWalletCore, getListModelToken);
-        total(listTokenFromWalletCore);
+        await getExchangeRate(
+          listTokenFromWalletCore,
+          getListModelToken,
+        );
+        totalBalance.add(total(listTokenFromWalletCore));
         listTokenStream.add(listTokenFromWalletCore);
         break;
       case 'getNFTCallback':
@@ -391,7 +391,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         break;
       case 'importListNftCallback':
-        List<NftInfo> listNftInfor = methodCall.arguments;
         break;
       default:
         break;
