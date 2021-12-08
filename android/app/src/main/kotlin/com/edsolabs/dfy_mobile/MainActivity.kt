@@ -124,6 +124,16 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("password") ?: return@setMethodCallHandler
                     getListShowedNft(walletAddress, password)
                 }
+                "checkToken" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    val tokenAddress =
+                        call.argument<String>("tokenAddress") ?: return@setMethodCallHandler
+                    checkToken(
+                        walletAddress,
+                        tokenAddress
+                    )
+                }
                 "importToken" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress") ?: return@setMethodCallHandler
@@ -460,6 +470,14 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getListShowedNftCallback", hasMap)
     }
 
+    private fun checkToken(walletAddress: String, tokenAddress: String) {
+        val hasMap = HashMap<String, Any>()
+        hasMap["isExist"] = appPreference.getListToken()
+            .firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress } != null
+        channel?.invokeMethod("checkTokenCallback", hasMap)
+    }
+
+
     private fun importToken(
         walletAddress: String,
         tokenAddress: String,
@@ -538,10 +556,12 @@ class MainActivity : FlutterFragmentActivity() {
             if (it.walletAddress == walletAddress) {
                 val data = HashMap<String, Any>()
                 data["walletAddress"] = it.walletAddress
+                data["collectionAddress"] = it.collectionAddress
                 data["nftAddress"] = it.nftAddress
                 data["nftName"] = it.nftName
                 data["iconNFT"] = it.iconNFT
                 data["nftID"] = it.nftID
+                data["isShow"] = it.isShow
                 hasMap.add(data)
             }
         }
