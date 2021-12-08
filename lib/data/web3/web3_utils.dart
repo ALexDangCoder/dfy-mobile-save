@@ -74,16 +74,33 @@ class Web3Utils {
   }
 
   //Token info
-  Future<TokenInfoModel> getTokenInfo({
+  Future<TokenInfoModel?> getTokenInfo({
     required String contractAddress,
     String? walletAddress,
   }) async {
     final token = Token(
-        address: EthereumAddress.fromHex(contractAddress), client: client);
+      address: EthereumAddress.fromHex(contractAddress),
+      client: client,
+    );
     double value = 0.0;
-    final name = await token.name();
-    final decimal = await token.decimals();
-    final symbol = await token.symbol();
+    String name;
+    String symbol;
+    BigInt decimal;
+    try {
+      name = await token.name();
+    } catch (e) {
+      return null;
+    }
+    try {
+      decimal = await token.decimals();
+    } catch (e) {
+      return null;
+    }
+    try {
+      symbol = await token.symbol();
+    } catch (e) {
+      return null;
+    }
     if (walletAddress != null) {
       final balance =
           await token.balanceOf(EthereumAddress.fromHex(walletAddress));
