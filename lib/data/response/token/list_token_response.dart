@@ -26,7 +26,7 @@ class ListTokenResponse extends Equatable {
   Map<String, dynamic> toJson() => _$ListTokenResponseToJson(this);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [data];
 
   List<TokenInf> toDomain() => data?.map((e) => e.toDomain()).toList() ?? [];
 }

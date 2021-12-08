@@ -133,15 +133,23 @@ class RemoveToken extends StatelessWidget {
                                       Expanded(
                                         child: GestureDetector(
                                           onTap: () {
-                                            print(cubit.addressWallet.value);
-                                            print(cubit
-                                                .listTokenFromWalletCore[
-                                            index]
-                                                .tokenAddress,);
+                                            print(
+                                              cubit
+                                                  .listTokenFromWalletCore[
+                                                      index]
+                                                  .walletAddress,
+                                            );
+                                            print(
+                                              cubit
+                                                  .listTokenFromWalletCore[
+                                                      index]
+                                                  .tokenAddress,
+                                            );
                                             cubit.setShowedToken(
-                                              walletAddress:
-                                                  cubit.addressWallet.value,
-
+                                              walletAddress: cubit
+                                                  .listTokenFromWalletCore[
+                                                      index]
+                                                  .walletAddress,
                                               isShow: false,
                                               tokenAddress: cubit
                                                   .listTokenFromWalletCore[

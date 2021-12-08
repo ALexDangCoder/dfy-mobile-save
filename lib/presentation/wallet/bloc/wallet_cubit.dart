@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -7,12 +8,15 @@ import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
@@ -27,11 +31,10 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getTokenInfoByAddress({required String tokenAddress}) async {
     final TokenInfoModel tokenInfoModel =
-        client.getTokenInfo(contractAddress: tokenAddress);
+        await client.getTokenInfo(contractAddress: tokenAddress);
     tokenSymbol.sink.add(tokenInfoModel.tokenSymbol ?? 'null');
     tokenDecimal.sink.add('${tokenInfoModel.decimal ?? 0} ');
     tokenFullName = tokenInfoModel.name ?? '';
-    iconToken = tokenInfoModel.icon ?? '';
     if (tokenInfoModel.tokenSymbol!.isNotEmpty) {
       isTokenEnterAddress.sink.add(true);
     }
@@ -51,9 +54,13 @@ class WalletCubit extends BaseCubit<WalletState> {
   // id: '124124',
   // link: 'https://goole.com',
   // standard: 'ERC-721',
+  //todo getNftInfoByAddress
   Future<void> getNftInfoByAddress(
       {required String nftAddress, int? enterId}) async {
-    final NftInfo nftInfoModel = await client.getNftInfo();
+    final NftInfo nftInfoModel = await client.getNftInfo(
+      contract: '',
+      id: 12,
+    );
     nftName = nftInfoModel.name ?? '';
     iconNFT = nftInfoModel.link ?? '';
   }
@@ -97,7 +104,8 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   String tokenFullName = '';
-  String iconToken = '';
+  String iconToken =
+      'https://assets.coingecko.com/coins/images/825/thumb/binance-coin-logo.png?1547034615';
   bool checkLogin = false;
   List<TokenModel> listStart = [];
   List<Wallet> listWallet = [];
@@ -224,7 +232,45 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  TokenRepository get _tokenRepository => Get.find();
+
+  List<ModelToken> getListModelToken = [];
+
+  Future<void> getTokenInfoByAddressList({
+    required List<TokenInf> res,
+  }) async {
+    for (final value in res) {
+      final TokenInfoModel tokenInfoModel = await client.getTokenInfo(
+        contractAddress: '0x20f1de452e9057fe863b99d33cf82dbee0c45b14',
+        //todo addressContract BE
+        walletAddress: addressWalletCore,
+      );
+      getListModelToken.add(
+        ModelToken(
+          tokenAddress: value.address ?? '',
+          iconToken: value.iconUrl ?? '',
+          nameShortToken: value.symbol ?? '',
+          nameToken: tokenInfoModel.name ?? '',
+          balanceToken: tokenInfoModel.value ?? 0,
+        ),
+      );
+    }
+    print('--------------${getListModelToken.length}');
+  }
+
   //Web3
+  Future<void> getListCategory() async {
+    final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
+    result.when(
+      success: (res) {
+        //todo: Import to wallet core
+        getTokenInfoByAddressList(res: res);
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
+  }
 
   Future<void> getExchangeRate(List<ModelToken> list) async {
     ///TODO: function get ExchangeRate
@@ -273,8 +319,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         for (final element in data) {
           checkShow.add(ModelToken.fromWalletCore(element));
         }
-        for(final element in checkShow){
-          if(element.isShowed){
+        for (final element in checkShow) {
+          if (element.isShow) {
             listTokenFromWalletCore.add(element);
           }
         }
