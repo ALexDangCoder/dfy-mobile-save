@@ -37,6 +37,7 @@ class _ChooseTokenState extends State<ChooseToken> {
             builder: (context, snapshot) {
               return Expanded(
                 child: ListView.builder(
+                  padding: EdgeInsets.zero,
                   itemCount: widget.bloc.getListTokenModel.value.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
@@ -54,22 +55,23 @@ class _ChooseTokenState extends State<ChooseToken> {
                         child: ListTileSwitch(
                           enabled: false,
                           switchScale: 1,
-                          value: widget
-                                  .bloc.getListTokenModel.value[index].isShow ??
-                              false,
-                          leading: Image.asset(
-                            widget.bloc.getListTokenModel.value[index]
-                                    .iconToken ??
-                                '',
+                          value:
+                              widget.bloc.getListTokenModel.value[index].isShow,
+                          leading: Image.network(
+                            widget
+                                .bloc.getListTokenModel.value[index].iconToken,
                           ),
                           onChanged: (value) {
                             widget.bloc.getListTokenModel.value[index].isShow =
                                 value;
                             widget.bloc.setShowedToken(
-                              walletAddress: 'walletAddress',
+                              walletAddress: widget.bloc.getListTokenModel
+                                  .value[index].walletAddress,
                               isShow: value,
-                              tokenAddress: 'tokenAddress',
+                              tokenAddress: widget.bloc.getListTokenModel
+                                  .value[index].tokenAddress,
                             );
+
                             setState(() {});
                           },
                           switchActiveColor: const Color(0xffE4AC1A),
@@ -78,8 +80,7 @@ class _ChooseTokenState extends State<ChooseToken> {
                             children: [
                               Text(
                                 widget.bloc.getListTokenModel.value[index]
-                                        .nameToken ??
-                                    '',
+                                    .nameToken,
                                 style: textNormalCustom(
                                   Colors.white,
                                   16,
@@ -89,8 +90,7 @@ class _ChooseTokenState extends State<ChooseToken> {
                               spaceW6,
                               Text(
                                 widget.bloc.getListTokenModel.value[index]
-                                        .nameTokenSymbol ??
-                                    '',
+                                    .nameShortToken,
                                 style: textNormalCustom(
                                   const Color.fromRGBO(255, 255, 255, 0.7),
                                   18,
@@ -100,8 +100,8 @@ class _ChooseTokenState extends State<ChooseToken> {
                             ],
                           ),
                           subtitle: Text(
-                            '${widget.bloc.getListTokenModel.value[index].amountToken?.toStringAsFixed(5)}' +
-                                ' ${widget.bloc.getListTokenModel.value[index].nameTokenSymbol ?? ''} ',
+                            '${widget.bloc.getListTokenModel.value[index].balanceToken.toStringAsFixed(5)}' +
+                                ' ${widget.bloc.getListTokenModel.value[index].nameShortToken} ',
                             style: textNormalCustom(
                               const Color.fromRGBO(255, 255, 255, 0.5),
                               16,

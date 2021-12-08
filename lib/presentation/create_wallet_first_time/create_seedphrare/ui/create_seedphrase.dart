@@ -5,6 +5,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrare_confirm.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom.dart';
@@ -32,9 +33,7 @@ class CreateSeedPhrase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (blocCreateSeedPhrase.passPhrase.isEmpty) {
-      blocCreateSeedPhrase.generateWallet(
-        password: blocCreateSeedPhrase.passWord,
-      );
+      blocCreateSeedPhrase.generateWallet();
     }
     trustWalletChannel.setMethodCallHandler(
       blocCreateSeedPhrase.nativeMethodCallBackTrustWallet,
@@ -150,8 +149,14 @@ class _BodyState extends State<_Body> {
                             if (widget.typeScreen == TypeScreen.one) {
                               Navigator.pop(context);
                             } else {
-                              Navigator.pop(context);
-                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MainScreen(
+                                    index: 3,
+                                  ),
+                                ),
+                              );
                             }
                           },
                         ),

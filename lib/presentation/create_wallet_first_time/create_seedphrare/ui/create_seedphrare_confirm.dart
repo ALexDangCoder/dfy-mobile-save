@@ -9,6 +9,7 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/c
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully_have_wallet.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
@@ -99,6 +100,7 @@ class _BodyState extends State<_Body> {
                         address: bLocCreateSeedPhrase.walletAddress,
                       ),
                       bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
+                      passWord: widget.bLocCreateSeedPhrase.passWord,
                     );
                   },
                 ),
@@ -184,9 +186,14 @@ class _BodyState extends State<_Body> {
                           Navigator.pop(context);
                           Navigator.pop(context);
                         } else {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainScreen(
+                                index: 3,
+                              ),
+                            ),
+                          );
                         }
                       },
                     ),

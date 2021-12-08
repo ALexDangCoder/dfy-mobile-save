@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'choice_dialog.dart';
 
@@ -63,7 +64,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
 
   @override
   void dispose() {
-    restoreCubit.close();
+    restoreCubit.dispose();
     seedPhraseController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
@@ -80,11 +81,12 @@ class _RestoreAccountState extends State<RestoreAccount> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
+                //todo theem pass
                 return CreateSuccessfully(
                   bLocCreateSeedPhrase:
                       BLocCreateSeedPhrase(passwordController.text),
                   wallet: restoreCubit.wallet ?? Wallet(),
-                  type: KeyType.IMPORT,
+                  type: KeyType.IMPORT, passWord: '',
                 );
               },
             ),
@@ -505,7 +507,6 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                       content: flag
                                           ? seedPhraseController.text
                                           : privateKeyController.text,
-                                      password: passwordController.text,
                                     );
                                   }
                                 },
