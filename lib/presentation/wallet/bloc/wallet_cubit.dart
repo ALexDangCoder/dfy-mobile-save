@@ -30,12 +30,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   Web3Utils client = Web3Utils();
 
   Future<void> getTokenInfoByAddress({required String tokenAddress}) async {
-    final TokenInfoModel tokenInfoModel =
+    final TokenInfoModel? tokenInfoModel =
         await client.getTokenInfo(contractAddress: tokenAddress);
-    tokenSymbol.sink.add(tokenInfoModel.tokenSymbol ?? 'null');
-    tokenDecimal.sink.add('${tokenInfoModel.decimal ?? 0} ');
-    tokenFullName = tokenInfoModel.name ?? '';
-    if (tokenInfoModel.tokenSymbol!.isNotEmpty) {
+    tokenSymbol.sink.add(tokenInfoModel?.tokenSymbol ?? 'null');
+    tokenDecimal.sink.add('${tokenInfoModel?.decimal ?? 0} ');
+    tokenFullName = tokenInfoModel?.name ?? '';
+    if (tokenInfoModel!.tokenSymbol!.isNotEmpty) {
       isTokenEnterAddress.sink.add(true);
     }
     if (tokenInfoModel.tokenSymbol!.isEmpty) {
@@ -255,7 +255,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     required List<TokenInf> res,
   }) async {
     for (final value in res) {
-      final TokenInfoModel tokenInfoModel = await client.getTokenInfo(
+      final TokenInfoModel? tokenInfoModel = await client.getTokenInfo(
         contractAddress: '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
         //todo addressContract BE
         walletAddress: addressWalletCore,
@@ -265,8 +265,8 @@ class WalletCubit extends BaseCubit<WalletState> {
           tokenAddress: value.address ?? '',
           iconToken: value.iconUrl ?? '',
           nameShortToken: value.symbol ?? '',
-          nameToken: tokenInfoModel.name ?? '',
-          balanceToken: tokenInfoModel.value ?? 0,
+          nameToken: tokenInfoModel?.name ?? '',
+          balanceToken: tokenInfoModel?.value ?? 0,
           exchangeRate: value.usdExchange ?? 0,
         ),
       );
