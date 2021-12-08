@@ -103,9 +103,7 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<Boolean>("isAppLock") ?: true
                     val isFaceID =
                         call.argument<Boolean>("isFaceID") ?: false
-                    val password =
-                        call.argument<String>("password") ?: return@setMethodCallHandler
-                    setConfig(isAppLock, isFaceID, password)
+                    setConfig(isAppLock, isFaceID)
                 }
                 "getListShowedToken" -> {
                     val walletAddress =
@@ -124,28 +122,11 @@ class MainActivity : FlutterFragmentActivity() {
                     getListShowedNft(walletAddress, password)
                 }
 
-                "importToken" -> {
-                    val walletAddress =
-                        call.argument<String>("walletAddress")
+                "importTokens" -> {
+                    val jsonTokens =
+                        call.argument<String>("jsonTokens")
                             ?: return@setMethodCallHandler
-                    val tokenAddress =
-                        call.argument<String>("tokenAddress") ?: return@setMethodCallHandler
-                    val tokenFullName =
-                        call.argument<String>("tokenFullName") ?: return@setMethodCallHandler
-                    val iconToken =
-                        call.argument<String>("iconToken") ?: return@setMethodCallHandler
-                    val symbol =
-                        call.argument<String>("symbol") ?: return@setMethodCallHandler
-                    val decimal =
-                        call.argument<Int>("decimal") ?: return@setMethodCallHandler
-                    importToken(
-                        walletAddress,
-                        tokenAddress,
-                        tokenFullName,
-                        iconToken,
-                        symbol,
-                        decimal
-                    )
+                    importToken(jsonTokens)
                 }
                 "setShowedToken" -> {
                     val walletAddress =
@@ -282,6 +263,7 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getConfigCallback", hasMap)
     }
 
+
     private fun earseAllWallet(type: String) {
         val hasMap = HashMap<String, Any>()
         appPreference.earseAllWallet()
@@ -308,7 +290,6 @@ class MainActivity : FlutterFragmentActivity() {
         try {
             when (type) {
                 TYPE_WALLET_SEED_PHRASE -> {
-                    //todo content is seed phrase
                     val wallet = HDWallet(content, "")
                     val address = wallet.getAddressForCoin(coinType)
                     val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
@@ -417,12 +398,11 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("storeWalletCallback", hasMap)
     }
 
-    private fun setConfig(appLock: Boolean, faceID: Boolean, password: String) {
+    private fun setConfig(appLock: Boolean, faceID: Boolean) {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
         appPreference.isAppLock = appLock
         appPreference.isFaceID = faceID
-        appPreference.password = password
         channel?.invokeMethod("setConfigCallback", hasMap)
     }
 
@@ -441,28 +421,23 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun importToken(
-        walletAddress: String,
-        tokenAddress: String,
-        tokenFullName: String,
-        iconToken: String,
-        symbol: String,
-        decimal: Int
+        jsonTokens: String
     ) {
         val hasMap = HashMap<String, Any>()
-        val listToken = ArrayList<TokenModel>()
-        listToken.addAll(appPreference.getListToken())
-        listToken.add(
-            TokenModel(
-                walletAddress,
-                tokenAddress,
-                tokenFullName,
-                iconToken,
-                symbol,
-                decimal
-            )
-        )
-        appPreference.saveListToken(listToken)
-        hasMap["isSuccess"] = true
+//        val listToken = ArrayList<TokenModel>()
+//        listToken.addAll(appPreference.getListToken())
+//        listToken.add(
+//            TokenModel(
+//                walletAddress,
+//                tokenAddress,
+//                tokenFullName,
+//                iconToken,
+//                symbol,
+//                decimal
+//            )
+//        )
+//        appPreference.saveListToken(listToken)
+        hasMap["isSuccess"] = false
         channel?.invokeMethod("importTokenCallback", hasMap)
     }
 
