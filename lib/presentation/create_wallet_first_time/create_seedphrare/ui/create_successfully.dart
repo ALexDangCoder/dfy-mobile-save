@@ -174,7 +174,8 @@ class _BodyState extends State<_Body> {
                     ),
                   ),
                 );
-
+                print(widget.bLocCreateSeedPhrase.isCheckAppLock.value);
+                print(widget.bLocCreateSeedPhrase.isCheckTouchID.value);
                 widget.bLocCreateSeedPhrase.setConfig(
                   isAppLock: widget.bLocCreateSeedPhrase.isCheckAppLock.value,
                   isFaceID: widget.bLocCreateSeedPhrase.isCheckTouchID.value,

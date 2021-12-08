@@ -1,4 +1,3 @@
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:flutter/services.dart';
@@ -95,7 +94,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   }
 
   void getStringToList(String passPhrase) {
-    listTitle1 = passPhrase.split(' ');//todo remove random
+    listTitle1 = passPhrase.split(' '); //todo remove random
     // List<int> indices = List<int>.generate(listTitle1.length, (i) => i);
     // indices.shuffle();
     // int newCount = listTitle1.length;
@@ -149,18 +148,33 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     }
   }
 
+  Future<void> savePassword({
+    required String password,
+  }) async {
+    try {
+      final data = {
+        'password': password,
+      };
+
+      await trustWalletChannel.invokeMethod('savePassword', data);
+    } on PlatformException {
+      //todo
+
+    }
+  }
+
   Future<void> setConfig({
     required bool isAppLock,
-    required bool? isFaceID,
+    required bool isFaceID,
   }) async {
     try {
       final data = {
         'isAppLock': isAppLock,
         'isFaceID': isFaceID,
       };
-      await PrefsService.saveFirstAppConfig('false');
-      await PrefsService.saveAppLockConfig(isAppLock.toString());
-      await PrefsService.saveFaceIDConfig(isFaceID.toString());
+      // await PrefsService.saveFirstAppConfig('false');
+      // await PrefsService.saveAppLockConfig(isAppLock.toString());
+      // await PrefsService.saveFaceIDConfig(isFaceID.toString());
       await trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {
       //todo
@@ -185,6 +199,11 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
       case 'setConfigCallback':
         //todo
         bool isSuccess = await methodCall.arguments['isSuccess'];
+        break;
+      case 'savePasswordCallback':
+        //todo
+        bool isSuccess = await methodCall.arguments['isSuccess'];
+        print('-----------------------------------$isSuccess');
         break;
       default:
         break;
