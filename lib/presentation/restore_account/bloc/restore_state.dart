@@ -17,6 +17,9 @@ class NavState extends RestoreState {
 }
 
 class ErrorState extends RestoreState {
+  final String message;
+
+  ErrorState(this.message);
   @override
   List<Object?> get props => [];
 }

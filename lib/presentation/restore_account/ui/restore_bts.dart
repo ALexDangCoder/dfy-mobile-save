@@ -63,7 +63,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
 
   @override
   void dispose() {
-    restoreCubit.close();
+    restoreCubit.dispose();
     seedPhraseController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
@@ -505,7 +505,6 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                       content: flag
                                           ? seedPhraseController.text
                                           : privateKeyController.text,
-                                      password: passwordController.text,
                                     );
                                   }
                                 },

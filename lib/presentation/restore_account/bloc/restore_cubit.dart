@@ -129,9 +129,13 @@ class RestoreCubit extends Cubit<RestoreState> {
       case 'importWalletCallback':
         final walletName = methodCall.arguments['walletName'];
         final walletAddress = methodCall.arguments['walletAddress'];
+        final message = methodCall.arguments['message'];
+        final code = methodCall.arguments['code'];
+        log('${code}code');
+        log('${message}message');
         wallet = Wallet(name: walletName, address: walletAddress);
         if (walletName == null || walletAddress == null) {
-          emit(ErrorState());
+          emit(ErrorState(message));
         } else {
           emit(NavState(wallet ?? Wallet()));
         }
@@ -150,11 +154,9 @@ class RestoreCubit extends Cubit<RestoreState> {
       final data = {
         'type': type,
         'content': content,
-        'password': password,
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
-      emit(ErrorState());
       throw CommonException();
     }
   }

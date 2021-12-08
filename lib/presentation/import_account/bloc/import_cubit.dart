@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -77,9 +79,13 @@ class ImportCubit extends Cubit<ImportState> {
       case 'importWalletCallback':
         final walletName = methodCall.arguments['walletName'];
         final walletAddress = methodCall.arguments['walletAddress'];
+        final message = methodCall.arguments['message'];
+        final code = methodCall.arguments['code'];
+        log('${code}code');
+        log('${message}message');
         wallet = Wallet(name: walletName, address: walletAddress);
-        if (walletName == null || walletAddress == null) {
-          emit(ErrorState());
+        if (walletName == null && walletAddress == null) {
+          emit(ErrorState(message));
         } else {
           emit(NavState(wallet ?? Wallet()));
         }
@@ -92,13 +98,12 @@ class ImportCubit extends Cubit<ImportState> {
   Future<void> importWallet({
     required String type,
     required String content,
-    String? password,
+
   }) async {
     try {
       final data = {
         'type': type,
-        'content': content,
-        'password': password,
+        'content': content
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
