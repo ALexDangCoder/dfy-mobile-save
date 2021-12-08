@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
@@ -258,7 +260,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getTokenInfoByAddressList({
     required List<TokenInf> res,
   }) async {
-    final List<Map<dynamic, dynamic>> listJson = [];
+    final List<ModelToken> listJson = [];
     await for (final value in getListTokenRealtime(res)) {
       final TokenInfoModel? tokenInfoModel = await client.getTokenInfo(
         contractAddress: value.address!,
@@ -287,10 +289,11 @@ class WalletCubit extends BaseCubit<WalletState> {
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
           decimal: tokenInfoModel?.decimal!.toDouble() ?? 0.0,
-        ).toJson(),
+        ),
       );
     }
-    await importListToken(listJson.toString());
+    final json = jsonEncode(listJson.map((e) => e.toJson()).toList());
+    await importListToken(json);
   }
 
   void getExchangeRate(
