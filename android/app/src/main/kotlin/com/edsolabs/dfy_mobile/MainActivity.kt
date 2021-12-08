@@ -304,19 +304,18 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun importWallet(type: String, content: String) {
-        when (type) {
-            TYPE_WALLET_SEED_PHRASE -> {
-                //todo content is seed phrase
-                val hasMap = HashMap<String, Any>()
-                try {
+        val hasMap = HashMap<String, Any>()
+        try {
+            when (type) {
+                TYPE_WALLET_SEED_PHRASE -> {
+                    //todo content is seed phrase
                     val wallet = HDWallet(content, "")
                     val address = wallet.getAddressForCoin(coinType)
                     val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
                     val listWallet = ArrayList<WalletModel>()
                     listWallet.addAll(appPreference.getListWallet())
-                    if(listWallet.firstOrNull { it.walletAddress != address } == null) {
-                        val sttWallet = appPreference.sttWallet
-                        val walletName = "Account ${sttWallet + 1}"
+                    if (listWallet.firstOrNull { it.walletAddress != address } == null) {
+                        val walletName = "Account ${listWallet.size + 1}"
                         hasMap["walletAddress"] = address
                         listWallet.add(
                             WalletModel(
@@ -327,26 +326,45 @@ class MainActivity : FlutterFragmentActivity() {
                             )
                         )
                         appPreference.saveListWallet(listWallet)
-                        appPreference.setSttWallet(sttWallet + 1)
                         hasMap["walletName"] = walletName
                         channel?.invokeMethod("importWalletCallback", hasMap)
                     }
-                } catch (e: InvalidParameterException) {
+
+                }
+                TYPE_WALLET_PRIVATE_KEY -> {
+                    val privateKey = PrivateKey(content.toHexBytes())
+                    val publicKey = privateKey.getPublicKeySecp256k1(false)
+                    val address = AnyAddress(publicKey, coinType).description()
+                    val listWallet = ArrayList<WalletModel>()
+                    listWallet.addAll(appPreference.getListWallet())
+                    if (listWallet.firstOrNull { it.walletAddress != address } == null) {
+                        val walletName = "Account ${listWallet.size + 1}"
+                        hasMap["walletAddress"] = address
+                        listWallet.add(
+                            WalletModel(
+                                walletName,
+                                address,
+                                "",
+                                content
+                            )
+                        )
+                        appPreference.saveListWallet(listWallet)
+                        hasMap["walletName"] = walletName
+                        channel?.invokeMethod("importWalletCallback", hasMap)
+                    }
+
+                    return
+                }
+                else -> {
                     hasMap["walletAddress"] = ""
                     hasMap["walletName"] = ""
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 }
-
             }
-            TYPE_WALLET_PRIVATE_KEY -> {
-                val privateKey = PrivateKey(content.toHexBytes())
-                val publicKey = privateKey.getPublicKeySecp256k1(false)
-                val anyAddress = AnyAddress(publicKey, coinType).description()
-                return
-            }
-            else -> {
-                return
-            }
+        } catch (e: InvalidParameterException) {
+            hasMap["walletAddress"] = ""
+            hasMap["walletName"] = ""
+            channel?.invokeMethod("importWalletCallback", hasMap)
         }
     }
 
@@ -366,8 +384,7 @@ class MainActivity : FlutterFragmentActivity() {
         val seedPhrase = wallet.mnemonic()
         val address = wallet.getAddressForCoin(coinType)
         val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
-        val sttWallet = appPreference.sttWallet
-        val walletName = "Account ${sttWallet + 1}"
+        val walletName = "Account ${appPreference.getListWallet().size + 1}"
 
         val hasMap = HashMap<String, String>()
         hasMap["walletName"] = walletName
@@ -375,7 +392,6 @@ class MainActivity : FlutterFragmentActivity() {
         hasMap["walletAddress"] = address
         hasMap["privateKey"] = privateKey.toByteArray().toHexString(false)
         appPreference.password = password
-        appPreference.setSttWallet(sttWallet + 1)
         channel?.invokeMethod("generateWalletCallback", hasMap)
     }
 
