@@ -124,12 +124,33 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("password") ?: return@setMethodCallHandler
                     getListShowedNft(walletAddress, password)
                 }
-
-                "importTokens" -> {
+                "importToken" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    val tokenAddress =
+                        call.argument<String>("tokenAddress") ?: return@setMethodCallHandler
+                    val tokenFullName =
+                        call.argument<String>("tokenFullName") ?: return@setMethodCallHandler
+                    val iconToken =
+                        call.argument<String>("iconToken") ?: return@setMethodCallHandler
+                    val symbol =
+                        call.argument<String>("symbol") ?: return@setMethodCallHandler
+                    val decimal =
+                        call.argument<Int>("decimal") ?: return@setMethodCallHandler
+                    importToken(
+                        walletAddress,
+                        tokenAddress,
+                        tokenFullName,
+                        iconToken,
+                        symbol,
+                        decimal
+                    )
+                }
+                "importListToken" -> {
                     val jsonTokens =
                         call.argument<String>("jsonTokens")
                             ?: return@setMethodCallHandler
-                    importToken(jsonTokens)
+                    importListToken(jsonTokens)
                 }
                 "setShowedToken" -> {
                     val walletAddress =
@@ -432,6 +453,34 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun importToken(
+        walletAddress: String,
+        tokenAddress: String,
+        tokenFullName: String,
+        iconToken: String,
+        symbol: String,
+        decimal: Int
+    ) {
+        val hasMap = HashMap<String, Any>()
+        val listToken = ArrayList<TokenModel>()
+        listToken.addAll(appPreference.getListToken())
+        if (listToken.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress } == null) {
+            listToken.add(
+                TokenModel(
+                    walletAddress,
+                    tokenAddress,
+                    tokenFullName,
+                    iconToken,
+                    symbol,
+                    decimal
+                )
+            )
+            appPreference.saveListToken(listToken)
+        }
+        hasMap["isSuccess"] = true
+        channel?.invokeMethod("importTokenCallback", hasMap)
+    }
+
+    private fun importListToken(
         jsonTokens: String
     ) {
         val hasMap = HashMap<String, Any>()
@@ -449,7 +498,7 @@ class MainActivity : FlutterFragmentActivity() {
 //        )
 //        appPreference.saveListToken(listToken)
         hasMap["isSuccess"] = false
-        channel?.invokeMethod("importTokenCallback", hasMap)
+        channel?.invokeMethod("importListTokenCallback", hasMap)
     }
 
     private fun getTokens(
