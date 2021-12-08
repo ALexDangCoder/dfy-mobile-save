@@ -54,6 +54,11 @@ class MainActivity : FlutterFragmentActivity() {
                         ?: return@setMethodCallHandler
                     changePassWordWallet(oldPassword, changePassword)
                 }
+                "savePassword" -> {
+                    val password = call.argument<String>("password")
+                        ?: return@setMethodCallHandler
+                    savePassWordWallet(password)
+                }
                 "getConfig" -> {
                     getConfigWallet()
                 }
@@ -244,6 +249,13 @@ class MainActivity : FlutterFragmentActivity() {
         val hasMap = HashMap<String, Any>()
         hasMap["isCorrect"] = password == appPreference.password
         channel?.invokeMethod("checkPasswordCallback", hasMap)
+    }
+
+    private fun savePassWordWallet(password: String) {
+        val hasMap = HashMap<String, Any>()
+        appPreference.password = password
+        hasMap["isSuccess"] = true
+        channel?.invokeMethod("savePasswordCallback", hasMap)
     }
 
     private fun changePassWordWallet(oldPassword: String, newPassword: String) {
