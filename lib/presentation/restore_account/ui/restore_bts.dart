@@ -8,6 +8,7 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/c
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/restore_account/bloc/restore_cubit.dart';
 import 'package:Dfy/presentation/restore_account/bloc/restore_state.dart';
+import 'package:Dfy/presentation/restore_account/ui/choice_dialog.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
@@ -18,9 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
-import 'choice_dialog.dart';
 
 const String PASS_PHRASE = 'PASS_PHRASE';
 const String PRIVATE_KEY = 'PRIVATE_KEY';
@@ -60,6 +58,9 @@ class _RestoreAccountState extends State<RestoreAccount> {
     confirmPasswordController = TextEditingController();
     privateKeyController = TextEditingController();
     seedPhraseController = TextEditingController();
+    passwordController.addListener(() {
+      restoreCubit.newPassword = passwordController.text;
+    });
   }
 
   @override

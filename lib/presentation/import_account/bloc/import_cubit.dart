@@ -116,32 +116,6 @@ class ImportCubit extends Cubit<ImportState> {
     }
   }
 
-  void checkSeedField(String value) {
-    if (value.isNotEmpty) {
-      haveValueSeed = true;
-    } else {
-      haveValueSeed = false;
-    }
-    if (haveValueSeed || haveValuePrivate) {
-      btnSink.add(true);
-    } else {
-      btnSink.add(false);
-    }
-  }
-
-  void checkPrivateField(String value) {
-    if (value.isNotEmpty) {
-      haveValuePrivate = true;
-    } else {
-      haveValuePrivate = false;
-    }
-    if (haveValuePrivate || haveValuePrivate) {
-      btnSink.add(true);
-    } else {
-      btnSink.add(false);
-    }
-  }
-
   void showTxtWarningSeed(String value, FormType type) {
     if (type == FormType.PASS_PHRASE) {
       if (value.isEmpty) {
@@ -154,6 +128,7 @@ class ImportCubit extends Cubit<ImportState> {
         if (len == 12 || len == 15 || len == 18 || len == 21 || len == 24) {
           seedSink.add(false);
           seedField = true;
+          btnSink.add(true);
         } else {
           seedField = false;
           seedSink.add(true);
@@ -172,6 +147,7 @@ class ImportCubit extends Cubit<ImportState> {
         if (len == 64 && !value.contains(' ')) {
           privateField = true;
           seedSink.add(false);
+          btnSink.add(true);
         }
         else{
           privateField = false;

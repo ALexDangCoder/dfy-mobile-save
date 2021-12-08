@@ -1,4 +1,3 @@
-
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -38,14 +37,10 @@ class RestoreCubit extends Cubit<RestoreState> {
   /// Huy
   bool newPasswordField = false;
   bool confirmPasswordField = false;
-  bool haveValueConfirmPW = false;
-  bool haveValueSeed = false;
-  bool haveValuePrivate = false;
-  bool haveValueNewPW = false;
   bool seedField = false;
   bool privateField = false;
-  bool checkBoxValue = true;
-  String message = '';
+  bool checkBoxValue = false;
+  String newPassword = '';
 
   /// button subject
   Stream<bool> get btnStream => _buttonSubject.stream;
@@ -158,43 +153,6 @@ class RestoreCubit extends Cubit<RestoreState> {
       throw CommonException();
     }
   }
-
-  /// check null seed field
-  void checkSeedField(String value) {
-    if (value.isNotEmpty) {
-      haveValueSeed = true;
-    } else {
-      haveValueSeed = false;
-    }
-    if ((haveValueSeed || haveValuePrivate) &&
-        haveValueConfirmPW &&
-        haveValueNewPW &&
-        ckcValue) {
-      btnSink.add(true);
-    } else {
-      btnSink.add(false);
-      ckcSink.add(false);
-      ckcSink.add(false);
-    }
-  }
-
-  void checkPrivateField(String value) {
-    if (value.isNotEmpty) {
-      haveValuePrivate = true;
-    } else {
-      haveValuePrivate = false;
-    }
-    if ((haveValueSeed || haveValuePrivate) &&
-        haveValueConfirmPW &&
-        haveValueNewPW &&
-        checkBoxValue) {
-      btnSink.add(true);
-    } else {
-      btnSink.add(false);
-      ckcSink.add(false);
-    }
-  }
-
   /// check validation of password
   void isValidate(String value) {
     if (Validator.validateStructure(value)) {
@@ -208,11 +166,8 @@ class RestoreCubit extends Cubit<RestoreState> {
   void isMatchPW({required String password, required String confirmPW}) {
     if (password == confirmPW) {
       matchSink.add(false);
-      ckcSink.add(true);
     } else {
       matchSink.add(true);
-      ckcSink.add(false);
-
     }
   }
 
@@ -247,6 +202,12 @@ class RestoreCubit extends Cubit<RestoreState> {
     } else {
       validateSink.add(false);
       newPasswordField = true;
+      if ((seedField || privateField) &&
+          confirmPasswordField &&
+          newPasswordField &&
+          checkBoxValue) {
+        btnSink.add(true);
+      }
     }
   }
 
@@ -263,6 +224,12 @@ class RestoreCubit extends Cubit<RestoreState> {
         if (len == 12 || len == 15 || len == 18 || len == 21 || len == 24) {
           seedSink.add(false);
           seedField = true;
+          if ((seedField || privateField) &&
+              confirmPasswordField &&
+              newPasswordField &&
+              checkBoxValue) {
+            btnSink.add(true);
+          }
         } else {
           seedField = false;
           seedSink.add(true);
@@ -283,8 +250,13 @@ class RestoreCubit extends Cubit<RestoreState> {
         if (len == 64 && !value.contains(' ')) {
           privateField = true;
           seedSink.add(false);
-        }
-        else{
+          if ((seedField || privateField) &&
+              confirmPasswordField &&
+              newPasswordField &&
+              checkBoxValue) {
+            btnSink.add(true);
+          }
+        } else {
           privateField = false;
           seedSink.add(true);
           txtWarningSeedSink.add(S.current.private_warning);
@@ -311,55 +283,24 @@ class RestoreCubit extends Cubit<RestoreState> {
     } else {
       matchSink.add(false);
       confirmPasswordField = true;
-    }
-  }
-
-  void checkHaveValuePW(String value) {
-    if (value.isEmpty) {
-      haveValueNewPW = false;
-      btnSink.add(false);
-      ckcSink.add(false);
-    } else {
-      haveValueNewPW = true;
       if ((seedField || privateField) &&
-          haveValueConfirmPW &&
-          haveValueNewPW &&
+          confirmPasswordField &&
+          newPasswordField &&
           checkBoxValue) {
         btnSink.add(true);
-      } else {
-        //nothing
-      }
-    }
-  }
-
-  void checkHaveValueConfirmPW(String value) {
-    if (value.isEmpty) {
-      haveValueConfirmPW = false;
-      btnSink.add(false);
-      ckcSink.add(false);
-    } else {
-      haveValueConfirmPW = true;
-      if ((seedField || privateField) &&
-          haveValueConfirmPW &&
-          haveValueNewPW &&
-          checkBoxValue) {
-        btnSink.add(true);
-      } else {
-        //nothing
       }
     }
   }
 
   void checkCkcValue(value) {
     checkBoxValue = value;
-    if ((haveValueSeed || haveValuePrivate) &&
-        haveValueConfirmPW &&
-        haveValueNewPW &&
+    if ((seedField || confirmPasswordField) &&
+        confirmPasswordField &&
+        newPasswordField &&
         checkBoxValue) {
       btnSink.add(true);
     } else {
       btnSink.add(false);
-      ckcSink.add(false);
     }
   }
 
