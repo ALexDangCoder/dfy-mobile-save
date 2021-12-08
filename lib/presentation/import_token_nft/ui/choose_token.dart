@@ -100,8 +100,9 @@ class _ChooseTokenState extends State<ChooseToken> {
                             ],
                           ),
                           subtitle: Text(
-                            '${widget.bloc.getListTokenModel.value[index].balanceToken.toStringAsFixed(5)}' +
-                                ' ${widget.bloc.getListTokenModel.value[index].nameShortToken} ',
+                            '${widget.bloc.getListTokenModel.value[index].
+                            balanceToken.toStringAsFixed(5)} ${widget.bloc.
+                            getListTokenModel.value[index].nameShortToken} ',
                             style: textNormalCustom(
                               const Color.fromRGBO(255, 255, 255, 0.5),
                               16,
