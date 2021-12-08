@@ -49,9 +49,43 @@ class Web3Utils {
     };
   }
 
-  Future<void> getCollectionInfo({required String contract}) async {
+  Future<Map<String, dynamic>> getCollectionInfo({
+    required String contract,
+    int? id,
+    required String address,
+  }) async {
     final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
     final name = await nft.name();
+    final symbol = await nft.symbol();
+    final listNft = <Map<String, dynamic>>[];
+    if (id != null) {
+      final balance = await nft.balanceOf(EthereumAddress.fromHex(address));
+      for (int i = 0; i < balance.toInt(); i++) {
+        final nftId = await nft.tokenOfOwnerByIndex(
+            EthereumAddress.fromHex(address), BigInt.from(i));
+        final uri = await nft.tokenURI(nftId);
+        final nftParam = {
+          'id': nftId,
+          'contract': contract,
+          'uri': uri,
+        };
+        listNft.add(nftParam);
+      }
+    } else {
+      final uri = await nft.tokenURI(BigInt.from(id!));
+      final nftParam = {
+        'id': id,
+        'contract': contract,
+        'uri': uri,
+      };
+      listNft.add(nftParam);
+    }
+    return {
+      'name': name,
+      'symbol': symbol,
+      'contract': contract,
+      'listNft': listNft,
+    };
   }
 
   //NFT info
