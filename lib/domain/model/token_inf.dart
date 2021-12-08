@@ -1,15 +1,12 @@
 class TokenInf {
-  String? symbol;
-  String? name;
-  String? iconUrl;
-  int? id;
+  String? id;
   bool? isWhitelistCollateral;
   bool? isWhitelistSupply;
   double? usdExchange;
-  bool? isAcceptedAsCollateral;
-  bool? isAcceptedAsLoan;
-  bool? isAcceptedRepayment;
+  String? iconUrl;
+  String? symbol;
   String? address;
+  String? name;
 
   TokenInf({
     this.symbol,
@@ -19,9 +16,6 @@ class TokenInf {
     this.isWhitelistCollateral,
     this.isWhitelistSupply,
     this.usdExchange,
-    this.isAcceptedAsCollateral,
-    this.isAcceptedAsLoan,
-    this.isAcceptedRepayment,
     this.address,
   });
 }

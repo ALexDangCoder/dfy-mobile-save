@@ -15,7 +15,7 @@ class TokenRepositoryImpl implements TokenRepository {
   Future<Result<List<TokenInf>>> getListToken() {
     return runCatchingAsync<ListTokenResponse, List<TokenInf>>(
       () => _tokenClient.getListToken(),
-      (response) => response.toDomain(),
+      (response) => response.toDomain() ?? [],
     );
   }
 }

@@ -7,7 +7,7 @@ part 'token_response.g.dart';
 @JsonSerializable()
 class TokenResponse extends Equatable {
   @JsonKey(name: 'id')
-  int? id;
+  String? id;
   @JsonKey(name: 'isWhitelistCollateral')
   bool? isWhitelistCollateral;
   @JsonKey(name: 'isWhitelistSupply')
