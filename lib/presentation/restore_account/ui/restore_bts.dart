@@ -81,11 +81,12 @@ class _RestoreAccountState extends State<RestoreAccount> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
+                //todo theem pass
                 return CreateSuccessfully(
                   bLocCreateSeedPhrase:
                       BLocCreateSeedPhrase(passwordController.text),
                   wallet: restoreCubit.wallet ?? Wallet(),
-                  type: KeyType.IMPORT,
+                  type: KeyType.IMPORT, passWord: '',
                 );
               },
             ),
