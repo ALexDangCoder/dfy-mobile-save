@@ -33,6 +33,22 @@ class Web3Utils {
     }
   }
 
+  Future<Map<String, dynamic>> getNFTInfo({
+    required String contract,
+    required int id,
+  }) async {
+    final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
+    final name = await nft.name();
+    final symbol = await nft.symbol();
+    final nftUri = await nft.tokenURI(BigInt.from(id));
+    return {
+      'id': id,
+      'name': name,
+      'symbol': symbol,
+      'uri': nftUri,
+    };
+  }
+
   Future<void> getCollectionInfo({required String contract}) async {
     final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
     final name = await nft.name();
@@ -92,7 +108,6 @@ class Web3Utils {
     required String tokenAddress,
     String? password,
   }) async {
-    //TODO: Mockup data
     final token =
         Token(address: EthereumAddress.fromHex(tokenAddress), client: client);
     final balance = await token.balanceOf(EthereumAddress.fromHex(ofAddress));
