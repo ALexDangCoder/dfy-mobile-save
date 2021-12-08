@@ -7,5 +7,6 @@ data class TokenModel(
     val iconUrl: String,
     val symbol: String,
     val decimal: Int,
+    val exchangeRate: Double,
     var isShow: Boolean = true,
 )

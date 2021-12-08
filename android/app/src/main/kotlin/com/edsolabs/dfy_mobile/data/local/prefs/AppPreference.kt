@@ -8,7 +8,6 @@ import com.edsolabs.dfy_mobile.data.model.TokenModel
 import com.edsolabs.dfy_mobile.data.model.WalletModel
 import jp.takuji31.koreference.KoreferenceModel
 import jp.takuji31.koreference.booleanPreference
-import jp.takuji31.koreference.intPreference
 import jp.takuji31.koreference.stringPreference
 
 open class AppPreference(sharedPreferences: SharedPreferences) :
@@ -35,7 +34,9 @@ open class AppPreference(sharedPreferences: SharedPreferences) :
 
     private var listWallet: String by stringPreference("")
 
-    private var listToken: String by stringPreference("")
+    private var listTokenSupport: String by stringPreference("")
+
+    private var listTokenImport: String by stringPreference("")
     var listNft: String by stringPreference("")
 
     fun earseAllWallet() {
@@ -50,12 +51,12 @@ open class AppPreference(sharedPreferences: SharedPreferences) :
         listWallet = JsonHelper.saveList(data, WalletModel::class.java)
     }
 
-    fun getListToken(): List<TokenModel> {
-        return JsonHelper.getList(listToken, TokenModel::class.java)
+    fun getListTokenSupport(): List<TokenModel> {
+        return JsonHelper.getList(listTokenSupport, TokenModel::class.java)
     }
 
-    fun saveListToken(data: List<TokenModel>) {
-        listToken = JsonHelper.saveList(data, TokenModel::class.java)
+    fun saveListTokenSupport(data: List<TokenModel>) {
+        listTokenSupport = JsonHelper.saveList(data, TokenModel::class.java)
     }
 
     fun getListNft(): List<NftModel> {
