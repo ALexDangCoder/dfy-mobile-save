@@ -10,6 +10,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import wallet.core.java.AnySigner
+import wallet.core.jni.AnyAddress
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.PrivateKey
@@ -308,39 +309,39 @@ class MainActivity : FlutterFragmentActivity() {
                 //todo content is seed phrase
                 val hasMap = HashMap<String, Any>()
                 try {
-                    val sttWallet = appPreference.sttWallet
-                    val walletName = "Account ${sttWallet + 1}"
                     val wallet = HDWallet(content, "")
                     val address = wallet.getAddressForCoin(coinType)
                     val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
-                    hasMap["walletAddress"] = address
                     val listWallet = ArrayList<WalletModel>()
                     listWallet.addAll(appPreference.getListWallet())
-                    listWallet.add(
-                        WalletModel(
-                            walletName,
-                            address,
-                            content,
-                            privateKey.toByteArray().toHexString(false)
+                    if(listWallet.firstOrNull { it.walletAddress != address } == null) {
+                        val sttWallet = appPreference.sttWallet
+                        val walletName = "Account ${sttWallet + 1}"
+                        hasMap["walletAddress"] = address
+                        listWallet.add(
+                            WalletModel(
+                                walletName,
+                                address,
+                                content,
+                                privateKey.toByteArray().toHexString(false)
+                            )
                         )
-                    )
-                    appPreference.saveListWallet(listWallet)
-                    appPreference.setSttWallet(sttWallet + 1)
-                    hasMap["walletName"] = walletName
+                        appPreference.saveListWallet(listWallet)
+                        appPreference.setSttWallet(sttWallet + 1)
+                        hasMap["walletName"] = walletName
+                        channel?.invokeMethod("importWalletCallback", hasMap)
+                    }
                 } catch (e: InvalidParameterException) {
                     hasMap["walletAddress"] = ""
                     hasMap["walletName"] = ""
+                    channel?.invokeMethod("importWalletCallback", hasMap)
                 }
-                channel?.invokeMethod("importWalletCallback", hasMap)
+
             }
             TYPE_WALLET_PRIVATE_KEY -> {
-                //todo content is private key
-                //            val wallet = HDWallet(content, "")
-                //            val privateKey = wallet.getKeyForCoin(coinType)
-                //            val publicKeyFalse = privateKey.getPublicKeySecp256k1(false)
-                //            val anyAddress = AnyAddress(publicKeyFalse, coinType)
-                //            address = anyAddress.data().toHexString()
-                //            hasMap["walletAddress"] = address
+                val privateKey = PrivateKey(content.toHexBytes())
+                val publicKey = privateKey.getPublicKeySecp256k1(false)
+                val anyAddress = AnyAddress(publicKey, coinType).description()
                 return
             }
             else -> {
