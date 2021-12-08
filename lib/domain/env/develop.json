@@ -1,5 +1,6 @@
 {
   "type": "develop",
-  "base_url": "http://8wlg9.mocklab.io/",
-  "base_image_url": "http://8wlg9.mocklab.io"
+  "base_url": "https://run.mocky.io/",
+  "base_image_url": "https://run.mocky.io/"
+
 }

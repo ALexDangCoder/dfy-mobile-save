@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'login_state.dart';
 
@@ -15,7 +16,7 @@ class LoginCubit extends BaseCubit<LoginState> {
   bool hidePass = true;
   bool isAppLock = true;
   bool isFaceID = false;
-
+  BehaviorSubject<bool> isFaceIDStream = BehaviorSubject();
   bool hidePassword() {
     return hidePass = !hidePass;
   }
@@ -26,7 +27,6 @@ class LoginCubit extends BaseCubit<LoginState> {
     switch (methodCall.method) {
       case 'checkPasswordCallback':
         loginSuccess = await methodCall.arguments['isCorrect'];
-        print(">>>>"+loginSuccess.toString());
         if (loginSuccess == true) {
           emit(LoginPasswordSuccess());
         } else {
@@ -35,9 +35,8 @@ class LoginCubit extends BaseCubit<LoginState> {
         break;
       case 'getConfigCallback':
         isAppLock = await methodCall.arguments['isAppLock'];
-        print(isAppLock);
         isFaceID = await methodCall.arguments['isFaceID'];
-        print(isFaceID);
+        isFaceIDStream.add(isFaceID);
         break;
       default:
         break;
@@ -76,7 +75,7 @@ class LoginCubit extends BaseCubit<LoginState> {
     final List<BiometricType> availableBiometrics =
         await auth.getAvailableBiometrics();
     //print(availableBiometrics);
-    if (canCheckBiometrics && isFaceID) {
+    if (canCheckBiometrics && isFaceIDStream.value) {
       await authenticate();
     }
   }

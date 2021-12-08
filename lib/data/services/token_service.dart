@@ -10,6 +10,7 @@ part 'token_service.g.dart';
 abstract class TokenClient {
   @factoryMethod
   factory TokenClient(Dio dio, {String baseUrl}) = _TokenClient;
+
   @GET(ApiConstants.GET_LIST_TOKEN)
   Future<ListTokenResponse> getListToken();
 }
