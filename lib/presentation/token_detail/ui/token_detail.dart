@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/model_token.dart';
@@ -24,25 +22,21 @@ class TokenDetail extends StatelessWidget {
   final ModelToken token;
   final TokenDetailBloc bloc;
   final String walletAddress;
-  final bool? initLoading;
 
   const TokenDetail({
     Key? key,
     required this.bloc,
     required this.token,
     required this.walletAddress,
-    this.initLoading = false,
   }) : super(
           key: key,
         );
 
   @override
   Widget build(BuildContext context) {
-    bloc.checkShowLoading();
-    log('Show loading: $initLoading');
     return StreamBuilder<bool>(
       stream: bloc.showLoadingStream,
-      initialData: initLoading,
+      initialData: false,
       builder: (context, snapshot) {
         final isShow = snapshot.data ?? false;
         if (isShow) {
@@ -62,136 +56,150 @@ class TokenDetail extends StatelessWidget {
   }
 
   Widget bottomSheet(BuildContext context) {
-    return BaseBottomSheet(
-      title: token.nameShortToken,
-      child: Column(
-        children: [
-          Container(
-            height: 308.h,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: AppTheme.getInstance().divideColor(),
-                ),
-              ),
-            ),
+    return StreamBuilder<ModelToken>(
+        stream: bloc.tokenStream,
+        builder: (context, snapshot) {
+          final modelToken = snapshot.data ?? token;
+          return BaseBottomSheet(
+            title: modelToken.nameShortToken,
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(
-                    top: 24.h,
-                    bottom: 8.h,
+                  height: 308.h,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: AppTheme.getInstance().divideColor(),
+                      ),
+                    ),
                   ),
-                  child: SizedBox(
-                    height: 54.h,
-                    width: 54.h,
-                     child: Image.network(token.iconToken),
-                  ),
-                ),
-                Text(
-                  customCurrency(
-                    amount: token.balanceToken.toString(),
-                    type: token.nameShortToken,
-                    digit: 8,
-                  ),
-                  style: tokenDetailAmount(
-                    color: AppTheme.getInstance().textThemeColor(),
-                  ),
-                ),
-                Text(
-                  customCurrency(
-                    amount: (token.balanceToken * 0.2).toString(),
-                    type: '\$',
-                    digit: 2,
-                  ),
-                  style: tokenDetailAmount(
-                    color: AppTheme.getInstance().currencyDetailTokenColor(),
-                    fontSize: 16,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 24.h,
-                    bottom: 28.h,
-                    left: 115.h,
-                    right: 115.h,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return Receive(
-                                walletAddress: walletAddress,
-                                type: TokenType.DFY,
-                              );
-                            },
-                          );
-                        },
-                        child: sizedSvgImage(
-                          w: 48,
-                          h: 48,
-                          image: ImageAssets.ic_btn_receive_token_svg,
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: 24.h,
+                          bottom: 8.h,
+                        ),
+                        child: SizedBox(
+                          height: 54.h,
+                          width: 54.h,
+                          child: Image.network(modelToken.iconToken),
+                        ),
+                      ),
+                      Text(
+                        customCurrency(
+                          amount: modelToken.balanceToken.toString(),
+                          type: modelToken.nameShortToken,
+                          digit: 8,
+                        ),
+                        style: tokenDetailAmount(
+                          color: AppTheme.getInstance().textThemeColor(),
+                        ),
+                      ),
+                      Text(
+                        customCurrency(
+                          amount: (modelToken.balanceToken *
+                                  modelToken.exchangeRate)
+                              .toString(),
+                          type: '\$',
+                          digit: 2,
+                        ),
+                        style: tokenDetailAmount(
+                          color:
+                              AppTheme.getInstance().currencyDetailTokenColor(),
+                          fontSize: 16,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: 24.h,
+                          bottom: 28.h,
+                          left: 115.h,
+                          right: 115.h,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  context: context,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (context) {
+                                    return Receive(
+                                      walletAddress: walletAddress,
+                                      type: TokenType.DFY,
+                                    );
+                                  },
+                                );
+                              },
+                              child: sizedSvgImage(
+                                w: 48,
+                                h: 48,
+                                image: ImageAssets.ic_btn_receive_token_svg,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  context: context,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (_) {
+                                    return SendToken(
+                                      walletAddress: walletAddress,
+                                    );
+                                  },
+                                ).then(
+                                  (value) => {
+                                    if (value) bloc.checkShowLoading() else null
+                                  },
+                                );
+                              },
+                              child: sizedSvgImage(
+                                w: 48,
+                                h: 48,
+                                image: ImageAssets.ic_btn_send_token_svg,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return SendToken(
-                                blocFromDetail: bloc,
-                                tokenFromDetail: token,
-                              );
-                            },
-                          ).then(
-                            (value) => {},
-                          );
-                        },
-                        child: sizedSvgImage(
-                          w: 48,
-                          h: 48,
-                          image: ImageAssets.ic_btn_send_token_svg,
+                        onTap: () {},
+                        child: Container(
+                          height: 48.h,
+                          width: 210.h,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(16),
+                            ),
+                            border: Border.all(
+                              color: AppTheme.getInstance().fillColor(),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              S.current.create_collateral,
+                              style: tokenDetailAmount(
+                                color: AppTheme.getInstance().fillColor(),
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    height: 48.h,
-                    width: 210.h,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(16)),
-                      border: Border.all(
-                        color: AppTheme.getInstance().fillColor(),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        S.current.create_collateral,
-                        style: tokenDetailAmount(
-                          color: AppTheme.getInstance().fillColor(),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
+                TransactionList(
+                  shortName: modelToken.nameShortToken,
+                  bloc: bloc,
                 ),
               ],
             ),
-          ),
-          TransactionList(shortName: token.nameShortToken, bloc: bloc)
-        ],
-      ),
-    );
+          );
+        });
   }
 }
