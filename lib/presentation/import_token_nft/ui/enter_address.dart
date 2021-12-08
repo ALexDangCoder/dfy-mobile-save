@@ -104,6 +104,24 @@ class _EnterAddressState extends State<EnterAddress> {
                           );
                         },
                       ),
+                      StreamBuilder(
+                        stream: widget.bloc.isAddressNotExist,
+                        builder: (context, snapshot) {
+                          return SizedBox(
+                            width: 343.w,
+                            child: widget.bloc.isAddressNotExist.value
+                                ? null
+                                : Text(
+                                    ' S.current.invalid_address',
+                                    style: textNormal(
+                                      Colors.red,
+                                      14,
+                                    ),
+                                    textAlign: TextAlign.start,
+                                  ),
+                          );
+                        },
+                      ),
                       spaceH16,
                       StreamBuilder<String>(
                         initialData: S.current.token_symbol,
