@@ -73,7 +73,7 @@ class Web3Utils {
     );
   }
 
-  Future<List<String>> importAllNFT({
+  Future<List<Map<String, dynamic>>> importAllNFT({
     required String address,
     required String contract,
   }) async {
@@ -83,8 +83,16 @@ class Web3Utils {
       await nft.tokenByIndex(BigInt.from(i));
     }
     return [
-      'https://defiforyou.mypinata.cloud/ipfs/QmXCQTqZYYyDCF6GcnnophSZryRQ3HJTvEjokoRFYbH5MG',
-      'https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c',
+      {
+        'id': 0,
+        'uri':
+            'https://defiforyou.mypinata.cloud/ipfs/QmXCQTqZYYyDCF6GcnnophSZryRQ3HJTvEjokoRFYbH5MG',
+      },
+      {
+        'id': 1,
+        'uri':
+            'https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c',
+      },
     ];
   }
 
