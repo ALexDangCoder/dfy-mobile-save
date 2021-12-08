@@ -1,3 +1,4 @@
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -35,9 +36,11 @@ class _EnterAddressState extends State<EnterAddress> {
     controller.addListener(() {
       widget.bloc.tokenAddressText.sink.add(controller.text);
       if (controller.text == '') {
-        widget.bloc.isTokenEnterAddress.sink.add(false);
+        widget.bloc.isTextTokenEnterAddress.sink.add(false);
         widget.bloc.tokenSymbol.sink.add(S.current.token_symbol);
         widget.bloc.tokenDecimal.sink.add(S.current.token_decimal);
+      } else {
+        widget.bloc.isTextTokenEnterAddress.sink.add(true);
       }
     });
   }
@@ -86,24 +89,8 @@ class _EnterAddressState extends State<EnterAddress> {
                         bloc: widget.bloc,
                       ),
                       spaceH4,
-                      StreamBuilder(
-                        stream: widget.bloc.isTokenAddressText,
-                        builder: (context, snapshot) {
-                          return SizedBox(
-                            width: 343.w,
-                            child: widget.bloc.isTokenAddressText.value
-                                ? null
-                                : Text(
-                                    S.current.invalid_address,
-                                    style: textNormal(
-                                      Colors.red,
-                                      14,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                          );
-                        },
-                      ),
+                      // showTextValidateOldPassword(),
+                      textValidate(),
                       spaceH16,
                       StreamBuilder<String>(
                         initialData: S.current.token_symbol,
@@ -136,9 +123,11 @@ class _EnterAddressState extends State<EnterAddress> {
                 ),
               ),
               Center(
-                child: StreamBuilder(
+                child: StreamBuilder<bool>(
                   stream: widget.bloc.isTokenEnterAddress,
+                  initialData: false,
                   builder: (context, snapshot) {
+                    final bool enable = snapshot.data ?? false;
                     return InkWell(
                       onTap: () {
                         print('-=------------------${widget.addressWallet}');
@@ -146,19 +135,22 @@ class _EnterAddressState extends State<EnterAddress> {
                         print(
                             '-=------------------${widget.bloc.tokenFullName}');
                         //todo icon BE
-                        widget.bloc.importToken(
-                          walletAddress: widget.addressWallet,
-                          tokenAddress: widget.bloc.tokenAddressText.value,
-                          symbol: widget.bloc.tokenSymbol.value,
-                          decimal: int.parse(widget.bloc.tokenDecimal.value),
-                          iconToken: widget.bloc.iconToken,
-                          tokenFullName: widget.bloc.tokenFullName,
-                        );
+                        if (enable) {
+                          print(enable);
+                          widget.bloc.importToken(
+                            walletAddress: widget.addressWallet,
+                            tokenAddress: widget.bloc.tokenAddressText.value,
+                            symbol: widget.bloc.tokenSymbol.value,
+                            decimal: int.parse(widget.bloc.tokenDecimal.value),
+                            iconToken: widget.bloc.iconToken,
+                            tokenFullName: widget.bloc.tokenFullName,
+                          );
+                        }
                         widget.bloc.checkAddressNull();
                       },
                       child: ButtonGold(
                         title: S.current.import,
-                        isEnable: widget.bloc.isTokenEnterAddress.value,
+                        isEnable: enable,
                       ),
                     );
                   },
@@ -167,6 +159,73 @@ class _EnterAddressState extends State<EnterAddress> {
             ],
           ),
         );
+      },
+    );
+  }
+
+  Widget showTextValidateOldPassword() {
+    return StreamBuilder(
+      stream: widget.bloc.isShowValidateText, //tao stream bool để ẩn hiển
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 343.w,
+                // height: 30.h,
+                child: StreamBuilder<String>(
+                  stream: widget.bloc.warningText,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromRGBO(255, 108, 108, 1),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget textValidate() {
+    return StreamBuilder<String>(
+      stream: widget.bloc.messStream,
+      builder: (context, snapshot) {
+        final _mess = snapshot.data ?? '';
+        if (_mess.isNotEmpty) {
+          return Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 343.w,
+                // height: 30.h,
+                child: Text(
+                  _mess,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromRGBO(255, 108, 108, 1),
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       },
     );
   }
