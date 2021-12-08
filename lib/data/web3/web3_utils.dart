@@ -73,17 +73,54 @@ class Web3Utils {
     );
   }
 
+  Future<List<String>> importAllNFT({
+    required String address,
+    required String contract,
+  }) async {
+    final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
+    final balance = await nft.balanceOf(EthereumAddress.fromHex(address));
+    for (int i = 0; i < balance.toInt(); i++) {
+      await nft.tokenByIndex(BigInt.from(i));
+    }
+    return [
+      'https://defiforyou.mypinata.cloud/ipfs/QmXCQTqZYYyDCF6GcnnophSZryRQ3HJTvEjokoRFYbH5MG',
+      'https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c',
+    ];
+  }
+
   //Token info
-  Future<TokenInfoModel> getTokenInfo({
+  Future<TokenInfoModel?> getTokenInfo({
     required String contractAddress,
     String? walletAddress,
   }) async {
-    final token = Token(
-        address: EthereumAddress.fromHex(contractAddress), client: client);
+    Token token;
+    try {
+      token = Token(
+        address: EthereumAddress.fromHex(contractAddress),
+        client: client,
+      );
+    } catch (e) {
+      return null;
+    }
     double value = 0.0;
-    final name = await token.name();
-    final decimal = await token.decimals();
-    final symbol = await token.symbol();
+    String name;
+    String symbol;
+    BigInt decimal;
+    try {
+      name = await token.name();
+    } catch (e) {
+      return null;
+    }
+    try {
+      decimal = await token.decimals();
+    } catch (e) {
+      return null;
+    }
+    try {
+      symbol = await token.symbol();
+    } catch (e) {
+      return null;
+    }
     if (walletAddress != null) {
       final balance =
           await token.balanceOf(EthereumAddress.fromHex(walletAddress));

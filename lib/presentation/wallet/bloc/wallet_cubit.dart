@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -13,7 +10,6 @@ import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/wallet.dart';
-import 'package:Dfy/domain/repository/collection_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -35,12 +31,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   Web3Utils client = Web3Utils();
 
   Future<void> getTokenInfoByAddress({required String tokenAddress}) async {
-    final TokenInfoModel tokenInfoModel =
+    final TokenInfoModel? tokenInfoModel =
         await client.getTokenInfo(contractAddress: tokenAddress);
-    tokenSymbol.sink.add(tokenInfoModel.tokenSymbol ?? 'null');
-    tokenDecimal.sink.add('${tokenInfoModel.decimal ?? 0} ');
-    tokenFullName = tokenInfoModel.name ?? '';
-    if (tokenInfoModel.tokenSymbol!.isNotEmpty) {
+    tokenSymbol.sink.add(tokenInfoModel?.tokenSymbol ?? 'null');
+    tokenDecimal.sink.add('${tokenInfoModel?.decimal ?? 0} ');
+    tokenFullName = tokenInfoModel?.name ?? '';
+    if (tokenInfoModel!.tokenSymbol!.isNotEmpty) {
       isTokenEnterAddress.sink.add(true);
     }
     if (tokenInfoModel.tokenSymbol!.isEmpty) {
@@ -239,9 +235,22 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  //Web3
   TokenRepository get _tokenRepository => Get.find();
 
-  CollectionRepository get _collectionRepository => Get.find();
+  Future<void> getListCategory() async {
+    final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
+    result.when(
+      success: (res) {
+        getTokenInfoByAddressList(res: res);
+        print(res[37].usdExchange.toString() + '|||||||||||||||||||||||||');
+      },
+      error: (error) {
+        updateStateError();
+        print('|||||||||||||||||||||||||');
+      },
+    );
+  }
 
   List<ModelToken> getListModelToken = [];
 
@@ -249,8 +258,8 @@ class WalletCubit extends BaseCubit<WalletState> {
     required List<TokenInf> res,
   }) async {
     for (final value in res) {
-      final TokenInfoModel tokenInfoModel = await client.getTokenInfo(
-        contractAddress: '0x20f1de452e9057fe863b99d33cf82dbee0c45b14',
+      final TokenInfoModel? tokenInfoModel = await client.getTokenInfo(
+        contractAddress: '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
         //todo addressContract BE
         walletAddress: addressWalletCore,
       );
@@ -259,42 +268,29 @@ class WalletCubit extends BaseCubit<WalletState> {
           tokenAddress: value.address ?? '',
           iconToken: value.iconUrl ?? '',
           nameShortToken: value.symbol ?? '',
-          nameToken: tokenInfoModel.name ?? '',
-          balanceToken: tokenInfoModel.value ?? 0,
+          nameToken: tokenInfoModel?.name ?? '',
+          balanceToken: tokenInfoModel?.value ?? 0,
+          exchangeRate: value.usdExchange ?? 0,
         ),
       );
+      print(value.symbol);
     }
-    print('--------------${getListModelToken.length}');
   }
 
-  //Web3
-  Future<void> getListCategory() async {
-    final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
-    result.when(
-      success: (res) {
-        //todo: Import to wallet core
-        getTokenInfoByAddressList(res: res);
-      },
-      error: (error) {
-        updateStateError();
-      },
-    );
+  void getExchangeRate(
+    List<ModelToken> listShow,
+    List<ModelToken> listCheck,
+  ) {
+    for (int i = 0; i < listShow.length; i++) {
+      for(int j = 0; j < listCheck.length; j++) {
+        if(listShow[i].nameShortToken == listCheck[j].nameShortToken){
+          listShow[i].exchangeRate = listCheck[j].exchangeRate;
+        }
+      }
+    }
   }
 
-  ///collection
-  Future<void> getCollection() async {
-    final Result<CollectionNftInfo> result =
-        await _collectionRepository.getCollection();
-    result.when(
-      success: (res) {},
-      error: (error) {
-        updateStateError();
-      },
-    );
-  }
-
-  Future<void> getExchangeRate(List<ModelToken> list) async {
-    ///TODO: function get ExchangeRate
+  Future<void> getBalanceOFToken(List<ModelToken> list) async {
     for (int i = 0; i < list.length; i++) {
       list[i].exchangeRate = 12;
       list[i].balanceToken = await client.getBalanceOfToken(
@@ -346,7 +342,9 @@ class WalletCubit extends BaseCubit<WalletState> {
             listTokenFromWalletCore.add(element);
           }
         }
-        await getExchangeRate(listTokenFromWalletCore);
+        await getListCategory();
+        getExchangeRate(listTokenFromWalletCore, getListModelToken);
+        await getBalanceOFToken(listTokenFromWalletCore);
         total(listTokenFromWalletCore);
         listTokenStream.add(listTokenFromWalletCore);
         break;
