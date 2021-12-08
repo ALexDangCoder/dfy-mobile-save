@@ -168,6 +168,8 @@ class MainActivity : FlutterFragmentActivity() {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
+                    val collectionAddress =
+                        call.argument<String>("collectionAddress") ?: return@setMethodCallHandler
                     val nftAddress =
                         call.argument<String>("nftAddress")
                             ?: return@setMethodCallHandler
@@ -180,7 +182,13 @@ class MainActivity : FlutterFragmentActivity() {
                     val nftID =
                         call.argument<Int>("nftID")
                             ?: return@setMethodCallHandler
-                    importNft(walletAddress, nftAddress, nftName, iconNFT, nftID)
+                    importNft(walletAddress, collectionAddress, nftAddress, nftName, iconNFT, nftID)
+                }
+                "importListNft" -> {
+                    val jsonNft =
+                        call.argument<String>("jsonNft")
+                            ?: return@setMethodCallHandler
+                    importListNft(jsonNft)
                 }
                 "setShowedNft" -> {
                     val walletAddress =
@@ -557,6 +565,7 @@ class MainActivity : FlutterFragmentActivity() {
 
     private fun importNft(
         walletAddress: String,
+        collectionAddress: String,
         nftAddress: String,
         nftName: String,
         iconNFT: String,
@@ -569,6 +578,7 @@ class MainActivity : FlutterFragmentActivity() {
         listNft.add(
             NftModel(
                 walletAddress,
+                collectionAddress,
                 nftAddress,
                 nftName,
                 iconNFT,
@@ -578,6 +588,27 @@ class MainActivity : FlutterFragmentActivity() {
         appPreference.saveListNft(listNft)
         hasMap["isSuccess"] = true
         channel?.invokeMethod("importNftCallback", hasMap)
+    }
+
+    private fun importListNft(
+        jsonNft: String
+    ) {
+        //todo check password
+        val hasMap = HashMap<String, Any>()
+//        val listNft = ArrayList<NftModel>()
+//        listNft.addAll(appPreference.getListNft())
+//        listNft.add(
+//            NftModel(
+//                walletAddress,
+//                nftAddress,
+//                nftName,
+//                iconNFT,
+//                nftID
+//            )
+//        )
+//        appPreference.saveListNft(listNft)
+        hasMap["isSuccess"] = false
+        channel?.invokeMethod("importListNftCallback", hasMap)
     }
 
     private fun setShowedNft(
