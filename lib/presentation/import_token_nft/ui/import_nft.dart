@@ -151,6 +151,7 @@ class _BodyState extends State<_Body> {
                             nftID: int.parse(widget.bloc.nftEnterID.value),
                             nftName: widget.bloc.nftName,
                             iconNFT: widget.bloc.iconNFT,
+                            collectionAddress: '',
                           );
 
                           widget.bloc.isImportNft.listen(
@@ -175,6 +176,8 @@ class _BodyState extends State<_Body> {
                                       int.parse(widget.bloc.nftEnterID.value),
                                   nftName: widget.bloc.nftName,
                                   iconNFT: widget.bloc.iconNFT,
+                                  collectionAddress:
+                                      widget.bloc.tokenAddressTextNft.value,
                                 );
                                 // Navigator.push(
                                 //   context,

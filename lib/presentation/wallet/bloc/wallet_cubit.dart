@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -282,8 +286,8 @@ class WalletCubit extends BaseCubit<WalletState> {
     List<ModelToken> listCheck,
   ) {
     for (int i = 0; i < listShow.length; i++) {
-      for(int j = 0; j < listCheck.length; j++) {
-        if(listShow[i].nameShortToken == listCheck[j].nameShortToken){
+      for (int j = 0; j < listCheck.length; j++) {
+        if (listShow[i].nameShortToken == listCheck[j].nameShortToken) {
           listShow[i].exchangeRate = listCheck[j].exchangeRate;
         }
       }
@@ -454,6 +458,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> importNft({
     required String walletAddress,
     required String nftAddress,
+    required String collectionAddress,
     required String nftName,
     required String iconNFT,
     required int nftID,
@@ -463,6 +468,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'walletAddress': walletAddress,
         'nftAddress': nftAddress,
         'nftName': nftName,
+        'collectionAddress': collectionAddress,
         'iconNFT': iconNFT,
         'nftID': nftID,
       };
@@ -507,6 +513,56 @@ class WalletCubit extends BaseCubit<WalletState> {
       throw Exception('Failed to load album');
     }
   }
+
+  //get Nft
+  Future<List<NftInfo>> getNFTFromWeb3({
+    required String address,
+    required String contract,
+  }) async {
+    final List<NftInfo> listNFTInfo = [];
+    final List<Map<String, dynamic>> listNFT = await Web3Utils().importAllNFT(
+      address: address,
+      contract: contract,
+    );
+
+    for (final e in listNFT) {
+      NftInfo _nftInfo;
+      final url = e['uri'];
+      final response = await http.get(
+        Uri.parse(url),
+      );
+      if (response.statusCode == 200) {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        _nftInfo = NftInfo.fromJson(jsonDecode(response.body));
+        _nftInfo.id = (e['id']).toString();
+        listNFTInfo.add(_nftInfo);
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load album');
+      }
+    }
+    return listNFTInfo;
+  }
+
+  //importAllNFT
+  Future<List<Map<String,dynamic>>> importAllNFT({
+    required String walletAddress,
+    required String contract,
+  }) async {
+    final List<NftInfo> list = await getNFTFromWeb3(
+      address: walletAddress,
+      contract: contract,
+    );
+    List<Map<String,dynamic>> listJsonNFT = [];
+    for (final e in list) {
+      listJsonNFT.add(e.saveToJson(walletAddress: walletAddress));
+    }
+    return listJsonNFT;
+  }
+
+
 
   Future<void> isImportNftSuccess({
     required String contractAddress,

@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/wallet.dart';
@@ -95,7 +96,9 @@ class _WalletState extends State<WalletScreen>
           onRefresh: () async {
             await cubit.getListCategory();
             cubit.getExchangeRate(
-              cubit.listTokenFromWalletCore, cubit.getListModelToken,);
+              cubit.listTokenFromWalletCore,
+              cubit.getListModelToken,
+            );
             cubit.listTokenStream.add(cubit.listTokenFromWalletCore);
             cubit.totalBalance.add(cubit.total(cubit.listTokenFromWalletCore));
           },
@@ -232,11 +235,13 @@ class _WalletState extends State<WalletScreen>
                             children: [
                               StreamBuilder(
                                 stream: cubit.listTokenStream,
-                                builder: (context,
-                                    AsyncSnapshot<List<ModelToken>> snapshot,) {
+                                builder: (
+                                  context,
+                                  AsyncSnapshot<List<ModelToken>> snapshot,
+                                ) {
                                   return ListView.builder(
                                     physics:
-                                    const NeverScrollableScrollPhysics(),
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: snapshot.data?.length ?? 0,
                                     itemBuilder: (context, index) {
@@ -271,26 +276,28 @@ class _WalletState extends State<WalletScreen>
                             children: [
                               StreamBuilder(
                                 stream: cubit.listNFTStream,
-                                builder: (context,
-                                    AsyncSnapshot<List<NftModel>> snapshot,) {
+                                builder: (
+                                  context,
+                                  AsyncSnapshot<List<NftModel>> snapshot,
+                                ) {
                                   if (snapshot.hasData) {
                                     return SafeArea(
                                       child: ListView.builder(
                                         physics:
-                                        const NeverScrollableScrollPhysics(),
+                                            const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data?.length,
                                         itemBuilder: (context, index) {
                                           return NFTItem(
                                             walletAddress:
-                                            cubit.addressWalletCore,
+                                                cubit.addressWalletCore,
                                             index: index,
                                             bloc: cubit,
                                             symbolUrl:
-                                            snapshot.data![index].iconNFT,
+                                                snapshot.data![index].iconNFT,
                                             nameNFT:
-                                            snapshot.data?[index].nftName ??
-                                                '',
+                                                snapshot.data?[index].nftName ??
+                                                    '',
                                           );
                                         },
                                       ),
@@ -361,8 +368,7 @@ class _WalletState extends State<WalletScreen>
                         },
                       ),
                     ).whenComplete(
-                          () =>
-                      {
+                      () => {
                         cubit.listSelectAccBloc.clear(),
                       },
                     );
@@ -501,12 +507,11 @@ class _WalletState extends State<WalletScreen>
                     isScrollControlled: true,
                     backgroundColor: Colors.transparent,
                     context: context,
-                    builder: (context) =>
-                        Receive(
-                          walletAddress:
+                    builder: (context) => Receive(
+                      walletAddress:
                           widget.wallet?.address ?? cubit.addressWalletCore,
-                          type: TokenType.QR,
-                        ),
+                      type: TokenType.QR,
+                    ),
                   );
                 },
                 icon: const ImageIcon(
