@@ -9,6 +9,7 @@ import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
+import org.json.JSONArray
 import wallet.core.java.AnySigner
 import wallet.core.jni.AnyAddress
 import wallet.core.jni.CoinType
@@ -150,13 +151,16 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("symbol") ?: return@setMethodCallHandler
                     val decimal =
                         call.argument<Int>("decimal") ?: return@setMethodCallHandler
+                    val exchangeRate =
+                        call.argument<Double>("exchangeRate") ?: return@setMethodCallHandler
                     importToken(
                         walletAddress,
                         tokenAddress,
                         tokenFullName,
                         iconToken,
                         symbol,
-                        decimal
+                        decimal,
+                        exchangeRate
                     )
                 }
                 "importListToken" -> {
@@ -493,7 +497,7 @@ class MainActivity : FlutterFragmentActivity() {
 
     private fun checkToken(walletAddress: String, tokenAddress: String) {
         val hasMap = HashMap<String, Any>()
-        hasMap["isExist"] = appPreference.getListToken()
+        hasMap["isExist"] = appPreference.getListTokenSupport()
             .firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress } != null
         channel?.invokeMethod("checkTokenCallback", hasMap)
     }
@@ -505,11 +509,12 @@ class MainActivity : FlutterFragmentActivity() {
         tokenFullName: String,
         iconToken: String,
         symbol: String,
-        decimal: Int
+        decimal: Int,
+        exchangeRate: Double
     ) {
         val hasMap = HashMap<String, Any>()
         val listToken = ArrayList<TokenModel>()
-        listToken.addAll(appPreference.getListToken())
+        listToken.addAll(appPreference.getListTokenSupport())
         if (listToken.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress } == null) {
             listToken.add(
                 TokenModel(
@@ -518,33 +523,50 @@ class MainActivity : FlutterFragmentActivity() {
                     tokenFullName,
                     iconToken,
                     symbol,
-                    decimal
+                    decimal,
+                    exchangeRate
                 )
             )
-            appPreference.saveListToken(listToken)
+            appPreference.saveListTokenSupport(listToken)
+            hasMap["isSuccess"] = true
+        } else {
+            hasMap["isSuccess"] = false
         }
-        hasMap["isSuccess"] = true
         channel?.invokeMethod("importTokenCallback", hasMap)
     }
 
     private fun importListToken(
         jsonTokens: String
     ) {
+        val listTokenSupport = ArrayList<TokenModel>()
+        listTokenSupport.addAll(appPreference.getListTokenSupport())
+        val listTokens = ArrayList<TokenModel>()
+        val listObjectTokens = JSONArray(jsonTokens)
+        var size = 0
+        while (size < listObjectTokens.length()) {
+            val data = listObjectTokens.getJSONObject(size)
+            val token = TokenModel(
+                walletAddress = data.getString("walletAddress"),
+                tokenAddress = data.getString("tokenAddress"),
+                tokenFullName = data.getString("nameToken"),
+                iconUrl = data.getString("iconToken"),
+                symbol = data.getString("nameShortToken"),
+                decimal = data.getInt("decimal"),
+                exchangeRate = data.getDouble("exchangeRate")
+            )
+            val tokenInCore =
+                listTokenSupport.firstOrNull { it.walletAddress == token.walletAddress && it.tokenAddress == token.tokenAddress }
+            if (tokenInCore == null) {
+                listTokens.add(token)
+            } else {
+                token.isShow = tokenInCore.isShow
+                listTokens.add(token)
+            }
+            size++
+        }
         val hasMap = HashMap<String, Any>()
-//        val listToken = ArrayList<TokenModel>()
-//        listToken.addAll(appPreference.getListToken())
-//        listToken.add(
-//            TokenModel(
-//                walletAddress,
-//                tokenAddress,
-//                tokenFullName,
-//                iconToken,
-//                symbol,
-//                decimal
-//            )
-//        )
-//        appPreference.saveListToken(listToken)
-        hasMap["isSuccess"] = false
+        appPreference.saveListTokenSupport(listTokens)
+        hasMap["isSuccess"] = true
         channel?.invokeMethod("importListTokenCallback", hasMap)
     }
 
@@ -552,7 +574,7 @@ class MainActivity : FlutterFragmentActivity() {
         walletAddress: String
     ) {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
-        appPreference.getListToken().forEach {
+        appPreference.getListTokenSupport().forEach {
             if (it.walletAddress == walletAddress) {
                 val data = HashMap<String, Any>()
                 data["walletAddress"] = it.walletAddress
@@ -563,6 +585,7 @@ class MainActivity : FlutterFragmentActivity() {
                     "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Bitcoin-BTC-icon.png"
                 data["isShow"] = it.isShow
                 data["decimal"] = it.decimal
+                data["exchangeRate"] = it.exchangeRate
                 hasMap.add(data)
             }
         }
@@ -596,10 +619,10 @@ class MainActivity : FlutterFragmentActivity() {
     ) {
         val hasMap = HashMap<String, Any>()
         val listToken = ArrayList<TokenModel>()
-        listToken.addAll(appPreference.getListToken())
+        listToken.addAll(appPreference.getListTokenSupport())
         listToken.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress }?.isShow =
             isShow
-        appPreference.saveListToken(listToken)
+        appPreference.saveListTokenSupport(listToken)
         hasMap["isSuccess"] = true
         channel?.invokeMethod("setShowedTokenCallback", hasMap)
     }

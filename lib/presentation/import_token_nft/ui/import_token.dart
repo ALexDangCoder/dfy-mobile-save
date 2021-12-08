@@ -143,12 +143,17 @@ class ImportTokenScreen extends StatelessWidget {
                       onTap: () {
                         final FocusScopeNode currentFocus =
                             FocusScope.of(context);
-
                         if (!currentFocus.hasPrimaryFocus) {
                           currentFocus.unfocus();
                           bloc.getTokenInfoByAddress(
                             tokenAddress: bloc.tokenAddressText.value,
                           );
+                          bloc.checkToken(
+                            walletAddress: addressWallet,
+                            tokenAddress: bloc.tokenAddressText.value,
+                          );
+                         // bloc.showTxtWarningAddress();
+                          bloc.validateAddressFunc();
                         }
                       },
                       child: TabBarView(

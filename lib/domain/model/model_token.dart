@@ -22,7 +22,6 @@ class ModelToken {
   @JsonKey(name: 'decimal')
   double decimal = 0;
   ModelToken({
-    required this.balanceToken,
     required this.tokenAddress,
     required this.nameToken,
     required this.nameShortToken,

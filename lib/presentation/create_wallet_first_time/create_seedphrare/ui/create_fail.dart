@@ -93,14 +93,23 @@ class CreateFail extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       if (type == KeyType.CREATE) {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainScreen(
+                              index: 1,
+                            ),
+                          ),
+                        );
                       } else if (type == KeyType.CREATE_HAVE_WALLET) {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainScreen(
+                              index: 2,
+                            ),
+                          ),
+                        );
                       } else if (type == KeyType.IMPORT) {
                         Navigator.pushReplacement(
                           context,
