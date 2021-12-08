@@ -29,7 +29,7 @@ import 'package:http/http.dart' as http;
 part 'wallet_state.dart';
 
 class WalletCubit extends BaseCubit<WalletState> {
-  WalletCubit() : super(WalletInitial()) {}
+  WalletCubit() : super(WalletInitial());
 
   ///web3
   Web3Utils client = Web3Utils();
@@ -247,23 +247,28 @@ class WalletCubit extends BaseCubit<WalletState> {
     result.when(
       success: (res) {
         getTokenInfoByAddressList(res: res);
-        print(res[37].usdExchange.toString() + '|||||||||||||||||||||||||');
       },
       error: (error) {
         updateStateError();
-        print('|||||||||||||||||||||||||');
       },
     );
   }
 
   List<ModelToken> getListModelToken = [];
 
+  Stream<TokenInf> getListTokenRealtime(List<TokenInf> listTokenInf) async* {
+    for (int i = 0; i < listTokenInf.length; i++) {
+      yield listTokenInf[i];
+    }
+  }
+
   Future<void> getTokenInfoByAddressList({
     required List<TokenInf> res,
   }) async {
-    for (final value in res) {
+    final List<Map<dynamic, dynamic>> listJson = [];
+    await for (final value in getListTokenRealtime(res)) {
       final TokenInfoModel? tokenInfoModel = await client.getTokenInfo(
-        contractAddress: '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
+        contractAddress: value.address!,
         //todo addressContract BE
         walletAddress: addressWalletCore,
       );
@@ -275,10 +280,24 @@ class WalletCubit extends BaseCubit<WalletState> {
           nameToken: tokenInfoModel?.name ?? '',
           balanceToken: tokenInfoModel?.value ?? 0,
           exchangeRate: value.usdExchange ?? 0,
+          walletAddress: addressWalletCore,
+          decimal: tokenInfoModel?.decimal!.toDouble() ?? 0.0,
         ),
       );
-      print(value.symbol);
+      listJson.add(
+        ModelToken(
+          tokenAddress: value.address ?? '',
+          iconToken: value.iconUrl ?? '',
+          nameShortToken: value.symbol ?? '',
+          nameToken: tokenInfoModel?.name ?? '',
+          balanceToken: tokenInfoModel?.value ?? 0,
+          exchangeRate: value.usdExchange ?? 0,
+          walletAddress: addressWalletCore,
+          decimal: tokenInfoModel?.decimal!.toDouble() ?? 0.0,
+        ).toJson(),
+      );
     }
+    await importListToken(listJson.toString());
   }
 
   void getExchangeRate(
@@ -296,7 +315,6 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getBalanceOFToken(List<ModelToken> list) async {
     for (int i = 0; i < list.length; i++) {
-      list[i].exchangeRate = 12;
       list[i].balanceToken = await client.getBalanceOfToken(
         ofAddress: addressWalletCore,
         tokenAddress: list[i].tokenAddress,
@@ -346,9 +364,10 @@ class WalletCubit extends BaseCubit<WalletState> {
             listTokenFromWalletCore.add(element);
           }
         }
+        await getBalanceOFToken(listTokenFromWalletCore);
+        listTokenStream.add(listTokenFromWalletCore);
         await getListCategory();
         getExchangeRate(listTokenFromWalletCore, getListModelToken);
-        await getBalanceOFToken(listTokenFromWalletCore);
         total(listTokenFromWalletCore);
         listTokenStream.add(listTokenFromWalletCore);
         break;
@@ -396,6 +415,17 @@ class WalletCubit extends BaseCubit<WalletState> {
         'walletAddress': walletAddress,
       };
       await trustWalletChannel.invokeMethod('getNFT', data);
+    } on PlatformException {}
+  }
+
+  Future<void> importListToken(
+    String jsonTokens,
+  ) async {
+    try {
+      final data = {
+        'jsonTokens': jsonTokens,
+      };
+      await trustWalletChannel.invokeMethod('importListToken', data);
     } on PlatformException {}
   }
 

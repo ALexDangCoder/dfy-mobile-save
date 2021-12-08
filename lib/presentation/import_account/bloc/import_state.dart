@@ -8,13 +8,12 @@ class ImportInitial extends ImportState {
   List<Object?> get props => [];
 }
 class NavState extends ImportState {
-  final Wallet wallet;
 
-  NavState(this.wallet);
   @override
   List<Object?> get props => [];
 }
 class ErrorState extends ImportState {
+
   @override
   List<Object?> get props => [];
 }

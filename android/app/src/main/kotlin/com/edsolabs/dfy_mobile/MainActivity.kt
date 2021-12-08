@@ -349,7 +349,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
                     val listWallet = ArrayList<WalletModel>()
                     listWallet.addAll(appPreference.getListWallet())
-                    if (listWallet.firstOrNull { it.walletAddress != address } == null) {
+                    if (listWallet.firstOrNull { it.walletAddress == address } == null) {
                         val walletName = "Account ${listWallet.size + 1}"
                         hasMap["walletAddress"] = address
                         listWallet.add(
@@ -370,6 +370,7 @@ class MainActivity : FlutterFragmentActivity() {
                         hasMap["walletName"] = ""
                         hasMap["code"] = CODE_ERROR
                         hasMap["messages"] = "Tài khoản đã tồn tại"
+                        channel?.invokeMethod("importWalletCallback", hasMap)
                     }
                 }
                 TYPE_WALLET_PRIVATE_KEY -> {
@@ -378,7 +379,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val address = AnyAddress(publicKey, coinType).description()
                     val listWallet = ArrayList<WalletModel>()
                     listWallet.addAll(appPreference.getListWallet())
-                    if (listWallet.firstOrNull { it.walletAddress != address } == null) {
+                    if (listWallet.firstOrNull { it.walletAddress == address } == null) {
                         val walletName = "Account ${listWallet.size + 1}"
                         hasMap["walletAddress"] = address
                         listWallet.add(
@@ -399,6 +400,7 @@ class MainActivity : FlutterFragmentActivity() {
                         hasMap["walletName"] = ""
                         hasMap["code"] = CODE_ERROR
                         hasMap["messages"] = "Tài khoản đã tồn tại"
+                        channel?.invokeMethod("importWalletCallback", hasMap)
                     }
                 }
                 else -> {

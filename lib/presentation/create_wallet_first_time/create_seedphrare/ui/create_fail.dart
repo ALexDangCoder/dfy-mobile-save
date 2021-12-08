@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 
 import 'package:Dfy/widgets/button/button.dart';
@@ -101,10 +102,23 @@ class CreateFail extends StatelessWidget {
                         Navigator.pop(context);
                         Navigator.pop(context);
                       } else if (type == KeyType.IMPORT) {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        //Navigator.pop(context);
-                      } else {}
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainScreen(
+                              index: 1,
+                            ),
+                          ),
+                        );
+                      } else {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainScreen(
+                            ),
+                          ),
+                        );
+                      }
                     },
                     child: ButtonGold(
                       title: S.current.complete,

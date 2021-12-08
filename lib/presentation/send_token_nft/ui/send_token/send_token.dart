@@ -1,12 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
-import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -15,13 +13,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendToken extends StatefulWidget {
-  final ModelToken tokenFromDetail;
-  final TokenDetailBloc blocFromDetail;
+  final String walletAddress;
 
   const SendToken({
     Key? key,
-    required this.tokenFromDetail,
-    required this.blocFromDetail,
+    required this.walletAddress,
   }) : super(key: key);
 
   @override
@@ -107,7 +103,7 @@ class _SendTokenState extends State<SendToken> {
                               ),
                             ),
                           ).then(
-                                (_) => tokenCubit.checkHaveVlAddressFormToken(
+                            (_) => tokenCubit.checkHaveVlAddressFormToken(
                               txtToAddressToken.text,
                               type: typeSend.SEND_TOKEN,
                             ),
@@ -161,16 +157,13 @@ class _SendTokenState extends State<SendToken> {
                           MaterialPageRoute(
                             builder: (_) {
                               return ConfirmBlockchainCategory(
-                                tokenDetailBloc: widget.blocFromDetail,
-                                modelToken: widget.tokenFromDetail,
                                 nameWallet: 'TestWallet',
                                 nameTokenWallet: 'BNB',
                                 balanceWallet: tokenCubit.balanceWallet,
                                 typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
                                 addressFrom:
-                                fakeFromAddress.formatAddressWallet(),
-                                addressTo:
-                                fakeToAddress.formatAddressWallet(),
+                                    fakeFromAddress.formatAddressWallet(),
+                                addressTo: fakeToAddress.formatAddressWallet(),
                                 imageWallet: ImageAssets.symbol,
                                 amount: double.parse(txtAmount.text),
                                 nameToken: 'BNB',
@@ -196,8 +189,8 @@ class _SendTokenState extends State<SendToken> {
             // ),
           ],
         ),
-      )
-    ,);
+      ),
+    );
   }
 
   Container formShowFtAddress({
@@ -319,8 +312,9 @@ class _SendTokenState extends State<SendToken> {
                       child: Text(
                         S.current.max,
                         style: textNormal(
-                                const Color.fromRGBO(228, 172, 26, 1), 16,)
-                            .copyWith(fontWeight: FontWeight.w600),
+                          const Color.fromRGBO(228, 172, 26, 1),
+                          16,
+                        ).copyWith(fontWeight: FontWeight.w600),
                       ),
                     )
                   : Padding(
