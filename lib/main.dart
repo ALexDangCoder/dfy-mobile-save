@@ -48,46 +48,100 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      builder: () =>
-          GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: Strings.app_name,
-            theme: ThemeData(
-              primaryColor: AppTheme.getInstance().primaryColor(),
-              cardColor: Colors.white,
-              textTheme: GoogleFonts.latoTextTheme(
-                Theme
-                    .of(context)
-                    .textTheme,
-              ),
-              appBarTheme: const AppBarTheme(
-                color: Colors.white,
-                systemOverlayStyle: SystemUiOverlayStyle.dark,
-              ),
-              dividerColor: dividerColor,
-              scaffoldBackgroundColor: Colors.white,
-              textSelectionTheme: TextSelectionThemeData(
-                cursorColor: AppTheme.getInstance().primaryColor(),
-                selectionColor: AppTheme.getInstance().primaryColor(),
-                selectionHandleColor: AppTheme.getInstance().primaryColor(),
-              ),
-              colorScheme: ColorScheme.fromSwatch().copyWith(
-                secondary: AppTheme.getInstance().accentColor(),
-              ),
-            ),
-            // supportedLocales: S.delegate.supportedLocales,
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            locale: Locale.fromSubtags(
-              languageCode: PrefsService.getLanguage(),
-            ),
-            onGenerateRoute: AppRouter.generateRoute,
-            initialRoute: AppRouter.splash,
+      builder: () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: Strings.app_name,
+        theme: ThemeData(
+          primaryColor: AppTheme.getInstance().primaryColor(),
+          cardColor: Colors.white,
+          textTheme: GoogleFonts.latoTextTheme(
+            Theme.of(context).textTheme,
           ),
+          appBarTheme: const AppBarTheme(
+            color: Colors.white,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+          ),
+          dividerColor: dividerColor,
+          scaffoldBackgroundColor: Colors.white,
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: AppTheme.getInstance().primaryColor(),
+            selectionColor: AppTheme.getInstance().primaryColor(),
+            selectionHandleColor: AppTheme.getInstance().primaryColor(),
+          ),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            secondary: AppTheme.getInstance().accentColor(),
+          ),
+        ),
+        // supportedLocales: S.delegate.supportedLocales,
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: Locale.fromSubtags(
+          languageCode: PrefsService.getLanguage(),
+        ),
+        onGenerateRoute: AppRouter.generateRoute,
+        initialRoute: AppRouter.splash,
+      ),
     );
+  }
+
+  Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'checkPasswordCallback':
+        break;
+      case 'getConfigCallback':
+        await PrefsService.saveAppLockConfig(
+          methodCall.arguments['isAppLock'].toString(),
+        );
+        await PrefsService.saveFaceIDConfig(
+          methodCall.arguments['isFaceID'].toString(),
+        );
+        break;
+      case 'importWalletCallback':
+        print('importWalletCallback ${methodCall.arguments}');
+        break;
+      case 'earseWalletCallback':
+        break;
+      case 'getListWalletsCallback':
+        break;
+      case 'generateWalletCallback':
+        break;
+      case 'storeWalletCallback':
+        break;
+      case 'setConfigCallback':
+        break;
+      case 'getListShowedTokenCallback':
+        break;
+      case 'getListShowedNftCallback':
+        break;
+      case 'importTokenCallback':
+        break;
+      case 'getListSupportedTokenCallback':
+        break;
+      case 'signTransactionCallback':
+        break;
+      case 'getTokensCallback':
+        break;
+      default:
+        break;
+    }
+  }
+
+  void callAllApi() {
+    importWallet();
+  }
+
+  Future<void> importWallet() async {
+    try {
+      final data = {
+        'type': 'PASS_PHRASE',
+        'content':
+            'alpha derive category enact use dinner over sister snap reform pulp enough'
+      };
+      await trustWalletChannel.invokeMethod('importWallet', data);
+    } on PlatformException {}
   }
 }
