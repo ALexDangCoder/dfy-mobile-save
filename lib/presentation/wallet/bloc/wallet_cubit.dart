@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -22,6 +24,7 @@ import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:http/http.dart' as http;
 
 part 'wallet_state.dart';
 
@@ -57,8 +60,10 @@ class WalletCubit extends BaseCubit<WalletState> {
   // link: 'https://goole.com',
   // standard: 'ERC-721',
   //todo getNftInfoByAddress
-  Future<void> getNftInfoByAddress(
-      {required String nftAddress, int? enterId}) async {
+  Future<void> getNftInfoByAddress({
+    required String nftAddress,
+    int? enterId,
+  }) async {
     final NftInfo nftInfoModel = await client.getNftInfo(
       contract: '',
       id: 12,
@@ -339,6 +344,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'importNftCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
         if (isSuccess) {
+          emit(ImportNftSuccess());
           isImportNft.sink.add(isSuccess);
         }
         if (!isSuccess) {
@@ -383,6 +389,9 @@ class WalletCubit extends BaseCubit<WalletState> {
           walletName.add(nameWallet);
           addressWallet.add(addressWalletCore);
         }
+        break;
+      case 'importListNftCallback':
+        List<NftInfo> listNftInfor = methodCall.arguments;
         break;
       default:
         break;
@@ -482,6 +491,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> importNft({
     required String walletAddress,
     required String nftAddress,
+    required String collectionAddress,
     required String nftName,
     required String iconNFT,
     required int nftID,
@@ -491,6 +501,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'walletAddress': walletAddress,
         'nftAddress': nftAddress,
         'nftName': nftName,
+        'collectionAddress': collectionAddress,
         'iconNFT': iconNFT,
         'nftID': nftID,
       };
@@ -513,6 +524,97 @@ class WalletCubit extends BaseCubit<WalletState> {
         'nftAddress': nftAddress,
       };
       await trustWalletChannel.invokeMethod('setShowedNft', data);
+    } on PlatformException {
+      //todo
+
+    }
+  }
+
+  ///import nft test
+  ///get collection
+  Future<CollectionNftInfo> fetchCollection() async {
+    final response = await http.get(Uri.parse(
+        'https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return CollectionNftInfo.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load Collection');
+    }
+  }
+
+  //get Nft
+  Future<List<NftInfo>> getNFTFromWeb3({
+    required String address,
+    required String contract,
+  }) async {
+    final List<NftInfo> listNFTInfo = [];
+    final List<Map<String, dynamic>> listNFT = await Web3Utils().importAllNFT(
+      address: address,
+      contract: contract,
+    );
+
+    for (final e in listNFT) {
+      NftInfo _nftInfo;
+      final url = e['uri'];
+      final response = await http.get(
+        Uri.parse(url),
+      );
+      if (response.statusCode == 200) {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        _nftInfo = NftInfo.fromJson(jsonDecode(response.body));
+        _nftInfo.id = (e['id']).toString();
+        listNFTInfo.add(_nftInfo);
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load album');
+      }
+    }
+    return listNFTInfo;
+  }
+
+  //importAllNFT
+  Future<void> importAllNFT({
+    required String walletAddress,
+    required String contract,
+  }) async {
+    final List<NftInfo> list = await getNFTFromWeb3(
+      address: walletAddress,
+      contract: contract,
+    );
+    List<Map<String, dynamic>> listJsonNFT = [];
+    for (final e in list) {
+      listJsonNFT.add(e.saveToJson(walletAddress: walletAddress));
+    }
+    await importListNft(jsonNft: listJsonNFT.toString());
+  }
+
+  Future<void> isImportNftSuccess({
+    required String contractAddress,
+    required int id,
+  }) async {
+    if (await Web3Utils().importNFT(
+      contract: contractAddress,
+      id: id,
+    )) {
+      // emit(ImportNftSuccess());
+    }
+  }
+
+  Future<void> importListNft({
+    required String jsonNft,
+  }) async {
+    try {
+      final data = {
+        'jsonNft': jsonNft,
+      };
+      await trustWalletChannel.invokeMethod('importListNft', data);
     } on PlatformException {
       //todo
 
