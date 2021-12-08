@@ -13,12 +13,15 @@ class ListTokenResponse extends Equatable {
   int? code;
   @JsonKey(name: 'data')
   List<TokenResponse>? data;
-  @JsonKey(name: 'message')
-  String? message;
   @JsonKey(name: 'trace_id')
   String? traceId;
 
-  ListTokenResponse(this.error, this.code, this.message, this.traceId);
+  ListTokenResponse(
+    this.error,
+    this.code,
+    this.traceId,
+    this.data,
+  );
 
   factory ListTokenResponse.fromJson(Map<String, dynamic> json) =>
       _$ListTokenResponseFromJson(json);
@@ -26,7 +29,7 @@ class ListTokenResponse extends Equatable {
   Map<String, dynamic> toJson() => _$ListTokenResponseToJson(this);
 
   @override
-  List<Object?> get props => [data];
+  List<Object?> get props => [];
 
-  List<TokenInf> toDomain() => data?.map((e) => e.toDomain()).toList() ?? [];
+  List<TokenInf>? toDomain() => data?.map((e) => e.toDomain()).toList();
 }

@@ -1,7 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
-import 'package:Dfy/domain/model/nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
@@ -9,6 +9,7 @@ import 'package:Dfy/presentation/receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/column_button/buil_column.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,10 +19,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class NFTDetail extends StatefulWidget {
   const NFTDetail({
     Key? key,
-    required this.nft,
+    required this.nftInfo,
     required this.listHistory,
   }) : super(key: key);
-  final NFT nft;
+  final NftInfo nftInfo;
   final List<HistoryNFT> listHistory;
 
   @override
@@ -53,7 +54,7 @@ class _NFTDetailState extends State<NFTDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final nft = widget.nft;
+    final nft = widget.nftInfo;
     return DraggableScrollableSheet(
       maxChildSize: 0.95,
       initialChildSize: 0.45,
@@ -103,7 +104,7 @@ class _NFTDetailState extends State<NFTDetail> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                nft.name,
+                                nft.name ?? '',
                                 style: textNormal(
                                   AppTheme.getInstance().textThemeColor(),
                                   24,
@@ -116,7 +117,7 @@ class _NFTDetailState extends State<NFTDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  nft.identity,
+                                  nft.id ?? '',
                                   style: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
                                     20,
@@ -125,7 +126,10 @@ class _NFTDetailState extends State<NFTDetail> {
                                   ),
                                 ),
                                 Text(
-                                  '1 of 10',
+                                  nft.standard == 'ERC-721'
+                                      ? '1 of 1'
+                                      //TODO
+                                      : '1 of 10',
                                   style: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
                                     20,
@@ -149,29 +153,27 @@ class _NFTDetailState extends State<NFTDetail> {
                               children: [
                                 _buildRow(
                                   title: S.current.description,
-                                  detail: nft.description,
+                                  detail: nft.description ?? '',
                                   type: TextType.NORM,
                                 ),
                                 _buildRow(
                                   title: S.current.nft_standard,
-                                  detail: nft.standard == Standard.ERC_721
-                                      ? 'ERC-721'
-                                      : 'ERC-1155',
+                                  detail: nft.standard ?? '',
                                   type: TextType.NORM,
                                 ),
                                 _buildRow(
                                   title: S.current.link,
-                                  detail: nft.link,
+                                  detail: nft.link?.handleString() ?? '',
                                   type: TextType.RICH,
                                 ),
                                 _buildRow(
                                   title: S.current.contract,
-                                  detail: nft.contract,
+                                  detail: nft.contract?.handleString() ?? '',
                                   type: TextType.RICH,
                                 ),
                                 _buildRow(
                                   title: S.current.block_chain,
-                                  detail: nft.blockChain,
+                                  detail: nft.blockchain ?? '',
                                   type: TextType.NORM,
                                 ),
                                 SizedBox(
