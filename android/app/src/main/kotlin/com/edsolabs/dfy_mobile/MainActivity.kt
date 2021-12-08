@@ -10,6 +10,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import wallet.core.java.AnySigner
+import wallet.core.jni.AnyAddress
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.PrivateKey
@@ -52,6 +53,11 @@ class MainActivity : FlutterFragmentActivity() {
                     val changePassword = call.argument<String>("changePassword")
                         ?: return@setMethodCallHandler
                     changePassWordWallet(oldPassword, changePassword)
+                }
+                "savePassword" -> {
+                    val password = call.argument<String>("password")
+                        ?: return@setMethodCallHandler
+                    savePassWordWallet(password)
                 }
                 "getConfig" -> {
                     getConfigWallet()
@@ -102,9 +108,7 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<Boolean>("isAppLock") ?: true
                     val isFaceID =
                         call.argument<Boolean>("isFaceID") ?: false
-                    val password =
-                        call.argument<String>("password") ?: return@setMethodCallHandler
-                    setConfig(isAppLock, isFaceID, password)
+                    setConfig(isAppLock, isFaceID)
                 }
                 "getListShowedToken" -> {
                     val walletAddress =
@@ -123,28 +127,11 @@ class MainActivity : FlutterFragmentActivity() {
                     getListShowedNft(walletAddress, password)
                 }
 
-                "importToken" -> {
-                    val walletAddress =
-                        call.argument<String>("walletAddress")
+                "importTokens" -> {
+                    val jsonTokens =
+                        call.argument<String>("jsonTokens")
                             ?: return@setMethodCallHandler
-                    val tokenAddress =
-                        call.argument<String>("tokenAddress") ?: return@setMethodCallHandler
-                    val tokenFullName =
-                        call.argument<String>("tokenFullName") ?: return@setMethodCallHandler
-                    val iconToken =
-                        call.argument<String>("iconToken") ?: return@setMethodCallHandler
-                    val symbol =
-                        call.argument<String>("symbol") ?: return@setMethodCallHandler
-                    val decimal =
-                        call.argument<Int>("decimal") ?: return@setMethodCallHandler
-                    importToken(
-                        walletAddress,
-                        tokenAddress,
-                        tokenFullName,
-                        iconToken,
-                        symbol,
-                        decimal
-                    )
+                    importToken(jsonTokens)
                 }
                 "setShowedToken" -> {
                     val walletAddress =
@@ -264,6 +251,13 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("checkPasswordCallback", hasMap)
     }
 
+    private fun savePassWordWallet(password: String) {
+        val hasMap = HashMap<String, Any>()
+        appPreference.password = password
+        hasMap["isSuccess"] = true
+        channel?.invokeMethod("savePasswordCallback", hasMap)
+    }
+
     private fun changePassWordWallet(oldPassword: String, newPassword: String) {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = oldPassword == appPreference.password
@@ -280,6 +274,7 @@ class MainActivity : FlutterFragmentActivity() {
         hasMap["isWalletExist"] = appPreference.getListWallet().isNotEmpty()
         channel?.invokeMethod("getConfigCallback", hasMap)
     }
+
 
     private fun earseAllWallet(type: String) {
         val hasMap = HashMap<String, Any>()
@@ -303,49 +298,66 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun importWallet(type: String, content: String) {
-        when (type) {
-            TYPE_WALLET_SEED_PHRASE -> {
-                //todo content is seed phrase
-                val hasMap = HashMap<String, Any>()
-                try {
-                    val sttWallet = appPreference.sttWallet
-                    val walletName = "Account ${sttWallet + 1}"
+        val hasMap = HashMap<String, Any>()
+        try {
+            when (type) {
+                TYPE_WALLET_SEED_PHRASE -> {
                     val wallet = HDWallet(content, "")
                     val address = wallet.getAddressForCoin(coinType)
                     val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
-                    hasMap["walletAddress"] = address
                     val listWallet = ArrayList<WalletModel>()
                     listWallet.addAll(appPreference.getListWallet())
-                    listWallet.add(
-                        WalletModel(
-                            walletName,
-                            address,
-                            content,
-                            privateKey.toByteArray().toHexString(false)
+                    if (listWallet.firstOrNull { it.walletAddress != address } == null) {
+                        val walletName = "Account ${listWallet.size + 1}"
+                        hasMap["walletAddress"] = address
+                        listWallet.add(
+                            WalletModel(
+                                walletName,
+                                address,
+                                content,
+                                privateKey.toByteArray().toHexString(false)
+                            )
                         )
-                    )
-                    appPreference.saveListWallet(listWallet)
-                    appPreference.setSttWallet(sttWallet + 1)
-                    hasMap["walletName"] = walletName
-                } catch (e: InvalidParameterException) {
+                        appPreference.saveListWallet(listWallet)
+                        hasMap["walletName"] = walletName
+                        channel?.invokeMethod("importWalletCallback", hasMap)
+                    }
+
+                }
+                TYPE_WALLET_PRIVATE_KEY -> {
+                    val privateKey = PrivateKey(content.toHexBytes())
+                    val publicKey = privateKey.getPublicKeySecp256k1(false)
+                    val address = AnyAddress(publicKey, coinType).description()
+                    val listWallet = ArrayList<WalletModel>()
+                    listWallet.addAll(appPreference.getListWallet())
+                    if (listWallet.firstOrNull { it.walletAddress != address } == null) {
+                        val walletName = "Account ${listWallet.size + 1}"
+                        hasMap["walletAddress"] = address
+                        listWallet.add(
+                            WalletModel(
+                                walletName,
+                                address,
+                                "",
+                                content
+                            )
+                        )
+                        appPreference.saveListWallet(listWallet)
+                        hasMap["walletName"] = walletName
+                        channel?.invokeMethod("importWalletCallback", hasMap)
+                    }
+
+                    return
+                }
+                else -> {
                     hasMap["walletAddress"] = ""
                     hasMap["walletName"] = ""
+                    channel?.invokeMethod("importWalletCallback", hasMap)
                 }
-                channel?.invokeMethod("importWalletCallback", hasMap)
             }
-            TYPE_WALLET_PRIVATE_KEY -> {
-                //todo content is private key
-                //            val wallet = HDWallet(content, "")
-                //            val privateKey = wallet.getKeyForCoin(coinType)
-                //            val publicKeyFalse = privateKey.getPublicKeySecp256k1(false)
-                //            val anyAddress = AnyAddress(publicKeyFalse, coinType)
-                //            address = anyAddress.data().toHexString()
-                //            hasMap["walletAddress"] = address
-                return
-            }
-            else -> {
-                return
-            }
+        } catch (e: InvalidParameterException) {
+            hasMap["walletAddress"] = ""
+            hasMap["walletName"] = ""
+            channel?.invokeMethod("importWalletCallback", hasMap)
         }
     }
 
@@ -365,8 +377,7 @@ class MainActivity : FlutterFragmentActivity() {
         val seedPhrase = wallet.mnemonic()
         val address = wallet.getAddressForCoin(coinType)
         val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
-        val sttWallet = appPreference.sttWallet
-        val walletName = "Account ${sttWallet + 1}"
+        val walletName = "Account ${appPreference.getListWallet().size + 1}"
 
         val hasMap = HashMap<String, String>()
         hasMap["walletName"] = walletName
@@ -374,7 +385,6 @@ class MainActivity : FlutterFragmentActivity() {
         hasMap["walletAddress"] = address
         hasMap["privateKey"] = privateKey.toByteArray().toHexString(false)
         appPreference.password = password
-        appPreference.setSttWallet(sttWallet + 1)
         channel?.invokeMethod("generateWalletCallback", hasMap)
     }
 
@@ -400,12 +410,11 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("storeWalletCallback", hasMap)
     }
 
-    private fun setConfig(appLock: Boolean, faceID: Boolean, password: String) {
+    private fun setConfig(appLock: Boolean, faceID: Boolean) {
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
         appPreference.isAppLock = appLock
         appPreference.isFaceID = faceID
-        appPreference.password = password
         channel?.invokeMethod("setConfigCallback", hasMap)
     }
 
@@ -424,28 +433,23 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun importToken(
-        walletAddress: String,
-        tokenAddress: String,
-        tokenFullName: String,
-        iconToken: String,
-        symbol: String,
-        decimal: Int
+        jsonTokens: String
     ) {
         val hasMap = HashMap<String, Any>()
-        val listToken = ArrayList<TokenModel>()
-        listToken.addAll(appPreference.getListToken())
-        listToken.add(
-            TokenModel(
-                walletAddress,
-                tokenAddress,
-                tokenFullName,
-                iconToken,
-                symbol,
-                decimal
-            )
-        )
-        appPreference.saveListToken(listToken)
-        hasMap["isSuccess"] = true
+//        val listToken = ArrayList<TokenModel>()
+//        listToken.addAll(appPreference.getListToken())
+//        listToken.add(
+//            TokenModel(
+//                walletAddress,
+//                tokenAddress,
+//                tokenFullName,
+//                iconToken,
+//                symbol,
+//                decimal
+//            )
+//        )
+//        appPreference.saveListToken(listToken)
+        hasMap["isSuccess"] = false
         channel?.invokeMethod("importTokenCallback", hasMap)
     }
 
