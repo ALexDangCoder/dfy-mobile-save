@@ -155,19 +155,14 @@ class _BodyState extends State<_Body> {
 
                           widget.bloc.isImportNft.listen(
                             (value) async {
-                              if (value &&
-                                  await Web3Utils().importNFT(
-                                    contract:
-                                        widget.bloc.tokenAddressTextNft.value,
-                                    id: int.parse(widget.bloc.nftEnterID.value),
-                                  )) {
-                                widget.bloc.getNftInfoByAddress(
+                              if (value) {
+                                await widget.bloc.getNftInfoByAddress(
                                   nftAddress:
                                       widget.bloc.tokenAddressTextNft.value,
                                   enterId:
                                       int.parse(widget.bloc.nftEnterID.value),
                                 );
-                                widget.bloc.importNft(
+                                await widget.bloc.importNft(
                                   walletAddress: widget.addressWallet,
                                   nftAddress:
                                       widget.bloc.tokenAddressTextNft.value,

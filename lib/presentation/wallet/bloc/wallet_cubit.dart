@@ -78,16 +78,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     return balanceOfBnb;
   }
 
-  bool importNftSuccess = false;
-
-  Future<void> isImportNftSuccess({
-    required String contractAddress,
-    required int id,
-  }) async {
-    importNftSuccess =
-        await Web3Utils().importNFT(contract: contractAddress, id: id);
-  }
-
   void getListWallet({
     required String addressWallet,
   }) async {
@@ -283,10 +273,10 @@ class WalletCubit extends BaseCubit<WalletState> {
     result.when(
       success: (res) {
         //todo: Import to wallet core
-        // getTokenInfoByAddressList(res: res);
+        getTokenInfoByAddressList(res: res);
       },
       error: (error) {
-        // updateStateError();
+        updateStateError();
       },
     );
   }
@@ -296,10 +286,9 @@ class WalletCubit extends BaseCubit<WalletState> {
     final Result<CollectionNftInfo> result =
         await _collectionRepository.getCollection();
     result.when(
-      success: (res) {
-      },
+      success: (res) {},
       error: (error) {
-         updateStateError();
+        updateStateError();
       },
     );
   }
@@ -505,9 +494,10 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   ///import nft test
+  ///get collection
   Future<CollectionNftInfo> fetchCollection() async {
-    final response = await http
-        .get(Uri.parse('https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c'));
+    final response = await http.get(Uri.parse(
+        'https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -517,6 +507,18 @@ class WalletCubit extends BaseCubit<WalletState> {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to load album');
+    }
+  }
+
+  Future<void> isImportNftSuccess({
+    required String contractAddress,
+    required int id,
+  }) async {
+    if (await Web3Utils().importNFT(
+      contract: contractAddress,
+      id: id,
+    )) {
+      // emit(ImportNftSuccess());
     }
   }
 }
