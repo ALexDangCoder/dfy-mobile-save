@@ -57,149 +57,158 @@ class TokenDetail extends StatelessWidget {
 
   Widget bottomSheet(BuildContext context) {
     return StreamBuilder<ModelToken>(
-        stream: bloc.tokenStream,
-        builder: (context, snapshot) {
-          final modelToken = snapshot.data ?? token;
-          return BaseBottomSheet(
-            title: modelToken.nameShortToken,
-            child: Column(
-              children: [
-                Container(
-                  height: 308.h,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: AppTheme.getInstance().divideColor(),
+      stream: bloc.tokenStream,
+      builder: (context, snapshot) {
+        final modelToken = snapshot.data ?? token;
+        return BaseBottomSheet(
+          title: modelToken.nameShortToken,
+          child: Column(
+            children: [
+              RefreshIndicator(
+                onRefresh: ()async{
+                  await bloc.getToken(token);
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Container(
+                    height: 308.h,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: AppTheme.getInstance().divideColor(),
+                        ),
                       ),
                     ),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                          top: 24.h,
-                          bottom: 8.h,
-                        ),
-                        child: SizedBox(
-                          height: 54.h,
-                          width: 54.h,
-                          child: Image.network(modelToken.iconToken),
-                        ),
-                      ),
-                      Text(
-                        customCurrency(
-                          amount: modelToken.balanceToken.toString(),
-                          type: modelToken.nameShortToken,
-                          digit: 8,
-                        ),
-                        style: tokenDetailAmount(
-                          color: AppTheme.getInstance().textThemeColor(),
-                        ),
-                      ),
-                      Text(
-                        customCurrency(
-                          amount: (modelToken.balanceToken *
-                                  modelToken.exchangeRate)
-                              .toString(),
-                          type: '\$',
-                          digit: 2,
-                        ),
-                        style: tokenDetailAmount(
-                          color:
-                              AppTheme.getInstance().currencyDetailTokenColor(),
-                          fontSize: 16,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          top: 24.h,
-                          bottom: 28.h,
-                          left: 115.h,
-                          right: 115.h,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  context: context,
-                                  backgroundColor: Colors.transparent,
-                                  builder: (context) {
-                                    return Receive(
-                                      walletAddress: walletAddress,
-                                      type: TokenType.DFY,
-                                    );
-                                  },
-                                );
-                              },
-                              child: sizedSvgImage(
-                                w: 48,
-                                h: 48,
-                                image: ImageAssets.ic_btn_receive_token_svg,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  context: context,
-                                  backgroundColor: Colors.transparent,
-                                  builder: (_) {
-                                    return SendToken(
-                                      walletAddress: walletAddress,
-                                    );
-                                  },
-                                ).then(
-                                  (value) => {
-                                    if (value) bloc.checkShowLoading() else null
-                                  },
-                                );
-                              },
-                              child: sizedSvgImage(
-                                w: 48,
-                                h: 48,
-                                image: ImageAssets.ic_btn_send_token_svg,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          height: 48.h,
-                          width: 210.h,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(16),
-                            ),
-                            border: Border.all(
-                              color: AppTheme.getInstance().fillColor(),
-                            ),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 24.h,
+                            bottom: 8.h,
                           ),
-                          child: Center(
-                            child: Text(
-                              S.current.create_collateral,
-                              style: tokenDetailAmount(
+                          child: SizedBox(
+                            height: 54.h,
+                            width: 54.h,
+                            child: Image.network(modelToken.iconToken),
+                          ),
+                        ),
+                        Text(
+                          customCurrency(
+                            amount: modelToken.balanceToken.toString(),
+                            type: modelToken.nameShortToken,
+                            digit: 8,
+                          ),
+                          style: tokenDetailAmount(
+                            color: AppTheme.getInstance().textThemeColor(),
+                          ),
+                        ),
+                        Text(
+                          customCurrency(
+                            amount:
+                                (modelToken.balanceToken * modelToken.exchangeRate)
+                                    .toString(),
+                            type: '\$',
+                            digit: 2,
+                          ),
+                          style: tokenDetailAmount(
+                            color:
+                                AppTheme.getInstance().currencyDetailTokenColor(),
+                            fontSize: 16,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 24.h,
+                            bottom: 28.h,
+                            left: 115.h,
+                            right: 115.h,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) {
+                                      return Receive(
+                                        walletAddress: walletAddress,
+                                        type: TokenType.DFY,
+                                      );
+                                    },
+                                  );
+                                },
+                                child: sizedSvgImage(
+                                  w: 48,
+                                  h: 48,
+                                  image: ImageAssets.ic_btn_receive_token_svg,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (_) {
+                                      return SendToken(
+                                        walletAddress: walletAddress,
+                                      );
+                                    },
+                                  ).then(
+                                    (value) => {
+                                      if (value) bloc.checkShowLoading() else null
+                                    },
+                                  );
+                                },
+                                child: sizedSvgImage(
+                                  w: 48,
+                                  h: 48,
+                                  image: ImageAssets.ic_btn_send_token_svg,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            height: 48.h,
+                            width: 210.h,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(16),
+                              ),
+                              border: Border.all(
                                 color: AppTheme.getInstance().fillColor(),
-                                fontSize: 16,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                S.current.create_collateral,
+                                style: tokenDetailAmount(
+                                  color: AppTheme.getInstance().fillColor(),
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-                TransactionList(
-                  shortName: modelToken.nameShortToken,
-                  bloc: bloc,
-                ),
-              ],
-            ),
-          );
-        });
+              ),
+              TransactionList(
+                shortName: modelToken.nameShortToken,
+                bloc: bloc,
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
