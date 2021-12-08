@@ -575,16 +575,18 @@ class MainActivity : FlutterFragmentActivity() {
         val hasMap = HashMap<String, Any>()
         val listNft = ArrayList<NftModel>()
         listNft.addAll(appPreference.getListNft())
-        listNft.add(
-            NftModel(
-                walletAddress,
-                collectionAddress,
-                nftAddress,
-                nftName,
-                iconNFT,
-                nftID
+        if (listNft.firstOrNull { it.walletAddress == walletAddress && it.nftAddress == nftAddress } == null) {
+            listNft.add(
+                NftModel(
+                    walletAddress,
+                    collectionAddress,
+                    nftAddress,
+                    nftName,
+                    iconNFT,
+                    nftID
+                )
             )
-        )
+        }
         appPreference.saveListNft(listNft)
         hasMap["isSuccess"] = true
         channel?.invokeMethod("importNftCallback", hasMap)
