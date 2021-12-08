@@ -72,7 +72,7 @@ class _ImportAccountState extends State<ImportAccount> {
               builder: (context) {
                 return CreateSuccessfullyHaveWallet(
                   type: KeyType.IMPORT,
-                  wallet: Wallet(),
+                  wallet: importCubit.wallet ?? Wallet(),
                 );
               },
             ),

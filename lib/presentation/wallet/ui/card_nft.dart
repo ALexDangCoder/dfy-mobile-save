@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
-import 'package:Dfy/domain/model/nft.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/draggable_nft_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
@@ -46,6 +45,7 @@ class RestoreCubit extends Cubit<RestoreState> {
   bool seedField = false;
   bool privateField = false;
   bool checkBoxValue = true;
+  String message = '';
 
   /// button subject
   Stream<bool> get btnStream => _buttonSubject.stream;
@@ -129,11 +129,13 @@ class RestoreCubit extends Cubit<RestoreState> {
       case 'importWalletCallback':
         final walletName = methodCall.arguments['walletName'];
         final walletAddress = methodCall.arguments['walletAddress'];
+        //message = methodCall.arguments['message'];
+        final code = methodCall.arguments['code'];
         wallet = Wallet(name: walletName, address: walletAddress);
-        if (walletName == null || walletAddress == null) {
+        if (walletName == null || walletAddress == null || code == 400) {
           emit(ErrorState());
         } else {
-          emit(NavState(wallet ?? Wallet()));
+          emit(NavState());
         }
         break;
       default:
@@ -150,11 +152,9 @@ class RestoreCubit extends Cubit<RestoreState> {
       final data = {
         'type': type,
         'content': content,
-        'password': password,
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
-      emit(ErrorState());
       throw CommonException();
     }
   }
@@ -208,8 +208,11 @@ class RestoreCubit extends Cubit<RestoreState> {
   void isMatchPW({required String password, required String confirmPW}) {
     if (password == confirmPW) {
       matchSink.add(false);
+      ckcSink.add(true);
     } else {
       matchSink.add(true);
+      ckcSink.add(false);
+
     }
   }
 

@@ -93,7 +93,7 @@ class CreateFail extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       if (type == KeyType.CREATE) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const MainScreen(
@@ -111,7 +111,7 @@ class CreateFail extends StatelessWidget {
                           ),
                         );
                       } else if (type == KeyType.IMPORT) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const MainScreen(
@@ -124,7 +124,6 @@ class CreateFail extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const MainScreen(
-                              index: 2,
                             ),
                           ),
                         );

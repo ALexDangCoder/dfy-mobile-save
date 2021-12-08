@@ -22,3 +22,8 @@ class NavigatorReset extends WalletState {
   @override
   List<Object?> get props => [];
 }
+
+class ImportNftSuccess extends WalletState {
+  @override
+  List<Object?> get props => [];
+}

@@ -32,6 +32,9 @@ class MainActivity : FlutterFragmentActivity() {
 
     private val CHANNEL_TRUST_WALLET = "flutter/trust_wallet"
 
+    private val CODE_SUCCESS = 200
+    private val CODE_ERROR = 400
+
     private var channel: MethodChannel? = null
     private lateinit var appPreference: AppPreference
     private val coinType: CoinType = CoinType.SMARTCHAIN
@@ -346,7 +349,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
                     val listWallet = ArrayList<WalletModel>()
                     listWallet.addAll(appPreference.getListWallet())
-                    if (listWallet.firstOrNull { it.walletAddress != address } == null) {
+                    if (listWallet.firstOrNull { it.walletAddress == address } == null) {
                         val walletName = "Account ${listWallet.size + 1}"
                         hasMap["walletAddress"] = address
                         listWallet.add(
@@ -359,9 +362,16 @@ class MainActivity : FlutterFragmentActivity() {
                         )
                         appPreference.saveListWallet(listWallet)
                         hasMap["walletName"] = walletName
+                        hasMap["code"] = CODE_SUCCESS
+                        hasMap["messages"] = "Import tài khoản thành công"
+                        channel?.invokeMethod("importWalletCallback", hasMap)
+                    } else {
+                        hasMap["walletAddress"] = ""
+                        hasMap["walletName"] = ""
+                        hasMap["code"] = CODE_ERROR
+                        hasMap["messages"] = "Tài khoản đã tồn tại"
                         channel?.invokeMethod("importWalletCallback", hasMap)
                     }
-
                 }
                 TYPE_WALLET_PRIVATE_KEY -> {
                     val privateKey = PrivateKey(content.toHexBytes())
@@ -369,7 +379,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val address = AnyAddress(publicKey, coinType).description()
                     val listWallet = ArrayList<WalletModel>()
                     listWallet.addAll(appPreference.getListWallet())
-                    if (listWallet.firstOrNull { it.walletAddress != address } == null) {
+                    if (listWallet.firstOrNull { it.walletAddress == address } == null) {
                         val walletName = "Account ${listWallet.size + 1}"
                         hasMap["walletAddress"] = address
                         listWallet.add(
@@ -382,20 +392,31 @@ class MainActivity : FlutterFragmentActivity() {
                         )
                         appPreference.saveListWallet(listWallet)
                         hasMap["walletName"] = walletName
+                        hasMap["code"] = CODE_SUCCESS
+                        hasMap["messages"] = "Import tài khoản thành công"
+                        channel?.invokeMethod("importWalletCallback", hasMap)
+                    } else {
+                        hasMap["walletAddress"] = ""
+                        hasMap["walletName"] = ""
+                        hasMap["code"] = CODE_ERROR
+                        hasMap["messages"] = "Tài khoản đã tồn tại"
                         channel?.invokeMethod("importWalletCallback", hasMap)
                     }
-
-                    return
                 }
                 else -> {
                     hasMap["walletAddress"] = ""
                     hasMap["walletName"] = ""
+                    hasMap["code"] = CODE_ERROR
+                    hasMap["messages"] = "Có lỗi xảy ra vui lòng thử lại."
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 }
             }
         } catch (e: InvalidParameterException) {
             hasMap["walletAddress"] = ""
             hasMap["walletName"] = ""
+            hasMap["code"] = CODE_ERROR
+            hasMap["messages"] =
+                if (type == TYPE_WALLET_SEED_PHRASE) "Lỗi seed phrase vui lòng thử lại" else "Lỗi private key vui lòng thử lại"
             channel?.invokeMethod("importWalletCallback", hasMap)
         }
     }
