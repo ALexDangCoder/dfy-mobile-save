@@ -437,13 +437,13 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         for (final element in checkShow) {
           if (element.isShow) {
+            print(element.nameShortToken);
             listTokenFromWalletCore.add(element);
           }
         }
         print('>>>>>'+listTokenFromWalletCore.length.toString());
         print(checkShow.length);
         getListTokenModel.add(checkShow);
-        await getBalanceOFToken(listTokenFromWalletCore);
         totalBalance.add(total(listTokenFromWalletCore));
         listTokenStream.add(listTokenFromWalletCore);
         break;
