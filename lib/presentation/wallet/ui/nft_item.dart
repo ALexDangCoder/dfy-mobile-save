@@ -1,8 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/nft.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
@@ -11,14 +9,15 @@ import 'package:Dfy/widgets/dialog_remove/remove_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-final NFT nft = NFT(
-  'Name of NFT',
+final NftInfo nft = NftInfo(
+  contract: '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+  name: 'Name of NFT',
+  blockchain: 'Binance Smart Chain',
+  description:
   'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
-  Standard.ERC_1155,
-  'https://medium.com/flutter-community/make-text-styling-more-effective-with-richtext-widget-b0e0cb4771ef',
-  'Binance smart chain',
-  '0xd07dc426200000415242343423424261d2461d2430',
-  '#357594',
+  id: '124124',
+  link: 'https://goole.com',
+  standard: 'ERC-721',
 );
 
 class NFTItem extends StatefulWidget {
