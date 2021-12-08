@@ -369,7 +369,9 @@ class WalletCubit extends BaseCubit<WalletState> {
           walletName.add(nameWallet);
           addressWallet.add(addressWalletCore);
         }
-
+        break;
+      case 'importListNftCallback':
+        List<NftInfo> listNftInfor = methodCall.arguments;
         break;
       default:
         break;
@@ -547,7 +549,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   //importAllNFT
-  Future<List<Map<String,dynamic>>> importAllNFT({
+  Future<void> importAllNFT({
     required String walletAddress,
     required String contract,
   }) async {
@@ -555,14 +557,12 @@ class WalletCubit extends BaseCubit<WalletState> {
       address: walletAddress,
       contract: contract,
     );
-    List<Map<String,dynamic>> listJsonNFT = [];
+    List<Map<String, dynamic>> listJsonNFT = [];
     for (final e in list) {
       listJsonNFT.add(e.saveToJson(walletAddress: walletAddress));
     }
-    return listJsonNFT;
+    await importListNft(jsonNft: listJsonNFT.toString());
   }
-
-
 
   Future<void> isImportNftSuccess({
     required String contractAddress,
@@ -573,6 +573,20 @@ class WalletCubit extends BaseCubit<WalletState> {
       id: id,
     )) {
       // emit(ImportNftSuccess());
+    }
+  }
+
+  Future<void> importListNft({
+    required String jsonNft,
+  }) async {
+    try {
+      final data = {
+        'jsonNft': jsonNft,
+      };
+      await trustWalletChannel.invokeMethod('importListNft', data);
+    } on PlatformException {
+      //todo
+
     }
   }
 }

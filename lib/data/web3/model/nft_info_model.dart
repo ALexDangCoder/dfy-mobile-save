@@ -49,7 +49,7 @@ class NftInfo {
     data['nftAddress'] = contract;
     data['collectionId'] = collectionId;
     data['nftName'] = name;
-    data['nftID'] = id;
+    data['nftID'] = int.parse(id ?? '-1');
     data['iconNFT'] = img;
     data['link'] = link;
     data['description'] = description;

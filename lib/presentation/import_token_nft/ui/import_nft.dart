@@ -137,85 +137,56 @@ class _BodyState extends State<_Body> {
                   stream: widget.bloc.tokenAddressTextNft,
                   builder: (context, snapshot) {
                     return InkWell(
-                      onTap: () {
+                      onTap: () async {
                         widget.bloc.checkAddressNullNFT();
-                        if (widget.bloc.isNFT.value) {
-                          print(widget.addressWallet);
-                          print(widget.bloc.tokenAddressTextNft.value);
-                          print(widget.bloc.nftEnterID.value);
-                          print(widget.bloc.nftName);
-                          print(widget.bloc.iconNFT);
-                          widget.bloc.importNft(
-                            walletAddress: widget.addressWallet,
-                            nftAddress: widget.bloc.tokenAddressTextNft.value,
-                            nftID: int.parse(widget.bloc.nftEnterID.value),
-                            nftName: widget.bloc.nftName,
-                            iconNFT: widget.bloc.iconNFT,
-                            collectionAddress: '',
-                          );
+                        if (widget.bloc.nftEnterID.value.isNotEmpty) {
+                          if (widget.bloc.isNFT.value) {
+                            widget.bloc.importNft(
+                              walletAddress: widget.addressWallet,
+                              nftAddress: widget.bloc.tokenAddressTextNft.value,
+                              nftID: int.parse(widget.bloc.nftEnterID.value),
+                              nftName: widget.bloc.nftName,
+                              iconNFT: widget.bloc.iconNFT,
+                              collectionAddress: '',
+                            );
 
-                          widget.bloc.isImportNft.listen(
-                            (value) async {
-                              if (value &&
-                                  await Web3Utils().importNFT(
-                                    contract:
-                                        widget.bloc.tokenAddressTextNft.value,
-                                    id: int.parse(widget.bloc.nftEnterID.value),
-                                  )) {
-                                await widget.bloc.getNftInfoByAddress(
-                                  nftAddress:
-                                      widget.bloc.tokenAddressTextNft.value,
-                                  enterId:
-                                      int.parse(widget.bloc.nftEnterID.value),
-                                );
-                                await widget.bloc.importNft(
-                                  walletAddress: widget.addressWallet,
-                                  nftAddress:
-                                      widget.bloc.tokenAddressTextNft.value,
-                                  nftID:
-                                      int.parse(widget.bloc.nftEnterID.value),
-                                  nftName: widget.bloc.nftName,
-                                  iconNFT: widget.bloc.iconNFT,
-                                  collectionAddress:
-                                      widget.bloc.tokenAddressTextNft.value,
-                                );
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) {
-                                //       return const NFTSuccessfully();
-                                //     },
-                                //   ),
-                                // ).then((value) => null);
-                                // widget.bloc.isImportNft.close();
-                                widget.bloc.tokenAddressTextNft.add('');
-                              }
-                            },
+                            widget.bloc.isImportNft.listen(
+                              (value) async {
+                                if (value &&
+                                    await Web3Utils().importNFT(
+                                      contract:
+                                          widget.bloc.tokenAddressTextNft.value,
+                                      id: int.parse(
+                                          widget.bloc.nftEnterID.value),
+                                    )) {}
+                              },
+                            );
+                            widget.bloc.isImportNftFail.listen(
+                              (value) {
+                                if (!value) {
+                                  _showDialog(
+                                    text: S.current.please_try_again,
+                                    alert: S.current.you_are_not,
+                                  );
+                                  widget.bloc.isImportNftFail.close();
+                                }
+                              },
+                            );
+                          }
+                        } else {
+                          await widget.bloc.importAllNFT(
+                            walletAddress:
+                                widget.bloc.tokenAddressTextNft.value,
+                            contract: widget.bloc.tokenAddressTextNft.value,
                           );
-                          widget.bloc.isImportNftFail.listen(
-                            (value) {
-                              if (!value) {
-                                _showDialog(
-                                  text: S.current.please_try_again,
-                                  alert: S.current.you_are_not,
-                                );
-                                widget.bloc.isImportNftFail.close();
-                              }
-                            },
-                          );
+                          Navigator.pop(context);
                         }
 
-                        // if (await Web3Utils().importNFT(
-                        //     contract: widget.bloc.tokenAddressTextNft.value,
-                        //     id: int.parse(widget.bloc.nftEnterID.value))) {
-
-                        // }
                       },
                       child: ButtonGold(
                         title: S.current.import,
-                        isEnable: widget.bloc.tokenAddressTextNft.value.isEmpty
-                            ? false
-                            : true,
+                        isEnable:
+                            widget.bloc.tokenAddressTextNft.value.isNotEmpty,
                       ),
                     );
                   },
