@@ -55,6 +55,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    _cubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
@@ -245,35 +252,40 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 40.h,
                   ),
-                  Visibility(
-                    visible: _cubit.isFaceID,
-                    child: BlocListener<LoginCubit, LoginState>(
-                      bloc: _cubit,
-                      listener: (context, state) {
-                        if (state is LoginSuccess) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => const MainScreen(
-                                index: 1,
-                              ),
-                            ),
-                            (route) => route.isFirst,
-                          );
-                        }
-                      },
-                      child: GestureDetector(
-                        onTap: () {
-                          _cubit.authenticate();
-                        },
-                        child: Platform.isIOS
-                            ? const Image(
-                                image: AssetImage(ImageAssets.faceID),
-                              )
-                            : const Image(
-                                image: AssetImage(ImageAssets.ic_finger),
-                              ),
-                      ),
-                    ),
+                  StreamBuilder<bool>(
+                    stream: _cubit.isFaceIDStream,
+                    builder: (context, state) {
+                      return Visibility(
+                        visible: state.data ?? true,
+                        child: BlocListener<LoginCubit, LoginState>(
+                          bloc: _cubit,
+                          listener: (context, state) {
+                            if (state is LoginSuccess) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) => const MainScreen(
+                                    index: 1,
+                                  ),
+                                ),
+                                (route) => route.isFirst,
+                              );
+                            }
+                          },
+                          child: GestureDetector(
+                            onTap: () {
+                              _cubit.authenticate();
+                            },
+                            child: Platform.isIOS
+                                ? const Image(
+                                    image: AssetImage(ImageAssets.faceID),
+                                  )
+                                : const Image(
+                                    image: AssetImage(ImageAssets.ic_finger),
+                                  ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   SizedBox(
                     height: 44.h,
