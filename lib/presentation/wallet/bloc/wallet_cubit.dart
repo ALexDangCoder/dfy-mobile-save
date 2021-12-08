@@ -232,7 +232,20 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  //Web3
   TokenRepository get _tokenRepository => Get.find();
+
+  Future<void> getListCategory() async {
+    final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
+    result.when(
+      success: (res) {
+        getTokenInfoByAddressList(res: res);
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
+  }
 
   List<ModelToken> getListModelToken = [];
 
@@ -258,24 +271,21 @@ class WalletCubit extends BaseCubit<WalletState> {
     print('--------------${getListModelToken.length}');
   }
 
-  //Web3
-  Future<void> getListCategory() async {
-    final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
-    result.when(
-      success: (res) {
-        //todo: Import to wallet core
-        getTokenInfoByAddressList(res: res);
-      },
-      error: (error) {
-        updateStateError();
-      },
-    );
+  void getExchangeRate(
+    List<ModelToken> listShow,
+    List<ModelToken> listCheck,
+  ) {
+    for (int i = 0; i < listShow.length; i++) {
+      for(int j = 0; j < listCheck.length; j++) {
+        if(listShow[i].nameShortToken == listCheck[j].nameShortToken){
+          listShow[i].balanceToken = listCheck[j].balanceToken;
+        }
+      }
+    }
   }
 
-  Future<void> getExchangeRate(List<ModelToken> list) async {
-    ///TODO: function get ExchangeRate
+  Future<void> getBalanceOFToken(List<ModelToken> list) async {
     for (int i = 0; i < list.length; i++) {
-      list[i].exchangeRate = 12;
       list[i].balanceToken = await client.getBalanceOfToken(
         ofAddress: addressWalletCore,
         tokenAddress: list[i].tokenAddress,
@@ -324,7 +334,8 @@ class WalletCubit extends BaseCubit<WalletState> {
             listTokenFromWalletCore.add(element);
           }
         }
-        await getExchangeRate(listTokenFromWalletCore);
+        await getBalanceOFToken(listTokenFromWalletCore);
+        getExchangeRate(listTokenFromWalletCore, getListModelToken);
         total(listTokenFromWalletCore);
         listTokenStream.add(listTokenFromWalletCore);
         break;

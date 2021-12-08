@@ -3,7 +3,7 @@ class ModelToken {
   String nameToken = '';
   String nameShortToken = '';
   String iconToken = '';
-  double balanceToken = 12313.3123123;
+  double balanceToken = 0.0;
   bool isShow = false;
   double exchangeRate = 0;
   String walletAddress = '';
