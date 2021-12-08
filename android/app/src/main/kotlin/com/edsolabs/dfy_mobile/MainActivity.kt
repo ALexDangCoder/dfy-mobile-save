@@ -28,6 +28,9 @@ class MainActivity : FlutterFragmentActivity() {
     private val TYPE_WALLET_SEED_PHRASE = "PASS_PHRASE"
     private val TYPE_WALLET_PRIVATE_KEY = "PRIVATE_KEY"
 
+    private val TOKEN_DFY_ADDRESS = "0x20f1de452e9057fe863b99d33cf82dbee0c45b14"
+    private val TOKEN_BNB_ADDRESS = "0x0000000000000000000000000000000000000000"
+
     private val TYPE_DELETE_WALLET_IMPORT = "IMPORT"
     private val TYPE_DELETE_WALLET_CREATE = "CREATE"
 
@@ -545,14 +548,16 @@ class MainActivity : FlutterFragmentActivity() {
         var size = 0
         while (size < listObjectTokens.length()) {
             val data = listObjectTokens.getJSONObject(size)
+            val tokenAddress = data.getString("tokenAddress")
             val token = TokenModel(
                 walletAddress = data.getString("walletAddress"),
-                tokenAddress = data.getString("tokenAddress"),
+                tokenAddress = tokenAddress,
                 tokenFullName = data.getString("nameToken"),
                 iconUrl = data.getString("iconToken"),
                 symbol = data.getString("nameShortToken"),
                 decimal = data.getInt("decimal"),
-                exchangeRate = data.getDouble("exchangeRate")
+                exchangeRate = data.getDouble("exchangeRate"),
+                isShow = tokenAddress == TOKEN_DFY_ADDRESS || tokenAddress == TOKEN_BNB_ADDRESS
             )
             val tokenInCore =
                 listTokenSupport.firstOrNull { it.walletAddress == token.walletAddress && it.tokenAddress == token.tokenAddress }
@@ -618,12 +623,16 @@ class MainActivity : FlutterFragmentActivity() {
         isShow: Boolean
     ) {
         val hasMap = HashMap<String, Any>()
-        val listToken = ArrayList<TokenModel>()
-        listToken.addAll(appPreference.getListTokenSupport())
-        listToken.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress }?.isShow =
-            isShow
-        appPreference.saveListTokenSupport(listToken)
-        hasMap["isSuccess"] = true
+        if (tokenAddress == TOKEN_DFY_ADDRESS || tokenAddress == TOKEN_BNB_ADDRESS) {
+            val listToken = ArrayList<TokenModel>()
+            listToken.addAll(appPreference.getListTokenSupport())
+            listToken.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress }?.isShow =
+                isShow
+            appPreference.saveListTokenSupport(listToken)
+            hasMap["isSuccess"] = true
+        } else {
+            hasMap["isSuccess"] = false
+        }
         channel?.invokeMethod("setShowedTokenCallback", hasMap)
     }
 
