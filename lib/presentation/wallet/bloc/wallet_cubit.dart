@@ -240,11 +240,9 @@ class WalletCubit extends BaseCubit<WalletState> {
     result.when(
       success: (res) {
         getTokenInfoByAddressList(res: res);
-        print(res[37].usdExchange.toString() + '|||||||||||||||||||||||||');
       },
       error: (error) {
         updateStateError();
-        print('|||||||||||||||||||||||||');
       },
     );
   }
@@ -270,7 +268,6 @@ class WalletCubit extends BaseCubit<WalletState> {
           exchangeRate: value.usdExchange ?? 0,
         ),
       );
-      print(value.symbol);
     }
   }
 
@@ -337,9 +334,10 @@ class WalletCubit extends BaseCubit<WalletState> {
             listTokenFromWalletCore.add(element);
           }
         }
+        await getBalanceOFToken(listTokenFromWalletCore);
+        listTokenStream.add(listTokenFromWalletCore);
         await getListCategory();
         getExchangeRate(listTokenFromWalletCore, getListModelToken);
-        await getBalanceOFToken(listTokenFromWalletCore);
         total(listTokenFromWalletCore);
         listTokenStream.add(listTokenFromWalletCore);
         break;
