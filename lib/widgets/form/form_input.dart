@@ -63,6 +63,7 @@ class FormInput extends StatelessWidget {
               onChanged: (value) {
                 bloc.checkAddressNull();
                 bloc.tokenAddressText.sink.add(value);
+               // bloc.showTxtWarningAddress();
               },
               decoration: InputDecoration(
                 counterText: '',

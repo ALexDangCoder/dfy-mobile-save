@@ -23,10 +23,12 @@ class CreateSuccessfully extends StatelessWidget {
     required this.bLocCreateSeedPhrase,
     required this.wallet,
     required this.type,
+    required this.passWord,
   }) : super(key: key);
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
   final Wallet wallet;
   final KeyType type;
+  final String passWord;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,7 @@ class CreateSuccessfully extends StatelessWidget {
             bLocCreateSeedPhrase: bLocCreateSeedPhrase,
             type: type,
             wallet: wallet,
+            passWord: passWord,
           )
         ],
       ),
@@ -55,10 +58,12 @@ class _Body extends StatefulWidget {
     required this.bLocCreateSeedPhrase,
     required this.wallet,
     required this.type,
+    required this.passWord,
   }) : super(key: key);
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
   final Wallet wallet;
   final KeyType type;
+  final String passWord;
 
   @override
   _BodyState createState() => _BodyState();
@@ -180,6 +185,8 @@ class _BodyState extends State<_Body> {
                   isAppLock: widget.bLocCreateSeedPhrase.isCheckAppLock.value,
                   isFaceID: widget.bLocCreateSeedPhrase.isCheckTouchID.value,
                 );
+                widget.bLocCreateSeedPhrase
+                    .savePassword(password: widget.passWord);
               },
               child: ButtonGold(
                 title: S.current.complete,
