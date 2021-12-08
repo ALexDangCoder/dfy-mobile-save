@@ -124,6 +124,16 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("password") ?: return@setMethodCallHandler
                     getListShowedNft(walletAddress, password)
                 }
+                "checkToken" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    val tokenAddress =
+                        call.argument<String>("tokenAddress") ?: return@setMethodCallHandler
+                    checkToken(
+                        walletAddress,
+                        tokenAddress
+                    )
+                }
                 "importToken" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress") ?: return@setMethodCallHandler
@@ -459,6 +469,14 @@ class MainActivity : FlutterFragmentActivity() {
         hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
         channel?.invokeMethod("getListShowedNftCallback", hasMap)
     }
+
+    private fun checkToken(walletAddress: String, tokenAddress: String) {
+        val hasMap = HashMap<String, Any>()
+        hasMap["isExist"] = appPreference.getListToken()
+            .firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress } != null
+        channel?.invokeMethod("checkTokenCallback", hasMap)
+    }
+
 
     private fun importToken(
         walletAddress: String,
