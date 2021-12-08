@@ -1,21 +1,21 @@
 class TokenInf {
-  String? id;
+  int? id;
   bool? isWhitelistCollateral;
   bool? isWhitelistSupply;
   double? usdExchange;
-  String? iconUrl;
   String? symbol;
   String? address;
   String? name;
+  String? iconUrl;
 
   TokenInf({
     this.symbol,
     this.name = '',
-    this.iconUrl,
     this.id,
     this.isWhitelistCollateral,
     this.isWhitelistSupply,
     this.usdExchange,
     this.address,
+    this.iconUrl,
   });
 }
