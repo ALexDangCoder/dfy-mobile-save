@@ -55,6 +55,7 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
+    cubit.getListCategory();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     if (widget.index == 1) {
@@ -94,12 +95,12 @@ class _WalletState extends State<WalletScreen>
           offset: 112.h,
           onRefresh: () async {
             await cubit.getListCategory();
-            cubit.getExchangeRate(
+            await cubit.getExchangeRate(
               cubit.listTokenFromWalletCore,
               cubit.getListModelToken,
             );
-            cubit.listTokenStream.add(cubit.listTokenFromWalletCore);
             cubit.totalBalance.add(cubit.total(cubit.listTokenFromWalletCore));
+            cubit.listTokenStream.add(cubit.listTokenFromWalletCore);
           },
           child: Container(
             width: 375.w,
