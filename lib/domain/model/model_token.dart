@@ -14,6 +14,7 @@ class ModelToken {
     required this.nameToken,
     required this.nameShortToken,
     required this.iconToken,
+    required this.exchangeRate,
   });
 
   ModelToken.init();

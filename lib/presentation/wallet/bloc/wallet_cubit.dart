@@ -240,9 +240,11 @@ class WalletCubit extends BaseCubit<WalletState> {
     result.when(
       success: (res) {
         getTokenInfoByAddressList(res: res);
+        print(res[37].usdExchange.toString() + '|||||||||||||||||||||||||');
       },
       error: (error) {
         updateStateError();
+        print('|||||||||||||||||||||||||');
       },
     );
   }
@@ -254,7 +256,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   }) async {
     for (final value in res) {
       final TokenInfoModel tokenInfoModel = await client.getTokenInfo(
-        contractAddress: '0x20f1de452e9057fe863b99d33cf82dbee0c45b14',
+        contractAddress: '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
         //todo addressContract BE
         walletAddress: addressWalletCore,
       );
@@ -265,10 +267,11 @@ class WalletCubit extends BaseCubit<WalletState> {
           nameShortToken: value.symbol ?? '',
           nameToken: tokenInfoModel.name ?? '',
           balanceToken: tokenInfoModel.value ?? 0,
+          exchangeRate: value.usdExchange ?? 0,
         ),
       );
+      print(value.symbol);
     }
-    print('--------------${getListModelToken.length}');
   }
 
   void getExchangeRate(
@@ -278,7 +281,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     for (int i = 0; i < listShow.length; i++) {
       for(int j = 0; j < listCheck.length; j++) {
         if(listShow[i].nameShortToken == listCheck[j].nameShortToken){
-          listShow[i].balanceToken = listCheck[j].balanceToken;
+          listShow[i].exchangeRate = listCheck[j].exchangeRate;
         }
       }
     }
@@ -334,8 +337,9 @@ class WalletCubit extends BaseCubit<WalletState> {
             listTokenFromWalletCore.add(element);
           }
         }
-        await getBalanceOFToken(listTokenFromWalletCore);
+        await getListCategory();
         getExchangeRate(listTokenFromWalletCore, getListModelToken);
+        await getBalanceOFToken(listTokenFromWalletCore);
         total(listTokenFromWalletCore);
         listTokenStream.add(listTokenFromWalletCore);
         break;
