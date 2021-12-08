@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -77,11 +79,12 @@ class ImportCubit extends Cubit<ImportState> {
       case 'importWalletCallback':
         final walletName = methodCall.arguments['walletName'];
         final walletAddress = methodCall.arguments['walletAddress'];
+        final code = methodCall.arguments['code'];
         wallet = Wallet(name: walletName, address: walletAddress);
-        if (walletName == null || walletAddress == null) {
+        if (walletName == null || walletAddress == null || code == 400) {
           emit(ErrorState());
         } else {
-          emit(NavState(wallet ?? Wallet()));
+          emit(NavState());
         }
         break;
       default:
@@ -92,13 +95,12 @@ class ImportCubit extends Cubit<ImportState> {
   Future<void> importWallet({
     required String type,
     required String content,
-    String? password,
+
   }) async {
     try {
       final data = {
         'type': type,
-        'content': content,
-        'password': password,
+        'content': content
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
@@ -167,7 +169,11 @@ class ImportCubit extends Cubit<ImportState> {
         btnSink.add(false);
       } else {
         final int len = value.length;
-        if (len != 64 && !value.contains(' ')) {
+        if (len == 64 && !value.contains(' ')) {
+          privateField = true;
+          seedSink.add(false);
+        }
+        else{
           privateField = false;
           seedSink.add(true);
           txtWarningSeedSink.add(S.current.private_warning);
