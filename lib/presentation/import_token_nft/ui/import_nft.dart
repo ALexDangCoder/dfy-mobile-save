@@ -71,7 +71,7 @@ class _BodyState extends State<_Body> {
                 return const NFTSuccessfully();
               },
             ),
-          );
+          ).whenComplete(() => null);
         }
       },
       bloc: widget.bloc,
@@ -155,7 +155,12 @@ class _BodyState extends State<_Body> {
 
                           widget.bloc.isImportNft.listen(
                             (value) async {
-                              if (value) {
+                              if (value &&
+                                  await Web3Utils().importNFT(
+                                    contract:
+                                        widget.bloc.tokenAddressTextNft.value,
+                                    id: int.parse(widget.bloc.nftEnterID.value),
+                                  )) {
                                 await widget.bloc.getNftInfoByAddress(
                                   nftAddress:
                                       widget.bloc.tokenAddressTextNft.value,
@@ -179,7 +184,7 @@ class _BodyState extends State<_Body> {
                                 //     },
                                 //   ),
                                 // ).then((value) => null);
-                                widget.bloc.isImportNft.close();
+                                // widget.bloc.isImportNft.close();
                                 widget.bloc.tokenAddressTextNft.add('');
                               }
                             },
