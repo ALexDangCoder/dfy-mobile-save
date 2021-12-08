@@ -259,11 +259,10 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   //Web3
-  Future<void> getListCategory() async {
+  Future<void> getListToken() async {
     final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
     result.when(
       success: (res) {
-        //todo: Import to wallet core
         getTokenInfoByAddressList(res: res);
       },
       error: (error) {

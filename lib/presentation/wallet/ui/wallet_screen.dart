@@ -74,7 +74,7 @@ class _WalletState extends State<WalletScreen>
       cubit.getTokens(
         widget.wallet?.address ?? cubit.addressWalletCore,
       );
-      cubit.getListCategory();
+      cubit.getListToken();
     }
   }
 

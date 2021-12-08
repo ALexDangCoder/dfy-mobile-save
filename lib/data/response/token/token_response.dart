@@ -14,14 +14,10 @@ class TokenResponse extends Equatable {
   bool? isWhitelistSupply;
   @JsonKey(name: 'usdExchange')
   double? usdExchange;
-  @JsonKey(name: 'isAcceptedAsCollateral')
-  bool? isAcceptedAsCollateral;
-  @JsonKey(name: 'isAcceptedAsLoan')
-  bool? isAcceptedAsLoan;
-  @JsonKey(name: 'isAcceptedRepayment')
-  bool? isAcceptedRepayment;
   @JsonKey(name: 'address')
   String? address;
+  @JsonKey(name: 'symbol')
+  String? symbol;
   @JsonKey(name: 'iconUrl')
   String? iconUrl;
 
@@ -30,11 +26,9 @@ class TokenResponse extends Equatable {
     this.isWhitelistCollateral,
     this.isWhitelistSupply,
     this.usdExchange,
-    this.isAcceptedAsCollateral,
-    this.isAcceptedAsLoan,
-    this.isAcceptedRepayment,
     this.address,
     this.iconUrl,
+    this.symbol,
   );
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) =>
@@ -49,11 +43,9 @@ class TokenResponse extends Equatable {
         id: id,
         isWhitelistCollateral: isWhitelistCollateral,
         iconUrl: iconUrl,
+        symbol: symbol,
         isWhitelistSupply: isWhitelistSupply,
         usdExchange: usdExchange,
-        isAcceptedAsCollateral: isAcceptedAsCollateral,
-        isAcceptedAsLoan: isAcceptedAsLoan,
-        isAcceptedRepayment: isAcceptedRepayment,
         address: address,
       );
 }
