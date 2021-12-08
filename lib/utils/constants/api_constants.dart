@@ -7,4 +7,6 @@ class ApiConstants {
   static const int TIME_OUT = 30;
   //get list token
   static const String GET_LIST_TOKEN = '/json/1';
+  static const String GET_COLLECTION = '/json/2';
+
 }
