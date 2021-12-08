@@ -2,6 +2,7 @@ package com.edsolabs.dfy_mobile.data.model
 
 data class NftModel(
     val walletAddress: String,
+    val collectionAddress: String,
     val nftAddress: String,
     val nftName: String,
     val iconNFT: String,
