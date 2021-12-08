@@ -588,11 +588,11 @@ class WalletCubit extends BaseCubit<WalletState> {
       address: walletAddress,
       contract: contract,
     );
-    List<Map<String, dynamic>> listJsonNFT = [];
-    for (final e in list) {
-      listJsonNFT.add(e.saveToJson(walletAddress: walletAddress));
-    }
-    await importListNft(jsonNft: listJsonNFT.toString());
+
+    final jsonNFT = jsonEncode(
+      list.map((e) => e.saveToJson(walletAddress: walletAddress)).toList(),
+    );
+    await importListNft(jsonNft: jsonNFT);
   }
 
   Future<void> isImportNftSuccess({
