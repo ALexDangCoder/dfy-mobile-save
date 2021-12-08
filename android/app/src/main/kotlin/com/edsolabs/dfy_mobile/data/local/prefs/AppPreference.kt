@@ -33,20 +33,13 @@ open class AppPreference(sharedPreferences: SharedPreferences) :
 
     var seedPhrase: String by stringPreference("")
 
-    var sttWallet: Int by intPreference(default = STT_WALLET_DEFAULT)
     private var listWallet: String by stringPreference("")
 
     private var listToken: String by stringPreference("")
     var listNft: String by stringPreference("")
 
     fun earseAllWallet() {
-        sttWallet = STT_WALLET_DEFAULT
         listWallet = ""
-    }
-
-    fun setSttWallet(stt: Int): Int {
-        this.sttWallet = stt
-        return stt
     }
 
     fun getListWallet(): List<WalletModel> {
