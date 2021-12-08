@@ -79,15 +79,12 @@ class ImportCubit extends Cubit<ImportState> {
       case 'importWalletCallback':
         final walletName = methodCall.arguments['walletName'];
         final walletAddress = methodCall.arguments['walletAddress'];
-        final message = methodCall.arguments['message'];
         final code = methodCall.arguments['code'];
-        log('${code}code');
-        log('${message}message');
         wallet = Wallet(name: walletName, address: walletAddress);
-        if (walletName == null && walletAddress == null) {
-          emit(ErrorState(message));
+        if (walletName == null || walletAddress == null || code == 400) {
+          emit(ErrorState());
         } else {
-          emit(NavState(wallet ?? Wallet()));
+          emit(NavState());
         }
         break;
       default:

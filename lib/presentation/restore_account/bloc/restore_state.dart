@@ -9,19 +9,11 @@ class RestoreInitial extends RestoreState {
 }
 
 class NavState extends RestoreState {
-  final Wallet wallet;
-
-  NavState(this.wallet);
   @override
   List<Object?> get props => [];
 }
 
 class ErrorState extends RestoreState {
-  final String message;
-
-  ErrorState(this.message);
   @override
   List<Object?> get props => [];
 }
-
-
