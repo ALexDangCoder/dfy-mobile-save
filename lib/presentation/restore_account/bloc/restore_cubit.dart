@@ -153,6 +153,7 @@ class RestoreCubit extends Cubit<RestoreState> {
       throw CommonException();
     }
   }
+
   /// check validation of password
   void isValidate(String value) {
     if (Validator.validateStructure(value)) {
@@ -221,7 +222,14 @@ class RestoreCubit extends Cubit<RestoreState> {
         ckcSink.add(false);
       } else {
         final int len = value.split(' ').length;
-        if (len == 12 || len == 15 || len == 18 || len == 21 || len == 24) {
+        bool flag;
+        if (value.contains('  ') || value[value.length - 1] == ' ') {
+          flag = false;
+        } else {
+          flag = true;
+        }
+        if ((len == 12 || len == 15 || len == 18 || len == 21 || len == 24) &&
+            flag == true) {
           seedSink.add(false);
           seedField = true;
           if ((seedField || privateField) &&
