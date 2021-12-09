@@ -134,6 +134,8 @@ class TokenDetail extends StatelessWidget {
                                       builder: (context) => Receive(
                                         walletAddress: walletAddress,
                                         type: TokenType.DFY,
+                                        nameToken: modelToken.nameToken,
+                                        symbol: modelToken.nameShortToken,
                                       ),
                                     ),
                                   );
