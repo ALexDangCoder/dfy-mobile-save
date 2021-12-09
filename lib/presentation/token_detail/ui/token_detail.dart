@@ -2,7 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/receive_token/ui/bts_receive_dfy.dart';
+import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_token/send_token.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/transaction_list.dart';
@@ -65,7 +65,7 @@ class TokenDetail extends StatelessWidget {
           child: Column(
             children: [
               RefreshIndicator(
-                onRefresh: ()async{
+                onRefresh: () async {
                   await bloc.getToken(token);
                 },
                 child: SingleChildScrollView(
@@ -104,15 +104,15 @@ class TokenDetail extends StatelessWidget {
                         ),
                         Text(
                           customCurrency(
-                            amount:
-                                (modelToken.balanceToken * modelToken.exchangeRate)
-                                    .toString(),
+                            amount: (modelToken.balanceToken *
+                                    modelToken.exchangeRate)
+                                .toString(),
                             type: '\$',
                             digit: 2,
                           ),
                           style: tokenDetailAmount(
-                            color:
-                                AppTheme.getInstance().currencyDetailTokenColor(),
+                            color: AppTheme.getInstance()
+                                .currencyDetailTokenColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -128,16 +128,14 @@ class TokenDetail extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    backgroundColor: Colors.transparent,
-                                    builder: (context) {
-                                      return Receive(
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Receive(
                                         walletAddress: walletAddress,
                                         type: TokenType.DFY,
-                                      );
-                                    },
+                                      ),
+                                    ),
                                   );
                                 },
                                 child: sizedSvgImage(
@@ -159,7 +157,10 @@ class TokenDetail extends StatelessWidget {
                                     },
                                   ).then(
                                     (value) => {
-                                      if (value) bloc.checkShowLoading() else null
+                                      if (value)
+                                        bloc.checkShowLoading()
+                                      else
+                                        null
                                     },
                                   );
                                 },
