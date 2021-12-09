@@ -58,7 +58,7 @@ class Web3Utils {
     final name = await nft.name();
     final symbol = await nft.symbol();
     final listNft = <Map<String, dynamic>>[];
-    if (id != null) {
+    if (id == null) {
       final balance = await nft.balanceOf(EthereumAddress.fromHex(address));
       for (int i = 0; i < balance.toInt(); i++) {
         final nftId = await nft.tokenOfOwnerByIndex(
@@ -72,7 +72,7 @@ class Web3Utils {
         listNft.add(nftParam);
       }
     } else {
-      final uri = await nft.tokenURI(BigInt.from(id!));
+      final uri = await nft.tokenURI(BigInt.from(id));
       final nftParam = {
         'id': id,
         'contract': contract,
