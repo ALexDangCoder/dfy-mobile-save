@@ -16,10 +16,13 @@ class ReceiveCubit extends BaseCubit<ReceiveState> {
   ReceiveCubit() : super(ReceiveInitial());
 
   final BehaviorSubject<String> _amountSubject = BehaviorSubject.seeded('');
+  final BehaviorSubject<List<TokenPrice>> _priceSubject = BehaviorSubject();
 
   Stream<String> get amountStream => _amountSubject.stream;
+  Stream<List<TokenPrice>> get priceStream => _priceSubject.stream;
 
   Sink<String> get amountSink => _amountSubject.sink;
+  Sink<List<TokenPrice>> get priceSink => _priceSubject.sink;
 
   String? get value => _amountSubject.valueOrNull;
   Future<String> createPath() async {
@@ -36,7 +39,7 @@ class ReceiveCubit extends BaseCubit<ReceiveState> {
     await _priceRepository.getListPriceToken(symbols);
     result.when(
       success: (res) {
-        emit(PriceSuccess(res));
+        priceSink.add(res);
       },
       error: (error) {
         updateStateError();
