@@ -493,7 +493,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         // }
         ///NEW
         {
-          log('START GET FROM CORE');
           //get List Map from COre
           final List<Map<String, dynamic>> collectionsFromCore =
               await methodCall.arguments;
@@ -519,7 +518,6 @@ class WalletCubit extends BaseCubit<WalletState> {
             }
             listCollectionNFT.add(cl);
           }
-          log('>>>>>>>>>>>>>>> COLLECTION LEN: ${listCollectionNFT.length}');
         }
         break;
       case 'importListNftCallback':
