@@ -8,5 +8,5 @@ data class TokenModel(
     val symbol: String,
     val decimal: Int,
     val exchangeRate: Double,
-    var isShow: Boolean = true,
+    var isShow: Boolean = false,
 )
