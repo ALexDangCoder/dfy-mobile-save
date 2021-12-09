@@ -55,26 +55,17 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    cubit.getListCategory();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     if (widget.index == 1) {
+      cubit.getListCategory();
       cubit.getListWallets('pass');
-      cubit.addressWalletCore =
-          widget.wallet?.address ?? cubit.addressWalletCore;
-      cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
       cubit.walletName.stream.listen((event) {
         changeName.text = event;
       });
       _tabController = TabController(length: 2, vsync: this);
       fToast = FToast();
       fToast.init(context);
-      cubit.getNFT(
-        widget.wallet?.address ?? cubit.addressWalletCore,
-      );
-      cubit.getTokens(
-        widget.wallet?.address ?? cubit.addressWalletCore,
-      );
     }
   }
 
@@ -94,7 +85,7 @@ class _WalletState extends State<WalletScreen>
         body: PullToRefresh(
           offset: 112.h,
           onRefresh: () async {
-            await cubit.getListCategory();
+            await cubit.getBalanceOFToken(cubit.listTokenFromWalletCore);
             await cubit.getExchangeRate(
               cubit.listTokenFromWalletCore,
               cubit.getListModelToken,

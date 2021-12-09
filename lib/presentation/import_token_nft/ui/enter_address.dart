@@ -130,13 +130,8 @@ class _EnterAddressState extends State<EnterAddress> {
                     final bool enable = snapshot.data ?? false;
                     return InkWell(
                       onTap: () {
-                        print('-=------------------${widget.addressWallet}');
-                        print('-=------------------${widget.bloc.iconToken}');
-                        print(
-                            '-=------------------${widget.bloc.tokenFullName}');
                         //todo icon BE
                         if (enable) {
-                          print(enable);
                           widget.bloc.importToken(
                             walletAddress: widget.addressWallet,
                             tokenAddress: widget.bloc.tokenAddressText.value,

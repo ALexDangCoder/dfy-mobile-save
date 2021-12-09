@@ -63,8 +63,10 @@ class ItemForm extends StatelessWidget {
             ),
             textAlignVertical: TextAlignVertical.center,
             onChanged: (value) {
-              cubit?.checkSeedField(value);
-              importCubit?.checkSeedField(value);
+              //cubit?.checkSeedField(value);
+              cubit?.showTxtWarningSeed(value, FormType.PASS_PHRASE);
+              //importCubit?.checkSeedField(value);
+              importCubit?.showTxtWarningSeed(value, FormType.PASS_PHRASE);
             },
             minLines: 1,
             maxLines: 10,
@@ -121,8 +123,10 @@ class ItemForm extends StatelessWidget {
             16,
           ),
           onChanged: (value) {
-            cubit?.checkPrivateField(value);
-            importCubit?.checkPrivateField(value);
+            //cubit?.checkPrivateField(value);
+            cubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
+            //importCubit?.checkPrivateField(value);
+            importCubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
           },
           cursorColor: Colors.white,
           decoration: InputDecoration(
@@ -246,10 +250,13 @@ class ItemForm extends StatelessWidget {
           ),
           onChanged: passType == PassType.CON
               ? (value) {
-                  cubit?.checkHaveValueConfirmPW(value);
+                  //cubit?.checkHaveValueConfirmPW(value);
+                  cubit?.showTxtWarningConfirmPW(value,
+                      newPW: cubit?.newPassword ?? '');
                 }
               : (value) {
-                  cubit?.checkHaveValuePW(value);
+                  //cubit?.checkHaveValuePW(value);
+                  cubit?.showTxtWarningNewPW(value);
                 },
           cursorColor: Colors.white,
           decoration: InputDecoration(

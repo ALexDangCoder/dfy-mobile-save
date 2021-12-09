@@ -28,6 +28,9 @@ class MainActivity : FlutterFragmentActivity() {
     private val TYPE_WALLET_SEED_PHRASE = "PASS_PHRASE"
     private val TYPE_WALLET_PRIVATE_KEY = "PRIVATE_KEY"
 
+    private val TOKEN_DFY_ADDRESS = "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
+    private val TOKEN_BNB_ADDRESS = "0x0000000000000000000000000000000000000000"
+
     private val TYPE_DELETE_WALLET_IMPORT = "IMPORT"
     private val TYPE_DELETE_WALLET_CREATE = "CREATE"
 
@@ -524,7 +527,8 @@ class MainActivity : FlutterFragmentActivity() {
                     iconToken,
                     symbol,
                     decimal,
-                    exchangeRate
+                    exchangeRate,
+                    isShow = true
                 )
             )
             appPreference.saveListTokenSupport(listToken)
@@ -545,14 +549,16 @@ class MainActivity : FlutterFragmentActivity() {
         var size = 0
         while (size < listObjectTokens.length()) {
             val data = listObjectTokens.getJSONObject(size)
+            val tokenAddress = data.getString("tokenAddress")
             val token = TokenModel(
                 walletAddress = data.getString("walletAddress"),
-                tokenAddress = data.getString("tokenAddress"),
+                tokenAddress = tokenAddress,
                 tokenFullName = data.getString("nameToken"),
                 iconUrl = data.getString("iconToken"),
                 symbol = data.getString("nameShortToken"),
                 decimal = data.getInt("decimal"),
-                exchangeRate = data.getDouble("exchangeRate")
+                exchangeRate = data.getDouble("exchangeRate"),
+                isShow = tokenAddress == TOKEN_DFY_ADDRESS || tokenAddress == TOKEN_BNB_ADDRESS
             )
             val tokenInCore =
                 listTokenSupport.firstOrNull { it.walletAddress == token.walletAddress && it.tokenAddress == token.tokenAddress }
@@ -618,12 +624,16 @@ class MainActivity : FlutterFragmentActivity() {
         isShow: Boolean
     ) {
         val hasMap = HashMap<String, Any>()
-        val listToken = ArrayList<TokenModel>()
-        listToken.addAll(appPreference.getListTokenSupport())
-        listToken.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress }?.isShow =
-            isShow
-        appPreference.saveListTokenSupport(listToken)
-        hasMap["isSuccess"] = true
+        if (tokenAddress == TOKEN_DFY_ADDRESS || tokenAddress == TOKEN_BNB_ADDRESS) {
+            val listToken = ArrayList<TokenModel>()
+            listToken.addAll(appPreference.getListTokenSupport())
+            listToken.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress }?.isShow =
+                isShow
+            appPreference.saveListTokenSupport(listToken)
+            hasMap["isSuccess"] = true
+        } else {
+            hasMap["isSuccess"] = false
+        }
         channel?.invokeMethod("setShowedTokenCallback", hasMap)
     }
 
@@ -635,7 +645,6 @@ class MainActivity : FlutterFragmentActivity() {
         iconNFT: String,
         nftID: Int
     ) {
-        //todo check password
         val hasMap = HashMap<String, Any>()
         val listNft = ArrayList<NftModel>()
         listNft.addAll(appPreference.getListNft())
@@ -650,30 +659,47 @@ class MainActivity : FlutterFragmentActivity() {
                     nftID
                 )
             )
+            appPreference.saveListNft(listNft)
+            hasMap["isSuccess"] = true
+        } else {
+            hasMap["isSuccess"] = false
         }
-        appPreference.saveListNft(listNft)
-        hasMap["isSuccess"] = true
         channel?.invokeMethod("importNftCallback", hasMap)
     }
 
     private fun importListNft(
         jsonNft: String
     ) {
-        //todo check password
+        val listNftSupport = ArrayList<NftModel>()
+        listNftSupport.addAll(appPreference.getListNft())
+        val listNft = ArrayList<NftModel>()
+        val listObjectNft = JSONArray(jsonNft)
+        var size = 0
+        while (size < listObjectNft.length()) {
+            val data = listObjectNft.getJSONObject(size)
+            val nftAddress = data.getString("nftAddress")
+
+            val nft = NftModel(
+                walletAddress = data.getString("walletAddress"),
+                nftAddress = nftAddress,
+                collectionAddress = data.getString("collectionAddress"),
+                nftName = data.getString("nftName"),
+                iconNFT = data.getString("iconNFT"),
+                nftID = data.getInt("nftID")
+            )
+            val nftInCore =
+                listNftSupport.firstOrNull { it.walletAddress == nft.walletAddress && it.nftAddress == nft.nftAddress }
+            if (nftInCore == null) {
+                listNft.add(nft)
+            } else {
+                nft.isShow = nftInCore.isShow
+                listNft.add(nft)
+            }
+            size++
+        }
         val hasMap = HashMap<String, Any>()
-//        val listNft = ArrayList<NftModel>()
-//        listNft.addAll(appPreference.getListNft())
-//        listNft.add(
-//            NftModel(
-//                walletAddress,
-//                nftAddress,
-//                nftName,
-//                iconNFT,
-//                nftID
-//            )
-//        )
-//        appPreference.saveListNft(listNft)
-        hasMap["isSuccess"] = false
+        appPreference.saveListNft(listNft)
+        hasMap["isSuccess"] = true
         channel?.invokeMethod("importListNftCallback", hasMap)
     }
 
@@ -682,7 +708,6 @@ class MainActivity : FlutterFragmentActivity() {
         nftAddress: String,
         isShow: Boolean
     ) {
-        //todo check password
         val hasMap = HashMap<String, Any>()
         val listNft = ArrayList<NftModel>()
         listNft.addAll(appPreference.getListNft())

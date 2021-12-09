@@ -141,7 +141,7 @@ class _BodyState extends State<_Body> {
                         widget.bloc.checkAddressNullNFT();
                         if (widget.bloc.nftEnterID.value.isNotEmpty) {
                           if (widget.bloc.isNFT.value) {
-                            widget.bloc.importNft(
+                            await widget.bloc.importNft(
                               walletAddress: widget.addressWallet,
                               nftAddress: widget.bloc.tokenAddressTextNft.value,
                               nftID: int.parse(widget.bloc.nftEnterID.value),
