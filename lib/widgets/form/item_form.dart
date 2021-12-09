@@ -63,9 +63,7 @@ class ItemForm extends StatelessWidget {
             ),
             textAlignVertical: TextAlignVertical.center,
             onChanged: (value) {
-              //cubit?.checkSeedField(value);
               cubit?.showTxtWarningSeed(value, FormType.PASS_PHRASE);
-              //importCubit?.checkSeedField(value);
               importCubit?.showTxtWarningSeed(value, FormType.PASS_PHRASE);
             },
             minLines: 1,
@@ -123,9 +121,7 @@ class ItemForm extends StatelessWidget {
             16,
           ),
           onChanged: (value) {
-            //cubit?.checkPrivateField(value);
             cubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
-            //importCubit?.checkPrivateField(value);
             importCubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
           },
           cursorColor: Colors.white,
@@ -163,7 +159,6 @@ class ItemForm extends StatelessWidget {
         padding: EdgeInsets.only(
           top: 12.h,
           bottom: 12.h,
-          right: 12.w,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
@@ -213,16 +208,6 @@ class ItemForm extends StatelessWidget {
                 ),
               ),
             ),
-            // SizedBox(
-            //   width: 11.w,
-            // ),
-            // Text(
-            //   'BNB',
-            //   style: textNormal(
-            //     Colors.grey,
-            //     16,
-            //   ),
-            // ),
           ],
         ),
       );
