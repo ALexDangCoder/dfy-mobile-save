@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -168,7 +169,8 @@ class _ReceiveState extends State<Receive> {
                     child: Column(
                       children: [
                         Text(
-                          '${receiveCubit.value} ${widget.symbol}',
+                          '${formatCoin.format(quantity)}'
+                              ' ${widget.symbol}',
                           style: textNormal(
                             AppTheme.getInstance().fillColor(),
                             24,
