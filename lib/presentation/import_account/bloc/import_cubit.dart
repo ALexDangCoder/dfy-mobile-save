@@ -35,6 +35,7 @@ class ImportCubit extends Cubit<ImportState> {
   final BehaviorSubject<bool> _buttonSubject = BehaviorSubject<bool>();
   final BehaviorSubject<String> _txtWarningSeed =
       BehaviorSubject<String>.seeded('');
+
   ///
   Sink<String> get txtWarningSeedSink => _txtWarningSeed.sink;
 
@@ -95,13 +96,9 @@ class ImportCubit extends Cubit<ImportState> {
   Future<void> importWallet({
     required String type,
     required String content,
-
   }) async {
     try {
-      final data = {
-        'type': type,
-        'content': content
-      };
+      final data = {'type': type, 'content': content};
       await trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
       throw CommonException();
@@ -125,7 +122,14 @@ class ImportCubit extends Cubit<ImportState> {
         btnSink.add(false);
       } else {
         final int len = value.split(' ').length;
-        if (len == 12 || len == 15 || len == 18 || len == 21 || len == 24) {
+        bool flag;
+        if (value.contains('  ') || value[value.length - 1] == ' ') {
+          flag = false;
+        } else {
+          flag = true;
+        }
+        if ((len == 12 || len == 15 || len == 18 || len == 21 || len == 24) &&
+            flag == true) {
           seedSink.add(false);
           seedField = true;
           btnSink.add(true);
@@ -144,12 +148,12 @@ class ImportCubit extends Cubit<ImportState> {
         btnSink.add(false);
       } else {
         final int len = value.length;
+
         if (len == 64 && !value.contains(' ')) {
           privateField = true;
           seedSink.add(false);
           btnSink.add(true);
-        }
-        else{
+        } else {
           privateField = false;
           seedSink.add(true);
           txtWarningSeedSink.add(S.current.private_warning);
