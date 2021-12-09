@@ -187,10 +187,13 @@ class MainActivity : FlutterFragmentActivity() {
                     setShowedToken(walletAddress, tokenAddress, isShow)
                 }
                 "importNft" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
                     val jsonNft =
                         call.argument<String>("jsonNft")
                             ?: return@setMethodCallHandler
-                    importNft(jsonNft)
+                    importNft(jsonNft, walletAddress)
                 }
 //                "importListNft" -> {
 //                    val jsonNft =
@@ -588,23 +591,41 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getTokensCallback", hasMap)
     }
 
+//    arrayOf(
+//    walletAddress: String
+//    collectionAddress: String
+//    nftName: String
+//    symbol: String
+//    arrayOf(
+//    id: Int
+//    contract*: String
+//    uri: String
+//    )
+//    )
+
     private fun getNFT(
         walletAddress: String
     ) {
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
-//        appPreference.getListNft().forEach {
-//            if (it.walletAddress == walletAddress) {
-//                val data = HashMap<String, Any>()
-//                data["walletAddress"] = it.walletAddress
-//                data["collectionAddress"] = it.collectionAddress
-//                data["nftAddress"] = it.nftAddress
-//                data["nftName"] = it.nftName
-//                data["iconNFT"] = it.iconNFT
-//                data["nftID"] = it.nftID
-//                data["isShow"] = it.isShow
-//                hasMap.add(data)
-//            }
-//        }
+        appPreference.getListNft().forEach {
+            if (it.walletAddress == walletAddress) {
+                val data = HashMap<String, Any>()
+                data["walletAddress"] = it.walletAddress ?: ""
+                data["collectionAddress"] = it.collectionAddress ?: ""
+                data["nftName"] = it.nftName ?: ""
+                data["symbol"] = it.symbol ?: ""
+                val hasMapListNft: ArrayList<HashMap<String, Any>> = ArrayList()
+                it.item.forEach {
+                    val dataListNft = HashMap<String, Any>()
+                    dataListNft["id"] = it.id
+                    dataListNft["contract"] = it.contract
+                    dataListNft["uri"] = it.uri
+                    hasMapListNft.add(dataListNft)
+                }
+                data["listNft"] = hasMapListNft
+                hasMap.add(data)
+            }
+        }
         channel?.invokeMethod("getNFTCallback", hasMap)
     }
 
@@ -628,20 +649,21 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun importNft(
-        jsonNft: String
+        jsonNft: String,
+        walletAddress: String
     ) {
         val listNftSupport = ArrayList<NftModel>()
         listNftSupport.addAll(appPreference.getListNft())
-        val nft = NftModel()
         val objectNft = JSONObject(jsonNft)
-
         val contractNft = objectNft.getString("contract")
-        val checkItemNft = listNftSupport.firstOrNull { it.collectionAddress == contractNft }
+        var checkItemNft =
+            listNftSupport.firstOrNull { it.walletAddress == walletAddress && it.collectionAddress == contractNft }
         if (checkItemNft == null) {
-            // todo không có
-            nft.collectionAddress = objectNft.getString("contract")
-            nft.nftName = objectNft.getString("name")
-            nft.symbol = objectNft.getString("symbol")
+            checkItemNft = NftModel()
+            checkItemNft.walletAddress = walletAddress
+            checkItemNft.collectionAddress = objectNft.getString("contract")
+            checkItemNft.nftName = objectNft.getString("name")
+            checkItemNft.symbol = objectNft.getString("symbol")
             val listNftJson = objectNft.getJSONArray("listNft")
             var size = 0
             val listNft = ArrayList<ItemNftModel>()
@@ -656,18 +678,34 @@ class MainActivity : FlutterFragmentActivity() {
                 )
                 size++
             }
-            nft.item = listNft
-            listNftSupport.add(nft)
+            checkItemNft.item = listNft
         } else {
-            // todo có
-
+            checkItemNft.let {
+                val listNftJson = objectNft.getJSONArray("listNft")
+                var size = 0
+                val listNft = ArrayList<ItemNftModel>()
+                while (size < listNftJson.length()) {
+                    val data = listNftJson.getJSONObject(size)
+                    val id = data.getInt("id")
+                    if (checkItemNft.item.firstOrNull { it.id != id } == null) {
+                        listNft.add(
+                            ItemNftModel(
+                                id = id,
+                                contract = data.getString("contract"),
+                                uri = data.getString("uri")
+                            )
+                        )
+                    }
+                    size++
+                }
+                it.item.addAll(listNft)
+            }
         }
-
-
+        listNftSupport.add(checkItemNft)
         val hasMap = HashMap<String, Any>()
         appPreference.saveListNft(listNftSupport)
-        hasMap["isSuccess"] = true
-        channel?.invokeMethod("importListNftCallback", hasMap)
+        hasMap["isSuccess"] = listNftSupport.toString()
+        channel?.invokeMethod("importNftCallback", hasMap)
     }
 
     private fun importListNft(

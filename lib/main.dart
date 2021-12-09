@@ -41,10 +41,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    trustWalletChannel
-        .setMethodCallHandler(nativeMethodCallHandler);
-    callAllApi();
+    trustWalletChannel.setMethodCallHandler(nativeMethodCallHandler);
     super.initState();
+    callAllApi();
   }
 
   @override
@@ -113,12 +112,13 @@ class _MyAppState extends State<MyApp> {
       case 'importListTokenCallback':
         print('importListTokenCallback ${methodCall.arguments}');
         break;
+      case 'importNftCallback':
+        print('importNftCallback ${methodCall.arguments}');
+        break;
     }
   }
 
   void callAllApi() {
-    getConfig();
-    importListToken();
   }
 
   Future<void> importListToken() async {
@@ -137,5 +137,15 @@ class _MyAppState extends State<MyApp> {
     } on PlatformException {
 
     }
+  }
+
+  Future<void> importNft() async {
+    try {
+      final data = {
+        'jsonNft':
+            '{"name": "Mobile Test Collection","symbol": "DFY-NFT","contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","listNft": [{"id": 2,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c"}]}',
+      };
+      await trustWalletChannel.invokeMethod('importNft', data);
+    } on PlatformException {}
   }
 }
