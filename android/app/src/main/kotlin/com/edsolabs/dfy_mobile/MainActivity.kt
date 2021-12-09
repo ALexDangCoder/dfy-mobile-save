@@ -494,7 +494,6 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("checkTokenCallback", hasMap)
     }
 
-
     private fun importToken(
         walletAddress: String,
         tokenAddress: String,
