@@ -412,7 +412,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   ///Wallet Core
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    print("chang-------------------------------------0");
     switch (methodCall.method) {
       case 'importTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
@@ -444,10 +443,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         final bool isSuccess = await methodCall.arguments['isSuccess'];
         if (isSuccess) {
           emit(ImportNftSuccess());
-          isImportNft.sink.add(isSuccess);
-        }
-        if (!isSuccess) {
-          isImportNftFail.sink.add(isSuccess);
+        } else {
+          emit(ImportNftFail());
         }
         break;
       case 'setShowedNftCallback':
@@ -492,6 +489,51 @@ class WalletCubit extends BaseCubit<WalletState> {
           nameWallet = listWallet.first.name!;
           walletName.add(nameWallet);
           addressWallet.add(addressWalletCore);
+        }
+        break;
+      case 'getNFTCallback':
+        // final List<CollectionNft> collections = [];
+        // final List<Map<String, dynamic>> collectionsFromCore = await methodCall.arguments;
+        // for (final elementCollection in collectionsFromCore) {
+        //   collections.add(CollectionNft.fromJson(elementCollection));
+        //   final List<Map<String, dynamic>> listMapNFT =
+        //       elementCollection['listNFT'];
+        //   final List<NftInfo> listNftInfo = [];
+        //   for (final elementListMapNFT in listMapNFT) {
+        //     final ListNft model = ListNft.fromJson(elementListMapNFT);
+        //     final NftInfo preNFTInfo = await fetchNft(url: model.uri ?? '');
+        //     preNFTInfo.id = elementListMapNFT['id'];
+        //     preNFTInfo.contract = elementListMapNFT['contract'];
+        //     listNftInfo.add(preNFTInfo);
+        //   }
+        // }
+        ///NEW
+        {
+          //get List Map from COre
+          final List<Map<String, dynamic>> collectionsFromCore =
+              await methodCall.arguments;
+          final List<CollectionNft> listCollectionNFT = [];
+          for (final eMapCollection in collectionsFromCore) {
+            //Tao object 1 CollectionNft, chua co list NFTInfo
+            final CollectionNft cl = CollectionNft.fromJson(eMapCollection);
+            final List<NftInfo> listNftInfo = [];
+            //tao list NFT Info
+            for (final e in cl.listNft ?? []) {
+              try {
+                if (e.uri != '') {
+                  final NftInfo nftInfo = await fetchNft(url: e.uri ?? '');
+                  nftInfo.id = e.id;
+                  nftInfo.contract = e.contract;
+                  nftInfo.standard = 'ERC-721';
+                  nftInfo.blockchain = 'Binance smart chain';
+                  listNftInfo.add(nftInfo);
+                }
+              } catch (e) {
+                print(e);
+              }
+            }
+            listCollectionNFT.add(cl);
+          }
         }
         break;
       case 'importListNftCallback':
@@ -546,7 +588,9 @@ class WalletCubit extends BaseCubit<WalletState> {
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {}
+    } on PlatformException {
+      //nothing
+    }
   }
 
   Future<void> getTokens(String walletAddress) async {
@@ -555,7 +599,9 @@ class WalletCubit extends BaseCubit<WalletState> {
         'walletAddress': walletAddress,
       };
       await trustWalletChannel.invokeMethod('getTokens', data);
-    } on PlatformException {}
+    } on PlatformException {
+      //nothing
+    }
   }
 
 // list
@@ -732,8 +778,9 @@ class WalletCubit extends BaseCubit<WalletState> {
     Map<String, dynamic> result = {};
     result = await Web3Utils()
         .getCollectionInfo(contract: contract, address: address);
-    result.putIfAbsent('walletAddress', () => address);
-    await importNftIntoWalletCore(jsonNft: result.toString());
+    // result.putIfAbsent('walletAddress', () => address);
+    await importNftIntoWalletCore(
+        jsonNft: json.encode(result), address: address,);
   }
 
   Future<CollectionNft> fetchCollection() async {
@@ -786,15 +833,26 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> importNftIntoWalletCore({
     required String jsonNft,
+    required String address,
   }) async {
     try {
       final data = {
         'jsonNft': jsonNft,
+        'walletAddress': address,
       };
-      await trustWalletChannel.invokeMethod('importListNft', data);
+      await trustWalletChannel.invokeMethod('importNft', data);
     } on PlatformException {
       //todo
 
+    }
+  }
+
+  Future<NftInfo> fetchNft({required String url}) async {
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      return NftInfo.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load Nft');
     }
   }
 

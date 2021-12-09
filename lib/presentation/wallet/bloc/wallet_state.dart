@@ -27,3 +27,8 @@ class ImportNftSuccess extends WalletState {
   @override
   List<Object?> get props => [];
 }
+
+class ImportNftFail extends WalletState {
+  @override
+  List<Object?> get props => [];
+}
