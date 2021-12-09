@@ -76,6 +76,13 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("walletAddress") ?: return@setMethodCallHandler
                     earseWallet(walletAddress)
                 }
+                "changeNameWallet" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    val walletName =
+                        call.argument<String>("walletName") ?: return@setMethodCallHandler
+                    changeNameWallet(walletAddress, walletName)
+                }
                 "earseAllWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
                     earseAllWallet(type)
@@ -315,6 +322,21 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getConfigCallback", hasMap)
     }
 
+
+    private fun changeNameWallet(walletAddress: String, walletName: String) {
+        val hasMap = HashMap<String, Any>()
+        val wallet = appPreference.getListWallet().firstOrNull { it.walletAddress == walletAddress }
+        if (wallet != null && walletName.isNotEmpty()) {
+            val listWallet = ArrayList<WalletModel>()
+            listWallet.addAll(appPreference.getListWallet())
+            listWallet.firstOrNull { it.walletAddress == walletAddress }?.walletName = walletName
+            appPreference.saveListWallet(listWallet)
+            hasMap["isSuccess"] = true
+        } else {
+            hasMap["isSuccess"] = false
+        }
+        channel?.invokeMethod("changeNameWalletCallBack", hasMap)
+    }
 
     private fun earseAllWallet(type: String) {
         val hasMap = HashMap<String, Any>()
