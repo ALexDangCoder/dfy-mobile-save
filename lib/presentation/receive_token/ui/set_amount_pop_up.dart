@@ -10,16 +10,18 @@ import 'package:Dfy/widgets/form/item_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'bts_receive_dfy.dart';
+import 'receive_token.dart';
 
 class SetAmountPopUp extends StatelessWidget {
   const SetAmountPopUp({
     Key? key,
     required this.controller,
     required this.cubit,
+    this.symbol,
   }) : super(key: key);
   final TextEditingController controller;
   final ReceiveCubit cubit;
+  final String? symbol;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,7 @@ class SetAmountPopUp extends StatelessWidget {
                         ItemForm(
                           prefix: ImageAssets.ic_token,
                           hint: S.current.amount,
-                          suffix: S.current.max,
+                          suffix: symbol ?? 'BNB',
                           formType: FormType.AMOUNT,
                           isShow: true,
                           controller: controller,

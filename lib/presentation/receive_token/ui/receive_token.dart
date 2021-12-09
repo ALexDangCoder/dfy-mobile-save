@@ -26,10 +26,17 @@ final formatUSD = NumberFormat('#,##0.#####\$', 'en_US');
 enum TokenType { DFY, NFT, QR }
 
 class Receive extends StatefulWidget {
-  const Receive({Key? key, required this.walletAddress, required this.type})
-      : super(key: key);
+  const Receive({
+    Key? key,
+    required this.walletAddress,
+    required this.type,
+    this.symbol = 'BNB',
+    this.nameToken = 'Binance',
+  }) : super(key: key);
   final String walletAddress;
   final TokenType type;
+  final String? symbol;
+  final String? nameToken;
 
   @override
   _ReceiveState createState() => _ReceiveState();
@@ -94,14 +101,21 @@ class _ReceiveState extends State<Receive> {
                   height: 13.17.h,
                 ),
                 RepaintBoundary(
-                  key: globalKey,
-                  child: QrImage(
-                    data: '%${widget.walletAddress}%',
-                    size: 230.w,
-                    gapless: false,
-                    backgroundColor: Colors.white,
-                  ),
-                ),
+                    key: globalKey,
+                    child: StreamBuilder(
+                      stream: receiveCubit.amountStream,
+                      builder: (context, snapshot) {
+                        return QrImage(
+                          data: receiveCubit.value?.isEmpty ?? true
+                              ? '%${widget.walletAddress}%'
+                              : '%${widget.nameToken}%:%${widget.walletAddress}'
+                              '%?amount=%${receiveCubit.value}%',
+                          size: 230.w,
+                          gapless: false,
+                          backgroundColor: Colors.white,
+                        );
+                      },
+                    )),
                 SizedBox(
                   height: 11.h,
                 ),
@@ -141,7 +155,7 @@ class _ReceiveState extends State<Receive> {
                   child: Column(
                     children: [
                       Text(
-                        '${receiveCubit.value} BNB',
+                        '${receiveCubit.value} ${widget.symbol}',
                         style: textNormal(
                           AppTheme.getInstance().fillColor(),
                           24,
