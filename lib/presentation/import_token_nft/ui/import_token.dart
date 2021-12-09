@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
@@ -147,15 +148,14 @@ class ImportTokenScreen extends StatelessWidget {
                             FocusScope.of(context);
                         if (!currentFocus.hasPrimaryFocus) {
                           currentFocus.unfocus();
-                          bloc.getTokenInfoByAddress(
-                            tokenAddress: bloc.tokenAddressText.value,
-                          );
-                          bloc.checkToken(
-                            walletAddress: addressWallet,
-                            tokenAddress: bloc.tokenAddressText.value,
-                          );
-                         // bloc.showTxtWarningAddress();
-                          bloc.validateAddressFunc();
+                          // bloc.getTokenInfoByAddress(
+                          //   tokenAddress: bloc.tokenAddressText.value,
+                          // );
+                          // bloc.checkToken(
+                          //   walletAddress: addressWallet,
+                          //   tokenAddress: bloc.tokenAddressText.value,
+                          // );
+                          //bloc.validateAddressFunc();
                         }
                       },
                       child: TabBarView(
