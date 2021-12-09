@@ -44,7 +44,6 @@ class _ChooseTokenState extends State<ChooseToken> {
                       onTap: () {
                         final FocusScopeNode currentFocus =
                             FocusScope.of(context);
-
                         if (!currentFocus.hasPrimaryFocus) {
                           currentFocus.unfocus();
                         }
@@ -64,6 +63,7 @@ class _ChooseTokenState extends State<ChooseToken> {
                           onChanged: (value) {
                             widget.bloc.getListTokenModel.value[index].isShow =
                                 value;
+                            print(value);
                             widget.bloc.setShowedToken(
                               walletAddress: widget.bloc.getListTokenModel
                                   .value[index].walletAddress,

@@ -52,9 +52,10 @@ class WalletCubit extends BaseCubit<WalletState> {
       tokenFullName = tokenInfoModel.name ?? '';
       if (tokenInfoModel.tokenSymbol!.isNotEmpty) {
         //isShowValidateText.sink.add(false);
-        if (!isHaveToken.value) {
-          isTokenEnterAddress.sink.add(true);
-        }
+        isTokenEnterAddress.sink.add(true);
+        // if (!isHaveToken.value) {
+        //   isTokenEnterAddress.sink.add(true);
+        // }
       }
       if (tokenInfoModel.tokenSymbol!.isEmpty) {
         isTokenEnterAddress.sink.add(false);
@@ -648,6 +649,10 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   //get Nft
+  Future<void> getInfoCollection (String smartContract, String? id) async {
+
+  }
+
   Future<List<NftInfo>> getNFTFromWeb3({
     required String address,
     required String contract,
@@ -727,15 +732,11 @@ class WalletCubit extends BaseCubit<WalletState> {
   Stream<String> get messStream => _messSubject.stream;
 
   void validateAddressFunc() {
-    log('>>>>>>>>>>>>RUN CHECK FUNC<<<<<<<<<<<<<');
     final bool isEmpty = isTextTokenEnterAddress.value;
-    log('IS EMPTY $isEmpty');
     if (isEmpty) {
       final bool isValidate = isAddressNotExist.value;
-      log('IS VALIDATE $isValidate');
       if (!isValidate) {
         final bool isImported = isHaveToken.value;
-        log('IS IMPORTED $isValidate');
         if (isImported) {
           isTokenEnterAddress.sink.add(false);
           _messSubject.sink.add('The token had been imported');
@@ -752,7 +753,5 @@ class WalletCubit extends BaseCubit<WalletState> {
       isTokenEnterAddress.sink.add(false);
       _messSubject.sink.add('The address must be enter');
     }
-
-    log('MESS: ${_messSubject.value}');
   }
 }
