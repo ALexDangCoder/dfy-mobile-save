@@ -389,7 +389,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   ///Wallet Core
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    print('fdgdsfgdsfgdsg');
     switch (methodCall.method) {
       case 'importTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
@@ -649,14 +648,41 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   ///import nft test
   ///get collection
-  Future<CollectionNftInfo> fetchCollection() async {
+
+  // Future<void> importAllNFT({
+  //   required String walletAddress,
+  //   required String contract,
+  // }) async {
+  //   final List<NftInfo> list = await getNFTFromWeb3(
+  //     address: walletAddress,
+  //     contract: contract,
+  //   );
+  //
+  //   final jsonNFT = jsonEncode(
+  //     list.map((e) => e.saveToJson(walletAddress: walletAddress)).toList(),
+  //   );
+  //   await importListNft(jsonNft: jsonNFT);
+  // }
+
+  Future<void> emitJsonNftToWalletCore({
+    required String contract,
+    int? id,
+    required String address,
+  }) async {
+    Map<String, dynamic> result;
+    result = await Web3Utils()
+        .getCollectionInfo(contract: contract, address: address);
+    await importNftIntoWalletCore(jsonNft: result.toString());
+  }
+
+  Future<CollectionNft> fetchCollection() async {
     final response = await http.get(Uri.parse(
         'https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      return CollectionNftInfo.fromJson(jsonDecode(response.body));
+      return CollectionNft.fromJson(jsonDecode(response.body));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -667,52 +693,25 @@ class WalletCubit extends BaseCubit<WalletState> {
   //get Nft
   Future<void> getInfoCollection(String smartContract, String? id) async {}
 
-  Future<List<NftInfo>> getNFTFromWeb3({
-    required String address,
-    required String contract,
-  }) async {
-    final List<NftInfo> listNFTInfo = [];
-    final List<Map<String, dynamic>> listNFT = await Web3Utils().importAllNFT(
-      address: address,
-      contract: contract,
-    );
 
-    for (final e in listNFT) {
-      NftInfo _nftInfo;
-      final url = e['uri'];
-      final response = await http.get(
-        Uri.parse(url),
-      );
-      if (response.statusCode == 200) {
-        // If the server did return a 200 OK response,
-        // then parse the JSON.
-        _nftInfo = NftInfo.fromJson(jsonDecode(response.body));
-        _nftInfo.id = (e['id']).toString();
-        listNFTInfo.add(_nftInfo);
-      } else {
-        // If the server did not return a 200 OK response,
-        // then throw an exception.
-        throw Exception('Failed to load album');
-      }
-    }
-    return listNFTInfo;
-  }
 
   //importAllNFT
-  Future<void> importAllNFT({
-    required String walletAddress,
-    required String contract,
-  }) async {
-    final List<NftInfo> list = await getNFTFromWeb3(
-      address: walletAddress,
-      contract: contract,
-    );
-
-    final jsonNFT = jsonEncode(
-      list.map((e) => e.saveToJson(walletAddress: walletAddress)).toList(),
-    );
-    await importListNft(jsonNft: jsonNFT);
-  }
+  //todo emit json to wallet core
+  // Future<void> importNFTFtAllNft({
+  //   required String walletAddress,
+  //   int? id,
+  //   required String contract,
+  // }) async {
+  //   final List<CollectionNft> list = await getNFTFromWeb3(
+  //     address: walletAddress,
+  //     contract: contract,
+  //   );
+  //
+  //   final jsonNFT = jsonEncode(
+  //     list.map((e) => e.saveToJson(walletAddress: walletAddress)).toList(),
+  //   );
+  //   await importNftIntoWalletCore(jsonNft: jsonNFT);
+  // }
 
   Future<void> isImportNftSuccess({
     required String contractAddress,
@@ -726,7 +725,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  Future<void> importListNft({
+  Future<void> importNftIntoWalletCore({
     required String jsonNft,
   }) async {
     try {
