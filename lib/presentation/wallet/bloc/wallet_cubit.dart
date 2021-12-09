@@ -373,6 +373,15 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+
+  Future<void> getExchangeRateFromServer(List<ModelToken> list) async {
+    final query  = StringBuffer();
+    for(final value in list){
+      query.write('${value.nameShortToken},');
+    }
+    print(query);
+  }
+
   Future<void> getBalanceOFToken(List<ModelToken> list) async {
     await for (final value in getTokenRealtime(list)) {
       if(value.nameShortToken != 'BNB') {
@@ -456,6 +465,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
        // await getBalanceOFToken(listTokenFromWalletCore);
         await getExchangeRate(listTokenFromWalletCore, getListModelToken);
+        await getExchangeRateFromServer(listTokenFromWalletCore);
         totalBalance.add(total(listTokenFromWalletCore));
         getListTokenModel.add(checkShow);
         listTokenStream.add(listTokenFromWalletCore);
