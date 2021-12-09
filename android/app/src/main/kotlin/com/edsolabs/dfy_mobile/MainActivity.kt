@@ -76,6 +76,13 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("walletAddress") ?: return@setMethodCallHandler
                     earseWallet(walletAddress)
                 }
+                "changeNameWallet" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    val walletName =
+                        call.argument<String>("walletName") ?: return@setMethodCallHandler
+                    changeNameWallet(walletAddress, walletName)
+                }
                 "earseAllWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
                     earseAllWallet(type)
@@ -316,6 +323,21 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
 
+    private fun changeNameWallet(walletAddress: String, walletName: String) {
+        val hasMap = HashMap<String, Any>()
+        val wallet = appPreference.getListWallet().firstOrNull { it.walletAddress == walletAddress }
+        if (wallet != null && walletName.isNotEmpty()) {
+            val listWallet = ArrayList<WalletModel>()
+            listWallet.addAll(appPreference.getListWallet())
+            listWallet.firstOrNull { it.walletAddress == walletAddress }?.walletName = walletName
+            appPreference.saveListWallet(listWallet)
+            hasMap["isSuccess"] = true
+        } else {
+            hasMap["isSuccess"] = false
+        }
+        channel?.invokeMethod("changeNameWalletCallBack", hasMap)
+    }
+
     private fun earseAllWallet(type: String) {
         val hasMap = HashMap<String, Any>()
         appPreference.earseAllWallet()
@@ -492,10 +514,7 @@ class MainActivity : FlutterFragmentActivity() {
     private fun checkToken(walletAddress: String, tokenAddress: String) {
         val hasMap = HashMap<String, Any>()
         hasMap["isExist"] = appPreference.getListTokenSupport()
-            .firstOrNull {
-                it.walletAddress == walletAddress && it.tokenAddress == tokenAddress
-                        && it.isShow
-            } != null
+            .firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress && it.isShow } != null
         channel?.invokeMethod("checkTokenCallback", hasMap)
     }
 
@@ -539,6 +558,7 @@ class MainActivity : FlutterFragmentActivity() {
         listTokenSupport.addAll(appPreference.getListTokenSupport())
         val listTokens = ArrayList<TokenModel>()
         val listObjectTokens = JSONArray(jsonTokens)
+
         var size = 0
         while (size < listObjectTokens.length()) {
             val data = listObjectTokens.getJSONObject(size)
@@ -556,10 +576,30 @@ class MainActivity : FlutterFragmentActivity() {
             val tokenInCore =
                 listTokenSupport.firstOrNull { it.walletAddress == token.walletAddress && it.tokenAddress == token.tokenAddress }
             if (tokenInCore == null) {
-                listTokens.add(token)
+                when (tokenAddress) {
+                    TOKEN_BNB_ADDRESS -> {
+                        listTokens.add(0, token)
+                    }
+                    TOKEN_DFY_ADDRESS -> {
+                        listTokens.add(1, token)
+                    }
+                    else -> {
+                        listTokens.add(token)
+                    }
+                }
             } else {
                 token.isShow = tokenInCore.isShow
-                listTokens.add(token)
+                when (tokenAddress) {
+                    TOKEN_BNB_ADDRESS -> {
+                        listTokens.add(0, token)
+                    }
+                    TOKEN_DFY_ADDRESS -> {
+                        listTokens.add(1, token)
+                    }
+                    else -> {
+                        listTokens.add(token)
+                    }
+                }
             }
             size++
         }
@@ -590,18 +630,6 @@ class MainActivity : FlutterFragmentActivity() {
         }
         channel?.invokeMethod("getTokensCallback", hasMap)
     }
-
-//    arrayOf(
-//    walletAddress: String
-//    collectionAddress: String
-//    nftName: String
-//    symbol: String
-//    arrayOf(
-//    id: Int
-//    contract*: String
-//    uri: String
-//    )
-//    )
 
     private fun getNFT(
         walletAddress: String
@@ -704,44 +732,8 @@ class MainActivity : FlutterFragmentActivity() {
         listNftSupport.add(checkItemNft)
         val hasMap = HashMap<String, Any>()
         appPreference.saveListNft(listNftSupport)
-        hasMap["isSuccess"] = listNftSupport.toString()
+        hasMap["isSuccess"] = true
         channel?.invokeMethod("importNftCallback", hasMap)
-    }
-
-    private fun importListNft(
-        jsonNft: String
-    ) {
-//        val listNftSupport = ArrayList<NftModel>()
-//        listNftSupport.addAll(appPreference.getListNft())
-//        val listNft = ArrayList<NftModel>()
-//        val listObjectNft = JSONArray(jsonNft)
-//        var size = 0
-//        while (size < listObjectNft.length()) {
-//            val data = listObjectNft.getJSONObject(size)
-//            val nftAddress = data.getString("nftAddress")
-//
-//            val nft = NftModel(
-//                walletAddress = data.getString("walletAddress"),
-//                nftAddress = nftAddress,
-//                collectionAddress = data.getString("collectionAddress"),
-//                nftName = data.getString("nftName"),
-//                iconNFT = data.getString("iconNFT"),
-//                nftID = data.getInt("nftID")
-//            )
-//            val nftInCore =
-//                listNftSupport.firstOrNull { it.walletAddress == nft.walletAddress && it.nftAddress == nft.nftAddress }
-//            if (nftInCore == null) {
-//                listNft.add(nft)
-//            } else {
-//                nft.isShow = nftInCore.isShow
-//                listNft.add(nft)
-//            }
-//            size++
-//        }
-//        val hasMap = HashMap<String, Any>()
-//        appPreference.saveListNft(listNft)
-//        hasMap["isSuccess"] = true
-//        channel?.invokeMethod("importListNftCallback", hasMap)
     }
 
     private fun setShowedNft(
