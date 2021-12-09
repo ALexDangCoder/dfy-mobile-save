@@ -87,7 +87,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   bLocCreateSeedPhrase:
                       BLocCreateSeedPhrase(passwordController.text),
                   wallet: restoreCubit.wallet ?? Wallet(),
-                  type: KeyType.IMPORT, passWord: '',
+                  type: KeyType.IMPORT,
+                  passWord: passwordController.text,
                 );
               },
             ),
