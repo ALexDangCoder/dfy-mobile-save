@@ -389,10 +389,14 @@ class WalletCubit extends BaseCubit<WalletState> {
   ///Wallet Core
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    print('fdgdsfgdsfgdsg');
     switch (methodCall.method) {
       case 'importTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
-        if (isSuccess) {}
+        print(isSuccess);
+        if (isSuccess) {
+          emit(NavigatorSuccessfully());
+        }
         break;
       case 'importListTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
@@ -530,6 +534,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('importListToken', data);
     } on PlatformException {}
   }
+
 //"jsonTokens*: String
 // arrayOf(
 // walletAddress*: String

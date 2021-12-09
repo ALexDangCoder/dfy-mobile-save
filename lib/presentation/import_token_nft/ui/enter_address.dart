@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../main.dart';
 import 'import_token_succesfully.dart';
 
 class EnterAddress extends StatefulWidget {
@@ -31,6 +32,8 @@ class _EnterAddressState extends State<EnterAddress> {
   @override
   void initState() {
     super.initState();
+    trustWalletChannel
+        .setMethodCallHandler(widget.bloc.nativeMethodCallBackTrustWallet);
     controller = TextEditingController();
     controller.addListener(() {
       widget.bloc.tokenAddressText.sink.add(controller.text);
@@ -130,6 +133,7 @@ class _EnterAddressState extends State<EnterAddress> {
                       onTap: () {
                         print(enable);
                         if (enable) {
+                          print(enable);
                           widget.bloc.importToken(
                             walletAddress: widget.addressWallet,
                             tokenAddress: widget.bloc.tokenAddressText.value,
