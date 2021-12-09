@@ -39,6 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
 
+
   void checkAppLock() {
     if(PrefsService.getFirstAppConfig() == 'true'){
       index = 3;

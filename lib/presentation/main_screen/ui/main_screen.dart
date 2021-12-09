@@ -14,6 +14,8 @@ import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../main.dart';
+
 const int tabWalletIndex = 0;
 const int tabPawnIndex = 1;
 const int tabHomeIndex = 2;
@@ -65,10 +67,14 @@ class _MainScreenState extends BaseState<MainScreen> {
     super.initState();
     _handleEventBus();
     _cubit = MainCubit();
+    trustWalletChannel
+        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
+    _cubit.getConfig();
     _pages = [
       WalletScreen(
         index: widget.index ?? 1,
         wallet: widget.wallet,
+        checkWallet: _cubit.checkWalletExist,
       ),
       const PawnScreen(),
       const HomeScreen(),

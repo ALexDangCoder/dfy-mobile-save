@@ -476,6 +476,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'getConfigCallback':
           checkWalletExist = methodCall.arguments['isWalletExist'];
           if (checkWalletExist) {
+            listTokenFromWalletCore.clear();
             await getTokens(addressWalletCore);
             await getNFT(addressWalletCore);
           }
