@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/model/collection_nft_info.dart';
@@ -37,6 +39,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   ///web3
   Web3Utils client = Web3Utils();
+  bool isHaveToken = true;
 
   Future<void> getTokenInfoByAddress({required String tokenAddress}) async {
     print(tokenAddress);
@@ -157,7 +160,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject();
 
   bool isAddressNotExist = false;
-  bool isHaveToken = false;
 
   BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isImportNftFail = BehaviorSubject.seeded(true);
@@ -206,6 +208,9 @@ class WalletCubit extends BaseCubit<WalletState> {
   void resetImportToken() {
     tokenSymbol.sink.add(S.current.token_symbol);
     tokenDecimal.sink.add(S.current.token_decimal);
+    _messSubject.sink.add('');
+    isAddressNotExist = false;
+    isHaveToken = true;
     emit(NavigatorReset());
   }
 
@@ -376,14 +381,13 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getBalanceOFToken(List<ModelToken> list) async {
     for (int i = 0; i < list.length; i++) {
-      if(list[i].nameShortToken != 'BNB') {
+      if (list[i].nameShortToken != 'BNB') {
         print(list[i].nameShortToken);
         list[i].balanceToken = await client.getBalanceOfToken(
           ofAddress: addressWalletCore,
           tokenAddress: list[i].tokenAddress,
         );
-      }
-      else{
+      } else {
         list[i].balanceToken = await client.getBalanceOfBnb(
           ofAddress: addressWalletCore,
         );
@@ -440,10 +444,16 @@ class WalletCubit extends BaseCubit<WalletState> {
         final bool isSetShowedNft = await methodCall.arguments['isSuccess'];
         break;
       case 'checkTokenCallback':
-        final bool isExist = await methodCall.arguments['isExist'];
-        isHaveToken = isExist;
-        if (isExist) {
+        isHaveToken = await methodCall.arguments['isExist'];
+        log('----------is exist $isHaveToken');
+        if (isHaveToken) {
+          log('>>>>>>>>>>>> DA CO TRONG VI');
           isTokenEnterAddress.sink.add(false);
+          _messSubject.sink.add(S.current.already_exist);
+        } else {
+          log('>>>>>>>>>>>> CHUA CO TRONG VI');
+          _messSubject.sink.add('');
+          isTokenEnterAddress.sink.add(true);
         }
         break;
       case 'getTokensCallback':
@@ -760,33 +770,34 @@ class WalletCubit extends BaseCubit<WalletState> {
   final BehaviorSubject<String> _inputSubject = BehaviorSubject();
 
   Stream<String> get inputStream => _inputSubject.stream;
+  Timer? debounceTime;
 
   void validateAddressFunc(String _st) {
+    if (debounceTime != null) {
+      if (debounceTime!.isActive) {
+        debounceTime!.cancel();
+      }
+    }
     if (_st != '') {
-      _inputSubject.sink.add(_st);
-      print(_st);
-      inputStream
-          .debounceTime(const Duration(milliseconds: 500))
-          .listen((event) {
-        print(_st);
-        getTokenInfoByAddress(tokenAddress: event);
-        if (!isAddressNotExist) {
-          checkToken(walletAddress: addressWalletCore, tokenAddress: event);
-          if (isHaveToken) {
-            isTokenEnterAddress.sink.add(false);
-            _messSubject.sink.add('The token had been imported');
+      trustWalletChannel.setMethodCallHandler(nativeMethodCallBackTrustWallet);
+      debounceTime = Timer(
+        const Duration(milliseconds: 500),
+        () async {
+          await getTokenInfoByAddress(tokenAddress: _st);
+          if (!isAddressNotExist) {
+            await checkToken(
+                walletAddress: addressWalletCore, tokenAddress: _st);
           } else {
-            _messSubject.sink.add('');
-            isTokenEnterAddress.sink.add(true);
+            isTokenEnterAddress.sink.add(false);
+            tokenSymbol.sink.add(S.current.token_symbol);
+            tokenDecimal.sink.add(S.current.token_decimal);
+            _messSubject.sink.add(S.current.invalid_address);
           }
-        } else {
-          isTokenEnterAddress.sink.add(false);
-          _messSubject.sink.add('The address not available');
-        }
-      });
+        },
+      );
     } else {
       isTokenEnterAddress.sink.add(false);
-      _messSubject.sink.add('The address must be enter');
+      _messSubject.sink.add(S.current.empty_address);
     }
   }
 }

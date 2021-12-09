@@ -51,65 +51,10 @@ class _ChooseTokenState extends State<ChooseToken> {
                       child: SizedBox(
                         height: 73,
                         width: 322,
-                        child: ListTileSwitch(
-                          enabled: false,
-                          switchScale: 1,
-                          value:
-                              widget.bloc.getListTokenModel.value[index].isShow,
-                          leading: Image.network(
-                            widget
-                                .bloc.getListTokenModel.value[index].iconToken,
-                          ),
-                          onChanged: (value) {
-                            widget.bloc.getListTokenModel.value[index].isShow =
-                                value;
-                            print(value);
-                            widget.bloc.setShowedToken(
-                              walletAddress: widget.bloc.getListTokenModel
-                                  .value[index].walletAddress,
-                              isShow: value,
-                              tokenAddress: widget.bloc.getListTokenModel
-                                  .value[index].tokenAddress,
-                            );
-
-                            setState(() {});
-                          },
-                          switchActiveColor: const Color(0xffE4AC1A),
-                          switchType: SwitchType.cupertino,
-                          title: Row(
-                            children: [
-                              Text(
-                                widget.bloc.getListTokenModel.value[index]
-                                    .nameToken,
-                                style: textNormalCustom(
-                                  Colors.white,
-                                  16,
-                                  FontWeight.w600,
-                                ),
-                              ),
-                              spaceW6,
-                              Text(
-                                widget.bloc.getListTokenModel.value[index]
-                                    .nameShortToken,
-                                style: textNormalCustom(
-                                  const Color.fromRGBO(255, 255, 255, 0.7),
-                                  18,
-                                  FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                          subtitle: Text(
-                            '${widget.bloc.getListTokenModel.value[index].
-                            balanceToken.toStringAsFixed(5)} ${widget.bloc.
-                            getListTokenModel.value[index].nameShortToken} ',
-                            style: textNormalCustom(
-                              const Color.fromRGBO(255, 255, 255, 0.5),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ),
+                        child: showItemToken(
+                            widget.bloc.getListTokenModel.value[index]
+                                .tokenAddress,
+                            index),
                       ),
                     );
                   },
@@ -120,5 +65,104 @@ class _ChooseTokenState extends State<ChooseToken> {
         ],
       ),
     );
+  }
+
+  Widget showItemToken(String addressToken, int index) {
+    if (addressToken == '0x20f1de452e9057fe863b99d33cf82dbee0c45b14' ||
+        addressToken == '0x0000000000000000000000000000000000000000') {
+      return ListTileSwitch(
+        enabled: false,
+        switchScale: 1,
+        value: widget.bloc.getListTokenModel.value[index].isShow,
+        leading: Image.network(
+          widget.bloc.getListTokenModel.value[index].iconToken,
+        ),
+        onChanged: (value) {},
+        switchActiveColor: Colors.grey,
+        switchType: SwitchType.cupertino,
+        title: Row(
+          children: [
+            Text(
+              widget.bloc.getListTokenModel.value[index].nameToken,
+              style: textNormalCustom(
+                Colors.white,
+                16,
+                FontWeight.w600,
+              ),
+            ),
+            spaceW6,
+            Text(
+              widget.bloc.getListTokenModel.value[index].nameShortToken,
+              style: textNormalCustom(
+                const Color.fromRGBO(255, 255, 255, 0.7),
+                18,
+                FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+        subtitle: Text(
+          '${widget.bloc.getListTokenModel.value[index].balanceToken.toStringAsFixed(5)} ${widget.bloc.getListTokenModel.value[index].nameShortToken} ',
+          style: textNormalCustom(
+            const Color.fromRGBO(255, 255, 255, 0.5),
+            16,
+            FontWeight.w400,
+          ),
+        ),
+      );
+    } else {
+      return ListTileSwitch(
+        enabled: false,
+        switchScale: 1,
+        value: widget.bloc.getListTokenModel.value[index].isShow,
+        leading: Image.network(
+          widget.bloc.getListTokenModel.value[index].iconToken,
+        ),
+        onChanged: (value) {
+          widget.bloc.getListTokenModel.value[index].isShow = value;
+          print(value);
+          widget.bloc.setShowedToken(
+            walletAddress:
+                widget.bloc.getListTokenModel.value[index].walletAddress,
+            isShow: value,
+            tokenAddress:
+                widget.bloc.getListTokenModel.value[index].tokenAddress,
+          );
+
+          setState(() {});
+        },
+        switchActiveColor: const Color(0xffE4AC1A),
+        switchType: SwitchType.cupertino,
+        title: Row(
+          children: [
+            Text(
+              widget.bloc.getListTokenModel.value[index].nameToken,
+              style: textNormalCustom(
+                Colors.white,
+                16,
+                FontWeight.w600,
+              ),
+            ),
+            spaceW6,
+            Text(
+              widget.bloc.getListTokenModel.value[index].nameShortToken,
+              style: textNormalCustom(
+                const Color.fromRGBO(255, 255, 255, 0.7),
+                18,
+                FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+        subtitle: Text(
+          '${widget.bloc.getListTokenModel.value[index].balanceToken.toStringAsFixed(5)} ${widget.bloc.getListTokenModel.value[index].nameShortToken} ',
+          style: textNormalCustom(
+            const Color.fromRGBO(255, 255, 255, 0.5),
+            16,
+            FontWeight.w400,
+          ),
+        ),
+      );
+    }
   }
 }
