@@ -1,83 +1,51 @@
-class CollectionNftInfo {
-  String? collectionId;
-  String? coverCid;
-  String? description;
-  String? fileCid;
-  int? mintingFeeNumber;
-  String? mintingFeeToken;
-  String? fileType;
+class CollectionNft {
   String? name;
-  List<Properties>? properties;
-  String? royalties;
+  String? symbol;
+  String? contract;
+  List<ListNft>? listNft;
 
-  CollectionNftInfo({
-    this.collectionId,
-    this.coverCid,
-    this.description,
-    this.fileCid,
-    this.mintingFeeNumber,
-    this.mintingFeeToken,
-    this.fileType,
-    this.name,
-    this.properties,
-    this.royalties,
-  });
+  CollectionNft({this.name, this.symbol, this.contract, this.listNft});
 
-
-
-  CollectionNftInfo.fromJson(Map<String, dynamic> json) {
-    collectionId = json['collection_id'];
-    coverCid = json['cover_cid'];
-    description = json['description'];
-    fileCid = json['file_cid'];
-    mintingFeeNumber = json['minting_fee_number'];
-    mintingFeeToken = json['minting_fee_token'];
-    fileType = json['file_type'];
+  CollectionNft.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    if (json['properties'] != null) {
-
-      properties as List<Properties>;
-      json['properties'].forEach((v) {
-        properties!.add(Properties.fromJson(v));
+    symbol = json['symbol'];
+    contract = json['contract'];
+    if (json['listNft'] != null) {
+      List<ListNft> listNft = [];
+      json['listNft'].forEach((v) {
+        listNft.add(ListNft.fromJson(v));
       });
     }
-    royalties = json['royalties'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['collection_id'] = this.collectionId;
-    data['cover_cid'] = this.coverCid;
-    data['description'] = this.description;
-    data['file_cid'] = this.fileCid;
-    data['minting_fee_number'] = this.mintingFeeNumber;
-    data['minting_fee_token'] = this.mintingFeeToken;
-    data['file_type'] = this.fileType;
-    data['name'] = this.name;
-    if (this.properties != null) {
-      data['properties'] = this.properties!.map((v) => v.toJson()).toList();
-    }
-    data['royalties'] = this.royalties;
-    return data;
-  }
-}
-
-
-class Properties {
-  String? key;
-  String? value;
-
-  Properties({this.key, this.value});
-
-  Properties.fromJson(Map<String, dynamic> json) {
-    key = json['key'];
-    value = json['value'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['key'] = key;
-    data['value'] = value;
+    data['name'] = name;
+    data['symbol'] = symbol;
+    data['contract'] = contract;
+    data['listNft'] = listNft?.map((v) => v.toJson()).toList();
+    return data;
+  }
+}
+
+class ListNft {
+  int? id;
+  String? contract;
+  String? uri;
+
+  ListNft({this.id, this.contract, this.uri});
+
+  ListNft.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    contract = json['contract'];
+    uri = json['uri'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data =  <String, dynamic>{};
+    data['id'] = id;
+    data['contract'] = contract;
+    data['uri'] = uri;
     return data;
   }
 }
