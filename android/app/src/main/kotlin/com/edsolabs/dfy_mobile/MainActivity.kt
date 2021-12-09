@@ -208,17 +208,17 @@ class MainActivity : FlutterFragmentActivity() {
 //                            ?: return@setMethodCallHandler
 //                    importListNft(jsonNft)
 //                }
-                "setShowedNft" -> {
+                "deleteNft" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
                     val nftAddress =
                         call.argument<String>("nftAddress")
                             ?: return@setMethodCallHandler
-                    val isShow =
-                        call.argument<Boolean>("isShow")
+                    val id =
+                        call.argument<Int>("id")
                             ?: return@setMethodCallHandler
-                    setShowedNft(walletAddress, nftAddress, isShow)
+                    deleteNft(walletAddress, nftAddress, id)
                 }
                 "getTokens" -> {
                     val walletAddress =
@@ -629,6 +629,35 @@ class MainActivity : FlutterFragmentActivity() {
             }
         }
         channel?.invokeMethod("getTokensCallback", hasMap)
+    }
+
+    private fun deleteNft(walletAddress: String, collectionAddress: String, id: Int) {
+        val listNft = ArrayList<NftModel>()
+        var isDeleteSuccess = false
+        appPreference.getListNft().forEach { it ->
+            if (it.walletAddress != walletAddress && it.collectionAddress != collectionAddress) {
+                val data = NftModel()
+                data.walletAddress = walletAddress
+                data.collectionAddress = collectionAddress
+                data.nftName = it.nftName
+                data.symbol = it.symbol
+                it.item.forEach {
+                    if (it.id != id) {
+                        data.item.add(it)
+                    } else {
+                        isDeleteSuccess = true
+                    }
+                }
+                if (data.item.isNotEmpty()) {
+                    listNft.add(it)
+                }
+            }
+        }
+        appPreference.saveListNft(listNft)
+        val data = HashMap<String, Any>()
+        data["isSuccess"] = isDeleteSuccess
+        channel?.invokeMethod("setDeleteNftCallback", data)
+
     }
 
     private fun getNFT(
