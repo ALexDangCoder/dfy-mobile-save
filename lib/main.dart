@@ -41,6 +41,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    trustWalletChannel
+        .setMethodCallHandler(nativeMethodCallHandler);
+    callAllApi();
     super.initState();
   }
 
@@ -94,11 +97,15 @@ class _MyAppState extends State<MyApp> {
         break;
       case 'getConfigCallback':
         await PrefsService.saveAppLockConfig(
-          methodCall.arguments['isAppLock'].toString(),
+            methodCall.arguments['isAppLock'].toString(),
         );
         await PrefsService.saveFaceIDConfig(
           methodCall.arguments['isFaceID'].toString(),
         );
+        await PrefsService.saveFirstAppConfig(
+          (!methodCall.arguments['isWalletExist']).toString(),
+        );
+        print('isWalletExit ${methodCall.arguments['isWalletExist']}');
         break;
       case 'importWalletCallback':
         print('importWalletCallback ${methodCall.arguments}');
@@ -106,34 +113,11 @@ class _MyAppState extends State<MyApp> {
       case 'importListTokenCallback':
         print('importListTokenCallback ${methodCall.arguments}');
         break;
-      case 'earseWalletCallback':
-        break;
-      case 'getListWalletsCallback':
-        break;
-      case 'generateWalletCallback':
-        break;
-      case 'storeWalletCallback':
-        break;
-      case 'setConfigCallback':
-        break;
-      case 'getListShowedTokenCallback':
-        break;
-      case 'getListShowedNftCallback':
-        break;
-      case 'importTokenCallback':
-        break;
-      case 'getListSupportedTokenCallback':
-        break;
-      case 'signTransactionCallback':
-        break;
-      case 'getTokensCallback':
-        break;
-      default:
-        break;
     }
   }
 
   void callAllApi() {
+    getConfig();
     importListToken();
   }
 
@@ -145,5 +129,13 @@ class _MyAppState extends State<MyApp> {
       };
       await trustWalletChannel.invokeMethod('importListToken', data);
     } on PlatformException {}
+  }
+  Future<void> getConfig() async {
+    try {
+      final data = {};
+      await trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException {
+
+    }
   }
 }
