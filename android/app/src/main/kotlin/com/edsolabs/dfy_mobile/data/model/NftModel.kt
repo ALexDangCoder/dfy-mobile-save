@@ -1,11 +1,15 @@
 package com.edsolabs.dfy_mobile.data.model
 
 data class NftModel(
-    val walletAddress: String,
-    val collectionAddress: String,
-    val nftAddress: String,
-    val nftName: String,
-    val iconNFT: String,
-    val nftID: Int,
-    var isShow: Boolean = true,
+    var walletAddress: String? = "",
+    var collectionAddress: String? = "",
+    var nftName: String? = "",
+    var symbol: String? = "",
+    var item: ArrayList<ItemNftModel> = ArrayList()
+)
+
+data class ItemNftModel(
+    var id: Int,
+    var contract: String,
+    var uri: String
 )
