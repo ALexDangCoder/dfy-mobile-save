@@ -10,7 +10,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
-import 'package:Dfy/presentation/receive_token/ui/bts_receive_dfy.dart';
+import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/setting_wallet.dart';
@@ -57,6 +57,8 @@ class _WalletState extends State<WalletScreen>
     super.initState();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
+    cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
+    cubit.addressWallet.add(widget.wallet?.address ?? cubit.addressWalletCore);
     if (widget.index == 1) {
       cubit.getListCategory();
       cubit.getListWallets('pass');
@@ -66,6 +68,8 @@ class _WalletState extends State<WalletScreen>
       _tabController = TabController(length: 2, vsync: this);
       fToast = FToast();
       fToast.init(context);
+      cubit.getTokens(cubit.addressWalletCore);
+      cubit.getNFT(cubit.addressWalletCore);
     }
   }
 

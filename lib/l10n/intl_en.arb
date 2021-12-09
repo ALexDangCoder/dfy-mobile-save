@@ -147,7 +147,7 @@
   "saved": "Saved",
   "share": "Share",
   "receive_nft": "Receive NFT",
-  "receive_dfy": "Receive DFY",
+  "receive": "Receive",
   "transaction_pending": "Pending",
   "no_transaction": "No transaction",
   "status": "Status",

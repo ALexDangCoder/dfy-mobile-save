@@ -3,7 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'app_constants.g.dart';
 
 @JsonSerializable()
-class AppConstants {
+class
+AppConstants {
   @JsonKey(name: 'type')
   String type;
 
