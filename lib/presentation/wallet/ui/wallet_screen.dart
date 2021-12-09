@@ -73,8 +73,12 @@ class _WalletState extends State<WalletScreen>
       _tabController = TabController(length: 2, vsync: this);
       fToast = FToast();
       fToast.init(context);
-      cubit.getListWallets('pass');
-      cubit.getConfig();
+      if (cubit.nameWallet == '') {
+        cubit.getListWallets('pass');
+      }
+      cubit.getTokens(cubit.addressWalletCore);
+      cubit.getNFT(cubit.addressWalletCore);
+      cubit.getListPrice('BNB,BTC');
     }
   }
 
