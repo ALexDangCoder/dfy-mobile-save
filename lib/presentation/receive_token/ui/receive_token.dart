@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -38,7 +39,7 @@ class Receive extends StatefulWidget {
   final TokenType type;
   final String? symbol;
   final String? nameToken;
-  final num? exchangeRate;
+  final double? exchangeRate;
 
   @override
   _ReceiveState createState() => _ReceiveState();
@@ -48,8 +49,9 @@ class _ReceiveState extends State<Receive> {
   late final TextEditingController amountController;
   late final ReceiveCubit receiveCubit;
   late final FToast toast;
-  String? prize;
+  String? amount;
   late final GlobalKey globalKey;
+  num price = 1.0;
 
   @override
   void initState() {
@@ -144,12 +146,15 @@ class _ReceiveState extends State<Receive> {
             stream: receiveCubit.amountStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                prize = snapshot.data;
+                amount = snapshot.data;
+                if(snapshot.data!.isNotEmpty){
+                  price = num.parse(amount!);
+                }
               } else {
-                prize = '';
+                amount = '';
               }
               return Visibility(
-                visible: prize!.isNotEmpty,
+                visible: amount!.isNotEmpty,
                 child: Container(
                   margin: EdgeInsets.only(
                     top: 12.h,
@@ -166,10 +171,7 @@ class _ReceiveState extends State<Receive> {
                         ),
                       ),
                       Text(
-                        formatUSD.format(
-                          double.parse(receiveCubit.value ?? '0') *
-                              widget.exchangeRate!,
-                        ),
+                        formatUSD.format(price * widget.exchangeRate!),
                         style: textNormal(
                           Colors.grey.withOpacity(0.5),
                           16,
