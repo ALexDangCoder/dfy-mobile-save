@@ -311,7 +311,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         await _priceRepository.getListPriceToken(symbols);
     result.when(
       success: (res) {
-        log(res.toString());
       },
       error: (error) {
         updateStateError();
