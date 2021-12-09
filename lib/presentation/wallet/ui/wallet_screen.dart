@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/model_token.dart';
@@ -35,10 +36,11 @@ class WalletScreen extends StatefulWidget {
   const WalletScreen({
     Key? key,
     required this.index,
-    this.wallet,
+    this.wallet, required this.checkWallet,
   }) : super(key: key);
   final int index;
   final Wallet? wallet;
+  final bool checkWallet;
 
   @override
   _WalletState createState() => _WalletState();
@@ -57,19 +59,23 @@ class _WalletState extends State<WalletScreen>
     super.initState();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
-    cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
-    cubit.addressWallet.add(widget.wallet?.address ?? cubit.addressWalletCore);
     if (widget.index == 1) {
-      cubit.getListCategory();
-      cubit.getListWallets('pass');
+      if (widget.checkWallet == false) {
+        cubit.getListCategory();
+      }
+      cubit.getConfig();
+      cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
+      cubit.addressWallet
+          .add(widget.wallet?.address ?? cubit.addressWalletCore);
       cubit.walletName.stream.listen((event) {
         changeName.text = event;
       });
       _tabController = TabController(length: 2, vsync: this);
       fToast = FToast();
       fToast.init(context);
-      cubit.getTokens(cubit.addressWalletCore);
-      cubit.getNFT(cubit.addressWalletCore);
+      if (cubit.nameWallet == '') {
+        cubit.getListWallets('pass');
+      }
     }
   }
 
@@ -234,19 +240,32 @@ class _WalletState extends State<WalletScreen>
                                   context,
                                   AsyncSnapshot<List<ModelToken>> snapshot,
                                 ) {
-                                  return ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: snapshot.data?.length ?? 0,
-                                    itemBuilder: (context, index) {
-                                      return TokenItem(
-                                        walletAddress: cubit.addressWalletCore,
-                                        index: index,
-                                        bloc: cubit,
-                                        modelToken: snapshot.data![index],
-                                      );
-                                    },
+                                  if (snapshot.data?.isNotEmpty ?? true) {
+                                    return ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data?.length ?? 0,
+                                      itemBuilder: (context, index) {
+                                        return TokenItem(
+                                          walletAddress:
+                                              cubit.addressWalletCore,
+                                          index: index,
+                                          bloc: cubit,
+                                          modelToken: snapshot.data![index],
+                                        );
+                                      },
+                                    );
+                                  }
+                                  return SizedBox(
+                                    height: 100.h,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 3.r,
+                                        color:
+                                            AppTheme.getInstance().whiteColor(),
+                                      ),
+                                    ),
                                   );
                                 },
                               ),

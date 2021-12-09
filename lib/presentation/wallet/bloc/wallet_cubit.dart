@@ -7,6 +7,7 @@ import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
@@ -133,6 +134,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
     getListAcc();
   }
+  bool checkWalletExist = false;
 
   String tokenFullName = '';
   String iconToken =
@@ -449,12 +451,9 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         for (final element in checkShow) {
           if (element.isShow) {
-            print(element.nameShortToken);
             listTokenFromWalletCore.add(element);
           }
         }
-        print('>>>>>' + listTokenFromWalletCore.length.toString());
-        print(checkShow.length);
         await getBalanceOFToken(listTokenFromWalletCore);
         await getExchangeRate(listTokenFromWalletCore, getListModelToken);
         totalBalance.add(total(listTokenFromWalletCore));
@@ -474,8 +473,25 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'importListNftCallback':
         break;
+      case 'getConfigCallback':
+          checkWalletExist = methodCall.arguments['isWalletExist'];
+          if (checkWalletExist) {
+            listTokenFromWalletCore.clear();
+            await getTokens(addressWalletCore);
+            await getNFT(addressWalletCore);
+          }
+        break;
       default:
         break;
+    }
+  }
+
+  Future<void> getConfig() async {
+    try {
+      final data = {};
+      await trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException {
+
     }
   }
 

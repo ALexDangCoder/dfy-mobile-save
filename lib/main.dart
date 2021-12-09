@@ -41,9 +41,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // trustWalletChannel.setMethodCallHandler(nativeMethodCallHandler);
+    trustWalletChannel.setMethodCallHandler(nativeMethodCallHandler);
     super.initState();
-    // callAllApi();
+    callAllApi();
   }
 
   @override
@@ -101,22 +101,21 @@ class _MyAppState extends State<MyApp> {
         await PrefsService.saveFaceIDConfig(
           methodCall.arguments['isFaceID'].toString(),
         );
-        await PrefsService.saveFirstAppConfig(
-          (!methodCall.arguments['isWalletExist']).toString(),
-        );
-        print('isWalletExit ${methodCall.arguments['isWalletExist']}');
-        break;
-      case 'importWalletCallback':
-        print('importWalletCallback ${methodCall.arguments}');
-        break;
-      case 'importListTokenCallback':
-        print('importListTokenCallback ${methodCall.arguments}');
-        break;
-      case 'importNftCallback':
-        print('importNftCallback ${methodCall.arguments}');
-        break;
+        if(methodCall.arguments['isWalletExist']){
+          await PrefsService.saveFirstAppConfig('false');
+        }
+        print('isWa lletExit ${methodCall.arguments['isWalletExist']}');
     }
   }
 
-  void callAllApi() {}
+  void callAllApi() {
+    getConfig();
+  }
+  Future<void> getConfig() async {
+    try {
+      final data = {};
+      await trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException {
+    }
+  }
 }
