@@ -32,11 +32,13 @@ class Receive extends StatefulWidget {
     required this.type,
     this.symbol = 'BNB',
     this.nameToken = 'Binance',
+    this.exchangeRate = 1.0,
   }) : super(key: key);
   final String walletAddress;
   final TokenType type;
   final String? symbol;
   final String? nameToken;
+  final num? exchangeRate;
 
   @override
   _ReceiveState createState() => _ReceiveState();
@@ -109,7 +111,7 @@ class _ReceiveState extends State<Receive> {
                           data: receiveCubit.value?.isEmpty ?? true
                               ? '%${widget.walletAddress}%'
                               : '%${widget.nameToken}%:%${widget.walletAddress}'
-                              '%?amount=%${receiveCubit.value}%',
+                                  '%?amount=%${receiveCubit.value}%',
                           size: 230.w,
                           gapless: false,
                           backgroundColor: Colors.white,
@@ -164,7 +166,10 @@ class _ReceiveState extends State<Receive> {
                         ),
                       ),
                       Text(
-                        formatUSD.format(19990.3932212),
+                        formatUSD.format(
+                          double.parse(receiveCubit.value ?? '0') *
+                              widget.exchangeRate!,
+                        ),
                         style: textNormal(
                           Colors.grey.withOpacity(0.5),
                           16,
@@ -356,54 +361,54 @@ class _ReceiveState extends State<Receive> {
     );
   }
 
-  // String textTitle(TokenType type) {
-  //   if (type == TokenType.DFY) {
-  //     return S.current.receive_dfy;
-  //   } else if (type == TokenType.NFT) {
-  //     return S.current.receive_nft;
-  //   } else if (type == TokenType.QR) {
-  //     return S.current.scan_qr_code;
-  //   } else {
-  //     return '';
-  //   }
-  // }
+// String textTitle(TokenType type) {
+//   if (type == TokenType.DFY) {
+//     return S.current.receive_dfy;
+//   } else if (type == TokenType.NFT) {
+//     return S.current.receive_nft;
+//   } else if (type == TokenType.QR) {
+//     return S.current.scan_qr_code;
+//   } else {
+//     return '';
+//   }
+// }
 
-  // Widget title(TokenType type) {
-  //   if (type == TokenType.DFY) {
-  //     return Text(
-  //       S.current.receive_dfy,
-  //       style: textNormal(
-  //         null,
-  //         20,
-  //       ).copyWith(
-  //         fontWeight: FontWeight.w700,
-  //         fontStyle: FontStyle.normal,
-  //       ),
-  //     );
-  //   } else if (type == TokenType.NFT) {
-  //     return Text(
-  //       S.current.receive_nft,
-  //       style: textNormal(
-  //         null,
-  //         20,
-  //       ).copyWith(
-  //         fontWeight: FontWeight.w700,
-  //         fontStyle: FontStyle.normal,
-  //       ),
-  //     );
-  //   } else if (type == TokenType.QR) {
-  //     return Text(
-  //       S.current.scan_qr_code,
-  //       style: textNormal(
-  //         null,
-  //         20,
-  //       ).copyWith(
-  //         fontWeight: FontWeight.w700,
-  //         fontStyle: FontStyle.normal,
-  //       ),
-  //     );
-  //   } else {
-  //     return Container();
-  //   }
-  // }
+// Widget title(TokenType type) {
+//   if (type == TokenType.DFY) {
+//     return Text(
+//       S.current.receive_dfy,
+//       style: textNormal(
+//         null,
+//         20,
+//       ).copyWith(
+//         fontWeight: FontWeight.w700,
+//         fontStyle: FontStyle.normal,
+//       ),
+//     );
+//   } else if (type == TokenType.NFT) {
+//     return Text(
+//       S.current.receive_nft,
+//       style: textNormal(
+//         null,
+//         20,
+//       ).copyWith(
+//         fontWeight: FontWeight.w700,
+//         fontStyle: FontStyle.normal,
+//       ),
+//     );
+//   } else if (type == TokenType.QR) {
+//     return Text(
+//       S.current.scan_qr_code,
+//       style: textNormal(
+//         null,
+//         20,
+//       ).copyWith(
+//         fontWeight: FontWeight.w700,
+//         fontStyle: FontStyle.normal,
+//       ),
+//     );
+//   } else {
+//     return Container();
+//   }
+// }
 }
