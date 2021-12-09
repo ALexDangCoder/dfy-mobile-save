@@ -158,7 +158,17 @@ class _BodyState extends State<_Body> {
                                           widget.bloc.tokenAddressTextNft.value,
                                       id: int.parse(
                                           widget.bloc.nftEnterID.value),
-                                    )) {}
+                                    )) {
+                                  await widget.bloc.emitJsonNftToWalletCore(
+                                    contract:
+                                        '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
+                                    id: int.parse(
+                                      widget.bloc.nftEnterID.value,
+                                    ),
+                                    address:
+                                        '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+                                  );
+                                }
                               },
                             );
                             widget.bloc.isImportNftFail.listen(
@@ -174,14 +184,19 @@ class _BodyState extends State<_Body> {
                             );
                           }
                         } else {
-                          await widget.bloc.importAllNFT(
-                            walletAddress:
-                                widget.bloc.tokenAddressTextNft.value,
-                            contract: widget.bloc.tokenAddressTextNft.value,
-                          );
+                          // await widget.bloc.importAllNFT(
+                          //   walletAddress:
+                          //       widget.bloc.tokenAddressTextNft.value,
+                          //   contract: widget.bloc.tokenAddressTextNft.value,
+                          // );
+                          await widget.bloc.emitJsonNftToWalletCore(
+                              contract:
+                                  '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
+                              // id: 0,
+                              address:
+                                  '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37');
                           Navigator.pop(context);
                         }
-
                       },
                       child: ButtonGold(
                         title: S.current.import,
