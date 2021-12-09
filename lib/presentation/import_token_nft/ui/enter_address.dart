@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -65,7 +64,7 @@ class _EnterAddressState extends State<EnterAddress> {
               },
             ),
           ).whenComplete(() async {
-            widget.bloc.listTokenFromWalletCore.clear();
+            //widget.bloc.listTokenFromWalletCore.clear();
             await widget.bloc.getTokens(widget.addressWallet);
             widget.bloc.listTokenStream
                 .add(widget.bloc.listTokenFromWalletCore);
@@ -89,7 +88,6 @@ class _EnterAddressState extends State<EnterAddress> {
                         bloc: widget.bloc,
                       ),
                       spaceH4,
-                      // showTextValidateOldPassword(),
                       textValidate(),
                       spaceH16,
                       StreamBuilder<String>(
@@ -130,7 +128,7 @@ class _EnterAddressState extends State<EnterAddress> {
                     final bool enable = snapshot.data ?? false;
                     return InkWell(
                       onTap: () {
-                        //todo icon BE
+                        print(enable);
                         if (enable) {
                           widget.bloc.importToken(
                             walletAddress: widget.addressWallet,
@@ -139,6 +137,7 @@ class _EnterAddressState extends State<EnterAddress> {
                             decimal: int.parse(widget.bloc.tokenDecimal.value),
                             iconToken: widget.bloc.iconToken,
                             tokenFullName: widget.bloc.tokenFullName,
+                            exchangeRate: 0.0,
                           );
                         }
                         widget.bloc.checkAddressNull();
@@ -160,7 +159,7 @@ class _EnterAddressState extends State<EnterAddress> {
 
   Widget showTextValidateOldPassword() {
     return StreamBuilder(
-      stream: widget.bloc.isShowValidateText, //tao stream bool để ẩn hiển
+      stream: widget.bloc.isShowValidateText,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Visibility(
           visible: snapshot.data ?? false,

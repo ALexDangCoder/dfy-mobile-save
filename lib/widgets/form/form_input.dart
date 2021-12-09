@@ -59,11 +59,11 @@ class FormInput extends StatelessWidget {
               ),
               onFieldSubmitted: (value) {
                 bloc.getTokenInfoByAddress(tokenAddress: value);
+                // bloc.getDataToken(addressToken: value);
               },
               onChanged: (value) {
                 bloc.checkAddressNull();
                 bloc.tokenAddressText.sink.add(value);
-               // bloc.showTxtWarningAddress();
               },
               decoration: InputDecoration(
                 counterText: '',

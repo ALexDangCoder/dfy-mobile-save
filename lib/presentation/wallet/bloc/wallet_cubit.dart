@@ -134,6 +134,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     getListAcc();
   }
 
+  final List<ModelToken> checkShow = [];
   String tokenFullName = '';
   String iconToken =
       'https://assets.coingecko.com/coins/images/825/thumb/binance-coin-logo.png?1547034615';
@@ -240,57 +241,58 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-// //todo sort list
-//   void sortList(List<ModelToken> listSort) {
-//     final List<ModelToken> list = [];
-//     for (final ModelToken value in listSort) {
-//       if (value.isShow) {
-//         list.add(value);
-//       }
-//     }
-//     final Comparator<ModelToken> amountTokenComparator =
-//         (b, a) => (a.balanceToken).compareTo(b.balanceToken);
-//     list.sort(amountTokenComparator);
-//     final List<ModelToken> list1 = [];
-//     for (final ModelToken value in listSort) {
-//       if (value.isShow) {
-//       } else {
-//         if ((value.balanceToken) > 0) {
-//           list1.add(value);
-//         }
-//       }
-//     }
-//     list1.sort(amountTokenComparator);
-//     list.addAll(list1);
-//     for (final ModelToken value in listSort) {
-//       if (value.isShow) {
-//       } else {
-//         if ((value.balanceToken) > 0) {
-//         } else {
-//           list.add(value);
-//         }
-//       }
-//     }
-//     getListTokenModel.sink.add(list);
-//   }
-//
-// //todo search
-//   void search() {
-//     final List<ModelToken> result = [];
-//     for (final ModelToken value in listTokenImport) {
-//       if (value.nameToken.toLowerCase().contains(
-//             textSearch.value.toLowerCase(),
-//           )) {
-//         result.add(value);
-//       }
-//     }
-//     if (textSearch.value.isEmpty) {
-//       getListTokenModel.sink.add(listTokenImport);
-//     }
-//     if (textSearch.value.isNotEmpty) {
-//       getListTokenModel.sink.add(result);
-//     }
-//   }
+//todo sort list
+  void sortList(List<ModelToken> listSort) {
+    final List<ModelToken> list = [];
+    for (final ModelToken value in listSort) {
+      if (value.isShow) {
+        list.add(value);
+      }
+    }
+    final Comparator<ModelToken> amountTokenComparator =
+        (b, a) => (a.balanceToken).compareTo(b.balanceToken);
+    list.sort(amountTokenComparator);
+    final List<ModelToken> list1 = [];
+    for (final ModelToken value in listSort) {
+      if (value.isShow) {
+      } else {
+        if ((value.balanceToken) > 0) {
+          list1.add(value);
+        }
+      }
+    }
+    list1.sort(amountTokenComparator);
+    list.addAll(list1);
+    for (final ModelToken value in listSort) {
+      if (value.isShow) {
+      } else {
+        if ((value.balanceToken) > 0) {
+        } else {
+          list.add(value);
+        }
+      }
+    }
+    getListTokenModel.sink.add(list);
+  }
+
+//todo search
+  void search() {
+    final List<ModelToken> result = [];
+    for (final ModelToken value in checkShow) {
+      if (value.nameShortToken.toLowerCase().contains(
+            textSearch.value.toLowerCase(),
+          )) {
+        result.add(value);
+      }
+    }
+
+    if (textSearch.value.isEmpty) {
+      sortList(checkShow);
+    }
+    if (textSearch.value.isNotEmpty) {
+      getListTokenModel.sink.add(result);
+    }
+  }
 
   void getIsWalletName(String value) {
     if (Validator.validateNotNull(value)) {
@@ -299,7 +301,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       isWalletName.sink.add(false);
     }
   }
-
 
   ///Logic Token
 
@@ -324,6 +325,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       yield listTokenInf[i];
     }
   }
+
   Stream<ModelToken> getTokenRealtime(List<ModelToken> listModelToken) async* {
     for (int i = 0; i < listModelToken.length; i++) {
       yield listModelToken[i];
@@ -362,12 +364,12 @@ class WalletCubit extends BaseCubit<WalletState> {
     await importListToken(json);
   }
 
-  Future<void> getExchangeRate (
+  Future<void> getExchangeRate(
     List<ModelToken> listShow,
     List<ModelToken> listCheck,
   ) async {
     await for (final valueShow in getTokenRealtime(listShow)) {
-      await  for (final valueCheck in getTokenRealtime(listCheck)) {
+      await for (final valueCheck in getTokenRealtime(listCheck)) {
         if (valueShow.nameShortToken == valueCheck.nameShortToken) {
           valueShow.exchangeRate = valueCheck.exchangeRate;
         }
@@ -390,8 +392,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     switch (methodCall.method) {
       case 'importTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
-        if (isSuccess) {
-        }
+        if (isSuccess) {}
         break;
       case 'importListTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
@@ -431,7 +432,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         isHaveToken.sink.add(isExist);
         break;
       case 'getTokensCallback':
-        final List<ModelToken> checkShow = [];
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           checkShow.add(ModelToken.fromWalletCore(element));
@@ -442,7 +442,7 @@ class WalletCubit extends BaseCubit<WalletState> {
             listTokenFromWalletCore.add(element);
           }
         }
-        print('>>>>>'+listTokenFromWalletCore.length.toString());
+        print('>>>>>' + listTokenFromWalletCore.length.toString());
         print(checkShow.length);
         getListTokenModel.add(checkShow);
         totalBalance.add(total(listTokenFromWalletCore));
@@ -465,6 +465,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
     }
   }
+
   Future<void> earseWallet({required String walletAddress}) async {
     try {
       final data = {
@@ -484,7 +485,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('getListWallets', data);
     } on PlatformException {}
   }
-
 
   Future<void> getTokens(String walletAddress) async {
     try {
@@ -530,7 +530,16 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('importListToken', data);
     } on PlatformException {}
   }
-
+//"jsonTokens*: String
+// arrayOf(
+// walletAddress*: String
+// tokenAddress*: String
+// tokenFullName*: String
+// iconUrl*: String
+// symbol*: String
+// decimal*: Int
+// exchangeRate*: double
+// )"
   Future<void> importToken({
     required String walletAddress,
     required String tokenAddress,
@@ -538,6 +547,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     required int decimal,
     required String tokenFullName,
     required String iconToken,
+    required double exchangeRate,
   }) async {
     try {
       final data = {
@@ -547,6 +557,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'decimal': decimal,
         'tokenFullName': tokenFullName,
         'iconToken': iconToken,
+        'exchangeRate': exchangeRate,
       };
       await trustWalletChannel.invokeMethod('importToken', data);
     } on PlatformException {
@@ -649,9 +660,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   //get Nft
-  Future<void> getInfoCollection (String smartContract, String? id) async {
-
-  }
+  Future<void> getInfoCollection(String smartContract, String? id) async {}
 
   Future<List<NftInfo>> getNFTFromWeb3({
     required String address,
