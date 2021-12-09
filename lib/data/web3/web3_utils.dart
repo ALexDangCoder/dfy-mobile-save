@@ -25,6 +25,9 @@ class Web3Utils {
     int? id,
   }) async {
     final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
+    if (id == null) {
+      return false;
+    }
     try {
       await nft.tokenURI(BigInt.from(id ?? 0));
       return true;
@@ -189,8 +192,12 @@ class Web3Utils {
   }) async {
     final token =
         Token(address: EthereumAddress.fromHex(tokenAddress), client: client);
-    final balance = await token.balanceOf(EthereumAddress.fromHex(ofAddress));
-    return balance / BigInt.from(10).pow(18);
+    try {
+      final balance = await token.balanceOf(EthereumAddress.fromHex(ofAddress));
+      return balance / BigInt.from(10).pow(18);
+    } catch (e) {
+      return 0.0;
+    }
   }
 
   //Transaction History of a token

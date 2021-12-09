@@ -8,6 +8,8 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../main.dart';
+
 class ChangeWalletName extends StatefulWidget {
   final WalletCubit bloc;
   final TextEditingController textEditingController;
@@ -217,11 +219,19 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                   return Expanded(
                                     child: GestureDetector(
                                       onTap: () {
+                                        trustWalletChannel.setMethodCallHandler(
+                                            widget.bloc
+                                                .nativeMethodCallBackTrustWallet);
                                         if (snapshot.data ?? false) {
                                           final String value =
                                               widget.textEditingController.text;
                                           widget.bloc.walletName.sink
                                               .add(value);
+                                          widget.bloc.changeNameWallet(
+                                              walletAddress: widget
+                                                  .bloc.addressWallet.value,
+                                              walletName: value);
+
                                           Navigator.pop(context);
                                         }
                                       },
