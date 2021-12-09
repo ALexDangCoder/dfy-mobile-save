@@ -5,6 +5,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -76,6 +77,9 @@ class _WalletState extends State<WalletScreen>
       if (cubit.nameWallet == '') {
         cubit.getListWallets('pass');
       }
+      cubit.getTokens(cubit.addressWalletCore);
+      cubit.getNFT(cubit.addressWalletCore);
+      cubit.getListPrice('BNB,BTC');
     }
   }
 
