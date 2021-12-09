@@ -51,7 +51,7 @@ class _FormSearchState extends State<FormSearch> {
                 maxLength: 20,
                 onChanged: (value) {
                   widget.bloc.textSearch.sink.add(value);
-                  //widget.bloc.search();
+                  widget.bloc.search();
                 },
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
@@ -78,7 +78,7 @@ class _FormSearchState extends State<FormSearch> {
                 onTap: () {
                   widget.bloc.textSearch.sink.add('');
                   textSearch.text = '';
-                  //widget.bloc.search();
+                  widget.bloc.search();
                   //widget.bloc.sortList(widget.bloc.getListTokenModel.value);
                 },
                 child: snapshot.data?.isNotEmpty ?? false

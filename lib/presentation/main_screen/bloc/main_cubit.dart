@@ -37,6 +37,16 @@ class MainCubit extends BaseCubit<MainState> {
       return 1;
     }
   }
+  bool checkWalletExist = false;
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'getConfigCallback':
+        checkWalletExist = methodCall.arguments['isWalletExist'];
+        break;
+      default:
+        break;
+    }
+  }
 
   Future<void> getConfig() async {
     try {

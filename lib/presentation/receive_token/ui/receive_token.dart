@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -32,11 +33,13 @@ class Receive extends StatefulWidget {
     required this.type,
     this.symbol = 'BNB',
     this.nameToken = 'Binance',
+    this.exchangeRate = 1.0,
   }) : super(key: key);
   final String walletAddress;
   final TokenType type;
   final String? symbol;
   final String? nameToken;
+  final double? exchangeRate;
 
   @override
   _ReceiveState createState() => _ReceiveState();
@@ -46,8 +49,9 @@ class _ReceiveState extends State<Receive> {
   late final TextEditingController amountController;
   late final ReceiveCubit receiveCubit;
   late final FToast toast;
-  String? prize;
+  String? amount;
   late final GlobalKey globalKey;
+  num price = 1.0;
 
   @override
   void initState() {
@@ -107,9 +111,9 @@ class _ReceiveState extends State<Receive> {
                       builder: (context, snapshot) {
                         return QrImage(
                           data: receiveCubit.value?.isEmpty ?? true
-                              ? '%${widget.walletAddress}%'
-                              : '%${widget.nameToken}%:%${widget.walletAddress}'
-                              '%?amount=%${receiveCubit.value}%',
+                              ? widget.walletAddress
+                              : '${widget.nameToken}:${widget.walletAddress}'
+                                  '?amount=${receiveCubit.value}',
                           size: 230.w,
                           gapless: false,
                           backgroundColor: Colors.white,
@@ -142,12 +146,15 @@ class _ReceiveState extends State<Receive> {
             stream: receiveCubit.amountStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                prize = snapshot.data;
+                amount = snapshot.data;
+                if(snapshot.data!.isNotEmpty){
+                  price = num.parse(amount!);
+                }
               } else {
-                prize = '';
+                amount = '';
               }
               return Visibility(
-                visible: prize!.isNotEmpty,
+                visible: amount!.isNotEmpty,
                 child: Container(
                   margin: EdgeInsets.only(
                     top: 12.h,
@@ -164,7 +171,7 @@ class _ReceiveState extends State<Receive> {
                         ),
                       ),
                       Text(
-                        formatUSD.format(19990.3932212),
+                        formatUSD.format(price * widget.exchangeRate!),
                         style: textNormal(
                           Colors.grey.withOpacity(0.5),
                           16,
@@ -356,54 +363,54 @@ class _ReceiveState extends State<Receive> {
     );
   }
 
-  // String textTitle(TokenType type) {
-  //   if (type == TokenType.DFY) {
-  //     return S.current.receive_dfy;
-  //   } else if (type == TokenType.NFT) {
-  //     return S.current.receive_nft;
-  //   } else if (type == TokenType.QR) {
-  //     return S.current.scan_qr_code;
-  //   } else {
-  //     return '';
-  //   }
-  // }
+// String textTitle(TokenType type) {
+//   if (type == TokenType.DFY) {
+//     return S.current.receive_dfy;
+//   } else if (type == TokenType.NFT) {
+//     return S.current.receive_nft;
+//   } else if (type == TokenType.QR) {
+//     return S.current.scan_qr_code;
+//   } else {
+//     return '';
+//   }
+// }
 
-  // Widget title(TokenType type) {
-  //   if (type == TokenType.DFY) {
-  //     return Text(
-  //       S.current.receive_dfy,
-  //       style: textNormal(
-  //         null,
-  //         20,
-  //       ).copyWith(
-  //         fontWeight: FontWeight.w700,
-  //         fontStyle: FontStyle.normal,
-  //       ),
-  //     );
-  //   } else if (type == TokenType.NFT) {
-  //     return Text(
-  //       S.current.receive_nft,
-  //       style: textNormal(
-  //         null,
-  //         20,
-  //       ).copyWith(
-  //         fontWeight: FontWeight.w700,
-  //         fontStyle: FontStyle.normal,
-  //       ),
-  //     );
-  //   } else if (type == TokenType.QR) {
-  //     return Text(
-  //       S.current.scan_qr_code,
-  //       style: textNormal(
-  //         null,
-  //         20,
-  //       ).copyWith(
-  //         fontWeight: FontWeight.w700,
-  //         fontStyle: FontStyle.normal,
-  //       ),
-  //     );
-  //   } else {
-  //     return Container();
-  //   }
-  // }
+// Widget title(TokenType type) {
+//   if (type == TokenType.DFY) {
+//     return Text(
+//       S.current.receive_dfy,
+//       style: textNormal(
+//         null,
+//         20,
+//       ).copyWith(
+//         fontWeight: FontWeight.w700,
+//         fontStyle: FontStyle.normal,
+//       ),
+//     );
+//   } else if (type == TokenType.NFT) {
+//     return Text(
+//       S.current.receive_nft,
+//       style: textNormal(
+//         null,
+//         20,
+//       ).copyWith(
+//         fontWeight: FontWeight.w700,
+//         fontStyle: FontStyle.normal,
+//       ),
+//     );
+//   } else if (type == TokenType.QR) {
+//     return Text(
+//       S.current.scan_qr_code,
+//       style: textNormal(
+//         null,
+//         20,
+//       ).copyWith(
+//         fontWeight: FontWeight.w700,
+//         fontStyle: FontStyle.normal,
+//       ),
+//     );
+//   } else {
+//     return Container();
+//   }
+// }
 }

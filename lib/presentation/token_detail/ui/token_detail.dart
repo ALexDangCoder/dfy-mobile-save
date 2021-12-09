@@ -136,6 +136,7 @@ class TokenDetail extends StatelessWidget {
                                         type: TokenType.DFY,
                                         nameToken: modelToken.nameToken,
                                         symbol: modelToken.nameShortToken,
+                                        exchangeRate: modelToken.exchangeRate,
                                       ),
                                     ),
                                   );
