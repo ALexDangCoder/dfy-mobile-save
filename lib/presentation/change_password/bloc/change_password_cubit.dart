@@ -38,7 +38,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       BehaviorSubject<String>.seeded('');
 
   ///wallet core
-  Future<void> changePassword({
+  Future<void> changePasswordIntoWalletCore({
     required String oldPassword,
     required String newPassword,
   }) async {
@@ -60,8 +60,9 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
         print(methodCall.arguments);
         try {
           if (isSuccess) {
-            //
+            emit(ChangePasswordSuccess());
           } else {
+            emit(ChangePasswordFail());
             // matchOldPWSink.add(true);
             // txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
             // isEnableButtonSink.add(false);
@@ -300,12 +301,13 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
 
   //check 3 forms is validate -> change screen
   bool checkAllValidate({
-    required String oldPWFetch,
+    // required String oldPWFetch,
     required String oldPW,
     required String newPW,
     required String confirmPW,
   }) {
-    if (oldPW == oldPWFetch &&
+    if (
+    // oldPW == oldPWFetch &&
         Validator.validateStructure(newPW) &&
         Validator.validateStructure(confirmPW) &&
         (newPW == confirmPW)) {
