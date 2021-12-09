@@ -635,7 +635,7 @@ class MainActivity : FlutterFragmentActivity() {
         isShow: Boolean
     ) {
         val hasMap = HashMap<String, Any>()
-        if (tokenAddress == TOKEN_DFY_ADDRESS || tokenAddress == TOKEN_BNB_ADDRESS) {
+        if (tokenAddress != TOKEN_DFY_ADDRESS || tokenAddress != TOKEN_BNB_ADDRESS) {
             val listToken = ArrayList<TokenModel>()
             listToken.addAll(appPreference.getListTokenSupport())
             listToken.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress }?.isShow =
