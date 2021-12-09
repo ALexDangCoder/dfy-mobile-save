@@ -392,9 +392,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   ///Wallet Core
 
-  final List<ModelToken> checkShow = [];
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    print("chang-------------------------------------0");
     switch (methodCall.method) {
       case 'importTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
@@ -456,7 +454,7 @@ class WalletCubit extends BaseCubit<WalletState> {
             listTokenFromWalletCore.add(element);
           }
         }
-        await getBalanceOFToken(listTokenFromWalletCore);
+       // await getBalanceOFToken(listTokenFromWalletCore);
         await getExchangeRate(listTokenFromWalletCore, getListModelToken);
         totalBalance.add(total(listTokenFromWalletCore));
         getListTokenModel.add(checkShow);
@@ -467,11 +465,11 @@ class WalletCubit extends BaseCubit<WalletState> {
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           listWallet.add(Wallet.fromJson(element));
-          addressWalletCore = listWallet.first.address!;
-          nameWallet = listWallet.first.name!;
-          walletName.add(nameWallet);
-          addressWallet.add(addressWalletCore);
         }
+        addressWalletCore = listWallet.first.address!;
+        nameWallet = listWallet.first.name!;
+        walletName.add(nameWallet);
+        addressWallet.add(addressWalletCore);
         break;
       case 'importListNftCallback':
         break;
@@ -518,10 +516,10 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getAddressWallet() async {}
 
-  Future<void> getListWallets(String password) async {
+  Future<void> getListWallets(String pass) async {
     try {
       final data = {
-        'password': password,
+        'password':pass,
       };
       await trustWalletChannel.invokeMethod('getListWallets', data);
     } on PlatformException {}

@@ -76,13 +76,13 @@ class TokenItem extends StatelessWidget {
                   child: modelToken.iconToken.isNotEmpty
                       ? CircleAvatar(
                           backgroundColor: Colors.yellow,
-                          radius: 14.r,
+                          radius: 18.r,
                           child: Center(
                             child: Text(
                               modelToken.nameShortToken.substring(0, 1),
                               style: textNormalCustom(
                                 Colors.black,
-                                14,
+                                20,
                                 FontWeight.w600,
                               ),
                             ),

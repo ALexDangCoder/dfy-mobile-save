@@ -60,25 +60,21 @@ class _WalletState extends State<WalletScreen>
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     if (widget.index == 1) {
-      if (widget.checkWallet == true) {
+      if (widget.checkWallet == false) {
         cubit.getListCategory();
       }
-      cubit.addressWalletCore =
-          widget.wallet?.address ?? cubit.addressWalletCore;
-      cubit.nameWallet = widget.wallet?.name ?? cubit.nameWallet;
       cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
       cubit.addressWallet
           .add(widget.wallet?.address ?? cubit.addressWalletCore);
+
       cubit.walletName.stream.listen((event) {
         changeName.text = event;
       });
       _tabController = TabController(length: 2, vsync: this);
       fToast = FToast();
       fToast.init(context);
-      if (cubit.nameWallet == '') {
-        cubit.getListWallets('pass');
-        cubit.getConfig();
-      }
+      cubit.getListWallets('pass');
+      cubit.getConfig();
     }
   }
 

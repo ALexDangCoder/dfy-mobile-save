@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -74,6 +75,7 @@ class _BodyState extends State<_Body> {
         if (widget.bLocCreateSeedPhrase.isSuccess) {
           if (state is SeedNavState) {
             if (widget.typeScreen == TypeScreen.one) {
+              PrefsService.saveFirstAppConfig('false');
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -93,6 +95,7 @@ class _BodyState extends State<_Body> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
+                    PrefsService.saveFirstAppConfig('false');
                     return CreateSuccessfully(
                       type: KeyType.CREATE,
                       wallet: Wallet(
