@@ -36,7 +36,8 @@ class WalletScreen extends StatefulWidget {
   const WalletScreen({
     Key? key,
     required this.index,
-    this.wallet, required this.checkWallet,
+    this.wallet,
+    required this.checkWallet,
   }) : super(key: key);
   final int index;
   final Wallet? wallet;
@@ -60,10 +61,12 @@ class _WalletState extends State<WalletScreen>
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     if (widget.index == 1) {
-      if (widget.checkWallet == false) {
+      if (widget.checkWallet == true) {
         cubit.getListCategory();
       }
-      cubit.getConfig();
+      cubit.addressWalletCore =
+          widget.wallet?.address ?? cubit.addressWalletCore;
+      cubit.nameWallet = widget.wallet?.name ?? cubit.nameWallet;
       cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
       cubit.addressWallet
           .add(widget.wallet?.address ?? cubit.addressWalletCore);
@@ -75,6 +78,7 @@ class _WalletState extends State<WalletScreen>
       fToast.init(context);
       if (cubit.nameWallet == '') {
         cubit.getListWallets('pass');
+        cubit.getConfig();
       }
     }
   }
