@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/model/collection_nft_info.dart';
@@ -51,11 +49,10 @@ class WalletCubit extends BaseCubit<WalletState> {
       tokenDecimal.sink.add('${tokenInfoModel.decimal ?? 0} ');
       tokenFullName = tokenInfoModel.name ?? '';
       if (tokenInfoModel.tokenSymbol!.isNotEmpty) {
-        //isShowValidateText.sink.add(false);
         isTokenEnterAddress.sink.add(true);
-        // if (!isHaveToken.value) {
-        //   isTokenEnterAddress.sink.add(true);
-        // }
+        if (isHaveToken) {
+          isTokenEnterAddress.sink.add(false);
+        }
       }
       if (tokenInfoModel.tokenSymbol!.isEmpty) {
         isTokenEnterAddress.sink.add(false);
@@ -63,12 +60,12 @@ class WalletCubit extends BaseCubit<WalletState> {
       print('--------------------------------------${tokenInfoModel.name}');
       print('----------------------------------${tokenInfoModel.tokenSymbol}');
       print('--------------------------------------${tokenInfoModel.decimal}');
-      isAddressNotExist.sink.add(false);
-      print('---------------------------${isAddressNotExist.value}');
+      isAddressNotExist = false;
+      print('---------------------------${isAddressNotExist}');
     }
     if (tokenInfoModel == null) {
-      isAddressNotExist.sink.add(true);
-      print('---------------------------${isAddressNotExist.value}');
+      isAddressNotExist = true;
+      print('---------------------------${isAddressNotExist}');
     }
   }
 
@@ -158,9 +155,9 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
 
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject();
-  BehaviorSubject<bool> isAddressNotExist = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isHaveToken = BehaviorSubject.seeded(true);
-  BehaviorSubject<bool> isTextTokenEnterAddress = BehaviorSubject.seeded(false);
+
+  bool isAddressNotExist = false;
+  bool isHaveToken = false;
 
   BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isImportNftFail = BehaviorSubject.seeded(true);
@@ -432,7 +429,10 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'checkTokenCallback':
         final bool isExist = await methodCall.arguments['isExist'];
-        isHaveToken.sink.add(isExist);
+        isHaveToken = isExist;
+        if (isExist) {
+          isTokenEnterAddress.sink.add(false);
+        }
         break;
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
@@ -693,8 +693,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   //get Nft
   Future<void> getInfoCollection(String smartContract, String? id) async {}
 
-
-
   //importAllNFT
   //todo emit json to wallet core
   // Future<void> importNFTFtAllNft({
@@ -744,24 +742,33 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Stream<String> get messStream => _messSubject.stream;
 
-  void validateAddressFunc() {
-    final bool isEmpty = isTextTokenEnterAddress.value;
-    if (isEmpty) {
-      final bool isValidate = isAddressNotExist.value;
-      if (!isValidate) {
-        final bool isImported = isHaveToken.value;
-        if (isImported) {
-          isTokenEnterAddress.sink.add(false);
-          _messSubject.sink.add('The token had been imported');
-        } else {
-          _messSubject.sink.add('');
-          isTokenEnterAddress.sink.add(true);
-        }
-      } else {
-        isTokenEnterAddress.sink.add(false);
+  final BehaviorSubject<String> _inputSubject = BehaviorSubject();
 
-        _messSubject.sink.add('The address not available');
-      }
+  Stream<String> get inputStream => _inputSubject.stream;
+
+  void validateAddressFunc(String _st) {
+    if (_st != '') {
+      _inputSubject.sink.add(_st);
+      print(_st);
+      inputStream
+          .debounceTime(const Duration(milliseconds: 500))
+          .listen((event) {
+        print(_st);
+        getTokenInfoByAddress(tokenAddress: event);
+        if (!isAddressNotExist) {
+          checkToken(walletAddress: addressWalletCore, tokenAddress: event);
+          if (isHaveToken) {
+            isTokenEnterAddress.sink.add(false);
+            _messSubject.sink.add('The token had been imported');
+          } else {
+            _messSubject.sink.add('');
+            isTokenEnterAddress.sink.add(true);
+          }
+        } else {
+          isTokenEnterAddress.sink.add(false);
+          _messSubject.sink.add('The address not available');
+        }
+      });
     } else {
       isTokenEnterAddress.sink.add(false);
       _messSubject.sink.add('The address must be enter');

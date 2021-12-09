@@ -57,13 +57,25 @@ class FormInput extends StatelessWidget {
                 AppTheme.getInstance().whiteColor(),
                 16.sp,
               ),
-              onFieldSubmitted: (value) {
-                bloc.getTokenInfoByAddress(tokenAddress: value);
-                // bloc.getDataToken(addressToken: value);
-              },
+              // onFieldSubmitted: (value) {
+              //   bloc.getTokenInfoByAddress(tokenAddress: value);
+              //   bloc.checkToken(
+              //     walletAddress: bloc.addressWalletCore,
+              //     tokenAddress: bloc.tokenAddressText.value,
+              //   );
+              //   bloc.validateAddressFunc();
+              // },
               onChanged: (value) {
-                bloc.checkAddressNull();
-                bloc.tokenAddressText.sink.add(value);
+                // bloc.checkAddressNull();
+                // bloc.getTokenInfoByAddress(tokenAddress: value);
+                // bloc.checkToken(
+                //   walletAddress: bloc.addressWalletCore,
+                //   tokenAddress: bloc.tokenAddressText.value,
+                // );
+                // bloc.validateAddressFunc();
+                // bloc.tokenAddressText.sink.add(value);
+
+                bloc.validateAddressFunc(value);
               },
               decoration: InputDecoration(
                 counterText: '',

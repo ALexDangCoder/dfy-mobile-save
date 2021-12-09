@@ -38,11 +38,9 @@ class _EnterAddressState extends State<EnterAddress> {
     controller.addListener(() {
       widget.bloc.tokenAddressText.sink.add(controller.text);
       if (controller.text == '') {
-        widget.bloc.isTextTokenEnterAddress.sink.add(false);
         widget.bloc.tokenSymbol.sink.add(S.current.token_symbol);
         widget.bloc.tokenDecimal.sink.add(S.current.token_decimal);
       } else {
-        widget.bloc.isTextTokenEnterAddress.sink.add(true);
       }
     });
   }
