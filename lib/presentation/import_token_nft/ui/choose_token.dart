@@ -52,9 +52,10 @@ class _ChooseTokenState extends State<ChooseToken> {
                         height: 73,
                         width: 322,
                         child: showItemToken(
-                            widget.bloc.getListTokenModel.value[index]
-                                .tokenAddress,
-                            index),
+                          widget.bloc.getListTokenModel.value[index]
+                              .nameShortToken,
+                          index,
+                        ),
                       ),
                     );
                   },
@@ -67,9 +68,8 @@ class _ChooseTokenState extends State<ChooseToken> {
     );
   }
 
-  Widget showItemToken(String addressToken, int index) {
-    if (addressToken == '0x20f1de452e9057fe863b99d33cf82dbee0c45b14' ||
-        addressToken == '0x0000000000000000000000000000000000000000') {
+  Widget showItemToken(String shortToken, int index) {
+    if (shortToken == 'BNB' || shortToken == 'DFY') {
       return ListTileSwitch(
         enabled: false,
         switchScale: 1,
@@ -120,7 +120,6 @@ class _ChooseTokenState extends State<ChooseToken> {
         ),
         onChanged: (value) {
           widget.bloc.getListTokenModel.value[index].isShow = value;
-          print(value);
           widget.bloc.setShowedToken(
             walletAddress:
                 widget.bloc.getListTokenModel.value[index].walletAddress,
@@ -128,7 +127,6 @@ class _ChooseTokenState extends State<ChooseToken> {
             tokenAddress:
                 widget.bloc.getListTokenModel.value[index].tokenAddress,
           );
-
           setState(() {});
         },
         switchActiveColor: const Color(0xffE4AC1A),

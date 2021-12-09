@@ -4,7 +4,6 @@ import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_input.dart';
-
 import 'package:Dfy/widgets/form/form_text2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,8 +39,7 @@ class _EnterAddressState extends State<EnterAddress> {
       if (controller.text == '') {
         widget.bloc.tokenSymbol.sink.add(S.current.token_symbol);
         widget.bloc.tokenDecimal.sink.add(S.current.token_decimal);
-      } else {
-      }
+      } else {}
     });
   }
 
@@ -129,11 +127,10 @@ class _EnterAddressState extends State<EnterAddress> {
                     final bool enable = snapshot.data ?? false;
                     return InkWell(
                       onTap: () {
-                        print(enable);
                         if (enable) {
-                          print(enable);
+                          //todo BE exchangeRate
                           widget.bloc.importToken(
-                            walletAddress: widget.addressWallet,
+                            walletAddress: widget.bloc.addressWallet.value,
                             tokenAddress: widget.bloc.tokenAddressText.value,
                             symbol: widget.bloc.tokenSymbol.value,
                             decimal: int.parse(widget.bloc.tokenDecimal.value),
