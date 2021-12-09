@@ -65,7 +65,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                 },
                 context: context,
               );
-            } else {
+            }
+            else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('ChangePW failed'),
@@ -142,10 +143,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                                 newPassword: _txtNewPW.text,
                               );
 
-                              passwordCubit.changePasswordIntoWalletCore(
-                                oldPassword: _txtOldPW.text,
-                                newPassword: _txtNewPW.text,
-                              );
+                              // passwordCubit.changePasswordIntoWalletCore(
+                              //   oldPassword: _txtOldPW.text,
+                              //   newPassword: _txtNewPW.text,
+                              // );
 
                               if (passwordCubit.checkAllValidate(
                                 // oldPWFetch: oldPWFetchFromApi,

@@ -667,7 +667,8 @@ class WalletCubit extends BaseCubit<WalletState> {
     int? id,
     required String address,
   }) async {
-    Map<String, dynamic> result;
+    Map<String, dynamic> result = {};
+    result.putIfAbsent('walletAddress', () => address);
     result = await Web3Utils()
         .getCollectionInfo(contract: contract, address: address);
     await importNftIntoWalletCore(jsonNft: result.toString());
