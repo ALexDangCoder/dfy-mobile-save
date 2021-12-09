@@ -52,9 +52,10 @@ class WalletCubit extends BaseCubit<WalletState> {
       tokenFullName = tokenInfoModel.name ?? '';
       if (tokenInfoModel.tokenSymbol!.isNotEmpty) {
         //isShowValidateText.sink.add(false);
-        if (!isHaveToken.value) {
-          isTokenEnterAddress.sink.add(true);
-        }
+        isTokenEnterAddress.sink.add(true);
+        // if (!isHaveToken.value) {
+        //   isTokenEnterAddress.sink.add(true);
+        // }
       }
       if (tokenInfoModel.tokenSymbol!.isEmpty) {
         isTokenEnterAddress.sink.add(false);
@@ -181,26 +182,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   String nameWallet = '';
   List<AccountModel> listSelectAccBloc = [];
 
-  Future<void> earseWallet({required String walletAddress}) async {
-    try {
-      final data = {
-        'walletAddress': walletAddress,
-      };
-      await trustWalletChannel.invokeMethod('earseWallet', data);
-    } on PlatformException {}
-  }
-
-  Future<void> getAddressWallet() async {}
-
-  Future<void> getListWallets(String password) async {
-    try {
-      final data = {
-        'password': password,
-      };
-      await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {}
-  }
-
   String formatAddress(String address) {
     if (address.isEmpty) return address;
     final String formatAddressWallet =
@@ -319,7 +300,9 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  //Web3
+
+  ///Logic Token
+
   TokenRepository get _tokenRepository => Get.find();
 
   Future<void> getListCategory() async {
@@ -374,7 +357,6 @@ class WalletCubit extends BaseCubit<WalletState> {
           decimal: 18.0,
         ),
       );
-      print(value.symbol);
     }
     final json = jsonEncode(listJson.map((e) => e.toJson()).toList());
     await importListToken(json);
@@ -397,18 +379,29 @@ class WalletCubit extends BaseCubit<WalletState> {
     for (int i = 0; i < list.length; i++) {
       list[i].balanceToken = await client.getBalanceOfToken(
         ofAddress: addressWalletCore,
-        tokenAddress: list[i].tokenAddress,
+        tokenAddress: '0x1Fa4a73a3F0133f0025378af00236f3aBDEE5D63',
       );
     }
   }
+
+  ///Wallet Core
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'importTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
-        print(isSuccess);
         if (isSuccess) {
-          emit(NavigatorSuccessfully());
+        }
+        break;
+      case 'importListTokenCallback':
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+        if (isSuccess) {
+          await getTokens(
+            addressWalletCore,
+          );
+          await getNFT(
+            addressWalletCore,
+          );
         }
         break;
       case 'earseWalletCallback':
@@ -435,7 +428,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'checkTokenCallback':
         final bool isExist = await methodCall.arguments['isExist'];
-        print('-------------------$isExist');
         isHaveToken.sink.add(isExist);
         break;
       case 'getTokensCallback':
@@ -446,15 +438,13 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         for (final element in checkShow) {
           if (element.isShow) {
+            print(element.nameShortToken);
             listTokenFromWalletCore.add(element);
           }
         }
-        await getBalanceOFToken(listTokenFromWalletCore);
-        listTokenStream.add(listTokenFromWalletCore);
-        await getExchangeRate(
-          listTokenFromWalletCore,
-          getListModelToken,
-        );
+        print('>>>>>'+listTokenFromWalletCore.length.toString());
+        print(checkShow.length);
+        getListTokenModel.add(checkShow);
         totalBalance.add(total(listTokenFromWalletCore));
         listTokenStream.add(listTokenFromWalletCore);
         break;
@@ -475,6 +465,26 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
     }
   }
+  Future<void> earseWallet({required String walletAddress}) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+      };
+      await trustWalletChannel.invokeMethod('earseWallet', data);
+    } on PlatformException {}
+  }
+
+  Future<void> getAddressWallet() async {}
+
+  Future<void> getListWallets(String password) async {
+    try {
+      final data = {
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('getListWallets', data);
+    } on PlatformException {}
+  }
+
 
   Future<void> getTokens(String walletAddress) async {
     try {
@@ -639,6 +649,10 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   //get Nft
+  Future<void> getInfoCollection (String smartContract, String? id) async {
+
+  }
+
   Future<List<NftInfo>> getNFTFromWeb3({
     required String address,
     required String contract,
@@ -718,15 +732,11 @@ class WalletCubit extends BaseCubit<WalletState> {
   Stream<String> get messStream => _messSubject.stream;
 
   void validateAddressFunc() {
-    log('>>>>>>>>>>>>RUN CHECK FUNC<<<<<<<<<<<<<');
     final bool isEmpty = isTextTokenEnterAddress.value;
-    log('IS EMPTY $isEmpty');
     if (isEmpty) {
       final bool isValidate = isAddressNotExist.value;
-      log('IS VALIDATE $isValidate');
       if (!isValidate) {
         final bool isImported = isHaveToken.value;
-        log('IS IMPORTED $isValidate');
         if (isImported) {
           isTokenEnterAddress.sink.add(false);
           _messSubject.sink.add('The token had been imported');
@@ -743,7 +753,5 @@ class WalletCubit extends BaseCubit<WalletState> {
       isTokenEnterAddress.sink.add(false);
       _messSubject.sink.add('The address must be enter');
     }
-
-    log('MESS: ${_messSubject.value}');
   }
 }
