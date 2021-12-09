@@ -29,7 +29,7 @@ class Web3Utils {
       return false;
     }
     try {
-      await nft.tokenURI(BigInt.from(id ?? 0));
+      await nft.tokenURI(BigInt.from(id));
       return true;
     } catch (e) {
       return false;
