@@ -29,17 +29,20 @@ class TokenItem extends StatelessWidget {
     return MaterialButton(
       padding: EdgeInsets.zero,
       onLongPress: () {
-        Navigator.of(context).push(
-          HeroDialogRoute(
-            builder: (context) {
-              return RemoveToken(
-                cubit: bloc,
-                index: index,
-              );
-            },
-            isNonBackground: false,
-          ),
-        );
+        if (modelToken.nameShortToken != 'DFY' &&
+            modelToken.nameShortToken != 'BNB') {
+          Navigator.of(context).push(
+            HeroDialogRoute(
+              builder: (context) {
+                return RemoveToken(
+                  cubit: bloc,
+                  index: index,
+                );
+              },
+              isNonBackground: false,
+            ),
+          );
+        }
       },
       onPressed: () {
         Navigator.push(
