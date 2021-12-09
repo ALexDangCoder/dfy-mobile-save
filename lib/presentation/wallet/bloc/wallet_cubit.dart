@@ -13,7 +13,9 @@ import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/model/token_price_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -304,6 +306,21 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   TokenRepository get _tokenRepository => Get.find();
 
+  PriceRepository get _priceRepository => Get.find();
+
+  Future<void> getListPrice(String symbols) async {
+    final Result<List<TokenPrice>> result =
+        await _priceRepository.getListPriceToken(symbols);
+    result.when(
+      success: (res) {
+        log(res.toString());
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
+  }
+
   Future<void> getListCategory() async {
     final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
     result.when(
@@ -377,14 +394,13 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getBalanceOFToken(List<ModelToken> list) async {
     for (int i = 0; i < list.length; i++) {
-      if(list[i].nameShortToken != 'BNB') {
+      if (list[i].nameShortToken != 'BNB') {
         print(list[i].nameShortToken);
         list[i].balanceToken = await client.getBalanceOfToken(
           ofAddress: addressWalletCore,
           tokenAddress: list[i].tokenAddress,
         );
-      }
-      else{
+      } else {
         list[i].balanceToken = await client.getBalanceOfBnb(
           ofAddress: addressWalletCore,
         );
@@ -691,8 +707,6 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   //get Nft
   Future<void> getInfoCollection(String smartContract, String? id) async {}
-
-
 
   //importAllNFT
   //todo emit json to wallet core

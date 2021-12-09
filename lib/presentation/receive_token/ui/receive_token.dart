@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -7,13 +6,16 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/receive_token/bloc/receive_cubit.dart';
+import 'package:Dfy/presentation/receive_token/bloc/receive_state.dart';
 import 'package:Dfy/presentation/receive_token/ui/set_amount_pop_up.dart';
 import 'package:Dfy/utils/animate/custom_rect_tween.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -33,13 +35,11 @@ class Receive extends StatefulWidget {
     required this.type,
     this.symbol = 'BNB',
     this.nameToken = 'Binance',
-    this.exchangeRate = 1.0,
   }) : super(key: key);
   final String walletAddress;
   final TokenType type;
   final String? symbol;
   final String? nameToken;
-  final double? exchangeRate;
 
   @override
   _ReceiveState createState() => _ReceiveState();
@@ -51,7 +51,8 @@ class _ReceiveState extends State<Receive> {
   late final FToast toast;
   String? amount;
   late final GlobalKey globalKey;
-  num price = 1.0;
+  double price = 1.0;
+  num quantity = 1.0;
 
   @override
   void initState() {
@@ -61,6 +62,7 @@ class _ReceiveState extends State<Receive> {
     globalKey = GlobalKey();
     toast = FToast();
     toast.init(context);
+    receiveCubit.getListPrice(widget.symbol!);
   }
 
   @override
@@ -74,202 +76,227 @@ class _ReceiveState extends State<Receive> {
   Widget build(BuildContext context) {
     return BaseBottomSheet(
       title: '${S.current.receive} ${widget.symbol!}',
-      child: Column(
-        children: [
-          SizedBox(
-            height: 41.h,
-          ),
-          Container(
-            height: 370.h,
-            width: 311.w,
-            padding: EdgeInsets.only(
-              top: 16.h,
-              bottom: 12.h,
-              right: 40.w,
-              left: 40.w,
-            ),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().selectDialogColor(),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(36),
-              ),
-            ),
+      child: PullToRefresh(
+        onRefresh: () {
+          receiveCubit.getListPrice('BTC');
+        },
+        child: Center(
+          child: Container(
+            width: double.infinity,
+            height: 699.h,
+            color: AppTheme.getInstance().bgBtsColor(),
             child: Column(
               children: [
                 SizedBox(
-                  width: 125.w,
-                  height: 29.h,
-                  child: Image.asset(ImageAssets.defiText),
+                  height: 41.h,
                 ),
-                SizedBox(
-                  height: 13.17.h,
-                ),
-                RepaintBoundary(
-                    key: globalKey,
-                    child: StreamBuilder(
-                      stream: receiveCubit.amountStream,
-                      builder: (context, snapshot) {
-                        return QrImage(
-                          data: receiveCubit.value?.isEmpty ?? true
-                              ? widget.walletAddress
-                              : '${widget.nameToken}:${widget.walletAddress}'
-                                  '?amount=${receiveCubit.value}',
-                          size: 230.w,
-                          gapless: false,
-                          backgroundColor: Colors.white,
-                        );
-                      },
-                    )),
-                SizedBox(
-                  height: 11.h,
-                ),
-                SizedBox(
-                  height: 39.h,
-                  width: 232.w,
-                  child: Text(
-                    widget.walletAddress,
-                    textAlign: TextAlign.center,
-                    style: textNormalCustom(
-                      null,
-                      18,
-                      FontWeight.w300,
-                    ),
+                Container(
+                  height: 370.h,
+                  width: 311.w,
+                  padding: EdgeInsets.only(
+                    top: 16.h,
+                    bottom: 12.h,
+                    right: 40.w,
+                    left: 40.w,
                   ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          StreamBuilder<String>(
-            stream: receiveCubit.amountStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                amount = snapshot.data;
-                if(snapshot.data!.isNotEmpty){
-                  price = num.parse(amount!);
-                }
-              } else {
-                amount = '';
-              }
-              return Visibility(
-                visible: amount!.isNotEmpty,
-                child: Container(
-                  margin: EdgeInsets.only(
-                    top: 12.h,
+                  decoration: BoxDecoration(
+                    color: AppTheme.getInstance().selectDialogColor(),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(36),
+                    ),
                   ),
                   child: Column(
                     children: [
-                      Text(
-                        '${receiveCubit.value} ${widget.symbol}',
-                        style: textNormal(
-                          AppTheme.getInstance().fillColor(),
-                          24,
-                        ).copyWith(
-                          fontWeight: FontWeight.w600,
+                      SizedBox(
+                        width: 125.w,
+                        height: 29.h,
+                        child: Image.asset(ImageAssets.defiText),
+                      ),
+                      SizedBox(
+                        height: 13.17.h,
+                      ),
+                      RepaintBoundary(
+                        key: globalKey,
+                        child: StreamBuilder(
+                          stream: receiveCubit.amountStream,
+                          builder: (context, snapshot) {
+                            return QrImage(
+                              data: receiveCubit.value?.isEmpty ?? true
+                                  ? widget.walletAddress
+                                  : '${widget.nameToken}:${widget.walletAddress}'
+                                      '?amount=${receiveCubit.value}',
+                              size: 230.w,
+                              gapless: false,
+                              backgroundColor: Colors.white,
+                            );
+                          },
                         ),
                       ),
-                      Text(
-                        formatUSD.format(price * widget.exchangeRate!),
-                        style: textNormal(
-                          Colors.grey.withOpacity(0.5),
-                          16,
-                        ).copyWith(
-                          fontWeight: FontWeight.w600,
+                      SizedBox(
+                        height: 11.h,
+                      ),
+                      SizedBox(
+                        height: 39.h,
+                        width: 232.w,
+                        child: Text(
+                          widget.walletAddress,
+                          textAlign: TextAlign.center,
+                          style: textNormalCustom(
+                            null,
+                            18,
+                            FontWeight.w300,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              );
-            },
-          ),
-          SizedBox(
-            height: 24.h,
-          ),
-          Container(
-            padding: EdgeInsets.only(
-              left: 24.w,
-              right: 24.w,
-            ),
-            width: 311.w,
-            height: 78.h,
-            child: Row(
-              mainAxisAlignment: widget.type == TokenType.DFY
-                  ? MainAxisAlignment.spaceBetween
-                  : MainAxisAlignment.center,
-              children: [
-                _buildColumnButton(
-                  path: ImageAssets.ic_save,
-                  label: S.current.save,
-                  callback: () async {
-                    final RenderRepaintBoundary? boundary =
-                        globalKey.currentContext!.findRenderObject()
-                            as RenderRepaintBoundary?;
-                    final image = await boundary!.toImage();
-                    final ByteData? byteData =
-                        await image.toByteData(format: ImageByteFormat.png);
-                    if (byteData != null) {
-                      await ImageGallerySaver.saveImage(
-                        byteData.buffer.asUint8List(),
-                      );
-                      toast.showToast(
-                        child: popMenu(),
-                        toastDuration: const Duration(seconds: 2),
-                        gravity: ToastGravity.CENTER,
-                      );
-                    }
-                  },
+                SizedBox(
+                  height: 20.h,
                 ),
-                if (widget.type == TokenType.DFY)
-                  Flexible(
-                    child: _buildColumnButton(
-                      path: ImageAssets.ic_set_amount,
-                      label: S.current.set_amount,
-                      callback: () {
-                        Navigator.of(context).push(
-                          HeroDialogRoute(
-                            builder: (context) {
-                              return SetAmountPopUp(
-                                controller: amountController,
-                                cubit: receiveCubit,
-                                symbol: widget.symbol,
-                              );
-                            },
-                            isNonBackground: false,
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                else
-                  spaceW60,
-                _buildColumnButton(
-                  path: ImageAssets.ic_share,
-                  label: S.current.share,
-                  callback: () async {
-                    final RenderRepaintBoundary? boundary =
-                        globalKey.currentContext!.findRenderObject()
-                            as RenderRepaintBoundary?;
-                    final image = await boundary!.toImage();
-                    final ByteData? byteData =
-                        await image.toByteData(format: ImageByteFormat.png);
-                    final Uint8List pngBytes = byteData!.buffer.asUint8List();
-
-                    final tempDir = await getTemporaryDirectory();
-                    final file =
-                        await File('${tempDir.path}/image.png').create();
-                    await file.writeAsBytes(pngBytes);
-                    await Share.shareFiles(
-                      ['${tempDir.path}/image.png'],
+                StreamBuilder<String>(
+                  stream: receiveCubit.amountStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      amount = snapshot.data;
+                      if (snapshot.data!.isNotEmpty) {
+                        quantity = num.parse(snapshot.data!);
+                      }
+                    } else {
+                      amount = '';
+                    }
+                    return Visibility(
+                      visible: amount!.isNotEmpty,
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          top: 12.h,
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              '${receiveCubit.value} ${widget.symbol}',
+                              style: textNormal(
+                                AppTheme.getInstance().fillColor(),
+                                24,
+                              ).copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            BlocBuilder(
+                              buildWhen: (prev, state) => state != prev,
+                              bloc: receiveCubit,
+                              builder: (context, state) {
+                                if (state is PriceSuccess) {
+                                  price = state.listTokenPrice.first.price!;
+                                }
+                                return Text(
+                                  formatUSD.format(
+                                    price * quantity,
+                                  ),
+                                  style: textNormal(
+                                    Colors.grey.withOpacity(0.5),
+                                    16,
+                                  ).copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     );
                   },
                 ),
+                SizedBox(
+                  height: 24.h,
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                    left: 24.w,
+                    right: 24.w,
+                  ),
+                  width: 311.w,
+                  height: 78.h,
+                  child: Row(
+                    mainAxisAlignment: widget.type == TokenType.DFY
+                        ? MainAxisAlignment.spaceBetween
+                        : MainAxisAlignment.center,
+                    children: [
+                      _buildColumnButton(
+                        path: ImageAssets.ic_save,
+                        label: S.current.save,
+                        callback: () async {
+                          final RenderRepaintBoundary? boundary =
+                              globalKey.currentContext!.findRenderObject()
+                                  as RenderRepaintBoundary?;
+                          final image = await boundary!.toImage();
+                          final ByteData? byteData = await image.toByteData(
+                              format: ImageByteFormat.png);
+                          if (byteData != null) {
+                            await ImageGallerySaver.saveImage(
+                              byteData.buffer.asUint8List(),
+                            );
+                            toast.showToast(
+                              child: popMenu(),
+                              toastDuration: const Duration(seconds: 2),
+                              gravity: ToastGravity.CENTER,
+                            );
+                          }
+                        },
+                      ),
+                      if (widget.type == TokenType.DFY)
+                        Flexible(
+                          child: _buildColumnButton(
+                            path: ImageAssets.ic_set_amount,
+                            label: S.current.set_amount,
+                            callback: () {
+                              Navigator.of(context).push(
+                                HeroDialogRoute(
+                                  builder: (context) {
+                                    return SetAmountPopUp(
+                                      controller: amountController,
+                                      cubit: receiveCubit,
+                                      symbol: widget.symbol,
+                                    );
+                                  },
+                                  isNonBackground: false,
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      else
+                        spaceW60,
+                      _buildColumnButton(
+                        path: ImageAssets.ic_share,
+                        label: S.current.share,
+                        callback: () async {
+                          final RenderRepaintBoundary? boundary =
+                              globalKey.currentContext!.findRenderObject()
+                                  as RenderRepaintBoundary?;
+                          final image = await boundary!.toImage();
+                          final ByteData? byteData = await image.toByteData(
+                              format: ImageByteFormat.png);
+                          final Uint8List pngBytes =
+                              byteData!.buffer.asUint8List();
+
+                          final tempDir = await getTemporaryDirectory();
+                          final file =
+                              await File('${tempDir.path}/image.png').create();
+                          await file.writeAsBytes(pngBytes);
+                          await Share.shareFiles(
+                            ['${tempDir.path}/image.png'],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }

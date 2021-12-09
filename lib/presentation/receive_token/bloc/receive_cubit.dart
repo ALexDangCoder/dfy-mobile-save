@@ -1,14 +1,18 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/token_price_model.dart';
+import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/presentation/receive_token/bloc/receive_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ReceiveCubit extends Cubit<ReceiveState> {
+class ReceiveCubit extends BaseCubit<ReceiveState> {
   ReceiveCubit() : super(ReceiveInitial());
 
   final BehaviorSubject<String> _amountSubject = BehaviorSubject.seeded('');
@@ -18,7 +22,6 @@ class ReceiveCubit extends Cubit<ReceiveState> {
   Sink<String> get amountSink => _amountSubject.sink;
 
   String? get value => _amountSubject.valueOrNull;
-
   Future<String> createPath() async {
     final tempDir = await getTemporaryDirectory();
     final String tempPath = tempDir.path;
@@ -26,7 +29,20 @@ class ReceiveCubit extends Cubit<ReceiveState> {
     final String path = '$tempPath/$ts.png';
     return path;
   }
+  PriceRepository get _priceRepository => Get.find();
 
+  Future<void> getListPrice(String symbols) async {
+    final Result<List<TokenPrice>> result =
+    await _priceRepository.getListPriceToken(symbols);
+    result.when(
+      success: (res) {
+        emit(PriceSuccess(res));
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
+  }
   Future<String> saveToGallery(String data) async {
     String path = '';
     final qrValidationResult = QrValidator.validate(
