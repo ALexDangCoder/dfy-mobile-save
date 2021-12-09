@@ -31,7 +31,7 @@ class _SelectAccState extends State<SelectAcc> {
   @override
   void initState() {
     super.initState();
-    widget.bloc.getListWallet(addressWallet: widget.bloc.addressWalletCore);
+    widget.bloc.getListWallet(addressWallet: widget.bloc.addressWallet.value);
   }
 
   @override

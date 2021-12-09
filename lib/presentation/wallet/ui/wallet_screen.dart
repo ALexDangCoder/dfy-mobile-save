@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/wallet.dart';
@@ -36,7 +35,8 @@ class WalletScreen extends StatefulWidget {
   const WalletScreen({
     Key? key,
     required this.index,
-    this.wallet, required this.checkWallet,
+    this.wallet,
+    required this.checkWallet,
   }) : super(key: key);
   final int index;
   final Wallet? wallet;
