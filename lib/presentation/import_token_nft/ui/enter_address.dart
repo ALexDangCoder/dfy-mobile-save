@@ -1,16 +1,15 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_input.dart';
-
 import 'package:Dfy/widgets/form/form_text2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../main.dart';
 import 'import_token_succesfully.dart';
 
 class EnterAddress extends StatefulWidget {
@@ -32,16 +31,15 @@ class _EnterAddressState extends State<EnterAddress> {
   @override
   void initState() {
     super.initState();
+    trustWalletChannel
+        .setMethodCallHandler(widget.bloc.nativeMethodCallBackTrustWallet);
     controller = TextEditingController();
     controller.addListener(() {
       widget.bloc.tokenAddressText.sink.add(controller.text);
       if (controller.text == '') {
-        widget.bloc.isTextTokenEnterAddress.sink.add(false);
         widget.bloc.tokenSymbol.sink.add(S.current.token_symbol);
         widget.bloc.tokenDecimal.sink.add(S.current.token_decimal);
-      } else {
-        widget.bloc.isTextTokenEnterAddress.sink.add(true);
-      }
+      } else {}
     });
   }
 
@@ -65,7 +63,7 @@ class _EnterAddressState extends State<EnterAddress> {
               },
             ),
           ).whenComplete(() async {
-            widget.bloc.listTokenFromWalletCore.clear();
+            //widget.bloc.listTokenFromWalletCore.clear();
             await widget.bloc.getTokens(widget.addressWallet);
             widget.bloc.listTokenStream
                 .add(widget.bloc.listTokenFromWalletCore);
@@ -89,7 +87,6 @@ class _EnterAddressState extends State<EnterAddress> {
                         bloc: widget.bloc,
                       ),
                       spaceH4,
-                      // showTextValidateOldPassword(),
                       textValidate(),
                       spaceH16,
                       StreamBuilder<String>(
@@ -130,15 +127,16 @@ class _EnterAddressState extends State<EnterAddress> {
                     final bool enable = snapshot.data ?? false;
                     return InkWell(
                       onTap: () {
-                        //todo icon BE
                         if (enable) {
+                          //todo BE exchangeRate
                           widget.bloc.importToken(
-                            walletAddress: widget.addressWallet,
+                            walletAddress: widget.bloc.addressWallet.value,
                             tokenAddress: widget.bloc.tokenAddressText.value,
                             symbol: widget.bloc.tokenSymbol.value,
                             decimal: int.parse(widget.bloc.tokenDecimal.value),
                             iconToken: widget.bloc.iconToken,
                             tokenFullName: widget.bloc.tokenFullName,
+                            exchangeRate: 0.0,
                           );
                         }
                         widget.bloc.checkAddressNull();
@@ -160,7 +158,7 @@ class _EnterAddressState extends State<EnterAddress> {
 
   Widget showTextValidateOldPassword() {
     return StreamBuilder(
-      stream: widget.bloc.isShowValidateText, //tao stream bool để ẩn hiển
+      stream: widget.bloc.isShowValidateText,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Visibility(
           visible: snapshot.data ?? false,

@@ -42,9 +42,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // trustWalletChannel.setMethodCallHandler(nativeMethodCallHandler);
+    trustWalletChannel.setMethodCallHandler(nativeMethodCallHandler);
     super.initState();
-    // callAllApi();
+    callAllApi();
   }
 
   @override
@@ -95,6 +95,18 @@ class _MyAppState extends State<MyApp> {
     switch (methodCall.method) {
       case 'checkPasswordCallback':
         break;
+      case 'importNftCallback':
+        print('importNftCallback ${methodCall.arguments}');
+        break;
+      case 'getNFTCallback':
+        print('getNFTCallback ${methodCall.arguments}');
+        break;
+      case 'importTokenCallback':
+        print('importTokenCallback ${methodCall.arguments}');
+        break;
+      case 'checkTokenCallback':
+        print('checkTokenCallback ${methodCall.arguments}');
+        break;
       case 'getConfigCallback':
         await PrefsService.saveAppLockConfig(
           methodCall.arguments['isAppLock'].toString(),
@@ -102,22 +114,66 @@ class _MyAppState extends State<MyApp> {
         await PrefsService.saveFaceIDConfig(
           methodCall.arguments['isFaceID'].toString(),
         );
-        await PrefsService.saveFirstAppConfig(
-          (!methodCall.arguments['isWalletExist']).toString(),
-        );
-        print('isWalletExit ${methodCall.arguments['isWalletExist']}');
-        break;
-      case 'importWalletCallback':
-        print('importWalletCallback ${methodCall.arguments}');
-        break;
-      case 'importListTokenCallback':
-        print('importListTokenCallback ${methodCall.arguments}');
-        break;
-      case 'importNftCallback':
-        print('importNftCallback ${methodCall.arguments}');
-        break;
+        if (methodCall.arguments['isWalletExist']) {
+          await PrefsService.saveFirstAppConfig('false');
+        }
+        print('isWa lletExit ${methodCall.arguments['isWalletExist']}');
     }
   }
 
-  void callAllApi() {}
+  void callAllApi() {
+    getConfig();
+  }
+
+  Future<void> getConfig() async {
+    try {
+      final data = {};
+      await trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException {}
+  }
+
+  Future<void> importNft() async {
+    try {
+      final data = {
+        'walletAddress': '123',
+        'jsonNft':
+            '{"name": "Mobile Test Collection","symbol": "DFY-NFT","contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","listNft": [{"id": 0,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmZbN93DKoW9owJ2QqJ8RM7hqCW5PgotRK3y8mnprU5VQW"},{"id": 1,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmTpRapaL9WbEVJibJrBzQ4nkggg9mSJK7DVK3mL6hpMEy"},{"id": 2,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c"},{"id": 3,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmXCQTqZYYyDCF6GcnnophSZryRQ3HJTvEjokoRFYbH5MG"}]}',
+      };
+      await trustWalletChannel.invokeMethod('importNft', data);
+    } on PlatformException {}
+  }
+
+  Future<void> importToken() async {
+    try {
+      final data = {
+        'walletAddress': '123',
+        'tokenAddress': '123',
+        'tokenFullName': '123',
+        'iconToken': '123',
+        'symbol': '123',
+        'decimal': 1,
+        'exchangeRate': 1.0,
+      };
+      await trustWalletChannel.invokeMethod('importToken', data);
+    } on PlatformException {}
+  }
+
+  Future<void> checkToken() async {
+    try {
+      final data = {
+        'walletAddress': '123',
+        'tokenAddress': '123',
+      };
+      await trustWalletChannel.invokeMethod('checkToken', data);
+    } on PlatformException {}
+  }
+
+  Future<void> getNFT() async {
+    try {
+      final data = {
+        'walletAddress': '123',
+      };
+      await trustWalletChannel.invokeMethod('getNFT', data);
+    } on PlatformException {}
+  }
 }
