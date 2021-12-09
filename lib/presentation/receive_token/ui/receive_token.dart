@@ -111,9 +111,9 @@ class _ReceiveState extends State<Receive> {
                       builder: (context, snapshot) {
                         return QrImage(
                           data: receiveCubit.value?.isEmpty ?? true
-                              ? '%${widget.walletAddress}%'
-                              : '%${widget.nameToken}%:%${widget.walletAddress}'
-                                  '%?amount=%${receiveCubit.value}%',
+                              ? widget.walletAddress
+                              : '${widget.nameToken}:${widget.walletAddress}'
+                                  '?amount=${receiveCubit.value}',
                           size: 230.w,
                           gapless: false,
                           backgroundColor: Colors.white,

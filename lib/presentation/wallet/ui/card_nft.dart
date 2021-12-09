@@ -1,4 +1,3 @@
-
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/draggable_nft_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -15,8 +14,10 @@ class CardNFT extends StatefulWidget {
   const CardNFT({
     Key? key,
     required this.objNFT,
+    required this.walletAddress,
   }) : super(key: key);
   final NftInfo objNFT;
+  final String walletAddress;
 
   @override
   State<StatefulWidget> createState() => _CardNFTState();
@@ -91,6 +92,7 @@ class _CardNFTState extends State<CardNFT> {
         child: NFTDetail(
           nftInfo: widget.objNFT,
           listHistory: cubit.listHistory,
+          walletAddress: widget.walletAddress,
         ),
       ),
     ).whenComplete(() => Navigator.pop(context));
