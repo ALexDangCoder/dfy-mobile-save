@@ -137,6 +137,7 @@ class _NFTItemState extends State<NFTItem> {
                       itemCount: 6,
                       itemBuilder: (BuildContext context, int index) => CardNFT(
                         objNFT: nft,
+                        walletAddress: widget.walletAddress,
                       ),
                     ),
                   ),

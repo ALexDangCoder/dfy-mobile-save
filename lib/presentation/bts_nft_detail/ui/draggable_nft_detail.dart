@@ -21,9 +21,11 @@ class NFTDetail extends StatefulWidget {
     Key? key,
     required this.nftInfo,
     required this.listHistory,
+    required this.walletAddress,
   }) : super(key: key);
   final NftInfo nftInfo;
   final List<HistoryNFT> listHistory;
+  final String walletAddress;
 
   @override
   _NFTDetailState createState() => _NFTDetailState();
@@ -374,8 +376,8 @@ class _NFTDetailState extends State<NFTDetail> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const Receive(
-                  walletAddress: 'aaaaaaaaaaa',
+                builder: (context) => Receive(
+                  walletAddress: widget.walletAddress,
                   type: TokenType.NFT,
                 ),
               ),

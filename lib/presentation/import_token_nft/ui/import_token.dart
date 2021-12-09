@@ -71,6 +71,8 @@ class ImportTokenScreen extends StatelessWidget {
                           ),
                           onTap: () {
                             Navigator.pop(context);
+                            bloc.listTokenFromWalletCore.clear();
+                            bloc.getTokens(bloc.addressWalletCore);
                           },
                         ),
                         Container(
