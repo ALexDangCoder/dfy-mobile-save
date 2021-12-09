@@ -57,6 +57,8 @@ class _WalletState extends State<WalletScreen>
     super.initState();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
+    cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
+    cubit.addressWallet.add(widget.wallet?.address ?? cubit.addressWalletCore);
     if (widget.index == 1) {
       cubit.getListCategory();
       cubit.getListWallets('pass');
