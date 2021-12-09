@@ -195,11 +195,11 @@ class ItemForm extends StatelessWidget {
                   suffixIcon: InkWell(
                     onTap: callback,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 8.h),
+                      padding: EdgeInsets.only(top: 10.h),
                       child: Text(
                         suffix,
                         style: textNormal(
-                          AppTheme.getInstance().fillColor(),
+                          Colors.grey,
                           16,
                         ),
                       ),
@@ -213,16 +213,16 @@ class ItemForm extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              width: 11.w,
-            ),
-            Text(
-              'BNB',
-              style: textNormal(
-                Colors.grey,
-                16,
-              ),
-            ),
+            // SizedBox(
+            //   width: 11.w,
+            // ),
+            // Text(
+            //   'BNB',
+            //   style: textNormal(
+            //     Colors.grey,
+            //     16,
+            //   ),
+            // ),
           ],
         ),
       );

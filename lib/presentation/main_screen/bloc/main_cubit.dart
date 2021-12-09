@@ -6,8 +6,11 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_state.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../../main.dart';
 
 class MainCubit extends BaseCubit<MainState> {
   MainCubit() : super(MainStateInitial());
@@ -34,6 +37,17 @@ class MainCubit extends BaseCubit<MainState> {
       return 1;
     }
   }
+
+  Future<void> getConfig() async {
+    try {
+      final data = {
+      };
+      await trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException {
+      //nothing
+    }
+  }
+
 
   @override
   Future<void> close() {
