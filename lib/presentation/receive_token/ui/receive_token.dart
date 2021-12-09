@@ -69,7 +69,7 @@ class _ReceiveState extends State<Receive> {
   @override
   Widget build(BuildContext context) {
     return BaseBottomSheet(
-      title: textTitle(widget.type),
+      title: '${S.current.receive} ${widget.symbol!}',
       child: Column(
         children: [
           SizedBox(
@@ -227,6 +227,7 @@ class _ReceiveState extends State<Receive> {
                               return SetAmountPopUp(
                                 controller: amountController,
                                 cubit: receiveCubit,
+                                symbol: widget.symbol,
                               );
                             },
                             isNonBackground: false,
@@ -355,54 +356,54 @@ class _ReceiveState extends State<Receive> {
     );
   }
 
-  String textTitle(TokenType type) {
-    if (type == TokenType.DFY) {
-      return S.current.receive_dfy;
-    } else if (type == TokenType.NFT) {
-      return S.current.receive_nft;
-    } else if (type == TokenType.QR) {
-      return S.current.scan_qr_code;
-    } else {
-      return '';
-    }
-  }
+  // String textTitle(TokenType type) {
+  //   if (type == TokenType.DFY) {
+  //     return S.current.receive_dfy;
+  //   } else if (type == TokenType.NFT) {
+  //     return S.current.receive_nft;
+  //   } else if (type == TokenType.QR) {
+  //     return S.current.scan_qr_code;
+  //   } else {
+  //     return '';
+  //   }
+  // }
 
-  Widget title(TokenType type) {
-    if (type == TokenType.DFY) {
-      return Text(
-        S.current.receive_dfy,
-        style: textNormal(
-          null,
-          20,
-        ).copyWith(
-          fontWeight: FontWeight.w700,
-          fontStyle: FontStyle.normal,
-        ),
-      );
-    } else if (type == TokenType.NFT) {
-      return Text(
-        S.current.receive_nft,
-        style: textNormal(
-          null,
-          20,
-        ).copyWith(
-          fontWeight: FontWeight.w700,
-          fontStyle: FontStyle.normal,
-        ),
-      );
-    } else if (type == TokenType.QR) {
-      return Text(
-        S.current.scan_qr_code,
-        style: textNormal(
-          null,
-          20,
-        ).copyWith(
-          fontWeight: FontWeight.w700,
-          fontStyle: FontStyle.normal,
-        ),
-      );
-    } else {
-      return Container();
-    }
-  }
+  // Widget title(TokenType type) {
+  //   if (type == TokenType.DFY) {
+  //     return Text(
+  //       S.current.receive_dfy,
+  //       style: textNormal(
+  //         null,
+  //         20,
+  //       ).copyWith(
+  //         fontWeight: FontWeight.w700,
+  //         fontStyle: FontStyle.normal,
+  //       ),
+  //     );
+  //   } else if (type == TokenType.NFT) {
+  //     return Text(
+  //       S.current.receive_nft,
+  //       style: textNormal(
+  //         null,
+  //         20,
+  //       ).copyWith(
+  //         fontWeight: FontWeight.w700,
+  //         fontStyle: FontStyle.normal,
+  //       ),
+  //     );
+  //   } else if (type == TokenType.QR) {
+  //     return Text(
+  //       S.current.scan_qr_code,
+  //       style: textNormal(
+  //         null,
+  //         20,
+  //       ).copyWith(
+  //         fontWeight: FontWeight.w700,
+  //         fontStyle: FontStyle.normal,
+  //       ),
+  //     );
+  //   } else {
+  //     return Container();
+  //   }
+  // }
 }

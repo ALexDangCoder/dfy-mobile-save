@@ -378,6 +378,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getBalanceOFToken(List<ModelToken> list) async {
     for (int i = 0; i < list.length; i++) {
       if(list[i].nameShortToken != 'BNB') {
+        print(list[i].nameShortToken);
         list[i].balanceToken = await client.getBalanceOfToken(
           ofAddress: addressWalletCore,
           tokenAddress: list[i].tokenAddress,
@@ -387,6 +388,10 @@ class WalletCubit extends BaseCubit<WalletState> {
         list[i].balanceToken = await client.getBalanceOfBnb(
           ofAddress: addressWalletCore,
         );
+        print(list[i].nameShortToken);
+        print(client.getBalanceOfBnb(
+          ofAddress: addressWalletCore,
+        ));
       }
     }
   }
@@ -450,9 +455,10 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         print('>>>>>' + listTokenFromWalletCore.length.toString());
         print(checkShow.length);
-        //await getBalanceOFToken(listTokenFromWalletCore);
-        getListTokenModel.add(checkShow);
+        await getBalanceOFToken(listTokenFromWalletCore);
+        await getExchangeRate(listTokenFromWalletCore, getListModelToken);
         totalBalance.add(total(listTokenFromWalletCore));
+        getListTokenModel.add(checkShow);
         listTokenStream.add(listTokenFromWalletCore);
         break;
 
