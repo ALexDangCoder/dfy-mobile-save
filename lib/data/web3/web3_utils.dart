@@ -22,11 +22,11 @@ class Web3Utils {
 
   Future<bool> importNFT({
     required String contract,
-    required int id,
+    int? id,
   }) async {
     final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
     try {
-      await nft.tokenURI(BigInt.from(id));
+      await nft.tokenURI(BigInt.from(id ?? 0));
       return true;
     } catch (e) {
       return false;
@@ -65,7 +65,7 @@ class Web3Utils {
             EthereumAddress.fromHex(address), BigInt.from(i));
         final uri = await nft.tokenURI(nftId);
         final nftParam = {
-          'id': nftId,
+          'id': nftId.toInt(),
           'contract': contract,
           'uri': uri,
         };
