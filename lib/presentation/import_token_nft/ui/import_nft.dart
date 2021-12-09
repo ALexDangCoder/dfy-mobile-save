@@ -140,25 +140,6 @@ class _BodyState extends State<_Body> {
                       onTap: () async {
                         widget.bloc.checkAddressNullNFT();
                         if (widget.bloc.nftEnterID.value.isNotEmpty) {
-                          if (widget.bloc.isNFT.value) {
-                            await widget.bloc.importNft(
-                              walletAddress: widget.addressWallet,
-                              nftAddress: widget.bloc.tokenAddressTextNft.value,
-                              nftID: int.parse(widget.bloc.nftEnterID.value),
-                              nftName: widget.bloc.nftName,
-                              iconNFT: widget.bloc.iconNFT,
-                              collectionAddress: '',
-                            );
-
-                            widget.bloc.isImportNft.listen(
-                              (value) async {
-                                if (value &&
-                                    await Web3Utils().importNFT(
-                                      contract:
-                                          widget.bloc.tokenAddressTextNft.value,
-                                      id: int.parse(
-                                          widget.bloc.nftEnterID.value),
-                                    )) {
                                   await widget.bloc.emitJsonNftToWalletCore(
                                     contract:
                                         '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
@@ -168,21 +149,51 @@ class _BodyState extends State<_Body> {
                                     address:
                                         '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
                                   );
-                                }
-                              },
-                            );
-                            widget.bloc.isImportNftFail.listen(
-                              (value) {
-                                if (!value) {
-                                  _showDialog(
-                                    text: S.current.please_try_again,
-                                    alert: S.current.you_are_not,
-                                  );
-                                  widget.bloc.isImportNftFail.close();
-                                }
-                              },
-                            );
-                          }
+                          // if (widget.bloc.isNFT.value) {
+                          //   await widget.bloc.importNft(
+                          //     walletAddress: widget.addressWallet,
+                          //     nftAddress: widget.bloc.tokenAddressTextNft.value,
+                          //     nftID: int.parse(widget.bloc.nftEnterID.value),
+                          //     nftName: widget.bloc.nftName,
+                          //     iconNFT: widget.bloc.iconNFT,
+                          //     collectionAddress: '',
+                          //   );
+                          //
+                          //   widget.bloc.isImportNft.listen(
+                          //     (value) async {
+                          //       if (value
+                          //           &&
+                          //           await Web3Utils().importNFT(
+                          //             contract:
+                          //                 widget.bloc.tokenAddressTextNft.value,
+                          //             id: int.parse(
+                          //                 widget.bloc.nftEnterID.value),
+                          //           )
+                          //       ) {
+                          //         await widget.bloc.emitJsonNftToWalletCore(
+                          //           contract:
+                          //               '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
+                          //           id: int.parse(
+                          //             widget.bloc.nftEnterID.value,
+                          //           ),
+                          //           address:
+                          //               '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+                          //         );
+                          //       }
+                          //     },
+                          //   );
+                          //   widget.bloc.isImportNftFail.listen(
+                          //     (value) {
+                          //       if (!value) {
+                          //         _showDialog(
+                          //           text: S.current.please_try_again,
+                          //           alert: S.current.you_are_not,
+                          //         );
+                          //         widget.bloc.isImportNftFail.close();
+                          //       }
+                          //     },
+                          //   );
+                          // }
                         } else {
                           // await widget.bloc.importAllNFT(
                           //   walletAddress:
