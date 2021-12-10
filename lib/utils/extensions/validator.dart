@@ -6,7 +6,7 @@ class Validator {
       return true;
     }
   }
-
+  //validate pw
   static bool validateStructure(String value){
     const String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.!@#\$&*~]).{8,}$';
     final RegExp regExp = RegExp(pattern);

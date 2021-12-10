@@ -11,16 +11,17 @@ Container formSetupPassWord({
   String? oldPassWordFetch,
   required ChangePasswordCubit cubit,
   required typeForm type,
+  required String newPW,
 }) {
   if (type == typeForm.OLD) {
     int index = 0;
     return Container(
       height: 64.h,
       width: 343.w,
-      padding: EdgeInsets.only(
-        top: 12.h,
-        bottom: 12.h,
-      ),
+      // padding: EdgeInsets.only(
+      //   top: 12.h,
+      //   bottom: 12.h,
+      // ),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(20),
@@ -30,24 +31,27 @@ Container formSetupPassWord({
       child: StreamBuilder<bool>(
         stream: cubit.showOldStream,
         builder: (context, snapshot) {
-          return TextFormField(
-            onChanged: (value) {
-              cubit.checkHaveValueOldPW(value);
-            },
-            obscureText: snapshot.data ?? true,
-            style: textNormal(
-              Colors.white,
-              16,
-            ),
-            cursorColor: Colors.white,
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: textNormal(
-                Colors.grey,
-                14,
+          return Center(
+            child: TextFormField(
+              onChanged: (value) {
+                cubit.checkHaveValueOldPW(value);
+                cubit.showTxtWarningOldPW(value);
+              },
+              obscureText: snapshot.data ?? true,
+              style: textNormal(
+                Colors.white,
+                16,
               ),
-              suffixIcon: InkWell(
+              textAlignVertical: TextAlignVertical.center,
+              cursorColor: Colors.white,
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: textNormal(
+                  Colors.grey,
+                  14,
+                ),
+                suffixIcon: InkWell(
                   onTap: () {
                     if (index == 0) {
                       index = 1;
@@ -65,12 +69,14 @@ Container formSetupPassWord({
                       : const ImageIcon(
                           AssetImage(ImageAssets.ic_hide),
                           color: Colors.grey,
-                        ),),
-              prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_lock),
-                color: Colors.white,
+                        ),
+                ),
+                prefixIcon: const ImageIcon(
+                  AssetImage(ImageAssets.ic_lock),
+                  color: Colors.white,
+                ),
+                border: InputBorder.none,
               ),
-              border: InputBorder.none,
             ),
           );
         },
@@ -81,10 +87,6 @@ Container formSetupPassWord({
     return Container(
       height: 64.h,
       width: 343.w,
-      padding: EdgeInsets.only(
-        top: 12.h,
-        bottom: 12.h,
-      ),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(20),
@@ -94,24 +96,27 @@ Container formSetupPassWord({
       child: StreamBuilder<bool>(
         stream: cubit.showNewPWStream,
         builder: (context, snapshot) {
-          return TextFormField(
-            onChanged: (value) {
-              cubit.checkHaveValueNewPW(value);
-            },
-            obscureText: snapshot.data ?? true,
-            style: textNormal(
-              Colors.white,
-              16,
-            ),
-            cursorColor: Colors.white,
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: textNormal(
-                Colors.grey,
-                14,
+          return Center(
+            child: TextFormField(
+              onChanged: (value) {
+                cubit.checkHaveValueNewPW(value);
+                cubit.showTxtWarningNewPW(value);
+              },
+              obscureText: snapshot.data ?? true,
+              style: textNormal(
+                Colors.white,
+                16,
               ),
-              suffixIcon: InkWell(
+              textAlignVertical: TextAlignVertical.center,
+              cursorColor: Colors.white,
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: textNormal(
+                  Colors.grey,
+                  14,
+                ),
+                suffixIcon: InkWell(
                   onTap: () {
                     if (index == 0) {
                       index = 1;
@@ -123,18 +128,20 @@ Container formSetupPassWord({
                   },
                   child: snapshot.data ?? false
                       ? const ImageIcon(
-                    AssetImage(ImageAssets.ic_show),
-                    color: Colors.grey,
-                  )
+                          AssetImage(ImageAssets.ic_show),
+                          color: Colors.grey,
+                        )
                       : const ImageIcon(
-                    AssetImage(ImageAssets.ic_hide),
-                    color: Colors.grey,
-                  ),),
-              prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_lock),
-                color: Colors.white,
+                          AssetImage(ImageAssets.ic_hide),
+                          color: Colors.grey,
+                        ),
+                ),
+                prefixIcon: const ImageIcon(
+                  AssetImage(ImageAssets.ic_lock),
+                  color: Colors.white,
+                ),
+                border: InputBorder.none,
               ),
-              border: InputBorder.none,
             ),
           );
         },
@@ -145,10 +152,6 @@ Container formSetupPassWord({
     return Container(
       height: 64.h,
       width: 343.w,
-      padding: EdgeInsets.only(
-        top: 12.h,
-        bottom: 12.h,
-      ),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(20),
@@ -158,24 +161,27 @@ Container formSetupPassWord({
       child: StreamBuilder<bool>(
         stream: cubit.showCfPWStream,
         builder: (context, snapshot) {
-          return TextFormField(
-            onChanged: (value) {
-              cubit.checkHaveValueConfirmPW(value);
-            },
-            obscureText: snapshot.data ?? true,
-            style: textNormal(
-              Colors.white,
-              16,
-            ),
-            cursorColor: Colors.white,
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: textNormal(
-                Colors.grey,
-                14,
+          return Center(
+            child: TextFormField(
+              onChanged: (value) {
+                cubit.checkHaveValueConfirmPW(value);
+                cubit.showTxtWarningConfirmPW(value, newPassword: newPW);
+              },
+              obscureText: snapshot.data ?? true,
+              style: textNormal(
+                Colors.white,
+                16,
               ),
-              suffixIcon: InkWell(
+              textAlignVertical: TextAlignVertical.center,
+              cursorColor: Colors.white,
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: textNormal(
+                  Colors.grey,
+                  14,
+                ),
+                suffixIcon: InkWell(
                   onTap: () {
                     if (index == 0) {
                       index = 1;
@@ -187,18 +193,20 @@ Container formSetupPassWord({
                   },
                   child: snapshot.data ?? false
                       ? const ImageIcon(
-                    AssetImage(ImageAssets.ic_show),
-                    color: Colors.grey,
-                  )
+                          AssetImage(ImageAssets.ic_show),
+                          color: Colors.grey,
+                        )
                       : const ImageIcon(
-                    AssetImage(ImageAssets.ic_hide),
-                    color: Colors.grey,
-                  ),),
-              prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_lock),
-                color: Colors.white,
+                          AssetImage(ImageAssets.ic_hide),
+                          color: Colors.grey,
+                        ),
+                ),
+                prefixIcon: const ImageIcon(
+                  AssetImage(ImageAssets.ic_lock),
+                  color: Colors.white,
+                ),
+                border: InputBorder.none,
               ),
-              border: InputBorder.none,
             ),
           );
         },
