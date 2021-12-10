@@ -49,8 +49,8 @@ extension AppDelegate {
                 result(generateWallet())
         }
         if call.method == "storeWallet" {
-            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let password = arguments["password"] as? String {
-                result(storeWallet(seedPhrase: seedPhrase, walletName: walletName, password: password))
+            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] {
+                result(storeWallet(seedPhrase: seedPhrase, walletName: walletName))
             }
         }
 //        if call.method == "setConfig" {
@@ -165,7 +165,7 @@ extension AppDelegate {
         return params
     }
     
-    private func storeWallet(seedPhrase: String, walletName: String, password: String) -> [String: Any] {
+    private func storeWallet(seedPhrase: String, walletName: String) -> [String: Any] {
         var params: [String: Any] = [:]
         params["isSuccess"] = true
         chatChanel?.invokeMethod("storeWalletCallback", arguments: params)
