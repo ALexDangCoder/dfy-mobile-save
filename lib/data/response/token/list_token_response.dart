@@ -7,21 +7,15 @@ part 'list_token_response.g.dart';
 
 @JsonSerializable()
 class ListTokenResponse extends Equatable {
-  @JsonKey(name: 'error')
-  String? error;
-  @JsonKey(name: 'code')
-  int? code;
-  @JsonKey(name: 'data')
-  List<TokenResponse>? data;
-  @JsonKey(name: 'trace_id')
-  String? traceId;
+  @JsonKey(name: 'rc')
+  int? rc;
+  @JsonKey(name: 'total')
+  int? total;
+  @JsonKey(name: 'rows')
+  List<TokenResponse>? rows;
 
-  ListTokenResponse(
-    this.error,
-    this.code,
-    this.traceId,
-    this.data,
-  );
+
+  ListTokenResponse(this.rc, this.total, this.rows);
 
   factory ListTokenResponse.fromJson(Map<String, dynamic> json) =>
       _$ListTokenResponseFromJson(json);
@@ -31,5 +25,5 @@ class ListTokenResponse extends Equatable {
   @override
   List<Object?> get props => [];
 
-  List<TokenInf>? toDomain() => data?.map((e) => e.toDomain()).toList();
+  List<TokenInf>? toDomain() => rows?.map((e) => e.toDomain()).toList();
 }

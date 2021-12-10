@@ -5,13 +5,13 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FromText3 extends StatelessWidget {
+class FromTextPrivateKey extends StatelessWidget {
   final String urlPrefixIcon;
   final String title;
   final String urlSuffixIcon;
   final String titleCopy;
 
-  const FromText3({
+  const FromTextPrivateKey({
     Key? key,
     required this.urlPrefixIcon,
     required this.title,

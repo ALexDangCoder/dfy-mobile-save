@@ -3,13 +3,12 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft_succesfully.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
-import 'package:Dfy/widgets/form/form_input3.dart';
+import 'package:Dfy/widgets/form/form_input_address_nft.dart';
 import 'package:Dfy/widgets/form/form_input_number.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +98,7 @@ class _BodyState extends State<_Body> {
                     child: Column(
                       children: [
                         spaceH24,
-                        FormInput3(
+                        FormInputAddressNFT(
                           controller: controller,
                           urlIcon1: ImageAssets.ic_address,
                           hint: S.current.token_address,
