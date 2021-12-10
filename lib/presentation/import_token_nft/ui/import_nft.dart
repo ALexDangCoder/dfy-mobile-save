@@ -71,8 +71,8 @@ class _BodyState extends State<_Body> {
               },
             ),
           ).whenComplete(
-            () async {
-              await widget.bloc.getNFT(widget.bloc.addressWalletCore);
+                () async {
+              await widget.bloc.getNFT('0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37');
               widget.bloc.listNFTStream.add(widget.bloc.listNftFromWalletCore);
             },
           );
@@ -101,7 +101,7 @@ class _BodyState extends State<_Body> {
                         FormInputAddressNFT(
                           controller: controller,
                           urlIcon1: ImageAssets.ic_address,
-                          hint: S.current.token_address,
+                          hint: S.current.contract_address,
                           urlIcon2: ImageAssets.ic_qr_code,
                           bloc: widget.bloc,
                         ),
@@ -114,19 +114,19 @@ class _BodyState extends State<_Body> {
                               child: widget.bloc.isNFT.value
                                   ? null
                                   : Text(
-                                      S.current.invalid_address,
-                                      style: textNormal(
-                                        Colors.red,
-                                        14,
-                                      ),
-                                      textAlign: TextAlign.start,
-                                    ),
+                                S.current.invalid_address,
+                                style: textNormal(
+                                  Colors.red,
+                                  14,
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
                             );
                           },
                         ),
                         spaceH16,
                         FormInputNumber(
-                          urlIcon1: ImageAssets.ic_face_id,
+                          urlIcon1: ImageAssets.ic_id,
                           bloc: widget.bloc,
                           hint: S.current.enter_id,
                         ),
@@ -148,19 +148,19 @@ class _BodyState extends State<_Body> {
                         if (widget.bloc.nftEnterID.value.isNotEmpty &&
                             await Web3Utils().importNFT(
                               contract:
-                                  '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
+                              '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
                               id: int.parse(
                                 widget.bloc.nftEnterID.value,
                               ),
                             )) {
                           await widget.bloc.emitJsonNftToWalletCore(
                             contract:
-                                '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
+                            '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
                             id: int.parse(
                               widget.bloc.nftEnterID.value,
                             ),
                             address:
-                                '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+                            '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
                           );
 
                           // if (widget.bloc.isNFT.value) {
@@ -216,12 +216,12 @@ class _BodyState extends State<_Body> {
                           // );
                           if (await Web3Utils().importNFT(
                               contract:
-                                  widget.bloc.tokenAddressTextNft.value)) {
+                              widget.bloc.tokenAddressTextNft.value)) {
                             await widget.bloc.emitJsonNftToWalletCore(
                               contract:
-                                  '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
+                              '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
                               address:
-                                  '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+                              '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
                             );
                           }
                         }
@@ -229,7 +229,7 @@ class _BodyState extends State<_Body> {
                       child: ButtonGold(
                         title: S.current.import,
                         isEnable:
-                            widget.bloc.tokenAddressTextNft.value.isNotEmpty,
+                        widget.bloc.tokenAddressTextNft.value.isNotEmpty,
                       ),
                     );
                   },
