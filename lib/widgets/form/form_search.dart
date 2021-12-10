@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FormSearch extends StatefulWidget {
-  final String urlIcon1;
+  final String urlIcon;
   final WalletCubit bloc;
   final String hint;
 
   const FormSearch({
     Key? key,
-    required this.urlIcon1,
+    required this.urlIcon,
     required this.bloc,
     required this.hint,
   }) : super(key: key);
@@ -29,7 +29,7 @@ class _FormSearchState extends State<FormSearch> {
     return Container(
       width: 336.w,
       height: 46.h,
-      margin: EdgeInsets.symmetric(horizontal: 19.w),
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
       padding: EdgeInsets.only(right: 15.w, left: 15.w),
       decoration: BoxDecoration(
         color: const Color(0xff32324c),
@@ -38,36 +38,33 @@ class _FormSearchState extends State<FormSearch> {
       child: Row(
         children: [
           Image.asset(
-            widget.urlIcon1,
+            widget.urlIcon,
           ),
           SizedBox(
             width: 11.5.w,
           ),
           Expanded(
-            child: Container(
-              margin: EdgeInsets.only(right: 5.w),
-              child: TextFormField(
-                controller: textSearch,
-                maxLength: 20,
-                onChanged: (value) {
-                  widget.bloc.textSearch.sink.add(value);
-                  widget.bloc.search();
-                },
-                cursorColor: AppTheme.getInstance().whiteColor(),
-                style: textNormal(
-                  AppTheme.getInstance().whiteColor(),
+            child: TextFormField(
+              controller: textSearch,
+              maxLength: 20,
+              onChanged: (value) {
+                widget.bloc.textSearch.sink.add(value);
+                widget.bloc.search();
+              },
+              cursorColor: AppTheme.getInstance().whiteColor(),
+              style: textNormal(
+                AppTheme.getInstance().whiteColor(),
+                16.sp,
+              ),
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(bottom: 4.h),
+                counterText: '',
+                hintText: widget.hint,
+                hintStyle: textNormal(
+                  Colors.white.withOpacity(0.5),
                   16.sp,
                 ),
-                decoration: InputDecoration(
-                  counterText: '',
-                  hintText: widget.hint,
-                  hintStyle: textNormal(
-                    Colors.white.withOpacity(0.5),
-                    16.sp,
-                  ),
-                  border: InputBorder.none,
-                ),
-                // onFieldSubmitted: ,
+                border: InputBorder.none,
               ),
             ),
           ),
@@ -79,7 +76,6 @@ class _FormSearchState extends State<FormSearch> {
                   widget.bloc.textSearch.sink.add('');
                   textSearch.text = '';
                   widget.bloc.search();
-                  //widget.bloc.sortList(widget.bloc.getListTokenModel.value);
                 },
                 child: snapshot.data?.isNotEmpty ?? false
                     ? Image.asset(

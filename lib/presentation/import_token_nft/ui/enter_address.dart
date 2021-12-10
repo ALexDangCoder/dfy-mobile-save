@@ -4,7 +4,7 @@ import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_input.dart';
-import 'package:Dfy/widgets/form/form_text2.dart';
+import 'package:Dfy/widgets/form/form_text_import_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -94,7 +94,7 @@ class _EnterAddressState extends State<EnterAddress> {
                         initialData: S.current.token_symbol,
                         stream: widget.bloc.tokenSymbol,
                         builder: (context, snapshot) {
-                          return FromText2(
+                          return FromTextImportToken(
                             title: snapshot.data ?? 'null',
                             urlPrefixIcon: ImageAssets.ic_token,
                             urlSuffixIcon: '',
@@ -106,7 +106,7 @@ class _EnterAddressState extends State<EnterAddress> {
                         initialData: S.current.token_decimal,
                         stream: widget.bloc.tokenDecimal,
                         builder: (context, snapshot) {
-                          return FromText2(
+                          return FromTextImportToken(
                             title: snapshot.data ?? 'null',
                             urlPrefixIcon: ImageAssets.ic_group,
                             urlSuffixIcon: '',
@@ -127,9 +127,18 @@ class _EnterAddressState extends State<EnterAddress> {
                   builder: (context, snapshot) {
                     final bool enable = snapshot.data ?? false;
                     return InkWell(
-                      onTap: () {
+                      onTap: () async {
                         if (enable) {
-                          //todo BE exchangeRate
+                          await widget.bloc
+                              .getListPrice(widget.bloc.tokenSymbol.value);
+                          print(widget.bloc.addressWallet.value);
+                          print(widget.bloc.tokenAddressText.value);
+                          print(widget.bloc.tokenSymbol.value);
+                          print(widget.bloc.tokenDecimal.value);
+                          print(widget.bloc.iconToken);
+                          print(widget.bloc.tokenFullName);
+                          print(widget.bloc.price);
+                          print('vao');
                           widget.bloc.importToken(
                             walletAddress: widget.bloc.addressWallet.value,
                             tokenAddress: widget.bloc.tokenAddressText.value,
@@ -137,8 +146,9 @@ class _EnterAddressState extends State<EnterAddress> {
                             decimal: int.parse(widget.bloc.tokenDecimal.value),
                             iconToken: widget.bloc.iconToken,
                             tokenFullName: widget.bloc.tokenFullName,
-                            exchangeRate: 0.0,
+                            exchangeRate: widget.bloc.price!,
                           );
+                          print('done');
                         }
                         widget.bloc.checkAddressNull();
                       },

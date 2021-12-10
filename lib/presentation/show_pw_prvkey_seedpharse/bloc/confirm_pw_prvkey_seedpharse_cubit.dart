@@ -91,7 +91,6 @@ class ConfirmPwPrvKeySeedpharseCubit
   }
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    print('asdfsadf');
     switch (methodCall.method) {
       case 'exportWalletCallBack':
         final String walletAddress =
@@ -118,9 +117,11 @@ class ConfirmPwPrvKeySeedpharseCubit
     }
   }
 
-  Future<void> getListWallets() async {
+  Future<void> getListWallets({required String password}) async {
     try {
-      final data = {};
+      final data = {
+        'password': password,
+      };
       await trustWalletChannel.invokeMethod('getListWallets', data);
     } on PlatformException {}
   }
