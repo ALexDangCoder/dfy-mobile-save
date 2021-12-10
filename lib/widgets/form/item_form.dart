@@ -126,6 +126,7 @@ class ItemForm extends StatelessWidget {
           },
           cursorColor: Colors.white,
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(right: 3.w),
             hintText: hint,
             hintStyle: textNormal(
               Colors.grey,
