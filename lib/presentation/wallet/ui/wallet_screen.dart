@@ -60,6 +60,7 @@ class _WalletState extends State<WalletScreen>
     super.initState();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
+    cubit.getListCategory();
     if (widget.index == 1) {
       if (widget.checkWallet == false) {
         cubit.getListCategory();
