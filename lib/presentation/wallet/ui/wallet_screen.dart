@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/wallet.dart';
@@ -99,10 +100,8 @@ class _WalletState extends State<WalletScreen>
           offset: 112.h,
           onRefresh: () async {
             await cubit.getBalanceOFToken(cubit.listTokenFromWalletCore);
-            await cubit.getExchangeRate(
-              cubit.listTokenFromWalletCore,
-              cubit.getListModelToken,
-            );
+            await cubit
+                .getExchangeRateFromServer(cubit.listTokenFromWalletCore);
             cubit.totalBalance.add(cubit.total(cubit.listTokenFromWalletCore));
             cubit.listTokenStream.add(cubit.listTokenFromWalletCore);
           },
@@ -291,39 +290,39 @@ class _WalletState extends State<WalletScreen>
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              StreamBuilder(
+                              StreamBuilder<List<CollectionNft>>(
                                 stream: cubit.listNFTStream,
                                 builder: (
                                   context,
-                                  AsyncSnapshot<List<NftModel>> snapshot,
+                                  AsyncSnapshot<List<CollectionNft>> snapshot,
                                 ) {
-                                  if (snapshot.hasData) {
-                                    return SafeArea(
-                                      child: ListView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: snapshot.data?.length,
-                                        itemBuilder: (context, index) {
-                                          return NFTItem(
-                                            walletAddress:
-                                                cubit.addressWalletCore,
-                                            index: index,
-                                            bloc: cubit,
-                                            symbolUrl:
-                                                snapshot.data![index].iconNFT,
-                                            nameNFT:
-                                                snapshot.data?[index].nftName ??
-                                                    '',
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  } else {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
+                                  if (snapshot.data?.isNotEmpty ?? true) {
+                                    return ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data?.length ?? 0,
+                                      itemBuilder: (context, index) {
+                                        return NFTItem(
+                                          walletAddress:
+                                              cubit.addressWalletCore,
+                                          index: index,
+                                          bloc: cubit,
+                                          collectionNft: snapshot.data![index],
+                                        );
+                                      },
                                     );
                                   }
+                                  return SizedBox(
+                                    height: 100.h,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 3.r,
+                                        color:
+                                            AppTheme.getInstance().whiteColor(),
+                                      ),
+                                    ),
+                                  );
                                 },
                               ),
                               ImportToken(
