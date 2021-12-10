@@ -68,7 +68,7 @@ class Web3Utils {
             EthereumAddress.fromHex(address), BigInt.from(i));
         final uri = await nft.tokenURI(nftId);
         final nftParam = {
-          'id': nftId,
+          'id': nftId.toInt(),
           'contract': contract,
           'uri': uri,
         };
