@@ -73,11 +73,26 @@ class TokenItem extends StatelessWidget {
                     top: 19.h,
                     left: 20.w,
                   ),
-                  child: Image(
-                    image: NetworkImage(modelToken.iconToken),
-                    width: 28.w,
-                    height: 28.h,
-                  ),
+                  child: modelToken.iconToken.isNotEmpty
+                      ? CircleAvatar(
+                          backgroundColor: Colors.yellow,
+                          radius: 18.r,
+                          child: Center(
+                            child: Text(
+                              modelToken.nameShortToken.substring(0, 1),
+                              style: textNormalCustom(
+                                Colors.black,
+                                20,
+                                FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Image(
+                          image: NetworkImage(modelToken.iconToken),
+                          width: 28.w,
+                          height: 28.h,
+                        ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(
