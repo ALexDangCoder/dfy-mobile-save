@@ -45,9 +45,6 @@ class FormInput extends StatelessWidget {
               height: 20.h,
             ),
           ),
-          SizedBox(
-            width: 20.5.w,
-          ),
           Expanded(
             child: TextFormField(
               maxLength: 100,
@@ -78,6 +75,7 @@ class FormInput extends StatelessWidget {
                 bloc.validateAddressFunc(value);
               },
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
                 counterText: '',
                 hintText: hint,
                 hintStyle: textNormal(

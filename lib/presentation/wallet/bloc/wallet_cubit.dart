@@ -170,7 +170,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<double> totalBalance = BehaviorSubject();
 
   List<HistoryNFT> listHistory = [];
-
+  double? price = 0.0;
   Future<void> getTransactionNFTHistory() async {
     listHistory = await client.getNFTHistory();
   }
@@ -314,6 +314,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         await _priceRepository.getListPriceToken(symbols);
     result.when(
       success: (res) {
+        price = res.first.price ?? 0.0;
         listTokenExchange = res;
       },
       error: (error) {
@@ -578,10 +579,10 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getAddressWallet() async {}
 
-  Future<void> getListWallets(String pass) async {
+  Future<void> getListWallets(String password) async {
     try {
       final data = {
-        'password': pass,
+        'password': password,
       };
       await trustWalletChannel.invokeMethod('getListWallets', data);
     } on PlatformException {

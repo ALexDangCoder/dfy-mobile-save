@@ -127,21 +127,34 @@ class _EnterAddressState extends State<EnterAddress> {
                   builder: (context, snapshot) {
                     final bool enable = snapshot.data ?? false;
                     return InkWell(
-                      onTap: () {
+                      onTap: () async {
                         if (enable) {
-                          //todo BE exchangeRate
+                          await widget.bloc
+                              .getListPrice(widget.bloc.tokenSymbol.value);
+                          print(widget.bloc.addressWallet.value);
+                          print(widget.bloc.tokenAddressText.value);
+                          print(widget.bloc.tokenSymbol.value);
+                          print(widget.bloc.tokenDecimal.value);
+                          print(widget.bloc.iconToken);
+                          print(widget.bloc.tokenFullName);
+                          print(widget.bloc.price);
+                          print('vao');
                           widget.bloc.importToken(
-                            walletAddress: widget.bloc.addressWallet.value,
-                            tokenAddress: widget.bloc.tokenAddressText.value,
+                            walletAddress:
+                            widget.bloc.addressWallet.value,
+                            tokenAddress:
+                            widget.bloc.tokenAddressText.value,
                             symbol: widget.bloc.tokenSymbol.value,
-                            decimal: int.parse(widget.bloc.tokenDecimal.value),
+                            decimal: int.parse(
+                                widget.bloc.tokenDecimal.value),
                             iconToken: widget.bloc.iconToken,
                             tokenFullName: widget.bloc.tokenFullName,
-                            exchangeRate: 0.0,
+                            exchangeRate: widget.bloc.price!,
                           );
+                          print('done');
                         }
                         widget.bloc.checkAddressNull();
-                      },
+                        },
                       child: ButtonGold(
                         title: S.current.import,
                         isEnable: enable,

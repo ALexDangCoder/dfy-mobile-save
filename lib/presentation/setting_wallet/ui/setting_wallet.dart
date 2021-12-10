@@ -35,23 +35,23 @@ class SettingWallet extends StatefulWidget {
 }
 
 class _SettingWalletState extends State<SettingWallet> {
-  late final ConfirmPwPrvKeySeedpharseCubit cubit;
+  final ConfirmPwPrvKeySeedpharseCubit cubit = ConfirmPwPrvKeySeedpharseCubit();
 
   @override
   void initState() {
     super.initState();
-    cubit = ConfirmPwPrvKeySeedpharseCubit();
+
     trustWalletChannel.setMethodCallHandler(
       cubit.nativeMethodCallBackTrustWallet,
     );
-    cubit.getListWallets();
+    cubit.getListWallets(password: 'pass');
     cubit.getListPrivateKeyAndSeedphrase();
   }
 
   @override
   Widget build(BuildContext context) {
-    trustWalletChannel
-        .setMethodCallHandler(widget.cubitSetting.nativeMethodCallBackTrustWallet);
+    trustWalletChannel.setMethodCallHandler(
+        widget.cubitSetting.nativeMethodCallBackTrustWallet);
     return BaseBottomSheet(
       title: S.current.setting,
       text: S.current.lock,
