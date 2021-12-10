@@ -144,7 +144,7 @@ class RemoveNft extends StatelessWidget {
                                           cubit.listNftFromWalletCore
                                               .removeAt(index);
                                           cubit.listNFTStream.sink
-                                              .add(cubit.listNftFromWalletCore);
+                                              .add(cubit.listNFTStream.value);
                                           Navigator.pop(context);
                                         },
                                         child: SizedBox(
