@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -312,15 +313,21 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getListPrice(String symbols) async {
     final Result<List<TokenPrice>> result =
         await _priceRepository.getListPriceToken(symbols);
-    result.when(
-      success: (res) {
-        price = res.first.price ?? 0.0;
-        listTokenExchange = res;
-      },
-      error: (error) {
-        updateStateError();
-      },
-    );
+    print('sadfasdfasdfasd');
+    if (result.obs.value==null) {
+      print('nullllllllllllllllllllllllllllllllllllllllllllll');
+    } else {
+      print('111111111nullllllllllllllllllllllllllllllllllllllllllllll');
+      result.when(
+        success: (res) {
+          print(res.first.price ?? 0.0);
+        },
+        error: (error) {
+          log('eror');
+          updateStateError();
+        },
+      );
+    }
   }
 
   Future<void> getListCategory() async {
@@ -473,7 +480,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'changeNameWalletCallBack':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
-        print('-------asdf-------------------------------------------------------------$isSuccess');
+        print(
+            '-------asdf-------------------------------------------------------------$isSuccess');
         break;
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
