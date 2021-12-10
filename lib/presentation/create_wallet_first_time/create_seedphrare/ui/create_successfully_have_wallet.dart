@@ -99,9 +99,15 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       if (type == KeyType.CREATE_HAVE_WALLET) {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainScreen(
+                              index: 1,
+                              wallet: wallet,
+                            ),
+                          ),
+                        );
                       } else {
                         Navigator.push(
                           context,
