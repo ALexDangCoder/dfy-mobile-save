@@ -126,6 +126,7 @@ class ItemForm extends StatelessWidget {
           },
           cursorColor: Colors.white,
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(right: 3.w),
             hintText: hint,
             hintStyle: textNormal(
               Colors.grey,
@@ -190,7 +191,7 @@ class ItemForm extends StatelessWidget {
                   suffixIcon: InkWell(
                     onTap: callback,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 10.h),
+                       padding: EdgeInsets.only(top: 10.h),
                       child: Text(
                         suffix,
                         style: textNormal(

@@ -30,7 +30,12 @@ class BoxListPassWordPhrase extends StatelessWidget {
             Radius.circular(20.r),
           ),
         ),
-        padding: EdgeInsets.only(top: 16.h, left: 13.w, right: 13.w),
+        padding: EdgeInsets.only(
+          top: 16.h,
+          left: 13.w,
+          right: 13.w,
+          bottom: 10.h,
+        ),
         child: Wrap(
           spacing: 5.w,
           runSpacing: 12.h,

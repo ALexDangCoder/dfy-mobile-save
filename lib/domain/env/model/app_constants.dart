@@ -12,14 +12,11 @@ class AppConstants {
 
   @JsonKey(name: 'base_image_url')
   String baseImageUrl;
-  @JsonKey(name: 'base_url_test')
-  String baseUrlTest;
 
   AppConstants(
     this.type,
     this.baseUrl,
     this.baseImageUrl,
-    this.baseUrlTest,
   );
 
   factory AppConstants.fromJson(Map<String, dynamic> json) =>

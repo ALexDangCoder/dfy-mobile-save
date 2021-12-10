@@ -4,7 +4,6 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/collection_nft_info.dart';
-import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -60,8 +59,9 @@ class _WalletState extends State<WalletScreen>
     super.initState();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
+    cubit.getListCategory();
     if (widget.index == 1) {
-      if (widget.checkWallet == false) {
+      if (widget.checkWallet == true) {
         cubit.getListCategory();
       }
       cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
