@@ -35,13 +35,12 @@ class SettingWallet extends StatefulWidget {
 }
 
 class _SettingWalletState extends State<SettingWallet> {
-  late final ConfirmPwPrvKeySeedpharseCubit cubit;
+  final ConfirmPwPrvKeySeedpharseCubit cubit = ConfirmPwPrvKeySeedpharseCubit();
 
   @override
   void initState() {
     super.initState();
-    print('ádfasdfsadfsdafsdafdsfsa');
-    cubit = ConfirmPwPrvKeySeedpharseCubit();
+
     trustWalletChannel.setMethodCallHandler(
       cubit.nativeMethodCallBackTrustWallet,
     );

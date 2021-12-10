@@ -91,7 +91,6 @@ class ConfirmPwPrvKeySeedpharseCubit
   }
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    print('zoooooooooooooooooooooooooooooooooooooooooooooo');
     switch (methodCall.method) {
       case 'exportWalletCallBack':
         final String walletAddress =
