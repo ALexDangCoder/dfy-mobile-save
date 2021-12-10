@@ -4,7 +4,7 @@ import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_input.dart';
-import 'package:Dfy/widgets/form/form_text2.dart';
+import 'package:Dfy/widgets/form/form_text_import_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -94,7 +94,7 @@ class _EnterAddressState extends State<EnterAddress> {
                         initialData: S.current.token_symbol,
                         stream: widget.bloc.tokenSymbol,
                         builder: (context, snapshot) {
-                          return FromText2(
+                          return FromTextImportToken(
                             title: snapshot.data ?? 'null',
                             urlPrefixIcon: ImageAssets.ic_token,
                             urlSuffixIcon: '',
@@ -106,7 +106,7 @@ class _EnterAddressState extends State<EnterAddress> {
                         initialData: S.current.token_decimal,
                         stream: widget.bloc.tokenDecimal,
                         builder: (context, snapshot) {
-                          return FromText2(
+                          return FromTextImportToken(
                             title: snapshot.data ?? 'null',
                             urlPrefixIcon: ImageAssets.ic_group,
                             urlSuffixIcon: '',

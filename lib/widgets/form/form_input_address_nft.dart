@@ -5,14 +5,14 @@ import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FormInput3 extends StatelessWidget {
+class FormInputAddressNFT extends StatelessWidget {
   final String urlIcon1;
   final String urlIcon2;
   final WalletCubit bloc;
   final String hint;
   final TextEditingController controller;
 
-  const FormInput3({
+  const FormInputAddressNFT({
     Key? key,
     required this.urlIcon1,
     required this.urlIcon2,

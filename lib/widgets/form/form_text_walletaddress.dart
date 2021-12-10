@@ -3,13 +3,13 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FromText4 extends StatelessWidget {
+class FromTextWalletAddress extends StatelessWidget {
   final String urlPrefixIcon;
   final String title;
   final String urlSuffixIcon;
   final String titleCopy;
 
-  const FromText4({
+  const FromTextWalletAddress({
     Key? key,
     required this.urlPrefixIcon,
     required this.title,

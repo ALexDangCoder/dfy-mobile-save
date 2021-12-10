@@ -8,7 +8,7 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/c
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/checkbox/checkbox_custom.dart';
+import 'package:Dfy/widgets/checkbox/checkbox_create_seedphrase.dart';
 import 'package:Dfy/widgets/form/form_text.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrasse_copy.dart';
 import 'package:flutter/cupertino.dart';
@@ -285,7 +285,7 @@ class _BodyState extends State<_Body> {
                               SizedBox(
                                 height: 17.h,
                               ),
-                              CheckBoxCustom(
+                              CheckBoxCreateSeedPhrase(
                                 title: S.current.i_understand,
                                 bLocCreateSeedPhrase:
                                     widget.blocCreateSeedPhrase,

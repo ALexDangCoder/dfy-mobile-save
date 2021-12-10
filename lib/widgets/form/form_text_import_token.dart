@@ -4,12 +4,12 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FromText2 extends StatelessWidget {
+class FromTextImportToken extends StatelessWidget {
   final String urlPrefixIcon;
   final String title;
   final String urlSuffixIcon;
 
-  const FromText2({
+  const FromTextImportToken({
     Key? key,
     required this.urlPrefixIcon,
     required this.title,

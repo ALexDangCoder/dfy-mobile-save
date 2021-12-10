@@ -6,11 +6,11 @@ import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BoxListPassWordPhrase extends StatelessWidget {
+class BoxListPassWordPhraseConfirm extends StatelessWidget {
   final List<String> listTitle;
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
-  const BoxListPassWordPhrase({
+  const BoxListPassWordPhraseConfirm({
     Key? key,
     required this.listTitle,
     required this.bLocCreateSeedPhrase,
@@ -34,7 +34,7 @@ class BoxListPassWordPhrase extends StatelessWidget {
           top: 16.h,
           left: 13.w,
           right: 13.w,
-          bottom: 10.h,
+          bottom: 16.h,
         ),
         child: Wrap(
           spacing: 5.w,
