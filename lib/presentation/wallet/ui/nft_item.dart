@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
@@ -23,14 +24,12 @@ final NftInfo nft = NftInfo(
 class NFTItem extends StatefulWidget {
   const NFTItem({
     Key? key,
-    required this.symbolUrl,
-    required this.nameNFT,
     required this.bloc,
     required this.index,
     required this.walletAddress,
+    required this.collectionNft,
   }) : super(key: key);
-  final String? symbolUrl;
-  final String nameNFT;
+  final CollectionNft collectionNft;
   final WalletCubit bloc;
   final int index;
   final String walletAddress;
@@ -94,18 +93,25 @@ class _NFTItemState extends State<NFTItem> {
                 height: 67.h,
                 child: Row(
                   children: [
-                    Image(
-                      width: 28.w,
-                      height: 28.h,
-                      image: const AssetImage(
-                        ImageAssets.ic_symbol,
+                    CircleAvatar(
+                      backgroundColor: Colors.yellow,
+                      radius: 18.r,
+                      child: Center(
+                        child: Text(
+                          widget.collectionNft.symbol!.substring(0, 1),
+                          style: textNormalCustom(
+                            Colors.black,
+                            20,
+                            FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(
                       width: 8.w,
                     ),
                     Text(
-                      widget.nameNFT,
+                      widget.collectionNft.name!,
                       style: textNormalCustom(
                         Colors.white,
                         20,
@@ -134,9 +140,9 @@ class _NFTItemState extends State<NFTItem> {
                       physics: const ClampingScrollPhysics(),
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: 6,
+                      itemCount: widget.collectionNft.listNft!.length,
                       itemBuilder: (BuildContext context, int index) => CardNFT(
-                        objNFT: nft,
+                        objNFT:  nft,
                         walletAddress: widget.walletAddress,
                       ),
                     ),

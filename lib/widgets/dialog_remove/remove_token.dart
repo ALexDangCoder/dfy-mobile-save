@@ -158,9 +158,12 @@ class RemoveToken extends StatelessWidget {
                                             );
                                             cubit.listTokenFromWalletCore
                                                 .removeAt(index);
+                                            cubit.checkShow.removeAt(index);
                                             cubit.listTokenStream.sink.add(
                                               cubit.listTokenFromWalletCore,
                                             );
+                                            cubit.getListTokenModel
+                                                .add(cubit.checkShow);
                                             cubit.totalBalance.add(
                                               cubit.total(
                                                 cubit.listTokenFromWalletCore,

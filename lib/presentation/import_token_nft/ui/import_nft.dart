@@ -73,7 +73,7 @@ class _BodyState extends State<_Body> {
             ),
           ).whenComplete(
             () async {
-              await widget.bloc.getNFT('0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37');
+              await widget.bloc.getNFT(widget.bloc.addressWalletCore);
               widget.bloc.listNFTStream.add(widget.bloc.listNftFromWalletCore);
             },
           );

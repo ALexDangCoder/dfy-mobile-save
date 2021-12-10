@@ -63,7 +63,8 @@ class _EnterAddressState extends State<EnterAddress> {
               },
             ),
           ).whenComplete(() async {
-            //widget.bloc.listTokenFromWalletCore.clear();
+            widget.bloc.listTokenFromWalletCore.clear();
+            widget.bloc.checkShow.clear();
             await widget.bloc.getTokens(widget.addressWallet);
             widget.bloc.listTokenStream
                 .add(widget.bloc.listTokenFromWalletCore);
