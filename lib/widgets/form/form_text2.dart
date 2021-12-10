@@ -40,7 +40,7 @@ class FromText2 extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 20.5.w,
+                width: 18.w,
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2,

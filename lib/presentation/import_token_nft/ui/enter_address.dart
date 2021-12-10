@@ -140,13 +140,10 @@ class _EnterAddressState extends State<EnterAddress> {
                           print(widget.bloc.price);
                           print('vao');
                           widget.bloc.importToken(
-                            walletAddress:
-                            widget.bloc.addressWallet.value,
-                            tokenAddress:
-                            widget.bloc.tokenAddressText.value,
+                            walletAddress: widget.bloc.addressWallet.value,
+                            tokenAddress: widget.bloc.tokenAddressText.value,
                             symbol: widget.bloc.tokenSymbol.value,
-                            decimal: int.parse(
-                                widget.bloc.tokenDecimal.value),
+                            decimal: int.parse(widget.bloc.tokenDecimal.value),
                             iconToken: widget.bloc.iconToken,
                             tokenFullName: widget.bloc.tokenFullName,
                             exchangeRate: widget.bloc.price!,
@@ -154,7 +151,7 @@ class _EnterAddressState extends State<EnterAddress> {
                           print('done');
                         }
                         widget.bloc.checkAddressNull();
-                        },
+                      },
                       child: ButtonGold(
                         title: S.current.import,
                         isEnable: enable,
