@@ -3,13 +3,12 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft_succesfully.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
-import 'package:Dfy/widgets/form/form_input3.dart';
+import 'package:Dfy/widgets/form/form_input_address_nft.dart';
 import 'package:Dfy/widgets/form/form_input_number.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,8 +54,8 @@ class _BodyState extends State<_Body> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    trustWalletChannel
-        .setMethodCallHandler(widget.bloc.nativeMethodCallBackTrustWallet);
+    // trustWalletChannel
+    //     .setMethodCallHandler(widget.bloc.nativeMethodCallBackTrustWallet);
   }
 
   @override
@@ -71,7 +70,14 @@ class _BodyState extends State<_Body> {
                 return const NFTSuccessfully();
               },
             ),
-          ).whenComplete(() => null);
+          ).whenComplete(
+            () async {
+              await widget.bloc.getNFT(widget.bloc.addressWalletCore);
+              widget.bloc.listNFTStream.add(widget.bloc.listNftFromWalletCore);
+            },
+          );
+        } else {
+          _showDialog(alert: 'Import failed');
         }
       },
       bloc: widget.bloc,
@@ -92,7 +98,7 @@ class _BodyState extends State<_Body> {
                     child: Column(
                       children: [
                         spaceH24,
-                        FormInput3(
+                        FormInputAddressNFT(
                           controller: controller,
                           urlIcon1: ImageAssets.ic_address,
                           hint: S.current.token_address,
@@ -139,16 +145,24 @@ class _BodyState extends State<_Body> {
                     return InkWell(
                       onTap: () async {
                         widget.bloc.checkAddressNullNFT();
-                        if (widget.bloc.nftEnterID.value.isNotEmpty) {
-                                  await widget.bloc.emitJsonNftToWalletCore(
-                                    contract:
-                                        '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
-                                    id: int.parse(
-                                      widget.bloc.nftEnterID.value,
-                                    ),
-                                    address:
-                                        '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
-                                  );
+                        if (widget.bloc.nftEnterID.value.isNotEmpty &&
+                            await Web3Utils().importNFT(
+                              contract:
+                                  '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
+                              id: int.parse(
+                                widget.bloc.nftEnterID.value,
+                              ),
+                            )) {
+                          await widget.bloc.emitJsonNftToWalletCore(
+                            contract:
+                                '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
+                            id: int.parse(
+                              widget.bloc.nftEnterID.value,
+                            ),
+                            address:
+                                '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+                          );
+
                           // if (widget.bloc.isNFT.value) {
                           //   await widget.bloc.importNft(
                           //     walletAddress: widget.addressWallet,
@@ -200,13 +214,16 @@ class _BodyState extends State<_Body> {
                           //       widget.bloc.tokenAddressTextNft.value,
                           //   contract: widget.bloc.tokenAddressTextNft.value,
                           // );
-                          await widget.bloc.emitJsonNftToWalletCore(
+                          if (await Web3Utils().importNFT(
+                              contract:
+                                  widget.bloc.tokenAddressTextNft.value)) {
+                            await widget.bloc.emitJsonNftToWalletCore(
                               contract:
                                   '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
-                              // id: 0,
                               address:
-                                  '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37');
-                          Navigator.pop(context);
+                                  '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+                            );
+                          }
                         }
                       },
                       child: ButtonGold(

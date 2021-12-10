@@ -1,4 +1,7 @@
 import 'package:Dfy/data/di/flutter_transformer.dart';
+import 'package:Dfy/data/repository_impl/price_repository_impl.dart';
+import 'package:Dfy/data/services/price_service.dart';
+import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/data/repository_impl/token_repository_impl.dart';
 import 'package:Dfy/data/services/token_service.dart';
@@ -12,8 +15,9 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 void configureDependencies() {
   Get.put(TokenClient(provideDio()));
   Get.put<TokenRepository>(TokenRepositoryImpl(Get.find()));
+  Get.put(PriceClient(provideDio()));
+  Get.put<PriceRepository>(PriceRepositoryImpl(Get.find()));
 }
-
 int _connectTimeOut = 60000;
 
 Dio provideDio() {

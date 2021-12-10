@@ -6,7 +6,6 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/c
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -40,88 +39,107 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        final FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
-      child: BaseBottomSheet(
-        isBackNewWallet: true,
-        title: S.current.create_new_wallet,
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    textShowSetupPass(),
-                    SizedBox(
-                      height: 28.h,
-                    ),
-                    formSetupPassWord(
-                      hintText: S.current.new_pass,
-                    ),
-                    showTextValidatePassword(),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    formSetupPassWordConfirm(
-                      hintText: S.current.con_pass,
-                    ),
-                    showTextValidateMatchPassword(),
-                    SizedBox(
-                      height: 25.h,
-                    ),
-                    ckcBoxAndTextSetupPass(),
-                    SizedBox(
-                      height: 256.h,
-                    ),
-                  ],
-                ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset:  false,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: GestureDetector(
+          onTap: () {
+            final FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: Container(
+            width: 375.w,
+            height: 764.h,
+            decoration: BoxDecoration(
+              color: AppTheme.getInstance().bgBtsColor(),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.r),
+                topRight: Radius.circular(30.r),
               ),
             ),
-            StreamBuilder<bool>(
-              stream: isValidPassCubit.isEnableBtnStream,
-              builder: (context, snapshot) {
-                return GestureDetector(
-                  child: ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: snapshot.data ?? true,
+            child: Column(
+              children: [
+                header(),
+                Divider(
+                  thickness: 1,
+                  color: AppTheme.getInstance().divideColor(),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        textShowSetupPass(),
+                        SizedBox(
+                          height: 28.h,
+                        ),
+                        formSetupPassWord(
+                          hintText: S.current.new_pass,
+                        ),
+                        showTextValidatePassword(),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        formSetupPassWordConfirm(
+                          hintText: S.current.con_pass,
+                        ),
+                        showTextValidateMatchPassword(),
+                        SizedBox(
+                          height: 25.h,
+                        ),
+                        ckcBoxAndTextSetupPass(),
+                        SizedBox(
+                          height: 256.h,
+                        ),
+                      ],
+                    ),
                   ),
-                  onTap: () {
-                    if (snapshot.data ?? false) {
-                      isValidPassCubit.showTxtWarningNewPW(password.text);
-                      isValidPassCubit.showTxtWarningConfirmPW(
-                        confirmPassword.text,
-                        newPW: password.text,
-                      );
-                      if (isValidPassCubit.validateAll()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return CreateSeedPhrase(
-                                blocCreateSeedPhrase:
+                ),
+                StreamBuilder<bool>(
+                  stream: isValidPassCubit.isEnableBtnStream,
+                  builder: (context, snapshot) {
+                    return GestureDetector(
+                      child: ButtonGold(
+                        title: S.current.continue_s,
+                        isEnable: snapshot.data ?? true,
+                      ),
+                      onTap: () {
+                        if (snapshot.data ?? false) {
+                          isValidPassCubit.showTxtWarningNewPW(password.text);
+                          isValidPassCubit.showTxtWarningConfirmPW(
+                            confirmPassword.text,
+                            newPW: password.text,
+                          );
+                          if (isValidPassCubit.validateAll()) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return CreateSeedPhrase(
+                                    blocCreateSeedPhrase:
                                     BLocCreateSeedPhrase(password.text),
-                                type: TypeScreen.two,
-                              );
-                            },
-                          ),
-                        );
-                      } else {
-                        //will not change screen
-                      }
-                    }
+                                    type: TypeScreen.two,
+                                  );
+                                },
+                              ),
+                            );
+                          } else {
+                            //will not change screen
+                          }
+                        }
+                      },
+                    );
                   },
-                );
-              },
+                ),
+                SizedBox(
+                  height: 38.h,
+                ),
+              ],
             ),
-            SizedBox(
-              height: 38.h,
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -146,8 +164,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style: textNormal(AppTheme.getInstance().wrongColor(), 12)
-                          .copyWith(fontWeight: FontWeight.w400),
+                      style:
+                          textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                              .copyWith(fontWeight: FontWeight.w400),
                     );
                   },
                 ),
@@ -178,8 +197,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style: textNormal(AppTheme.getInstance().wrongColor(), 12)
-                          .copyWith(fontWeight: FontWeight.w400),
+                      style:
+                          textNormal(AppTheme.getInstance().wrongColor(), 12.sp)
+                              .copyWith(fontWeight: FontWeight.w400),
                     );
                   },
                 ),
@@ -209,7 +229,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 builder: (context, snapshot) {
                   return Checkbox(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(6.r),
                     ),
                     fillColor:
                         MaterialStateProperty.all(const Color(0xffE4AC1A)),
@@ -252,61 +272,60 @@ class _SetupPassWordState extends State<SetupPassWord> {
     return Container(
       height: 64.h,
       width: 343.w,
-      padding: EdgeInsets.only(
-        top: 12.h,
-        bottom: 12.h,
-      ),
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
         ),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showPWStream,
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
-          return TextFormField(
-            onChanged: (value) {
-              isValidPassCubit.checkHaveValuePW(value);
-            },
-            obscureText: snapshot.data ?? false,
-            style: textNormal(
-              Colors.white,
-              16,
-            ),
-            cursorColor: Colors.white,
-            controller: password,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: textNormal(
-                Colors.grey,
-                14,
+          return Center(
+            child: TextFormField(
+              textAlignVertical: TextAlignVertical.center,
+              onChanged: (value) {
+                isValidPassCubit.checkHaveValuePW(value);
+              },
+              obscureText: snapshot.data ?? false,
+              style: textNormal(
+                AppTheme.getInstance().textThemeColor(),
+                16.sp,
               ),
-              suffixIcon: InkWell(
-                onTap: () {
-                  if (indexPW == 1) {
-                    isValidPassCubit.isShowPW(1);
-                    indexPW = 2;
-                  } else {
-                    isValidPassCubit.isShowPW(0);
-                    indexPW = 1;
-                  }
-                },
-                child: snapshot.data ?? false
-                    ? const ImageIcon(
-                        AssetImage(ImageAssets.ic_show),
-                        color: Colors.grey,
-                      )
-                    : const ImageIcon(
-                        AssetImage(ImageAssets.ic_hide),
-                        color: Colors.grey,
-                      ),
+              cursorColor: AppTheme.getInstance().textThemeColor(),
+              controller: password,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: textNormal(
+                  AppTheme.getInstance().disableColor(),
+                  14.sp,
+                ),
+                suffixIcon: InkWell(
+                  onTap: () {
+                    if (indexPW == 1) {
+                      isValidPassCubit.isShowPW(1);
+                      indexPW = 2;
+                    } else {
+                      isValidPassCubit.isShowPW(0);
+                      indexPW = 1;
+                    }
+                  },
+                  child: snapshot.data ?? false
+                      ? ImageIcon(
+                          const AssetImage(ImageAssets.ic_show),
+                          color: AppTheme.getInstance().disableColor(),
+                        )
+                      : ImageIcon(
+                          const AssetImage(ImageAssets.ic_hide),
+                          color: AppTheme.getInstance().disableColor(),
+                        ),
+                ),
+                prefixIcon: ImageIcon(
+                  const AssetImage(ImageAssets.ic_lock),
+                  color: AppTheme.getInstance().textThemeColor(),
+                ),
+                border: InputBorder.none,
               ),
-              prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_lock),
-                color: Colors.white,
-              ),
-              border: InputBorder.none,
             ),
           );
         },
@@ -318,59 +337,58 @@ class _SetupPassWordState extends State<SetupPassWord> {
     return Container(
       height: 64.h,
       width: 343.w,
-      padding: EdgeInsets.only(
-        top: 12.h,
-        bottom: 12.h,
-      ),
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.r),
         ),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: StreamBuilder(
         stream: isValidPassCubit.showConfirmPWStream,
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
-          return TextFormField(
-            onChanged: (value) {
-              isValidPassCubit.checkHaveValueConfirmPW(value);
-            },
-            obscureText: snapshot.data ?? false,
-            style: textNormal(Colors.white, 16)
-                .copyWith(fontWeight: FontWeight.w400),
-            cursorColor: Colors.white,
-            controller: confirmPassword,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: textNormal(
-                Colors.grey,
-                14,
+          return Center(
+            child: TextFormField(
+              textAlignVertical: TextAlignVertical.center,
+              onChanged: (value) {
+                isValidPassCubit.checkHaveValueConfirmPW(value);
+              },
+              obscureText: snapshot.data ?? false,
+              style: textNormal(AppTheme.getInstance().textThemeColor(), 16.sp)
+                  .copyWith(fontWeight: FontWeight.w400),
+              cursorColor: AppTheme.getInstance().textThemeColor(),
+              controller: confirmPassword,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: textNormal(
+                  AppTheme.getInstance().disableColor(),
+                  14.sp,
+                ),
+                suffixIcon: InkWell(
+                  onTap: () {
+                    if (indexConfirmPW == 1) {
+                      isValidPassCubit.isShowConfirmPW(1);
+                      indexConfirmPW = 2;
+                    } else {
+                      isValidPassCubit.isShowConfirmPW(0);
+                      indexConfirmPW = 1;
+                    }
+                  },
+                  child: snapshot.data ?? false
+                      ? ImageIcon(
+                          const AssetImage(ImageAssets.ic_show),
+                          color: AppTheme.getInstance().disableColor(),
+                        )
+                      : ImageIcon(
+                          const AssetImage(ImageAssets.ic_hide),
+                          color: AppTheme.getInstance().disableColor(),
+                        ),
+                ),
+                prefixIcon: ImageIcon(
+                  const AssetImage(ImageAssets.ic_lock),
+                  color: AppTheme.getInstance().textThemeColor(),
+                ),
+                border: InputBorder.none,
               ),
-              suffixIcon: InkWell(
-                onTap: () {
-                  if (indexConfirmPW == 1) {
-                    isValidPassCubit.isShowConfirmPW(1);
-                    indexConfirmPW = 2;
-                  } else {
-                    isValidPassCubit.isShowConfirmPW(0);
-                    indexConfirmPW = 1;
-                  }
-                },
-                child: snapshot.data ?? false
-                    ? const ImageIcon(
-                        AssetImage(ImageAssets.ic_show),
-                        color: Colors.grey,
-                      )
-                    : const ImageIcon(
-                        AssetImage(ImageAssets.ic_hide),
-                        color: Colors.grey,
-                      ),
-              ),
-              prefixIcon: const ImageIcon(
-                AssetImage(ImageAssets.ic_lock),
-                color: Colors.white,
-              ),
-              border: InputBorder.none,
             ),
           );
         },
@@ -386,7 +404,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
         // height: 72.h,
         child: Text(
           S.current.please,
-          style: textNormal(const Color.fromRGBO(255, 255, 255, 1.0), 16)
+          style: textNormal(AppTheme.getInstance().textThemeColor(), 16.sp)
               .copyWith(fontWeight: FontWeight.w400),
         ),
       ),
@@ -418,7 +436,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
           Text(
             S.current.create_new_wallet,
-            style: textNormal(Colors.white, 20)
+            style: textNormal(AppTheme.getInstance().textThemeColor(), 20.sp)
                 .copyWith(fontWeight: FontWeight.w700),
           ),
           IconButton(

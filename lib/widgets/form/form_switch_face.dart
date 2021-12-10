@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
 
-class FromSwitch extends StatelessWidget {
+class FromSwitchFace extends StatelessWidget {
   final bool isCheck;
   final String title;
   final String urlPrefixIcon;
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
-  const FromSwitch({
+  const FromSwitchFace({
     Key? key,
     required this.isCheck,
     required this.title,
@@ -25,16 +25,15 @@ class FromSwitch extends StatelessWidget {
       width: 343.w,
       height: 64.h,
       margin: EdgeInsets.symmetric(horizontal: 16.w),
+      //padding: EdgeInsets.symmetric(horizontal: 15.5.w),
       decoration: BoxDecoration(
-        color: AppTheme.getInstance().itemBtsColors(),
-        borderRadius: BorderRadius.all(
-          Radius.circular(20.r),
-        ),
+        color: const Color(0xff32324c),
+        borderRadius: BorderRadius.all(Radius.circular(20.r)),
       ),
       child: Center(
         child: ListTileSwitch(
           enabled: false,
-          switchScale: 1,
+          switchScale: 1.0,
           value: isCheck,
           leading: SizedBox(
             width: 24.w,
@@ -42,7 +41,7 @@ class FromSwitch extends StatelessWidget {
             child: Image.asset(urlPrefixIcon),
           ),
           onChanged: (value) {
-            bLocCreateSeedPhrase.isCheckAppLock.sink.add(value);
+            bLocCreateSeedPhrase.isCheckTouchID.sink.add(value);
           },
           switchActiveColor: AppTheme.getInstance().fillColor(),
           switchType: SwitchType.cupertino,

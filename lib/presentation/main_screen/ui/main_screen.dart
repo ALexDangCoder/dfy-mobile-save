@@ -67,14 +67,11 @@ class _MainScreenState extends BaseState<MainScreen> {
     super.initState();
     _handleEventBus();
     _cubit = MainCubit();
-    trustWalletChannel
-        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
-    _cubit.getConfig();
     _pages = [
       WalletScreen(
         index: widget.index ?? 1,
         wallet: widget.wallet,
-        checkWallet: _cubit.checkWalletExist,
+        checkWallet: _cubit.checkWalletExist(),
       ),
       const PawnScreen(),
       const HomeScreen(),

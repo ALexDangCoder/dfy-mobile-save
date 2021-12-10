@@ -1,6 +1,5 @@
 {
   "type": "develop",
-  "base_url": "https://run.mocky.io/",
-  "base_image_url": "https://run.mocky.io/"
-
+  "base_url": "https://dev2.gwapi.defiforyou.uk/nft-market-svc/public-api/",
+  "base_image_url": "https://dev2.gwapi.defiforyou.uk/nft-market-svc/public-api/"
 }

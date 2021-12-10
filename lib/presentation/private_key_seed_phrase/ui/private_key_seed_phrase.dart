@@ -6,9 +6,9 @@ import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/dialog_remove/choose_acc.dart';
-import 'package:Dfy/widgets/form/form%20_text3.dart';
-import 'package:Dfy/widgets/form/form_text4.dart';
-import 'package:Dfy/widgets/list_passphrase/box_list_passphrase_copy2.dart';
+import 'package:Dfy/widgets/form/form%20_text_privatekey.dart';
+import 'package:Dfy/widgets/form/form_text_walletaddress.dart';
+import 'package:Dfy/widgets/list_passphrase/box_list_passphrase_show.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -88,7 +88,7 @@ class _BodyState extends State<_Body> {
                                     ),
                                   );
                                 },
-                                child: FromText4(
+                                child: FromTextWalletAddress(
                                   titleCopy: snapshot
                                           .data?[index ?? 0].walletAddress ??
                                       '',
@@ -103,7 +103,7 @@ class _BodyState extends State<_Body> {
                               SizedBox(
                                 height: 16.h,
                               ),
-                              FromText3(
+                              FromTextPrivateKey(
                                 titleCopy:
                                     snapshot.data?[index ?? 0].privateKey ?? '',
                                 title: widget.bloc.formatText(
@@ -117,7 +117,7 @@ class _BodyState extends State<_Body> {
                               ),
                               Column(
                                 children: [
-                                  BoxListPassWordPhraseCopy2(
+                                  BoxListPassWordPhraseShow(
                                     listTitle: widget.bloc.stringToList(
                                       snapshot.data?[index ?? 0].seedPhrase ??
                                           '',

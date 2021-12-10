@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -12,8 +13,8 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/c
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/checkbox/checkbox_custom2.dart';
-import 'package:Dfy/widgets/list_passphrase/box_list_passphrase.dart';
+import 'package:Dfy/widgets/checkbox/checkbox_seedphrase_comfirm.dart';
+import 'package:Dfy/widgets/list_passphrase/box_list_passphrase_confirm.dart';
 import 'package:Dfy/widgets/list_passphrase/list_passphrase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +75,7 @@ class _BodyState extends State<_Body> {
         if (widget.bLocCreateSeedPhrase.isSuccess) {
           if (state is SeedNavState) {
             if (widget.typeScreen == TypeScreen.one) {
+              PrefsService.saveFirstAppConfig('false');
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -93,6 +95,7 @@ class _BodyState extends State<_Body> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
+                    PrefsService.saveFirstAppConfig('false');
                     return CreateSuccessfully(
                       type: KeyType.CREATE,
                       wallet: Wallet(
@@ -231,7 +234,7 @@ class _BodyState extends State<_Body> {
                               return Container(
                                 margin:
                                     EdgeInsets.only(right: 16.w, left: 16.w),
-                                child: BoxListPassWordPhrase(
+                                child: BoxListPassWordPhraseConfirm(
                                   listTitle: listSeedPhrase ?? [],
                                   bLocCreateSeedPhrase: bLocCreateSeedPhrase,
                                 ),
@@ -280,7 +283,7 @@ class _BodyState extends State<_Body> {
                       SizedBox(
                         height: 41.h,
                       ),
-                      CheckBoxCustom2(
+                      CheckBoxSeedphraseConfirm(
                         title: S.current.do_not,
                         bLocCreateSeedPhrase: bLocCreateSeedPhrase,
                       ),

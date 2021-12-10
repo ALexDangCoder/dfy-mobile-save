@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CheckBoxCustom2 extends StatelessWidget {
+class CheckBoxSeedphraseConfirm extends StatelessWidget {
   final String title;
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
-  const CheckBoxCustom2({
+  const CheckBoxSeedphraseConfirm({
     Key? key,
     required this.title,
     required this.bLocCreateSeedPhrase,

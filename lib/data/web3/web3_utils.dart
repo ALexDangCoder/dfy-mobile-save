@@ -29,7 +29,7 @@ class Web3Utils {
       return false;
     }
     try {
-      await nft.tokenURI(BigInt.from(id ?? 0));
+      await nft.tokenURI(BigInt.from(id));
       return true;
     } catch (e) {
       return false;
@@ -68,7 +68,7 @@ class Web3Utils {
             EthereumAddress.fromHex(address), BigInt.from(i));
         final uri = await nft.tokenURI(nftId);
         final nftParam = {
-          'id': nftId,
+          'id': nftId.toInt(),
           'contract': contract,
           'uri': uri,
         };

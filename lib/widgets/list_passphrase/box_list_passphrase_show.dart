@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
 import 'package:Dfy/widgets/toast/toast_copy.dart';
@@ -10,14 +9,14 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BoxListPassWordPhraseCopy extends StatelessWidget {
+class BoxListPassWordPhraseShow extends StatelessWidget {
   final List<String> listTitle;
-  final BLocCreateSeedPhrase bLocCreateSeedPhrase;
+  final String text;
 
-  const BoxListPassWordPhraseCopy({
+  const BoxListPassWordPhraseShow({
     Key? key,
     required this.listTitle,
-    required this.bLocCreateSeedPhrase,
+    required this.text,
   }) : super(key: key);
 
   @override
@@ -28,25 +27,15 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
         minWidth: 343.w,
       ),
       child: Container(
-        margin: EdgeInsets.only(
-          right: 16.w,
-          left: 16.w,
-          top: 16.h,
-          bottom: 16.h,
-        ),
         decoration: BoxDecoration(
           color: AppTheme.getInstance().itemBtsColors(),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              20.r,
-            ),
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(20.r)),
         ),
         padding: EdgeInsets.only(
           top: 16.h,
           left: 13.w,
           right: 13.w,
-          bottom: 10.h,
+          bottom: 16.h,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,13 +52,13 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    FlutterClipboard.copy(bLocCreateSeedPhrase.passPhrase);
+                    FlutterClipboard.copy(text);
                     toast_copy();
                   },
                   child: Image.asset(
                     ImageAssets.ic_copy,
-                    height: 17.67.h,
-                    width: 19.14.w,
+                    height: 20.h,
+                    width: 20.14.w,
                     color: AppTheme.getInstance().fillColor(),
                   ),
                 ),
@@ -85,7 +74,7 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
                 listTitle.length,
                 (int index) {
                   return ItemSeedPhrase(
-                    title: ' ${listTitle[index]}',
+                    title: '${index + 1}. ${listTitle[index]}',
                   );
                 },
               ),
