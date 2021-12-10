@@ -8,6 +8,8 @@ part 'token_response.g.dart';
 class TokenResponse extends Equatable {
   @JsonKey(name: 'id')
   int? id;
+  @JsonKey(name: 'name')
+  String? name;
   @JsonKey(name: 'isWhitelistCollateral')
   bool? isWhitelistCollateral;
   @JsonKey(name: 'isWhitelistSupply')
@@ -29,6 +31,7 @@ class TokenResponse extends Equatable {
     this.address,
     this.symbol,
     this.iconUrl,
+    this.name,
   );
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) =>
@@ -40,6 +43,7 @@ class TokenResponse extends Equatable {
   List<Object?> get props => [];
 
   TokenInf toDomain() => TokenInf(
+        name: name,
         id: id,
         isWhitelistCollateral: isWhitelistCollateral,
         symbol: symbol,

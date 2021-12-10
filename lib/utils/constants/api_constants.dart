@@ -5,8 +5,7 @@ class ApiConstants {
   static const int PAGE_BEGIN = 1;
   static const int NOT_SAVED_ID = -1;
   static const int TIME_OUT = 30;
-  static const String GET_LIST_TOKEN = '/v3/7a05d97c-18c1-49ad-be09-378cf4edb4bf';
-  /// price
+  static const String GET_LIST_TOKEN = '/market/coin-list';
   static const String GET_PRICE_TOKEN_BY_SYMBOL = '/market/coin-price/';
 
 }

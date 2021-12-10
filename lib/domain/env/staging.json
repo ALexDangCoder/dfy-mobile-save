@@ -1,5 +1,5 @@
 {
   "type": "staging",
-  "base_url": "http://8wlg9.mocklab.io/",
-  "base_image_url": "http://8wlg9.mocklab.io/"
+  "base_url": "https://dev2.gwapi.defiforyou.uk/nft-market-svc/public-api/",
+  "base_image_url": "https://dev2.gwapi.defiforyou.uk/nft-market-svc/public-api/"
 }

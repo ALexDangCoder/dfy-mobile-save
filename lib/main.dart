@@ -26,7 +26,6 @@ Future<void> mainApp() async {
     ),
   );
   configureDependencies();
-  configureDependenciesTest();
   runApp(const MyApp());
 }
 
