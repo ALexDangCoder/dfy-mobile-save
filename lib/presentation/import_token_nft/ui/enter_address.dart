@@ -127,27 +127,42 @@ class _EnterAddressState extends State<EnterAddress> {
                   builder: (context, snapshot) {
                     final bool enable = snapshot.data ?? false;
                     return InkWell(
-                      onTap: () async {
+                      onTap: () {
                         if (enable) {
-                          await widget.bloc
+                          widget.bloc
                               .getListPrice(widget.bloc.tokenSymbol.value);
-                          print(widget.bloc.addressWallet.value);
-                          print(widget.bloc.tokenAddressText.value);
-                          print(widget.bloc.tokenSymbol.value);
-                          print(widget.bloc.tokenDecimal.value);
-                          print(widget.bloc.iconToken);
-                          print(widget.bloc.tokenFullName);
-                          print(widget.bloc.price);
-                          print('vao');
-                          widget.bloc.importToken(
-                            walletAddress: widget.bloc.addressWallet.value,
-                            tokenAddress: widget.bloc.tokenAddressText.value,
-                            symbol: widget.bloc.tokenSymbol.value,
-                            decimal: int.parse(widget.bloc.tokenDecimal.value),
-                            iconToken: widget.bloc.iconToken,
-                            tokenFullName: widget.bloc.tokenFullName,
-                            exchangeRate: widget.bloc.price!,
-                          );
+                          if (widget.bloc.price! != 0) {
+                            print(widget.bloc.addressWallet.value);
+                            print(widget.bloc.tokenAddressText.value);
+                            print(widget.bloc.tokenSymbol.value);
+                            print(widget.bloc.tokenDecimal.value);
+                            print(widget.bloc.iconToken);
+                            print(widget.bloc.tokenFullName);
+                            print(widget.bloc.price);
+                            print('vao');
+                            widget.bloc.importToken(
+                              walletAddress: widget.bloc.addressWallet.value,
+                              tokenAddress: widget.bloc.tokenAddressText.value,
+                              symbol: widget.bloc.tokenSymbol.value,
+                              decimal:
+                                  int.parse(widget.bloc.tokenDecimal.value),
+                              iconToken: widget.bloc.iconToken,
+                              tokenFullName: widget.bloc.tokenFullName,
+                              exchangeRate: widget.bloc.price!,
+                            );
+                          } else {
+                            widget.bloc.importToken(
+                              walletAddress: widget.bloc.addressWallet.value,
+                              tokenAddress: widget.bloc.tokenAddressText.value,
+                              symbol: widget.bloc.tokenSymbol.value,
+                              decimal:
+                                  int.parse(widget.bloc.tokenDecimal.value),
+                              iconToken: widget.bloc.iconToken,
+                              tokenFullName: widget.bloc.tokenFullName,
+                              exchangeRate: widget.bloc.price!,
+                            );
+                          }
+
                           print('done');
                         }
                         widget.bloc.checkAddressNull();

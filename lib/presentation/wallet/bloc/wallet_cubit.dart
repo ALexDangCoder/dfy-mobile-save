@@ -10,7 +10,6 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
-import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
@@ -171,6 +170,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   List<HistoryNFT> listHistory = [];
   double? price = 0.0;
+
   Future<void> getTransactionNFTHistory() async {
     listHistory = await client.getNFTHistory();
   }
@@ -401,8 +401,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
     await getListPrice(query.toString());
     for (int i = 0; i < list.length; i++) {
-      listTokenFromWalletCore[i].exchangeRate =
-          listTokenExchange[i].price ?? 0;
+      listTokenFromWalletCore[i].exchangeRate = listTokenExchange[i].price ?? 0;
     }
   }
 
@@ -443,6 +442,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'earseWalletCallback':
         bool isSuccess = await methodCall.arguments['isSuccess'];
+        print('---------------------------------------------$isSuccess');
         break;
       case 'getListSupportedTokenCallback':
         break;
@@ -473,6 +473,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'changeNameWalletCallBack':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
+        print('-------asdf-------------------------------------------------------------$isSuccess');
         break;
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
@@ -564,7 +565,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'walletAddress': walletAddress,
         'walletName': walletName,
       };
-      await trustWalletChannel.invokeMethod('earseWallet', data);
+      await trustWalletChannel.invokeMethod('changeNameWallet', data);
     } on PlatformException {}
   }
 
