@@ -1,7 +1,7 @@
 class TokenInf {
   int? id;
-  bool? isWhitelistCollateral;
-  bool? isWhitelistSupply;
+  bool? whitelistCollateral;
+  bool? whitelistSupply;
   double? usdExchange;
   String? symbol;
   String? address;
@@ -10,10 +10,10 @@ class TokenInf {
 
   TokenInf({
     this.symbol,
-    this.name = '',
+    this.name,
     this.id,
-    this.isWhitelistCollateral,
-    this.isWhitelistSupply,
+    this.whitelistCollateral,
+    this.whitelistSupply,
     this.usdExchange,
     this.address,
     this.iconUrl,
