@@ -577,10 +577,10 @@ class MainActivity : FlutterFragmentActivity() {
                 listTokenSupport.firstOrNull { it.walletAddress == token.walletAddress && it.tokenAddress == token.tokenAddress }
             if (tokenInCore == null) {
                 when (tokenAddress) {
-                    TOKEN_BNB_ADDRESS -> {
+                    TOKEN_DFY_ADDRESS -> {
                         listTokens.add(0, token)
                     }
-                    TOKEN_DFY_ADDRESS -> {
+                    TOKEN_BNB_ADDRESS -> {
                         listTokens.add(1, token)
                     }
                     else -> {
@@ -590,10 +590,10 @@ class MainActivity : FlutterFragmentActivity() {
             } else {
                 token.isShow = tokenInCore.isShow
                 when (tokenAddress) {
-                    TOKEN_BNB_ADDRESS -> {
+                    TOKEN_DFY_ADDRESS -> {
                         listTokens.add(0, token)
                     }
-                    TOKEN_DFY_ADDRESS -> {
+                    TOKEN_BNB_ADDRESS -> {
                         listTokens.add(1, token)
                     }
                     else -> {
