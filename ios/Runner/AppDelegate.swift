@@ -30,61 +30,60 @@ import WalletCore
 extension AppDelegate {
     private func handleMethodCall(call: FlutterMethodCall, result: FlutterResult) {
         guard self.chatChanel != nil else { return }
-        if call.method == "getListWallets" {
-            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
-                result(getListWallet(password: password))
-            }
-        }
-        if call.method == "getNFT" {
-            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
-                result(getNFT(walletAddress: walletAddress))
-            }
-        }
-        if call.method == "getTokens" {
-            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
-                result(getTokens(walletAddress: walletAddress))
-            }
-        }
+//        if call.method == "getListWallets" {
+//            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
+//                result(getListWallet(password: password))
+//            }
+//        }
+//        if call.method == "getNFT" {
+//            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
+//                result(getNFT(walletAddress: walletAddress))
+//            }
+//        }
+//        if call.method == "getTokens" {
+//            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
+//                result(getTokens(walletAddress: walletAddress))
+//            }
+//        }
         if call.method == "generateWallet" {
-            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
-                result(generateWallet(password: password))
-            }
+                result(generateWallet())
         }
         if call.method == "storeWallet" {
             if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let password = arguments["password"] as? String {
                 result(storeWallet(seedPhrase: seedPhrase, walletName: walletName, password: password))
             }
         }
-        if call.method == "setConfig" {
-            if let arguments = call.arguments as? [String: Any], let isAppLock = arguments["isAppLock"] as? Bool, let isFaceID = arguments["isFaceID"] as? Bool, let password = arguments["password"] as? String {
-                result(setConfig(appLock: isAppLock,faceID: isFaceID,password: password))
-            }
-        }
-        if call.method == "checkPassword" {
-            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
-                result(checkPassword(password: password))
-            }
-        }
+//        if call.method == "setConfig" {
+//            if let arguments = call.arguments as? [String: Any], let isAppLock = arguments["isAppLock"] as? Bool, let isFaceID = arguments["isFaceID"] as? Bool, let password = arguments["password"] as? String {
+//                result(setConfig(appLock: isAppLock,faceID: isFaceID,password: password))
+//            }
+//        }
+//        if call.method == "checkPassword" {
+//            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
+//                result(checkPassword(password: password))
+//            }
+//        }
         if call.method == "getConfig" {
             result(getConfigWallet())
         }
-        if call.method == "earseWallet" {
-            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
-                result(eraseWallet(walletAddress: walletAddress))
-            }
-        }
-        if call.method == "earseAllWallet" {
-            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String {
-                result(eraseAllWallet(type: type))
-            }
-        }
-
-
-
-        guard call.method == "signTransaction" else {
-            result(FlutterMethodNotImplemented)
-            return
-        }
+//        if call.method == "earseWallet" {
+//            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
+//                result(eraseWallet(walletAddress: walletAddress))
+//            }
+//        }
+//        if call.method == "earseAllWallet" {
+//            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String {
+//                result(eraseAllWallet(type: type))
+//            }
+//        }
+//
+        result(FlutterMethodNotImplemented)
+//
+//
+//        guard call.method == "signTransaction" else {
+//            result(FlutterMethodNotImplemented)
+//            return
+//        }
     }
 }
 
@@ -96,11 +95,17 @@ extension AppDelegate {
         return params
     }
     
-    private func generateWallet(password: String) -> [String: String] {
-        var params: [String: String] = [:]
-        params["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        params["privateKey"] = "e507e499158b5b6e1a89ad1e65250f6c38a28d455c37cf23c41f4bdd82436e5a"
-        params["passPhrase"] = "party response give dove tooth master flip video permit game expire token"
+    private func generateWallet() -> [String: Any] {
+        let wallet = HDWallet(strength: 128, passphrase: "")
+        let seedPhrase = wallet!.mnemonic
+        let address = wallet?.getAddressForCoin(coin: .smartChain)
+        let walletName = "Account 1"
+        let privateKey = (wallet?.getKeyForCoin(coin: .smartChain).data)!.hexEncodedString()
+        var params: [String: Any] = [:]
+        params["walletName"] = walletName
+        params["walletAddress"] = address
+        params["privateKey"] = privateKey
+        params["passPhrase"] = seedPhrase
         chatChanel?.invokeMethod("generateWalletCallback", arguments: params)
         return params
     }
@@ -202,4 +207,16 @@ extension AppDelegate {
 extension StringProtocol {
     var data: Data { .init(utf8) }
     var bytes: [UInt8] { .init(utf8) }
+}
+
+extension Data {
+    struct HexEncodingOptions: OptionSet {
+        let rawValue: Int
+        static let upperCase = HexEncodingOptions(rawValue: 1 << 0)
+    }
+
+    func hexEncodedString(options: HexEncodingOptions = []) -> String {
+        let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
+        return self.map { String(format: format, $0) }.joined()
+    }
 }
