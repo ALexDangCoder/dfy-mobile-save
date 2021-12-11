@@ -108,11 +108,11 @@ class _SetupPassWordState extends State<SetupPassWord> {
                       ),
                       onTap: () {
                         if (snapshot.data ?? false) {
-                          isValidPassCubit.showTxtWarningNewPW(password.text);
-                          isValidPassCubit.showTxtWarningConfirmPW(
-                            confirmPassword.text,
-                            newPW: password.text,
-                          );
+                          // isValidPassCubit.showTxtWarningNewPW(password.text);
+                          // isValidPassCubit.showTxtWarningConfirmPW(
+                          //   confirmPassword.text,
+                          //   newPW: password.text,
+                          // );
                           if (isValidPassCubit.validateAll()) {
                             Navigator.push(
                               context,
@@ -286,6 +286,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               textAlignVertical: TextAlignVertical.center,
               onChanged: (value) {
                 isValidPassCubit.checkHaveValuePW(value);
+                isValidPassCubit.showTxtWarningNewPW(value);
               },
               obscureText: snapshot.data ?? false,
               style: textNormal(
@@ -351,6 +352,10 @@ class _SetupPassWordState extends State<SetupPassWord> {
               textAlignVertical: TextAlignVertical.center,
               onChanged: (value) {
                 isValidPassCubit.checkHaveValueConfirmPW(value);
+                isValidPassCubit.showTxtWarningConfirmPW(
+                  value,
+                  newPW: password.text,
+                );
               },
               obscureText: snapshot.data ?? false,
               style: textNormal(AppTheme.getInstance().textThemeColor(), 16.sp)

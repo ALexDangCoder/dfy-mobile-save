@@ -517,30 +517,34 @@ class WalletCubit extends BaseCubit<WalletState> {
           //get List Map from COre
           final List<Map<String, dynamic>> collectionsFromCore =
               await methodCall.arguments;
-          final List<CollectionNft> listCollectionNFT = [];
-          for (final eMapCollection in collectionsFromCore) {
-            //Tao object 1 CollectionNft, chua co list NFTInfo
-            final CollectionNft cl = CollectionNft.fromJson(eMapCollection);
-            final List<NftInfo> listNftInfo = [];
-            //tao list NFT Info
-            for (final e in cl.listNft ?? []) {
-              try {
-                if (e.uri != '') {
-                  final NftInfo nftInfo = await fetchNft(url: e.uri ?? '');
-                  nftInfo.id = e.id;
-                  nftInfo.contract = e.contract;
-                  nftInfo.standard = 'ERC-721';
-                  nftInfo.blockchain = 'Binance smart chain';
-                  listNftInfo.add(nftInfo);
+          try {
+            final List<CollectionNft> listCollectionNFT = [];
+            for (final eMapCollection in collectionsFromCore) {
+              //Tao object 1 CollectionNft, chua co list NFTInfo
+              final CollectionNft cl = CollectionNft.fromJson(eMapCollection);
+              final List<NftInfo> listNftInfo = [];
+              //tao list NFT Info
+              for (final e in cl.listNft ?? []) {
+                try {
+                  if (e.uri != '') {
+                    final NftInfo nftInfo = await fetchNft(url: e.uri ?? '');
+                    nftInfo.id = e.id;
+                    nftInfo.contract = e.contract;
+                    nftInfo.standard = 'ERC-721';
+                    nftInfo.blockchain = 'Binance smart chain';
+                    listNftInfo.add(nftInfo);
+                  }
+                } catch (e) {
+                  print(e);
                 }
-              } catch (e) {
-                print(e);
               }
+              listCollectionNFT.add(cl);
+              listNftFromWalletCore.add(cl);
             }
-            listCollectionNFT.add(cl);
-            listNftFromWalletCore.add(cl);
+            listNFTStream.sink.add(listNftFromWalletCore);
+          } catch(e) {
+            print(e);
           }
-          listNFTStream.sink.add(listNftFromWalletCore);
         }
         break;
       case 'importListNftCallback':
