@@ -3,14 +3,12 @@ import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/private_key_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../../main.dart';
-
 part 'confirm_pw_prvkey_seedpharse_state.dart';
 
 class ConfirmPwPrvKeySeedpharseCubit
@@ -61,13 +59,23 @@ class ConfirmPwPrvKeySeedpharseCubit
   BehaviorSubject<int> index = BehaviorSubject.seeded(0);
   BehaviorSubject<List<PrivateKeyModel>> listPrivateKey = BehaviorSubject();
 
+  BehaviorSubject<PrivateKeyModel> privateKeySubject = BehaviorSubject();
+
   String passWord = '';
 
-  void getListPrivateKeyAndSeedphrase() {
-    for (final Wallet value in listWalletCore) {
-      exportWallet(walletAddress: value.address ?? '', password: passWord);
+  void getListPrivateKeyAndSeedPhrase({
+    required String password,
+  }) {
+    for (final value in listWalletCore) {
+      exportWallet(
+        walletAddress: value.address ?? '',
+        password: password,
+      );
     }
-    listPrivateKey.sink.add(listWallet);
+  }
+
+  void sendPrivateKey(int _index) {
+    privateKeySubject.sink.add(listWallet[_index]);
   }
 
   List<String> stringToList(String seedPhrase) {
@@ -92,25 +100,23 @@ class ConfirmPwPrvKeySeedpharseCubit
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
+      case 'getListWalletsCallback':
+        final List<dynamic> data = methodCall.arguments;
+        for (final element in data) {
+          listWalletCore.add(Wallet.fromJson(element));
+        }
+        break;
       case 'exportWalletCallBack':
         final String walletAddress =
             await methodCall.arguments['walletAddress'];
         final String privateKey = await methodCall.arguments['privateKey'];
         final String passPhrase = await methodCall.arguments['passPhrase'];
-        PrivateKeyModel obj = PrivateKeyModel(
+        final PrivateKeyModel obj = PrivateKeyModel(
           seedPhrase: passPhrase,
           privateKey: privateKey,
           walletAddress: walletAddress,
         );
         listWallet.add(obj);
-        break;
-      case 'getListWalletsCallback':
-        final List<dynamic> data = methodCall.arguments;
-        for (final element in data) {
-          listWalletCore.add(Wallet.fromJson(element));
-          print(
-              '-------------------------------------${listWalletCore.first.address}');
-        }
         break;
       default:
         break;
@@ -123,7 +129,9 @@ class ConfirmPwPrvKeySeedpharseCubit
         'password': password,
       };
       await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {}
+    } on PlatformException {
+      //nothing
+    }
   }
 
 //exportWallet
@@ -183,3 +191,4 @@ class ConfirmPwPrvKeySeedpharseCubit
     }
   }
 }
+//warfare pluck security velvet finish enroll frost flock suffer anchor view seek
