@@ -377,7 +377,8 @@ class MainActivity : FlutterFragmentActivity() {
                                 walletName,
                                 address,
                                 content,
-                                privateKey.toByteArray().toHexString(false)
+                                privateKey.toByteArray().toHexString(false),
+                                true
                             )
                         )
                         appPreference.saveListWallet(listWallet)
@@ -407,7 +408,8 @@ class MainActivity : FlutterFragmentActivity() {
                                 walletName,
                                 address,
                                 "",
-                                content
+                                content,
+                                true
                             )
                         )
                         appPreference.saveListWallet(listWallet)
@@ -482,7 +484,8 @@ class MainActivity : FlutterFragmentActivity() {
                 walletName,
                 walletAddress,
                 seedPhrase,
-                privateKey
+                privateKey,
+                false
             )
         )
         appPreference.saveListWallet(listWallet)
