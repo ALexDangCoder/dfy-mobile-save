@@ -622,8 +622,7 @@ class MainActivity : FlutterFragmentActivity() {
                 data["tokenFullName"] = it.tokenFullName
                 data["symbol"] = it.symbol
                 data["tokenAddress"] = it.tokenAddress
-                data["iconUrl"] =
-                    "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Bitcoin-BTC-icon.png"
+                data["iconUrl"] =it.iconUrl
                 data["isShow"] = it.isShow
                 data["decimal"] = it.decimal
                 data["exchangeRate"] = it.exchangeRate
