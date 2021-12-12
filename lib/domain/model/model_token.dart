@@ -5,7 +5,7 @@ class ModelToken {
   String iconToken = '';
   double exchangeRate = 0;
   String walletAddress = '';
-  double decimal = 0;
+  int decimal = 0;
 
   double balanceToken = 0.0;
   bool isShow = false;
@@ -33,10 +33,12 @@ class ModelToken {
   ModelToken.init();
 
   ModelToken.fromWalletCore(dynamic json)
-      : tokenAddress = json['tokenAddress'].toString(),
-        walletAddress = json['walletAddress'].toString(),
-        iconToken = json['iconUrl'],
-        nameToken = json['tokenFullName'].toString(),
-        isShow = json['isShow'],
-        nameShortToken = json['symbol'].toString();
+      : tokenAddress = json['tokenAddress'].toString(),//
+        walletAddress = json['walletAddress'].toString(),//
+        iconToken = json['iconUrl'].toString(),//
+        nameToken = json['tokenFullName'].toString(),//
+        isShow = json['isShow'],//
+        decimal = json['decimal'],//
+        exchangeRate = json['exchangeRate'],//
+        nameShortToken = json['symbol'].toString();//
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -126,6 +127,12 @@ class WalletCubit extends BaseCubit<WalletState> {
       }
     }
     getListAcc();
+  }
+
+  int randomAvatar() {
+    final Random rd = Random();
+
+    return rd.nextInt(10);
   }
 
   bool checkWalletExist = false;
@@ -313,21 +320,16 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getListPrice(String symbols) async {
     final Result<List<TokenPrice>> result =
         await _priceRepository.getListPriceToken(symbols);
-    print('sadfasdfasdfasd');
-    if (result.obs.value==null) {
-      print('nullllllllllllllllllllllllllllllllllllllllllllll');
-    } else {
-      print('111111111nullllllllllllllllllllllllllllllllllllllllllllll');
-      result.when(
-        success: (res) {
-          print(res.first.price ?? 0.0);
-        },
-        error: (error) {
-          log('eror');
-          updateStateError();
-        },
-      );
-    }
+    result.when(
+      success: (res) {
+        for (final element in res) {
+          listTokenExchange.add(element);
+        }
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
   }
 
   Future<void> getListCategory() async {
@@ -355,6 +357,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       yield listModelToken[i];
     }
   }
+
   Stream<dynamic> getListDynamic(List<dynamic> listModelToken) async* {
     for (int i = 0; i < listModelToken.length; i++) {
       yield listModelToken[i];
@@ -374,7 +377,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           nameToken: value.name ?? '',
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
-          decimal: 18.0,
+          decimal: 18,
         ),
       );
       listJson.add(
@@ -385,7 +388,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           nameToken: value.name ?? '',
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
-          decimal: 18.0,
+          decimal: 18,
         ),
       );
     }
@@ -490,11 +493,11 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
-        await for (final element in getListDynamic(data)) {
+        for (final element in data) {
           print(element);
           checkShow.add(ModelToken.fromWalletCore(element));
         }
-        await for (final element in getTokenRealtime(checkShow)) {
+        for (final element in checkShow) {
           if (element.isShow) {
             print(element.nameShortToken);
             listTokenFromWalletCore.add(element);
@@ -549,7 +552,7 @@ class WalletCubit extends BaseCubit<WalletState> {
               listNftFromWalletCore.add(cl);
             }
             listNFTStream.sink.add(listNftFromWalletCore);
-          } catch(e) {
+          } catch (e) {
             print(e);
           }
         }

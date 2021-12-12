@@ -378,10 +378,17 @@ class _WalletState extends State<WalletScreen>
                       },
                     );
                   },
-                  child: CircleAvatar(
-                    radius: 27.r,
-                    child: const Image(
-                      image: AssetImage(ImageAssets.ic_symbol),
+                  child: Container(
+                    width: 54.w,
+                    height: 54.h,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          '${ImageAssets.image_avatar}${cubit.randomAvatar()}'
+                          '.png',
+                        ),
+                      ),
+                      shape: BoxShape.circle,
                     ),
                   ),
                 ),
