@@ -59,9 +59,9 @@ class MainActivity : FlutterFragmentActivity() {
                 "changePassword" -> {
                     val oldPassword = call.argument<String>("oldPassword")
                         ?: return@setMethodCallHandler
-                    val changePassword = call.argument<String>("changePassword")
+                    val newPassword = call.argument<String>("newPassword")
                         ?: return@setMethodCallHandler
-                    changePassWordWallet(oldPassword, changePassword)
+                    changePassWordWallet(oldPassword, newPassword)
                 }
                 "savePassword" -> {
                     val password = call.argument<String>("password")
