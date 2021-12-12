@@ -9,8 +9,8 @@ import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/form/form_switch.dart';
-import 'package:Dfy/widgets/form/form_switch1.dart';
+import 'package:Dfy/widgets/form/form_switch_applock.dart';
+import 'package:Dfy/widgets/form/form_switch_face.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -138,7 +138,7 @@ class _BodyState extends State<_Body> {
                   StreamBuilder(
                     stream: widget.bLocCreateSeedPhrase.isCheckTouchID,
                     builder: (context, AsyncSnapshot<bool> snapshot) {
-                      return FromSwitch1(
+                      return FromSwitchFace(
                         bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
                         title: S.current.use_face,
                         isCheck: snapshot.data ?? false,
@@ -152,7 +152,7 @@ class _BodyState extends State<_Body> {
                   StreamBuilder(
                     stream: widget.bLocCreateSeedPhrase.isCheckAppLock,
                     builder: (context, AsyncSnapshot<bool> snapshot) {
-                      return FromSwitch(
+                      return FromSwitchAppLock(
                         bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
                         title: S.current.wallet_app_lock,
                         isCheck: snapshot.data ?? false,

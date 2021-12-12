@@ -27,7 +27,7 @@ class _ChooseTokenState extends State<ChooseToken> {
           FormSearch(
             hint: S.current.search_token,
             bloc: widget.bloc,
-            urlIcon1: ImageAssets.ic_search,
+            urlIcon: ImageAssets.ic_search,
           ),
           spaceH12,
           line,

@@ -4,11 +4,11 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CheckBoxCustom extends StatelessWidget {
+class CheckBoxCreateSeedPhrase extends StatelessWidget {
   final String title;
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
-  const CheckBoxCustom({
+  const CheckBoxCreateSeedPhrase({
     Key? key,
     required this.title,
     required this.bLocCreateSeedPhrase,

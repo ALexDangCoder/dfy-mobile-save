@@ -5,7 +5,6 @@ import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'price_service.g.dart';
-//https://dev2.gwapi.defiforyou.uk/nft-market-svc/public-api/market/coin-price?symbols
 @RestApi()
 abstract class PriceClient {
   @factoryMethod

@@ -26,7 +26,6 @@ Future<void> mainApp() async {
     ),
   );
   configureDependencies();
-  configureDependenciesTest();
   runApp(const MyApp());
 }
 
@@ -42,8 +41,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    trustWalletChannel.setMethodCallHandler(nativeMethodCallHandler);
     super.initState();
+    trustWalletChannel.setMethodCallHandler(nativeMethodCallHandler);
     callAllApi();
   }
 
@@ -93,20 +92,6 @@ class _MyAppState extends State<MyApp> {
 
   Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
     switch (methodCall.method) {
-      case 'checkPasswordCallback':
-        break;
-      case 'importNftCallback':
-        print('importNftCallback ${methodCall.arguments}');
-        break;
-      case 'getNFTCallback':
-        print('getNFTCallback ${methodCall.arguments}');
-        break;
-      case 'importTokenCallback':
-        print('importTokenCallback ${methodCall.arguments}');
-        break;
-      case 'checkTokenCallback':
-        print('checkTokenCallback ${methodCall.arguments}');
-        break;
       case 'getConfigCallback':
         await PrefsService.saveAppLockConfig(
           methodCall.arguments['isAppLock'].toString(),
@@ -117,7 +102,7 @@ class _MyAppState extends State<MyApp> {
         if (methodCall.arguments['isWalletExist']) {
           await PrefsService.saveFirstAppConfig('false');
         }
-        print('isWa lletExit ${methodCall.arguments['isWalletExist']}');
+        print('isWalletExit ${methodCall.arguments['isWalletExist']}');
     }
   }
 
@@ -129,17 +114,6 @@ class _MyAppState extends State<MyApp> {
     try {
       final data = {};
       await trustWalletChannel.invokeMethod('getConfig', data);
-    } on PlatformException {}
-  }
-
-  Future<void> importNft() async {
-    try {
-      final data = {
-        'walletAddress': '123',
-        'jsonNft':
-            '{"name": "Mobile Test Collection","symbol": "DFY-NFT","contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","listNft": [{"id": 0,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmZbN93DKoW9owJ2QqJ8RM7hqCW5PgotRK3y8mnprU5VQW"},{"id": 1,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmTpRapaL9WbEVJibJrBzQ4nkggg9mSJK7DVK3mL6hpMEy"},{"id": 2,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c"},{"id": 3,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmXCQTqZYYyDCF6GcnnophSZryRQ3HJTvEjokoRFYbH5MG"}]}',
-      };
-      await trustWalletChannel.invokeMethod('importNft', data);
     } on PlatformException {}
   }
 
