@@ -85,7 +85,9 @@ class _SettingWalletState extends State<SettingWallet> {
                         ),
                       ).whenComplete(
                         () => {
-                          widget.cubit.listSelectAccBloc.clear(),
+                          widget.cubit.listWallet.clear(),
+                          widget.cubit.getListWallets(),
+                          widget.cubit.getListAcc(),
                         },
                       );
                     },

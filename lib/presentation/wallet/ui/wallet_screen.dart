@@ -69,7 +69,7 @@ class _WalletState extends State<WalletScreen>
       fToast = FToast();
       fToast.init(context);
       if (cubit.nameWallet == '') {
-        cubit.getListWallets('pass');
+        cubit.getListWallets();
       }
     }
   }
@@ -375,6 +375,9 @@ class _WalletState extends State<WalletScreen>
                     ).whenComplete(
                       () => {
                         cubit.listSelectAccBloc.clear(),
+                        cubit.listWallet.clear(),
+                        cubit.getListWallets(),
+                        cubit.getListAcc(),
                       },
                     );
                   },

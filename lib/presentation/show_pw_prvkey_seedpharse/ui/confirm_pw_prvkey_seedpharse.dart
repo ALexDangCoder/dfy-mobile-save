@@ -25,7 +25,6 @@ class ConfirmPWShowPRVSeedPhr extends StatefulWidget {
 }
 
 class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
-  String password = '123456aA@';
   late TextEditingController txtController;
 
   @override
@@ -33,7 +32,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
     trustWalletChannel.setMethodCallHandler(
       widget.cubit.nativeMethodCallBackTrustWallet,
     );
-    widget.cubit.getListWallets(password: 'pass');
+    widget.cubit.getListWallets();
     txtController = TextEditingController();
     widget.cubit.getConfig();
     super.initState();
@@ -45,7 +44,22 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
         ConfirmPwPrvKeySeedpharseState>(
       listener: (context, state) {
         if (state is ConfirmPWToShowSuccess) {
-          //todo viết hàm chuyển màn hình xem seedphase ở đây a hải
+          widget.cubit.getListPrivateKeyAndSeedPhrase(
+            password: txtController.text,
+          );
+          widget.cubit.listPrivateKey.sink.add(widget.cubit.listWallet);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PrivateKeySeedPhrase(
+                bloc: widget.cubit,
+              ),
+            ),
+          ).whenComplete(
+            () => {
+              // widget.cubit.listWallet.clear(),
+            },
+          );
         } else {
           _showDialog(
             alert: S.current.warn_old_pw_not_match,
@@ -73,7 +87,6 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
               SizedBox(
                 height: 40.h,
               ),
-              // cubit.isEnableBtnStream,
               StreamBuilder<bool>(
                 stream: widget.cubit.isEnableBtnStream,
                 builder: (context, snapshot) {
@@ -82,27 +95,6 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
                       if (snapshot.data ?? false) {
                         widget.cubit
                             .checkPassword(password: txtController.text);
-                        // if (widget.cubit.isValidPW) {
-                        //   widget.cubit.getListPrivateKeyAndSeedPhrase(
-                        //     password: '123456aA@',
-                        //   );
-                        //   widget.cubit.listPrivateKey.sink
-                        //       .add(widget.cubit.listWallet);
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => PrivateKeySeedPhrase(
-                        //         bloc: widget.cubit,
-                        //       ),
-                        //     ),
-                        //   ).whenComplete(
-                        //     () => {
-                        //       // widget.cubit.listWallet.clear(),
-                        //     },
-                        //   );
-                        // } else {
-                        //   //nothing
-                        // }
                       }
                     },
                     child: ButtonGold(

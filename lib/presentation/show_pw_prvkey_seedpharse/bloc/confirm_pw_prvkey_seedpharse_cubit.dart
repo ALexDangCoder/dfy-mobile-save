@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/private_key_model.dart';
@@ -76,6 +78,12 @@ class ConfirmPwPrvKeySeedpharseCubit
     }
   }
 
+  int randomAvatar() {
+    final Random rd = Random();
+
+    return rd.nextInt(10);
+  }
+
   void sendPrivateKey(int _index) {
     privateKeySubject.sink.add(listWallet[_index]);
   }
@@ -106,6 +114,7 @@ class ConfirmPwPrvKeySeedpharseCubit
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           listWalletCore.add(Wallet.fromJson(element));
+          print('ádfdasfdsafasdf 11111111111111111111111111111');
         }
         break;
       case 'exportWalletCallBack':
@@ -123,7 +132,7 @@ class ConfirmPwPrvKeySeedpharseCubit
       case 'checkPasswordCallback':
         bool isCorrect = false;
         isCorrect = await methodCall.arguments['isCorrect'];
-        if(isCorrect) {
+        if (isCorrect) {
           emit(ConfirmPWToShowSuccess());
         } else {
           emit(ConfirmPWToShowFail());
@@ -134,11 +143,9 @@ class ConfirmPwPrvKeySeedpharseCubit
     }
   }
 
-  Future<void> getListWallets({required String password}) async {
+  Future<void> getListWallets() async {
     try {
-      final data = {
-        'password': password,
-      };
+      final data = {};
       await trustWalletChannel.invokeMethod('getListWallets', data);
     } on PlatformException {
       //nothing
@@ -161,7 +168,6 @@ class ConfirmPwPrvKeySeedpharseCubit
 
     }
   }
-
 
   Future<void> checkPassword({required String password}) async {
     try {

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:math';
+import 'dart:math' hide log;
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -20,6 +19,7 @@ import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
@@ -67,17 +67,19 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  Future<String> getIcon(String addressToken) async {
+    for (final ModelToken value in checkShow) {
+      if (addressToken == value.tokenAddress) {
+        return value.iconToken;
+      }
+    }
+    return '';
+  }
+
   String nftName = '';
   String iconNFT = '';
 
-  // contract: '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
-  // name: 'Name of NFT',
-  // blockchain: 'Binance Smart Chain',
-  // description:
-  // 'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
-  // id: '124124',
-  // link: 'https://goole.com',
-  // standard: 'ERC-721',
+
   //todo getNftInfoByAddress
   Future<void> getNftInfoByAddress({
     required String nftAddress,
@@ -109,9 +111,10 @@ class WalletCubit extends BaseCubit<WalletState> {
           isCheck: true,
           addressWallet: value.address,
           amountWallet: balanceOfBnb,
-          imported: false,
+          imported: value.isImportWallet,
           nameWallet: value.name,
-          url: 'assets/images/Ellipse 39.png',
+          url: '${ImageAssets.image_avatar}${randomAvatar()}'
+              '.png',
         );
         listSelectAccBloc.add(acc);
       } else {
@@ -119,9 +122,10 @@ class WalletCubit extends BaseCubit<WalletState> {
           isCheck: false,
           addressWallet: value.address,
           amountWallet: balanceOfBnb,
-          imported: false,
+          imported: value.isImportWallet,
           nameWallet: value.name,
-          url: 'assets/images/Ellipse 39.png',
+          url: '${ImageAssets.image_avatar}${randomAvatar()}'
+              '.png',
         );
         listSelectAccBloc.add(acc);
       }
@@ -139,8 +143,6 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   final List<ModelToken> checkShow = [];
   String tokenFullName = '';
-  String iconToken =
-      'https://assets.coingecko.com/coins/images/825/thumb/binance-coin-logo.png?1547034615';
   bool checkLogin = false;
   List<TokenModel> listStart = [];
   List<Wallet> listWallet = [];
@@ -314,7 +316,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   TokenRepository get _tokenRepository => Get.find();
 
   PriceRepository get _priceRepository => Get.find();
-
   List<TokenPrice> listTokenExchange = [];
 
   Future<void> getListPrice(String symbols) async {
@@ -322,8 +323,13 @@ class WalletCubit extends BaseCubit<WalletState> {
         await _priceRepository.getListPriceToken(symbols);
     result.when(
       success: (res) {
-        for (final element in res) {
-          listTokenExchange.add(element);
+        if (res.isEmpty) {
+          price = 0;
+        } else {
+          price = res.first.price ?? 0.0;
+          for (final element in res) {
+            listTokenExchange.add(element);
+          }
         }
       },
       error: (error) {
@@ -477,7 +483,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'checkTokenCallback':
         isHaveToken = await methodCall.arguments['isExist'];
-
         if (isHaveToken) {
           isTokenEnterAddress.sink.add(false);
           _messSubject.sink.add(S.current.already_exist);
@@ -494,12 +499,10 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
-          print(element);
           checkShow.add(ModelToken.fromWalletCore(element));
         }
         for (final element in checkShow) {
           if (element.isShow) {
-            print(element.nameShortToken);
             listTokenFromWalletCore.add(element);
           }
         }
@@ -511,13 +514,12 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
 
       case 'getListWalletsCallback':
+        listSelectAccBloc.clear();
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           listWallet.add(Wallet.fromJson(element));
         }
-        addressWalletCore = listWallet.first.address!;
-        nameWallet = listWallet.first.name!;
-        walletName.add(nameWallet);
+        getWalletDetailInfo();
         addressWallet.add(addressWalletCore);
         break;
       case 'getNFTCallback':
@@ -571,6 +573,13 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  int indexWallet = 0;
+  void getWalletDetailInfo() {
+    addressWalletCore = listWallet[indexWallet].address!;
+    nameWallet = listWallet[indexWallet].name!;
+    walletName.add(nameWallet);
+  }
+
   Future<void> getConfig() async {
     try {
       final data = {};
@@ -602,11 +611,9 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getAddressWallet() async {}
 
-  Future<void> getListWallets(String password) async {
+  Future<void> getListWallets() async {
     try {
-      final data = {
-        'password': password,
-      };
+      final data = {};
       await trustWalletChannel.invokeMethod('getListWallets', data);
     } on PlatformException {
       //nothing
