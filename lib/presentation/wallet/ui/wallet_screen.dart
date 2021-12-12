@@ -36,11 +36,9 @@ class WalletScreen extends StatefulWidget {
     Key? key,
     required this.index,
     this.wallet,
-    required this.checkWallet,
   }) : super(key: key);
   final int index;
   final Wallet? wallet;
-  final bool checkWallet;
 
   @override
   _WalletState createState() => _WalletState();
@@ -60,13 +58,10 @@ class _WalletState extends State<WalletScreen>
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     if (widget.index == 1) {
-      if (widget.checkWallet == true) {
-        cubit.getListCategory();
-      }
       cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
       cubit.addressWallet
           .add(widget.wallet?.address ?? cubit.addressWalletCore);
-
+      cubit.getListCategory();
       cubit.walletName.stream.listen((event) {
         changeName.text = event;
       });
@@ -76,9 +71,6 @@ class _WalletState extends State<WalletScreen>
       if (cubit.nameWallet == '') {
         cubit.getListWallets('pass');
       }
-      cubit.getTokens(cubit.addressWalletCore);
-      cubit.getNFT(cubit.addressWalletCore);
-      cubit.getListPrice('BNB,BTC');
     }
   }
 
@@ -125,7 +117,6 @@ class _WalletState extends State<WalletScreen>
                     right: 10.w,
                   ),
                   child: SizedBox(
-                    height: 54.h,
                     width: 323.w,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -365,7 +356,6 @@ class _WalletState extends State<WalletScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 125.h,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

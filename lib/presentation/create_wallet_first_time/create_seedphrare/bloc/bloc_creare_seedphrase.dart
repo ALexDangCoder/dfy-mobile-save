@@ -1,3 +1,4 @@
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +24,10 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
 
   BehaviorSubject<bool> isSeedPhraseImportFailed =
       BehaviorSubject.seeded(false);
+
+  Future<void> setFirstTime() async {
+   await PrefsService.saveFirstAppConfig('false');
+  }
 
   final String passWord;
   List<String> listTitle1 = [];

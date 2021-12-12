@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -96,7 +97,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     return balanceOfBnb;
   }
 
-  void getListWallet({
+  Future<void> getListWallet({
     required String addressWallet,
   }) async {
     for (final Wallet value in listWallet) {
@@ -104,7 +105,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         walletAddress: value.address ?? '',
       );
       if (addressWallet == value.address) {
-        AccountModel acc = AccountModel(
+        final AccountModel acc = AccountModel(
           isCheck: true,
           addressWallet: value.address,
           amountWallet: balanceOfBnb,
@@ -114,7 +115,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         );
         listSelectAccBloc.add(acc);
       } else {
-        AccountModel acc = AccountModel(
+        final AccountModel acc = AccountModel(
           isCheck: false,
           addressWallet: value.address,
           amountWallet: balanceOfBnb,
@@ -330,7 +331,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         getTokenInfoByAddressList(res: res);
       },
       error: (error) {
-        updateStateError();
+        getTokens(addressWalletCore);
       },
     );
   }
@@ -348,12 +349,17 @@ class WalletCubit extends BaseCubit<WalletState> {
       yield listModelToken[i];
     }
   }
+  Stream<dynamic> getListDynamic(List<dynamic> listModelToken) async* {
+    for (int i = 0; i < listModelToken.length; i++) {
+      yield listModelToken[i];
+    }
+  }
 
   Future<void> getTokenInfoByAddressList({
     required List<TokenInf> res,
   }) async {
     final List<ModelToken> listJson = [];
-    await for (final value in getListTokenRealtime(res)) {
+    for (final value in res) {
       getListModelToken.add(
         ModelToken(
           tokenAddress: value.address ?? '',
@@ -476,11 +482,13 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
-        for (final element in data) {
+        await for (final element in getListDynamic(data)) {
+          print(element);
           checkShow.add(ModelToken.fromWalletCore(element));
         }
-        for (final element in checkShow) {
+        await for (final element in getTokenRealtime(checkShow)) {
           if (element.isShow) {
+            print(element.nameShortToken);
             listTokenFromWalletCore.add(element);
           }
         }

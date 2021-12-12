@@ -82,6 +82,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
+                restoreCubit.setFirstTime();
                 //todo theem pass
                 return CreateSuccessfully(
                   bLocCreateSeedPhrase:
