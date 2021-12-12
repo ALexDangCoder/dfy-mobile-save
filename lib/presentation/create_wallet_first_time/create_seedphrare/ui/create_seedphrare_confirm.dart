@@ -75,7 +75,7 @@ class _BodyState extends State<_Body> {
         if (widget.bLocCreateSeedPhrase.isSuccess) {
           if (state is SeedNavState) {
             if (widget.typeScreen == TypeScreen.one) {
-              PrefsService.saveFirstAppConfig('false');
+              widget.bLocCreateSeedPhrase.setFirstTime();
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -95,7 +95,7 @@ class _BodyState extends State<_Body> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    PrefsService.saveFirstAppConfig('false');
+                    widget.bLocCreateSeedPhrase.setFirstTime();
                     return CreateSuccessfully(
                       type: KeyType.CREATE,
                       wallet: Wallet(

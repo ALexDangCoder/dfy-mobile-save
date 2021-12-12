@@ -1,4 +1,5 @@
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -323,7 +324,10 @@ class RestoreCubit extends Cubit<RestoreState> {
       return false;
     }
   }
-
+  ///setFirstTime
+  Future<void> setFirstTime() async {
+    await PrefsService.saveFirstAppConfig('false');
+  }
   void dispose() {
     _behaviorSubject.close();
     _stringSubject.close();
