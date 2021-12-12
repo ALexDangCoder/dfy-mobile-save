@@ -59,9 +59,9 @@ class MainActivity : FlutterFragmentActivity() {
                 "changePassword" -> {
                     val oldPassword = call.argument<String>("oldPassword")
                         ?: return@setMethodCallHandler
-                    val changePassword = call.argument<String>("changePassword")
+                    val newPassword = call.argument<String>("newPassword")
                         ?: return@setMethodCallHandler
-                    changePassWordWallet(oldPassword, changePassword)
+                    changePassWordWallet(oldPassword, newPassword)
                 }
                 "savePassword" -> {
                     val password = call.argument<String>("password")
@@ -94,8 +94,6 @@ class MainActivity : FlutterFragmentActivity() {
                     importWallet(type, content)
                 }
                 "getListWallets" -> {
-                    val password = call.argument<String>("password")
-                        ?: return@setMethodCallHandler
                     getListWallets()
                 }
                 "generateWallet" -> {
@@ -377,7 +375,8 @@ class MainActivity : FlutterFragmentActivity() {
                                 walletName,
                                 address,
                                 content,
-                                privateKey.toByteArray().toHexString(false)
+                                privateKey.toByteArray().toHexString(false),
+                                true
                             )
                         )
                         appPreference.saveListWallet(listWallet)
@@ -407,7 +406,8 @@ class MainActivity : FlutterFragmentActivity() {
                                 walletName,
                                 address,
                                 "",
-                                content
+                                content,
+                                true
                             )
                         )
                         appPreference.saveListWallet(listWallet)
@@ -447,6 +447,7 @@ class MainActivity : FlutterFragmentActivity() {
             val data = HashMap<String, Any>()
             data["walletName"] = it.walletName
             data["walletAddress"] = it.walletAddress
+            data["isImportWallet"] = it.isImportWallet
             hasMap.add(data)
         }
         channel?.invokeMethod("getListWalletsCallback", hasMap)
@@ -482,7 +483,8 @@ class MainActivity : FlutterFragmentActivity() {
                 walletName,
                 walletAddress,
                 seedPhrase,
-                privateKey
+                privateKey,
+                false
             )
         )
         appPreference.saveListWallet(listWallet)

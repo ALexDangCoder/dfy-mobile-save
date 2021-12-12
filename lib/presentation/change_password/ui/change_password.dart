@@ -4,8 +4,10 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/change_password/bloc/change_password_cubit.dart';
 import 'package:Dfy/presentation/change_password/ui/components/form_setup_password.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/success/successful_by_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,21 +53,20 @@ class _ChangePasswordState extends State<ChangePassword> {
         bloc: passwordCubit,
         listener: (context, state) {
           if (state is ChangePasswordSuccess) {
-            _showDialog(alert: "Sieu quang huy");
-            // showSuccessfulByTitle(
-            //   title: S.current.change_pw_success,
-            //   callBack: () {
-            //     Navigator.of(context).pushAndRemoveUntil(
-            //       MaterialPageRoute(
-            //         builder: (context) => const MainScreen(
-            //           index: 2,
-            //         ),
-            //       ),
-            //       (route) => route.isFirst,
-            //     );
-            //   },
-            //   context: context,
-            // );
+            showSuccessfulByTitle(
+              title: S.current.change_pw_success,
+              callBack: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 2,
+                    ),
+                  ),
+                  (route) => route.isFirst,
+                );
+              },
+              context: context,
+            );
           } else {
             _showDialog(alert: S.current.not_match,);
           }
@@ -134,12 +135,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                             _txtOldPW.text,
                             // passwordOld: oldPWFetchFromApi,
                           );
-
-                          // passwordCubit.changePasswordIntoWalletCore(
-                          //   oldPassword: _txtOldPW.text,
-                          //   newPassword: _txtNewPW.text,
-                          // );
-
                           if (passwordCubit.checkAllValidate(
                             // oldPWFetch: oldPWFetchFromApi,
                             oldPW: _txtOldPW.text,
@@ -150,25 +145,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                               oldPassword: _txtOldPW.text,
                               newPassword: _txtNewPW.text,
                             );
-                            // passwordCubit.changePassword(
-                            //   oldPassword: _txtOldPW.text,
-                            //   newPassword: _txtNewPW.text,
-                            // );
-                            // showSuccessfulByTitle(
-                            //   title: S.current.change_pw_success,
-                            //   callBack: () {
-                            //     Navigator.of(context).pushAndRemoveUntil(
-                            //       MaterialPageRoute(
-                            //         builder: (context) =>
-                            //         const MainScreen(
-                            //           index: 2,
-                            //         ),
-                            //       ),
-                            //           (route) => route.isFirst,
-                            //     );
-                            //   },
-                            //   context: context,
-                            // );
                           } else {
                             //nothing
                           }
