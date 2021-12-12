@@ -8,30 +8,30 @@ part 'token_response.g.dart';
 class TokenResponse extends Equatable {
   @JsonKey(name: 'id')
   int? id;
+  @JsonKey(name: 'usdExchange')
+  double? usdExchange;
+  @JsonKey(name: 'symbol')
+  String? symbol;
+  @JsonKey(name: 'address')
+  String? address;
   @JsonKey(name: 'name')
   String? name;
+  @JsonKey(name: 'iconUrl')
+  String? iconUrl;
   @JsonKey(name: 'whitelistCollateral')
   bool? whitelistCollateral;
   @JsonKey(name: 'whitelistSupply')
   bool? whitelistSupply;
-  @JsonKey(name: 'usdExchange')
-  double? usdExchange;
-  @JsonKey(name: 'address')
-  String? address;
-  @JsonKey(name: 'symbol')
-  String? symbol;
-  @JsonKey(name: 'iconUrl')
-  String? iconUrl;
 
   TokenResponse(
     this.id,
+    this.usdExchange,
+    this.symbol,
+    this.address,
+    this.name,
+    this.iconUrl,
     this.whitelistCollateral,
     this.whitelistSupply,
-    this.usdExchange,
-    this.address,
-    this.symbol,
-    this.iconUrl,
-    this.name,
   );
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) =>
@@ -43,12 +43,13 @@ class TokenResponse extends Equatable {
   List<Object?> get props => [];
 
   TokenInf toDomain() => TokenInf(
-        name: name,
         id: id,
-        whitelistCollateral: whitelistCollateral,
-        symbol: symbol,
-        whitelistSupply: whitelistSupply,
         usdExchange: usdExchange,
+        symbol: symbol,
         address: address,
+        name: name,
+        iconUrl: iconUrl,
+        whitelistCollateral: whitelistCollateral,
+        whitelistSupply: whitelistSupply,
       );
 }

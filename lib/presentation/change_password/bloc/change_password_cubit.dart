@@ -46,7 +46,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     try {
       final data = {
         'oldPassword': oldPassword,
-        'newPassword': newPassword,
+        'changePassword': newPassword,
       };
       await trustWalletChannel.invokeMethod('changePassword', data);
     } on PlatformException {

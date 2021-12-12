@@ -21,14 +21,14 @@ class ModelToken {
   });
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'tokenAddress': tokenAddress,
-        'nameToken': nameToken,
-        'nameShortToken': nameShortToken,
-        'iconToken': iconToken,
-        'exchangeRate': exchangeRate,
-        'walletAddress': walletAddress,
-        'decimal': decimal,
-      };
+    'tokenAddress': tokenAddress,
+    'nameToken': nameToken,
+    'nameShortToken': nameShortToken,
+    'iconToken': iconToken,
+    'exchangeRate': exchangeRate,
+    'walletAddress': walletAddress,
+    'decimal': decimal,
+  };
 
   ModelToken.init();
 
