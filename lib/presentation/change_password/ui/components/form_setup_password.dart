@@ -11,7 +11,6 @@ Container formSetupPassWord({
   String? oldPassWordFetch,
   required ChangePasswordCubit cubit,
   required typeForm type,
-  required String newPW,
 }) {
   if (type == typeForm.OLD) {
     int index = 0;
@@ -100,6 +99,7 @@ Container formSetupPassWord({
             child: TextFormField(
               onChanged: (value) {
                 cubit.checkHaveValueNewPW(value);
+                cubit.currentCfPW.sink.add(value);
                 cubit.showTxtWarningNewPW(value);
               },
               obscureText: snapshot.data ?? true,
@@ -165,7 +165,10 @@ Container formSetupPassWord({
             child: TextFormField(
               onChanged: (value) {
                 cubit.checkHaveValueConfirmPW(value);
-                cubit.showTxtWarningConfirmPW(value, newPassword: newPW);
+                cubit.showTxtWarningConfirmPW(
+                  value,
+                  newPassword: cubit.currentCfPW.value,
+                );
               },
               obscureText: snapshot.data ?? true,
               style: textNormal(
