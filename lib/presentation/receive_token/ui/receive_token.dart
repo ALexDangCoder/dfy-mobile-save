@@ -75,7 +75,7 @@ class _ReceiveState extends State<Receive> {
   @override
   Widget build(BuildContext context) {
     return BaseBottomSheet(
-      title: '${S.current.receive} ${widget.symbol!}',
+      title: textTitle(widget.type),
       child: CustomRefreshIndicator(
         onRefresh: () async {
           await receiveCubit.getListPrice(widget.symbol!);
@@ -170,7 +170,7 @@ class _ReceiveState extends State<Receive> {
                       children: [
                         Text(
                           '${formatCoin.format(quantity)}'
-                              ' ${widget.symbol}',
+                          ' ${widget.symbol}',
                           style: textNormal(
                             AppTheme.getInstance().fillColor(),
                             24,
@@ -384,54 +384,15 @@ class _ReceiveState extends State<Receive> {
     );
   }
 
-// String textTitle(TokenType type) {
-//   if (type == TokenType.DFY) {
-//     return S.current.receive_dfy;
-//   } else if (type == TokenType.NFT) {
-//     return S.current.receive_nft;
-//   } else if (type == TokenType.QR) {
-//     return S.current.scan_qr_code;
-//   } else {
-//     return '';
-//   }
-// }
-
-// Widget title(TokenType type) {
-//   if (type == TokenType.DFY) {
-//     return Text(
-//       S.current.receive_dfy,
-//       style: textNormal(
-//         null,
-//         20,
-//       ).copyWith(
-//         fontWeight: FontWeight.w700,
-//         fontStyle: FontStyle.normal,
-//       ),
-//     );
-//   } else if (type == TokenType.NFT) {
-//     return Text(
-//       S.current.receive_nft,
-//       style: textNormal(
-//         null,
-//         20,
-//       ).copyWith(
-//         fontWeight: FontWeight.w700,
-//         fontStyle: FontStyle.normal,
-//       ),
-//     );
-//   } else if (type == TokenType.QR) {
-//     return Text(
-//       S.current.scan_qr_code,
-//       style: textNormal(
-//         null,
-//         20,
-//       ).copyWith(
-//         fontWeight: FontWeight.w700,
-//         fontStyle: FontStyle.normal,
-//       ),
-//     );
-//   } else {
-//     return Container();
-//   }
-// }
+  String textTitle(TokenType type) {
+    if (type == TokenType.DFY) {
+      return '${S.current.receive} ${widget.symbol!}';
+    } else if (type == TokenType.NFT) {
+      return S.current.receive_nft;
+    } else if (type == TokenType.QR) {
+      return S.current.scan_qr_code;
+    } else {
+      return '';
+    }
+  }
 }
