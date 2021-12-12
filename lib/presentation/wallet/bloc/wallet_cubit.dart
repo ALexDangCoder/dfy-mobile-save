@@ -336,7 +336,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
     result.when(
       success: (res) {
-        log(res.first.iconUrl!);
         getTokenInfoByAddressList(res: res);
       },
       error: (error) {
