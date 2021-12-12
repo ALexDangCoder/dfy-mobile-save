@@ -8,3 +8,15 @@ class ConfirmPwPrvKeySeedpharseInitial extends ConfirmPwPrvKeySeedpharseState {
   @override
   List<Object> get props => [];
 }
+
+class ConfirmPWToShowSuccess extends ConfirmPwPrvKeySeedpharseState {
+  @override
+  List<Object?> get props => [];
+
+}
+
+class ConfirmPWToShowFail extends ConfirmPwPrvKeySeedpharseState {
+  @override
+  List<Object?> get props => [];
+
+}

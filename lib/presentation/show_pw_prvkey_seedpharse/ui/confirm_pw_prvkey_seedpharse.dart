@@ -9,6 +9,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../main.dart';
@@ -40,103 +41,120 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
-      title: S.current.prv_key_ft_seed_phr,
-      text: ImageAssets.ic_close,
-      isImage: true,
-      onRightClick: () {
-        Navigator.pop(context);
+    return BlocConsumer<ConfirmPwPrvKeySeedpharseCubit,
+        ConfirmPwPrvKeySeedpharseState>(
+      listener: (context, state) {
+        if (state is ConfirmPWToShowSuccess) {
+          //todo show seedpharse success
+        } else {
+          _showDialog(
+            alert: S.current.warn_old_pw_not_match,
+          );
+        }
       },
-      child: Column(
-        children: [
-          spaceH24,
-          formSetupPassWordConfirm(
-            hintText: S.current.enter_password,
-            controller: txtController,
-            isShow: true,
-          ),
-          showTextValidatePW(),
-          SizedBox(
-            height: 40.h,
-          ),
-          // cubit.isEnableBtnStream,
-          StreamBuilder<bool>(
-            stream: widget.cubit.isEnableBtnStream,
-            builder: (context, snapshot) {
-              return GestureDetector(
-                onTap: () {
-                  if (snapshot.data ?? false) {
-                    if (widget.cubit.isValidPW) {
-                      widget.cubit.getListPrivateKeyAndSeedPhrase(
-                        password: '123456aA@',
-                      );
-                      widget.cubit.listPrivateKey.sink
-                          .add(widget.cubit.listWallet);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PrivateKeySeedPhrase(
-                            bloc: widget.cubit,
-                          ),
-                        ),
-                      ).whenComplete(
-                        () => {
-                          // widget.cubit.listWallet.clear(),
-                        },
-                      );
-                    } else {
-                      //nothing
-                    }
-                  }
+      bloc: widget.cubit,
+      builder: (context, state) {
+        return BaseBottomSheet(
+          title: S.current.prv_key_ft_seed_phr,
+          text: ImageAssets.ic_close,
+          isImage: true,
+          onRightClick: () {
+            Navigator.pop(context);
+          },
+          child: Column(
+            children: [
+              spaceH24,
+              formSetupPassWordConfirm(
+                hintText: S.current.enter_password,
+                controller: txtController,
+                isShow: true,
+              ),
+              showTextValidatePW(),
+              SizedBox(
+                height: 40.h,
+              ),
+              // cubit.isEnableBtnStream,
+              StreamBuilder<bool>(
+                stream: widget.cubit.isEnableBtnStream,
+                builder: (context, snapshot) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (snapshot.data ?? false) {
+                        widget.cubit
+                            .checkPassword(password: txtController.text);
+                        // if (widget.cubit.isValidPW) {
+                        //   widget.cubit.getListPrivateKeyAndSeedPhrase(
+                        //     password: '123456aA@',
+                        //   );
+                        //   widget.cubit.listPrivateKey.sink
+                        //       .add(widget.cubit.listWallet);
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => PrivateKeySeedPhrase(
+                        //         bloc: widget.cubit,
+                        //       ),
+                        //     ),
+                        //   ).whenComplete(
+                        //     () => {
+                        //       // widget.cubit.listWallet.clear(),
+                        //     },
+                        //   );
+                        // } else {
+                        //   //nothing
+                        // }
+                      }
+                    },
+                    child: ButtonGold(
+                      title: S.current.continue_s,
+                      isEnable: snapshot.data ?? false,
+                    ),
+                  );
                 },
-                child: ButtonGold(
-                  title: S.current.continue_s,
-                  isEnable: snapshot.data ?? false,
-                ),
-              );
-            },
-          ),
-          SizedBox(
-            height: 40.h,
-          ),
+              ),
+              SizedBox(
+                height: 40.h,
+              ),
 
-          //todo handel scan finger or faceID
-          StreamBuilder<bool>(
-            stream: widget.cubit.isSuccessWhenScanStream,
-            builder: (context, snapshot) {
-              return Visibility(
-                child: GestureDetector(
-                  onTap: () async {
-                    await widget.cubit
-                        .authenticate(); //todo change stream not bloc
-                    if (snapshot.data == true) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return PrivateKeySeedPhrase(
-                              bloc: widget.cubit,
-                            );
-                          },
-                        ),
-                      );
-                    } else {
-                      //nothing
-                    }
-                  },
-                  child: Platform.isIOS
-                      ? const Image(
-                          image: AssetImage(ImageAssets.ic_face_id),
-                        )
-                      : const Image(
-                          image: AssetImage(ImageAssets.ic_finger),
-                        ),
-                ),
-              );
-            },
-          )
-        ],
-      ),
+              //todo handel scan finger or faceID, done
+              StreamBuilder<bool>(
+                stream: widget.cubit.isSuccessWhenScanStream,
+                builder: (context, snapshot) {
+                  return Visibility(
+                    child: GestureDetector(
+                      onTap: () async {
+                        await widget.cubit
+                            .authenticate(); //todo change stream not bloc
+                        if (snapshot.data == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return PrivateKeySeedPhrase(
+                                  bloc: widget.cubit,
+                                );
+                              },
+                            ),
+                          );
+                        } else {
+                          //nothing
+                        }
+                      },
+                      child: Platform.isIOS
+                          ? const Image(
+                              image: AssetImage(ImageAssets.ic_face_id),
+                            )
+                          : const Image(
+                              image: AssetImage(ImageAssets.ic_finger),
+                            ),
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -245,6 +263,71 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  void _showDialog({String? alert, String? text}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                36.0.r,
+              ),
+            ),
+          ),
+          backgroundColor: AppTheme.getInstance().selectDialogColor(),
+          title: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Text(
+                  alert ?? S.current.password_is_not_correct,
+                  style: textNormalCustom(
+                    Colors.white,
+                    20.sp,
+                    FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              spaceH16,
+              Text(
+                text ?? S.current.please_try_again,
+                style: textNormalCustom(
+                  Colors.white,
+                  12.sp,
+                  FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            Divider(
+              height: 1.h,
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            Center(
+              child: TextButton(
+                child: Text(
+                  S.current.ok,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().fillColor(),
+                    20.sp,
+                    FontWeight.w700,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ],
         );
       },
     );
