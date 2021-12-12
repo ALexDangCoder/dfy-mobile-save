@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -96,7 +97,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     return balanceOfBnb;
   }
 
-  void getListWallet({
+  Future<void> getListWallet({
     required String addressWallet,
   }) async {
     for (final Wallet value in listWallet) {
@@ -104,7 +105,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         walletAddress: value.address ?? '',
       );
       if (addressWallet == value.address) {
-        AccountModel acc = AccountModel(
+        final AccountModel acc = AccountModel(
           isCheck: true,
           addressWallet: value.address,
           amountWallet: balanceOfBnb,
@@ -114,7 +115,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         );
         listSelectAccBloc.add(acc);
       } else {
-        AccountModel acc = AccountModel(
+        final AccountModel acc = AccountModel(
           isCheck: false,
           addressWallet: value.address,
           amountWallet: balanceOfBnb,
@@ -126,6 +127,12 @@ class WalletCubit extends BaseCubit<WalletState> {
       }
     }
     getListAcc();
+  }
+
+  int randomAvatar() {
+    final Random rd = Random();
+
+    return rd.nextInt(10);
   }
 
   bool checkWalletExist = false;
@@ -313,21 +320,16 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> getListPrice(String symbols) async {
     final Result<List<TokenPrice>> result =
         await _priceRepository.getListPriceToken(symbols);
-    print('sadfasdfasdfasd');
-    if (result.obs.value==null) {
-      print('nullllllllllllllllllllllllllllllllllllllllllllll');
-    } else {
-      print('111111111nullllllllllllllllllllllllllllllllllllllllllllll');
-      result.when(
-        success: (res) {
-          print(res.first.price ?? 0.0);
-        },
-        error: (error) {
-          log('eror');
-          updateStateError();
-        },
-      );
-    }
+    result.when(
+      success: (res) {
+        for (final element in res) {
+          listTokenExchange.add(element);
+        }
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
   }
 
   Future<void> getListCategory() async {
@@ -337,7 +339,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         getTokenInfoByAddressList(res: res);
       },
       error: (error) {
-        updateStateError();
+        getTokens(addressWalletCore);
       },
     );
   }
@@ -356,11 +358,17 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  Stream<dynamic> getListDynamic(List<dynamic> listModelToken) async* {
+    for (int i = 0; i < listModelToken.length; i++) {
+      yield listModelToken[i];
+    }
+  }
+
   Future<void> getTokenInfoByAddressList({
     required List<TokenInf> res,
   }) async {
     final List<ModelToken> listJson = [];
-    await for (final value in getListTokenRealtime(res)) {
+    for (final value in res) {
       getListModelToken.add(
         ModelToken(
           tokenAddress: value.address ?? '',
@@ -369,7 +377,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           nameToken: value.name ?? '',
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
-          decimal: 18.0,
+          decimal: 18,
         ),
       );
       listJson.add(
@@ -380,7 +388,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           nameToken: value.name ?? '',
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
-          decimal: 18.0,
+          decimal: 18,
         ),
       );
     }
@@ -486,10 +494,12 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
+          print(element);
           checkShow.add(ModelToken.fromWalletCore(element));
         }
         for (final element in checkShow) {
           if (element.isShow) {
+            print(element.nameShortToken);
             listTokenFromWalletCore.add(element);
           }
         }
@@ -542,7 +552,7 @@ class WalletCubit extends BaseCubit<WalletState> {
               listNftFromWalletCore.add(cl);
             }
             listNFTStream.sink.add(listNftFromWalletCore);
-          } catch(e) {
+          } catch (e) {
             print(e);
           }
         }
