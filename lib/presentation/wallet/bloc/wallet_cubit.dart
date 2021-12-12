@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
+import 'dart:math' hide log;
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -67,7 +67,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  Future<String> getIcon(String addressToken) async  {
+  Future<String> getIcon(String addressToken) async {
     for (final ModelToken value in checkShow) {
       if (addressToken == value.tokenAddress) {
         return value.iconToken;
@@ -79,14 +79,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   String nftName = '';
   String iconNFT = '';
 
-  // contract: '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
-  // name: 'Name of NFT',
-  // blockchain: 'Binance Smart Chain',
-  // description:
-  // 'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
-  // id: '124124',
-  // link: 'https://goole.com',
-  // standard: 'ERC-721',
+
   //todo getNftInfoByAddress
   Future<void> getNftInfoByAddress({
     required String nftAddress,
