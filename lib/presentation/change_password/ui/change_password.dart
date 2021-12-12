@@ -65,8 +65,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 },
                 context: context,
               );
-            }
-            else {
+            } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('ChangePW failed'),
@@ -92,6 +91,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                               // oldPassWordFetch: oldPWFetchFromApi,
                               cubit: passwordCubit,
                               type: typeForm.OLD,
+                              newPW: _txtNewPW.text,
                             ),
                             showTextValidateOldPassword(),
                             SizedBox(
@@ -102,6 +102,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                               hintText: S.current.new_pass,
                               cubit: passwordCubit,
                               type: typeForm.NEW,
+                              newPW: _txtNewPW.text,
                             ),
                             showTextValidateNewPassword(),
                             SizedBox(
@@ -112,6 +113,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                               hintText: S.current.confirm_new_password,
                               cubit: passwordCubit,
                               type: typeForm.CONFIRM,
+                              newPW: _txtNewPW.text,
                             ),
                             showTextValidateConfirmPassword(),
                             SizedBox(
@@ -133,14 +135,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                           onTap: () {
                             if (snapshot.data ?? false) {
                               //todo show fail when change pw fail
-                              // passwordCubit.showTxtWarningOldPW(
-                              //   _txtOldPW.text,
-                              //   passwordOld: oldPWFetchFromApi,
-                              // );
-                              passwordCubit.showTxtWarningNewPW(_txtNewPW.text);
-                              passwordCubit.showTxtWarningConfirmPW(
-                                _txtConfirmPW.text,
-                                newPassword: _txtNewPW.text,
+                              passwordCubit.showTxtWarningOldPW(
+                                _txtOldPW.text,
+                                // passwordOld: oldPWFetchFromApi,
                               );
 
                               // passwordCubit.changePasswordIntoWalletCore(

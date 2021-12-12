@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 ///=========== Colors for default when didn't setup app theme ===============
