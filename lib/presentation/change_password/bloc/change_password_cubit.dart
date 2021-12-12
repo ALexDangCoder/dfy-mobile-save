@@ -35,6 +35,8 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnCfPW =
       BehaviorSubject<String>.seeded('');
+  final BehaviorSubject<String> currentCfPW =
+      BehaviorSubject<String>();
 
   ///wallet core
   Future<void> changePasswordIntoWalletCore({
@@ -61,11 +63,9 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
         try {
           if (isSuccess) {
             emit(ChangePasswordSuccess());
-          } else {
+          }
+          else {
             emit(ChangePasswordFail());
-            // matchOldPWSink.add(true);
-            // txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
-            // isEnableButtonSink.add(false);
           }
         } catch(e) {
           print(e);
@@ -247,7 +247,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else if (!(value == newPassword && newPassword.isNotEmpty)) {
+    } else if (value != newPassword) {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_cf_pw);
       isEnableButtonSink.add(false);
