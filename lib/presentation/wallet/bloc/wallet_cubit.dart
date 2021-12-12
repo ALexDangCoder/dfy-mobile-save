@@ -370,7 +370,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           nameToken: value.name ?? '',
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
-          decimal: 18.0,
+          decimal: 18,
         ),
       );
       listJson.add(
@@ -381,7 +381,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           nameToken: value.name ?? '',
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
-          decimal: 18.0,
+          decimal: 18,
         ),
       );
     }
