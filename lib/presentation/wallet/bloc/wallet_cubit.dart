@@ -504,7 +504,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'getNFTCallback':
 
         ///NEW
-        {
           //get List Map from COre
           final List<Map<String, dynamic>> collectionsFromCore =
               await methodCall.arguments;
@@ -532,7 +531,6 @@ class WalletCubit extends BaseCubit<WalletState> {
             listNftFromWalletCore.add(cl);
           }
           listNFTStream.sink.add(listNftFromWalletCore);
-        }
         break;
       case 'importListNftCallback':
         break;
