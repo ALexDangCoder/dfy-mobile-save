@@ -247,7 +247,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else if (!(value == newPassword)) {
+    } else if (!(value == newPassword && newPassword.isNotEmpty)) {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_cf_pw);
       isEnableButtonSink.add(false);
