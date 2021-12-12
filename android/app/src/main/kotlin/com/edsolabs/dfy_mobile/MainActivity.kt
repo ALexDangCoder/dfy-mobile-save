@@ -94,8 +94,6 @@ class MainActivity : FlutterFragmentActivity() {
                     importWallet(type, content)
                 }
                 "getListWallets" -> {
-                    val password = call.argument<String>("password")
-                        ?: return@setMethodCallHandler
                     getListWallets()
                 }
                 "generateWallet" -> {
