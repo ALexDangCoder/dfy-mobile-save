@@ -124,9 +124,9 @@ class ConfirmPwPrvKeySeedpharseCubit
         bool isCorrect = false;
         isCorrect = await methodCall.arguments['isCorrect'];
         if(isCorrect) {
-          //todo emit success will show seedpharse
+          emit(ConfirmPWToShowSuccess());
         } else {
-          //todo emit fail will show seedpharse
+          emit(ConfirmPWToShowFail());
         }
         break;
       default:
