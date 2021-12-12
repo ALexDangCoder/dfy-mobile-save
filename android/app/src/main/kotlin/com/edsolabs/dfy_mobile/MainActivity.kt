@@ -449,6 +449,7 @@ class MainActivity : FlutterFragmentActivity() {
             val data = HashMap<String, Any>()
             data["walletName"] = it.walletName
             data["walletAddress"] = it.walletAddress
+            data["isImportWallet"] = it.isImportWallet
             hasMap.add(data)
         }
         channel?.invokeMethod("getListWalletsCallback", hasMap)
