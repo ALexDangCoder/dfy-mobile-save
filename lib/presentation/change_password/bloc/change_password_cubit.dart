@@ -18,7 +18,6 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   bool _haveValueOldPW = false;
   bool _haveValueNewPW = false;
   bool _haveValueConfirmPW = false;
-  bool isSuccess = false;
 
   final BehaviorSubject<bool> _validatePW = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _changePWSuccess =
@@ -53,11 +52,12 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     }
   }
 
+  // isSuccess: boolean
+
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'changePasswordCallback':
-        isSuccess = await methodCall.arguments['isSuccess'];
-        print(methodCall.arguments);
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
         try {
           if (isSuccess) {
             emit(ChangePasswordSuccess());
@@ -190,11 +190,14 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchOldPWSink.add(true);
       txtWarnOldPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else if (value != passwordOld) {
-      matchOldPWSink.add(true);
-      txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
-      isEnableButtonSink.add(false);
-    } else {
+    }
+
+    // else if (value != passwordOld) {
+    //   matchOldPWSink.add(true);
+    //   txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
+    //   isEnableButtonSink.add(false);
+    // }
+    else {
       matchOldPWSink.add(false);
       _flagOldPW = 1;
       if (_flagCfPW == 1 && _flagNewPW == 1 && _flagOldPW == 1) {
@@ -244,7 +247,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else if (!(value == newPassword)) {
+    } else if (!(value == newPassword && newPassword.isNotEmpty)) {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_cf_pw);
       isEnableButtonSink.add(false);
