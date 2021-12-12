@@ -40,6 +40,7 @@ class TransactionList extends StatelessWidget {
                         maxHeight: dataLen * 67.08.h,
                       ),
                       child: ListView.builder(
+                        padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: dataLen,
                         itemBuilder: (context, index) {

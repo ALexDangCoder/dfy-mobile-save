@@ -34,6 +34,7 @@ class TokenDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bloc.getToken(token);
     return StreamBuilder<bool>(
       stream: bloc.showLoadingStream,
       initialData: false,
