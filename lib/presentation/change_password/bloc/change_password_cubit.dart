@@ -18,7 +18,6 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   bool _haveValueOldPW = false;
   bool _haveValueNewPW = false;
   bool _haveValueConfirmPW = false;
-  bool isSuccess = false;
 
   final BehaviorSubject<bool> _validatePW = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _changePWSuccess =
@@ -36,6 +35,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnCfPW =
       BehaviorSubject<String>.seeded('');
+  final BehaviorSubject<String> currentCfPW = BehaviorSubject<String>();
 
   ///wallet core
   Future<void> changePasswordIntoWalletCore({
@@ -45,7 +45,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     try {
       final data = {
         'oldPassword': oldPassword,
-        'newPassword': newPassword,
+        'changePassword': newPassword,
       };
       await trustWalletChannel.invokeMethod('changePassword', data);
     } on PlatformException {
@@ -53,21 +53,19 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     }
   }
 
+  // isSuccess: boolean
+
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'changePasswordCallback':
-        isSuccess = await methodCall.arguments['isSuccess'];
-        print(methodCall.arguments);
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
         try {
           if (isSuccess) {
             emit(ChangePasswordSuccess());
           } else {
             emit(ChangePasswordFail());
-            // matchOldPWSink.add(true);
-            // txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
-            // isEnableButtonSink.add(false);
           }
-        } catch(e) {
+        } catch (e) {
           print(e);
         }
         break;
@@ -190,11 +188,14 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchOldPWSink.add(true);
       txtWarnOldPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else if (value != passwordOld) {
-      matchOldPWSink.add(true);
-      txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
-      isEnableButtonSink.add(false);
-    } else {
+    }
+
+    // else if (value != passwordOld) {
+    //   matchOldPWSink.add(true);
+    //   txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
+    //   isEnableButtonSink.add(false);
+    // }
+    else {
       matchOldPWSink.add(false);
       _flagOldPW = 1;
       if (_flagCfPW == 1 && _flagNewPW == 1 && _flagOldPW == 1) {
@@ -240,11 +241,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_pw_required);
       isEnableButtonSink.add(false);
-    } else if (!Validator.validateStructure(value)) {
-      matchPWSink.add(true);
-      txtWarnCfPWSink.add(S.current.warn_pw_validate);
-      isEnableButtonSink.add(false);
-    } else if (!(value == newPassword)) {
+    } else if (value != newPassword) {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_cf_pw);
       isEnableButtonSink.add(false);
@@ -307,10 +304,10 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     required String confirmPW,
   }) {
     if (
-    // oldPW == oldPWFetch &&
+        // oldPW == oldPWFetch &&
         Validator.validateStructure(newPW) &&
-        Validator.validateStructure(confirmPW) &&
-        (newPW == confirmPW)) {
+            Validator.validateStructure(confirmPW) &&
+            (newPW == confirmPW)) {
       return true;
     } else {
       return false;

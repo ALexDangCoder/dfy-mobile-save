@@ -31,6 +31,12 @@ class BoxListPassWordPhraseShow extends StatelessWidget {
           color: AppTheme.getInstance().itemBtsColors(),
           borderRadius: BorderRadius.all(Radius.circular(20.r)),
         ),
+        margin: EdgeInsets.only(
+          right: 16.w,
+          left: 16.w,
+          top: 16.h,
+          bottom: 16.h,
+        ),
         padding: EdgeInsets.only(
           top: 16.h,
           left: 13.w,

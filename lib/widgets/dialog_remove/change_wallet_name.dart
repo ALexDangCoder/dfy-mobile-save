@@ -227,6 +227,9 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                               widget.textEditingController.text;
                                           widget.bloc.walletName.sink
                                               .add(value);
+                                          print(value);
+                                          print(widget
+                                              .bloc.addressWallet.value);
                                           widget.bloc.changeNameWallet(
                                               walletAddress: widget
                                                   .bloc.addressWallet.value,

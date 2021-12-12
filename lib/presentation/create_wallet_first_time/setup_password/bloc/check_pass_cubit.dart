@@ -86,15 +86,15 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   }
 
   void showTxtWarningConfirmPW(String value, {required String newPW}) {
-    if (value != newPW) {
-      _flagConfirmPW = false;
-      matchPWSink.add(true);
-      txtWarningConfirmPWSink.add(S.current.not_match);
-      isEnableBtnSink.add(false);
-    } else if (value.isEmpty) {
+    if (value.isEmpty) {
       _flagConfirmPW = false;
       matchPWSink.add(true);
       txtWarningConfirmPWSink.add(S.current.password_is_required);
+      isEnableBtnSink.add(false);
+    } else if (value != newPW) {
+      _flagConfirmPW = false;
+      matchPWSink.add(true);
+      txtWarningConfirmPWSink.add(S.current.not_match);
       isEnableBtnSink.add(false);
     } else {
       matchPWSink.add(false);
@@ -131,7 +131,7 @@ class CheckPassCubit extends Cubit<CheckPassState> {
   }
 
   bool validateAll() {
-    if(_flagConfirmPW && _flagNewPW) {
+    if (_flagConfirmPW && _flagNewPW) {
       return true;
     } else {
       return false;
