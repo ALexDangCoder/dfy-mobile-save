@@ -220,21 +220,22 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                     child: GestureDetector(
                                       onTap: () {
                                         trustWalletChannel.setMethodCallHandler(
-                                            widget.bloc
-                                                .nativeMethodCallBackTrustWallet);
+                                          widget.bloc
+                                              .nativeMethodCallBackTrustWallet,
+                                        );
                                         if (snapshot.data ?? false) {
                                           final String value =
                                               widget.textEditingController.text;
                                           widget.bloc.walletName.sink
                                               .add(value);
-                                          print(value);
-                                          print(widget
-                                              .bloc.addressWallet.value);
                                           widget.bloc.changeNameWallet(
-                                              walletAddress: widget
-                                                  .bloc.addressWallet.value,
-                                              walletName: value);
-
+                                            walletAddress:
+                                                widget.bloc.addressWallet.value,
+                                            walletName: value,
+                                          );
+                                          widget.bloc.listSelectAccBloc.clear();
+                                          widget.bloc.getListWallets();
+                                          widget.bloc.listWallet.clear();
                                           Navigator.pop(context);
                                         }
                                       },

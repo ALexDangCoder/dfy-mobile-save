@@ -375,6 +375,9 @@ class _WalletState extends State<WalletScreen>
                     ).whenComplete(
                       () => {
                         cubit.listSelectAccBloc.clear(),
+                        cubit.listWallet.clear(),
+                        cubit.getListWallets(),
+                        cubit.getListAcc(),
                       },
                     );
                   },

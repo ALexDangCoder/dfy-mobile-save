@@ -135,7 +135,6 @@ class RemoveAcc extends StatelessWidget {
                                           walletAddress: walletAddress,
                                         );
                                         bloc.listSelectAccBloc.removeAt(index);
-                                        bloc.getListWallets();
                                         bloc.getListAcc();
                                         Navigator.pop(context);
                                       },

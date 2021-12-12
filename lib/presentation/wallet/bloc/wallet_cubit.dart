@@ -483,7 +483,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'checkTokenCallback':
         isHaveToken = await methodCall.arguments['isExist'];
-
         if (isHaveToken) {
           isTokenEnterAddress.sink.add(false);
           _messSubject.sink.add(S.current.already_exist);
@@ -520,9 +519,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         for (final element in data) {
           listWallet.add(Wallet.fromJson(element));
         }
-        addressWalletCore = listWallet.first.address!;
-        nameWallet = listWallet.first.name!;
-        walletName.add(nameWallet);
+        getWalletDetailInfo();
         addressWallet.add(addressWalletCore);
         break;
       case 'getNFTCallback':
@@ -574,6 +571,13 @@ class WalletCubit extends BaseCubit<WalletState> {
       default:
         break;
     }
+  }
+
+  int indexWallet = 0;
+  void getWalletDetailInfo() {
+    addressWalletCore = listWallet[indexWallet].address!;
+    nameWallet = listWallet[indexWallet].name!;
+    walletName.add(nameWallet);
   }
 
   Future<void> getConfig() async {
