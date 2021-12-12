@@ -35,8 +35,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnCfPW =
       BehaviorSubject<String>.seeded('');
-  final BehaviorSubject<String> currentCfPW =
-      BehaviorSubject<String>();
+  final BehaviorSubject<String> currentCfPW = BehaviorSubject<String>();
 
   ///wallet core
   Future<void> changePasswordIntoWalletCore({
@@ -46,7 +45,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     try {
       final data = {
         'oldPassword': oldPassword,
-        'newPassword': newPassword,
+        'changePassword': newPassword,
       };
       await trustWalletChannel.invokeMethod('changePassword', data);
     } on PlatformException {
@@ -63,11 +62,10 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
         try {
           if (isSuccess) {
             emit(ChangePasswordSuccess());
-          }
-          else {
+          } else {
             emit(ChangePasswordFail());
           }
-        } catch(e) {
+        } catch (e) {
           print(e);
         }
         break;
@@ -243,10 +241,6 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_pw_required);
       isEnableButtonSink.add(false);
-    } else if (!Validator.validateStructure(value)) {
-      matchPWSink.add(true);
-      txtWarnCfPWSink.add(S.current.warn_pw_validate);
-      isEnableButtonSink.add(false);
     } else if (value != newPassword) {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_cf_pw);
@@ -310,10 +304,10 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     required String confirmPW,
   }) {
     if (
-    // oldPW == oldPWFetch &&
+        // oldPW == oldPWFetch &&
         Validator.validateStructure(newPW) &&
-        Validator.validateStructure(confirmPW) &&
-        (newPW == confirmPW)) {
+            Validator.validateStructure(confirmPW) &&
+            (newPW == confirmPW)) {
       return true;
     } else {
       return false;
