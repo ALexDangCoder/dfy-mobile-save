@@ -17,7 +17,6 @@ class MainCubit extends BaseCubit<MainState> {
 
   final BehaviorSubject<int> _index = BehaviorSubject<int>.seeded(0);
   final BehaviorSubject<int> _walletIndex = BehaviorSubject<int>();
-  List<TokenInf> listToken = [];
 
   Stream<int> get indexStream => _index.stream;
 
