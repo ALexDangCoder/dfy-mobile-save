@@ -45,7 +45,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
         ConfirmPwPrvKeySeedpharseState>(
       listener: (context, state) {
         if (state is ConfirmPWToShowSuccess) {
-          //todo show seedpharse success
+          //todo viết hàm chuyển màn hình xem seedphase ở đây a hải
         } else {
           _showDialog(
             alert: S.current.warn_old_pw_not_match,
