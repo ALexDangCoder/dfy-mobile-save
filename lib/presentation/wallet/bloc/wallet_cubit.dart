@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -10,7 +11,6 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
-import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
@@ -327,6 +327,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
     result.when(
       success: (res) {
+        log(res.first.iconUrl!);
         getTokenInfoByAddressList(res: res);
       },
       error: (error) {
