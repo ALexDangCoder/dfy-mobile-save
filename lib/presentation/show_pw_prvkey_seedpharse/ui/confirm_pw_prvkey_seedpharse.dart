@@ -32,7 +32,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
     trustWalletChannel.setMethodCallHandler(
       widget.cubit.nativeMethodCallBackTrustWallet,
     );
-    widget.cubit.getListWallets(password: 'pass');
+    widget.cubit.getListWallets();
     txtController = TextEditingController();
     widget.cubit.getConfig();
     super.initState();

@@ -88,7 +88,6 @@ class ChooseAcc extends StatelessWidget {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                // bloc.index.sink.add(index);
                                 bloc.sendPrivateKey(index);
                                 Navigator.pop(context);
                               },
@@ -100,12 +99,17 @@ class ChooseAcc extends StatelessWidget {
                                     child: Row(
                                       children: [
                                         spaceW16,
-                                        SizedBox(
-                                          width: 44.w,
-                                          height: 44.h,
-                                          child: Image.asset(
-                                            // todo image
-                                            ImageAssets.img_delete,
+                                        Container(
+                                          height: 40.h,
+                                          width: 40.w,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                '${ImageAssets.image_avatar}${bloc.randomAvatar()}'
+                                                '.png',
+                                              ),
+                                            ),
+                                            shape: BoxShape.circle,
                                           ),
                                         ),
                                         spaceW8,
@@ -116,8 +120,7 @@ class ChooseAcc extends StatelessWidget {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              listWalletCore[index].name ??
-                                                  '',
+                                              listWalletCore[index].name ?? '',
                                               style: textNormal(
                                                 AppTheme.getInstance()
                                                     .whiteColor(),
@@ -129,8 +132,7 @@ class ChooseAcc extends StatelessWidget {
                                             ),
                                             Text(
                                               bloc.formatText(
-                                                listWalletCore[index]
-                                                        .address ??
+                                                listWalletCore[index].address ??
                                                     '',
                                               ),
                                               style: textNormal(
@@ -147,7 +149,7 @@ class ChooseAcc extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    child: index == listWalletCore.length
+                                    child: index + 1 == listWalletCore.length
                                         ? null
                                         : line,
                                   )

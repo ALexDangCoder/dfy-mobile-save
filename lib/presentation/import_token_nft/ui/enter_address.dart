@@ -136,7 +136,8 @@ class _EnterAddressState extends State<EnterAddress> {
                           print(widget.bloc.tokenAddressText.value);
                           print(widget.bloc.tokenSymbol.value);
                           print(widget.bloc.tokenDecimal.value);
-                          print(widget.bloc.iconToken);
+                          print(widget.bloc
+                              .getIcon(widget.bloc.tokenAddressText.value));
                           print(widget.bloc.tokenFullName);
                           print(widget.bloc.price);
                           print('vao');
@@ -145,10 +146,15 @@ class _EnterAddressState extends State<EnterAddress> {
                             tokenAddress: widget.bloc.tokenAddressText.value,
                             symbol: widget.bloc.tokenSymbol.value,
                             decimal: int.parse(widget.bloc.tokenDecimal.value),
-                            iconToken: widget.bloc.iconToken,
+                            iconToken: widget.bloc
+                                .getIcon(widget.bloc.tokenAddressText.value),
                             tokenFullName: widget.bloc.tokenFullName,
                             exchangeRate: widget.bloc.price!,
                           );
+                          print(widget.bloc
+                              .getIcon(widget.bloc.tokenAddressText.value));
+
+
 
                           print('done');
                         }

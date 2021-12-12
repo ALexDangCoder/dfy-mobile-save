@@ -19,6 +19,7 @@ import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
@@ -66,6 +67,15 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  String getIcon(String addressToken) {
+    for (final ModelToken value in checkShow) {
+      if (addressToken == value.tokenAddress) {
+        return value.iconToken;
+      }
+    }
+    return '';
+  }
+
   String nftName = '';
   String iconNFT = '';
 
@@ -108,9 +118,10 @@ class WalletCubit extends BaseCubit<WalletState> {
           isCheck: true,
           addressWallet: value.address,
           amountWallet: balanceOfBnb,
-          imported: false,
+          imported: value.isImportWallet,
           nameWallet: value.name,
-          url: 'assets/images/Ellipse 39.png',
+          url: '${ImageAssets.image_avatar}${randomAvatar()}'
+              '.png',
         );
         listSelectAccBloc.add(acc);
       } else {
@@ -118,9 +129,10 @@ class WalletCubit extends BaseCubit<WalletState> {
           isCheck: false,
           addressWallet: value.address,
           amountWallet: balanceOfBnb,
-          imported: false,
+          imported: value.isImportWallet,
           nameWallet: value.name,
-          url: 'assets/images/Ellipse 39.png',
+          url: '${ImageAssets.image_avatar}${randomAvatar()}'
+              '.png',
         );
         listSelectAccBloc.add(acc);
       }
@@ -138,8 +150,6 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   final List<ModelToken> checkShow = [];
   String tokenFullName = '';
-  String iconToken =
-      'https://assets.coingecko.com/coins/images/825/thumb/binance-coin-logo.png?1547034615';
   bool checkLogin = false;
   List<TokenModel> listStart = [];
   List<Wallet> listWallet = [];
@@ -604,11 +614,9 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getAddressWallet() async {}
 
-  Future<void> getListWallets(String password) async {
+  Future<void> getListWallets() async {
     try {
-      final data = {
-        'password': password,
-      };
+      final data = {};
       await trustWalletChannel.invokeMethod('getListWallets', data);
     } on PlatformException {
       //nothing
