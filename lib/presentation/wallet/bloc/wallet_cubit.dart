@@ -67,7 +67,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  String getIcon(String addressToken) {
+  Future<String> getIcon(String addressToken) async  {
     for (final ModelToken value in checkShow) {
       if (addressToken == value.tokenAddress) {
         return value.iconToken;
