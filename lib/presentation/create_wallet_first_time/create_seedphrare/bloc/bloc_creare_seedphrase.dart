@@ -99,11 +99,11 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   }
 
   void getStringToList(String passPhrase) {
-    listTitle1 = passPhrase.split(' '); //todo remove random
-    List<int> indices = List<int>.generate(listTitle1.length, (i) => i);
+    listTitle1 = passPhrase.split(' ');
+    final List<int> indices = List<int>.generate(listTitle1.length, (i) => i);
     indices.shuffle();
-    int newCount = listTitle1.length;
-    List<String> randomList =
+    final int newCount = listTitle1.length;
+    final List<String> randomList =
         indices.take(newCount).map((i) => listTitle1[i]).toList();
     listTitle.sink.add(randomList);
   }

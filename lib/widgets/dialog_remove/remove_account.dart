@@ -131,11 +131,11 @@ class RemoveAcc extends StatelessWidget {
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () {
-                                        print('---------------$walletAddress');
                                         bloc.earseWallet(
                                             walletAddress: walletAddress,);
                                         bloc.listSelectAccBloc.removeAt(index);
                                         bloc.getListAcc();
+                                        bloc.getListWallets('pass');
                                         Navigator.pop(context);
                                       },
                                       child: SizedBox(

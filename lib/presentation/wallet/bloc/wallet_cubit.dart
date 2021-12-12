@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
@@ -314,7 +313,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   TokenRepository get _tokenRepository => Get.find();
 
   PriceRepository get _priceRepository => Get.find();
-
   List<TokenPrice> listTokenExchange = [];
 
   Future<void> getListPrice(String symbols) async {
@@ -322,8 +320,13 @@ class WalletCubit extends BaseCubit<WalletState> {
         await _priceRepository.getListPriceToken(symbols);
     result.when(
       success: (res) {
-        for (final element in res) {
-          listTokenExchange.add(element);
+        if (res.isEmpty) {
+          price = 0;
+        } else {
+          price = res.first.price ?? 0.0;
+          for (final element in res) {
+            listTokenExchange.add(element);
+          }
         }
       },
       error: (error) {
@@ -494,12 +497,10 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
-          print(element);
           checkShow.add(ModelToken.fromWalletCore(element));
         }
         for (final element in checkShow) {
           if (element.isShow) {
-            print(element.nameShortToken);
             listTokenFromWalletCore.add(element);
           }
         }
@@ -511,6 +512,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
 
       case 'getListWalletsCallback':
+        listSelectAccBloc.clear();
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           listWallet.add(Wallet.fromJson(element));
