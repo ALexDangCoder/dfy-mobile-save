@@ -1,11 +1,11 @@
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/change_password/bloc/change_password_cubit.dart';
 import 'package:Dfy/presentation/change_password/ui/components/form_setup_password.dart';
-import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
-import 'package:Dfy/widgets/success/successful_by_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,10 +29,10 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   void initState() {
+    passwordCubit = ChangePasswordCubit();
     _txtOldPW = TextEditingController();
     _txtNewPW = TextEditingController();
     _txtConfirmPW = TextEditingController();
-    passwordCubit = ChangePasswordCubit();
     trustWalletChannel
         .setMethodCallHandler(passwordCubit.nativeMethodCallBackTrustWallet);
     super.initState();
@@ -41,156 +41,153 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          final FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
+      onTap: () {
+        final FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: BlocConsumer<ChangePasswordCubit, ChangePasswordState>(
+        bloc: passwordCubit,
+        listener: (context, state) {
+          if (state is ChangePasswordSuccess) {
+            _showDialog(alert: "Sieu quang huy");
+            // showSuccessfulByTitle(
+            //   title: S.current.change_pw_success,
+            //   callBack: () {
+            //     Navigator.of(context).pushAndRemoveUntil(
+            //       MaterialPageRoute(
+            //         builder: (context) => const MainScreen(
+            //           index: 2,
+            //         ),
+            //       ),
+            //       (route) => route.isFirst,
+            //     );
+            //   },
+            //   context: context,
+            // );
+          } else {
+            _showDialog(alert: S.current.not_match,);
           }
         },
-        child: BlocConsumer<ChangePasswordCubit, ChangePasswordState>(
-          bloc: passwordCubit,
-          listener: (context, state) {
-            if (state is ChangePasswordSuccess) {
-              showSuccessfulByTitle(
-                title: S.current.change_pw_success,
-                callBack: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => const MainScreen(
-                        index: 2,
-                      ),
-                    ),
-                    (route) => route.isFirst,
-                  );
-                },
-                context: context,
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('ChangePW failed'),
-                ),
-              );
-            }
-          },
-          builder: (context, state) {
-            return BaseBottomSheet(
-                title: S.current.change_password,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 24.h,
-                            ),
-                            formSetupPassWord(
-                              controller: _txtOldPW,
-                              hintText: S.current.old_password,
-                              // oldPassWordFetch: oldPWFetchFromApi,
-                              cubit: passwordCubit,
-                              type: typeForm.OLD,
-                              newPW: _txtNewPW.text,
-                            ),
-                            showTextValidateOldPassword(),
-                            SizedBox(
-                              height: 16.h,
-                            ),
-                            formSetupPassWord(
-                              controller: _txtNewPW,
-                              hintText: S.current.new_pass,
-                              cubit: passwordCubit,
-                              type: typeForm.NEW,
-                              newPW: _txtNewPW.text,
-                            ),
-                            showTextValidateNewPassword(),
-                            SizedBox(
-                              height: 16.h,
-                            ),
-                            formSetupPassWord(
-                              controller: _txtConfirmPW,
-                              hintText: S.current.confirm_new_password,
-                              cubit: passwordCubit,
-                              type: typeForm.CONFIRM,
-                              newPW: _txtNewPW.text,
-                            ),
-                            showTextValidateConfirmPassword(),
-                            SizedBox(
-                              height: 349.h,
-                            ),
-                          ],
+        builder: (context, state) {
+          return BaseBottomSheet(
+            title: S.current.change_password,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 24.h,
                         ),
+                        formSetupPassWord(
+                          controller: _txtOldPW,
+                          hintText: S.current.old_password,
+                          // oldPassWordFetch: oldPWFetchFromApi,
+                          cubit: passwordCubit,
+                          type: typeForm.OLD,
+
+                        ),
+                        showTextValidateOldPassword(),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        formSetupPassWord(
+                          controller: _txtNewPW,
+                          hintText: S.current.new_pass,
+                          cubit: passwordCubit,
+                          type: typeForm.NEW,
+                        ),
+                        showTextValidateNewPassword(),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        formSetupPassWord(
+                          controller: _txtConfirmPW,
+                          hintText: S.current.confirm_new_password,
+                          cubit: passwordCubit,
+                          type: typeForm.CONFIRM,
+                        ),
+                        showTextValidateConfirmPassword(),
+                        SizedBox(
+                          height: 349.h,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                //handle enable or disable btn
+                StreamBuilder<bool>(
+                  stream: passwordCubit.isEnableButtonStream,
+                  builder: (context, snapshot) {
+                    return GestureDetector(
+                      child: ButtonGold(
+                        title: S.current.continue_s,
+                        isEnable: snapshot.data ?? true,
                       ),
-                    ),
-                    //handle enable or disable btn
-                    StreamBuilder<bool>(
-                      stream: passwordCubit.isEnableButtonStream,
-                      builder: (context, snapshot) {
-                        return GestureDetector(
-                          child: ButtonGold(
-                            title: S.current.continue_s,
-                            isEnable: snapshot.data ?? true,
-                          ),
-                          onTap: () {
-                            if (snapshot.data ?? false) {
-                              //todo show fail when change pw fail
-                              passwordCubit.showTxtWarningOldPW(
-                                _txtOldPW.text,
-                                // passwordOld: oldPWFetchFromApi,
-                              );
+                      onTap: () {
+                        if (snapshot.data ?? false) {
+                          //todo show fail when change pw fail
+                          passwordCubit.showTxtWarningOldPW(
+                            _txtOldPW.text,
+                            // passwordOld: oldPWFetchFromApi,
+                          );
 
-                              // passwordCubit.changePasswordIntoWalletCore(
-                              //   oldPassword: _txtOldPW.text,
-                              //   newPassword: _txtNewPW.text,
-                              // );
+                          // passwordCubit.changePasswordIntoWalletCore(
+                          //   oldPassword: _txtOldPW.text,
+                          //   newPassword: _txtNewPW.text,
+                          // );
 
-                              if (passwordCubit.checkAllValidate(
-                                // oldPWFetch: oldPWFetchFromApi,
-                                oldPW: _txtOldPW.text,
-                                newPW: _txtNewPW.text,
-                                confirmPW: _txtConfirmPW.text,
-                              )) {
-                                passwordCubit.changePasswordIntoWalletCore(
-                                  oldPassword: _txtOldPW.text,
-                                  newPassword: _txtNewPW.text,
-                                );
-                                // passwordCubit.changePassword(
-                                //   oldPassword: _txtOldPW.text,
-                                //   newPassword: _txtNewPW.text,
-                                // );
-                                // showSuccessfulByTitle(
-                                //   title: S.current.change_pw_success,
-                                //   callBack: () {
-                                //     Navigator.of(context).pushAndRemoveUntil(
-                                //       MaterialPageRoute(
-                                //         builder: (context) =>
-                                //         const MainScreen(
-                                //           index: 2,
-                                //         ),
-                                //       ),
-                                //           (route) => route.isFirst,
-                                //     );
-                                //   },
-                                //   context: context,
-                                // );
-                              } else {
-                                //nothing
-                              }
-                            } else {
-                              // nothing
-                            }
-                          },
-                        );
+                          if (passwordCubit.checkAllValidate(
+                            // oldPWFetch: oldPWFetchFromApi,
+                            oldPW: _txtOldPW.text,
+                            newPW: _txtNewPW.text,
+                            confirmPW: _txtConfirmPW.text,
+                          )) {
+                            passwordCubit.changePasswordIntoWalletCore(
+                              oldPassword: _txtOldPW.text,
+                              newPassword: _txtNewPW.text,
+                            );
+                            // passwordCubit.changePassword(
+                            //   oldPassword: _txtOldPW.text,
+                            //   newPassword: _txtNewPW.text,
+                            // );
+                            // showSuccessfulByTitle(
+                            //   title: S.current.change_pw_success,
+                            //   callBack: () {
+                            //     Navigator.of(context).pushAndRemoveUntil(
+                            //       MaterialPageRoute(
+                            //         builder: (context) =>
+                            //         const MainScreen(
+                            //           index: 2,
+                            //         ),
+                            //       ),
+                            //           (route) => route.isFirst,
+                            //     );
+                            //   },
+                            //   context: context,
+                            // );
+                          } else {
+                            //nothing
+                          }
+                        } else {
+                          // nothing
+                        }
                       },
-                    ),
-                    SizedBox(
-                      height: 38.h,
-                    ),
-                  ],
-                ));
-          },
-        ));
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 38.h,
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 
   Widget showTextValidateOldPassword() {
@@ -293,6 +290,71 @@ class _ChangePasswordState extends State<ChangePassword> {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  void _showDialog({String? alert, String? text}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                36.0.r,
+              ),
+            ),
+          ),
+          backgroundColor: AppTheme.getInstance().selectDialogColor(),
+          title: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Text(
+                  alert ?? S.current.password_is_not_correct,
+                  style: textNormalCustom(
+                    Colors.white,
+                    20.sp,
+                    FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              spaceH16,
+              Text(
+                text ?? S.current.please_try_again,
+                style: textNormalCustom(
+                  Colors.white,
+                  12.sp,
+                  FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            Divider(
+              height: 1.h,
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            Center(
+              child: TextButton(
+                child: Text(
+                  S.current.ok,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().fillColor(),
+                    20.sp,
+                    FontWeight.w700,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ],
         );
       },
     );
