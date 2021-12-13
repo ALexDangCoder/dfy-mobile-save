@@ -1,11 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/token_price_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/receive_token/bloc/receive_cubit.dart';
 import 'package:Dfy/presentation/receive_token/ui/set_amount_pop_up.dart';
@@ -35,11 +33,13 @@ class Receive extends StatefulWidget {
     required this.type,
     this.symbol = 'BNB',
     this.nameToken = 'Binance',
+    this.price,
   }) : super(key: key);
   final String walletAddress;
   final TokenType type;
   final String? symbol;
   final String? nameToken;
+  final double? price;
 
   @override
   _ReceiveState createState() => _ReceiveState();
@@ -62,7 +62,7 @@ class _ReceiveState extends State<Receive> {
     globalKey = GlobalKey();
     toast = FToast();
     toast.init(context);
-    receiveCubit.getListPrice(widget.symbol!);
+    receiveCubit.getListPrice(widget.symbol ?? '');
   }
 
   @override
@@ -78,7 +78,7 @@ class _ReceiveState extends State<Receive> {
       title: textTitle(widget.type),
       child: CustomRefreshIndicator(
         onRefresh: () async {
-          await receiveCubit.getListPrice(widget.symbol!);
+          await receiveCubit.getListPrice(widget.symbol ?? '');
         },
         child: Column(
           children: [
@@ -178,13 +178,14 @@ class _ReceiveState extends State<Receive> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        StreamBuilder<List<TokenPrice>>(
+                        StreamBuilder<double>(
                           stream: receiveCubit.priceStream,
+                          initialData: widget.price,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              price = snapshot.data!.first.price!;
+                              price = snapshot.data!;
                             } else {
-                              price = 1.0;
+                              price = widget.price ?? 0.0;
                             }
                             return Text(
                               formatUSD.format(
