@@ -79,7 +79,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   String nftName = '';
   String iconNFT = '';
 
-
   //todo getNftInfoByAddress
   Future<void> getNftInfoByAddress({
     required String nftAddress,
@@ -402,7 +401,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     await importListToken(json);
   }
 
-
   Future<void> getExchangeRateFromServer(List<ModelToken> list) async {
     final query = StringBuffer();
     for (final value in list) {
@@ -413,8 +411,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       for (int j = 0; j < listTokenExchange.length; j++) {
         if (list[i].nameShortToken ==
             listTokenExchange[j].tokenSymbol!.toUpperCase()) {
-          list[i].exchangeRate =
-              listTokenExchange[j].price ?? 0;
+          list[i].exchangeRate = listTokenExchange[j].price ?? 0;
         }
       }
     }
@@ -522,6 +519,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           //get List Map from COre
           final List<Map<String, dynamic>> collectionsFromCore =
               await methodCall.arguments;
+          print(collectionsFromCore);
           try {
             final List<CollectionNft> listCollectionNFT = [];
             for (final eMapCollection in collectionsFromCore) {
@@ -552,8 +550,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           }
         }
         break;
-      case 'importListNftCallback':
-        break;
+
       case 'getConfigCallback':
         checkWalletExist = methodCall.arguments['isWalletExist'];
         if (checkWalletExist) {
@@ -567,6 +564,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   int indexWallet = 0;
+
   void getWalletDetailInfo() {
     addressWalletCore = listWallet[indexWallet].address!;
     nameWallet = listWallet[indexWallet].name!;
