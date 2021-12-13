@@ -467,7 +467,9 @@ class WalletCubit extends BaseCubit<WalletState> {
           emit(ImportNftFail());
         }
         break;
-      case 'setShowedNftCallback':
+      case 'setDeleteNftCallback':
+        final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
+        print('setDeleteNftCallback $isSetDeleteNft');
         break;
       case 'checkTokenCallback':
         isHaveToken = await methodCall.arguments['isExist'];
@@ -733,18 +735,16 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  Future<void> setShowedNft({
+  Future<void> deleteNft({
     required String walletAddress,
     required String nftAddress,
-    required bool isShow,
   }) async {
     try {
       final data = {
         'walletAddress': walletAddress,
-        'isShow': isShow,
         'nftAddress': nftAddress,
       };
-      await trustWalletChannel.invokeMethod('setShowedNft', data);
+      await trustWalletChannel.invokeMethod('deleteNft', data);
     } on PlatformException {
       //todo
 
