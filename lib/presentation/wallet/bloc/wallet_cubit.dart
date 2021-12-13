@@ -79,7 +79,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   String nftName = '';
   String iconNFT = '';
 
-
   //todo getNftInfoByAddress
   Future<void> getNftInfoByAddress({
     required String nftAddress,
@@ -402,7 +401,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     await importListToken(json);
   }
 
-
   Future<void> getExchangeRateFromServer(List<ModelToken> list) async {
     final query = StringBuffer();
     for (final value in list) {
@@ -413,8 +411,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       for (int j = 0; j < listTokenExchange.length; j++) {
         if (list[i].nameShortToken ==
             listTokenExchange[j].tokenSymbol!.toUpperCase()) {
-          list[i].exchangeRate =
-              listTokenExchange[j].price ?? 0;
+          list[i].exchangeRate = listTokenExchange[j].price ?? 0;
         }
       }
     }
@@ -516,41 +513,12 @@ class WalletCubit extends BaseCubit<WalletState> {
         addressWallet.add(addressWalletCore);
         break;
       case 'getNFTCallback':
-
-        ///NEW
-        {
-          //get List Map from COre
-          final List<Map<String, dynamic>> collectionsFromCore =
-              await methodCall.arguments;
-          try {
-            final List<CollectionNft> listCollectionNFT = [];
-            for (final eMapCollection in collectionsFromCore) {
-              //Tao object 1 CollectionNft, chua co list NFTInfo
-              final CollectionNft cl = CollectionNft.fromJson(eMapCollection);
-              final List<NftInfo> listNftInfo = [];
-              //tao list NFT Info
-              for (final e in cl.listNft ?? []) {
-                try {
-                  if (e.uri != '') {
-                    final NftInfo nftInfo = await fetchNft(url: e.uri ?? '');
-                    nftInfo.id = e.id;
-                    nftInfo.contract = e.contract;
-                    nftInfo.standard = 'ERC-721';
-                    nftInfo.blockchain = 'Binance smart chain';
-                    listNftInfo.add(nftInfo);
-                  }
-                } catch (e) {
-                  print(e);
-                }
-              }
-              listCollectionNFT.add(cl);
-              listNftFromWalletCore.add(cl);
-            }
-            listNFTStream.sink.add(listNftFromWalletCore);
-          } catch (e) {
-            print(e);
-          }
+        final List<dynamic> data = methodCall.arguments;
+        final List<CollectionNft> listCollectionNFT = [];
+        for (final element in data) {
+          listCollectionNFT.add(CollectionNft.fromJson(element));
         }
+        //todo HUY
         break;
       case 'importListNftCallback':
         break;
@@ -567,6 +535,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   int indexWallet = 0;
+
   void getWalletDetailInfo() {
     addressWalletCore = listWallet[indexWallet].address!;
     nameWallet = listWallet[indexWallet].name!;
@@ -812,7 +781,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      return CollectionNft.fromJson(jsonDecode(response.body));
+      return CollectionNft.fromJsonMap(jsonDecode(response.body));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
