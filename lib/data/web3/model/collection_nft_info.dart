@@ -6,15 +6,28 @@ class CollectionNft {
 
   CollectionNft({this.name, this.symbol, this.contract, this.listNft});
 
-  CollectionNft.fromJson(Map<String, dynamic> json) {
+  CollectionNft.fromJsonMap(Map<String, dynamic> json) {
     name = json['name'];
     symbol = json['symbol'];
     contract = json['contract'];
     if (json['listNft'] != null) {
       List<ListNft> listNft = [];
       json['listNft'].forEach((v) {
-        listNft.add(ListNft.fromJson(v));
+        listNft.add(ListNft.fromJsonMap(v));
       });
+    }
+  }
+
+  CollectionNft.fromJson(dynamic json) {
+    name = json['nftName'];
+    symbol = json['symbol'];
+    contract = json['collectionAddress'];
+    final List<dynamic> items = json['listNft'];
+    listNft = [];
+    if (items != null) {
+      for (var item in items) {
+        listNft?.add(ListNft.fromJson(item));
+      }
     }
   }
 
@@ -35,14 +48,20 @@ class ListNft {
 
   ListNft({this.id, this.contract, this.uri});
 
-  ListNft.fromJson(Map<String, dynamic> json) {
+  ListNft.fromJsonMap(Map<String, dynamic> json) {
+    id = json['id'];
+    contract = json['contract'];
+    uri = json['uri'];
+  }
+
+  ListNft.fromJson(dynamic json) {
     id = json['id'];
     contract = json['contract'];
     uri = json['uri'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['contract'] = contract;
     data['uri'] = uri;

@@ -711,11 +711,10 @@ class MainActivity : FlutterFragmentActivity() {
         walletAddress: String
     ) {
         val listNftSupport = ArrayList<NftModel>()
-        listNftSupport.addAll(appPreference.getListNft())
         val objectNft = JSONObject(jsonNft)
         val contractNft = objectNft.getString("contract")
         var checkItemNft =
-            listNftSupport.firstOrNull { it.walletAddress == walletAddress && it.collectionAddress == contractNft }
+            appPreference.getListNft().firstOrNull { it.walletAddress == walletAddress && it.collectionAddress == contractNft }
         if (checkItemNft == null) {
             checkItemNft = NftModel()
             checkItemNft.walletAddress = walletAddress
