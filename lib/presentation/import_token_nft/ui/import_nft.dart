@@ -70,13 +70,11 @@ class _BodyState extends State<_Body> {
                 return const NFTSuccessfully();
               },
             ),
+          ).whenComplete(() async {
+              await widget.bloc.getNFT('0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37');
+              widget.bloc.listNFTStream.add(widget.bloc.listNftFromWalletCore);
+            },
           );
-          //     .whenComplete(
-          //       () async {
-          //     await widget.bloc.getNFT('0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37');
-          //     widget.bloc.listNFTStream.add(widget.bloc.listNftFromWalletCore);
-          //   },
-          // );
         } else {
           _showDialog(alert: 'Import failed');
         }
@@ -145,7 +143,6 @@ class _BodyState extends State<_Body> {
                   builder: (context, snapshot) {
                     return InkWell(
                       onTap: () async {
-                        //nhap id, id k null
                         widget.bloc.checkAddressNullNFT();
                         if (widget.bloc.nftEnterID.value.isNotEmpty &&
                             await Web3Utils().importNFT(
