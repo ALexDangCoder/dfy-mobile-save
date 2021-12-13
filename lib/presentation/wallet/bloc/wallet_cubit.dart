@@ -440,7 +440,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     switch (methodCall.method) {
       case 'importTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
-        print(isSuccess);
         if (isSuccess) {
           emit(NavigatorSuccessfully());
         }
@@ -454,8 +453,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         break;
       case 'earseWalletCallback':
-        bool isSuccess = await methodCall.arguments['isSuccess'];
-        print('---------------------------------------------$isSuccess');
         break;
       case 'getListSupportedTokenCallback':
         break;
@@ -471,7 +468,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         break;
       case 'setShowedNftCallback':
-        final bool isSetShowedNft = await methodCall.arguments['isSuccess'];
         break;
       case 'checkTokenCallback':
         isHaveToken = await methodCall.arguments['isExist'];
@@ -484,9 +480,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         break;
       case 'changeNameWalletCallBack':
-        final bool isSuccess = await methodCall.arguments['isSuccess'];
-        print(
-            '-------asdf-------------------------------------------------------------$isSuccess');
         break;
       case 'getTokensCallback':
         final List<dynamic> data = methodCall.arguments;
@@ -523,9 +516,9 @@ class WalletCubit extends BaseCubit<WalletState> {
         for (final element in data) {
           listCollectionNFT.add(CollectionNft.fromJson(element));
           //get nft list in each collection
-          for(final nftItem in listCollectionNFT[index].listNft ?? []) {
+          for (final nftItem in listCollectionNFT[index].listNft ?? []) {
             final List<NftInfo> listNftInfo = [];
-            if(nftItem.uri != null) {
+            if (nftItem.uri != null) {
               final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
               nftInfo.id = nftItem.id;
               nftInfo.contract = nftItem.contract;
@@ -538,9 +531,8 @@ class WalletCubit extends BaseCubit<WalletState> {
           }
           index++;
         }
-        //todo hung
-
-
+        listNftFromWalletCore = listCollectionNFT;
+        listNFTStream.add(listNftFromWalletCore);
         break;
 
       case 'getConfigCallback':
@@ -680,10 +672,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'exchangeRate': exchangeRate,
       };
       await trustWalletChannel.invokeMethod('importToken', data);
-    } on PlatformException {
-      //todo
-
-    }
+    } on PlatformException {}
   }
 
   Future<void> getListSupportedToken({
@@ -892,7 +881,9 @@ class WalletCubit extends BaseCubit<WalletState> {
           await getTokenInfoByAddress(tokenAddress: _st);
           if (!isAddressNotExist) {
             await checkToken(
-                walletAddress: addressWalletCore, tokenAddress: _st);
+              walletAddress: addressWalletCore,
+              tokenAddress: _st,
+            );
           } else {
             isTokenEnterAddress.sink.add(false);
             tokenSymbol.sink.add(S.current.token_symbol);

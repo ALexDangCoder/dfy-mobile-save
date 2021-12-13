@@ -303,16 +303,22 @@ class _WalletState extends State<WalletScreen>
                                       },
                                     );
                                   }
-                                  return SizedBox(
-                                    height: 100.h,
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 3.r,
-                                        color:
-                                            AppTheme.getInstance().whiteColor(),
+                                  else if(snapshot.data?.isEmpty ?? false){
+                                    return const SizedBox(
+                                    );
+                                  }
+                                  else {
+                                    return SizedBox(
+                                      height: 100.h,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 3.r,
+                                          color:
+                                          AppTheme.getInstance().whiteColor(),
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  }
                                 },
                               ),
                               ImportToken(
