@@ -71,10 +71,10 @@ class _BodyState extends State<_Body> {
               },
             ),
           ).whenComplete(() async {
-              await widget.bloc.getNFT('0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37');
-              widget.bloc.listNFTStream.add(widget.bloc.listNftFromWalletCore);
-            },
-          );
+            widget.bloc.listNftFromWalletCore.clear();
+            await widget.bloc.getNFT(widget.bloc.addressWalletCore);
+            widget.bloc.listNFTStream.add(widget.bloc.listNftFromWalletCore);
+          });
         } else {
           _showDialog(alert: 'Import failed');
         }
@@ -159,7 +159,7 @@ class _BodyState extends State<_Body> {
                               widget.bloc.nftEnterID.value,
                             ),
                             address:
-                            '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+                            widget.bloc.addressWalletCore,
                           );
 
                           // if (widget.bloc.isNFT.value) {
@@ -220,7 +220,7 @@ class _BodyState extends State<_Body> {
                               contract:
                               '0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1',
                               address:
-                              '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
+                              widget.bloc.addressWalletCore,
                             );
                           }
                         }
