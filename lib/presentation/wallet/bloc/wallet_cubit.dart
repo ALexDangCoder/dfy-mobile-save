@@ -4,6 +4,7 @@ import 'dart:math' hide log;
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/abi/nft.g.dart';
 import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
@@ -11,6 +12,7 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
@@ -514,11 +516,31 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'getNFTCallback':
         final List<dynamic> data = methodCall.arguments;
+        print(data);
         final List<CollectionNft> listCollectionNFT = [];
+
+        int index = 0;
         for (final element in data) {
           listCollectionNFT.add(CollectionNft.fromJson(element));
+          //get nft list in each collection
+          for(final nftItem in listCollectionNFT[index].listNft ?? []) {
+            final List<NftInfo> listNftInfo = [];
+            if(nftItem.uri != null) {
+              final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
+              nftInfo.id = nftItem.id;
+              nftInfo.contract = nftItem.contract;
+              nftInfo.standard = 'ERC-721';
+              nftInfo.blockchain = 'Binance smart chain';
+              listNftInfo.add(nftInfo);
+            } else {
+              //todo handle uri null
+            }
+          }
+          index++;
         }
-        //todo HUY
+        //todo hung
+
+
         break;
 
       case 'getConfigCallback':
