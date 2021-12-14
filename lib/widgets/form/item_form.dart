@@ -47,7 +47,7 @@ class ItemForm extends StatelessWidget {
           padding: EdgeInsets.only(
             top: 10.h,
             bottom: 10.h,
-            //right: 12.w,
+            right: 10.w,
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
@@ -70,6 +70,7 @@ class ItemForm extends StatelessWidget {
             maxLines: 10,
             cursorColor: Colors.white,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(right: 3.w),
               hintText: hint,
               hintStyle: textNormal(
                 Colors.grey,
@@ -104,7 +105,7 @@ class ItemForm extends StatelessWidget {
         padding: EdgeInsets.only(
           top: 10.h,
           bottom: 12.h,
-          //right: 10.w,
+          right: 10.w,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
@@ -191,7 +192,7 @@ class ItemForm extends StatelessWidget {
                   suffixIcon: InkWell(
                     onTap: callback,
                     child: Padding(
-                       padding: EdgeInsets.only(top: 10.h),
+                      padding: EdgeInsets.only(top: 10.h),
                       child: Text(
                         suffix,
                         style: textNormal(
@@ -236,12 +237,12 @@ class ItemForm extends StatelessWidget {
           ),
           onChanged: passType == PassType.CON
               ? (value) {
-                  //cubit?.checkHaveValueConfirmPW(value);
-                  cubit?.showTxtWarningConfirmPW(value,
-                      newPW: cubit?.newPassword ?? '');
+                  cubit?.showTxtWarningConfirmPW(
+                    value,
+                    newPW: cubit?.newPassword ?? '',
+                  );
                 }
               : (value) {
-                  //cubit?.checkHaveValuePW(value);
                   cubit?.showTxtWarningNewPW(value);
                 },
           cursorColor: Colors.white,
