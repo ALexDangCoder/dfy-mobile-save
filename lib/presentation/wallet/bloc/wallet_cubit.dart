@@ -511,16 +511,16 @@ class WalletCubit extends BaseCubit<WalletState> {
         final List<dynamic> data = methodCall.arguments;
         print(data);
         final List<CollectionNft> listCollectionNFT = [];
-
+        final List<NftInfo> listNftInfo = [];
         int index = 0;
         for (final element in data) {
           listCollectionNFT.add(CollectionNft.fromJson(element));
           //get nft list in each collection
           for (final nftItem in listCollectionNFT[index].listNft ?? []) {
-            final List<NftInfo> listNftInfo = [];
-            if (nftItem.uri != null) {
+            nftItem as ListNft;
+            if (nftItem.uri != '') {
               final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
-              nftInfo.id = nftItem.id;
+              nftInfo.id = nftItem.id as String?;
               nftInfo.contract = nftItem.contract;
               nftInfo.standard = 'ERC-721';
               nftInfo.blockchain = 'Binance smart chain';
@@ -531,6 +531,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           }
           index++;
         }
+        final result = listNftInfo;
         listNftFromWalletCore = listCollectionNFT;
         listNFTStream.add(listNftFromWalletCore);
         break;
