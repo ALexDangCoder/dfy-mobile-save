@@ -89,6 +89,11 @@ android {
     flavorDimensions "default"
 
     productFlavors {
+        staging {
+            dimension "default"
+            applicationIdSuffix ".staging"
+            resValue "string", "app_name", "[STG]Dfy"
+        }
         develop {
             dimension "default"
             applicationIdSuffix ".develop"
