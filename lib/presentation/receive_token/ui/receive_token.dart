@@ -78,6 +78,7 @@ class _ReceiveState extends State<Receive> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: StateStreamLayout(
         stream: receiveCubit.stateStream,
         error: AppException('', S.current.something_went_wrong),
