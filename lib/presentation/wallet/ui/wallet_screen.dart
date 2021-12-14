@@ -71,6 +71,7 @@ class _WalletState extends State<WalletScreen>
       if (cubit.nameWallet == '') {
         cubit.getListWallets();
       }
+      cubit.getNFT(cubit.addressWalletCore);
     }
   }
 
