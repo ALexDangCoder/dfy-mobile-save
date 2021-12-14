@@ -4,20 +4,22 @@ class NftInfo {
   String? name;
   String? id;
   String? img;
-  String? link;
   String? description;
   String? standard = 'ERC-721';
   String? blockchain = 'Binance smart chain';
+  String? collectionSymbol;
+  String? collectionName;
 
   NftInfo({
     this.contract,
     this.collectionId,
     this.name,
     this.id,
-    this.link,
     this.description,
     this.standard,
     this.blockchain,
+    this.collectionSymbol,
+    this.collectionName,
   });
 
   NftInfo.fromJson(Map<String, dynamic> json) {
@@ -37,7 +39,6 @@ class NftInfo {
     data['nftName'] = name;
     data['nftID'] = int.parse(id ?? '-1');
     data['iconNFT'] = img;
-    data['link'] = link ?? '';
     data['description'] = description;
     data['name'] = name;
     data['standard'] = standard ?? '';

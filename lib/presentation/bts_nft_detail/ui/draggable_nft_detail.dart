@@ -164,11 +164,6 @@ class _NFTDetailState extends State<NFTDetail> {
                                   type: TextType.NORM,
                                 ),
                                 _buildRow(
-                                  title: S.current.link,
-                                  detail: nft.link?.handleString() ?? '',
-                                  type: TextType.RICH,
-                                ),
-                                _buildRow(
                                   title: S.current.contract,
                                   detail: nft.contract?.handleString() ?? '',
                                   type: TextType.RICH,
