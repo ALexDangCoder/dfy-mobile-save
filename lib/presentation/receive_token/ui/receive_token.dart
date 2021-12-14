@@ -64,7 +64,8 @@ class _ReceiveState extends State<Receive> {
     globalKey = GlobalKey();
     toast = FToast();
     toast.init(context);
-    receiveCubit.getListPrice(widget.symbol ?? '');
+    //receiveCubit.getListPrice(widget.symbol ?? '');
+    receiveCubit.showContent();
   }
 
   @override
@@ -87,7 +88,7 @@ class _ReceiveState extends State<Receive> {
         child: BaseBottomSheet(
           title: textTitle(widget.type),
           child: CustomRefreshIndicator(
-            onRefresh: () async {
+            onRefresh: widget.type == TokenType.QR ? (){} : () async {
               await receiveCubit.getListPrice(widget.symbol ?? '');
             },
             child: Column(

@@ -35,11 +35,15 @@ class ReceiveCubit extends BaseCubit<ReceiveState> {
   PriceRepository get _priceRepository => Get.find();
 
   Future<void> getListPrice(String symbols) async {
+    showLoading();
     final Result<List<TokenPrice>> result =
     await _priceRepository.getListPriceToken(symbols);
     result.when(
       success: (res) {
         priceSink.add(res.first.price ?? 0);
+        if(res.first.isBlank ?? true){
+          showEmpty();
+        }
       },
       error: (error) {
         updateStateError();

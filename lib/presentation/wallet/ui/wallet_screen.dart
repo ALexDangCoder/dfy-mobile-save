@@ -302,19 +302,16 @@ class _WalletState extends State<WalletScreen>
                                         );
                                       },
                                     );
-                                  }
-                                  else if(snapshot.data?.isEmpty ?? false){
-                                    return const SizedBox(
-                                    );
-                                  }
-                                  else {
+                                  } else if (snapshot.data?.isEmpty ?? false) {
+                                    return const SizedBox();
+                                  } else {
                                     return SizedBox(
                                       height: 100.h,
                                       child: Center(
                                         child: CircularProgressIndicator(
                                           strokeWidth: 3.r,
-                                          color:
-                                          AppTheme.getInstance().whiteColor(),
+                                          color: AppTheme.getInstance()
+                                              .whiteColor(),
                                         ),
                                       ),
                                     );
@@ -524,14 +521,14 @@ class _WalletState extends State<WalletScreen>
               ),
               IconButton(
                 onPressed: () {
-                  showModalBottomSheet(
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (context) => Receive(
-                      walletAddress:
-                          widget.wallet?.address ?? cubit.addressWalletCore,
-                      type: TokenType.QR,
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Receive(
+                        walletAddress:
+                            widget.wallet?.address ?? cubit.addressWalletCore,
+                        type: TokenType.QR,
+                      ),
                     ),
                   );
                 },
