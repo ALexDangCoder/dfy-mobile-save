@@ -508,6 +508,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         addressWallet.add(addressWalletCore);
         break;
       case 'getNFTCallback':
+        // 0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1
+
         final List<dynamic> data = methodCall.arguments;
         print(data);
         final List<CollectionNft> listCollectionNFT = [];
@@ -521,7 +523,7 @@ class WalletCubit extends BaseCubit<WalletState> {
             print(nftItem.uri);
             if (nftItem.uri != '') {
               final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
-              nftInfo.id = nftItem.id as String?;
+              // nftInfo.id = nftItem.id as String?;
               nftInfo.contract = nftItem.contract;
               nftInfo.standard = 'ERC-721';
               nftInfo.blockchain = 'Binance smart chain';
