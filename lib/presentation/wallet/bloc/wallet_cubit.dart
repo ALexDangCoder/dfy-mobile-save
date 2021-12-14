@@ -347,6 +347,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       },
       error: (error) {
         getTokens(addressWalletCore);
+        getNFT(addressWalletCore);
       },
     );
   }
@@ -517,10 +518,12 @@ class WalletCubit extends BaseCubit<WalletState> {
           listCollectionNFT.add(CollectionNft.fromJson(element));
           //get nft list in each collection
           for (final nftItem in listCollectionNFT[index].listNft ?? []) {
+            nftItem as ListNft;
             final List<NftInfo> listNftInfo = [];
             if (nftItem.uri != null) {
               final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
-              nftInfo.id = nftItem.id;
+              print(nftInfo);
+              nftInfo.id = nftItem.id as String?;
               nftInfo.contract = nftItem.contract;
               nftInfo.standard = 'ERC-721';
               nftInfo.blockchain = 'Binance smart chain';
