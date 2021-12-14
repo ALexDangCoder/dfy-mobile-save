@@ -71,7 +71,6 @@ class _WalletState extends State<WalletScreen>
       if (cubit.nameWallet == '') {
         cubit.getListWallets();
       }
-      cubit.getNFT(cubit.addressWalletCore);
     }
   }
 
@@ -303,8 +302,6 @@ class _WalletState extends State<WalletScreen>
                                         );
                                       },
                                     );
-                                  } else if (snapshot.data?.isEmpty ?? false) {
-                                    return const SizedBox();
                                   } else {
                                     return SizedBox(
                                       height: 100.h,

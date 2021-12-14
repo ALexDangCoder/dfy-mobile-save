@@ -6,8 +6,8 @@ class NftInfo {
   String? img;
   String? link;
   String? description;
-  String? standard;
-  String? blockchain;
+  String? standard = 'ERC-721';
+  String? blockchain = 'Binance smart chain';
 
   NftInfo({
     this.contract,
