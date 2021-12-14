@@ -451,6 +451,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           await getTokens(
             addressWalletCore,
           );
+          await getNFT(addressWalletCore);
         }
         break;
       case 'earseWalletCallback':
@@ -509,24 +510,19 @@ class WalletCubit extends BaseCubit<WalletState> {
         addressWallet.add(addressWalletCore);
         break;
       case 'getNFTCallback':
+        listNftInfo.clear();
+        listNftFromWalletCore.clear();
         final List<dynamic> data = methodCall.arguments;
         print(data);
         final List<CollectionNft> listCollectionNFT = [];
-
         int index = 0;
         for (final element in data) {
           listCollectionNFT.add(CollectionNft.fromJson(element));
           //get nft list in each collection
           for (final nftItem in listCollectionNFT[index].listNft ?? []) {
             nftItem as ListNft;
-            final List<NftInfo> listNftInfo = [];
             if (nftItem.uri != null) {
               final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
-              print(nftInfo);
-              nftInfo.id = nftItem.id as String?;
-              nftInfo.contract = nftItem.contract;
-              nftInfo.standard = 'ERC-721';
-              nftInfo.blockchain = 'Binance smart chain';
               listNftInfo.add(nftInfo);
             } else {
               //todo handle uri null
@@ -549,6 +545,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
     }
   }
+  final List<NftInfo> listNftInfo = [];
+
 
   int indexWallet = 0;
 

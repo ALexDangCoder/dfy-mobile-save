@@ -140,9 +140,9 @@ class _NFTItemState extends State<NFTItem> {
                       physics: const ClampingScrollPhysics(),
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: widget.collectionNft.listNft!.length,
+                      itemCount: widget.bloc.listNftInfo.length,
                       itemBuilder: (BuildContext context, int index) => CardNFT(
-                        objNFT:  nft,
+                        objNFT: widget.bloc.listNftInfo[index],
                         walletAddress: widget.walletAddress,
                       ),
                     ),
