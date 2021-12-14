@@ -347,6 +347,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       },
       error: (error) {
         getTokens(addressWalletCore);
+        getNFT(addressWalletCore);
       },
     );
   }
@@ -450,6 +451,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           await getTokens(
             addressWalletCore,
           );
+          await getNFT(addressWalletCore);
         }
         break;
       case 'earseWalletCallback':
@@ -508,25 +510,19 @@ class WalletCubit extends BaseCubit<WalletState> {
         addressWallet.add(addressWalletCore);
         break;
       case 'getNFTCallback':
-        // 0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1
-
+        listNftInfo.clear();
+        listNftFromWalletCore.clear();
         final List<dynamic> data = methodCall.arguments;
         print(data);
         final List<CollectionNft> listCollectionNFT = [];
-        final List<NftInfo> listNftInfo = [];
         int index = 0;
         for (final element in data) {
           listCollectionNFT.add(CollectionNft.fromJson(element));
           //get nft list in each collection
           for (final nftItem in listCollectionNFT[index].listNft ?? []) {
             nftItem as ListNft;
-            print(nftItem.uri);
-            if (nftItem.uri != '') {
+            if (nftItem.uri != null) {
               final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
-              // nftInfo.id = nftItem.id as String?;
-              nftInfo.contract = nftItem.contract;
-              nftInfo.standard = 'ERC-721';
-              nftInfo.blockchain = 'Binance smart chain';
               listNftInfo.add(nftInfo);
             } else {
               //todo handle uri null
@@ -534,7 +530,6 @@ class WalletCubit extends BaseCubit<WalletState> {
           }
           index++;
         }
-        final result = listNftInfo;
         listNftFromWalletCore = listCollectionNFT;
         listNFTStream.add(listNftFromWalletCore);
         break;
@@ -550,6 +545,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
     }
   }
+  final List<NftInfo> listNftInfo = [];
+
 
   int indexWallet = 0;
 

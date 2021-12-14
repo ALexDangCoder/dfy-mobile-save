@@ -46,8 +46,8 @@ class _CardNFTState extends State<CardNFT> {
             height: 102.h,
             width: 88.w,
             decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage(ImageAssets.image_example_pop_up),
+              image:  DecorationImage(
+                image: NetworkImage(widget.objNFT.img ?? ''),
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(
