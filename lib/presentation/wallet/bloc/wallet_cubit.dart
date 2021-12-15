@@ -4,7 +4,6 @@ import 'dart:math' hide log;
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/data/web3/abi/nft.g.dart';
 import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
@@ -12,7 +11,6 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
-import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
@@ -386,6 +384,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
           decimal: 18,
+          isImport: false,
         ),
       );
       listJson.add(
@@ -397,6 +396,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
           decimal: 18,
+          isImport: false,
         ),
       );
     }
@@ -468,7 +468,13 @@ class WalletCubit extends BaseCubit<WalletState> {
           emit(ImportNftFail());
         }
         break;
-      case 'setShowedNftCallback':
+      case 'setDeleteNftCallback':
+        final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
+        print('setDeleteNftCallback $isSetDeleteNft');
+        break;
+      case 'setDeleteCollectionCallback':
+        final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
+        print('setDeleteCollectionCallback $isSetDeleteNft');
         break;
       case 'checkTokenCallback':
         isHaveToken = await methodCall.arguments['isExist'];
@@ -487,27 +493,38 @@ class WalletCubit extends BaseCubit<WalletState> {
         for (final element in data) {
           checkShow.add(ModelToken.fromWalletCore(element));
         }
+        final List<ModelToken> listSwitch = [];
         for (final element in checkShow) {
           if (element.isShow) {
             listTokenFromWalletCore.add(element);
+          }
+          if (element.isImport == false) {
+            listSwitch.add(element);
           }
         }
         await getBalanceOFToken(listTokenFromWalletCore);
         await getExchangeRateFromServer(listTokenFromWalletCore);
         totalBalance.add(total(listTokenFromWalletCore));
-        getListTokenModel.add(checkShow);
+        getListTokenModel.add(listSwitch);
         listTokenStream.add(listTokenFromWalletCore);
         break;
 
       case 'getListWalletsCallback':
         listSelectAccBloc.clear();
         final List<dynamic> data = methodCall.arguments;
-        for (final element in data) {
-          listWallet.add(Wallet.fromJson(element));
+        if (data.isEmpty) {
+          //todo bắn emit ra màn hình đầu tiên
+          print('màn hình đầu tiên');
+          emit(NavigatorFirst());
+        } else {
+          for (final element in data) {
+            listWallet.add(Wallet.fromJson(element));
+          }
+          getWalletDetailInfo();
+          addressWallet.add(addressWalletCore);
+          await getNFT(addressWalletCore);
         }
-        getWalletDetailInfo();
-        addressWallet.add(addressWalletCore);
-        await getNFT(addressWalletCore);
+
         break;
       case 'getNFTCallback':
         listNftInfo.clear();
@@ -649,16 +666,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     } on PlatformException {}
   }
 
-//"jsonTokens*: String
-// arrayOf(
-// walletAddress*: String
+//walletAddress*: String
 // tokenAddress*: String
 // tokenFullName*: String
 // iconUrl*: String
 // symbol*: String
 // decimal*: Int
 // exchangeRate*: double
-// )"
+// isImport*: boolean
   Future<void> importToken({
     required String walletAddress,
     required String tokenAddress,
@@ -667,6 +682,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     required String tokenFullName,
     required String iconToken,
     required double exchangeRate,
+    required bool isImport,
   }) async {
     try {
       final data = {
@@ -677,6 +693,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'tokenFullName': tokenFullName,
         'iconToken': iconToken,
         'exchangeRate': exchangeRate,
+        'isImport': isImport,
       };
       await trustWalletChannel.invokeMethod('importToken', data);
     } on PlatformException {}
@@ -702,12 +719,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     required String walletAddress,
     required String tokenAddress,
     required bool isShow,
+    required bool isImport,
   }) async {
     try {
       final data = {
         'walletAddress': walletAddress,
         'tokenAddress': tokenAddress,
         'isShow': isShow,
+        'isImport': isImport,
       };
       await trustWalletChannel.invokeMethod('setShowedToken', data);
     } on PlatformException {
@@ -740,18 +759,39 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  Future<void> setShowedNft({
+//"walletAddress*: String
+// collectionAddress*: String
+// nftContract*: String"
+  Future<void> deleteNft({
     required String walletAddress,
-    required String nftAddress,
-    required bool isShow,
+    required String collectionAddress,
+    required String nftContract,
   }) async {
     try {
       final data = {
         'walletAddress': walletAddress,
-        'isShow': isShow,
-        'nftAddress': nftAddress,
+        'nftContract': nftContract,
+        'collectionAddress': collectionAddress,
       };
-      await trustWalletChannel.invokeMethod('setShowedNft', data);
+      await trustWalletChannel.invokeMethod('deleteNft', data);
+    } on PlatformException {
+      //todo
+
+    }
+  }
+
+//"walletAddress*: String
+// collectionAddress*: String"
+  Future<void> deleteCollection({
+    required String walletAddress,
+    required String collectionAddress,
+  }) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+        'collectionAddress': collectionAddress,
+      };
+      await trustWalletChannel.invokeMethod('deleteCollection', data);
     } on PlatformException {
       //todo
 
