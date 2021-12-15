@@ -341,13 +341,13 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getListCategory() async {
     final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
-    result.when(
+    await result.when(
       success: (res) {
         getTokenInfoByAddressList(res: res);
       },
-      error: (error) {
-        getTokens(addressWalletCore);
-        getNFT(addressWalletCore);
+      error: (error) async {
+        await getTokens(addressWalletCore);
+        await getNFT(addressWalletCore);
       },
     );
   }
@@ -451,7 +451,6 @@ class WalletCubit extends BaseCubit<WalletState> {
           await getTokens(
             addressWalletCore,
           );
-          await getNFT(addressWalletCore);
         }
         break;
       case 'earseWalletCallback':
@@ -508,9 +507,10 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         getWalletDetailInfo();
         addressWallet.add(addressWalletCore);
+        await getNFT(addressWalletCore);
         break;
       case 'getNFTCallback':
-        listNftInfo..clear();
+        listNftInfo.clear();
         listNftFromWalletCore.clear();
         final List<dynamic> data = methodCall.arguments;
         print(data);
