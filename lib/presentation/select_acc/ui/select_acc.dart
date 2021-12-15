@@ -122,21 +122,20 @@ class _SelectAccState extends State<SelectAcc> {
                                 }
                               },
                               onLongPress: () {
-                                Navigator.of(context)
-                                    .push(
-                                      HeroDialogRoute(
-                                        builder: (context) {
-                                          return RemoveAcc(
-                                            bloc: widget.bloc,
-                                            index: index,
-                                            walletAddress: snapshot.data?[index]
-                                                    .addressWallet ??
-                                                '',
-                                          );
-                                        },
-                                        isNonBackground: false,
-                                      ),
-                                    );
+                                Navigator.of(context).push(
+                                  HeroDialogRoute(
+                                    builder: (context) {
+                                      return RemoveAcc(
+                                        bloc: widget.bloc,
+                                        index: index,
+                                        walletAddress: snapshot
+                                                .data?[index].addressWallet ??
+                                            '',
+                                      );
+                                    },
+                                    isNonBackground: false,
+                                  ),
+                                );
                               },
                               child: Container(
                                 decoration: BoxDecoration(
