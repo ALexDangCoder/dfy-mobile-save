@@ -26,13 +26,24 @@ class Web3Utils {
   }) async {
     final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
     if (id == null) {
-      return false;
-    }
-    try {
-      await nft.tokenURI(BigInt.from(id));
-      return true;
-    } catch (e) {
-      return false;
+      try {
+        final balanceOfNft =
+            await nft.balanceOf(EthereumAddress.fromHex(contract));
+        if (balanceOfNft > BigInt.zero) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (e) {
+        return false;
+      }
+    } else {
+      try {
+        await nft.tokenURI(BigInt.from(id));
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
   }
 
