@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FormInputAddressNFT extends StatelessWidget {
@@ -23,6 +27,7 @@ class FormInputAddressNFT extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final regex = RegExp(r'^0x[a-fA-F0-9]{40}$');
     return Container(
       width: 343.w,
       height: 64.h,
@@ -50,10 +55,27 @@ class FormInputAddressNFT extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
                 maxLength: 100,
-                onChanged: (value) {
-                  bloc.tokenAddressTextNft.sink.add(value);
-                  bloc.checkAddressNullNFT();
+                onChanged: (value) async {
+                  if (value.isNotEmpty && regex.hasMatch(value)) {
+                    final res = await Web3Utils().importNFT(
+                      contract: value,
+                    );
+                    bloc.btnSubject.sink.add(res);
+                  }
+                  if(!regex.hasMatch(value)){
+                    bloc.isNFT.sink.add(false);
+                  }
                 },
+                onFieldSubmitted: (value) async {
+                  if (value.isNotEmpty && regex.hasMatch(value)) {
+                    final res = await Web3Utils().importNFT(
+                      contract: value,
+                    );
+                    bloc.btnSubject.sink.add(res);
+                    bloc.isNFT.sink.add(res);
+                  }
+                },
+
                 controller: controller,
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(

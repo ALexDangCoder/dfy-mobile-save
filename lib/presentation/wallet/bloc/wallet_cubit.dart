@@ -163,7 +163,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
 
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject();
-
   bool isAddressNotExist = false;
 
   BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
@@ -176,6 +175,10 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
   BehaviorSubject<double> totalBalance = BehaviorSubject();
+  /// Nam
+  BehaviorSubject<String> contractSubject = BehaviorSubject();
+  BehaviorSubject<String> idSubject = BehaviorSubject();
+  BehaviorSubject<bool> btnSubject = BehaviorSubject.seeded(false);
 
   List<HistoryNFT> listHistory = [];
   double? price = 0.0;
