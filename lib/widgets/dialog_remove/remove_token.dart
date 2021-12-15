@@ -143,6 +143,7 @@ class RemoveToken extends StatelessWidget {
                                                   .listTokenFromWalletCore[
                                                       index]
                                                   .tokenAddress,
+                                              isImport: false,
                                             );
                                             cubit.listTokenFromWalletCore
                                                 .removeAt(index);

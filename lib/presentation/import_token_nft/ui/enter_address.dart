@@ -149,7 +149,7 @@ class _EnterAddressState extends State<EnterAddress> {
                             decimal: int.parse(widget.bloc.tokenDecimal.value),
                             iconToken: icon,
                             tokenFullName: widget.bloc.tokenFullName,
-                            exchangeRate: widget.bloc.price!,
+                            exchangeRate: widget.bloc.price!, isImport: true,
                           );
                         }
                         widget.bloc.checkAddressNull();

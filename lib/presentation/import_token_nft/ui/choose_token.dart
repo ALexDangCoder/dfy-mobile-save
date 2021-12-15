@@ -126,6 +126,7 @@ class _ChooseTokenState extends State<ChooseToken> {
             isShow: value,
             tokenAddress:
                 widget.bloc.getListTokenModel.value[index].tokenAddress,
+            isImport: false,
           );
           setState(() {});
         },

@@ -4,7 +4,6 @@ import 'dart:math' hide log;
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/data/web3/abi/nft.g.dart';
 import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
@@ -12,7 +11,6 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
-import 'package:Dfy/domain/model/nft_model.dart';
 import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
@@ -385,6 +383,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
           decimal: 18,
+          isImport: false,
         ),
       );
       listJson.add(
@@ -396,6 +395,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           exchangeRate: value.usdExchange ?? 0,
           walletAddress: addressWalletCore,
           decimal: 18,
+          isImport: false,
         ),
       );
     }
@@ -644,16 +644,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     } on PlatformException {}
   }
 
-//"jsonTokens*: String
-// arrayOf(
-// walletAddress*: String
+//walletAddress*: String
 // tokenAddress*: String
 // tokenFullName*: String
 // iconUrl*: String
 // symbol*: String
 // decimal*: Int
 // exchangeRate*: double
-// )"
+// isImport*: boolean
   Future<void> importToken({
     required String walletAddress,
     required String tokenAddress,
@@ -662,6 +660,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     required String tokenFullName,
     required String iconToken,
     required double exchangeRate,
+    required bool isImport,
   }) async {
     try {
       final data = {
@@ -672,6 +671,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         'tokenFullName': tokenFullName,
         'iconToken': iconToken,
         'exchangeRate': exchangeRate,
+        'isImport': isImport,
       };
       await trustWalletChannel.invokeMethod('importToken', data);
     } on PlatformException {}
@@ -697,12 +697,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     required String walletAddress,
     required String tokenAddress,
     required bool isShow,
+    required bool isImport,
   }) async {
     try {
       final data = {
         'walletAddress': walletAddress,
         'tokenAddress': tokenAddress,
         'isShow': isShow,
+        'isImport': isImport,
       };
       await trustWalletChannel.invokeMethod('setShowedToken', data);
     } on PlatformException {
