@@ -75,9 +75,9 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled true
-            zipAlignEnabled true
-            shrinkResources true
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             ndk {
@@ -89,6 +89,11 @@ android {
     flavorDimensions "default"
 
     productFlavors {
+        staging {
+            dimension "default"
+            applicationIdSuffix ".staging"
+            resValue "string", "app_name", "[STG]Dfy"
+        }
         develop {
             dimension "default"
             applicationIdSuffix ".develop"

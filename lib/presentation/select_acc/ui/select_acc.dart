@@ -31,7 +31,9 @@ class _SelectAccState extends State<SelectAcc> {
   @override
   void initState() {
     super.initState();
-    widget.bloc.getListWallet(addressWallet: widget.bloc.addressWallet.value);
+    widget.bloc.getListWallet(
+      addressWallet: widget.bloc.addressWallet.value,
+    );
   }
 
   @override
@@ -104,6 +106,7 @@ class _SelectAccState extends State<SelectAcc> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
+                                widget.bloc.indexWallet = index;
                                 widget.bloc.addressWallet.sink.add(
                                   snapshot.data?[index].addressWallet ?? '',
                                 );
@@ -156,11 +159,17 @@ class _SelectAccState extends State<SelectAcc> {
                                       children: [
                                         Row(
                                           children: [
-                                            SizedBox(
+                                            Container(
                                               height: 40.h,
                                               width: 40.w,
-                                              child: Image.asset(
-                                                snapshot.data?[index].url ?? '',
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage(
+                                                    snapshot.data?[index].url ??
+                                                        '',
+                                                  ),
+                                                ),
+                                                shape: BoxShape.circle,
                                               ),
                                             ),
                                             spaceW8,

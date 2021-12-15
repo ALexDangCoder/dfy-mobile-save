@@ -14,8 +14,6 @@ import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../main.dart';
-
 const int tabWalletIndex = 0;
 const int tabPawnIndex = 1;
 const int tabHomeIndex = 2;
@@ -23,9 +21,11 @@ const int tabMarketingPlaceIndex = 3;
 const int tabStakingIndex = 4;
 
 class MainScreen extends BaseScreen {
-  const MainScreen({Key? key, this.index, this.wallet}) : super(key: key);
+  const MainScreen({Key? key, this.index, this.wallet,this.checkExist}) :
+        super(key: key);
   final int? index;
   final Wallet? wallet;
+  final bool? checkExist;
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -71,7 +71,6 @@ class _MainScreenState extends BaseState<MainScreen> {
       WalletScreen(
         index: widget.index ?? 1,
         wallet: widget.wallet,
-        checkWallet: _cubit.checkWalletExist(),
       ),
       const PawnScreen(),
       const HomeScreen(),

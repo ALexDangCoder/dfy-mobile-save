@@ -1,3 +1,4 @@
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrase_state.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +24,10 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
 
   BehaviorSubject<bool> isSeedPhraseImportFailed =
       BehaviorSubject.seeded(false);
+
+  Future<void> setFirstTime() async {
+   await PrefsService.saveFirstAppConfig('false');
+  }
 
   final String passWord;
   List<String> listTitle1 = [];
@@ -94,11 +99,11 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   }
 
   void getStringToList(String passPhrase) {
-    listTitle1 = passPhrase.split(' '); //todo remove random
-    List<int> indices = List<int>.generate(listTitle1.length, (i) => i);
+    listTitle1 = passPhrase.split(' ');
+    final List<int> indices = List<int>.generate(listTitle1.length, (i) => i);
     indices.shuffle();
-    int newCount = listTitle1.length;
-    List<String> randomList =
+    final int newCount = listTitle1.length;
+    final List<String> randomList =
         indices.take(newCount).map((i) => listTitle1[i]).toList();
     listTitle.sink.add(randomList);
   }

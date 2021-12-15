@@ -1,26 +1,16 @@
-
-import 'package:json_annotation/json_annotation.dart';
-part 'model_token.g.dart';
-@JsonSerializable()
 class ModelToken {
-  @JsonKey(name: 'tokenAddress')
   String tokenAddress = '';
-  @JsonKey(name: 'nameToken')
   String nameToken = '';
-  @JsonKey(name: 'nameShortToken')
   String nameShortToken = '';
-  @JsonKey(name: 'iconToken')
   String iconToken = '';
-  @JsonKey(name: 'balanceToken')
-  double balanceToken = 0.0;
-  @JsonKey(name: 'isShow')
-  bool isShow = false;
-  @JsonKey(name: 'exchangeRate')
   double exchangeRate = 0;
-  @JsonKey(name: 'walletAddress')
   String walletAddress = '';
-  @JsonKey(name: 'decimal')
-  double decimal = 0;
+  int decimal = 0;
+
+  double balanceToken = 0.0;
+  bool isShow = false;
+  bool isImport = false;
+
   ModelToken({
     required this.tokenAddress,
     required this.nameToken,
@@ -29,19 +19,38 @@ class ModelToken {
     required this.exchangeRate,
     required this.walletAddress,
     required this.decimal,
+    required this.isImport,
   });
-  factory ModelToken.fromJson(Map<String, dynamic> json) =>
-      _$ModelTokenFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ModelTokenToJson(this);
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'tokenAddress': tokenAddress,
+        'nameToken': nameToken,
+        'nameShortToken': nameShortToken,
+        'iconToken': iconToken,
+        'exchangeRate': exchangeRate,
+        'walletAddress': walletAddress,
+        'decimal': decimal,
+        'isImport': isImport,
+      };
 
   ModelToken.init();
 
   ModelToken.fromWalletCore(dynamic json)
       : tokenAddress = json['tokenAddress'].toString(),
+        //
         walletAddress = json['walletAddress'].toString(),
-        iconToken = json['iconUrl'],
+        //
+        iconToken = json['iconUrl'].toString(),
+        //
         nameToken = json['tokenFullName'].toString(),
+        //
         isShow = json['isShow'],
-        nameShortToken = json['symbol'].toString();
+        //
+        decimal = json['decimal'],
+        //
+        exchangeRate = json['exchangeRate'],
+        //
+        nameShortToken = json['symbol'].toString(),
+        //
+        isImport = json['isImport']; //
 }

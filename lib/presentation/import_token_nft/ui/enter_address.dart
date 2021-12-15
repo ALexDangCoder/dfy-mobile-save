@@ -62,13 +62,7 @@ class _EnterAddressState extends State<EnterAddress> {
                 return const TokenSuccessfully();
               },
             ),
-          ).whenComplete(() async {
-            widget.bloc.listTokenFromWalletCore.clear();
-            widget.bloc.checkShow.clear();
-            await widget.bloc.getTokens(widget.addressWallet);
-            widget.bloc.listTokenStream
-                .add(widget.bloc.listTokenFromWalletCore);
-          });
+          );
         }
       },
       builder: (context, _) {
@@ -128,6 +122,9 @@ class _EnterAddressState extends State<EnterAddress> {
                     final bool enable = snapshot.data ?? false;
                     return InkWell(
                       onTap: () async {
+                        final String icon = await widget.bloc
+                            .getIcon(widget.bloc.tokenAddressText.value);
+                        widget.bloc.checkAddressNull();
                         if (enable) {
                           await widget.bloc
                               .getListPrice(widget.bloc.tokenSymbol.value);
@@ -135,7 +132,7 @@ class _EnterAddressState extends State<EnterAddress> {
                           print(widget.bloc.tokenAddressText.value);
                           print(widget.bloc.tokenSymbol.value);
                           print(widget.bloc.tokenDecimal.value);
-                          print(widget.bloc.iconToken);
+                          print('-----$icon');
                           print(widget.bloc.tokenFullName);
                           print(widget.bloc.price);
                           print('vao');
@@ -144,13 +141,12 @@ class _EnterAddressState extends State<EnterAddress> {
                             tokenAddress: widget.bloc.tokenAddressText.value,
                             symbol: widget.bloc.tokenSymbol.value,
                             decimal: int.parse(widget.bloc.tokenDecimal.value),
-                            iconToken: widget.bloc.iconToken,
+                            iconToken: icon,
                             tokenFullName: widget.bloc.tokenFullName,
                             exchangeRate: widget.bloc.price!,
+                            isImport: true,
                           );
-                          print('done');
                         }
-                        widget.bloc.checkAddressNull();
                       },
                       child: ButtonGold(
                         title: S.current.import,

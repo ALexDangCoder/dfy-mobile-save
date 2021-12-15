@@ -1,12 +1,17 @@
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/model/transaction.dart';
 import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/token_price_model.dart';
+import 'package:Dfy/domain/repository/price_repository.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
   final String walletAddress;
   final Web3Utils _web3client = Web3Utils();
+  final PriceRepository _priceRepository = Get.find();
 
   TokenDetailBloc({
     required this.walletAddress,
@@ -18,22 +23,27 @@ class TokenDetailBloc {
 
   final BehaviorSubject<List<TransactionHistory>> _transactionListSubject =
       BehaviorSubject();
+
   Stream<List<TransactionHistory>> get transactionListStream =>
       _transactionListSubject.stream;
 
   final BehaviorSubject<bool> _showMoreSubject = BehaviorSubject();
+
   Stream<bool> get showMoreStream => _showMoreSubject.stream;
 
   final BehaviorSubject<bool> _showLoadingSubject = BehaviorSubject();
+
   Stream<bool> get showLoadingStream => _showLoadingSubject.stream;
 
   final BehaviorSubject<TransactionHistoryDetail>
       _transactionHistoryDetailSubject = BehaviorSubject();
+
   Stream<TransactionHistoryDetail> get transactionHistoryStream =>
       _transactionHistoryDetailSubject.stream;
 
   final BehaviorSubject<ModelToken> _tokenSubject = BehaviorSubject();
-  Stream <ModelToken> get tokenStream => _tokenSubject.stream;
+
+  Stream<ModelToken> get tokenStream => _tokenSubject.stream;
 
   ///Get functions
   ///Get list Transaction and detail Transaction
@@ -43,6 +53,7 @@ class TokenDetailBloc {
     final result = await _web3client.getHistoryDetail(txhId: txhId);
     _transactionHistoryDetailSubject.sink.add(result);
   }
+
   Future<void> getHistory(String _tokenAddress) async {
     final result = await _web3client.getTransactionHistory(
       ofAddress: walletAddress,
@@ -73,7 +84,6 @@ class TokenDetailBloc {
     } else {
       currentTransactionList = totalTransactionList;
       _showMoreSubject.sink.add(false);
-
     }
     _transactionListSubject.sink.add(currentTransactionList);
   }
@@ -87,11 +97,24 @@ class TokenDetailBloc {
 
   ///GET TOKEN DETAIL
   Future<void> getToken(ModelToken token) async {
-    token.balanceToken = await Web3Utils().getBalanceOfToken(
-      ofAddress: walletAddress,
-      tokenAddress: token.tokenAddress,
+    if (token.nameShortToken == 'BNB') {
+      token.balanceToken = await _web3client.getBalanceOfBnb(
+        ofAddress: walletAddress,
+      );
+    } else {
+      token.balanceToken = await _web3client.getBalanceOfToken(
+        ofAddress: walletAddress,
+        tokenAddress: token.tokenAddress,
+      );
+    }
+    final Result<List<TokenPrice>> result =
+        await _priceRepository.getListPriceToken(token.nameShortToken);
+    result.when(
+      success: (res) {
+        token.exchangeRate = res.first.price ?? 0;
+      },
+      error: (error) {},
     );
-    //token.exchangeRate = await
     _tokenSubject.sink.add(token);
   }
 }

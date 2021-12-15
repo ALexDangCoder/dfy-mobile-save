@@ -1,15 +1,17 @@
+import 'dart:math';
+
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/private_key_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
+import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../../main.dart';
 
 part 'confirm_pw_prvkey_seedpharse_state.dart';
 
@@ -61,13 +63,29 @@ class ConfirmPwPrvKeySeedpharseCubit
   BehaviorSubject<int> index = BehaviorSubject.seeded(0);
   BehaviorSubject<List<PrivateKeyModel>> listPrivateKey = BehaviorSubject();
 
+  BehaviorSubject<PrivateKeyModel> privateKeySubject = BehaviorSubject();
+
   String passWord = '';
 
-  void getListPrivateKeyAndSeedphrase() {
-    for (final Wallet value in listWalletCore) {
-      exportWallet(walletAddress: value.address ?? '', password: passWord);
+  void getListPrivateKeyAndSeedPhrase({
+    required String password,
+  }) {
+    for (final value in listWalletCore) {
+      exportWallet(
+        walletAddress: value.address ?? '',
+        password: password,
+      );
     }
-    listPrivateKey.sink.add(listWallet);
+  }
+
+  int randomAvatar() {
+    final Random rd = Random();
+
+    return rd.nextInt(10);
+  }
+
+  void sendPrivateKey(int _index) {
+    privateKeySubject.sink.add(listWallet[_index]);
   }
 
   List<String> stringToList(String seedPhrase) {
@@ -92,24 +110,31 @@ class ConfirmPwPrvKeySeedpharseCubit
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
+      case 'getListWalletsCallback':
+        final List<dynamic> data = methodCall.arguments;
+        for (final element in data) {
+          listWalletCore.add(Wallet.fromJson(element));
+        }
+        break;
       case 'exportWalletCallBack':
         final String walletAddress =
             await methodCall.arguments['walletAddress'];
         final String privateKey = await methodCall.arguments['privateKey'];
         final String passPhrase = await methodCall.arguments['passPhrase'];
-        PrivateKeyModel obj = PrivateKeyModel(
+        final PrivateKeyModel obj = PrivateKeyModel(
           seedPhrase: passPhrase,
           privateKey: privateKey,
           walletAddress: walletAddress,
         );
         listWallet.add(obj);
         break;
-      case 'getListWalletsCallback':
-        final List<dynamic> data = methodCall.arguments;
-        for (final element in data) {
-          listWalletCore.add(Wallet.fromJson(element));
-          print(
-              '-------------------------------------${listWalletCore.first.address}');
+      case 'checkPasswordCallback':
+        bool isCorrect = false;
+        isCorrect = await methodCall.arguments['isCorrect'];
+        if (isCorrect) {
+          emit(ConfirmPWToShowSuccess());
+        } else {
+          emit(ConfirmPWToShowFail());
         }
         break;
       default:
@@ -117,13 +142,13 @@ class ConfirmPwPrvKeySeedpharseCubit
     }
   }
 
-  Future<void> getListWallets({required String password}) async {
+  Future<void> getListWallets() async {
     try {
-      final data = {
-        'password': password,
-      };
+      final data = {};
       await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {}
+    } on PlatformException {
+      //nothing
+    }
   }
 
 //exportWallet
@@ -140,6 +165,17 @@ class ConfirmPwPrvKeySeedpharseCubit
     } on PlatformException {
       //todo
 
+    }
+  }
+
+  Future<void> checkPassword({required String password}) async {
+    try {
+      final data = {
+        'password': password,
+      };
+      await trustWalletChannel.invokeMethod('checkPassword', data);
+    } on PlatformException {
+      //todo
     }
   }
 
@@ -164,12 +200,29 @@ class ConfirmPwPrvKeySeedpharseCubit
     }
   }
 
-  void checkValidate(String value, {required String rightPW}) {
-    if (value != rightPW) {
+  void checkValidate(
+    String value,
+  ) {
+    if ((value.isNotEmpty && value.length < 8) ||
+        (value.isNotEmpty && value.length > 15)) {
       isValidPW = false;
       showValidatePWSink.add(true);
-      txtWarningValidateSink.add(S.current.not_match);
-    } else {
+      txtWarningValidateSink.add(S.current.warn_pw_8_15);
+    } else if (value.isEmpty) {
+      isValidPW = false;
+      showValidatePWSink.add(true);
+      txtWarningValidateSink.add(S.current.password_is_required);
+    } else if (!Validator.validateStructure(value)) {
+      isValidPW = false;
+      showValidatePWSink.add(true);
+      txtWarningValidateSink.add(S.current.warn_pw_validate);
+    }
+    // else if (value != rightPW) {
+    //   isValidPW = false;
+    //   showValidatePWSink.add(true);
+    //   txtWarningValidateSink.add(S.current.not_match);
+    // }
+    else {
       isValidPW = true;
       showValidatePWSink.add(false);
     }
@@ -183,3 +236,4 @@ class ConfirmPwPrvKeySeedpharseCubit
     }
   }
 }
+//warfare pluck security velvet finish enroll frost flock suffer anchor view seek

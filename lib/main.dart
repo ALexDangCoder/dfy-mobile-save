@@ -101,8 +101,15 @@ class _MyAppState extends State<MyApp> {
         );
         if (methodCall.arguments['isWalletExist']) {
           await PrefsService.saveFirstAppConfig('false');
+          print('isWalletExit ${methodCall.arguments['isWalletExist']}');
         }
-        print('isWalletExit ${methodCall.arguments['isWalletExist']}');
+        break;
+      case 'importNftCallback':
+        print('importNftCallback ${methodCall.arguments}');
+        break;
+      case 'getNFTCallback':
+        print('getNFTCallback ${methodCall.arguments}');
+        break;
     }
   }
 
@@ -139,6 +146,17 @@ class _MyAppState extends State<MyApp> {
         'tokenAddress': '123',
       };
       await trustWalletChannel.invokeMethod('checkToken', data);
+    } on PlatformException {}
+  }
+
+  Future<void> importNft() async {
+    try {
+      final data = {
+        'walletAddress': '123',
+        'jsonNft':
+            '{"name": "Mobile Test Collection","symbol": "DFY-NFT","contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","listNft": [{"id": 0,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmZbN93DKoW9owJ2QqJ8RM7hqCW5PgotRK3y8mnprU5VQW"},{"id": 1,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmTpRapaL9WbEVJibJrBzQ4nkggg9mSJK7DVK3mL6hpMEy"},{"id": 2,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c"},{"id": 3,"contract": "0x51eE4cFa0363BAA22cE8d628ef1F75D7eE4C24a1","uri": "https://defiforyou.mypinata.cloud/ipfs/QmXCQTqZYYyDCF6GcnnophSZryRQ3HJTvEjokoRFYbH5MG"}]}',
+      };
+      await trustWalletChannel.invokeMethod('importNft', data);
     } on PlatformException {}
   }
 

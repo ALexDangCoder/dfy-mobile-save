@@ -1,6 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrase.dart';
@@ -16,8 +15,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../main.dart';
 
 enum typeSwitchForm { FINGER_FT_FACEID, APPLOCK }
 
@@ -40,18 +37,10 @@ class _SettingWalletState extends State<SettingWallet> {
   @override
   void initState() {
     super.initState();
-
-    trustWalletChannel.setMethodCallHandler(
-      cubit.nativeMethodCallBackTrustWallet,
-    );
-    cubit.getListWallets(password: 'pass');
-    cubit.getListPrivateKeyAndSeedphrase();
   }
 
   @override
   Widget build(BuildContext context) {
-    trustWalletChannel.setMethodCallHandler(
-        widget.cubitSetting.nativeMethodCallBackTrustWallet);
     return BaseBottomSheet(
       title: S.current.setting,
       text: S.current.lock,
@@ -96,7 +85,9 @@ class _SettingWalletState extends State<SettingWallet> {
                         ),
                       ).whenComplete(
                         () => {
-                          widget.cubit.listSelectAccBloc.clear(),
+                          widget.cubit.listWallet.clear(),
+                          widget.cubit.getListWallets(),
+                          widget.cubit.getListAcc(),
                         },
                       );
                     },
@@ -158,6 +149,10 @@ class _SettingWalletState extends State<SettingWallet> {
                             );
                           },
                         ),
+                      ).whenComplete(
+                        () => {
+                          cubit.listWalletCore.clear(),
+                        },
                       );
                     },
                     child: buttonForm(

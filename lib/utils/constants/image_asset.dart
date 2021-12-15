@@ -96,6 +96,7 @@ class ImageAssets {
   static const String plus = '$baseImg/Plus.png';
   static const String import = '$baseImg/Import.png';
   static const String face_id = '$baseImg/face_id.png';
+  static const String img_cash = '$baseImg/cash.png';
 
   static const String symbol = '$baseImg/symbol.png';
 
@@ -108,6 +109,7 @@ class ImageAssets {
   static const String ic_plus = '$baseImg/Plus.png';
   static const String ic_symbol = 'assets/images/symbol.png';
   static const String image_example_pop_up = '$baseImg/pop_image.png';
+  static const String image_avatar = '$baseImg/ava_0';
 
   ///SvgImage
   static const String ic_btn_send_token_svg =

@@ -98,7 +98,7 @@ class _ImportAccountState extends State<ImportAccount> {
             }
           },
           child: BaseBottomSheet(
-            title: S.current.import_seed,
+            title: S.current.import_acc,
             child: Column(
               children: [
                 spaceH24,

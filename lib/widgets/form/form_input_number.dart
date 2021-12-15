@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,8 +44,21 @@ class FormInputNumber extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
                 maxLength: 100,
-                onChanged: (value) {
-                  bloc.nftEnterID.sink.add(value);
+                onChanged: (value) async {
+                  if (value.isNotEmpty) {
+                    final res = await Web3Utils().importNFT(
+                      contract: bloc.contractSubject.valueOrNull ?? '',
+                      id: int.parse(value),
+                    );
+                    bloc.btnSubject.sink.add(res);
+                  }
+                },
+                onFieldSubmitted: (value) async {
+                  final res = await Web3Utils().importNFT(
+                    contract: bloc.contractSubject.valueOrNull ?? '',
+                    id: int.parse(value),
+                  );
+                  bloc.btnSubject.sink.add(res);
                 },
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
@@ -56,7 +70,7 @@ class FormInputNumber extends StatelessWidget {
                   counterText: '',
                   hintText: hint,
                   hintStyle: textNormal(
-                  Colors.white.withOpacity(0.5),
+                    Colors.white.withOpacity(0.5),
                     16.sp,
                   ),
                   border: InputBorder.none,

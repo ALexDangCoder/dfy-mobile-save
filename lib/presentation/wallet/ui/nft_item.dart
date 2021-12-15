@@ -9,18 +9,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-final NftInfo nft = NftInfo(
-  contract: '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
-  name: 'Name of NFT',
-  blockchain: 'Binance Smart Chain',
-  description:
-  'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
-  id: '124124',
-  link: 'https://goole.com',
-  standard: 'ERC-721',
-);
-
 class NFTItem extends StatefulWidget {
   const NFTItem({
     Key? key,
@@ -78,7 +66,6 @@ class _NFTItemState extends State<NFTItem> {
             child: ExpansionTile(
               leading: Container(
                 padding: EdgeInsets.only(
-                  left: 10.w,
                   top: 10.h,
                 ),
                 child: ImageIcon(
@@ -130,7 +117,6 @@ class _NFTItemState extends State<NFTItem> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(
-                    left: 52.w,
                     right: 26.w,
                     bottom: 16.h,
                   ),
@@ -140,9 +126,9 @@ class _NFTItemState extends State<NFTItem> {
                       physics: const ClampingScrollPhysics(),
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: widget.collectionNft.listNft!.length,
+                      itemCount: widget.bloc.listNftInfo.length,
                       itemBuilder: (BuildContext context, int index) => CardNFT(
-                        objNFT:  nft,
+                        objNFT: widget.bloc.listNftInfo[index],
                         walletAddress: widget.walletAddress,
                       ),
                     ),

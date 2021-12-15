@@ -35,7 +35,7 @@ extension AppDelegate {
 //                result(getListWallet(password: password))
 //            }
 //        }
-//        if call.method == "getNFT" {
+//        if call.method == "getPriceTokenResponse" {
 //            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
 //                result(getNFT(walletAddress: walletAddress))
 //            }

@@ -133,18 +133,6 @@ class RemoveToken extends StatelessWidget {
                                       Expanded(
                                         child: GestureDetector(
                                           onTap: () {
-                                            print(
-                                              cubit
-                                                  .listTokenFromWalletCore[
-                                                      index]
-                                                  .walletAddress,
-                                            );
-                                            print(
-                                              cubit
-                                                  .listTokenFromWalletCore[
-                                                      index]
-                                                  .tokenAddress,
-                                            );
                                             cubit.setShowedToken(
                                               walletAddress: cubit
                                                   .listTokenFromWalletCore[
@@ -155,6 +143,10 @@ class RemoveToken extends StatelessWidget {
                                                   .listTokenFromWalletCore[
                                                       index]
                                                   .tokenAddress,
+                                              isImport: cubit
+                                                  .listTokenFromWalletCore[
+                                                      index]
+                                                  .isImport,
                                             );
                                             cubit.listTokenFromWalletCore
                                                 .removeAt(index);
@@ -170,6 +162,11 @@ class RemoveToken extends StatelessWidget {
                                               ),
                                             );
                                             Navigator.pop(context);
+                                            cubit.checkShow.clear();
+                                            cubit.listTokenFromWalletCore
+                                                .clear();
+                                            cubit.getTokens(
+                                                cubit.addressWalletCore);
                                           },
                                           child: SizedBox(
                                             height: 64.h,
