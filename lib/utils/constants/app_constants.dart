@@ -22,6 +22,7 @@ enum PageTransitionType {
 const String CALENDAR_TYPE_DAY = 'Day';
 const String CALENDAR_TYPE_MONTH = 'Month';
 const String CALENDAR_TYPE_YEAR = 'Year';
+const String BSC_SCAN = 'https://bscscan.com/address/';
 
 const EN_CODE = 'en';
 const VI_CODE = 'vi';

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
@@ -8,13 +10,16 @@ import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
 import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/column_button/buil_column.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NFTDetail extends StatefulWidget {
   const NFTDetail({
@@ -96,9 +101,35 @@ class _NFTDetailState extends State<NFTDetail> {
                         ),
                         child: Column(
                           children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Image.asset(ImageAssets.img_card_defi),
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.yellow,
+                                  radius: 18.r,
+                                  child: Center(
+                                    child: Text(
+                                      nft.collectionSymbol?.substring(0, 1) ??
+                                          '',
+                                      style: textNormalCustom(
+                                        Colors.black,
+                                        20,
+                                        FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8.w,
+                                ),
+                                Text(
+                                  nft.collectionName ?? '',
+                                  style: textNormalCustom(
+                                    Colors.white,
+                                    16,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: 18.h,
@@ -119,7 +150,7 @@ class _NFTDetailState extends State<NFTDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  nft.id ?? '',
+                                  '#${nft.id}',
                                   style: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
                                     20,
@@ -155,7 +186,7 @@ class _NFTDetailState extends State<NFTDetail> {
                               children: [
                                 _buildRow(
                                   title: S.current.description,
-                                  detail: nft.description ?? '',
+                                  detail: nft.description?.parseHtml() ?? '',
                                   type: TextType.NORM,
                                 ),
                                 _buildRow(
@@ -165,7 +196,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                 ),
                                 _buildRow(
                                   title: S.current.contract,
-                                  detail: nft.contract?.handleString() ?? '',
+                                  detail: nft.contract ?? '',
                                   type: TextType.RICH,
                                 ),
                                 _buildRow(
@@ -298,14 +329,14 @@ class _NFTDetailState extends State<NFTDetail> {
     final objDetail = bloc.listDetailHistory;
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TransactionDetail(
-              obj: objDetail,
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => TransactionDetail(
+        //       obj: objDetail,
+        //     ),
+        //   ),
+        // );
       },
       child: Container(
         height: 68.h,
@@ -430,17 +461,24 @@ class _NFTDetailState extends State<NFTDetail> {
               ),
             )
           else
-            SizedBox(
-              width: 225.w,
-              child: RichText(
-                maxLines: 1,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: detail,
-                      style: richTextValueNFT,
-                    ),
-                  ],
+            GestureDetector(
+              child: SizedBox(
+                width: 225.w,
+                child: RichText(
+                  maxLines: 1,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            log(detail);
+                            launch('$BSC_SCAN$detail');
+                          },
+                        text: detail.handleString(),
+                        style: richTextValueNFT,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )
