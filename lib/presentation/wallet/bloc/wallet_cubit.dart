@@ -91,7 +91,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       id: 12,
     );
     nftName = nftInfoModel.name ?? '';
-    iconNFT = nftInfoModel.link ?? '';
+    // iconNFT = nftInfoModel.link ?? '';
   }
 
   Future<double> getWalletDetail({required String walletAddress}) async {
@@ -510,7 +510,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         addressWallet.add(addressWalletCore);
         break;
       case 'getNFTCallback':
-        listNftInfo.clear();
+        listNftInfo..clear();
         listNftFromWalletCore.clear();
         final List<dynamic> data = methodCall.arguments;
         print(data);
@@ -523,9 +523,12 @@ class WalletCubit extends BaseCubit<WalletState> {
             nftItem as ListNft;
             if (nftItem.uri != null) {
               final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
-              //nftInfo.id = nftItem.id.toString();
-              nftInfo.contract = nftItem.contract ?? 'contract';
-
+              nftInfo.contract =
+                  listCollectionNFT[index].contract ?? 'contract';
+              nftInfo.collectionSymbol =
+                  listCollectionNFT[index].symbol ?? 'symbol';
+              nftInfo.collectionName =
+                  listCollectionNFT[index].name ?? 'name collection';
               listNftInfo.add(nftInfo);
             } else {
               //todo handle uri null
@@ -548,8 +551,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
     }
   }
-  final List<NftInfo> listNftInfo = [];
 
+  final List<NftInfo> listNftInfo = [];
 
   int indexWallet = 0;
 
