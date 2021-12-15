@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
 import 'package:Dfy/presentation/restore_account/ui/restore_bts.dart';
@@ -40,30 +41,29 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
               color: Color.fromRGBO(255, 255, 255, 0.1),
             ),
             SizedBox(
-              height: 40.h,
+              height: 31.h,
             ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    GestureDetector(
+                    Image.asset(ImageAssets.img_cash),
+                    spaceH46,
+                    InkWell(
                       child: btnAddWallet(),
                       onTap: () {
-                        showModalBottomSheet(
-                          backgroundColor: Colors.transparent,
-                          context: context,
-                          builder: (context) {
-                            return const SetupPassWord();
-                          },
-                          isScrollControlled: true,
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const SetupPassWord();
+                            },
+                          ),
                         );
                       },
                     ),
                     SizedBox(height: 39.h),
-                    GestureDetector(
-                      onTap: () {},
-                      child: btnImportSeedPhrase(),
-                    ),
+                    btnImportSeedPhrase(),
                   ],
                 ),
               ),
@@ -75,20 +75,20 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
   }
 
   Widget btnImportSeedPhrase() {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
-        showModalBottomSheet(
-          backgroundColor: Colors.transparent,
-          context: context,
-          builder: (context) {
-            return const RestoreAccount();
-          },
-          isScrollControlled: true,
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const RestoreAccount();
+            },
+          ),
         );
       },
       child: SizedBox(
-        width: 343.w,
-        // height: 25.h,
+        height: 32.h,
+        width: 323.w,
         child: Center(
           child: Text(
             S.current.pls_import_seed,
