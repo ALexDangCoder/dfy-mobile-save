@@ -114,7 +114,6 @@ class ConfirmPwPrvKeySeedpharseCubit
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           listWalletCore.add(Wallet.fromJson(element));
-          print('ádfdasfdsafasdf 11111111111111111111111111111');
         }
         break;
       case 'exportWalletCallBack':

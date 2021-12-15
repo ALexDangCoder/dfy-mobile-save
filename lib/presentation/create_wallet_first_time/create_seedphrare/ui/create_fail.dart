@@ -44,7 +44,11 @@ class CreateFail extends StatelessWidget {
                 ),
                 Center(
                   child: Text(
-                    S.current.create_new_wallet_failed,
+                    (KeyType.CREATE == type ||
+                            KeyType.CREATE_HAVE_WALLET == type
+                    )
+                        ? S.current.create_new_wallet_failed
+                        : S.current.import_new_wallet_failed,
                     style: TextStyle(
                       fontSize: 20.sp,
                       color: Colors.white,

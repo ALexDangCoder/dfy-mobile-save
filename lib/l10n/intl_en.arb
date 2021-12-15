@@ -192,7 +192,8 @@
   "oopps_omething_went_wrong": "Oopps! \nSomething went wrong",
   "create_new_wallet_failed": "Create new wallet failed",
   "you_are_not": "You are not the owner of this collectible, so you can not add it",
-  "empty_address" : "Address cannot be empty",
-  "already_exist" : "Token already exists in the wallet",
-  "contract_address": "Contract address"
-  }
+  "empty_address": "Address cannot be empty",
+  "already_exist": "Token already exists in the wallet",
+  "contract_address": "Contract address",
+  "import_new_wallet_failed": "Import new wallet failed"
+}

@@ -190,23 +190,26 @@ class MainActivity : FlutterFragmentActivity() {
                             ?: return@setMethodCallHandler
                     importNft(jsonNft, walletAddress)
                 }
-//                "importListNft" -> {
-//                    val jsonNft =
-//                        call.argument<String>("jsonNft")
-//                            ?: return@setMethodCallHandler
-//                    importListNft(jsonNft)
-//                }
                 "deleteNft" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
-                    val nftAddress =
-                        call.argument<String>("nftAddress")
+                    val collectionAddress =
+                        call.argument<String>("collectionAddress")
                             ?: return@setMethodCallHandler
-                    val id =
-                        call.argument<Int>("id")
+                    val nftContract =
+                        call.argument<Int>("nftContract")
                             ?: return@setMethodCallHandler
-                    deleteNft(walletAddress, nftAddress, id)
+                    deleteNft(walletAddress, collectionAddress, nftContract)
+                }
+                "deleteCollection" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    val collectionAddress =
+                        call.argument<String>("collectionAddress")
+                            ?: return@setMethodCallHandler
+                    deleteCollection(walletAddress, collectionAddress)
                 }
                 "getTokens" -> {
                     val walletAddress =
@@ -696,6 +699,7 @@ class MainActivity : FlutterFragmentActivity() {
                 data["iconUrl"] = it.iconUrl
                 data["isShow"] = it.isShow
                 data["decimal"] = it.decimal
+                data["exchangeRate"] = it.exchangeRate
                 data["isImport"] = it.isImport
                 hasMap.add(data)
             }
@@ -731,6 +735,24 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("setDeleteNftCallback", data)
 
     }
+
+    private fun deleteCollection(walletAddress: String, collectionAddress: String) {
+        val listNft = ArrayList<NftModel>()
+        var isDeleteSuccess = false
+        appPreference.getListNft().forEach { it ->
+            if (it.walletAddress != walletAddress && it.collectionAddress != collectionAddress) {
+                listNft.add(it)
+            } else {
+                isDeleteSuccess = true
+            }
+        }
+        appPreference.saveListNft(listNft)
+        val data = HashMap<String, Any>()
+        data["isSuccess"] = isDeleteSuccess
+        channel?.invokeMethod("setDeleteCollectionCallback", data)
+
+    }
+
 
     private fun getNFT(
         walletAddress: String
