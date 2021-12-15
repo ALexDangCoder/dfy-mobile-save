@@ -40,6 +40,7 @@ class ReceiveCubit extends BaseCubit<ReceiveState> {
     await _priceRepository.getListPriceToken(symbols);
     result.when(
       success: (res) {
+        showContent();
         priceSink.add(res.first.price ?? 0);
         if(res.first.isBlank ?? true){
           showEmpty();

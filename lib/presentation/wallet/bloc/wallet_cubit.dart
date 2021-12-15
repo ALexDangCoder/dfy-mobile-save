@@ -513,7 +513,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         listNftInfo.clear();
         listNftFromWalletCore.clear();
         final List<dynamic> data = methodCall.arguments;
-        print(data);
         final List<CollectionNft> listCollectionNFT = [];
         int index = 0;
         for (final element in data) {
@@ -523,6 +522,7 @@ class WalletCubit extends BaseCubit<WalletState> {
             nftItem as ListNft;
             if (nftItem.uri != null) {
               final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
+              nftInfo.id = nftItem.id.toString();
               nftInfo.contract =
                   listCollectionNFT[index].contract ?? 'contract';
               nftInfo.collectionSymbol =
