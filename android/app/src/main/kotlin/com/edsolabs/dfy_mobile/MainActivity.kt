@@ -699,6 +699,7 @@ class MainActivity : FlutterFragmentActivity() {
                 data["iconUrl"] = it.iconUrl
                 data["isShow"] = it.isShow
                 data["decimal"] = it.decimal
+                data["exchangeRate"] = it.exchangeRate
                 data["isImport"] = it.isImport
                 hasMap.add(data)
             }
