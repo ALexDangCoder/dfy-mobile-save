@@ -96,6 +96,7 @@ class ImageAssets {
   static const String plus = '$baseImg/Plus.png';
   static const String import = '$baseImg/Import.png';
   static const String face_id = '$baseImg/face_id.png';
+  static const String img_cash = '$baseImg/cash.png';
 
   static const String symbol = '$baseImg/symbol.png';
 

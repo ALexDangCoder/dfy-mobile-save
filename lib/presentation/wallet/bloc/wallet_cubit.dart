@@ -89,7 +89,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       id: 12,
     );
     nftName = nftInfoModel.name ?? '';
-    iconNFT = nftInfoModel.link ?? '';
+    // iconNFT = nftInfoModel.link ?? '';
   }
 
   Future<double> getWalletDetail({required String walletAddress}) async {
@@ -339,12 +339,13 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getListCategory() async {
     final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
-    result.when(
+    await result.when(
       success: (res) {
         getTokenInfoByAddressList(res: res);
       },
-      error: (error) {
-        getTokens(addressWalletCore);
+      error: (error) async {
+        await getTokens(addressWalletCore);
+        await getNFT(addressWalletCore);
       },
     );
   }
@@ -508,24 +509,28 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         getWalletDetailInfo();
         addressWallet.add(addressWalletCore);
+        await getNFT(addressWalletCore);
         break;
       case 'getNFTCallback':
+        listNftInfo.clear();
+        listNftFromWalletCore.clear();
         final List<dynamic> data = methodCall.arguments;
-        print(data);
         final List<CollectionNft> listCollectionNFT = [];
-
         int index = 0;
         for (final element in data) {
           listCollectionNFT.add(CollectionNft.fromJson(element));
           //get nft list in each collection
           for (final nftItem in listCollectionNFT[index].listNft ?? []) {
-            final List<NftInfo> listNftInfo = [];
+            nftItem as ListNft;
             if (nftItem.uri != null) {
               final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
-              nftInfo.id = nftItem.id;
-              nftInfo.contract = nftItem.contract;
-              nftInfo.standard = 'ERC-721';
-              nftInfo.blockchain = 'Binance smart chain';
+              nftInfo.id = nftItem.id.toString();
+              nftInfo.contract =
+                  listCollectionNFT[index].contract ?? 'contract';
+              nftInfo.collectionSymbol =
+                  listCollectionNFT[index].symbol ?? 'symbol';
+              nftInfo.collectionName =
+                  listCollectionNFT[index].name ?? 'name collection';
               listNftInfo.add(nftInfo);
             } else {
               //todo handle uri null
@@ -548,6 +553,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
     }
   }
+
+  final List<NftInfo> listNftInfo = [];
 
   int indexWallet = 0;
 

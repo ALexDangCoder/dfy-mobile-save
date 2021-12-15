@@ -1,5 +1,5 @@
+import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
-
 final formatValue = NumberFormat('###,###,###.###', 'en_US');
 
 extension StringHandle on String {
@@ -22,5 +22,15 @@ extension FormatAddress on String {
     final String result = '${substring(0, 5)}...${substring(
       length - 4, length,)}';
     return result;
+  }
+}
+
+
+extension StringParse on String {
+  String parseHtml() {
+    final document = parse(this);
+    final String parsedString =
+        parse(document.body?.text).documentElement?.text ?? '';
+    return parsedString;
   }
 }

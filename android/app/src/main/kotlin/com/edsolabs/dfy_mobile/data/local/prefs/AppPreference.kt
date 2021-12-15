@@ -16,6 +16,7 @@ open class AppPreference(sharedPreferences: SharedPreferences) :
     companion object {
         const val STT_WALLET_DEFAULT = 1
     }
+
     constructor(context: Context) : this(
         context.applicationContext.getSharedPreferences(
             context.packageName, Context.MODE_PRIVATE
@@ -57,6 +58,14 @@ open class AppPreference(sharedPreferences: SharedPreferences) :
 
     fun saveListTokenSupport(data: List<TokenModel>) {
         listTokenSupport = JsonHelper.saveList(data, TokenModel::class.java)
+    }
+
+    fun getListTokenImport(): List<TokenModel> {
+        return JsonHelper.getList(listTokenImport, TokenModel::class.java)
+    }
+
+    fun saveListTokenImport(data: List<TokenModel>) {
+        listTokenImport = JsonHelper.saveList(data, TokenModel::class.java)
     }
 
     fun getListNft(): List<NftModel> {
