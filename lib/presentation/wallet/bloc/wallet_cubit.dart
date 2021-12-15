@@ -513,7 +513,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         listNftInfo.clear();
         listNftFromWalletCore.clear();
         final List<dynamic> data = methodCall.arguments;
-        print(data);
         final List<CollectionNft> listCollectionNFT = [];
         int index = 0;
         for (final element in data) {
