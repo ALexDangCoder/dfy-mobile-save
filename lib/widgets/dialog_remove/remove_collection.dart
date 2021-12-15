@@ -13,14 +13,14 @@ class RemoveCollection extends StatelessWidget {
   final WalletCubit cubit;
   final int index;
   final String walletAddress;
-  final String nftAddress;
+  final String collectionAddress;
 
   const RemoveCollection({
     Key? key,
     required this.cubit,
     required this.index,
     required this.walletAddress,
-    required this.nftAddress,
+    required this.collectionAddress,
   }) : super(key: key);
 
   @override
@@ -137,16 +137,17 @@ class RemoveCollection extends StatelessWidget {
                                       child: GestureDetector(
                                         onTap: () {
                                           print('walletAddress $walletAddress');
-                                          print('nftAddress $nftAddress');
+                                          print(
+                                              'nftAddress $collectionAddress');
+                                          cubit.listNftFromWalletCore
+                                              .removeAt(index);
+                                          cubit.listNFTStream
+                                              .add(cubit.listNftFromWalletCore);
                                           cubit.deleteCollection(
                                             walletAddress: walletAddress,
                                             collectionAddress:
-                                                'ádf', // address todo collection
+                                                collectionAddress,
                                           );
-                                          // cubit.listNftFromWalletCore
-                                          //     .removeAt(index);
-                                          // cubit.listNFTStream.sink
-                                          //     .add(cubit.listNFTStream.value);
                                           Navigator.pop(context);
                                         },
                                         child: SizedBox(

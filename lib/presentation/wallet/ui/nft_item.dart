@@ -38,12 +38,11 @@ class _NFTItemState extends State<NFTItem> {
         Navigator.of(context).push(
           HeroDialogRoute(
             builder: (context) {
-              // todo nftAddress
               return RemoveCollection(
                 walletAddress: widget.walletAddress,
                 index: widget.index,
                 cubit: widget.bloc,
-                nftAddress: '0xd07dc426200000415242343423424261d2461d2430',
+                collectionAddress: widget.collectionNft.contract ?? '',
               );
             },
             isNonBackground: false,
@@ -128,18 +127,21 @@ class _NFTItemState extends State<NFTItem> {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemCount: widget.bloc.listNftInfo.length,
-                      itemBuilder: (BuildContext context, int index) => InkWell(
+                      itemBuilder: (BuildContext context, int index) =>
+                          GestureDetector(
                         onLongPress: () {
                           Navigator.of(context).push(
                             HeroDialogRoute(
                               builder: (context) {
-                                // todo nftAddress
                                 return RemoveNft(
                                   walletAddress: widget.walletAddress,
                                   index: widget.index,
                                   cubit: widget.bloc,
-                                  nftAddress:
-                                      '0xd07dc426200000415242343423424261d2461d2430',
+                                  collectionAddress:
+                                      widget.collectionNft.contract ?? '',
+                                  nftContract: widget.collectionNft
+                                          .listNft?[index].contract ??
+                                      '',
                                 );
                               },
                               isNonBackground: false,

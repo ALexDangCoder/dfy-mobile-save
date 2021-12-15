@@ -9,18 +9,22 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../main.dart';
+
 class RemoveNft extends StatelessWidget {
   final WalletCubit cubit;
   final int index;
   final String walletAddress;
-  final String nftAddress;
+  final String nftContract;
+  final String collectionAddress;
 
   const RemoveNft({
     Key? key,
     required this.cubit,
     required this.index,
     required this.walletAddress,
-    required this.nftAddress,
+    required this.nftContract,
+    required this.collectionAddress,
   }) : super(key: key);
 
   @override
@@ -137,12 +141,18 @@ class RemoveNft extends StatelessWidget {
                                       child: GestureDetector(
                                         onTap: () {
                                           print('walletAddress $walletAddress');
-                                          print('nftAddress $nftAddress');
+                                          print('nftAddress $nftContract');
+                                          print(
+                                              'nftAddress $collectionAddress');
+                                          cubit.listNftInfo.removeAt(index);
+                                          trustWalletChannel
+                                              .setMethodCallHandler(cubit
+                                                  .nativeMethodCallBackTrustWallet);
                                           cubit.deleteNft(
                                             walletAddress: walletAddress,
-                                            collectionAddress: 'ádf',
-                                            nftContract:
-                                                '', // address todo collection
+                                            collectionAddress:
+                                                collectionAddress,
+                                            nftContract: nftContract,
                                           );
                                           cubit.listNftFromWalletCore
                                               .removeAt(index);

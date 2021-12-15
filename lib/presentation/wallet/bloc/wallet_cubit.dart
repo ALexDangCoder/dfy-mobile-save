@@ -513,8 +513,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         listSelectAccBloc.clear();
         final List<dynamic> data = methodCall.arguments;
         if (data.isEmpty) {
-          //todo bắn emit ra màn hình đầu tiên
-          print('màn hình đầu tiên');
           emit(NavigatorFirst());
         } else {
           for (final element in data) {
@@ -524,7 +522,6 @@ class WalletCubit extends BaseCubit<WalletState> {
           addressWallet.add(addressWalletCore);
           await getNFT(addressWalletCore);
         }
-
         break;
       case 'getNFTCallback':
         listNftInfo.clear();
