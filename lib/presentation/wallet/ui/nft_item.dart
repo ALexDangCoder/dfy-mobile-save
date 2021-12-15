@@ -78,7 +78,6 @@ class _NFTItemState extends State<NFTItem> {
             child: ExpansionTile(
               leading: Container(
                 padding: EdgeInsets.only(
-                  left: 10.w,
                   top: 10.h,
                 ),
                 child: ImageIcon(
@@ -130,7 +129,6 @@ class _NFTItemState extends State<NFTItem> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(
-                    left: 52.w,
                     right: 26.w,
                     bottom: 16.h,
                   ),
