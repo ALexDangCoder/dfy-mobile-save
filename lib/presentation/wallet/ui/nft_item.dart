@@ -9,18 +9,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-final NftInfo nft = NftInfo(
-  contract: '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
-  name: 'Name of NFT',
-  blockchain: 'Binance Smart Chain',
-  description:
-  'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
-  id: '124124',
-  // link: 'https://goole.com',
-  standard: 'ERC-721',
-);
-
 class NFTItem extends StatefulWidget {
   const NFTItem({
     Key? key,

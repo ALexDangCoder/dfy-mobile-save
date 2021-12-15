@@ -64,7 +64,6 @@ class _ReceiveState extends State<Receive> {
     globalKey = GlobalKey();
     toast = FToast();
     toast.init(context);
-    //receiveCubit.getListPrice(widget.symbol ?? '');
     receiveCubit.showContent();
   }
 

@@ -38,6 +38,9 @@ class ImportToken extends StatelessWidget {
             ),
           ).whenComplete(
             () => {
+              cubit.checkShow.clear(),
+              cubit.listTokenFromWalletCore.clear(),
+              cubit.getTokens(cubit.addressWalletCore),
               cubit.resetImportToken(),
             },
           );

@@ -130,10 +130,10 @@ class _EnterAddressState extends State<EnterAddress> {
                       onTap: () async {
                         final String icon = await widget.bloc
                             .getIcon(widget.bloc.tokenAddressText.value);
+                        widget.bloc.checkAddressNull();
                         if (enable) {
                           await widget.bloc
                               .getListPrice(widget.bloc.tokenSymbol.value);
-
                           print(widget.bloc.addressWallet.value);
                           print(widget.bloc.tokenAddressText.value);
                           print(widget.bloc.tokenSymbol.value);
@@ -150,9 +150,9 @@ class _EnterAddressState extends State<EnterAddress> {
                             iconToken: icon,
                             tokenFullName: widget.bloc.tokenFullName,
                             exchangeRate: widget.bloc.price!,
+                            isImport: true,
                           );
                         }
-                        widget.bloc.checkAddressNull();
                       },
                       child: ButtonGold(
                         title: S.current.import,

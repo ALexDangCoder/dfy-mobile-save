@@ -193,6 +193,6 @@
   "you_are_not": "Bạn không phải là chủ sở hữu của bộ sưu tập này, vì vậy bạn không thể thêm nó",
   "empty_address" : "Địa chỉ ví không thể trống",
   "already_exist" : "Token đã tồn tại trong ví",
-  "contract_address": "Địa chỉ hợp đồng"
-
+  "contract_address": "Địa chỉ hợp đồng",
+  "import_new_wallet_failed": "Nhập ví mới thất bại"
 }
