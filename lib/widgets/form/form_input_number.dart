@@ -55,8 +55,9 @@ class FormInputNumber extends StatelessWidget {
                 },
                 onFieldSubmitted: (value) async {
                   final res = await Web3Utils().importNFT(
-                      contract: bloc.contractSubject.valueOrNull ?? '',
-                      id: int.parse(value));
+                    contract: bloc.contractSubject.valueOrNull ?? '',
+                    id: int.parse(value),
+                  );
                   bloc.btnSubject.sink.add(res);
                 },
                 cursorColor: AppTheme.getInstance().whiteColor(),
