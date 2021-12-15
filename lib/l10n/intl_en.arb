@@ -113,6 +113,7 @@
   "import": "Import ",
   "enter_id": "Enter ID",
   "are_you_sure_collectible": "Are you sure you want to remove this collectible?",
+  "are_you_sure_nft": "Are you sure you want to remove this nft?",
   "this_will_also": "This will also delete all transactions under this wallet and cannot be recovered.",
   "cancel": "Cancel",
   "remove": "Remove",

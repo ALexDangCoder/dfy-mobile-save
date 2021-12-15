@@ -9,13 +9,13 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class RemoveNft extends StatelessWidget {
+class RemoveCollection extends StatelessWidget {
   final WalletCubit cubit;
   final int index;
   final String walletAddress;
   final String nftAddress;
 
-  const RemoveNft({
+  const RemoveCollection({
     Key? key,
     required this.cubit,
     required this.index,
@@ -64,7 +64,7 @@ class RemoveNft extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 34.w),
                               child: Text(
-                                S.current.are_you_sure_nft,
+                                S.current.are_you_sure_collectible,
                                 style: textNormal(
                                   null,
                                   20.sp,
@@ -138,16 +138,15 @@ class RemoveNft extends StatelessWidget {
                                         onTap: () {
                                           print('walletAddress $walletAddress');
                                           print('nftAddress $nftAddress');
-                                          cubit.deleteNft(
+                                          cubit.deleteCollection(
                                             walletAddress: walletAddress,
-                                            collectionAddress: 'ádf',
-                                            nftContract:
-                                                '', // address todo collection
+                                            collectionAddress:
+                                                'ádf', // address todo collection
                                           );
-                                          cubit.listNftFromWalletCore
-                                              .removeAt(index);
-                                          cubit.listNFTStream.sink
-                                              .add(cubit.listNFTStream.value);
+                                          // cubit.listNftFromWalletCore
+                                          //     .removeAt(index);
+                                          // cubit.listNFTStream.sink
+                                          //     .add(cubit.listNFTStream.value);
                                           Navigator.pop(context);
                                         },
                                         child: SizedBox(

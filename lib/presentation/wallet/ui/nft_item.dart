@@ -1,14 +1,15 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/collection_nft_info.dart';
-import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/dialog_remove/remove_collection.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class NFTItem extends StatefulWidget {
   const NFTItem({
     Key? key,
@@ -38,7 +39,7 @@ class _NFTItemState extends State<NFTItem> {
           HeroDialogRoute(
             builder: (context) {
               // todo nftAddress
-              return RemoveNft(
+              return RemoveCollection(
                 walletAddress: widget.walletAddress,
                 index: widget.index,
                 cubit: widget.bloc,
@@ -127,9 +128,28 @@ class _NFTItemState extends State<NFTItem> {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemCount: widget.bloc.listNftInfo.length,
-                      itemBuilder: (BuildContext context, int index) => CardNFT(
-                        objNFT: widget.bloc.listNftInfo[index],
-                        walletAddress: widget.walletAddress,
+                      itemBuilder: (BuildContext context, int index) => InkWell(
+                        onLongPress: () {
+                          Navigator.of(context).push(
+                            HeroDialogRoute(
+                              builder: (context) {
+                                // todo nftAddress
+                                return RemoveNft(
+                                  walletAddress: widget.walletAddress,
+                                  index: widget.index,
+                                  cubit: widget.bloc,
+                                  nftAddress:
+                                      '0xd07dc426200000415242343423424261d2461d2430',
+                                );
+                              },
+                              isNonBackground: false,
+                            ),
+                          );
+                        },
+                        child: CardNFT(
+                          objNFT: widget.bloc.listNftInfo[index],
+                          walletAddress: widget.walletAddress,
+                        ),
                       ),
                     ),
                   ),

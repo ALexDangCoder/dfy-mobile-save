@@ -114,6 +114,7 @@
   "import": "Nhập",
   "enter_id": "Nhập ID",
   "are_you_sure_collectible": "Bạn có chắc chắn muốn xóa bộ sưu tập này không?",
+  "are_you_sure_nft": "Bạn có chắc chắn muốn xóa nft này không?",
   "this_will_also": "Thao tác này cũng sẽ xóa tất cả các giao dịch trong ví này và không thể khôi phục được.",
   "remove": "Xóa",
   "are_you_sure_token": "Bạn có chắc chắn muốn xóa mã thông báo này không?",
