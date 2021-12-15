@@ -9,4 +9,5 @@ data class TokenModel(
     val decimal: Int,
     val exchangeRate: Double,
     var isShow: Boolean = false,
+    var isImport: Boolean = false,
 )
