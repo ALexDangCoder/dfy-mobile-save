@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -6,7 +5,6 @@ import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
-import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
 import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
@@ -64,7 +62,7 @@ class _NFTDetailState extends State<NFTDetail> {
     final nft = widget.nftInfo;
     return DraggableScrollableSheet(
       maxChildSize: 0.95,
-      initialChildSize: 0.45,
+      initialChildSize: 0.46,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
           decoration: BoxDecoration(
@@ -103,17 +101,21 @@ class _NFTDetailState extends State<NFTDetail> {
                           children: [
                             Row(
                               children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.yellow,
-                                  radius: 18.r,
-                                  child: Center(
-                                    child: Text(
-                                      nft.collectionSymbol?.substring(0, 1) ??
-                                          '',
-                                      style: textNormalCustom(
-                                        Colors.black,
-                                        20,
-                                        FontWeight.w600,
+                                SizedBox(
+                                  height: 24.h,
+                                  width: 24.w,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.yellow,
+                                    radius: 18.r,
+                                    child: Center(
+                                      child: Text(
+                                        nft.collectionSymbol?.substring(0, 1) ??
+                                            '',
+                                        style: textNormalCustom(
+                                          Colors.black,
+                                          20,
+                                          FontWeight.w600,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -326,7 +328,7 @@ class _NFTDetailState extends State<NFTDetail> {
 
   Widget itemTransition(int index) {
     final objHistory = widget.listHistory[index];
-    final objDetail = bloc.listDetailHistory;
+    // final objDetail = bloc.listDetailHistory;
     return GestureDetector(
       onTap: () {
         // Navigator.push(
@@ -471,7 +473,6 @@ class _NFTDetailState extends State<NFTDetail> {
                       TextSpan(
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            log(detail);
                             launch('$BSC_SCAN$detail');
                           },
                         text: detail.handleString(),
