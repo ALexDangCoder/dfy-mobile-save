@@ -138,9 +138,10 @@ class RemoveNft extends StatelessWidget {
                                         onTap: () {
                                           print('walletAddress $walletAddress');
                                           print('nftAddress $nftAddress');
-                                          cubit.deleteNft(
+                                          cubit.deleteCollection(
                                             walletAddress: walletAddress,
-                                            nftAddress: nftAddress,
+                                            collectionAddress:
+                                                'ádf', // address todo collection
                                           );
                                           cubit.listNftFromWalletCore
                                               .removeAt(index);
