@@ -6,7 +6,6 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FormInputAddressNFT extends StatelessWidget {
@@ -55,17 +54,19 @@ class FormInputAddressNFT extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
                 maxLength: 100,
-                onChanged: (value) async {
-                  if (value.isNotEmpty && regex.hasMatch(value)) {
-                    final res = await Web3Utils().importNFT(
-                      contract: value,
-                    );
-                    bloc.isNFT.sink.add(true);
-                    bloc.btnSubject.sink.add(res);
-                  }
-                  if(!regex.hasMatch(value)){
-                    bloc.isNFT.sink.add(false);
-                  }
+                onChanged: (value) {
+                  Timer(const Duration(milliseconds: 500), () async {
+                    if (value.isNotEmpty && regex.hasMatch(value)) {
+                      final res = await Web3Utils().importNFT(
+                        contract: value,
+                      );
+                      bloc.isNFT.sink.add(res);
+                      bloc.btnSubject.sink.add(res);
+                    }
+                    if(!regex.hasMatch(value)){
+                      bloc.isNFT.sink.add(false);
+                    }
+                  });
                 },
                 onFieldSubmitted: (value) async {
                   if (value.isNotEmpty && regex.hasMatch(value)) {
@@ -75,8 +76,11 @@ class FormInputAddressNFT extends StatelessWidget {
                     bloc.btnSubject.sink.add(res);
                     bloc.isNFT.sink.add(res);
                   }
+                  if(!regex.hasMatch(value)){
+                    bloc.isNFT.sink.add(false);
+                    bloc.btnSubject.sink.add(false);
+                  }
                 },
-
                 controller: controller,
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
