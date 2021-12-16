@@ -525,6 +525,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           //todo bắn emit ra màn hình đầu tiên
           print('màn hình đầu tiên');
           emit(NavigatorFirst());
+          await PrefsService.saveFirstAppConfig('true');
         } else {
           for (final element in data) {
             listWallet.add(Wallet.fromJson(element));
