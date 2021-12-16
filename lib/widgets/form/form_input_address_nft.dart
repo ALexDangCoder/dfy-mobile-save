@@ -80,7 +80,7 @@ class FormInputAddressNFT extends StatelessWidget {
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
                   AppTheme.getInstance().whiteColor(),
-                  16.sp,g
+                  16.sp,
                 ),
                 decoration: InputDecoration(
                   counterText: '',
