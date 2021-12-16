@@ -130,7 +130,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> importToken() async {
     try {
       final data = {
-        'walletAddress': '0x40Dcd83e299a9b356C91A84bfFB19ec5506703E8',
+        'walletAddress': '0x6A587Aa17b562d0714650e0E7DCC7E964d3Dc148',
         'tokenAddress': '123',
         'tokenFullName': '123',
         'iconUrl': '123',
@@ -187,7 +187,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> getTokens() async {
     try {
       final data = {
-        'walletAddress': '0x40Dcd83e299a9b356C91A84bfFB19ec5506703E8',
+        'walletAddress': '0x6A587Aa17b562d0714650e0E7DCC7E964d3Dc148',
       };
       await trustWalletChannel.invokeMethod('getTokens', data);
     } on PlatformException {}
