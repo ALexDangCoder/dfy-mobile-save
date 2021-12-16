@@ -22,13 +22,14 @@ class Web3Utils {
 
   Future<bool> importNFT({
     required String contract,
+    required String address,
     int? id,
   }) async {
     final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
     if (id == null) {
       try {
         final balanceOfNft =
-            await nft.balanceOf(EthereumAddress.fromHex(contract));
+            await nft.balanceOf(EthereumAddress.fromHex(address));
         if (balanceOfNft > BigInt.zero) {
           return true;
         } else {
