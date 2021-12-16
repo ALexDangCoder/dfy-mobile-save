@@ -6,6 +6,7 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FormInputAddressNFT extends StatelessWidget {
@@ -59,7 +60,7 @@ class FormInputAddressNFT extends StatelessWidget {
                     if (value.isNotEmpty && regex.hasMatch(value)) {
                       final res = await Web3Utils().importNFT(
                         contract: value,
-                      );
+                        address: '',)
                       bloc.isNFT.sink.add(res);
                       bloc.btnSubject.sink.add(res);
                     }
@@ -72,6 +73,7 @@ class FormInputAddressNFT extends StatelessWidget {
                   if (value.isNotEmpty && regex.hasMatch(value)) {
                     final res = await Web3Utils().importNFT(
                       contract: value,
+                      address: '',
                     );
                     bloc.btnSubject.sink.add(res);
                     bloc.isNFT.sink.add(res);

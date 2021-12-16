@@ -48,6 +48,7 @@ class FormInputNumber extends StatelessWidget {
                   if (value.isNotEmpty) {
                     final res = await Web3Utils().importNFT(
                       contract: bloc.contractSubject.valueOrNull ?? '',
+                      address: '',
                       id: int.parse(value),
                     );
                     bloc.btnSubject.sink.add(res);
@@ -56,6 +57,7 @@ class FormInputNumber extends StatelessWidget {
                 onFieldSubmitted: (value) async {
                   final res = await Web3Utils().importNFT(
                     contract: bloc.contractSubject.valueOrNull ?? '',
+                    address: '',
                     id: int.parse(value),
                   );
                   bloc.btnSubject.sink.add(res);
