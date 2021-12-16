@@ -173,7 +173,7 @@
   "warning_private": "Private key must require",
   "seed_required": "Secret seed phrase must required",
   "private_required": "Private key must required",
-  "private_warning": "Private key is not invalid",
+  "private_warning": "Invalid private key",
   "tran_submit": "Transaction submitted",
   "waiting_for_cf": "Waiting for confirmation",
   "send_nft": "Send NFT",
