@@ -49,7 +49,7 @@ class WalletScreen extends StatefulWidget {
 class _WalletState extends State<WalletScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final WalletCubit cubit = WalletCubit();
+  late final WalletCubit cubit;
   late FToast fToast;
   final changeName = TextEditingController();
   final formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
@@ -57,6 +57,7 @@ class _WalletState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
+    cubit = WalletCubit();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     if (widget.index == 1) {
@@ -320,7 +321,9 @@ class _WalletState extends State<WalletScreen>
                                           );
                                         },
                                       );
-                                    } else if(snapshot.hasData){
+                                    } else if (snapshot.data?.isEmpty ?? true) {
+                                      return const SizedBox();
+                                    } else {
                                       return SizedBox(
                                         height: 100.h,
                                         child: Center(
@@ -331,9 +334,6 @@ class _WalletState extends State<WalletScreen>
                                           ),
                                         ),
                                       );
-                                    }
-                                    else {
-                                      return const SizedBox();
                                     }
                                   },
                                 ),

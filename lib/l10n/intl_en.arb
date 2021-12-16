@@ -113,6 +113,7 @@
   "import": "Import ",
   "enter_id": "Enter ID",
   "are_you_sure_collectible": "Are you sure you want to remove this collectible?",
+  "are_you_sure_nft": "Are you sure you want to remove this nft?",
   "this_will_also": "This will also delete all transactions under this wallet and cannot be recovered.",
   "cancel": "Cancel",
   "remove": "Remove",
@@ -173,7 +174,7 @@
   "warning_private": "Private key must require",
   "seed_required": "Secret seed phrase must required",
   "private_required": "Private key must required",
-  "private_warning": "Private key is not invalid",
+  "private_warning": "Invalid private key",
   "tran_submit": "Transaction submitted",
   "waiting_for_cf": "Waiting for confirmation",
   "send_nft": "Send NFT",
@@ -195,5 +196,7 @@
   "empty_address": "Address cannot be empty",
   "already_exist": "Token already exists in the wallet",
   "contract_address": "Contract address",
-  "import_new_wallet_failed": "Import new wallet failed"
+  "import_new_wallet_failed": "Import new wallet failed",
+  "not_exist": "NFT address does not exist or you do not own",
+  "no_support_token" : "The token is not supported yet"
 }

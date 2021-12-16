@@ -8,6 +8,7 @@ import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
@@ -180,6 +181,11 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> contractSubject = BehaviorSubject();
   BehaviorSubject<String> idSubject = BehaviorSubject();
   BehaviorSubject<bool> btnSubject = BehaviorSubject.seeded(false);
+  final BehaviorSubject<String> _warningSubject = BehaviorSubject.seeded('');
+
+  Stream<String> get warningStream => _warningSubject.stream;
+
+  Sink<String> get warningSink => _warningSubject.sink;
 
   List<HistoryNFT> listHistory = [];
   double? price = 0.0;
@@ -349,7 +355,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       },
       error: (error) async {
         await getTokens(addressWalletCore);
-        await getNFT(addressWalletCore);
       },
     );
   }
@@ -493,10 +498,11 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'changeNameWalletCallBack':
         break;
       case 'getTokensCallback':
+        listTokenFromWalletCore.clear();
+        checkShow.clear();
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           checkShow.add(ModelToken.fromWalletCore(element));
-          
         }
         final List<ModelToken> listSwitch = [];
         for (final element in checkShow) {
@@ -518,9 +524,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         listSelectAccBloc.clear();
         final List<dynamic> data = methodCall.arguments;
         if (data.isEmpty) {
-          //todo bắn emit ra màn hình đầu tiên
-          print('màn hình đầu tiên');
           emit(NavigatorFirst());
+          await PrefsService.saveFirstAppConfig('true');
         } else {
           for (final element in data) {
             listWallet.add(Wallet.fromJson(element));
@@ -529,7 +534,6 @@ class WalletCubit extends BaseCubit<WalletState> {
           addressWallet.add(addressWalletCore);
           await getNFT(addressWalletCore);
         }
-
         break;
       case 'getNFTCallback':
         listNftInfo.clear();
@@ -770,12 +774,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> deleteNft({
     required String walletAddress,
     required String collectionAddress,
-    required String nftContract,
+    required String nftId,
   }) async {
     try {
       final data = {
         'walletAddress': walletAddress,
-        'nftContract': nftContract,
+        'nftId': nftId,
         'collectionAddress': collectionAddress,
       };
       await trustWalletChannel.invokeMethod('deleteNft', data);
@@ -927,24 +931,33 @@ class WalletCubit extends BaseCubit<WalletState> {
       }
     }
     if (_st != '') {
-      trustWalletChannel.setMethodCallHandler(nativeMethodCallBackTrustWallet);
-      debounceTime = Timer(
-        const Duration(milliseconds: 500),
-        () async {
-          await getTokenInfoByAddress(tokenAddress: _st);
-          if (!isAddressNotExist) {
-            await checkToken(
-              walletAddress: addressWalletCore,
-              tokenAddress: _st,
-            );
-          } else {
-            isTokenEnterAddress.sink.add(false);
-            tokenSymbol.sink.add(S.current.token_symbol);
-            tokenDecimal.sink.add(S.current.token_decimal);
-            _messSubject.sink.add(S.current.invalid_address);
-          }
-        },
-      );
+      final regex = RegExp(r'^0x[a-fA-F0-9]{40}$');
+      if (regex.hasMatch(_st)) {
+        trustWalletChannel
+            .setMethodCallHandler(nativeMethodCallBackTrustWallet);
+        debounceTime = Timer(
+          const Duration(milliseconds: 500),
+          () async {
+            await getTokenInfoByAddress(tokenAddress: _st);
+            if (!isAddressNotExist) {
+              await checkToken(
+                walletAddress: addressWalletCore,
+                tokenAddress: _st,
+              );
+            } else {
+              isTokenEnterAddress.sink.add(false);
+              tokenSymbol.sink.add(S.current.token_symbol);
+              tokenDecimal.sink.add(S.current.token_decimal);
+              _messSubject.sink.add(S.current.no_support_token);
+            }
+          },
+        );
+      } else {
+        tokenSymbol.sink.add(S.current.token_symbol);
+        tokenDecimal.sink.add(S.current.token_decimal);
+        isTokenEnterAddress.sink.add(false);
+        _messSubject.sink.add(S.current.invalid_address);
+      }
     } else {
       isTokenEnterAddress.sink.add(false);
       _messSubject.sink.add(S.current.empty_address);

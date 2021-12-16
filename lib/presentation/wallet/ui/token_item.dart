@@ -7,9 +7,10 @@ import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class TokenItem extends StatelessWidget {
-  const TokenItem({
+   TokenItem({
     Key? key,
     required this.index,
     required this.bloc,
@@ -21,11 +22,13 @@ class TokenItem extends StatelessWidget {
   final int index;
   final WalletCubit bloc;
   final String walletAddress;
+  final formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
+   final formatBalance = NumberFormat('###,###,###.######', 'en_US');
 
   @override
   Widget build(BuildContext context) {
     final String price =
-        (modelToken.balanceToken * modelToken.exchangeRate).toString();
+        formatUSD.format(modelToken.balanceToken * modelToken.exchangeRate);
     return MaterialButton(
       padding: EdgeInsets.zero,
       onLongPress: () {
@@ -104,8 +107,8 @@ class TokenItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${modelToken.balanceToken} '
-                        '${modelToken.nameShortToken}',
+                        '${formatBalance.format(modelToken.balanceToken)} '
+                            '${modelToken.nameShortToken}',
                         style: textNormalCustom(
                           Colors.white,
                           20,
@@ -113,7 +116,7 @@ class TokenItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '\$ $price',
+                        price,
                         style: textNormalCustom(
                           Colors.grey.shade400,
                           16,

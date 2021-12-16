@@ -42,12 +42,10 @@ class MainActivity : FlutterFragmentActivity() {
     private val CODE_ERROR = 400
 
     private var channel: MethodChannel? = null
-    private lateinit var appPreference: AppPreference
     private val coinType: CoinType = CoinType.SMARTCHAIN
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
-        appPreference = AppPreference(context = this@MainActivity)
         channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL_TRUST_WALLET)
         channel?.setMethodCallHandler { call, _ ->
             when (call.method) {
@@ -198,7 +196,7 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("collectionAddress")
                             ?: return@setMethodCallHandler
                     val nftId =
-                        call.argument<Int>("nftId")
+                        call.argument<String>("nftId")
                             ?: return@setMethodCallHandler
                     deleteNft(walletAddress, collectionAddress, nftId)
                 }
@@ -268,6 +266,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun exportWallet(password: String, walletAddress: String) {
+        val appPreference = AppPreference(this)
         if (password == appPreference.password) {
             val hasMap = HashMap<String, Any>()
             appPreference.getListWallet().forEach {
@@ -282,12 +281,14 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun checkPassWordWallet(password: String) {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Any>()
         hasMap["isCorrect"] = password == appPreference.password
         channel?.invokeMethod("checkPasswordCallback", hasMap)
     }
 
     private fun savePassWordWallet(password: String) {
+        val appPreference = AppPreference(this)
         if (password.isNotEmpty()) {
             val hasMap = HashMap<String, Any>()
             appPreference.password = password
@@ -297,6 +298,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun changePassWordWallet(oldPassword: String, newPassword: String) {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = oldPassword == appPreference.password
         if (appPreference.password == oldPassword) {
@@ -306,6 +308,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun getConfigWallet() {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Boolean>()
         hasMap["isAppLock"] = appPreference.isAppLock
         hasMap["isFaceID"] = appPreference.isFaceID
@@ -315,6 +318,7 @@ class MainActivity : FlutterFragmentActivity() {
 
 
     private fun changeNameWallet(walletAddress: String, walletName: String) {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Any>()
         val wallet = appPreference.getListWallet().firstOrNull { it.walletAddress == walletAddress }
         if (wallet != null && walletName.isNotEmpty()) {
@@ -330,6 +334,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun earseAllWallet(type: String) {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Any>()
         appPreference.earseAllWallet()
         hasMap["isSuccess"] = true
@@ -338,6 +343,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun earseWallet(walletAddress: String) {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
         val listWallet = ArrayList<WalletModel>()
@@ -351,6 +357,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun importWallet(type: String, content: String) {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Any>()
         try {
             when (type) {
@@ -435,6 +442,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun getListWallets() {
+        val appPreference = AppPreference(this)
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
         appPreference.getListWallet().forEach {
             val data = HashMap<String, Any>()
@@ -447,6 +455,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun generateWallet() {
+        val appPreference = AppPreference(this)
         val wallet = HDWallet(128, "")
         val seedPhrase = wallet.mnemonic()
         val address = wallet.getAddressForCoin(coinType)
@@ -467,6 +476,7 @@ class MainActivity : FlutterFragmentActivity() {
         walletAddress: String,
         privateKey: String
     ) {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
         val listWallet = ArrayList<WalletModel>()
@@ -485,6 +495,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun setConfig(appLock: Boolean, faceID: Boolean) {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
         appPreference.isAppLock = appLock
@@ -493,8 +504,9 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun checkToken(walletAddress: String, tokenAddress: String) {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Any>()
-        hasMap["isExist"] = appPreference.getListTokenSupport()
+        hasMap["isExist"] = appPreference.getListTokens()
             .firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress && it.isShow } != null
         channel?.invokeMethod("checkTokenCallback", hasMap)
     }
@@ -509,51 +521,28 @@ class MainActivity : FlutterFragmentActivity() {
         exchangeRate: Double,
         isImport: Boolean
     ) {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Any>()
-        if (isImport) {
-            val listTokenImport = ArrayList<TokenModel>()
-            listTokenImport.addAll(appPreference.getListTokenImport())
-            if (listTokenImport.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress && it.isShow } == null) {
-                listTokenImport.add(
-                    TokenModel(
-                        walletAddress,
-                        tokenAddress,
-                        tokenFullName,
-                        iconToken,
-                        symbol,
-                        decimal,
-                        exchangeRate,
-                        true,
-                        isImport
-                    )
+        val listTokens = ArrayList<TokenModel>()
+        listTokens.addAll(appPreference.getListTokens())
+        if (listTokens.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress && it.isShow } == null) {
+            listTokens.add(
+                TokenModel(
+                    walletAddress,
+                    tokenAddress,
+                    tokenFullName,
+                    iconToken,
+                    symbol,
+                    decimal,
+                    exchangeRate,
+                    true,
+                    isImport
                 )
-                appPreference.saveListTokenImport(listTokenImport)
-                hasMap["isSuccess"] = true
-            } else {
-                hasMap["isSuccess"] = false
-            }
+            )
+            appPreference.saveListTokens(listTokens)
+            hasMap["isSuccess"] = true
         } else {
-            val listTokenSupport = ArrayList<TokenModel>()
-            listTokenSupport.addAll(appPreference.getListTokenSupport())
-            if (listTokenSupport.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress && it.isShow } == null) {
-                listTokenSupport.add(
-                    TokenModel(
-                        walletAddress,
-                        tokenAddress,
-                        tokenFullName,
-                        iconToken,
-                        symbol,
-                        decimal,
-                        exchangeRate,
-                        true,
-                        isImport
-                    )
-                )
-                appPreference.saveListTokenSupport(listTokenSupport)
-                hasMap["isSuccess"] = true
-            } else {
-                hasMap["isSuccess"] = false
-            }
+            hasMap["isSuccess"] = false
         }
         channel?.invokeMethod("importTokenCallback", hasMap)
     }
@@ -561,11 +550,8 @@ class MainActivity : FlutterFragmentActivity() {
     private fun importListToken(
         jsonTokens: String
     ) {
-        val listTokenSupport = ArrayList<TokenModel>()
-        listTokenSupport.addAll(appPreference.getListTokenSupport())
-
-        val listTokenImport = ArrayList<TokenModel>()
-        listTokenImport.addAll(appPreference.getListTokenImport())
+        val appPreference = AppPreference(this)
+        val listTokenSupport = appPreference.getListTokens()
         val listTokens = ArrayList<TokenModel>()
         val listObjectTokens = JSONArray(jsonTokens)
         var size = 0
@@ -574,98 +560,49 @@ class MainActivity : FlutterFragmentActivity() {
             val tokenAddress = data.getString("tokenAddress")
             val symbol = data.getString("nameShortToken")
             val isImport = data.getBoolean("isImport")
-            if (isImport) {
-                val checkTokenImportDuplicate =
-                    listTokenImport.firstOrNull { it.symbol == symbol || it.tokenAddress == tokenAddress }
-                if (checkTokenImportDuplicate == null) {
-                    val tokenModel = TokenModel(
-                        walletAddress = data.getString("walletAddress"),
-                        tokenAddress = tokenAddress,
-                        tokenFullName = data.getString("nameToken"),
-                        iconUrl = data.getString("iconToken"),
-                        symbol = symbol,
-                        decimal = data.getInt("decimal"),
-                        exchangeRate = data.getDouble("exchangeRate"),
-                        isShow = tokenAddress == TOKEN_DFY_ADDRESS || tokenAddress == TOKEN_BNB_ADDRESS,
-                        isImport = true
-                    )
-                    val tokenInCore =
-                        listTokenImport.firstOrNull { it.walletAddress == tokenModel.walletAddress }
-                    if (tokenInCore == null) {
-                        when (tokenAddress) {
-                            TOKEN_DFY_ADDRESS -> {
-                                listTokens.add(0, tokenModel)
-                            }
-                            TOKEN_BNB_ADDRESS -> {
-                                listTokens.add(1, tokenModel)
-                            }
-                            else -> {
-                                listTokens.add(tokenModel)
-                            }
-                        }
-                    } else {
-                        tokenModel.isShow = tokenInCore.isShow
-                        when (tokenAddress) {
-                            TOKEN_DFY_ADDRESS -> {
-                                listTokens.add(0, tokenModel)
-                            }
-                            TOKEN_BNB_ADDRESS -> {
-                                listTokens.add(1, tokenModel)
-                            }
-                            else -> {
-                                listTokens.add(tokenModel)
-                            }
-                        }
+            val tokenModel = TokenModel(
+                walletAddress = data.getString("walletAddress"),
+                tokenAddress = tokenAddress,
+                tokenFullName = data.getString("nameToken"),
+                iconUrl = data.getString("iconToken"),
+                symbol = symbol,
+                decimal = data.getInt("decimal"),
+                exchangeRate = data.getDouble("exchangeRate"),
+                isShow = tokenAddress == TOKEN_DFY_ADDRESS || tokenAddress == TOKEN_BNB_ADDRESS,
+                isImport = isImport
+            )
+            val tokenInCore =
+                listTokenSupport.firstOrNull { it.tokenAddress == tokenModel.tokenAddress }
+            if (tokenInCore == null) {
+                when (tokenAddress) {
+                    TOKEN_DFY_ADDRESS -> {
+                        listTokens.add(0, tokenModel)
+                    }
+                    TOKEN_BNB_ADDRESS -> {
+                        listTokens.add(1, tokenModel)
+                    }
+                    else -> {
+                        listTokens.add(tokenModel)
                     }
                 }
             } else {
-                val checkTokenDuplicate =
-                    listTokenSupport.firstOrNull { it.symbol == symbol || it.tokenAddress == tokenAddress }
-                if (checkTokenDuplicate == null) {
-                    val tokenModel = TokenModel(
-                        walletAddress = data.getString("walletAddress"),
-                        tokenAddress = tokenAddress,
-                        tokenFullName = data.getString("nameToken"),
-                        iconUrl = data.getString("iconToken"),
-                        symbol = symbol,
-                        decimal = data.getInt("decimal"),
-                        exchangeRate = data.getDouble("exchangeRate"),
-                        isShow = tokenAddress == TOKEN_DFY_ADDRESS || tokenAddress == TOKEN_BNB_ADDRESS
-                    )
-                    val tokenInCore =
-                        listTokenSupport.firstOrNull { it.walletAddress == tokenModel.walletAddress }
-                    if (tokenInCore == null) {
-                        when (tokenAddress) {
-                            TOKEN_DFY_ADDRESS -> {
-                                listTokens.add(0, tokenModel)
-                            }
-                            TOKEN_BNB_ADDRESS -> {
-                                listTokens.add(1, tokenModel)
-                            }
-                            else -> {
-                                listTokens.add(tokenModel)
-                            }
-                        }
-                    } else {
-                        tokenModel.isShow = tokenInCore.isShow
-                        when (tokenAddress) {
-                            TOKEN_DFY_ADDRESS -> {
-                                listTokens.add(0, tokenModel)
-                            }
-                            TOKEN_BNB_ADDRESS -> {
-                                listTokens.add(1, tokenModel)
-                            }
-                            else -> {
-                                listTokens.add(tokenModel)
-                            }
-                        }
+                tokenModel.isShow = tokenInCore.isShow
+                when (tokenAddress) {
+                    TOKEN_DFY_ADDRESS -> {
+                        listTokens.add(0, tokenModel)
+                    }
+                    TOKEN_BNB_ADDRESS -> {
+                        listTokens.add(1, tokenModel)
+                    }
+                    else -> {
+                        listTokens.add(tokenModel)
                     }
                 }
             }
             size++
         }
         val hasMap = HashMap<String, Any>()
-        appPreference.saveListTokenSupport(listTokens)
+        appPreference.saveListTokens(listTokens)
         hasMap["isSuccess"] = true
         channel?.invokeMethod("importListTokenCallback", hasMap)
     }
@@ -673,23 +610,9 @@ class MainActivity : FlutterFragmentActivity() {
     private fun getTokens(
         walletAddress: String
     ) {
+        val appPreference = AppPreference(this)
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
-        appPreference.getListTokenSupport().forEach {
-            if (it.walletAddress == walletAddress) {
-                val data = HashMap<String, Any>()
-                data["walletAddress"] = it.walletAddress
-                data["tokenFullName"] = it.tokenFullName
-                data["symbol"] = it.symbol
-                data["tokenAddress"] = it.tokenAddress
-                data["iconUrl"] = it.iconUrl
-                data["isShow"] = it.isShow
-                data["decimal"] = it.decimal
-                data["exchangeRate"] = it.exchangeRate
-                data["isImport"] = it.isImport
-                hasMap.add(data)
-            }
-        }
-        appPreference.getListTokenImport().forEach {
+        appPreference.getListTokens().forEach {
             if (it.walletAddress == walletAddress) {
                 val data = HashMap<String, Any>()
                 data["walletAddress"] = it.walletAddress
@@ -707,7 +630,8 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getTokensCallback", hasMap)
     }
 
-    private fun deleteNft(walletAddress: String, collectionAddress: String, nftId: Int) {
+    private fun deleteNft(walletAddress: String, collectionAddress: String, nftId: String) {
+        val appPreference = AppPreference(this)
         val listNft = ArrayList<NftModel>()
         var isDeleteSuccess = false
         appPreference.getListNft().forEach { it ->
@@ -737,6 +661,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun deleteCollection(walletAddress: String, collectionAddress: String) {
+        val appPreference = AppPreference(this)
         val listNft = ArrayList<NftModel>()
         var isDeleteSuccess = false
         appPreference.getListNft().forEach { it ->
@@ -757,6 +682,7 @@ class MainActivity : FlutterFragmentActivity() {
     private fun getNFT(
         walletAddress: String
     ) {
+        val appPreference = AppPreference(this)
         val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
         appPreference.getListNft().forEach {
             if (it.walletAddress == walletAddress) {
@@ -786,23 +712,22 @@ class MainActivity : FlutterFragmentActivity() {
         isShow: Boolean,
         isImport: Boolean
     ) {
+        val appPreference = AppPreference(this)
         val hasMap = HashMap<String, Any>()
         if (tokenAddress != TOKEN_DFY_ADDRESS || tokenAddress != TOKEN_BNB_ADDRESS) {
+            val listToken = ArrayList<TokenModel>()
             if (isImport) {
-                val listTokenImport = ArrayList<TokenModel>()
-                appPreference.getListTokenImport().forEach {
-                    if (it.walletAddress != walletAddress && it.tokenAddress != tokenAddress) {
-                        listTokenImport.add(it)
+                appPreference.getListTokens().forEach {
+                    if (it.walletAddress != walletAddress || it.tokenAddress != tokenAddress) {
+                        listToken.add(it)
                     }
                 }
-                appPreference.saveListTokenImport(listTokenImport)
             } else {
-                val listToken = ArrayList<TokenModel>()
-                listToken.addAll(appPreference.getListTokenSupport())
+                listToken.addAll(appPreference.getListTokens())
                 listToken.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress }?.isShow =
                     isShow
-                appPreference.saveListTokenSupport(listToken)
             }
+            appPreference.saveListTokens(listToken)
             hasMap["isSuccess"] = true
         } else {
             hasMap["isSuccess"] = false
@@ -814,6 +739,7 @@ class MainActivity : FlutterFragmentActivity() {
         jsonNft: String,
         walletAddress: String
     ) {
+        val appPreference = AppPreference(this)
         val listNftSupport = ArrayList<NftModel>()
         val objectNft = JSONObject(jsonNft)
         val contractNft = objectNft.getString("contract")
@@ -833,7 +759,7 @@ class MainActivity : FlutterFragmentActivity() {
                 val data = listNftJson.getJSONObject(size)
                 listNft.add(
                     ItemNftModel(
-                        id = data.getInt("id"),
+                        id = data.getString("id"),
                         contract = data.getString("contract"),
                         uri = data.getString("uri")
                     )
@@ -848,7 +774,7 @@ class MainActivity : FlutterFragmentActivity() {
                 val listNft = ArrayList<ItemNftModel>()
                 while (size < listNftJson.length()) {
                     val data = listNftJson.getJSONObject(size)
-                    val id = data.getInt("id")
+                    val id = data.getString("id")
                     if (checkItemNft.item.firstOrNull { it.id != id } == null) {
                         listNft.add(
                             ItemNftModel(
