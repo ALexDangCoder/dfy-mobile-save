@@ -180,6 +180,11 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> contractSubject = BehaviorSubject();
   BehaviorSubject<String> idSubject = BehaviorSubject();
   BehaviorSubject<bool> btnSubject = BehaviorSubject.seeded(false);
+  final BehaviorSubject<String> _warningSubject = BehaviorSubject.seeded('');
+
+  Stream<String> get warningStream => _warningSubject.stream;
+
+  Sink<String> get warningSink => _warningSubject.sink;
 
   List<HistoryNFT> listHistory = [];
   double? price = 0.0;
@@ -496,7 +501,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           checkShow.add(ModelToken.fromWalletCore(element));
-          
         }
         final List<ModelToken> listSwitch = [];
         for (final element in checkShow) {
