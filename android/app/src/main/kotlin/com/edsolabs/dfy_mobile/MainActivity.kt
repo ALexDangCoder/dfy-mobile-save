@@ -1,6 +1,5 @@
 package com.edsolabs.dfy_mobile
 
-import android.util.Log
 import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
 import com.edsolabs.dfy_mobile.data.model.ItemNftModel
 import com.edsolabs.dfy_mobile.data.model.NftModel
@@ -719,7 +718,7 @@ class MainActivity : FlutterFragmentActivity() {
             val listToken = ArrayList<TokenModel>()
             if (isImport) {
                 appPreference.getListTokens().forEach {
-                    if (it.walletAddress != walletAddress && it.tokenAddress != tokenAddress) {
+                    if (it.walletAddress != walletAddress || it.tokenAddress != tokenAddress) {
                         listToken.add(it)
                     }
                 }
