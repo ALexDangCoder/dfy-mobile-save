@@ -348,7 +348,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       },
       error: (error) async {
         await getTokens(addressWalletCore);
-        await getNFT(addressWalletCore);
       },
     );
   }
@@ -492,10 +491,11 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'changeNameWalletCallBack':
         break;
       case 'getTokensCallback':
+        listTokenFromWalletCore.clear();
+        checkShow.clear();
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           checkShow.add(ModelToken.fromWalletCore(element));
-          
         }
         final List<ModelToken> listSwitch = [];
         for (final element in checkShow) {
