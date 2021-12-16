@@ -928,6 +928,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         () async {
           await getTokenInfoByAddress(tokenAddress: _st);
           if (!isAddressNotExist) {
+            print('---------------------$addressWalletCore');
+            print('---------------------$_st');
             await checkToken(
               walletAddress: addressWalletCore,
               tokenAddress: _st,

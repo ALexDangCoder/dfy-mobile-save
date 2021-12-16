@@ -320,8 +320,11 @@ class _WalletState extends State<WalletScreen>
                                           );
                                         },
                                       );
-                                    } else if(snapshot.hasData){
+                                    }else if (snapshot.data?.isEmpty ?? true) {
+                                      return const SizedBox();
+                                    } else {
                                       return SizedBox(
+
                                         height: 100.h,
                                         child: Center(
                                           child: CircularProgressIndicator(
@@ -331,9 +334,6 @@ class _WalletState extends State<WalletScreen>
                                           ),
                                         ),
                                       );
-                                    }
-                                    else {
-                                      return const SizedBox();
                                     }
                                   },
                                 ),
