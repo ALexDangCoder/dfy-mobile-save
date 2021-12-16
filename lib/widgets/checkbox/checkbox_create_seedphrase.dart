@@ -25,7 +25,7 @@ class CheckBoxCreateSeedPhrase extends StatelessWidget {
             width: 24.w,
             height: 24.h,
             child: StreamBuilder(
-              stream: bLocCreateSeedPhrase.isCheckBox1,
+              stream: bLocCreateSeedPhrase.isCheckBoxCreateSeedPhrase,
               builder: (context, AsyncSnapshot<bool> snapshot) {
                 return Transform.scale(
                   scale: 1.sp,
@@ -38,12 +38,8 @@ class CheckBoxCreateSeedPhrase extends StatelessWidget {
                     ),
                     value: snapshot.data ?? false,
                     onChanged: (value) {
-                      bLocCreateSeedPhrase.isCheckBox1.sink.add(true);
-                      if (snapshot.data ?? false) {
-                        bLocCreateSeedPhrase.isCheckBox1.sink.add(false);
-                      }
-
-                      bLocCreateSeedPhrase.isButton();
+                      bLocCreateSeedPhrase.isCheckBoxCreateSeedPhrase.sink
+                          .add(!value!);
                     },
                     activeColor: AppTheme.getInstance().fillColor(),
                   ),

@@ -135,12 +135,13 @@ class _NFTItemState extends State<NFTItem> {
                               builder: (context) {
                                 return RemoveNft(
                                   walletAddress: widget.walletAddress,
-                                  index: widget.index,
+                                  index: index,
                                   cubit: widget.bloc,
                                   collectionAddress:
                                       widget.collectionNft.contract ?? '',
                                   nftId:
                                       widget.bloc.listNftInfo[index].id ?? '',
+                                  indexCollection: widget.index,
                                 );
                               },
                               isNonBackground: false,
