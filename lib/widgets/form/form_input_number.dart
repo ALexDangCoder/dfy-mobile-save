@@ -52,12 +52,12 @@ class FormInputNumber extends StatelessWidget {
                       address: bloc.addressWallet.value,
                       id: int.parse(value),
                     );
-                    if (res) {
+                    if (res.isSuccess) {
                       bloc.warningSink.add('');
                     } else {
                       bloc.warningSink.add(S.current.not_exist);
                     }
-                    bloc.btnSubject.sink.add(res);
+                    bloc.btnSubject.sink.add(res.isSuccess);
                   }
                 },
                 onFieldSubmitted: (value) async {
@@ -66,12 +66,12 @@ class FormInputNumber extends StatelessWidget {
                     address: bloc.addressWallet.value,
                     id: int.parse(value),
                   );
-                  if (res) {
+                  if (res.isSuccess) {
                     bloc.warningSink.add('');
                   } else {
                     bloc.warningSink.add(S.current.not_exist);
                   }
-                  bloc.btnSubject.sink.add(res);
+                  bloc.btnSubject.sink.add(res.isSuccess);
                 },
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
