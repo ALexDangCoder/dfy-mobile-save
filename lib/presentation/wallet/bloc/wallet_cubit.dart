@@ -496,6 +496,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           checkShow.add(ModelToken.fromWalletCore(element));
+          
         }
         final List<ModelToken> listSwitch = [];
         for (final element in checkShow) {
