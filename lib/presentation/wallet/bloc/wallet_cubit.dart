@@ -8,6 +8,7 @@ import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
@@ -523,9 +524,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         listSelectAccBloc.clear();
         final List<dynamic> data = methodCall.arguments;
         if (data.isEmpty) {
-          //todo bắn emit ra màn hình đầu tiên
-          print('màn hình đầu tiên');
           emit(NavigatorFirst());
+          await PrefsService.saveFirstAppConfig('true');
         } else {
           for (final element in data) {
             listWallet.add(Wallet.fromJson(element));
