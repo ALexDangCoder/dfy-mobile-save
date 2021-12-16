@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
@@ -55,27 +56,44 @@ class FormInputAddressNFT extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
                 maxLength: 100,
-                onChanged: (value) async {
-                  if (value.isNotEmpty && regex.hasMatch(value)) {
-                    final res = await Web3Utils().importNFT(
-                      contract: value,
-                    );
-                    bloc.btnSubject.sink.add(res);
-                  }
-                  if(!regex.hasMatch(value)){
-                    bloc.isNFT.sink.add(false);
-                  }
+                onChanged: (value) {
+                  Timer(const Duration(milliseconds: 500), () async {
+                    if (value.isNotEmpty && regex.hasMatch(value)) {
+                      final res = await Web3Utils().importNFT(
+                        contract: value,
+                        address: bloc.addressWallet.value,
+                      );
+                      if (res) {
+                        bloc.warningSink.add('');
+                      } else {
+                        bloc.warningSink.add(S.current.not_exist);
+                      }
+                      bloc.btnSubject.sink.add(res);
+                    }
+                    if (!regex.hasMatch(value)) {
+                      bloc.warningSink.add(S.current.invalid_address);
+                      bloc.btnSubject.sink.add(false);
+                    }
+                  });
                 },
                 onFieldSubmitted: (value) async {
                   if (value.isNotEmpty && regex.hasMatch(value)) {
                     final res = await Web3Utils().importNFT(
                       contract: value,
+                      address: bloc.addressWallet.value,
                     );
                     bloc.btnSubject.sink.add(res);
-                    bloc.isNFT.sink.add(res);
+                    if (res) {
+                      bloc.warningSink.add('');
+                    } else {
+                      bloc.warningSink.add(S.current.not_exist);
+                    }
+                  }
+                  if (!regex.hasMatch(value)) {
+                    bloc.warningSink.add(S.current.invalid_address);
+                    bloc.btnSubject.sink.add(false);
                   }
                 },
-
                 controller: controller,
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(

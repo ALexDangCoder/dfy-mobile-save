@@ -175,10 +175,16 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
   BehaviorSubject<double> totalBalance = BehaviorSubject();
+
   /// Nam
   BehaviorSubject<String> contractSubject = BehaviorSubject();
   BehaviorSubject<String> idSubject = BehaviorSubject();
   BehaviorSubject<bool> btnSubject = BehaviorSubject.seeded(false);
+  final BehaviorSubject<String> _warningSubject = BehaviorSubject.seeded('');
+
+  Stream<String> get warningStream => _warningSubject.stream;
+
+  Sink<String> get warningSink => _warningSubject.sink;
 
   List<HistoryNFT> listHistory = [];
   double? price = 0.0;
@@ -495,7 +501,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           checkShow.add(ModelToken.fromWalletCore(element));
-          
         }
         final List<ModelToken> listSwitch = [];
         for (final element in checkShow) {
@@ -874,6 +879,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   }) async {
     if (await Web3Utils().importNFT(
       contract: contractAddress,
+      address: '',
       id: id,
     )) {
       // emit(ImportNftSuccess());

@@ -195,5 +195,6 @@
   "empty_address" : "Địa chỉ ví không thể trống",
   "already_exist" : "Token đã tồn tại trong ví",
   "contract_address": "Địa chỉ hợp đồng",
-  "import_new_wallet_failed": "Nhập ví mới thất bại"
+  "import_new_wallet_failed": "Nhập ví mới thất bại",
+  "not_exist": "Địa chỉ NFT không tồn tại hoặc bạn không sở hữu"
 }

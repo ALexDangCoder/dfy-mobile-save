@@ -57,6 +57,7 @@ class _BodyState extends State<_Body> {
     _contractController = TextEditingController();
     _idController = TextEditingController();
     widget.bloc.btnSubject.sink.add(false);
+    widget.bloc.warningSink.add('');
     _contractController.addListener(() {
       widget.bloc.contractSubject.sink.add(_contractController.text);
     });
@@ -119,21 +120,22 @@ class _BodyState extends State<_Body> {
                           bloc: widget.bloc,
                         ),
                         spaceH4,
-                        StreamBuilder(
-                          stream: widget.bloc.isNFT,
+                        StreamBuilder<String>(
+                          stream: widget.bloc.warningStream,
                           builder: (context, snapshot) {
-                            return SizedBox(
-                              width: 343.w,
-                              child: widget.bloc.isNFT.value
-                                  ? null
-                                  : Text(
-                                      S.current.invalid_address,
-                                      style: textNormal(
-                                        Colors.red,
-                                        14,
-                                      ),
-                                      textAlign: TextAlign.start,
-                                    ),
+                            return Visibility(
+                              visible: snapshot.data?.isNotEmpty ?? false,
+                              child: SizedBox(
+                                width: 343.w,
+                                child: Text(
+                                  snapshot.data ?? '',
+                                  style: textNormal(
+                                    Colors.red,
+                                    14,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
                             );
                           },
                         ),

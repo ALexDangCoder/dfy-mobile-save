@@ -36,8 +36,6 @@ open class AppPreference(sharedPreferences: SharedPreferences) :
     private var listWallet: String by stringPreference("")
 
     private var listTokenSupport: String by stringPreference("")
-
-    private var listTokenImport: String by stringPreference("")
     var listNft: String by stringPreference("")
 
     fun earseAllWallet() {
@@ -52,20 +50,12 @@ open class AppPreference(sharedPreferences: SharedPreferences) :
         listWallet = JsonHelper.saveList(data, WalletModel::class.java)
     }
 
-    fun getListTokenSupport(): List<TokenModel> {
+    fun getListTokens(): List<TokenModel> {
         return JsonHelper.getList(listTokenSupport, TokenModel::class.java)
     }
 
-    fun saveListTokenSupport(data: List<TokenModel>) {
+    fun saveListTokens(data: List<TokenModel>) {
         listTokenSupport = JsonHelper.saveList(data, TokenModel::class.java)
-    }
-
-    fun getListTokenImport(): List<TokenModel> {
-        return JsonHelper.getList(listTokenImport, TokenModel::class.java)
-    }
-
-    fun saveListTokenImport(data: List<TokenModel>) {
-        listTokenImport = JsonHelper.saveList(data, TokenModel::class.java)
     }
 
     fun getListNft(): List<NftModel> {
