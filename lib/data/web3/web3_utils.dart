@@ -10,6 +10,16 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
+class ImportNftResponse {
+  bool isSuccess;
+  String message;
+
+  ImportNftResponse({
+    required this.isSuccess,
+    required this.message,
+  });
+}
+
 class Web3Utils {
   Web3Utils._privateConstructor();
 
@@ -20,35 +30,50 @@ class Web3Utils {
   //client
   final client = Web3Client(rpcURL, Client());
 
-  Future<bool> importNFT({
+  Future<ImportNftResponse> importNFT({
     required String contract,
     required String address,
     int? id,
   }) async {
-    final nft = Nft(address: EthereumAddress.fromHex(contract), client: client);
-    if (id == null) {
-      try {
-        final balanceOfNft =
-            await nft.balanceOf(EthereumAddress.fromHex(address));
-        if (balanceOfNft > BigInt.zero) {
-          return true;
-        } else {
-          return false;
+    try {
+      final nft =
+          Nft(address: EthereumAddress.fromHex(contract), client: client);
+      if (id == null) {
+        try {
+          final balanceOfNft =
+              await nft.balanceOf(EthereumAddress.fromHex(address));
+          if (balanceOfNft > BigInt.zero) {
+            return ImportNftResponse(isSuccess: true, message: '');
+          } else {
+            return ImportNftResponse(
+                isSuccess: false, message: 'Empty list NFT');
+          }
+        } catch (error) {
+          return ImportNftResponse(
+              isSuccess: false, message: 'Invalid wallet address');
         }
-      } on Exception catch (_) {
-        return false;
-      } catch (error) {
-        return false;
+      } else {
+        try {
+          final ownerAddress = await nft.ownerOf(BigInt.from(id));
+          if (EthereumAddress.fromHex(address) == ownerAddress) {
+            return ImportNftResponse(isSuccess: true, message: '');
+          } else {
+            return ImportNftResponse(
+              isSuccess: false,
+              message:
+                  'You are not the owner of this collectible, so you can not add it',
+            );
+          }
+        } on Exception catch (_) {
+          return ImportNftResponse(
+              isSuccess: false, message: 'Nonexistent token');
+        } catch (error) {
+          return ImportNftResponse(
+              isSuccess: false, message: 'Invalid wallet address');
+        }
       }
-    } else {
-      try {
-        await nft.tokenURI(BigInt.from(id));
-        return true;
-      } on Exception catch (_) {
-        return false;
-      } catch (error) {
-        return false;
-      }
+    } catch (error) {
+      return ImportNftResponse(isSuccess: false, message: 'Invalid address');
     }
   }
 
