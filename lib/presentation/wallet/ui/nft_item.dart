@@ -139,9 +139,9 @@ class _NFTItemState extends State<NFTItem> {
                                   cubit: widget.bloc,
                                   collectionAddress:
                                       widget.collectionNft.contract ?? '',
-                                  nftContract: widget.collectionNft
-                                          .listNft?[index].contract ??
-                                      '',
+                                  nftId:
+                                      widget.collectionNft.listNft?[index].id ??
+                                          0,
                                 );
                               },
                               isNonBackground: false,

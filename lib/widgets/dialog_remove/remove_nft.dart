@@ -15,7 +15,7 @@ class RemoveNft extends StatelessWidget {
   final WalletCubit cubit;
   final int index;
   final String walletAddress;
-  final String nftContract;
+  final int nftId;
   final String collectionAddress;
 
   const RemoveNft({
@@ -23,7 +23,7 @@ class RemoveNft extends StatelessWidget {
     required this.cubit,
     required this.index,
     required this.walletAddress,
-    required this.nftContract,
+    required this.nftId,
     required this.collectionAddress,
   }) : super(key: key);
 
@@ -141,7 +141,7 @@ class RemoveNft extends StatelessWidget {
                                       child: GestureDetector(
                                         onTap: () {
                                           print('walletAddress $walletAddress');
-                                          print('nftAddress $nftContract');
+                                          print('nftAddress $nftId');
                                           print(
                                               'nftAddress $collectionAddress');
                                           cubit.listNftInfo.removeAt(index);
@@ -152,7 +152,7 @@ class RemoveNft extends StatelessWidget {
                                             walletAddress: walletAddress,
                                             collectionAddress:
                                                 collectionAddress,
-                                            nftContract: nftContract,
+                                            nftId: nftId,
                                           );
                                           cubit.listNftFromWalletCore
                                               .removeAt(index);

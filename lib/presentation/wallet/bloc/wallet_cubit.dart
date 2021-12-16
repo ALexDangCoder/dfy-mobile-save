@@ -766,12 +766,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> deleteNft({
     required String walletAddress,
     required String collectionAddress,
-    required String nftContract,
+    required int nftId,
   }) async {
     try {
       final data = {
         'walletAddress': walletAddress,
-        'nftContract': nftContract,
+        'nftId': nftId,
         'collectionAddress': collectionAddress,
       };
       await trustWalletChannel.invokeMethod('deleteNft', data);
