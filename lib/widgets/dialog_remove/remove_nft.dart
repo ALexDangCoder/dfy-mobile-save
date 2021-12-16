@@ -9,13 +9,12 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../main.dart';
 
 class RemoveNft extends StatelessWidget {
   final WalletCubit cubit;
   final int index;
   final String walletAddress;
-  final int nftId;
+  final String nftId;
   final String collectionAddress;
 
   const RemoveNft({

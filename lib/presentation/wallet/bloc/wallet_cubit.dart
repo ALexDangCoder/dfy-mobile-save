@@ -774,7 +774,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   Future<void> deleteNft({
     required String walletAddress,
     required String collectionAddress,
-    required int nftId,
+    required String nftId,
   }) async {
     try {
       final data = {
@@ -931,26 +931,33 @@ class WalletCubit extends BaseCubit<WalletState> {
       }
     }
     if (_st != '') {
-      trustWalletChannel.setMethodCallHandler(nativeMethodCallBackTrustWallet);
-      debounceTime = Timer(
-        const Duration(milliseconds: 500),
-        () async {
-          await getTokenInfoByAddress(tokenAddress: _st);
-          if (!isAddressNotExist) {
-            print('---------------------$addressWalletCore');
-            print('---------------------$_st');
-            await checkToken(
-              walletAddress: addressWalletCore,
-              tokenAddress: _st,
-            );
-          } else {
-            isTokenEnterAddress.sink.add(false);
-            tokenSymbol.sink.add(S.current.token_symbol);
-            tokenDecimal.sink.add(S.current.token_decimal);
-            _messSubject.sink.add(S.current.invalid_address);
-          }
-        },
-      );
+      final regex = RegExp(r'^0x[a-fA-F0-9]{40}$');
+      if (regex.hasMatch(_st)) {
+        trustWalletChannel
+            .setMethodCallHandler(nativeMethodCallBackTrustWallet);
+        debounceTime = Timer(
+          const Duration(milliseconds: 500),
+          () async {
+            await getTokenInfoByAddress(tokenAddress: _st);
+            if (!isAddressNotExist) {
+              await checkToken(
+                walletAddress: addressWalletCore,
+                tokenAddress: _st,
+              );
+            } else {
+              isTokenEnterAddress.sink.add(false);
+              tokenSymbol.sink.add(S.current.token_symbol);
+              tokenDecimal.sink.add(S.current.token_decimal);
+              _messSubject.sink.add(S.current.no_support_token);
+            }
+          },
+        );
+      } else {
+        tokenSymbol.sink.add(S.current.token_symbol);
+        tokenDecimal.sink.add(S.current.token_decimal);
+        isTokenEnterAddress.sink.add(false);
+        _messSubject.sink.add(S.current.invalid_address);
+      }
     } else {
       isTokenEnterAddress.sink.add(false);
       _messSubject.sink.add(S.current.empty_address);
