@@ -60,6 +60,7 @@ class FormInputAddressNFT extends StatelessWidget {
                     final res = await Web3Utils().importNFT(
                       contract: value,
                     );
+                    bloc.isNFT.sink.add(true);
                     bloc.btnSubject.sink.add(res);
                   }
                   if(!regex.hasMatch(value)){

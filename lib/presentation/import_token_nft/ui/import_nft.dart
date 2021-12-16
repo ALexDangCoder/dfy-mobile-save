@@ -57,6 +57,7 @@ class _BodyState extends State<_Body> {
     _contractController = TextEditingController();
     _idController = TextEditingController();
     widget.bloc.btnSubject.sink.add(false);
+    widget.bloc.isNFT.sink.add(true);
     _contractController.addListener(() {
       widget.bloc.contractSubject.sink.add(_contractController.text);
     });
