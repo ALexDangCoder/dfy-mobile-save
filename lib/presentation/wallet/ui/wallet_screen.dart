@@ -320,7 +320,7 @@ class _WalletState extends State<WalletScreen>
                                           );
                                         },
                                       );
-                                    } else {
+                                    } else if(snapshot.hasData){
                                       return SizedBox(
                                         height: 100.h,
                                         child: Center(
@@ -331,6 +331,9 @@ class _WalletState extends State<WalletScreen>
                                           ),
                                         ),
                                       );
+                                    }
+                                    else {
+                                      return const SizedBox();
                                     }
                                   },
                                 ),
