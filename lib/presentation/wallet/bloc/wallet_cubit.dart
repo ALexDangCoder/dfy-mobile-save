@@ -175,6 +175,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
   BehaviorSubject<double> totalBalance = BehaviorSubject();
+
   /// Nam
   BehaviorSubject<String> contractSubject = BehaviorSubject();
   BehaviorSubject<String> idSubject = BehaviorSubject();
@@ -877,6 +878,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   }) async {
     if (await Web3Utils().importNFT(
       contract: contractAddress,
+      address: '',
       id: id,
     )) {
       // emit(ImportNftSuccess());
