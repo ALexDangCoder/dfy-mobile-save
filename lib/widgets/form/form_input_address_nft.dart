@@ -59,10 +59,11 @@ class FormInputAddressNFT extends StatelessWidget {
                   if (value.isNotEmpty && regex.hasMatch(value)) {
                     final res = await Web3Utils().importNFT(
                       contract: value,
+                      address: '',
                     );
                     bloc.btnSubject.sink.add(res);
                   }
-                  if(!regex.hasMatch(value)){
+                  if (!regex.hasMatch(value)) {
                     bloc.isNFT.sink.add(false);
                   }
                 },
@@ -70,6 +71,7 @@ class FormInputAddressNFT extends StatelessWidget {
                   if (value.isNotEmpty && regex.hasMatch(value)) {
                     final res = await Web3Utils().importNFT(
                       contract: value,
+                      address: '',
                     );
                     bloc.btnSubject.sink.add(res);
                     bloc.isNFT.sink.add(res);
