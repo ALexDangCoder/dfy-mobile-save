@@ -195,5 +195,6 @@
   "empty_address": "Address cannot be empty",
   "already_exist": "Token already exists in the wallet",
   "contract_address": "Contract address",
-  "import_new_wallet_failed": "Import new wallet failed"
+  "import_new_wallet_failed": "Import new wallet failed",
+  "not_exist": "NFT address does not exist or you do not own"
 }

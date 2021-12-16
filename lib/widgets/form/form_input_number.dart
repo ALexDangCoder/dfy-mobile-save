@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,18 +49,28 @@ class FormInputNumber extends StatelessWidget {
                   if (value.isNotEmpty) {
                     final res = await Web3Utils().importNFT(
                       contract: bloc.contractSubject.valueOrNull ?? '',
-                      address: '',
+                      address: bloc.addressWallet.value,
                       id: int.parse(value),
                     );
+                    if (res) {
+                      bloc.warningSink.add('');
+                    } else {
+                      bloc.warningSink.add(S.current.not_exist);
+                    }
                     bloc.btnSubject.sink.add(res);
                   }
                 },
                 onFieldSubmitted: (value) async {
                   final res = await Web3Utils().importNFT(
                     contract: bloc.contractSubject.valueOrNull ?? '',
-                    address: '',
+                    address: bloc.addressWallet.value,
                     id: int.parse(value),
                   );
+                  if (res) {
+                    bloc.warningSink.add('');
+                  } else {
+                    bloc.warningSink.add(S.current.not_exist);
+                  }
                   bloc.btnSubject.sink.add(res);
                 },
                 cursorColor: AppTheme.getInstance().whiteColor(),

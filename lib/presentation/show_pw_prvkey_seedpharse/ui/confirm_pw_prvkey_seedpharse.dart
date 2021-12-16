@@ -29,9 +29,6 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
 
   @override
   void initState() {
-    trustWalletChannel.setMethodCallHandler(
-      widget.cubit.nativeMethodCallBackTrustWallet,
-    );
     widget.cubit.getListWallets();
     txtController = TextEditingController();
     widget.cubit.getConfig();
@@ -40,6 +37,9 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
 
   @override
   Widget build(BuildContext context) {
+    trustWalletChannel.setMethodCallHandler(
+      widget.cubit.nativeMethodCallBackTrustWallet,
+    );
     return BlocConsumer<ConfirmPwPrvKeySeedpharseCubit,
         ConfirmPwPrvKeySeedpharseState>(
       listener: (context, state) {
@@ -55,11 +55,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
                 bloc: widget.cubit,
               ),
             ),
-          ).whenComplete(
-            () => {
-              // widget.cubit.listWallet.clear(),
-            },
-          );
+          ).whenComplete(() => txtController.clear());
         } else {
           _showDialog(
             alert: S.current.warn_old_pw_not_match,
@@ -92,7 +88,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
                 builder: (context, snapshot) {
                   return GestureDetector(
                     onTap: () {
-                      if (snapshot.data ?? false) {
+                      if (snapshot.data!) {
                         widget.cubit
                             .checkPassword(password: txtController.text);
                       }
@@ -107,42 +103,6 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
               SizedBox(
                 height: 40.h,
               ),
-
-              //todo handel scan finger or faceID, done
-              StreamBuilder<bool>(
-                stream: widget.cubit.isSuccessWhenScanStream,
-                builder: (context, snapshot) {
-                  return Visibility(
-                    child: GestureDetector(
-                      onTap: () async {
-                        await widget.cubit
-                            .authenticate(); //todo change stream not bloc
-                        if (snapshot.data == true) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return PrivateKeySeedPhrase(
-                                  bloc: widget.cubit,
-                                );
-                              },
-                            ),
-                          );
-                        } else {
-                          //nothing
-                        }
-                      },
-                      child: Platform.isIOS
-                          ? const Image(
-                              image: AssetImage(ImageAssets.ic_face_id),
-                            )
-                          : const Image(
-                              image: AssetImage(ImageAssets.ic_finger),
-                            ),
-                    ),
-                  );
-                },
-              )
             ],
           ),
         );
