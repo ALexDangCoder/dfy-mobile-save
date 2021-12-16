@@ -76,7 +76,7 @@ class TokenItem extends StatelessWidget {
                   child: modelToken.iconToken.isEmpty
                       ? CircleAvatar(
                           backgroundColor: Colors.yellow,
-                          radius: 18.r,
+                          radius: 14.r,
                           child: Center(
                             child: Text(
                               modelToken.nameShortToken.substring(0, 1),
