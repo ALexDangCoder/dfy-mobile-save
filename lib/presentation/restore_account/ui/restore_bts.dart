@@ -223,7 +223,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                             Flexible(
                                               flex: 8,
                                               child: StreamBuilder<String>(
-                                                stream: restoreCubit.stringStream,
+                                                stream:
+                                                    restoreCubit.stringStream,
                                                 initialData: strValue,
                                                 builder: (ctx, snapshot) {
                                                   strValue = snapshot.data!;
@@ -270,7 +271,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                                 formType: FormType.PASS_PHRASE,
                                                 isShow: false,
                                                 cubit: restoreCubit,
-                                                controller: seedPhraseController,
+                                                controller:
+                                                    seedPhraseController,
                                                 callback: () async {
                                                   final ClipboardData? data =
                                                       await Clipboard.getData(
@@ -278,6 +280,11 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                                   );
                                                   seedPhraseController.text =
                                                       data?.text ?? '';
+                                                  restoreCubit
+                                                      .showTxtWarningSeed(
+                                                    seedPhraseController.text,
+                                                    FormType.PASS_PHRASE,
+                                                  );
                                                 },
                                               )
                                             : ItemForm(
@@ -287,7 +294,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                                 formType: FormType.PRIVATE_KEY,
                                                 isShow: false,
                                                 cubit: restoreCubit,
-                                                controller: privateKeyController,
+                                                controller:
+                                                    privateKeyController,
                                                 callback: () async {
                                                   final ClipboardData? data =
                                                       await Clipboard.getData(
@@ -295,6 +303,11 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                                   );
                                                   privateKeyController.text =
                                                       data?.text ?? '';
+                                                  restoreCubit
+                                                      .showTxtWarningSeed(
+                                                    privateKeyController.text,
+                                                    FormType.PRIVATE_KEY,
+                                                  );
                                                 },
                                               );
                                       },
