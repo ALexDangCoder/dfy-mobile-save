@@ -9,20 +9,17 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-class RemoveNft extends StatelessWidget {
+class RemoveCollection extends StatelessWidget {
   final WalletCubit cubit;
   final int index;
   final String walletAddress;
-  final String nftId;
   final String collectionAddress;
 
-  const RemoveNft({
+  const RemoveCollection({
     Key? key,
     required this.cubit,
     required this.index,
     required this.walletAddress,
-    required this.nftId,
     required this.collectionAddress,
   }) : super(key: key);
 
@@ -67,7 +64,7 @@ class RemoveNft extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 34.w),
                               child: Text(
-                                S.current.are_you_sure_nft,
+                                S.current.are_you_sure_collectible,
                                 style: textNormal(
                                   null,
                                   20.sp,
@@ -140,18 +137,17 @@ class RemoveNft extends StatelessWidget {
                                       child: GestureDetector(
                                         onTap: () {
                                           print('walletAddress $walletAddress');
-                                          print('nftId $nftId');
                                           print(
                                               'nftAddress $collectionAddress');
-                                          cubit.listNftInfo.removeAt(index);
-                                          cubit.deleteNft(
+                                          cubit.listNftFromWalletCore
+                                              .removeAt(index);
+                                          cubit.listNFTStream
+                                              .add(cubit.listNftFromWalletCore);
+                                          cubit.deleteCollection(
                                             walletAddress: walletAddress,
                                             collectionAddress:
                                                 collectionAddress,
-                                            nftId: nftId,
                                           );
-                                          cubit.listNFTStream.sink
-                                              .add(cubit.listNFTStream.value);
                                           Navigator.pop(context);
                                         },
                                         child: SizedBox(

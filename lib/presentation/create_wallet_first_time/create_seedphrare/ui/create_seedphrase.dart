@@ -71,11 +71,13 @@ class _Body extends StatefulWidget {
 
 class _BodyState extends State<_Body> {
   late final TextEditingController nameWallet;
+  bool needName = true;
 
   @override
   void initState() {
     super.initState();
     nameWallet = TextEditingController();
+    nameWallet.text = widget.blocCreateSeedPhrase.walletNameCore;
     nameWallet.addListener(() {
       widget.blocCreateSeedPhrase.nameWallet.sink.add(nameWallet.text);
     });
@@ -87,7 +89,10 @@ class _BodyState extends State<_Body> {
       stream: widget.blocCreateSeedPhrase.isCheckData,
       builder: (context, snapshot) {
         if (snapshot.data == true) {
-          nameWallet.text = widget.blocCreateSeedPhrase.walletNameCore;
+          if(needName){
+            nameWallet.text = widget.blocCreateSeedPhrase.walletNameCore;
+            needName = false;
+          }
           return GestureDetector(
             onTap: () {
               final FocusScopeNode currentFocus = FocusScope.of(context);
