@@ -197,10 +197,10 @@ class MainActivity : FlutterFragmentActivity() {
                     val collectionAddress =
                         call.argument<String>("collectionAddress")
                             ?: return@setMethodCallHandler
-                    val nftContract =
-                        call.argument<Int>("nftContract")
+                    val nftId =
+                        call.argument<Int>("nftId")
                             ?: return@setMethodCallHandler
-                    deleteNft(walletAddress, collectionAddress, nftContract)
+                    deleteNft(walletAddress, collectionAddress, nftId)
                 }
                 "deleteCollection" -> {
                     val walletAddress =
@@ -707,7 +707,7 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getTokensCallback", hasMap)
     }
 
-    private fun deleteNft(walletAddress: String, collectionAddress: String, id: Int) {
+    private fun deleteNft(walletAddress: String, collectionAddress: String, nftId: Int) {
         val listNft = ArrayList<NftModel>()
         var isDeleteSuccess = false
         appPreference.getListNft().forEach { it ->
@@ -718,7 +718,7 @@ class MainActivity : FlutterFragmentActivity() {
                 data.nftName = it.nftName
                 data.symbol = it.symbol
                 it.item.forEach {
-                    if (it.id != id) {
+                    if (it.id != nftId) {
                         data.item.add(it)
                     } else {
                         isDeleteSuccess = true
