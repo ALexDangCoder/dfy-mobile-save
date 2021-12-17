@@ -42,7 +42,7 @@ class CollectionNft {
 }
 
 class ListNft {
-  int? id;
+  String? id;
   String? contract;
   String? uri;
 
