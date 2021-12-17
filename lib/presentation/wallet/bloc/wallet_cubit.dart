@@ -21,7 +21,6 @@ import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -68,6 +67,30 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  BehaviorSubject<String> warningTextNft = BehaviorSubject<String>.seeded('');
+
+  //handle call nft from web3
+  void checkImportNft({
+    required String contract,
+    required String address,
+    int? id,
+  }) async {
+    emit(ImportNftLoading());
+    if(id != null){
+
+    } else {
+      final resultWhenCall =
+      await client.importNFT(contract: contract, address: address);
+      if(!resultWhenCall.isSuccess) {
+        emit(ImportNftFail());
+        warningTextNft.sink.add(resultWhenCall.message);
+        btnSubject.sink.add(false);
+      } else {
+        await emitJsonNftToWalletCore(contract: contract, address: address);
+      }
+    }
+  }
+
   Future<String> getIcon(String addressToken) async {
     for (final ModelToken value in checkShow) {
       if (addressToken == value.tokenAddress) {
@@ -76,8 +99,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
     return '';
   }
-
-  //todo getNftInfoByAddress
 
   String nftName = '';
   String iconNFT = '';
@@ -149,6 +170,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> tokenDecimal = BehaviorSubject();
   BehaviorSubject<bool> isTokenAddressText = BehaviorSubject.seeded(true);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
+  BehaviorSubject<String> checkDataWallet = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject();
   BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isImportNftFail = BehaviorSubject.seeded(true);
@@ -163,6 +185,8 @@ class WalletCubit extends BaseCubit<WalletState> {
   List<ModelToken> listTokenFromWalletCore = [];
   List<CollectionNft> listNftFromWalletCore = [];
   BehaviorSubject<double> totalBalance = BehaviorSubject();
+  BehaviorSubject<String> messStreamEnterWalletName =
+      BehaviorSubject.seeded('');
   BehaviorSubject<String> addressWallet = BehaviorSubject();
   BehaviorSubject<String> walletName = BehaviorSubject();
   BehaviorSubject<List<ModelToken>> listTokenStream =
@@ -296,9 +320,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   void search() {
     final List<ModelToken> result = [];
     for (final ModelToken value in checkShow) {
-      if (value.nameShortToken.toLowerCase().contains(
-            textSearch.value.toLowerCase(),
-          )) {
+      if (value.nameShortToken
+              .toLowerCase()
+              .contains(textSearch.value.toLowerCase()) ||
+          value.nameToken
+              .toLowerCase()
+              .contains(textSearch.value.toLowerCase())) {
         result.add(value);
       }
     }
@@ -310,16 +337,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       getListTokenModel.sink.add(result);
     }
   }
-
-  void getIsWalletName(String value) {
-    if (Validator.validateNotNull(value)) {
-      isWalletName.sink.add(true);
-    } else {
-      isWalletName.sink.add(false);
-    }
-  }
-
-  ///Logic Token
 
   TokenRepository get _tokenRepository => Get.find();
 
@@ -854,6 +871,21 @@ class WalletCubit extends BaseCubit<WalletState> {
     } else {
       isTokenEnterAddress.sink.add(false);
       _messSubject.sink.add(S.current.empty_address);
+    }
+  }
+
+  void validateNameWallet(String _name) {
+    if (_name != '') {
+      if (_name.length > 20) {
+        messStreamEnterWalletName.sink.add(S.current.name_characters);
+        isWalletName.sink.add(false);
+      } else {
+        isWalletName.sink.add(true);
+        messStreamEnterWalletName.sink.add('');
+      }
+    } else {
+      isWalletName.sink.add(false);
+      messStreamEnterWalletName.sink.add(S.current.name_not_null);
     }
   }
 }

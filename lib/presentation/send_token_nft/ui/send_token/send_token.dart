@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
@@ -14,10 +15,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendToken extends StatefulWidget {
   final String walletAddress;
+  final ModelToken modelToken;
 
   const SendToken({
     Key? key,
     required this.walletAddress,
+    required this.modelToken,
   }) : super(key: key);
 
   @override
@@ -27,7 +30,6 @@ class SendToken extends StatefulWidget {
 class _SendTokenState extends State<SendToken> {
   late SendTokenCubit tokenCubit;
   final String fakeToAddress = '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
-  final String fakeFromAddress = '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37';
   late TextEditingController txtToAddressToken;
   late TextEditingController txtAmount;
 
@@ -43,7 +45,7 @@ class _SendTokenState extends State<SendToken> {
     //   to: fakeToAddress,
     //   value: 1000,
     // );
-    tokenCubit.getBalanceWallet(ofAddress: fakeFromAddress);
+    tokenCubit.getBalanceWallet(ofAddress: widget.walletAddress);
     tokenCubit.getGasPrice();
     trustWalletChannel
         .setMethodCallHandler(tokenCubit.nativeMethodCallBackTrustWallet);
@@ -61,7 +63,7 @@ class _SendTokenState extends State<SendToken> {
       child: BaseBottomSheet(
         isImage: true,
         text: ImageAssets.ic_close,
-        title: '${S.current.send} DFY',
+        title: '${S.current.send} ${widget.modelToken.nameShortToken}',
         onRightClick: () {
           Navigator.pop(context);
         },
@@ -82,7 +84,7 @@ class _SendTokenState extends State<SendToken> {
                       ),
                       formShowFtAddress(
                         // hintText: snapshot.data ?? '',
-                        hintText: '0xFE5788e2...EB7144fd0',
+                        hintText: widget.walletAddress.formatAddressWallet(),
                         readOnly: true,
                         prefixImg: ImageAssets.ic_from,
                         suffixImg: '',
@@ -115,6 +117,7 @@ class _SendTokenState extends State<SendToken> {
                         height: 16.h,
                       ),
                       formAmountFtQuantity(
+                        modelToken: widget.modelToken,
                         hintText: S.current.amount,
                         isAmount: true,
                         isQuantity: false,
@@ -143,7 +146,7 @@ class _SendTokenState extends State<SendToken> {
                       tokenCubit.checkValidAddress(txtToAddressToken.text);
                       tokenCubit.checkValidAmount(txtAmount.text);
                       await tokenCubit.getEstimateGas(
-                        from: fakeFromAddress,
+                        from: widget.walletAddress,
                         to: fakeToAddress,
                         value: double.parse(
                           txtAmount.text,
@@ -162,7 +165,7 @@ class _SendTokenState extends State<SendToken> {
                                 balanceWallet: tokenCubit.balanceWallet,
                                 typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
                                 addressFrom:
-                                    fakeFromAddress.formatAddressWallet(),
+                                    widget.walletAddress.formatAddressWallet(),
                                 addressTo: fakeToAddress.formatAddressWallet(),
                                 imageWallet: ImageAssets.symbol,
                                 amount: double.parse(txtAmount.text),
@@ -184,9 +187,6 @@ class _SendTokenState extends State<SendToken> {
                 );
               },
             ),
-            // SizedBox(
-            //   height: 34.h,
-            // ),
           ],
         ),
       ),
@@ -267,6 +267,7 @@ class _SendTokenState extends State<SendToken> {
     required bool isAmount,
     required bool isQuantity,
     required String prefixImg,
+    ModelToken? modelToken,
     Function()? callBack,
   }) {
     return Container(
@@ -281,10 +282,9 @@ class _SendTokenState extends State<SendToken> {
       child: Center(
         child: TextFormField(
           onChanged: (value) {
-            tokenCubit.checkHaveVLAmountFormToken(value);
-            tokenCubit.checkHaveVlAddressFormToken(
-              txtToAddressToken.text,
-              type: typeSend.SEND_TOKEN,
+            tokenCubit.checkHaveVLAmountFormToken(
+              value,
+              amountBalance: widget.modelToken.balanceToken,
             );
           },
           controller: txtAmount,
@@ -304,17 +304,26 @@ class _SendTokenState extends State<SendToken> {
             suffixIcon: InkWell(
               onTap: callBack,
               child: (isAmount && !isQuantity)
-                  ? Padding(
-                      padding: EdgeInsets.only(
-                        top: 15.h,
-                        right: 20.w,
-                      ),
-                      child: Text(
-                        S.current.max,
-                        style: textNormal(
-                          const Color.fromRGBO(228, 172, 26, 1),
-                          16,
-                        ).copyWith(fontWeight: FontWeight.w600),
+                  ? InkWell(
+                      onTap: () {
+                        txtAmount.text = modelToken!.balanceToken.toString();
+                        tokenCubit.checkHaveVLAmountFormToken(
+                          txtAmount.text,
+                          amountBalance: widget.modelToken.balanceToken,
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: 15.h,
+                          right: 20.w,
+                        ),
+                        child: Text(
+                          S.current.max,
+                          style: textNormal(
+                            const Color.fromRGBO(228, 172, 26, 1),
+                            16,
+                          ).copyWith(fontWeight: FontWeight.w600),
+                        ),
                       ),
                     )
                   : Padding(

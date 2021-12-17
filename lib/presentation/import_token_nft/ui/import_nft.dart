@@ -91,7 +91,7 @@ class _BodyState extends State<_Body> {
             widget.bloc.listNFTStream.add(widget.bloc.listNftFromWalletCore);
           });
         } else if (state is ImportNftLoading) {
-
+          _showLoading();
         } else {
           _showDialog(alert: 'Import failed');
         }
@@ -261,6 +261,59 @@ class _BodyState extends State<_Body> {
                   Navigator.of(context).pop();
                 },
               ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showLoading() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                36.0.r,
+              ),
+            ),
+          ),
+          backgroundColor: AppTheme.getInstance().selectDialogColor(),
+          title: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Text(
+                  'Loading',
+                  style: textNormalCustom(
+                    Colors.white,
+                    20.sp,
+                    FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              spaceH16,
+              Text(
+                'Loading',
+                style: textNormalCustom(
+                  Colors.white,
+                  12.sp,
+                  FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            Divider(
+              height: 1.h,
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            const Center(
+              child: CircularProgressIndicator(),
             ),
           ],
         );

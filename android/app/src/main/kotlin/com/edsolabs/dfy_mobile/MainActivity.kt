@@ -113,6 +113,11 @@ class MainActivity : FlutterFragmentActivity() {
                         privateKey
                     )
                 }
+                "chooseWallet" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    chooseWallet(walletAddress)
+                }
                 "setConfig" -> {
                     val isAppLock =
                         call.argument<Boolean>("isAppLock") ?: true
@@ -265,6 +270,25 @@ class MainActivity : FlutterFragmentActivity() {
         }
     }
 
+    private fun chooseWallet(walletAddress: String) {
+        val appPreference = AppPreference(this)
+        val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
+        val listWallet = ArrayList<WalletModel>()
+        val listWalletInCore = appPreference.getListWallet()
+        listWalletInCore.forEachIndexed { index, walletModel ->
+            if (walletAddress == walletModel.walletAddress) {
+                listWallet.add(0, walletModel)
+            } else {
+                listWallet.add(walletModel)
+            }
+        }
+        listWallet.forEachIndexed { index, walletModel ->
+            walletModel.walletIndex = index
+        }
+        appPreference.saveListWallet(listWallet)
+        channel?.invokeMethod("chooseWalletCallBack", hasMap)
+    }
+
     private fun exportWallet(password: String, walletAddress: String) {
         val appPreference = AppPreference(this)
         if (password == appPreference.password) {
@@ -371,14 +395,19 @@ class MainActivity : FlutterFragmentActivity() {
                         val walletName = "Account ${listWallet.size + 1}"
                         hasMap["walletAddress"] = address
                         listWallet.add(
+                            0,
                             WalletModel(
                                 walletName,
                                 address,
+                                0,
                                 content,
                                 privateKey.toByteArray().toHexString(false),
                                 true
                             )
                         )
+                        listWallet.forEachIndexed { index, walletModel ->
+                            walletModel.walletIndex = index
+                        }
                         appPreference.saveListWallet(listWallet)
                         hasMap["walletName"] = walletName
                         hasMap["code"] = CODE_SUCCESS
@@ -402,14 +431,19 @@ class MainActivity : FlutterFragmentActivity() {
                         val walletName = "Account ${listWallet.size + 1}"
                         hasMap["walletAddress"] = address
                         listWallet.add(
+                            0,
                             WalletModel(
                                 walletName,
                                 address,
+                                0,
                                 "",
                                 content,
                                 true
                             )
                         )
+                        listWallet.forEachIndexed { index, walletModel ->
+                            walletModel.walletIndex = index
+                        }
                         appPreference.saveListWallet(listWallet)
                         hasMap["walletName"] = walletName
                         hasMap["code"] = CODE_SUCCESS
@@ -482,14 +516,19 @@ class MainActivity : FlutterFragmentActivity() {
         val listWallet = ArrayList<WalletModel>()
         listWallet.addAll(appPreference.getListWallet())
         listWallet.add(
+            0,
             WalletModel(
                 walletName,
                 walletAddress,
+                0,
                 seedPhrase,
                 privateKey,
                 false
             )
         )
+        listWallet.forEachIndexed { index, walletModel ->
+            walletModel.walletIndex = index
+        }
         appPreference.saveListWallet(listWallet)
         channel?.invokeMethod("storeWalletCallback", hasMap)
     }
@@ -632,28 +671,30 @@ class MainActivity : FlutterFragmentActivity() {
 
     private fun deleteNft(walletAddress: String, collectionAddress: String, nftId: String) {
         val appPreference = AppPreference(this)
-        val listNft = ArrayList<NftModel>()
+        val listCollection = ArrayList<NftModel>()
         var isDeleteSuccess = false
         appPreference.getListNft().forEach { it ->
-            if (it.walletAddress != walletAddress && it.collectionAddress != collectionAddress) {
+            if (it.walletAddress == walletAddress && it.collectionAddress == collectionAddress) {
                 val data = NftModel()
                 data.walletAddress = walletAddress
                 data.collectionAddress = collectionAddress
                 data.nftName = it.nftName
                 data.symbol = it.symbol
+                val listNft = ArrayList<ItemNftModel>()
                 it.item.forEach {
-                    if (it.id != nftId) {
-                        data.item.add(it)
-                    } else {
+                    if (it.id == nftId) {
                         isDeleteSuccess = true
+                    } else {
+                        listNft.add(it)
                     }
                 }
-                if (data.item.isNotEmpty()) {
-                    listNft.add(it)
+                if (listNft.isNotEmpty()) {
+                    data.item.addAll(listNft)
+                    listCollection.add(data)
                 }
             }
         }
-        appPreference.saveListNft(listNft)
+        appPreference.saveListNft(listCollection)
         val data = HashMap<String, Any>()
         data["isSuccess"] = isDeleteSuccess
         channel?.invokeMethod("setDeleteNftCallback", data)
