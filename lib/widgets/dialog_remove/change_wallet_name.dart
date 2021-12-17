@@ -106,7 +106,6 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                   padding: EdgeInsets.only(right: 5.w),
                                   child: TextFormField(
                                     controller: widget.textEditingController,
-                                    maxLength: 20,
                                     cursorColor:
                                         AppTheme.getInstance().whiteColor(),
                                     style: textNormal(
@@ -114,7 +113,9 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                       16.sp,
                                     ),
                                     onChanged: (value) {
-                                      widget.bloc.getIsWalletName(value);
+                                      widget.bloc.validateNameWallet(value);
+                                      widget.bloc.checkDataWallet.sink
+                                          .add(value);
                                     },
                                     decoration: InputDecoration(
                                       hintText: S.current.name_wallet,
@@ -122,7 +123,6 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                         Colors.white.withOpacity(0.5),
                                         16.sp,
                                       ),
-                                      counterText: '',
                                       border: InputBorder.none,
                                     ),
                                     // onFieldSubmitted: ,
@@ -130,16 +130,19 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                 ),
                               ),
                               StreamBuilder(
-                                stream: widget.bloc.isWalletName,
+                                stream: widget.bloc.checkDataWallet,
                                 builder:
-                                    (context, AsyncSnapshot<bool> snapshot) {
+                                    (context, AsyncSnapshot<String> snapshot) {
                                   return SizedBox(
-                                    child: snapshot.data ?? false
+                                    child: snapshot.data?.isNotEmpty ?? false
                                         ? GestureDetector(
                                             onTap: () {
                                               widget.textEditingController
                                                   .text = '';
-                                              widget.bloc.getIsWalletName('');
+                                              widget.bloc
+                                                  .validateNameWallet('');
+                                              widget.bloc.checkDataWallet.sink
+                                                  .add('');
                                             },
                                             child: Image.asset(
                                               ImageAssets.ic_close,
@@ -156,31 +159,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                         ),
                       ),
                       spaceH4,
-                      StreamBuilder(
-                        stream: widget.bloc.isWalletName,
-                        builder: (context, AsyncSnapshot<bool> snapshot) {
-                          return SizedBox(
-                            width: 343.w,
-                            child: snapshot.data ?? false
-                                ? spaceH24
-                                : Container(
-                                    padding: EdgeInsets.only(
-                                      right: 15.w,
-                                      left: 28.w,
-                                    ),
-                                    height: 24.h,
-                                    child: Text(
-                                      S.current.name_not_null,
-                                      style: textNormal(
-                                        Colors.red,
-                                        14.sp,
-                                      ),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ),
-                          );
-                        },
-                      ),
+                      textValidate(),
                       spaceH8,
                       Expanded(
                         child: Container(
@@ -224,14 +203,13 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                               .nativeMethodCallBackTrustWallet,
                                         );
                                         if (snapshot.data ?? false) {
-                                          final String value =
-                                              widget.textEditingController.text;
-                                          widget.bloc.walletName.sink
-                                              .add(value);
+                                          widget.bloc.walletName.sink.add(widget
+                                              .textEditingController.text);
                                           widget.bloc.changeNameWallet(
                                             walletAddress:
                                                 widget.bloc.addressWallet.value,
-                                            walletName: value,
+                                            walletName:
+                                                widget.bloc.walletName.value,
                                           );
                                           widget.bloc.listSelectAccBloc.clear();
                                           widget.bloc.getListWallets();
@@ -269,6 +247,40 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget textValidate() {
+    return StreamBuilder<String>(
+      stream: widget.bloc.messStreamEnterWalletName,
+      builder: (context, snapshot) {
+        final _mess = snapshot.data ?? '';
+        if (_mess.isNotEmpty) {
+          return Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              Container(
+                padding: EdgeInsets.only(
+                  left: 24.w,
+                ),
+                width: 343.w,
+                child: Text(
+                  _mess,
+                  style: textNormal(
+                    Colors.red,
+                    14.sp,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+            ],
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
     );
   }
 }

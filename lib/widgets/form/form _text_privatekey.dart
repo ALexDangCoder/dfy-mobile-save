@@ -49,7 +49,7 @@ class FromTextPrivateKey extends StatelessWidget {
                 child: Text(
                   title,
                   style: textNormal(
-                    Colors.grey,
+                    null,
                     16,
                   ),
                 ),
