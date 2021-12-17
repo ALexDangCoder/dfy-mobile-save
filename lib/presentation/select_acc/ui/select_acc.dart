@@ -7,6 +7,7 @@ import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_account.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -106,12 +107,9 @@ class _SelectAccState extends State<SelectAcc> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                widget.bloc.indexWallet = index;
-                                widget.bloc.addressWallet.sink.add(
-                                  snapshot.data?[index].addressWallet ?? '',
-                                );
-                                widget.bloc.walletName.sink.add(
-                                  snapshot.data?[index].nameWallet ?? '',
+                                widget.bloc.chooseWallet(
+                                  walletAddress:
+                                      snapshot.data?[index].addressWallet ?? '',
                                 );
                                 widget.bloc.click(index);
                                 if (widget.typeScreen2 == TypeScreen2.detail) {
@@ -139,9 +137,8 @@ class _SelectAccState extends State<SelectAcc> {
                               },
                               child: Column(
                                 children: [
-
                                   SizedBox(
-                                    child: index!=0?line:null,
+                                    child: index != 0 ? line : null,
                                   ),
                                   Container(
                                     height: 74.h,
@@ -150,7 +147,8 @@ class _SelectAccState extends State<SelectAcc> {
                                       left: 15.h,
                                     ),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
@@ -164,7 +162,8 @@ class _SelectAccState extends State<SelectAcc> {
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
-                                                        snapshot.data?[index].url ??
+                                                        snapshot.data?[index]
+                                                                .url ??
                                                             '',
                                                       ),
                                                     ),
@@ -178,11 +177,12 @@ class _SelectAccState extends State<SelectAcc> {
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        Text(
+                                                        AutoSizeText(
                                                           snapshot.data?[index]
                                                                   .nameWallet ??
                                                               '',
-                                                          style: textNormalCustom(
+                                                          style:
+                                                              textNormalCustom(
                                                             null,
                                                             16.sp,
                                                             FontWeight.w700,
@@ -190,12 +190,16 @@ class _SelectAccState extends State<SelectAcc> {
                                                         ),
                                                         spaceW4,
                                                         Text(
-                                                          widget.bloc.formatAddress(
-                                                            snapshot.data?[index]
+                                                          widget.bloc
+                                                              .formatAddress(
+                                                            snapshot
+                                                                    .data?[
+                                                                        index]
                                                                     .addressWallet ??
                                                                 '',
                                                           ),
-                                                          style: textNormalCustom(
+                                                          style:
+                                                              textNormalCustom(
                                                             AppTheme.getInstance()
                                                                 .whiteWithOpacityFireZero(),
                                                             14.sp,
@@ -225,12 +229,18 @@ class _SelectAccState extends State<SelectAcc> {
                                                       ? Container(
                                                           width: 65.w,
                                                           height: 22.h,
-                                                          padding: EdgeInsets.only(
-                                                              top: 3.h),
-                                                          decoration: BoxDecoration(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            top: 3.h,
+                                                          ),
+                                                          decoration:
+                                                              BoxDecoration(
                                                             borderRadius:
-                                                                BorderRadius.all(
-                                                              Radius.circular(6.r),
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                6.r,
+                                                              ),
                                                             ),
                                                             border: Border.all(
                                                               color: AppTheme
@@ -246,8 +256,8 @@ class _SelectAccState extends State<SelectAcc> {
                                                                   .whiteWithOpacityFireZero(),
                                                               11.sp,
                                                             ),
-                                                            textAlign:
-                                                                TextAlign.center,
+                                                            textAlign: TextAlign
+                                                                .center,
                                                           ),
                                                         )
                                                       : SizedBox(
@@ -261,7 +271,8 @@ class _SelectAccState extends State<SelectAcc> {
                                                               .isCheck ??
                                                           false
                                                       ? Image.asset(
-                                                          ImageAssets.ic_selected,
+                                                          ImageAssets
+                                                              .ic_selected,
                                                           width: 24.w,
                                                           height: 24.h,
                                                         )
