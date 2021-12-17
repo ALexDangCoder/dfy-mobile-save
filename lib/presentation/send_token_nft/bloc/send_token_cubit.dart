@@ -50,7 +50,9 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   //3 boolean below check if 3 forms have value
   bool _haveVLAddress = false;
   bool _haveVLQuantity = false;
-  bool _haveVLAmount = false;
+
+  //regex
+  final regex = RegExp(r'^0x[a-fA-F0-9]{40}$');
 
   final BehaviorSubject<String> _formField = BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _formEstimateGasFee = BehaviorSubject<String>();
@@ -138,16 +140,24 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   //handle send token screen
   //check have value will enable button
   void checkHaveVlAddressFormToken(String value, {required typeSend type}) {
-    if (value.isEmpty) {
-      _haveVLAddress = false;
-    } else {
-      _haveVLAddress = true;
-    }
     if (type == typeSend.SEND_TOKEN) {
-      if (_haveVLAddress && _haveVLAmount) {
-        isShowCFBlockChainSink.add(true);
-      } else {
+      ///validate address
+      if (value.isEmpty) {
+        _flagAddress = false;
         isShowCFBlockChainSink.add(false);
+        isValidAddressFormSink.add(true);
+        txtInvalidAddressFormSink.add(S.current.address_required);
+      } else if (!regex.hasMatch(value)) {
+        _flagAddress = false;
+        isShowCFBlockChainSink.add(false);
+        isValidAddressFormSink.add(true);
+        txtInvalidAddressFormSink.add(S.current.invalid_address);
+      } else {
+        isValidAddressFormSink.add(false);
+        _flagAddress = true;
+        if(_flagAddress && _flagAmount) {
+          isShowCFBlockChainSink.add(true);
+        }
       }
     } else {
       if (_haveVLAddress && _haveVLQuantity) {
@@ -158,17 +168,33 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-  void checkHaveVLAmountFormToken(String value) {
+  void checkHaveVLAmountFormToken(
+    String value, {
+    required double amountBalance,
+  }) {
     if (value.isEmpty) {
-      _haveVLAmount = false;
-    } else {
-      _haveVLAmount = true;
-    }
-    if (_haveVLAddress && _haveVLAmount) {
-      isShowCFBlockChainSink.add(true);
-    } else {
+      _flagAmount = false;
       isShowCFBlockChainSink.add(false);
+      isValidAmountFormSink.add(true);
+      txtInvalidAmountSink.add(S.current.amount_required);
+    } else if(double.parse(value) > amountBalance) {
+      _flagAmount = false;
+      isShowCFBlockChainSink.add(false);
+      isValidAmountFormSink.add(true);
+      txtInvalidAmountSink.add(S.current.insufficient_balance);
+    } else {
+      print("here");
+      isValidAmountFormSink.add(false);
+      _flagAmount = true;
+      if(_flagAddress && _flagAmount) {
+        isShowCFBlockChainSink.add(true);
+      }
     }
+    // if (_haveVLAddress && _flagAmount) {
+    //   isShowCFBlockChainSink.add(true);
+    // } else {
+    //   isShowCFBlockChainSink.add(false);
+    // }
   }
 
   void checkHaveVLQuantityFormNFT(String value) {

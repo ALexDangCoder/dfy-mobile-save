@@ -1,4 +1,5 @@
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -20,6 +21,8 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
       BehaviorSubject<bool>.seeded(
     PrefsService.getFaceIDConfig() == 'true' ? true : false,
   );
+  final BehaviorSubject<String> textLockSetting =
+      BehaviorSubject<String>.seeded(S.current.lock);
   final BehaviorSubject<bool> isSwitchAppLockOn = BehaviorSubject<bool>.seeded(
     PrefsService.getAppLockConfig() == 'true' ? true : false,
   );
@@ -41,6 +44,14 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
 
   void changeValueAppLock({required bool value}) {
     isSwitchAppLockOnSink.add(value);
+  }
+
+  void isShowOrHideLockTxt(bool value) {
+    if(value) {
+      textLockSetting.sink.add(S.current.lock);
+    } else {
+      textLockSetting.sink.add('');
+    }
   }
 
   //if user enable switch on app will or will not lock

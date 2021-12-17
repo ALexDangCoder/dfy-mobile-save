@@ -18,6 +18,8 @@ class BaseBottomSheet extends StatelessWidget {
   final Function()? onRightClick;
   final bool isBackNewWallet;
   final bool isHaveLeftIcon;
+  final bool? isLockTextInSetting;
+  final Widget? widget;
 
   const BaseBottomSheet({
     Key? key,
@@ -28,6 +30,8 @@ class BaseBottomSheet extends StatelessWidget {
     this.isImage,
     this.isHaveLeftIcon = true,
     this.isBackNewWallet = false,
+    this.isLockTextInSetting = false,
+    this.widget,
   }) : super(key: key);
 
   @override
@@ -113,7 +117,7 @@ class BaseBottomSheet extends StatelessWidget {
                           ),
                         ),
                       ),
-                      if (text != null)
+                      if (text != null && (isLockTextInSetting == false))
                         Flexible(
                           child: InkWell(
                             onTap: onRightClick,
@@ -129,6 +133,8 @@ class BaseBottomSheet extends StatelessWidget {
                                   ),
                           ),
                         )
+                      else if (isLockTextInSetting == true)
+                        widget!
                       else
                         Container(
                           margin: EdgeInsets.only(

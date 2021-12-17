@@ -76,18 +76,18 @@ class FormInputAddressNFT extends StatelessWidget {
                   });
                 },
                 onFieldSubmitted: (value) async {
-                  if (value.isNotEmpty && regex.hasMatch(value)) {
-                    final res = await Web3Utils().importNFT(
-                      contract: value,
-                      address: bloc.addressWallet.value,
-                    );
-                    bloc.btnSubject.sink.add(res.isSuccess);
-                    if (res.isSuccess) {
-                      bloc.warningSink.add('');
-                    } else {
-                      bloc.warningSink.add(res.message);
-                    }
-                  }
+                  // if (value.isNotEmpty && regex.hasMatch(value)) {
+                  //   final res = await Web3Utils().importNFT(
+                  //     contract: value,
+                  //     address: bloc.addressWallet.value,
+                  //   );
+                  //   bloc.btnSubject.sink.add(res.isSuccess);
+                  //   if (res.isSuccess) {
+                  //     bloc.warningSink.add('');
+                  //   } else {
+                  //     bloc.warningSink.add(res.message);
+                  //   }
+                  // }
                   if (!regex.hasMatch(value)) {
                     bloc.warningSink.add(S.current.invalid_address);
                     bloc.btnSubject.sink.add(false);

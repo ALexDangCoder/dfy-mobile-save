@@ -67,6 +67,30 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+  BehaviorSubject<String> warningTextNft = BehaviorSubject<String>.seeded('');
+
+  //handle call nft from web3
+  void checkImportNft({
+    required String contract,
+    required String address,
+    int? id,
+  }) async {
+    emit(ImportNftLoading());
+    if(id != null){
+
+    } else {
+      final resultWhenCall =
+      await client.importNFT(contract: contract, address: address);
+      if(!resultWhenCall.isSuccess) {
+        emit(ImportNftFail());
+        warningTextNft.sink.add(resultWhenCall.message);
+        btnSubject.sink.add(false);
+      } else {
+        await emitJsonNftToWalletCore(contract: contract, address: address);
+      }
+    }
+  }
+
   Future<String> getIcon(String addressToken) async {
     for (final ModelToken value in checkShow) {
       if (addressToken == value.tokenAddress) {
