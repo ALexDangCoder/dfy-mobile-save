@@ -537,9 +537,6 @@ class WalletCubit extends BaseCubit<WalletState> {
           }
           addressWalletCore = listWallet.first.address!;
           nameWallet = listWallet.first.name!;
-          addressWalletCore = listWallet.first.address!;
-          nameWallet = listWallet.first.name!;
-          walletName.add(nameWallet);
           addressWallet.add(addressWalletCore);
           walletName.add(nameWallet);
           await getListCategory();
