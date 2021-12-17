@@ -12,7 +12,6 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
-import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
@@ -447,13 +446,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
   final List<NftInfo> listNftInfo = [];
 
-  int indexWallet = 0;
-
-  void getWalletDetailInfo() {
-    addressWalletCore = listWallet[indexWallet].address!;
-    nameWallet = listWallet[indexWallet].name!;
-    walletName.add(nameWallet);
-  }
 
   ///Wallet Core
 
@@ -540,8 +532,10 @@ class WalletCubit extends BaseCubit<WalletState> {
           for (final element in data) {
             listWallet.add(Wallet.fromJson(element));
           }
-          getWalletDetailInfo();
+          addressWalletCore = listWallet.first.address!;
+          nameWallet = listWallet.first.name!;
           addressWallet.add(addressWalletCore);
+          walletName.add(nameWallet);
           await getListCategory();
           await getNFT(addressWalletCore);
         }

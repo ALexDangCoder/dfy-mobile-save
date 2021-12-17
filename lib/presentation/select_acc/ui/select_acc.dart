@@ -106,17 +106,11 @@ class _SelectAccState extends State<SelectAcc> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                widget.bloc.indexWallet = index;
-                                widget.bloc.addressWallet.sink.add(
-                                  snapshot.data?[index].addressWallet ?? '',
-                                );
-                                widget.bloc.walletName.sink.add(
-                                  snapshot.data?[index].nameWallet ?? '',
-                                );
-                                widget.bloc.click(index);
                                 if (widget.typeScreen2 == TypeScreen2.detail) {
                                   Navigator.pop(context);
                                 } else {
+                                  widget.bloc.getListWallets();
+                                  widget.bloc.getListAcc();
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                 }
