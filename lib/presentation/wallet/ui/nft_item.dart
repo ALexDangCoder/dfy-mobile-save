@@ -124,19 +124,21 @@ class _NFTItemState extends State<NFTItem> {
                     itemCount: widget.bloc.listNftInfo.length,
                     itemBuilder: (BuildContext context, int index) =>
                         GestureDetector(
-                      onLongPress: () {
-                        Navigator.of(context).push(
-                          HeroDialogRoute(
-                            builder: (context) {
-                              return RemoveNft(
-                                walletAddress: widget.walletAddress,
-                                index: widget.index,
-                                cubit: widget.bloc,
-                                collectionAddress:
+                          onLongPress: () {
+                            Navigator.of(context).push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return RemoveNft(
+                                    walletAddress: widget.walletAddress,
+                                    index: index,
+                                    cubit: widget.bloc,
+                                    collectionAddress:
                                     widget.collectionNft.contract ?? '',
-                                nftId: widget.bloc.listNftInfo[index].id ?? '',
-                              );
-                            },
+                                    nftId:
+                                    widget.bloc.listNftInfo[index].id ?? '',
+                                    indexCollection: widget.index,
+                                  );
+                                },
                             isNonBackground: false,
                           ),
                         );

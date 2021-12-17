@@ -128,14 +128,6 @@ class _EnterAddressState extends State<EnterAddress> {
                         if (enable) {
                           await widget.bloc
                               .getListPrice(widget.bloc.tokenSymbol.value);
-                          print(widget.bloc.addressWallet.value);
-                          print(widget.bloc.tokenAddressText.value);
-                          print(widget.bloc.tokenSymbol.value);
-                          print(widget.bloc.tokenDecimal.value);
-                          print('-----$icon');
-                          print(widget.bloc.tokenFullName);
-                          print(widget.bloc.price);
-                          print('vao');
                           widget.bloc.importToken(
                             walletAddress: widget.bloc.addressWallet.value,
                             tokenAddress: widget.bloc.tokenAddressText.value,
@@ -151,41 +143,6 @@ class _EnterAddressState extends State<EnterAddress> {
                       child: ButtonGold(
                         title: S.current.import,
                         isEnable: enable,
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget showTextValidateOldPassword() {
-    return StreamBuilder(
-      stream: widget.bloc.isShowValidateText,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        return Visibility(
-          visible: snapshot.data ?? false,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 4.h,
-              ),
-              SizedBox(
-                width: 343.w,
-                // height: 30.h,
-                child: StreamBuilder<String>(
-                  stream: widget.bloc.warningText,
-                  builder: (context, snapshot) {
-                    return Text(
-                      snapshot.data ?? '',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 108, 108, 1),
                       ),
                     );
                   },
@@ -214,10 +171,9 @@ class _EnterAddressState extends State<EnterAddress> {
                 // height: 30.h,
                 child: Text(
                   _mess,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(255, 108, 108, 1),
+                  style: textNormal(
+                    Colors.red,
+                    14.sp,
                   ),
                 ),
               ),

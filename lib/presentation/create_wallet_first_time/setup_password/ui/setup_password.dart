@@ -119,7 +119,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                               MaterialPageRoute(
                                 builder: (context) {
                                   return CreateSeedPhrase(
-                                    blocCreateSeedPhrase:
+                                    bloc:
                                     BLocCreateSeedPhrase(password.text),
                                     type: TypeScreen.two,
                                   );

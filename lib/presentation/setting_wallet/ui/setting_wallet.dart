@@ -106,7 +106,7 @@ class _SettingWalletState extends State<SettingWallet> {
                         MaterialPageRoute(
                           builder: (context) {
                             return CreateSeedPhrase(
-                              blocCreateSeedPhrase: BLocCreateSeedPhrase(''),
+                              bloc: BLocCreateSeedPhrase(''),
                               type: TypeScreen.one,
                             );
                           },

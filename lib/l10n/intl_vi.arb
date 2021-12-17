@@ -197,5 +197,7 @@
   "contract_address": "Địa chỉ hợp đồng",
   "import_new_wallet_failed": "Nhập ví mới thất bại",
   "not_exist": "Địa chỉ NFT không tồn tại hoặc bạn không sở hữu",
-  "no_support_token" : "Token chưa được hỗ trợ"
+  "no_support_token" : "Token chưa được hỗ trợ",
+  "name_characters": "Tên không được quá 20 ký tự"
+
 }
