@@ -64,16 +64,13 @@ class _WalletState extends State<WalletScreen>
       cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
       cubit.addressWallet
           .add(widget.wallet?.address ?? cubit.addressWalletCore);
-      cubit.getListCategory();
       cubit.walletName.stream.listen((event) {
         changeName.text = event;
       });
       _tabController = TabController(length: 2, vsync: this);
       fToast = FToast();
       fToast.init(context);
-      if (cubit.nameWallet == '') {
-        cubit.getListWallets();
-      }
+      cubit.getListWallets();
     }
   }
 
@@ -253,8 +250,7 @@ class _WalletState extends State<WalletScreen>
                                     if (snapshot.data?.isNotEmpty ?? true) {
                                       return ListView.builder(
                                         physics:
-                                            const
-                                            NeverScrollableScrollPhysics(),
+                                            const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data?.length ?? 0,
                                         itemBuilder: (context, index) {
@@ -308,8 +304,7 @@ class _WalletState extends State<WalletScreen>
                                     if (snapshot.data?.isNotEmpty ?? true) {
                                       return ListView.builder(
                                         physics:
-                                            const
-                                            NeverScrollableScrollPhysics(),
+                                            const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data?.length ?? 0,
                                         itemBuilder: (context, index) {
@@ -399,12 +394,7 @@ class _WalletState extends State<WalletScreen>
                       ),
                     ).whenComplete(
                       () async {
-                        cubit.listTokenFromWalletCore.clear();
-                        cubit.checkShow.clear();
-                        cubit.listSelectAccBloc.clear();
-                        cubit.listWallet.clear();
                         await cubit.getListWallets();
-                        await cubit.getTokens(cubit.addressWalletCore);
                         cubit.getListAcc();
                       },
                     );
