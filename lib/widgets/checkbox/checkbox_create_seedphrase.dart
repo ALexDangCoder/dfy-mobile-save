@@ -38,16 +38,15 @@ class CheckBoxCreateSeedPhrase extends StatelessWidget {
                     ),
                     value: snapshot.data ?? false,
                     onChanged: (value) {
-
                       bLocCreateSeedPhrase.isCheckBoxCreateSeedPhrase.sink
                           .add(true);
                       if (snapshot.data ?? false) {
                         bLocCreateSeedPhrase.isCheckBoxCreateSeedPhrase.sink
                             .add(false);
                       }
-
+                      bLocCreateSeedPhrase.validateNameWallet(
+                          bLocCreateSeedPhrase.nameWallet.value);
                     },
-
                     activeColor: AppTheme.getInstance().fillColor(),
                   ),
                 );

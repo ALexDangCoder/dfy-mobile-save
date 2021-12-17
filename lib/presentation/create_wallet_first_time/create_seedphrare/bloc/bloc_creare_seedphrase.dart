@@ -88,15 +88,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     isCheckBoxCreateSeedPhraseConfirm.sink.add(false);
   }
 
-  // void isButton() {
-  //   if (Validator.validateNotNull(nameWallet.value) &&
-  //       isCheckBoxCreateSeedPhrase.value) {
-  //     isCheckButton1.sink.add(true);
-  //   } else {
-  //     isCheckButton1.sink.add(false);
-  //   }
-  // }
-
   void getStringToList(String passPhrase) {
     listTitle1 = passPhrase.split(' ');
     final List<int> indices = List<int>.generate(listTitle1.length, (i) => i);
@@ -210,6 +201,8 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
           messStream.sink.add('');
           if (isCheckBoxCreateSeedPhrase.value) {
             isCheckButtonCreate.sink.add(true);
+          }else{
+            isCheckButtonCreate.sink.add(false);
           }
         }
       });
