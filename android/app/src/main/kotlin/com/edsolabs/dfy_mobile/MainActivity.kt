@@ -167,7 +167,10 @@ class MainActivity : FlutterFragmentActivity() {
                     val jsonTokens =
                         call.argument<String>("jsonTokens")
                             ?: return@setMethodCallHandler
-                    importListToken(jsonTokens)
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    importListToken(walletAddress,jsonTokens)
                 }
                 "setShowedToken" -> {
                     val walletAddress =
@@ -587,15 +590,19 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun importListToken(
+        walletAddress: String,
         jsonTokens: String
     ) {
         val appPreference = AppPreference(this)
-        val listTokenSupport = appPreference.getListTokens()
+        val listAllToken = appPreference.getListTokens()
+        val listTokenAddress = listAllToken.filter { it.walletAddress == walletAddress }
+        val listTokenOther = listAllToken.filter { it.walletAddress != walletAddress }
+
         val listTokens = ArrayList<TokenModel>()
         val listObjectTokens = JSONArray(jsonTokens)
-        var size = 0
-        while (size < listObjectTokens.length()) {
-            val data = listObjectTokens.getJSONObject(size)
+        var index = 0
+        while (index < listObjectTokens.length()) {
+            val data = listObjectTokens.getJSONObject(index)
             val tokenAddress = data.getString("tokenAddress")
             val symbol = data.getString("nameShortToken")
             val isImport = data.getBoolean("isImport")
@@ -610,37 +617,31 @@ class MainActivity : FlutterFragmentActivity() {
                 isShow = tokenAddress == TOKEN_DFY_ADDRESS || tokenAddress == TOKEN_BNB_ADDRESS,
                 isImport = isImport
             )
-            val tokenInCore =
-                listTokenSupport.firstOrNull { it.tokenAddress == tokenModel.tokenAddress }
-            if (tokenInCore == null) {
-                when (tokenAddress) {
-                    TOKEN_DFY_ADDRESS -> {
-                        listTokens.add(0, tokenModel)
-                    }
-                    TOKEN_BNB_ADDRESS -> {
-                        listTokens.add(1, tokenModel)
-                    }
-                    else -> {
-                        listTokens.add(tokenModel)
-                    }
-                }
-            } else {
+            val tokenInCore = listTokenAddress.firstOrNull { it.tokenAddress == tokenModel.tokenAddress }
+            if (tokenInCore != null) {
                 tokenModel.isShow = tokenInCore.isShow
-                when (tokenAddress) {
-                    TOKEN_DFY_ADDRESS -> {
-                        listTokens.add(0, tokenModel)
-                    }
-                    TOKEN_BNB_ADDRESS -> {
-                        listTokens.add(1, tokenModel)
-                    }
-                    else -> {
-                        listTokens.add(tokenModel)
-                    }
+            }
+            when (tokenAddress) {
+                TOKEN_DFY_ADDRESS -> {
+                    listTokens.add(0, tokenModel)
+                }
+                TOKEN_BNB_ADDRESS -> {
+                    listTokens.add(1, tokenModel)
+                }
+                else -> {
+                    listTokens.add(tokenModel)
                 }
             }
-            size++
+            index++
         }
         val hasMap = HashMap<String, Any>()
+        listTokenAddress.forEachIndexed { index, tokenModel ->
+            val item = listTokens.filter { it.tokenAddress == tokenModel.tokenAddress }
+            if(item == null) {
+                listTokens.add(tokenModel)
+            }
+        }
+        listTokens.addAll(listTokenOther)
         appPreference.saveListTokens(listTokens)
         hasMap["isSuccess"] = true
         channel?.invokeMethod("importListTokenCallback", hasMap)
