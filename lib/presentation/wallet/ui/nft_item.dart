@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/collection_nft_info.dart';
-import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
@@ -82,7 +81,7 @@ class _NFTItemState extends State<NFTItem> {
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.yellow,
-                      radius: 18.r,
+                      radius: 14.r,
                       child: Center(
                         child: Text(
                           widget.collectionNft.symbol!.substring(0, 1),

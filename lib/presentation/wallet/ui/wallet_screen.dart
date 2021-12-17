@@ -253,7 +253,8 @@ class _WalletState extends State<WalletScreen>
                                     if (snapshot.data?.isNotEmpty ?? true) {
                                       return ListView.builder(
                                         physics:
-                                            const NeverScrollableScrollPhysics(),
+                                            const
+                                            NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data?.length ?? 0,
                                         itemBuilder: (context, index) {
@@ -307,7 +308,8 @@ class _WalletState extends State<WalletScreen>
                                     if (snapshot.data?.isNotEmpty ?? true) {
                                       return ListView.builder(
                                         physics:
-                                            const NeverScrollableScrollPhysics(),
+                                            const
+                                            NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data?.length ?? 0,
                                         itemBuilder: (context, index) {

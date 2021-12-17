@@ -74,15 +74,16 @@ class _CardNFTState extends State<CardNFT> {
             height: 346.h,
             width: 300.w,
             child: ClipRRect(
-                child: CachedNetworkImage(
-              placeholder: (context, url) => Center(
-                child: CircularProgressIndicator(
-                  color: AppTheme.getInstance().bgBtsColor(),
+              child: CachedNetworkImage(
+                placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.getInstance().bgBtsColor(),
+                  ),
                 ),
+                imageUrl: url,
+                fit: BoxFit.cover,
               ),
-              imageUrl: url,
-              fit: BoxFit.cover,
-            )),
+            ),
           ),
         );
       },
