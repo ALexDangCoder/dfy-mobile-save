@@ -23,7 +23,7 @@ class CheckBoxSeedphraseConfirm extends StatelessWidget {
         children: [
           Align(
             child: StreamBuilder(
-              stream: bLocCreateSeedPhrase.isCheckBox2,
+              stream: bLocCreateSeedPhrase.isCheckBoxCreateSeedPhraseConfirm,
               builder: (context, AsyncSnapshot<bool> snapshot) {
                 bLocCreateSeedPhrase.getIsSeedPhraseImport2();
                 return SizedBox(
@@ -40,9 +40,9 @@ class CheckBoxSeedphraseConfirm extends StatelessWidget {
                       ),
                       value: snapshot.data ?? false,
                       onChanged: (value) {
-                        bLocCreateSeedPhrase.isCheckBox2.sink.add(true);
+                        bLocCreateSeedPhrase.isCheckBoxCreateSeedPhraseConfirm.sink.add(true);
                         if (snapshot.data ?? false) {
-                          bLocCreateSeedPhrase.isCheckBox2.sink.add(false);
+                          bLocCreateSeedPhrase.isCheckBoxCreateSeedPhraseConfirm.sink.add(false);
                         }
                       },
                       activeColor: AppTheme.getInstance().fillColor(),

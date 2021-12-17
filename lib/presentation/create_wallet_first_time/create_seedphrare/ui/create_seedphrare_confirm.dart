@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -297,7 +296,7 @@ class _BodyState extends State<_Body> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    if (bLocCreateSeedPhrase.isCheckBox2.value &&
+                    if (bLocCreateSeedPhrase.isCheckBoxCreateSeedPhraseConfirm.value &&
                         bLocCreateSeedPhrase.getIsSeedPhraseImport()) {
                       bLocCreateSeedPhrase.getCheck();
                       if (!bLocCreateSeedPhrase

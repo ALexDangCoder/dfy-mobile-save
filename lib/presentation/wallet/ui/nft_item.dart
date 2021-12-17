@@ -64,7 +64,7 @@ class _NFTItemState extends State<NFTItem> {
               dividerColor: Colors.transparent,
             ),
             child: ExpansionTile(
-              leading: Container(
+              leading: Padding(
                 padding: EdgeInsets.only(
                   top: 10.h,
                 ),
@@ -72,7 +72,7 @@ class _NFTItemState extends State<NFTItem> {
                   _customTileExpanded
                       ? const AssetImage(ImageAssets.ic_line_down)
                       : const AssetImage(ImageAssets.ic_line_right),
-                  size: 24,
+                  size: 24.sp,
                   color: Colors.white,
                 ),
               ),
@@ -82,7 +82,7 @@ class _NFTItemState extends State<NFTItem> {
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.yellow,
-                      radius: 18.r,
+                      radius: 14.r,
                       child: Center(
                         child: Text(
                           widget.collectionNft.symbol!.substring(0, 1),
@@ -115,38 +115,39 @@ class _NFTItemState extends State<NFTItem> {
               },
               controlAffinity: ListTileControlAffinity.leading,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                    right: 26.w,
-                    bottom: 16.h,
-                  ),
-                  child: SizedBox(
-                    height: 140,
-                    child: ListView.builder(
-                      physics: const ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: widget.bloc.listNftInfo.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          GestureDetector(
-                        onLongPress: () {
-                          Navigator.of(context).push(
-                            HeroDialogRoute(
-                              builder: (context) {
-                                return RemoveNft(
-                                  walletAddress: widget.walletAddress,
-                                  index: widget.index,
-                                  cubit: widget.bloc,
-                                  collectionAddress:
-                                      widget.collectionNft.contract ?? '',
-                                  nftId:
-                                      widget.bloc.listNftInfo[index].id ?? '',
-                                );
-                              },
-                              isNonBackground: false,
-                            ),
-                          );
-                        },
+                SizedBox(
+                  height: 140.h,
+                  child: ListView.builder(
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: widget.bloc.listNftInfo.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        GestureDetector(
+                          onLongPress: () {
+                            Navigator.of(context).push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return RemoveNft(
+                                    walletAddress: widget.walletAddress,
+                                    index: index,
+                                    cubit: widget.bloc,
+                                    collectionAddress:
+                                    widget.collectionNft.contract ?? '',
+                                    nftId:
+                                    widget.bloc.listNftInfo[index].id ?? '',
+                                    indexCollection: widget.index,
+                                  );
+                                },
+                            isNonBackground: false,
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          bottom: 16.h,
+                          left: 16.w,
+                        ),
                         child: CardNFT(
                           objNFT: widget.bloc.listNftInfo[index],
                           walletAddress: widget.walletAddress,

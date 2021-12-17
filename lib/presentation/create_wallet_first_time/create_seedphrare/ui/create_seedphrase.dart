@@ -21,22 +21,22 @@ import '../../../../main.dart';
 enum TypeScreen { one, two }
 
 class CreateSeedPhrase extends StatelessWidget {
-  final BLocCreateSeedPhrase blocCreateSeedPhrase;
+  final BLocCreateSeedPhrase bloc;
   final TypeScreen type;
 
   const CreateSeedPhrase({
     Key? key,
-    required this.blocCreateSeedPhrase,
+    required this.bloc,
     required this.type,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (blocCreateSeedPhrase.passPhrase.isEmpty) {
-      blocCreateSeedPhrase.generateWallet();
+    if (bloc.passPhrase.isEmpty) {
+      bloc.generateWallet();
     }
     trustWalletChannel.setMethodCallHandler(
-      blocCreateSeedPhrase.nativeMethodCallBackTrustWallet,
+      bloc.nativeMethodCallBackTrustWallet,
     );
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -47,7 +47,7 @@ class CreateSeedPhrase extends StatelessWidget {
             height: 48.h,
           ),
           _Body(
-            blocCreateSeedPhrase: blocCreateSeedPhrase,
+            bloc: bloc,
             typeScreen: type,
           ),
         ],
@@ -59,10 +59,10 @@ class CreateSeedPhrase extends StatelessWidget {
 class _Body extends StatefulWidget {
   const _Body({
     Key? key,
-    required this.blocCreateSeedPhrase,
+    required this.bloc,
     required this.typeScreen,
   }) : super(key: key);
-  final BLocCreateSeedPhrase blocCreateSeedPhrase;
+  final BLocCreateSeedPhrase bloc;
   final TypeScreen typeScreen;
 
   @override
@@ -70,27 +70,24 @@ class _Body extends StatefulWidget {
 }
 
 class _BodyState extends State<_Body> {
-  late final TextEditingController nameWallet;
+  late final TextEditingController nameWalletController;
   bool needName = true;
 
   @override
   void initState() {
     super.initState();
-    nameWallet = TextEditingController();
-    nameWallet.text = widget.blocCreateSeedPhrase.walletNameCore;
-    nameWallet.addListener(() {
-      widget.blocCreateSeedPhrase.nameWallet.sink.add(nameWallet.text);
-    });
+    nameWalletController = TextEditingController();
+    nameWalletController.text = widget.bloc.walletNameCore;
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: widget.blocCreateSeedPhrase.isCheckData,
+      stream: widget.bloc.isCheckData,
       builder: (context, snapshot) {
         if (snapshot.data == true) {
-          if(needName){
-            nameWallet.text = widget.blocCreateSeedPhrase.walletNameCore;
+          if (needName) {
+            nameWalletController.text = widget.bloc.walletNameCore;
             needName = false;
           }
           return GestureDetector(
@@ -199,15 +196,15 @@ class _BodyState extends State<_Body> {
                                   child: Container(
                                     padding: EdgeInsets.only(right: 5.w),
                                     child: TextFormField(
-                                      maxLength: 20,
-                                      controller: nameWallet,
+                                      controller: nameWalletController,
                                       cursorColor: Colors.white,
                                       style: textNormal(
                                         AppTheme.getInstance().whiteColor(),
                                         16.sp,
                                       ),
                                       onChanged: (value) {
-                                        widget.blocCreateSeedPhrase.isButton();
+                                        widget.bloc.nameWallet.sink.add(value);
+                                        widget.bloc.validateNameWallet(value);
                                       },
                                       decoration: InputDecoration(
                                         hintText: S.current.name_wallet,
@@ -215,56 +212,46 @@ class _BodyState extends State<_Body> {
                                           Colors.white.withOpacity(0.5),
                                           16.sp,
                                         ),
-                                        counterText: '',
                                         border: InputBorder.none,
                                       ),
-                                      // onFieldSubmitted: ,
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  child:
-                                      widget.blocCreateSeedPhrase.isWalletName()
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                widget.blocCreateSeedPhrase
-                                                    .nameWallet.sink
-                                                    .add('');
-                                                nameWallet.text = '';
-                                                widget.blocCreateSeedPhrase
-                                                    .isButton();
-                                                setState(() {});
-                                              },
-                                              child: Image.asset(
-                                                ImageAssets.ic_close,
-                                                width: 20.w,
-                                                height: 20.h,
-                                              ),
-                                            )
-                                          : null,
-                                ),
+                                StreamBuilder(
+                                  initialData: 'Acc',
+                                  stream: widget.bloc.nameWallet,
+                                  builder: (
+                                    context,
+                                    AsyncSnapshot<String> snapshot,
+                                  ) {
+                                    return snapshot.data?.isNotEmpty ?? false
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              widget.bloc.nameWallet.sink
+                                                  .add('');
+                                              nameWalletController.text = '';
+                                              widget.bloc.validateNameWallet(
+                                                  nameWalletController.text);
+                                            },
+                                            child: Image.asset(
+                                              ImageAssets.ic_close,
+                                              width: 20.w,
+                                              height: 20.h,
+                                            ),
+                                          )
+                                        : const SizedBox.shrink();
+                                  },
+                                )
                               ],
                             ),
                           ),
                           spaceH4,
-                          SizedBox(
-                            width: 343.w,
-                            child: widget.blocCreateSeedPhrase.isWalletName()
-                                ? null
-                                : Text(
-                                    S.current.name_not_null,
-                                    style: textNormal(
-                                      Colors.red,
-                                      14.sp,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                          ),
+                          textValidate(),
                           SizedBox(
                             height: 16.h,
                           ),
                           FromText(
-                            title: widget.blocCreateSeedPhrase.walletAddress,
+                            title: widget.bloc.walletAddress,
                             urlSuffixIcon: ImageAssets.ic_copy,
                             urlPrefixIcon: ImageAssets.ic_address,
                           ),
@@ -272,7 +259,7 @@ class _BodyState extends State<_Body> {
                             height: 16.h,
                           ),
                           FromText(
-                            title: widget.blocCreateSeedPhrase.privateKey,
+                            title: widget.bloc.privateKey,
                             urlSuffixIcon: ImageAssets.ic_copy,
                             urlPrefixIcon: ImageAssets.ic_key24,
                           ),
@@ -282,18 +269,15 @@ class _BodyState extends State<_Body> {
                           Column(
                             children: [
                               BoxListPassWordPhraseCopy(
-                                listTitle:
-                                    widget.blocCreateSeedPhrase.listTitle1,
-                                bLocCreateSeedPhrase:
-                                    widget.blocCreateSeedPhrase,
+                                listTitle: widget.bloc.listTitle1,
+                                bLocCreateSeedPhrase: widget.bloc,
                               ),
                               SizedBox(
                                 height: 17.h,
                               ),
                               CheckBoxCreateSeedPhrase(
                                 title: S.current.i_understand,
-                                bLocCreateSeedPhrase:
-                                    widget.blocCreateSeedPhrase,
+                                bLocCreateSeedPhrase: widget.bloc,
                               ),
                               SizedBox(
                                 height: 18.h,
@@ -307,36 +291,32 @@ class _BodyState extends State<_Body> {
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        if (widget.blocCreateSeedPhrase.isCheckBox1.value &&
-                            widget.blocCreateSeedPhrase.isWalletName()) {
+                        if (widget.bloc.isCheckButtonCreate.value) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
                                 return CreateSeedPhraseConfirm(
                                   typeScreen: widget.typeScreen,
-                                  bLocCreateSeedPhrase:
-                                      widget.blocCreateSeedPhrase,
+                                  bLocCreateSeedPhrase: widget.bloc,
                                 );
                               },
                             ),
                           ).whenComplete(
                             () => {
-                              widget.blocCreateSeedPhrase.resetPassPhrase(),
-                              widget.blocCreateSeedPhrase
-                                  .isSeedPhraseImportFailed.sink
+                              widget.bloc.resetPassPhrase(),
+                              widget.bloc.isSeedPhraseImportFailed.sink
                                   .add(false),
                             },
                           );
                         }
                       },
                       child: StreamBuilder(
-                        stream: widget.blocCreateSeedPhrase.isCheckButton1,
+                        stream: widget.bloc.isCheckButtonCreate,
                         builder: (context, snapshot) {
                           return ButtonGold(
                             title: S.current.continue_s,
-                            isEnable: widget
-                                .blocCreateSeedPhrase.isCheckButton1.value,
+                            isEnable: widget.bloc.isCheckButtonCreate.value,
                           );
                         },
                       ),
@@ -350,6 +330,37 @@ class _BodyState extends State<_Body> {
           return const Center(
             child: CircularProgressIndicator(),
           );
+        }
+      },
+    );
+  }
+
+  Widget textValidate() {
+    return StreamBuilder<String>(
+      stream: widget.bloc.messStream,
+      builder: (context, snapshot) {
+        final _mess = snapshot.data ?? '';
+        if (_mess.isNotEmpty) {
+          return Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 343.w,
+                child: Text(
+                  _mess,
+                  style: textNormal(
+                    Colors.red,
+                    14.sp,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+            ],
+          );
+        } else {
+          return const SizedBox.shrink();
         }
       },
     );
