@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:Dfy/data/web3/abi/nft.g.dart';
 import 'package:Dfy/data/web3/abi/token.g.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
@@ -7,6 +9,7 @@ import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -17,6 +20,16 @@ class ImportNftResponse {
   ImportNftResponse({
     required this.isSuccess,
     required this.message,
+  });
+}
+
+class TransactionCountResponse {
+  bool isSuccess;
+  int count;
+
+  TransactionCountResponse({
+    required this.isSuccess,
+    required this.count,
   });
 }
 
@@ -238,6 +251,18 @@ class Web3Utils {
       return balance / BigInt.from(10).pow(18);
     } catch (e) {
       return 0.0;
+    }
+  }
+
+  Future<TransactionCountResponse> getTransactionCount({
+    required String address,
+  }) async {
+    try {
+      final count =
+          await client.getTransactionCount(EthereumAddress.fromHex(address));
+      return TransactionCountResponse(isSuccess: true, count: count);
+    } catch (error) {
+      return TransactionCountResponse(isSuccess: false, count: 0);
     }
   }
 
