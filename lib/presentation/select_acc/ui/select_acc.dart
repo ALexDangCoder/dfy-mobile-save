@@ -7,7 +7,6 @@ import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_account.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -140,152 +139,164 @@ class _SelectAccState extends State<SelectAcc> {
                                   SizedBox(
                                     child: index != 0 ? line : null,
                                   ),
-                                  Container(
-                                    height: 74.h,
-                                    width: 357.w,
-                                    padding: EdgeInsets.only(
-                                      left: 15.h,
+                                  ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                      minHeight: 74.h,
                                     ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  height: 40.h,
-                                                  width: 40.w,
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: AssetImage(
-                                                        snapshot.data?[index]
-                                                                .url ??
-                                                            '',
-                                                      ),
-                                                    ),
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                ),
-                                                spaceW8,
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        AutoSizeText(
+                                    child: Container(
+                                      width: 357.w,
+                                      padding: EdgeInsets.only(
+                                        left: 15.h,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    height: 40.h,
+                                                    width: 40.w,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: AssetImage(
                                                           snapshot.data?[index]
-                                                                  .nameWallet ??
+                                                                  .url ??
                                                               '',
-                                                          style:
-                                                              textNormalCustom(
-                                                            null,
-                                                            16.sp,
-                                                            FontWeight.w700,
-                                                          ),
                                                         ),
-                                                        spaceW4,
-                                                        Text(
-                                                          widget.bloc
-                                                              .formatAddress(
-                                                            snapshot
-                                                                    .data?[
-                                                                        index]
-                                                                    .addressWallet ??
-                                                                '',
-                                                          ),
-                                                          style:
-                                                              textNormalCustom(
-                                                            AppTheme.getInstance()
-                                                                .whiteWithOpacityFireZero(),
-                                                            14.sp,
-                                                            FontWeight.w400,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Text(
-                                                      '${snapshot.data?[index].amountWallet?.toStringAsFixed(5)} BNB',
-                                                      style: textNormalCustom(
-                                                        null,
-                                                        16.sp,
-                                                        FontWeight.w400,
                                                       ),
+                                                      shape: BoxShape.circle,
                                                     ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  child: snapshot.data?[index]
-                                                              .imported ??
-                                                          false
-                                                      ? Container(
-                                                          width: 65.w,
-                                                          height: 22.h,
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                            top: 3.h,
-                                                          ),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(
-                                                              Radius.circular(
-                                                                6.r,
+                                                  ),
+                                                  spaceW8,
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 80.w,
+                                                            child: Text(
+                                                              snapshot
+                                                                      .data?[
+                                                                          index]
+                                                                      .nameWallet ??
+                                                                  '',
+                                                              style:
+                                                                  textNormalCustom(
+                                                                null,
+                                                                16.sp,
+                                                                FontWeight.w700,
                                                               ),
                                                             ),
-                                                            border: Border.all(
-                                                              color: AppTheme
-                                                                      .getInstance()
-                                                                  .whiteWithOpacityFireZero(),
-                                                              width: 1.h,
-                                                            ),
                                                           ),
-                                                          child: Text(
-                                                            S.current.import,
-                                                            style: textNormal(
+                                                          spaceW4,
+                                                          Text(
+                                                            widget.bloc
+                                                                .formatAddress(
+                                                              snapshot
+                                                                      .data?[
+                                                                          index]
+                                                                      .addressWallet ??
+                                                                  '',
+                                                            ),
+                                                            style:
+                                                                textNormalCustom(
                                                               AppTheme.getInstance()
                                                                   .whiteWithOpacityFireZero(),
-                                                              11.sp,
+                                                              14.sp,
+                                                              FontWeight.w400,
                                                             ),
-                                                            textAlign: TextAlign
-                                                                .center,
                                                           ),
-                                                        )
-                                                      : SizedBox(
-                                                          width: 65.w,
-                                                          height: 22.h,
+                                                        ],
+                                                      ),
+                                                      Text(
+                                                        '${snapshot.data?[index].amountWallet?.toStringAsFixed(5)} BNB',
+                                                        style: textNormalCustom(
+                                                          null,
+                                                          16.sp,
+                                                          FontWeight.w400,
                                                         ),
-                                                ),
-                                                spaceW10,
-                                                Container(
-                                                  child: snapshot.data?[index]
-                                                              .isCheck ??
-                                                          false
-                                                      ? Image.asset(
-                                                          ImageAssets
-                                                              .ic_selected,
-                                                          width: 24.w,
-                                                          height: 24.h,
-                                                        )
-                                                      : SizedBox(
-                                                          width: 24.w,
-                                                        ),
-                                                ),
-                                                spaceW5,
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    child: snapshot.data?[index]
+                                                                .imported ??
+                                                            false
+                                                        ? Container(
+                                                            width: 65.w,
+                                                            height: 22.h,
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                              top: 3.h,
+                                                            ),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                  6.r,
+                                                                ),
+                                                              ),
+                                                              border:
+                                                                  Border.all(
+                                                                color: AppTheme
+                                                                        .getInstance()
+                                                                    .whiteWithOpacityFireZero(),
+                                                                width: 1.h,
+                                                              ),
+                                                            ),
+                                                            child: Text(
+                                                              S.current.import,
+                                                              style: textNormal(
+                                                                AppTheme.getInstance()
+                                                                    .whiteWithOpacityFireZero(),
+                                                                11.sp,
+                                                              ),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                            ),
+                                                          )
+                                                        : SizedBox(
+                                                            width: 65.w,
+                                                            height: 22.h,
+                                                          ),
+                                                  ),
+                                                  spaceW10,
+                                                  Container(
+                                                    child: snapshot.data?[index]
+                                                                .isCheck ??
+                                                            false
+                                                        ? Image.asset(
+                                                            ImageAssets
+                                                                .ic_selected,
+                                                            width: 24.w,
+                                                            height: 24.h,
+                                                          )
+                                                        : SizedBox(
+                                                            width: 24.w,
+                                                          ),
+                                                  ),
+                                                  spaceW5,
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
