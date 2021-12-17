@@ -63,12 +63,12 @@ class FormInputAddressNFT extends StatelessWidget {
                         contract: value,
                         address: bloc.addressWallet.value,
                       );
-                      if (res) {
+                      if (res.isSuccess) {
                         bloc.warningSink.add('');
                       } else {
                         bloc.warningSink.add(S.current.not_exist);
                       }
-                      bloc.btnSubject.sink.add(res);
+                      bloc.btnSubject.sink.add(res.isSuccess);
                     }
                     if (!regex.hasMatch(value)) {
                       bloc.warningSink.add(S.current.invalid_address);
@@ -82,8 +82,8 @@ class FormInputAddressNFT extends StatelessWidget {
                       contract: value,
                       address: bloc.addressWallet.value,
                     );
-                    bloc.btnSubject.sink.add(res);
-                    if (res) {
+                    bloc.btnSubject.sink.add(res.isSuccess);
+                    if (res.isSuccess) {
                       bloc.warningSink.add('');
                     } else {
                       bloc.warningSink.add(S.current.not_exist);
