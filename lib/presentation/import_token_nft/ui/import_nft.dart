@@ -57,7 +57,6 @@ class _BodyState extends State<_Body> {
     _contractController = TextEditingController();
     _idController = TextEditingController();
     widget.bloc.btnSubject.sink.add(false);
-    widget.bloc.warningSink.add('');
     _contractController.addListener(() {
       widget.bloc.contractSubject.sink.add(_contractController.text);
     });
@@ -93,7 +92,9 @@ class _BodyState extends State<_Body> {
         } else if (state is ImportNftLoading) {
           _showLoading();
         } else {
-          _showDialog(alert: 'Import failed');
+          _showDialog(
+            alert: widget.bloc.errorWhenImportNft,
+          );
         }
       },
       bloc: widget.bloc,
@@ -123,7 +124,7 @@ class _BodyState extends State<_Body> {
                         ),
                         spaceH4,
                         StreamBuilder<String>(
-                          stream: widget.bloc.warningStream,
+                          stream: widget.bloc.warningTextNft,
                           builder: (context, snapshot) {
                             return Visibility(
                               visible: snapshot.data?.isNotEmpty ?? false,
@@ -162,7 +163,7 @@ class _BodyState extends State<_Body> {
                     return snapshot.data ?? false
                         ? ButtonGradient(
                             onPressed: () async {
-                              await widget.bloc.emitJsonNftToWalletCore(
+                              widget.bloc.checkImportNft(
                                 contract: _contractController.text,
                                 address: widget.bloc.addressWalletCore,
                               );
@@ -294,15 +295,6 @@ class _BodyState extends State<_Body> {
                     FontWeight.w700,
                   ),
                   textAlign: TextAlign.center,
-                ),
-              ),
-              spaceH16,
-              Text(
-                'Loading',
-                style: textNormalCustom(
-                  Colors.white,
-                  12.sp,
-                  FontWeight.w400,
                 ),
               ),
             ],
