@@ -68,7 +68,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   BehaviorSubject<String> warningTextNft = BehaviorSubject<String>.seeded('');
-
+  String errorWhenImportNft = '';
   //handle call nft from web3
   void checkImportNft({
     required String contract,
@@ -76,14 +76,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     int? id,
   }) async {
     emit(ImportNftLoading());
-    if(id != null){
-
+    if (id != null) {
+      //todo handle when user not fill ID
     } else {
       final resultWhenCall =
-      await client.importNFT(contract: contract, address: address);
-      if(!resultWhenCall.isSuccess) {
+          await client.importNFT(contract: contract, address: address);
+      if (!resultWhenCall.isSuccess) {
         emit(ImportNftFail());
-        warningTextNft.sink.add(resultWhenCall.message);
+        errorWhenImportNft = resultWhenCall.message;
         btnSubject.sink.add(false);
       } else {
         await emitJsonNftToWalletCore(contract: contract, address: address);
@@ -207,13 +207,22 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> idSubject = BehaviorSubject();
   BehaviorSubject<bool> btnSubject = BehaviorSubject.seeded(false);
   final BehaviorSubject<String> _warningSubject = BehaviorSubject.seeded('');
-
-  Stream<String> get warningStream => _warningSubject.stream;
-
-  Sink<String> get warningSink => _warningSubject.sink;
-
+  final regexAddress = RegExp(r'^0x[a-fA-F0-9]{40}$');
   List<HistoryNFT> listHistory = [];
   double? price = 0.0;
+
+  void checkValidateAddress({required String value}) {
+    if (value.isEmpty) {
+      btnSubject.sink.add(false);
+      warningTextNft.sink.add(S.current.address_required);
+    } else if (!regexAddress.hasMatch(value)) {
+      btnSubject.sink.add(false);
+      warningTextNft.sink.add(S.current.invalid_address);
+    } else {
+      warningTextNft.sink.add('');
+      btnSubject.sink.add(true);
+    }
+  }
 
   Future<void> getTransactionNFTHistory() async {
     listHistory = await client.getNFTHistory();
@@ -875,36 +884,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   //get Nft
   Future<void> getInfoCollection(String smartContract, String? id) async {}
 
-  //importAllNFT
-  //todo emit json to wallet core
-  // Future<void> importNFTFtAllNft({
-  //   required String walletAddress,
-  //   int? id,
-  //   required String contract,
-  // }) async {
-  //   final List<CollectionNft> list = await getNFTFromWeb3(
-  //     address: walletAddress,
-  //     contract: contract,
-  //   );
-  //
-  //   final jsonNFT = jsonEncode(
-  //     list.map((e) => e.saveToJson(walletAddress: walletAddress)).toList(),
-  //   );
-  //   await importNftIntoWalletCore(jsonNft: jsonNFT);
-  // }
-
-  Future<void> isImportNftSuccess({
-    required String contractAddress,
-    required int id,
-  }) async {
-    // if (await Web3Utils().importNFT(
-    //   contract: contractAddress,
-    //   address: '',
-    //   id: id,
-    // )) {
-    //   // emit(ImportNftSuccess());
-    // }
-  }
 
   Future<void> importNftIntoWalletCore({
     required String jsonNft,
