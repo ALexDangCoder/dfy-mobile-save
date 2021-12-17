@@ -155,7 +155,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       } else {
         isValidAddressFormSink.add(false);
         _flagAddress = true;
-        if(_flagAddress && _flagAmount) {
+        if (_flagAddress && _flagAmount) {
           isShowCFBlockChainSink.add(true);
         }
       }
@@ -177,7 +177,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       isShowCFBlockChainSink.add(false);
       isValidAmountFormSink.add(true);
       txtInvalidAmountSink.add(S.current.amount_required);
-    } else if(double.parse(value) > amountBalance) {
+    } else if (double.parse(value) > amountBalance) {
       _flagAmount = false;
       isShowCFBlockChainSink.add(false);
       isValidAmountFormSink.add(true);
@@ -186,7 +186,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       print("here");
       isValidAmountFormSink.add(false);
       _flagAmount = true;
-      if(_flagAddress && _flagAmount) {
+      if (_flagAddress && _flagAmount) {
         isShowCFBlockChainSink.add(true);
       }
     }

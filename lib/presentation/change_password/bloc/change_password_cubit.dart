@@ -9,8 +9,8 @@ import 'package:rxdart/rxdart.dart';
 part 'change_password_state.dart';
 
 class ChangePasswordCubit extends Cubit<ChangePasswordState> {
-  ChangePasswordCubit() : super(ChangePasswordInitial());
 
+  ChangePasswordCubit() : super(ChangePasswordInitial());
   //declare flag to handle enable btn or disable btn
   int _flagOldPW = 0;
   int _flagNewPW = 0;
@@ -28,7 +28,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   final BehaviorSubject<bool> _showNewPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _showCfPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _isEnableButton =
-      BehaviorSubject<bool>.seeded(true);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<String> _txtWarnOldPW =
       BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnNewPW =
@@ -36,6 +36,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   final BehaviorSubject<String> _txtWarnCfPW =
       BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> currentCfPW = BehaviorSubject<String>();
+
 
   ///wallet core
   Future<void> changePasswordIntoWalletCore({
@@ -45,7 +46,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     try {
       final data = {
         'oldPassword': oldPassword,
-        'changePassword': newPassword,
+        'newPassword': newPassword,
       };
       await trustWalletChannel.invokeMethod('changePassword', data);
     } on PlatformException {
