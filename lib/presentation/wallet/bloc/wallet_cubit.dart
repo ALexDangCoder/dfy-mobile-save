@@ -479,9 +479,12 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'setDeleteNftCallback':
         final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
+        print('isSetDeleteNft $isSetDeleteNft');
         break;
       case 'setDeleteCollectionCallback':
-        final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
+        final bool isSetDeleteCollection = await methodCall.arguments['isSuccess'];
+        print('isSetDeleteCollection $isSetDeleteCollection');
+
         break;
       case 'checkTokenCallback':
         isHaveToken = await methodCall.arguments['isExist'];

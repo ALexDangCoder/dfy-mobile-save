@@ -140,13 +140,6 @@ class RemoveNft extends StatelessWidget {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
-                                          //"walletAddress*: String
-                                          // collectionAddress*: String
-                                          // nftId*: String"
-                                          print('walletAddress $walletAddress');
-                                          print('nftId $nftId');
-                                          print(
-                                              'collectionAddress $collectionAddress');
                                           cubit.listNftInfo.removeAt(index);
                                           cubit.deleteNft(
                                             walletAddress: walletAddress,
@@ -156,12 +149,12 @@ class RemoveNft extends StatelessWidget {
                                           );
                                           cubit.listNFTStream.sink
                                               .add(cubit.listNFTStream.value);
-                                          if (cubit.listNftInfo.isEmpty) {
-                                            cubit.listNftFromWalletCore
-                                                .removeAt(indexCollection);
-                                            cubit.listNFTStream.add(
-                                                cubit.listNftFromWalletCore);
-                                          }
+                                          // if (cubit.listNftInfo.isEmpty) {
+                                          //   cubit.listNftFromWalletCore
+                                          //       .removeAt(indexCollection);
+                                          //   cubit.listNFTStream.add(
+                                          //       cubit.listNftFromWalletCore);
+                                          // }
                                           Navigator.pop(context);
                                         },
                                         child: SizedBox(
