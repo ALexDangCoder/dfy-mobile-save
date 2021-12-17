@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/private_key_model.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -52,102 +51,6 @@ class _BodyState extends State<_Body> {
 
   @override
   Widget build(BuildContext context) {
-    // return StreamBuilder(
-    //   stream: widget.bloc.index,
-    //   builder: (context, AsyncSnapshot<int> snapshot) {
-    //     if (snapshot.hasData) {
-    //       final index = snapshot.data ?? 0;
-    //       return BaseBottomSheet(
-    //         title: S.current.prv_key_ft_seed_phr,
-    //         isImage: true,
-    //         onRightClick: () {
-    //           Navigator.pop(context);
-    //           Navigator.pop(context);
-    //         },
-    //         text: ImageAssets.ic_close,
-    //         child: Column(
-    //           children: [
-    //             spaceH24,
-    //             Expanded(
-    //               child: SingleChildScrollView(
-    //                 child: StreamBuilder<List<PrivateKeyModel>>(
-    //                   stream: widget.bloc.listPrivateKey,
-    //                   // initialData: const [],
-    //                   builder: (context, snapshot) {
-    //                     final list = snapshot.data;
-    //                     if (snapshot.hasData) {
-    //                       return Column(
-    //                         children: [
-    //                           GestureDetector(
-    //                             onTap: () {
-    //                               Navigator.of(context).push(
-    //                                 HeroDialogRoute(
-    //                                   builder: (context) {
-    //                                     log('>>>> RETURN LIST WALLET ON PUSH <<<<<<<');
-    //                                     return ChooseAcc(
-    //                                       listWalletCore:
-    //                                           widget.bloc.listWalletCore,
-    //                                       bloc: widget.bloc,
-    //                                     );
-    //                                   },
-    //                                   isNonBackground: false,
-    //                                 ),
-    //                               );
-    //                             },
-    //                             child: FromTextWalletAddress(
-    //                               titleCopy: list?[index].walletAddress ?? '',
-    //                               title: widget.bloc.formatText(
-    //                                 list?[index].walletAddress ?? '',
-    //                               ),
-    //                               urlSuffixIcon: ImageAssets.ic_line_down,
-    //                               urlPrefixIcon: ImageAssets.ic_address,
-    //                             ),
-    //                           ),
-    //                           SizedBox(
-    //                             height: 16.h,
-    //                           ),
-    //                           FromTextPrivateKey(
-    //                             titleCopy: list?[index].privateKey ?? '',
-    //                             title: widget.bloc.formatText(
-    //                               list?[index].privateKey ?? '',
-    //                             ),
-    //                             urlSuffixIcon: ImageAssets.ic_copy,
-    //                             urlPrefixIcon: ImageAssets.ic_key24,
-    //                           ),
-    //                           SizedBox(
-    //                             height: 20.h,
-    //                           ),
-    //                           Column(
-    //                             children: [
-    //                               BoxListPassWordPhraseShow(
-    //                                 listTitle: widget.bloc.stringToList(
-    //                                   list?[index].seedPhrase ?? '',
-    //                                 ),
-    //                                 text: list?[index].seedPhrase ?? '',
-    //                               ),
-    //                             ],
-    //                           )
-    //                         ],
-    //                       );
-    //                     } else {
-    //                       return const Center(
-    //                         child: CircularProgressIndicator(),
-    //                       );
-    //                     }
-    //                   },
-    //                 ),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       );
-    //     } else {
-    //       return const Center(
-    //         child: CircularProgressIndicator(),
-    //       );
-    //     }
-    //   },
-    // );
     return StreamBuilder<PrivateKeyModel>(
       stream: widget.bloc.privateKeySubject,
       builder: (context, snapshotModel) {
@@ -206,11 +109,17 @@ class _BodyState extends State<_Body> {
                         ),
                         Column(
                           children: [
-                            BoxListPassWordPhraseShow(
-                              listTitle: widget.bloc.stringToList(
-                                snapshotModel.data?.seedPhrase ?? '',
-                              ),
-                              text: snapshotModel.data?.seedPhrase ?? '',
+                            Container(
+                              child: snapshotModel.data?.seedPhrase?.isEmpty ??
+                                      false
+                                  ? const SizedBox.shrink()
+                                  : BoxListPassWordPhraseShow(
+                                      listTitle: widget.bloc.stringToList(
+                                        snapshotModel.data?.seedPhrase ?? '',
+                                      ),
+                                      text:
+                                          snapshotModel.data?.seedPhrase ?? '',
+                                    ),
                             ),
                           ],
                         )

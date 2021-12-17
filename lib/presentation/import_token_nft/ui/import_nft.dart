@@ -57,7 +57,6 @@ class _BodyState extends State<_Body> {
     _contractController = TextEditingController();
     _idController = TextEditingController();
     widget.bloc.btnSubject.sink.add(false);
-    widget.bloc.warningSink.add('');
     _contractController.addListener(() {
       widget.bloc.contractSubject.sink.add(_contractController.text);
     });
@@ -90,8 +89,12 @@ class _BodyState extends State<_Body> {
             await widget.bloc.getNFT(widget.bloc.addressWalletCore);
             widget.bloc.listNFTStream.add(widget.bloc.listNftFromWalletCore);
           });
+        } else if (state is ImportNftLoading) {
+          _showLoading();
         } else {
-          _showDialog(alert: 'Import failed');
+          _showDialog(
+            alert: widget.bloc.errorWhenImportNft,
+          );
         }
       },
       bloc: widget.bloc,
@@ -121,7 +124,7 @@ class _BodyState extends State<_Body> {
                         ),
                         spaceH4,
                         StreamBuilder<String>(
-                          stream: widget.bloc.warningStream,
+                          stream: widget.bloc.warningTextNft,
                           builder: (context, snapshot) {
                             return Visibility(
                               visible: snapshot.data?.isNotEmpty ?? false,
@@ -160,7 +163,7 @@ class _BodyState extends State<_Body> {
                     return snapshot.data ?? false
                         ? ButtonGradient(
                             onPressed: () async {
-                              await widget.bloc.emitJsonNftToWalletCore(
+                              widget.bloc.checkImportNft(
                                 contract: _contractController.text,
                                 address: widget.bloc.addressWalletCore,
                               );
@@ -259,6 +262,50 @@ class _BodyState extends State<_Body> {
                   Navigator.of(context).pop();
                 },
               ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showLoading() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                36.0.r,
+              ),
+            ),
+          ),
+          backgroundColor: AppTheme.getInstance().selectDialogColor(),
+          title: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Text(
+                  'Loading',
+                  style: textNormalCustom(
+                    Colors.white,
+                    20.sp,
+                    FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            Divider(
+              height: 1.h,
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            const Center(
+              child: CircularProgressIndicator(),
             ),
           ],
         );

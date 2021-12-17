@@ -9,13 +9,13 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class RemoveNft extends StatelessWidget {
   final WalletCubit cubit;
   final int index;
   final String walletAddress;
   final String nftId;
   final String collectionAddress;
+  final int indexCollection;
 
   const RemoveNft({
     Key? key,
@@ -24,6 +24,7 @@ class RemoveNft extends StatelessWidget {
     required this.walletAddress,
     required this.nftId,
     required this.collectionAddress,
+    required this.indexCollection,
   }) : super(key: key);
 
   @override
@@ -139,10 +140,6 @@ class RemoveNft extends StatelessWidget {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
-                                          print('walletAddress $walletAddress');
-                                          print('nftId $nftId');
-                                          print(
-                                              'nftAddress $collectionAddress');
                                           cubit.listNftInfo.removeAt(index);
                                           cubit.deleteNft(
                                             walletAddress: walletAddress,
@@ -152,6 +149,12 @@ class RemoveNft extends StatelessWidget {
                                           );
                                           cubit.listNFTStream.sink
                                               .add(cubit.listNFTStream.value);
+                                          // if (cubit.listNftInfo.isEmpty) {
+                                          //   cubit.listNftFromWalletCore
+                                          //       .removeAt(indexCollection);
+                                          //   cubit.listNFTStream.add(
+                                          //       cubit.listNftFromWalletCore);
+                                          // }
                                           Navigator.pop(context);
                                         },
                                         child: SizedBox(

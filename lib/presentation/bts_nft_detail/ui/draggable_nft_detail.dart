@@ -151,13 +151,15 @@ class _NFTDetailState extends State<NFTDetail> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  '#${nft.id}',
-                                  style: textNormal(
-                                    AppTheme.getInstance().textThemeColor(),
-                                    20,
-                                  ).copyWith(
-                                    fontWeight: FontWeight.w400,
+                                Expanded(
+                                  child: Text(
+                                    '#${nft.id}',
+                                    style: textNormal(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      20,
+                                    ).copyWith(
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ),
                                 Text(

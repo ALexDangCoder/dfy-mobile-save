@@ -192,10 +192,16 @@
   "oopps_omething_went_wrong": "Oopps!\nĐã xảy ra sự cố",
   "create_new_wallet_failed": "Tạo ví mới không thành công",
   "you_are_not": "Bạn không phải là chủ sở hữu của bộ sưu tập này, vì vậy bạn không thể thêm nó",
-  "empty_address" : "Địa chỉ ví không thể trống",
-  "already_exist" : "Token đã tồn tại trong ví",
+  "empty_address": "Địa chỉ ví không thể trống",
+  "already_exist": "Token đã tồn tại trong ví",
   "contract_address": "Địa chỉ hợp đồng",
   "import_new_wallet_failed": "Nhập ví mới thất bại",
   "not_exist": "Địa chỉ NFT không tồn tại hoặc bạn không sở hữu",
-  "no_support_token" : "Token chưa được hỗ trợ"
+  "no_support_token": "Token chưa được hỗ trợ",
+  "err_empty_nfts": "Không có NFT nào",
+  "err_invalid_wallet_add": "Địa chỉ không hợp lệ",
+  "err_not_owner_nft": "Bạn không phải là chủ sở hữu của bộ sưu tập này, vì vậy bạn không thể thêm nó",
+  "err_none_exist_nft": "Mã thông báo không tồn tại",
+  "name_characters": "Tên không được quá 20 ký tự"
+
 }

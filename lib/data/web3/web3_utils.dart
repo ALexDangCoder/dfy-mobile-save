@@ -8,6 +8,7 @@ import 'package:Dfy/data/web3/model/transaction.dart';
 import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -59,11 +60,15 @@ class Web3Utils {
             return ImportNftResponse(isSuccess: true, message: '');
           } else {
             return ImportNftResponse(
-                isSuccess: false, message: 'Empty list NFT');
+              isSuccess: false,
+              message: S.current.err_empty_nfts,
+            );
           }
         } catch (error) {
           return ImportNftResponse(
-              isSuccess: false, message: 'Invalid wallet address');
+            isSuccess: false,
+            message: S.current.err_invalid_wallet_add,
+          );
         }
       } else {
         try {
@@ -73,20 +78,26 @@ class Web3Utils {
           } else {
             return ImportNftResponse(
               isSuccess: false,
-              message:
-                  'You are not the owner of this collectible, so you can not add it',
+              message: S.current.err_not_owner_nft,
             );
           }
         } on Exception catch (_) {
           return ImportNftResponse(
-              isSuccess: false, message: 'Nonexistent token');
+            isSuccess: false,
+            message: S.current.err_none_exist_nft,
+          );
         } catch (error) {
           return ImportNftResponse(
-              isSuccess: false, message: 'Invalid wallet address');
+            isSuccess: false,
+            message: S.current.err_invalid_wallet_add,
+          );
         }
       }
     } catch (error) {
-      return ImportNftResponse(isSuccess: false, message: 'Invalid address');
+      return ImportNftResponse(
+        isSuccess: false,
+        message: S.current.err_invalid_wallet_add,
+      );
     }
   }
 

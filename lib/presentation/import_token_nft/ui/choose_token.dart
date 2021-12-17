@@ -5,6 +5,7 @@ import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/form/form_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
 
 class ChooseToken extends StatefulWidget {
@@ -31,13 +32,14 @@ class _ChooseTokenState extends State<ChooseToken> {
           ),
           spaceH12,
           line,
-          spaceH24,
           StreamBuilder(
             stream: widget.bloc.getListTokenModel,
             builder: (context, snapshot) {
               return Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.zero,
+                  padding: EdgeInsets.only(
+                    top: 24.h,
+                  ),
                   itemCount: widget.bloc.getListTokenModel.value.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
@@ -86,28 +88,21 @@ class _ChooseTokenState extends State<ChooseToken> {
               widget.bloc.getListTokenModel.value[index].nameToken,
               style: textNormalCustom(
                 Colors.white,
-                16,
+                16.sp,
                 FontWeight.w600,
               ),
             ),
             spaceW6,
-            Text(
-              widget.bloc.getListTokenModel.value[index].nameShortToken,
-              style: textNormalCustom(
-                const Color.fromRGBO(255, 255, 255, 0.7),
-                18,
-                FontWeight.w400,
-              ),
-            ),
           ],
         ),
         subtitle: Text(
-          '${widget.bloc.getListTokenModel.value[index].balanceToken.toStringAsFixed(5)} ${widget.bloc.getListTokenModel.value[index].nameShortToken} ',
+          widget.bloc.getListTokenModel.value[index].nameShortToken,
           style: textNormalCustom(
             const Color.fromRGBO(255, 255, 255, 0.5),
-            16,
+            16.sp,
             FontWeight.w400,
           ),
+          textAlign: TextAlign.start,
         ),
       );
     } else {
@@ -138,26 +133,18 @@ class _ChooseTokenState extends State<ChooseToken> {
               widget.bloc.getListTokenModel.value[index].nameToken,
               style: textNormalCustom(
                 Colors.white,
-                16,
+                16.sp,
                 FontWeight.w600,
               ),
             ),
             spaceW6,
-            Text(
-              widget.bloc.getListTokenModel.value[index].nameShortToken,
-              style: textNormalCustom(
-                const Color.fromRGBO(255, 255, 255, 0.7),
-                18,
-                FontWeight.w400,
-              ),
-            ),
           ],
         ),
         subtitle: Text(
-          '${widget.bloc.getListTokenModel.value[index].balanceToken.toStringAsFixed(5)} ${widget.bloc.getListTokenModel.value[index].nameShortToken} ',
+          widget.bloc.getListTokenModel.value[index].nameShortToken,
           style: textNormalCustom(
             const Color.fromRGBO(255, 255, 255, 0.5),
-            16,
+            16.sp,
             FontWeight.w400,
           ),
         ),

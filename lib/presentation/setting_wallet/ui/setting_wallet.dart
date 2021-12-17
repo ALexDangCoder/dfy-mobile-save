@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -43,18 +44,9 @@ class _SettingWalletState extends State<SettingWallet> {
   Widget build(BuildContext context) {
     return BaseBottomSheet(
       title: S.current.setting,
-      text: S.current.lock,
+      isLockTextInSetting: true,
+      widget: buildTextHideFtShow(),
       isImage: false,
-      onRightClick: () {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const MainScreen(
-              index: 2,
-            ),
-          ),
-          (route) => route.isFirst,
-        );
-      },
       child: Column(
         children: [
           spaceH24,
@@ -106,7 +98,7 @@ class _SettingWalletState extends State<SettingWallet> {
                         MaterialPageRoute(
                           builder: (context) {
                             return CreateSeedPhrase(
-                              blocCreateSeedPhrase: BLocCreateSeedPhrase(''),
+                              bloc: BLocCreateSeedPhrase(''),
                               type: TypeScreen.one,
                             );
                           },
@@ -215,6 +207,49 @@ class _SettingWalletState extends State<SettingWallet> {
           )
         ],
       ),
+    );
+  }
+
+  StreamBuilder<String> buildTextHideFtShow() {
+    return StreamBuilder<String>(
+      stream: widget.cubitSetting.textLockSetting,
+      builder: (context, snapshot) {
+        if (snapshot.data == '') {
+          return Flexible(
+            child: Text(
+              S.current.lock,
+              style: textNormalCustom(
+                AppTheme.getInstance().bgBtsColor(),
+                16,
+                FontWeight.w700,
+              ),
+            ),
+          );
+        } else {
+          return Flexible(
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 2,
+                    ),
+                  ),
+                      (route) => route.isFirst,
+                );
+              },
+              child: Text(
+                S.current.lock,
+                style: textNormalCustom(
+                  AppTheme.getInstance().fillColor(),
+                  16,
+                  FontWeight.w700,
+                ),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }

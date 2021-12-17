@@ -7,7 +7,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/widgets/scan_qr/scan_qr.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FormInputAddressNFT extends StatelessWidget {
@@ -28,7 +27,6 @@ class FormInputAddressNFT extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final regex = RegExp(r'^0x[a-fA-F0-9]{40}$');
     return Container(
       width: 343.w,
       height: 64.h,
@@ -57,42 +55,7 @@ class FormInputAddressNFT extends StatelessWidget {
               child: TextFormField(
                 maxLength: 100,
                 onChanged: (value) {
-                  Timer(const Duration(milliseconds: 500), () async {
-                    if (value.isNotEmpty && regex.hasMatch(value)) {
-                      final res = await Web3Utils().importNFT(
-                        contract: value,
-                        address: bloc.addressWallet.value,
-                      );
-                      if (res.isSuccess) {
-                        bloc.warningSink.add('');
-                      } else {
-                        bloc.warningSink.add(S.current.not_exist);
-                      }
-                      bloc.btnSubject.sink.add(res.isSuccess);
-                    }
-                    if (!regex.hasMatch(value)) {
-                      bloc.warningSink.add(S.current.invalid_address);
-                      bloc.btnSubject.sink.add(false);
-                    }
-                  });
-                },
-                onFieldSubmitted: (value) async {
-                  if (value.isNotEmpty && regex.hasMatch(value)) {
-                    final res = await Web3Utils().importNFT(
-                      contract: value,
-                      address: bloc.addressWallet.value,
-                    );
-                    bloc.btnSubject.sink.add(res.isSuccess);
-                    if (res.isSuccess) {
-                      bloc.warningSink.add('');
-                    } else {
-                      bloc.warningSink.add(S.current.not_exist);
-                    }
-                  }
-                  if (!regex.hasMatch(value)) {
-                    bloc.warningSink.add(S.current.invalid_address);
-                    bloc.btnSubject.sink.add(false);
-                  }
+                  bloc.checkValidateAddress(value: value);
                 },
                 controller: controller,
                 cursorColor: AppTheme.getInstance().whiteColor(),

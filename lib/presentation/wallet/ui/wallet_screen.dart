@@ -64,16 +64,13 @@ class _WalletState extends State<WalletScreen>
       cubit.walletName.sink.add(widget.wallet?.name ?? cubit.nameWallet);
       cubit.addressWallet
           .add(widget.wallet?.address ?? cubit.addressWalletCore);
-      cubit.getListCategory();
       cubit.walletName.stream.listen((event) {
         changeName.text = event;
       });
       _tabController = TabController(length: 2, vsync: this);
       fToast = FToast();
       fToast.init(context);
-      if (cubit.nameWallet == '') {
-        cubit.getListWallets();
-      }
+      cubit.getListWallets();
     }
   }
 
@@ -108,7 +105,7 @@ class _WalletState extends State<WalletScreen>
             offset: 112.h,
             onRefresh: () async {
               await cubit.getBalanceOFToken(cubit.listTokenFromWalletCore);
-              await cubit
+              cubit
                   .getExchangeRateFromServer(cubit.listTokenFromWalletCore);
               cubit.totalBalance
                   .add(cubit.total(cubit.listTokenFromWalletCore));
@@ -396,11 +393,9 @@ class _WalletState extends State<WalletScreen>
                         },
                       ),
                     ).whenComplete(
-                      () => {
-                        cubit.listSelectAccBloc.clear(),
-                        cubit.listWallet.clear(),
-                        cubit.getListWallets(),
-                        cubit.getListAcc(),
+                      () async {
+                        await cubit.getListWallets();
+                        cubit.getListAcc();
                       },
                     );
                   },
