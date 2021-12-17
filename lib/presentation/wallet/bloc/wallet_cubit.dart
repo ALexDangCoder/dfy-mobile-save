@@ -880,13 +880,13 @@ class WalletCubit extends BaseCubit<WalletState> {
     required String contractAddress,
     required int id,
   }) async {
-    if (await Web3Utils().importNFT(
-      contract: contractAddress,
-      address: '',
-      id: id,
-    )) {
-      // emit(ImportNftSuccess());
-    }
+    // if (await Web3Utils().importNFT(
+    //   contract: contractAddress,
+    //   address: '',
+    //   id: id,
+    // )) {
+    //   // emit(ImportNftSuccess());
+    // }
   }
 
   Future<void> importNftIntoWalletCore({
