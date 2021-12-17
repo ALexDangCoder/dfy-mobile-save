@@ -635,7 +635,7 @@ class MainActivity : FlutterFragmentActivity() {
         val listNft = ArrayList<NftModel>()
         var isDeleteSuccess = false
         appPreference.getListNft().forEach { it ->
-            if (it.walletAddress != walletAddress && it.collectionAddress != collectionAddress) {
+            if (it.walletAddress == walletAddress && it.collectionAddress == collectionAddress) {
                 val data = NftModel()
                 data.walletAddress = walletAddress
                 data.collectionAddress = collectionAddress

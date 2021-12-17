@@ -45,19 +45,19 @@ class _CardNFTState extends State<CardNFT> {
         children: [
           Container(
             height: 102.h,
-            width: 88.w,
+            width: 92.w,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(widget.objNFT.img ?? ''),
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(
-                10,
+                10.r,
               ),
             ),
           ),
           SizedBox(
-            width: 16.w,
+            width: 4.w,
           ),
         ],
       ),
@@ -74,15 +74,16 @@ class _CardNFTState extends State<CardNFT> {
             height: 346.h,
             width: 300.w,
             child: ClipRRect(
-                child: CachedNetworkImage(
-              placeholder: (context, url) => Center(
-                child: CircularProgressIndicator(
-                  color: AppTheme.getInstance().bgBtsColor(),
+              child: CachedNetworkImage(
+                placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.getInstance().bgBtsColor(),
+                  ),
                 ),
+                imageUrl: url,
+                fit: BoxFit.cover,
               ),
-              imageUrl: url,
-              fit: BoxFit.cover,
-            )),
+            ),
           ),
         );
       },
