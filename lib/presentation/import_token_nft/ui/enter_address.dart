@@ -126,9 +126,9 @@ class _EnterAddressState extends State<EnterAddress> {
                             .getIcon(widget.bloc.tokenAddressText.value);
                         widget.bloc.checkAddressNull();
                         if (enable) {
-                          await widget.bloc
+                           await widget.bloc
                               .getListPrice(widget.bloc.tokenSymbol.value);
-                          widget.bloc.importToken(
+                          await widget.bloc.importToken(
                             walletAddress: widget.bloc.addressWallet.value,
                             tokenAddress: widget.bloc.tokenAddressText.value,
                             symbol: widget.bloc.tokenSymbol.value,
