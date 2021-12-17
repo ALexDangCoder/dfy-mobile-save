@@ -201,7 +201,7 @@
   "err_empty_nfts": "Không có NFT nào",
   "err_invalid_wallet_add": "Địa chỉ không hợp lệ",
   "err_not_owner_nft": "Bạn không phải là chủ sở hữu của bộ sưu tập này, vì vậy bạn không thể thêm nó",
-  "err_none_exist_nft": "Mã thông báo không tồn tại"
+  "err_none_exist_nft": "Mã thông báo không tồn tại",
   "name_characters": "Tên không được quá 20 ký tự"
 
 }

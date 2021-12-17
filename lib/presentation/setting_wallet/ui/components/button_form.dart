@@ -93,7 +93,7 @@ Container switchForm({
           switchScale: 1,
           value: isCheck,
           onChanged: (value) {
-            print('2'+value.toString());
+            cubit.isShowOrHideLockTxt(value);
             cubit.changeValueAppLock(value: value);
             cubit.setConfig(
               isFaceID: cubit.isSwitchFingerFtFaceIdOn.value,
