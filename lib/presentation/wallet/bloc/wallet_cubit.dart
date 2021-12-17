@@ -75,12 +75,11 @@ class WalletCubit extends BaseCubit<WalletState> {
     int? id,
   }) async {
     emit(ImportNftLoading());
-    if(id != null){
-
+    if (id != null) {
     } else {
       final resultWhenCall =
-      await client.importNFT(contract: contract, address: address);
-      if(!resultWhenCall.isSuccess) {
+          await client.importNFT(contract: contract, address: address);
+      if (!resultWhenCall.isSuccess) {
         emit(ImportNftFail());
         warningTextNft.sink.add(resultWhenCall.message);
         btnSubject.sink.add(false);
@@ -486,6 +485,10 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'setDeleteCollectionCallback':
         //final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
         break;
+      case 'chooseWalletCallBack':
+        final bool chooseWalletCallBack =
+            await methodCall.arguments['isSuccess'];
+        break;
       case 'checkTokenCallback':
         isHaveToken = await methodCall.arguments['isExist'];
         if (isHaveToken) {
@@ -534,6 +537,9 @@ class WalletCubit extends BaseCubit<WalletState> {
           }
           addressWalletCore = listWallet.first.address!;
           nameWallet = listWallet.first.name!;
+          addressWalletCore = listWallet.first.address!;
+          nameWallet = listWallet.first.name!;
+          walletName.add(nameWallet);
           addressWallet.add(addressWalletCore);
           walletName.add(nameWallet);
           await getListCategory();
@@ -573,6 +579,24 @@ class WalletCubit extends BaseCubit<WalletState> {
       default:
         break;
     }
+  }
+
+  Future<void> getConfig() async {
+    try {
+      final data = {};
+      await trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException {}
+  }
+
+  Future<void> chooseWallet({
+    required String walletAddress,
+  }) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+      };
+      await trustWalletChannel.invokeMethod('chooseWallet', data);
+    } on PlatformException {}
   }
 
   Future<void> changeNameWallet({
