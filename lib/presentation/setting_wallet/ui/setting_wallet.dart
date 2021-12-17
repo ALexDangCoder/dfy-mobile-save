@@ -216,6 +216,17 @@ class _SettingWalletState extends State<SettingWallet> {
       builder: (context, snapshot) {
         if (snapshot.data == '') {
           return Flexible(
+            child: Text(
+              S.current.lock,
+              style: textNormalCustom(
+                AppTheme.getInstance().bgBtsColor(),
+                16,
+                FontWeight.w700,
+              ),
+            ),
+          );
+        } else {
+          return Flexible(
             child: InkWell(
               onTap: () {
                 Navigator.of(context).pushAndRemoveUntil(
@@ -224,27 +235,16 @@ class _SettingWalletState extends State<SettingWallet> {
                       index: 2,
                     ),
                   ),
-                  (route) => route.isFirst,
+                      (route) => route.isFirst,
                 );
               },
               child: Text(
-                snapshot.data ?? S.current.lock,
+                S.current.lock,
                 style: textNormalCustom(
                   AppTheme.getInstance().fillColor(),
                   16,
                   FontWeight.w700,
                 ),
-              ),
-            ),
-          );
-        } else {
-          return Flexible(
-            child: Text(
-              S.current.lock,
-              style: textNormalCustom(
-                AppTheme.getInstance().bgBtsColor(),
-                16,
-                FontWeight.w700,
               ),
             ),
           );
