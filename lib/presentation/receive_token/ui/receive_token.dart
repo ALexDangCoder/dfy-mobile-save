@@ -94,69 +94,68 @@ class _ReceiveState extends State<Receive> {
                     await receiveCubit.getListPrice(widget.symbol ?? '');
                   },
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
                   height: 41.h,
                 ),
                 RepaintBoundary(
                   key: globalKey,
-                  child: Container(
-                    height: 370.h,
-                    width: 311.w,
-                    padding: EdgeInsets.only(
-                      top: 16.h,
-                      bottom: 12.h,
-                      right: 40.w,
-                      left: 40.w,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: 370.h,
                     ),
-                    decoration: BoxDecoration(
-                      color: AppTheme.getInstance().selectDialogColor(),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(36),
+                    child: Container(
+                      height: 367.h,
+                      width: 311.w,
+                      padding: EdgeInsets.only(
+                        top: 16.h,
+                        right: 40.w,
+                        left: 40.w,
                       ),
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: 125.w,
-                          height: 29.h,
-                          child: Image.asset(ImageAssets.defiText),
+                      decoration: BoxDecoration(
+                        color: AppTheme.getInstance().selectDialogColor(),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(36.r),
                         ),
-                        SizedBox(
-                          height: 13.17.h,
-                        ),
-                        StreamBuilder(
-                          stream: receiveCubit.amountStream,
-                          builder: (context, snapshot) {
-                            return QrImage(
-                              data: receiveCubit.value?.isEmpty ?? true
-                                  ? widget.walletAddress
-                                  : '${widget.nameToken}:'
-                                      '${widget.walletAddress}'
-                                      '?amount=${receiveCubit.value}',
-                              size: 230.w,
-                              gapless: false,
-                              backgroundColor: Colors.white,
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          height: 11.h,
-                        ),
-                        SizedBox(
-                          height: 39.h,
-                          width: 232.w,
-                          child: Text(
-                            widget.walletAddress,
-                            textAlign: TextAlign.center,
-                            style: textNormalCustom(
-                              null,
-                              18,
-                              FontWeight.w300,
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 125.w,
+                            height: 30.h,
+                            child: Image.asset(ImageAssets.defiText),
+                          ),
+                          spaceH12,
+                          StreamBuilder(
+                            stream: receiveCubit.amountStream,
+                            builder: (context, snapshot) {
+                              return QrImage(
+                                data: receiveCubit.value?.isEmpty ?? true
+                                    ? widget.walletAddress
+                                    : '${widget.nameToken}:'
+                                        '${widget.walletAddress}'
+                                        '?amount=${receiveCubit.value}',
+                                size: 230.w,
+                                gapless: false,
+                                backgroundColor: Colors.white,
+                              );
+                            },
+                          ),
+                          spaceH12,
+                          Expanded(
+                            child: Text(
+                              widget.walletAddress,
+                              textAlign: TextAlign.center,
+                              style: textNormalCustom(
+                                null,
+                                18,
+                                FontWeight.w300,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
