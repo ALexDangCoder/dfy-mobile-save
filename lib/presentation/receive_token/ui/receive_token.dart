@@ -88,42 +88,44 @@ class _ReceiveState extends State<Receive> {
         child: BaseBottomSheet(
           title: textTitle(widget.type),
           child: CustomRefreshIndicator(
-            onRefresh: widget.type == TokenType.QR ? (){} : () async {
-              await receiveCubit.getListPrice(widget.symbol ?? '');
-            },
+            onRefresh: widget.type == TokenType.QR
+                ? () {}
+                : () async {
+                    await receiveCubit.getListPrice(widget.symbol ?? '');
+                  },
             child: Column(
               children: [
                 SizedBox(
                   height: 41.h,
                 ),
-                Container(
-                  height: 370.h,
-                  width: 311.w,
-                  padding: EdgeInsets.only(
-                    top: 16.h,
-                    bottom: 12.h,
-                    right: 40.w,
-                    left: 40.w,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppTheme.getInstance().selectDialogColor(),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(36),
+                RepaintBoundary(
+                  key: globalKey,
+                  child: Container(
+                    height: 370.h,
+                    width: 311.w,
+                    padding: EdgeInsets.only(
+                      top: 16.h,
+                      bottom: 12.h,
+                      right: 40.w,
+                      left: 40.w,
                     ),
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: 125.w,
-                        height: 29.h,
-                        child: Image.asset(ImageAssets.defiText),
+                    decoration: BoxDecoration(
+                      color: AppTheme.getInstance().selectDialogColor(),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(36),
                       ),
-                      SizedBox(
-                        height: 13.17.h,
-                      ),
-                      RepaintBoundary(
-                        key: globalKey,
-                        child: StreamBuilder(
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: 125.w,
+                          height: 29.h,
+                          child: Image.asset(ImageAssets.defiText),
+                        ),
+                        SizedBox(
+                          height: 13.17.h,
+                        ),
+                        StreamBuilder(
                           stream: receiveCubit.amountStream,
                           builder: (context, snapshot) {
                             return QrImage(
@@ -138,24 +140,24 @@ class _ReceiveState extends State<Receive> {
                             );
                           },
                         ),
-                      ),
-                      SizedBox(
-                        height: 11.h,
-                      ),
-                      SizedBox(
-                        height: 39.h,
-                        width: 232.w,
-                        child: Text(
-                          widget.walletAddress,
-                          textAlign: TextAlign.center,
-                          style: textNormalCustom(
-                            null,
-                            18,
-                            FontWeight.w300,
+                        SizedBox(
+                          height: 11.h,
+                        ),
+                        SizedBox(
+                          height: 39.h,
+                          width: 232.w,
+                          child: Text(
+                            widget.walletAddress,
+                            textAlign: TextAlign.center,
+                            style: textNormalCustom(
+                              null,
+                              18,
+                              FontWeight.w300,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
