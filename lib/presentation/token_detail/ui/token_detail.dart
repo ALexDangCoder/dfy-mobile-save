@@ -156,6 +156,7 @@ class TokenDetail extends StatelessWidget {
                                     backgroundColor: Colors.transparent,
                                     builder: (_) {
                                       return SendToken(
+                                        modelToken: modelToken,
                                         walletAddress: walletAddress,
                                       );
                                     },

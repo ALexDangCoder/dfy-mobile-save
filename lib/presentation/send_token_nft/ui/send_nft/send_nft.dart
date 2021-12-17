@@ -286,7 +286,7 @@ class _SendNftState extends State<SendNft> {
                       ),
                     )
                   : Padding(
-                      padding: EdgeInsets.only(right: 20.w, top: 15.h),
+                      padding: EdgeInsets.only(right: 20.w, top: 16.h),
                       child: Text(
                         '${S.current.of_all} $maxQuantityFirstFetch',
                         style: textNormal(

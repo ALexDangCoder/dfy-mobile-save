@@ -199,5 +199,9 @@
   "import_new_wallet_failed": "Import new wallet failed",
   "not_exist": "NFT address does not exist or you do not own",
   "no_support_token" : "The token is not supported yet",
+  "err_empty_nfts": "Empty list NFT",
+  "err_invalid_wallet_add": "Invalid wallet address",
+  "err_not_owner_nft": "You are not the owner of this collectible, so you can not add it",
+  "err_none_exist_nft": "Nonexistent token",
   "name_characters": "Name can be no more than 20 characters"
 }
