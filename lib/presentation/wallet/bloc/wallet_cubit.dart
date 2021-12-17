@@ -548,7 +548,7 @@ class WalletCubit extends BaseCubit<WalletState> {
             nftItem as ListNft;
             if (nftItem.uri != null) {
               final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
-              nftInfo.id = nftItem.id.toString();
+              nftInfo.id = nftItem.id;
               nftInfo.contract =
                   listCollectionNFT[index].contract ?? 'contract';
               nftInfo.collectionSymbol =
