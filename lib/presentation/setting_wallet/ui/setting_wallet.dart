@@ -210,11 +210,11 @@ class _SettingWalletState extends State<SettingWallet> {
     );
   }
 
-  StreamBuilder<String?> buildTextHideFtShow() {
-    return StreamBuilder<String?>(
+  StreamBuilder<String> buildTextHideFtShow() {
+    return StreamBuilder<String>(
       stream: widget.cubitSetting.textLockSetting,
       builder: (context, snapshot) {
-        if (snapshot.data!.isNotEmpty) {
+        if (snapshot.data == '') {
           return Flexible(
             child: InkWell(
               onTap: () {

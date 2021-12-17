@@ -100,17 +100,15 @@ class _SendTokenState extends State<SendToken> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (ctx) =>
-                                  QRViewExample(
-                                    controller: txtToAddressToken,
-                                  ),
+                              builder: (ctx) => QRViewExample(
+                                controller: txtToAddressToken,
+                              ),
                             ),
                           ).then(
-                                (_) =>
-                                tokenCubit.checkHaveVlAddressFormToken(
-                                  txtToAddressToken.text,
-                                  type: typeSend.SEND_TOKEN,
-                                ),
+                            (_) => tokenCubit.checkHaveVlAddressFormToken(
+                              txtToAddressToken.text,
+                              type: typeSend.SEND_TOKEN,
+                            ),
                           );
                         },
                       ),
@@ -167,7 +165,7 @@ class _SendTokenState extends State<SendToken> {
                                 balanceWallet: tokenCubit.balanceWallet,
                                 typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
                                 addressFrom:
-                                widget.walletAddress.formatAddressWallet(),
+                                    widget.walletAddress.formatAddressWallet(),
                                 addressTo: fakeToAddress.formatAddressWallet(),
                                 imageWallet: ImageAssets.symbol,
                                 amount: double.parse(txtAmount.text),
@@ -189,9 +187,6 @@ class _SendTokenState extends State<SendToken> {
                 );
               },
             ),
-            // SizedBox(
-            //   height: 34.h,
-            // ),
           ],
         ),
       ),
@@ -234,24 +229,24 @@ class _SendTokenState extends State<SendToken> {
             hintText: hintText,
             hintStyle: readOnly
                 ? textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              16.sp,
-              FontWeight.w400,
-            )
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                    FontWeight.w400,
+                  )
                 : textNormal(
-              AppTheme.getInstance().disableColor(),
-              14.sp,
-            ),
+                    AppTheme.getInstance().disableColor(),
+                    14.sp,
+                  ),
             suffixIcon: InkWell(
               onTap: callBack,
               child: suffixImg == ''
                   ? const SizedBox(
-                width: 0,
-              )
+                      width: 0,
+                    )
                   : ImageIcon(
-                AssetImage(suffixImg),
-                color: AppTheme.getInstance().textThemeColor(),
-              ),
+                      AssetImage(suffixImg),
+                      color: AppTheme.getInstance().textThemeColor(),
+                    ),
             ),
             prefixIcon: GestureDetector(
               onTap: callBack,
@@ -291,10 +286,6 @@ class _SendTokenState extends State<SendToken> {
               value,
               amountBalance: widget.modelToken.balanceToken,
             );
-            // tokenCubit.checkHaveVlAddressFormToken(
-            //   txtToAddressToken.text,
-            //   type: typeSend.SEND_TOKEN,
-            // );
           },
           controller: txtAmount,
           keyboardType: TextInputType.number,
@@ -314,35 +305,37 @@ class _SendTokenState extends State<SendToken> {
               onTap: callBack,
               child: (isAmount && !isQuantity)
                   ? InkWell(
-                onTap: () {
-                  txtAmount.text = modelToken!.balanceToken.toString();
-                  tokenCubit.checkHaveVLAmountFormToken(txtAmount.text,
-                    amountBalance: widget.modelToken.balanceToken,);
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: 15.h,
-                    right: 20.w,
-                  ),
-                  child: Text(
-                    S.current.max,
-                    style: textNormal(
-                      const Color.fromRGBO(228, 172, 26, 1),
-                      16,
-                    ).copyWith(fontWeight: FontWeight.w600),
-                  ),
-                ),
-              )
+                      onTap: () {
+                        txtAmount.text = modelToken!.balanceToken.toString();
+                        tokenCubit.checkHaveVLAmountFormToken(
+                          txtAmount.text,
+                          amountBalance: widget.modelToken.balanceToken,
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: 15.h,
+                          right: 20.w,
+                        ),
+                        child: Text(
+                          S.current.max,
+                          style: textNormal(
+                            const Color.fromRGBO(228, 172, 26, 1),
+                            16,
+                          ).copyWith(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    )
                   : Padding(
-                padding: EdgeInsets.only(top: 15.h, right: 20.w),
-                child: Text(
-                  '${S.current.of_all} 10',
-                  style: textNormal(
-                    const Color.fromRGBO(255, 255, 255, 1),
-                    16,
-                  ).copyWith(fontWeight: FontWeight.w400),
-                ),
-              ),
+                      padding: EdgeInsets.only(top: 15.h, right: 20.w),
+                      child: Text(
+                        '${S.current.of_all} 10',
+                        style: textNormal(
+                          const Color.fromRGBO(255, 255, 255, 1),
+                          16,
+                        ).copyWith(fontWeight: FontWeight.w400),
+                      ),
+                    ),
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),
