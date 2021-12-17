@@ -214,7 +214,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> contractSubject = BehaviorSubject();
   BehaviorSubject<String> idSubject = BehaviorSubject();
   BehaviorSubject<bool> btnSubject = BehaviorSubject.seeded(false);
-  final BehaviorSubject<String> _warningSubject = BehaviorSubject.seeded('');
   final regexAddress = RegExp(r'^0x[a-fA-F0-9]{40}$');
   List<HistoryNFT> listHistory = [];
   double? price = 0.0;
@@ -375,12 +374,12 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   Future<void> getListCategory() async {
     final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
-    await result.when(
+    result.when(
       success: (res) {
         getTokenInfoByAddressList(res: res);
       },
-      error: (error) async {
-        await getTokens(addressWalletCore);
+      error: (error) {
+         getTokens(addressWalletCore);
       },
     );
   }
@@ -403,9 +402,9 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  Future<void> getTokenInfoByAddressList({
+  void getTokenInfoByAddressList({
     required List<TokenInf> res,
-  }) async {
+  })  {
     final List<ModelToken> listJson = [];
     for (final value in res) {
       listJson.add(
@@ -422,15 +421,15 @@ class WalletCubit extends BaseCubit<WalletState> {
       );
     }
     final json = jsonEncode(listJson.map((e) => e.toJson()).toList());
-    await importListToken(json);
+    importListToken(json);
   }
 
-  Future<void> getExchangeRateFromServer(List<ModelToken> list) async {
+  void getExchangeRateFromServer(List<ModelToken> list) {
     final query = StringBuffer();
     for (final value in list) {
       query.write('${value.nameShortToken},');
     }
-    await getListPrice(query.toString());
+    getListPrice(query.toString());
     for (int i = 0; i < list.length; i++) {
       for (int j = 0; j < listTokenExchange.length; j++) {
         if (list[i].nameShortToken ==
@@ -498,8 +497,8 @@ class WalletCubit extends BaseCubit<WalletState> {
         //final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
         break;
       case 'chooseWalletCallBack':
-        final bool chooseWalletCallBack =
-            await methodCall.arguments['isSuccess'];
+        //final bool chooseWalletCallBack =
+          //  await methodCall.arguments['isSuccess'];
         break;
       case 'checkTokenCallback':
         isHaveToken = await methodCall.arguments['isExist'];
@@ -530,7 +529,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           }
         }
         await getBalanceOFToken(listTokenFromWalletCore);
-        await getExchangeRateFromServer(listTokenFromWalletCore);
+        getExchangeRateFromServer(listTokenFromWalletCore);
         totalBalance.add(total(listTokenFromWalletCore));
         getListTokenModel.add(listSwitch);
         listTokenStream.add(listTokenFromWalletCore);
@@ -680,6 +679,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     try {
       final data = {
         'jsonTokens': jsonTokens,
+        'walletAddress':addressWalletCore,
       };
       await trustWalletChannel.invokeMethod('importListToken', data);
     } on PlatformException {}

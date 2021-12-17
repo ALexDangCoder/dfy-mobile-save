@@ -105,7 +105,7 @@ class _WalletState extends State<WalletScreen>
             offset: 112.h,
             onRefresh: () async {
               await cubit.getBalanceOFToken(cubit.listTokenFromWalletCore);
-              await cubit
+              cubit
                   .getExchangeRateFromServer(cubit.listTokenFromWalletCore);
               cubit.totalBalance
                   .add(cubit.total(cubit.listTokenFromWalletCore));
