@@ -91,18 +91,18 @@ class _ChooseTokenState extends State<ChooseToken> {
               ),
             ),
             spaceW6,
-            Text(
-              widget.bloc.getListTokenModel.value[index].nameShortToken,
-              style: textNormalCustom(
-                const Color.fromRGBO(255, 255, 255, 0.7),
-                18,
-                FontWeight.w400,
-              ),
-            ),
+            // Text(
+            //   widget.bloc.getListTokenModel.value[index].nameShortToken,
+            //   style: textNormalCustom(
+            //     const Color.fromRGBO(255, 255, 255, 0.7),
+            //     18,
+            //     FontWeight.w400,
+            //   ),
+            // ),
           ],
         ),
-        subtitle: Text(
-          '${widget.bloc.getListTokenModel.value[index].balanceToken.toStringAsFixed(5)} ${widget.bloc.getListTokenModel.value[index].nameShortToken} ',
+        subtitle: Text(//${widget.bloc.getListTokenModel.value[index].balanceToken.toStringAsFixed(5)}
+          ' ${widget.bloc.getListTokenModel.value[index].nameShortToken} ',
           style: textNormalCustom(
             const Color.fromRGBO(255, 255, 255, 0.5),
             16,
@@ -143,18 +143,18 @@ class _ChooseTokenState extends State<ChooseToken> {
               ),
             ),
             spaceW6,
-            Text(
-              widget.bloc.getListTokenModel.value[index].nameShortToken,
-              style: textNormalCustom(
-                const Color.fromRGBO(255, 255, 255, 0.7),
-                18,
-                FontWeight.w400,
-              ),
-            ),
+            // Text(
+            //   widget.bloc.getListTokenModel.value[index].nameShortToken,
+            //   style: textNormalCustom(
+            //     const Color.fromRGBO(255, 255, 255, 0.7),
+            //     18,
+            //     FontWeight.w400,
+            //   ),
+            // ),
           ],
         ),
-        subtitle: Text(
-          '${widget.bloc.getListTokenModel.value[index].balanceToken.toStringAsFixed(5)} ${widget.bloc.getListTokenModel.value[index].nameShortToken} ',
+        subtitle: Text(//${widget.bloc.getListTokenModel.value[index].balanceToken.toStringAsFixed(5)}
+          ' ${widget.bloc.getListTokenModel.value[index].nameShortToken} ',
           style: textNormalCustom(
             const Color.fromRGBO(255, 255, 255, 0.5),
             16,

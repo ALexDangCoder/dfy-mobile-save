@@ -184,28 +184,19 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     }
   }
 
-  Timer? debounceTime;
-
   void validateNameWallet(String _name) {
-    if (debounceTime != null) {
-      if (debounceTime!.isActive) {
-        debounceTime!.cancel();
-      }
-    }
     if (_name != '') {
-      debounceTime = Timer(const Duration(milliseconds: 500), () {
-        if (_name.length > 20) {
-          messStream.sink.add(S.current.name_characters);
-          isCheckButtonCreate.sink.add(false);
+      if (_name.length > 20) {
+        messStream.sink.add(S.current.name_characters);
+        isCheckButtonCreate.sink.add(false);
+      } else {
+        messStream.sink.add('');
+        if (isCheckBoxCreateSeedPhrase.value) {
+          isCheckButtonCreate.sink.add(true);
         } else {
-          messStream.sink.add('');
-          if (isCheckBoxCreateSeedPhrase.value) {
-            isCheckButtonCreate.sink.add(true);
-          }else{
-            isCheckButtonCreate.sink.add(false);
-          }
+          isCheckButtonCreate.sink.add(false);
         }
-      });
+      }
     } else {
       isCheckButtonCreate.sink.add(false);
       messStream.sink.add(S.current.name_not_null);
