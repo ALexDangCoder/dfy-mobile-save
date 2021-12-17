@@ -101,7 +101,6 @@ class _ReceiveState extends State<Receive> {
                 RepaintBoundary(
                   key: globalKey,
                   child: Container(
-                    height: 370.h,
                     width: 311.w,
                     padding: EdgeInsets.only(
                       top: 16.h,
