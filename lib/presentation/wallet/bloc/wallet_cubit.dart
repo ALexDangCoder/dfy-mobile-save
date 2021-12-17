@@ -12,7 +12,6 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
-import 'package:Dfy/domain/model/token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
@@ -156,26 +155,13 @@ class WalletCubit extends BaseCubit<WalletState> {
     getListAcc();
   }
 
-  int randomAvatar() {
-    final Random rd = Random();
-
-    return rd.nextInt(10);
-  }
-
   bool checkWalletExist = false;
+  bool isAddressNotExist = false;
 
-  final List<ModelToken> checkShow = [];
   String tokenFullName = '';
   bool checkLogin = false;
-  List<TokenModel> listStart = [];
   List<Wallet> listWallet = [];
-  List<ModelToken> listTokenFromWalletCore = [];
   List<ModelToken> listTokenImport = [];
-  List<CollectionNft> listNftFromWalletCore = [];
-  BehaviorSubject<List<ModelToken>> listTokenStream =
-      BehaviorSubject.seeded([]);
-  BehaviorSubject<List<CollectionNft>> listNFTStream =
-      BehaviorSubject.seeded([]);
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
   BehaviorSubject<String> nftEnterID = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenAddressTextNft = BehaviorSubject.seeded('');
@@ -187,20 +173,42 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<String> checkDataWallet = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject();
-  bool isAddressNotExist = false;
-
   BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isImportNftFail = BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isNFT = BehaviorSubject.seeded(true);
   BehaviorSubject<List<ModelToken>> getListTokenModel =
       BehaviorSubject.seeded([]);
   BehaviorSubject<List<AccountModel>> list = BehaviorSubject.seeded([]);
-  BehaviorSubject<String> addressWallet = BehaviorSubject();
-  BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
+
+  ///Hung
+  final List<ModelToken> checkShow = [];
+  List<ModelToken> listTokenFromWalletCore = [];
+  List<CollectionNft> listNftFromWalletCore = [];
   BehaviorSubject<double> totalBalance = BehaviorSubject();
   BehaviorSubject<String> messStreamEnterWalletName =
       BehaviorSubject.seeded('');
+  BehaviorSubject<String> addressWallet = BehaviorSubject();
+  BehaviorSubject<String> walletName = BehaviorSubject();
+  BehaviorSubject<List<ModelToken>> listTokenStream =
+  BehaviorSubject.seeded([]);
+  BehaviorSubject<List<CollectionNft>> listNFTStream =
+  BehaviorSubject.seeded([]);
+
+
+  int randomAvatar() {
+    final Random rd = Random();
+
+    return rd.nextInt(10);
+  }
+  double total(List<ModelToken> list) {
+    double total = 0;
+    for (int i = 0; i < list.length; i++) {
+      total = total + list[i].exchangeRate * list[i].balanceToken;
+    }
+    totalBalance.add(total);
+    return total;
+  }
 
   /// Nam
   BehaviorSubject<String> contractSubject = BehaviorSubject();
@@ -240,15 +248,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       address.length,
     )}';
     return formatAddressWallet;
-  }
-
-  double total(List<ModelToken> list) {
-    double total = 0;
-    for (int i = 0; i < list.length; i++) {
-      total = total + list[i].exchangeRate * list[i].balanceToken;
-    }
-    totalBalance.add(total);
-    return total;
   }
 
   void getListAcc() {
@@ -386,8 +385,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     );
   }
 
-  List<ModelToken> getListModelToken = [];
-
   Stream<TokenInf> getListTokenRealtime(List<TokenInf> listTokenInf) async* {
     for (int i = 0; i < listTokenInf.length; i++) {
       yield listTokenInf[i];
@@ -411,18 +408,6 @@ class WalletCubit extends BaseCubit<WalletState> {
   }) async {
     final List<ModelToken> listJson = [];
     for (final value in res) {
-      getListModelToken.add(
-        ModelToken(
-          tokenAddress: value.address ?? '',
-          iconToken: value.iconUrl ?? '',
-          nameShortToken: value.symbol ?? '',
-          nameToken: value.name ?? '',
-          exchangeRate: value.usdExchange ?? 0,
-          walletAddress: addressWalletCore,
-          decimal: 18,
-          isImport: false,
-        ),
-      );
       listJson.add(
         ModelToken(
           tokenAddress: value.address ?? '',
@@ -470,6 +455,8 @@ class WalletCubit extends BaseCubit<WalletState> {
       }
     }
   }
+  final List<NftInfo> listNftInfo = [];
+
 
   ///Wallet Core
 
@@ -505,10 +492,13 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
         break;
       case 'setDeleteNftCallback':
-        final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
+        //final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
         break;
       case 'setDeleteCollectionCallback':
-        final bool isSetDeleteCollection =
+        //final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
+        break;
+      case 'chooseWalletCallBack':
+        final bool chooseWalletCallBack =
             await methodCall.arguments['isSuccess'];
         break;
       case 'checkTokenCallback':
@@ -548,6 +538,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
       case 'getListWalletsCallback':
         listSelectAccBloc.clear();
+        listWallet.clear();
         final List<dynamic> data = methodCall.arguments;
         if (data.isEmpty) {
           emit(NavigatorFirst());
@@ -556,8 +547,11 @@ class WalletCubit extends BaseCubit<WalletState> {
           for (final element in data) {
             listWallet.add(Wallet.fromJson(element));
           }
-          getWalletDetailInfo();
+          addressWalletCore = listWallet.first.address!;
+          nameWallet = listWallet.first.name!;
           addressWallet.add(addressWalletCore);
+          walletName.add(nameWallet);
+          await getListCategory();
           await getNFT(addressWalletCore);
         }
         break;
@@ -591,33 +585,26 @@ class WalletCubit extends BaseCubit<WalletState> {
         listNftFromWalletCore = listCollectionNFT;
         listNFTStream.add(listNftFromWalletCore);
         break;
-
-      case 'getConfigCallback':
-        checkWalletExist = methodCall.arguments['isWalletExist'];
-        if (checkWalletExist) {
-          listTokenFromWalletCore.clear();
-          await getTokens(addressWalletCore);
-        }
-        break;
       default:
         break;
     }
-  }
-
-  final List<NftInfo> listNftInfo = [];
-
-  int indexWallet = 0;
-
-  void getWalletDetailInfo() {
-    addressWalletCore = listWallet[indexWallet].address!;
-    nameWallet = listWallet[indexWallet].name!;
-    walletName.add(nameWallet);
   }
 
   Future<void> getConfig() async {
     try {
       final data = {};
       await trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException {}
+  }
+
+  Future<void> chooseWallet({
+    required String walletAddress,
+  }) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+      };
+      await trustWalletChannel.invokeMethod('chooseWallet', data);
     } on PlatformException {}
   }
 
@@ -643,8 +630,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     } on PlatformException {}
   }
 
-  Future<void> getAddressWallet() async {}
-
   Future<void> getListWallets() async {
     try {
       final data = {};
@@ -665,7 +650,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-// list
   Future<void> getNFT(
     String walletAddress,
   ) async {
@@ -701,14 +685,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     } on PlatformException {}
   }
 
-//walletAddress*: String
-// tokenAddress*: String
-// tokenFullName*: String
-// iconUrl*: String
-// symbol*: String
-// decimal*: Int
-// exchangeRate*: double
-// isImport*: boolean
   Future<void> importToken({
     required String walletAddress,
     required String tokenAddress,
@@ -746,7 +722,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('getListSupportedToken', data);
     } on PlatformException {
       //todo
-
     }
   }
 
@@ -766,7 +741,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('setShowedToken', data);
     } on PlatformException {
       //todo
-
     }
   }
 
@@ -790,13 +764,9 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('importNft', data);
     } on PlatformException {
       //todo
-
     }
   }
 
-//"walletAddress*: String
-// collectionAddress*: String
-// nftContract*: String"
   Future<void> deleteNft({
     required String walletAddress,
     required String collectionAddress,
@@ -811,12 +781,9 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('deleteNft', data);
     } on PlatformException {
       //todo
-
     }
   }
 
-//"walletAddress*: String
-// collectionAddress*: String"
   Future<void> deleteCollection({
     required String walletAddress,
     required String collectionAddress,
@@ -829,27 +796,8 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('deleteCollection', data);
     } on PlatformException {
       //todo
-
     }
   }
-
-  ///import nft test
-  ///get collection
-
-  // Future<void> importAllNFT({
-  //   required String walletAddress,
-  //   required String contract,
-  // }) async {
-  //   final List<NftInfo> list = await getNFTFromWeb3(
-  //     address: walletAddress,
-  //     contract: contract,
-  //   );
-  //
-  //   final jsonNFT = jsonEncode(
-  //     list.map((e) => e.saveToJson(walletAddress: walletAddress)).toList(),
-  //   );
-  //   await importListNft(jsonNft: jsonNFT);
-  // }
 
   Future<void> emitJsonNftToWalletCore({
     required String contract,
@@ -867,23 +815,17 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   Future<CollectionNft> fetchCollection() async {
-    final response = await http.get(Uri.parse(
-        'https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c'));
-
+    final response = await http.get(
+      Uri.parse(
+        'https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c',
+      ),
+    );
     if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
       return CollectionNft.fromJsonMap(jsonDecode(response.body));
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load Collection');
     }
   }
-
-  //get Nft
-  Future<void> getInfoCollection(String smartContract, String? id) async {}
-
 
   Future<void> importNftIntoWalletCore({
     required String jsonNft,
@@ -897,7 +839,6 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('importNft', data);
     } on PlatformException {
       //todo
-
     }
   }
 
