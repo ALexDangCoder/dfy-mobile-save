@@ -1,6 +1,5 @@
 package com.edsolabs.dfy_mobile
 
-import android.util.Log
 import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
 import com.edsolabs.dfy_mobile.data.model.ItemNftModel
 import com.edsolabs.dfy_mobile.data.model.NftModel
@@ -197,7 +196,7 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("collectionAddress")
                             ?: return@setMethodCallHandler
                     val nftId =
-                        call.argument<Int>("nftId")
+                        call.argument<String>("nftId")
                             ?: return@setMethodCallHandler
                     deleteNft(walletAddress, collectionAddress, nftId)
                 }
@@ -631,7 +630,7 @@ class MainActivity : FlutterFragmentActivity() {
         channel?.invokeMethod("getTokensCallback", hasMap)
     }
 
-    private fun deleteNft(walletAddress: String, collectionAddress: String, nftId: Int) {
+    private fun deleteNft(walletAddress: String, collectionAddress: String, nftId: String) {
         val appPreference = AppPreference(this)
         val listNft = ArrayList<NftModel>()
         var isDeleteSuccess = false
@@ -719,7 +718,7 @@ class MainActivity : FlutterFragmentActivity() {
             val listToken = ArrayList<TokenModel>()
             if (isImport) {
                 appPreference.getListTokens().forEach {
-                    if (it.walletAddress != walletAddress && it.tokenAddress != tokenAddress) {
+                    if (it.walletAddress != walletAddress || it.tokenAddress != tokenAddress) {
                         listToken.add(it)
                     }
                 }
@@ -760,7 +759,7 @@ class MainActivity : FlutterFragmentActivity() {
                 val data = listNftJson.getJSONObject(size)
                 listNft.add(
                     ItemNftModel(
-                        id = data.getInt("id"),
+                        id = data.getString("id"),
                         contract = data.getString("contract"),
                         uri = data.getString("uri")
                     )
@@ -775,7 +774,7 @@ class MainActivity : FlutterFragmentActivity() {
                 val listNft = ArrayList<ItemNftModel>()
                 while (size < listNftJson.length()) {
                     val data = listNftJson.getJSONObject(size)
-                    val id = data.getInt("id")
+                    val id = data.getString("id")
                     if (checkItemNft.item.firstOrNull { it.id != id } == null) {
                         listNft.add(
                             ItemNftModel(

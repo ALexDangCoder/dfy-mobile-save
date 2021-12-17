@@ -9,7 +9,7 @@ data class NftModel(
 )
 
 data class ItemNftModel(
-    var id: Int,
+    var id: String,
     var contract: String,
     var uri: String
 )
