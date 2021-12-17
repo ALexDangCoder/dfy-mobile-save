@@ -371,14 +371,19 @@ class MainActivity : FlutterFragmentActivity() {
                         val walletName = "Account ${listWallet.size + 1}"
                         hasMap["walletAddress"] = address
                         listWallet.add(
+                            0,
                             WalletModel(
                                 walletName,
                                 address,
+                                0,
                                 content,
                                 privateKey.toByteArray().toHexString(false),
                                 true
                             )
                         )
+                        listWallet.forEachIndexed { index, walletModel ->
+                            walletModel.walletIndex = index
+                        }
                         appPreference.saveListWallet(listWallet)
                         hasMap["walletName"] = walletName
                         hasMap["code"] = CODE_SUCCESS
@@ -402,14 +407,19 @@ class MainActivity : FlutterFragmentActivity() {
                         val walletName = "Account ${listWallet.size + 1}"
                         hasMap["walletAddress"] = address
                         listWallet.add(
+                            0,
                             WalletModel(
                                 walletName,
                                 address,
+                                0,
                                 "",
                                 content,
                                 true
                             )
                         )
+                        listWallet.forEachIndexed { index, walletModel ->
+                            walletModel.walletIndex = index
+                        }
                         appPreference.saveListWallet(listWallet)
                         hasMap["walletName"] = walletName
                         hasMap["code"] = CODE_SUCCESS
@@ -482,14 +492,19 @@ class MainActivity : FlutterFragmentActivity() {
         val listWallet = ArrayList<WalletModel>()
         listWallet.addAll(appPreference.getListWallet())
         listWallet.add(
+            0,
             WalletModel(
                 walletName,
                 walletAddress,
+                0,
                 seedPhrase,
                 privateKey,
                 false
             )
         )
+        listWallet.forEachIndexed { index, walletModel ->
+            walletModel.walletIndex = index
+        }
         appPreference.saveListWallet(listWallet)
         channel?.invokeMethod("storeWalletCallback", hasMap)
     }
