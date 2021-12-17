@@ -52,9 +52,9 @@ class FormInputNumber extends StatelessWidget {
                       id: int.parse(value),
                     );
                     if (res.isSuccess) {
-                      bloc.warningSink.add('');
+                      bloc.warningTextNft.sink.add('');
                     } else {
-                      bloc.warningSink.add(res.message);
+                      bloc.warningTextNft.sink.add(res.message);
                     }
                     bloc.btnSubject.sink.add(res.isSuccess);
                   }
@@ -66,9 +66,9 @@ class FormInputNumber extends StatelessWidget {
                     id: int.parse(value),
                   );
                   if (res.isSuccess) {
-                    bloc.warningSink.add('');
+                    bloc.warningTextNft.sink.add('');
                   } else {
-                    bloc.warningSink.add(res.message);
+                    bloc.warningTextNft.sink.add(res.message);
                   }
                   bloc.btnSubject.sink.add(res.isSuccess);
                 },
