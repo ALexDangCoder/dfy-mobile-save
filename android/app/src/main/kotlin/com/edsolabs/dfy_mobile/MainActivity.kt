@@ -632,7 +632,7 @@ class MainActivity : FlutterFragmentActivity() {
 
     private fun deleteNft(walletAddress: String, collectionAddress: String, nftId: String) {
         val appPreference = AppPreference(this)
-        val listNft = ArrayList<NftModel>()
+        val listCollection = ArrayList<NftModel>()
         var isDeleteSuccess = false
         appPreference.getListNft().forEach { it ->
             if (it.walletAddress == walletAddress && it.collectionAddress == collectionAddress) {
@@ -641,19 +641,21 @@ class MainActivity : FlutterFragmentActivity() {
                 data.collectionAddress = collectionAddress
                 data.nftName = it.nftName
                 data.symbol = it.symbol
+                val listNft = ArrayList<ItemNftModel>()
                 it.item.forEach {
-                    if (it.id != nftId) {
-                        data.item.add(it)
-                    } else {
+                    if (it.id == nftId) {
                         isDeleteSuccess = true
+                    } else {
+                        listNft.add(it)
                     }
                 }
-                if (data.item.isNotEmpty()) {
-                    listNft.add(it)
+                if (listNft.isNotEmpty()) {
+                    data.item.addAll(listNft)
+                    listCollection.add(data)
                 }
             }
         }
-        appPreference.saveListNft(listNft)
+        appPreference.saveListNft(listCollection)
         val data = HashMap<String, Any>()
         data["isSuccess"] = isDeleteSuccess
         channel?.invokeMethod("setDeleteNftCallback", data)
