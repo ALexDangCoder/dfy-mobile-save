@@ -90,6 +90,8 @@ class _BodyState extends State<_Body> {
             await widget.bloc.getNFT(widget.bloc.addressWalletCore);
             widget.bloc.listNFTStream.add(widget.bloc.listNftFromWalletCore);
           });
+        } else if (state is ImportNftLoading) {
+
         } else {
           _showDialog(alert: 'Import failed');
         }

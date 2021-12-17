@@ -33,6 +33,10 @@ class ImportNftFail extends WalletState {
   List<Object?> get props => [];
 }
 
+class ImportNftLoading extends WalletState {
+  @override
+  List<Object?> get props => [];
+}
 
 class NavigatorFirst extends WalletState {
   @override
