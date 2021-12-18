@@ -126,8 +126,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
           currentFocus.unfocus();
         }
       },
-      child: BlocConsumer<FormFieldBlockchainCubit,
-          FormFieldBlockchainState>(
+      child: BlocConsumer<FormFieldBlockchainCubit, FormFieldBlockchainState>(
         listener: (context, state) {
           if (state is FormBlockchainSendTokenSuccess) {
             Navigator.pop(context);
@@ -246,10 +245,14 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                             await cubitFormCustomizeGasFee.signTransaction(
                               fromAddress: widget.addressFrom,
                               toAddress: widget.addressTo,
-                              gasPrice: widget.gasPriceFirstFetch.toString(),
+                              gasPrice: (widget.gasPriceFirstFetch * 100000000)
+                                  .toString(),
                               nonce: nonce.toString(),
-                              gasLimit: _txtGasLimit.text,
-                              amount: widget.amount.toString(),
+                              gasLimit:
+                                  (double.parse(_txtGasLimit.text) * 100000000)
+                                      .toString(),
+                              amount:
+                                  ((widget.amount ?? 0) * 100000000).toString(),
                             );
                             break;
                           case TYPE_CONFIRM.SEND_NFT:
