@@ -233,9 +233,6 @@ class MainActivity : FlutterFragmentActivity() {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
-                    val fromAddress =
-                        call.argument<String>("fromAddress")
-                            ?: return@setMethodCallHandler
                     val toAddress =
                         call.argument<String>("toAddress")
                             ?: return@setMethodCallHandler
@@ -849,7 +846,6 @@ class MainActivity : FlutterFragmentActivity() {
 
     private fun signTransaction(
         walletAddress: String,
-        fromAddress: String,
         toAddress: String,
         nonce: String,
         chainId: String,
