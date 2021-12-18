@@ -245,14 +245,14 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                             await cubitFormCustomizeGasFee.signTransaction(
                               fromAddress: widget.addressFrom,
                               toAddress: widget.addressTo,
-                              gasPrice: (widget.gasPriceFirstFetch * 100000000)
+                              gasPrice: (widget.gasPriceFirstFetch * 1000000000)
                                   .toString(),
                               nonce: nonce.toString(),
                               gasLimit:
-                                  (double.parse(_txtGasLimit.text) * 100000000)
+                                  (double.parse(_txtGasLimit.text) * 1000000000000000000)
                                       .toString(),
                               amount:
-                                  ((widget.amount ?? 0) * 100000000).toString(),
+                                  ((widget.amount ?? 0) * 1000000000000000000).toString(),
                             );
                             break;
                           case TYPE_CONFIRM.SEND_NFT:
