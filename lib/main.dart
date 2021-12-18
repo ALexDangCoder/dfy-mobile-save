@@ -113,6 +113,9 @@ class _MyAppState extends State<MyApp> {
       case 'getTokensCallback':
         print('getTokensCallback ${methodCall.arguments}');
         break;
+      case 'signTransactionCallback':
+        print('signTransactionCallback ${methodCall.arguments}');
+        break;
     }
   }
 
@@ -141,6 +144,21 @@ class _MyAppState extends State<MyApp> {
         'isImport': true,
       };
       await trustWalletChannel.invokeMethod('importToken', data);
+    } on PlatformException {}
+  }
+
+  Future<void> signTransaction() async {
+    try {
+      final data = {
+        'fromAddress': '',
+        'toAddress': '',
+        'nonce': '',
+        'chainId': '',
+        'gasPrice': '',
+        'gasLimit': '',
+        'amount': '',
+      };
+      await trustWalletChannel.invokeMethod('signTransaction', data);
     } on PlatformException {}
   }
 
