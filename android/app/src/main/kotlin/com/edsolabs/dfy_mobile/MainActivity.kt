@@ -253,7 +253,6 @@ class MainActivity : FlutterFragmentActivity() {
                             ?: return@setMethodCallHandler
                     signTransaction(
                         walletAddress,
-                        fromAddress,
                         toAddress,
                         nonce,
                         chainId,
