@@ -75,9 +75,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       // print(methodCall.arguments);
         isSuccess = await methodCall.arguments['isSuccess'];
         signedTransaction = await methodCall.arguments['signedTransaction'];
-        print(signedTransaction);
         if(isSuccess) {
-          print(signedTransaction);
           Web3Utils().sendRawTransaction(transaction: signedTransaction);
           emit(FormBlockchainSendTokenSuccess());
         } else {
