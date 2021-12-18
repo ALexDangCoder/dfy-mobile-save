@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:web3dart/web3dart.dart';
 
 part 'form_field_blockchain_state.dart';
 
@@ -72,9 +73,13 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       case 'signTransactionCallback':
       // print(methodCall.arguments);
         isSuccess = await methodCall.arguments['isSuccess'];
-        print(isSuccess);
         signedTransaction = await methodCall.arguments['signedTransaction'];
-        print(signedTransaction);
+        if(isSuccess) {
+          Web3Utils().sendRawTransaction(transaction: signedTransaction);
+          emit(FormBlockchainSendTokenSuccess());
+        } else {
+          emit(FormBlockchainSendTokenFail());
+        }
         break;
       default:
         break;
