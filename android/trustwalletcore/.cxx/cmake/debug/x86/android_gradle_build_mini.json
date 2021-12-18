@@ -1,0 +1,58 @@
+{
+  "buildFiles": [
+    "/Users/hoang/dfy-mobile/wallet-core/CMakeLists.txt",
+    "/Users/hoang/dfy-mobile/wallet-core/trezor-crypto/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+      "-C",
+      "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+    "-C",
+    "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "TrezorCrypto-Release-x86": {
+      "artifactName": "TrezorCrypto",
+      "buildCommandComponents": [
+        "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86",
+        "TrezorCrypto"
+      ],
+      "abi": "x86",
+      "output": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/trezor-crypto/libTrezorCrypto.a",
+      "runtimeFiles": []
+    },
+    "TrustWalletCore-Release-x86": {
+      "artifactName": "TrustWalletCore",
+      "buildCommandComponents": [
+        "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86",
+        "TrustWalletCore"
+      ],
+      "abi": "x86",
+      "output": "/Users/hoang/dfy-mobile/build/trustwalletcore/intermediates/cmake/debug/obj/x86/libTrustWalletCore.so",
+      "runtimeFiles": []
+    },
+    "protobuf-Release-x86": {
+      "artifactName": "protobuf",
+      "buildCommandComponents": [
+        "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86",
+        "protobuf"
+      ],
+      "abi": "x86",
+      "output": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/libprotobuf.a",
+      "runtimeFiles": []
+    }
+  }
+}

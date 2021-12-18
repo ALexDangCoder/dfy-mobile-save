@@ -17,7 +17,7 @@ import wallet.core.jni.AnyAddress
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.PrivateKey
-import wallet.core.jni.proto.Binance
+import wallet.core.jni.proto.Ethereum
 import java.math.BigInteger
 import java.security.InvalidParameterException
 import kotlin.experimental.and
@@ -230,6 +230,9 @@ class MainActivity : FlutterFragmentActivity() {
                     getNFT(walletAddress)
                 }
                 "signTransaction" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
                     val fromAddress =
                         call.argument<String>("fromAddress")
                             ?: return@setMethodCallHandler
@@ -252,6 +255,7 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("amount")
                             ?: return@setMethodCallHandler
                     signTransaction(
+                        walletAddress,
                         fromAddress,
                         toAddress,
                         nonce,
@@ -844,6 +848,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun signTransaction(
+        walletAddress: String,
         fromAddress: String,
         toAddress: String,
         nonce: String,
@@ -853,9 +858,37 @@ class MainActivity : FlutterFragmentActivity() {
         amount: String
     ) {
         val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = true
-        hasMap["signedTransaction"] =
-            "f86b1985e8d4a5100082520894fc0f99bb0105b164ce317384e8415b953d4ae115865af3107a40008081e6a03f5872ca808076dfb9fde759c6a840c2c62532e3b3b65721b8ef5aaa2d734ba5a01acef3da2f4edec5f0717dd8225e2f058cbecdc446b5339475907e6d955c77e0"
+        val walletModel =
+            AppPreference(this).getListWallet().firstOrNull { it.walletAddress == walletAddress }
+        if (walletModel != null && walletModel.privateKey.isNotEmpty()) {
+            val signerInput = Ethereum.SigningInput.newBuilder().apply {
+                this.nonce = ByteString.copyFrom(BigInteger(nonce).toByteArray())
+                this.chainId = ByteString.copyFrom(BigInteger(chainId).toByteArray())
+                this.gasPrice = BigInteger(
+                    gasPrice.toDouble().toLong().toString()
+                ).toByteString() // decimal 3600000000
+                this.gasLimit = BigInteger(
+                    gasLimit.toDouble().toLong().toString()
+                ).toByteString()     // decimal 21000
+                this.toAddress = toAddress
+                this.transaction = Ethereum.Transaction.newBuilder().apply {
+                    transfer = Ethereum.Transaction.Transfer.newBuilder().apply {
+                        this.amount =
+                            BigInteger(amount.toDouble().toLong().toString()).toByteString()
+                    }.build()
+                }.build()
+                this.privateKey =
+                    ByteString.copyFrom(PrivateKey(walletModel.privateKey.toHexBytes()).data())
+            }.build()
+            val output =
+                AnySigner.sign(signerInput, CoinType.SMARTCHAIN, Ethereum.SigningOutput.parser())
+            val value = output.encoded.toByteArray().toHexString(false)
+            hasMap["isSuccess"] = true
+            hasMap["signedTransaction"] = value
+        } else {
+            hasMap["isSuccess"] = false
+            hasMap["signedTransaction"] = ""
+        }
         channel?.invokeMethod("signTransactionCallback", hasMap)
     }
 }

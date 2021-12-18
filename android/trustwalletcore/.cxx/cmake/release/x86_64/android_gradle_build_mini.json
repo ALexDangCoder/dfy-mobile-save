@@ -1,0 +1,37 @@
+{
+  "buildFiles": [
+    "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/wallet-core/CMakeLists.txt",
+    "/Users/hoang/Library/Android/sdk/ndk/21.2.6472646/build/cmake/android.toolchain.cmake",
+    "/Users/hoang/Library/Android/sdk/ndk/21.2.6472646/build/cmake/platforms.cmake",
+    "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/wallet-core/cmake/Protobuf.cmake",
+    "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/wallet-core/swift/cpp.xcconfig.in",
+    "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/wallet-core/trezor-crypto/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64\" clean"
+  ],
+  "buildTargetsCommand": "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "TrustWalletCore-Release-x86_64": {
+      "artifactName": "TrustWalletCore",
+      "buildCommand": "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64\" TrustWalletCore",
+      "abi": "x86_64",
+      "output": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/build/trustwalletcore/intermediates/cmake/release/obj/x86_64/libTrustWalletCore.so",
+      "runtimeFiles": []
+    },
+    "TrezorCrypto-Release-x86_64": {
+      "artifactName": "TrezorCrypto",
+      "buildCommand": "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64\" TrezorCrypto",
+      "abi": "x86_64",
+      "output": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64/trezor-crypto/libTrezorCrypto.a",
+      "runtimeFiles": []
+    },
+    "protobuf-Release-x86_64": {
+      "artifactName": "protobuf",
+      "buildCommand": "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64\" protobuf",
+      "abi": "x86_64",
+      "output": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64/libprotobuf.a",
+      "runtimeFiles": []
+    }
+  }
+}

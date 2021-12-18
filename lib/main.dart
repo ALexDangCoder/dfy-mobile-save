@@ -150,6 +150,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> signTransaction() async {
     try {
       final data = {
+        'walletAddress': '',
         'fromAddress': '',
         'toAddress': '',
         'nonce': '',

@@ -1,0 +1,15 @@
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/CMakeFiles/install/local.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/CMakeFiles/install/strip.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/CMakeFiles/install.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/CMakeFiles/list_install_components.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/CMakeFiles/TrustWalletCore.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/CMakeFiles/protobuf.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/trezor-crypto/CMakeFiles/install/local.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/trezor-crypto/CMakeFiles/install/strip.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/trezor-crypto/CMakeFiles/install.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/trezor-crypto/CMakeFiles/list_install_components.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/trezor-crypto/CMakeFiles/rebuild_cache.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/trezor-crypto/CMakeFiles/edit_cache.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/trezor-crypto/CMakeFiles/TrezorCrypto.dir

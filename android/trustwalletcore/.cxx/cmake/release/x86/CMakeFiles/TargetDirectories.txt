@@ -1,0 +1,15 @@
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/CMakeFiles/install/local.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/CMakeFiles/install/strip.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/CMakeFiles/install.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/CMakeFiles/list_install_components.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/CMakeFiles/rebuild_cache.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/CMakeFiles/edit_cache.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/CMakeFiles/TrustWalletCore.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/CMakeFiles/protobuf.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/trezor-crypto/CMakeFiles/install/local.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/trezor-crypto/CMakeFiles/install/strip.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/trezor-crypto/CMakeFiles/install.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/trezor-crypto/CMakeFiles/list_install_components.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/trezor-crypto/CMakeFiles/rebuild_cache.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/trezor-crypto/CMakeFiles/edit_cache.dir
+/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86/trezor-crypto/CMakeFiles/TrezorCrypto.dir
