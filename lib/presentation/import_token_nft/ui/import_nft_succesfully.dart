@@ -89,6 +89,7 @@ class NFTSuccessfully extends StatelessWidget {
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.pop(context);
+                      Navigator.pop(context);
                     },
                     child: ButtonGold(
                       title: S.current.complete,

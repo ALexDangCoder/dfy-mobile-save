@@ -299,12 +299,8 @@ class _BodyState extends State<_Body> {
               ),
             ],
           ),
-          actions: <Widget>[
-            Divider(
-              height: 1.h,
-              color: AppTheme.getInstance().divideColor(),
-            ),
-            const Center(
+          actions: const <Widget>[
+            Center(
               child: CircularProgressIndicator(),
             ),
           ],
