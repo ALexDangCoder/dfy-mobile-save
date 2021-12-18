@@ -172,8 +172,8 @@ class _SendTokenState extends State<SendToken> {
                                 amount: double.parse(txtAmount.text),
                                 nameToken: 'BNB',
                                 cubitCategory: tokenCubit,
-                                gasPriceFirstFetch: tokenCubit.gasPrice,
-                                gasFeeFirstFetch: tokenCubit.estimateGasFee,
+                                gasPriceFirstFetch: tokenCubit.gasPrice / 1000000000,
+                                gasFeeFirstFetch: tokenCubit.estimateGasFee / 1000000000,
                               );
                             },
                           ),

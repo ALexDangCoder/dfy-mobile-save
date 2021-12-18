@@ -33,7 +33,8 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   }
 
   Future<void> getGasPrice() async {
-    gasPrice = await Web3Utils().getGasPrice();
+    final result = await Web3Utils().getGasPrice();
+    gasPrice = double.parse(result);
   }
 
   Future<void> getEstimateGas({
@@ -41,8 +42,9 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     required String to,
     required double value,
   }) async {
-    estimateGasFee =
+    final result =
         await Web3Utils().getEstimateGasPrice(from: from, to: to, value: value);
+    estimateGasFee = double.parse(result);
   }
 
   //handle nft pending api
