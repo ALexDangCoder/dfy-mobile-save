@@ -16,11 +16,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SendToken extends StatefulWidget {
   final String walletAddress;
   final ModelToken modelToken;
+  final String walletName;
 
   const SendToken({
     Key? key,
     required this.walletAddress,
     required this.modelToken,
+    required this.walletName,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class SendToken extends StatefulWidget {
 
 class _SendTokenState extends State<SendToken> {
   late SendTokenCubit tokenCubit;
+
   // final String fakeToAddress = '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
   late TextEditingController txtToAddressToken;
   late TextEditingController txtAmount;
@@ -159,12 +162,11 @@ class _SendTokenState extends State<SendToken> {
                           MaterialPageRoute(
                             builder: (_) {
                               return ConfirmBlockchainCategory(
-                                nameWallet: 'TestWallet',
+                                nameWallet: widget.walletName,
                                 nameTokenWallet: 'BNB',
                                 balanceWallet: tokenCubit.balanceWallet,
                                 typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
-                                addressFrom:
-                                    widget.walletAddress,
+                                addressFrom: widget.walletAddress,
                                 addressTo: txtToAddressToken.text,
                                 imageWallet: ImageAssets.symbol,
                                 amount: double.parse(txtAmount.text),
