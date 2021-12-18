@@ -299,8 +299,8 @@ class _BodyState extends State<_Body> {
               ),
             ],
           ),
-          actions: <Widget>[
-            const Center(
+          actions: const <Widget>[
+            Center(
               child: CircularProgressIndicator(),
             ),
           ],
