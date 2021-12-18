@@ -173,7 +173,7 @@ class _SendTokenState extends State<SendToken> {
                                 nameToken: 'BNB',
                                 cubitCategory: tokenCubit,
                                 gasPriceFirstFetch: tokenCubit.gasPrice / 1000000000,
-                                gasFeeFirstFetch: tokenCubit.estimateGasFee / 1000000000,
+                                gasFeeFirstFetch: tokenCubit.estimateGasFee / 1000000000000000000,
                               );
                             },
                           ),
