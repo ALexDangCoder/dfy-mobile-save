@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:typed_data';
 
 import 'package:Dfy/data/web3/abi/nft.g.dart';
 import 'package:Dfy/data/web3/abi/token.g.dart';
@@ -10,9 +11,9 @@ import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:convert/convert.dart';
 
 class ImportNftResponse {
   bool isSuccess;
@@ -384,6 +385,23 @@ class Web3Utils {
       ),
     );
     return amount / BigInt.from(10).pow(9);
+  }
+
+  // Future<double> getTokenEstimateGas({
+  //   required String contract,
+  //   required String from,
+  //   required String to,
+  //   required double value,
+  // }) async {
+  //   final token =
+  //       Token(address: EthereumAddress.fromHex(contract), client: client);
+  //       final amount = await token
+  // }
+
+  void sendRawTransaction({required String transaction}) {
+    final List<int> listInt = hex.decode(transaction);
+    final Uint8List signedTransaction = Uint8List.fromList(listInt);
+    client.sendRawTransaction(signedTransaction);
   }
 
   //Token detail
