@@ -158,7 +158,7 @@ class TokenDetail extends StatelessWidget {
                                     backgroundColor: Colors.transparent,
                                     builder: (_) {
                                       return SendToken(
-                                        // walletName: walletName ?? '',
+                                        walletName: walletName ?? '',
                                         modelToken: modelToken,
                                         walletAddress: walletAddress,
                                       );

@@ -366,12 +366,12 @@ class Web3Utils {
   }
 
   //get gas price
-  Future<double> getGasPrice() async {
+  Future<String> getGasPrice() async {
     final amount = await client.getGasPrice();
-    return amount.getInWei / BigInt.from(10).pow(9);
+    return '${amount.getInWei}';
   }
 
-  Future<double> getEstimateGasPrice({
+  Future<String> getEstimateGasPrice({
     required String from,
     required String to,
     required double value,
@@ -384,7 +384,7 @@ class Web3Utils {
         (value * 1000000000).toInt(),
       ),
     );
-    return amount / BigInt.from(10).pow(9);
+    return '$amount';
   }
 
   // Future<double> getTokenEstimateGas({
