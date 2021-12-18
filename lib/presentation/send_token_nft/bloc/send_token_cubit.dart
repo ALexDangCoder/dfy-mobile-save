@@ -183,7 +183,6 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       isValidAmountFormSink.add(true);
       txtInvalidAmountSink.add(S.current.insufficient_balance);
     } else {
-      print("here");
       isValidAmountFormSink.add(false);
       _flagAmount = true;
       if (_flagAddress && _flagAmount) {
@@ -329,45 +328,6 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       return false;
     } else {
       return true;
-    }
-  }
-
-  //web 3
-
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    bool isSuccess = false;
-    Uint8List signedTransaction;
-    switch (methodCall.method) {
-      case 'signTransactionCallback':
-        // print(methodCall.arguments);
-        isSuccess = await methodCall.arguments['isSuccess'];
-        signedTransaction = await methodCall.arguments['signedTransaction'];
-        break;
-      default:
-        break;
-    }
-  }
-
-  Future<void> signTransaction({
-    required String fromAddress,
-    required String toAddress,
-    required String chainId,
-    required double gasPrice,
-    required double price,
-    required double maxGas,
-  }) async {
-    try {
-      final data = {
-        'fromAddress': fromAddress,
-        'toAddress': toAddress,
-        'chainId': chainId,
-        'gasPrice': gasPrice,
-        'price': price,
-        'maxGas': maxGas,
-      };
-      await trustWalletChannel.invokeMethod('signTransaction', data);
-    } on PlatformException {
-      //todo
     }
   }
 

@@ -29,7 +29,7 @@ class SendToken extends StatefulWidget {
 
 class _SendTokenState extends State<SendToken> {
   late SendTokenCubit tokenCubit;
-  final String fakeToAddress = '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
+  // final String fakeToAddress = '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
   late TextEditingController txtToAddressToken;
   late TextEditingController txtAmount;
 
@@ -47,8 +47,8 @@ class _SendTokenState extends State<SendToken> {
     // );
     tokenCubit.getBalanceWallet(ofAddress: widget.walletAddress);
     tokenCubit.getGasPrice();
-    trustWalletChannel
-        .setMethodCallHandler(tokenCubit.nativeMethodCallBackTrustWallet);
+    // trustWalletChannel
+    //     .setMethodCallHandler(tokenCubit.nativeMethodCallBackTrustWallet);
   }
 
   @override
@@ -147,12 +147,11 @@ class _SendTokenState extends State<SendToken> {
                       tokenCubit.checkValidAmount(txtAmount.text);
                       await tokenCubit.getEstimateGas(
                         from: widget.walletAddress,
-                        to: fakeToAddress,
+                        to: txtToAddressToken.text,
                         value: double.parse(
                           txtAmount.text,
                         ),
                       );
-                      final estimateGasFee = tokenCubit.estimateGasFee;
                       //check validate before go to next screen
                       if (tokenCubit.checkAddressFtAmount()) {
                         Navigator.push(
@@ -165,14 +164,14 @@ class _SendTokenState extends State<SendToken> {
                                 balanceWallet: tokenCubit.balanceWallet,
                                 typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
                                 addressFrom:
-                                    widget.walletAddress.formatAddressWallet(),
-                                addressTo: fakeToAddress.formatAddressWallet(),
+                                    widget.walletAddress,
+                                addressTo: txtToAddressToken.text,
                                 imageWallet: ImageAssets.symbol,
                                 amount: double.parse(txtAmount.text),
                                 nameToken: 'BNB',
                                 cubitCategory: tokenCubit,
                                 gasPriceFirstFetch: tokenCubit.gasPrice,
-                                gasFeeFirstFetch: estimateGasFee,
+                                gasFeeFirstFetch: tokenCubit.estimateGasFee,
                               );
                             },
                           ),
