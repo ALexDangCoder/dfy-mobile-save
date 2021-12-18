@@ -1,0 +1,1 @@
+/Users/hoang/wallet-core/android/trustwalletcore/build/intermediates/cmake/release/obj/x86_64

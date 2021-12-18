@@ -12,12 +12,6 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import org.json.JSONArray
 import org.json.JSONObject
-import wallet.core.java.AnySigner
-import wallet.core.jni.AnyAddress
-import wallet.core.jni.CoinType
-import wallet.core.jni.HDWallet
-import wallet.core.jni.PrivateKey
-import wallet.core.jni.proto.Binance
 import java.math.BigInteger
 import java.security.InvalidParameterException
 import kotlin.experimental.and
@@ -42,7 +36,8 @@ class MainActivity : FlutterFragmentActivity() {
     private val CODE_ERROR = 400
 
     private var channel: MethodChannel? = null
-    private val coinType: CoinType = CoinType.SMARTCHAIN
+
+//    private val coinType: CoinType = CoinType.SMARTCHAIN
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
@@ -393,76 +388,76 @@ class MainActivity : FlutterFragmentActivity() {
         try {
             when (type) {
                 TYPE_WALLET_SEED_PHRASE -> {
-                    val wallet = HDWallet(content, "")
-                    val address = wallet.getAddressForCoin(coinType)
-                    val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
-                    val listWallet = ArrayList<WalletModel>()
-                    listWallet.addAll(appPreference.getListWallet())
-                    if (listWallet.firstOrNull { it.walletAddress == address } == null) {
-                        val walletName = "Account ${listWallet.size + 1}"
-                        hasMap["walletAddress"] = address
-                        listWallet.add(
-                            0,
-                            WalletModel(
-                                walletName,
-                                address,
-                                0,
-                                content,
-                                privateKey.toByteArray().toHexString(false),
-                                true
-                            )
-                        )
-                        listWallet.forEachIndexed { index, walletModel ->
-                            walletModel.walletIndex = index
-                        }
-                        appPreference.saveListWallet(listWallet)
-                        hasMap["walletName"] = walletName
-                        hasMap["code"] = CODE_SUCCESS
-                        hasMap["messages"] = "Import tài khoản thành công"
-                        channel?.invokeMethod("importWalletCallback", hasMap)
-                    } else {
-                        hasMap["walletAddress"] = ""
-                        hasMap["walletName"] = ""
-                        hasMap["code"] = CODE_ERROR
-                        hasMap["messages"] = "Tài khoản đã tồn tại"
-                        channel?.invokeMethod("importWalletCallback", hasMap)
-                    }
+//                    val wallet = HDWallet(content, "")
+//                    val address = wallet.getAddressForCoin(coinType)
+//                    val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
+//                    val listWallet = ArrayList<WalletModel>()
+//                    listWallet.addAll(appPreference.getListWallet())
+//                    if (listWallet.firstOrNull { it.walletAddress == address } == null) {
+//                        val walletName = "Account ${listWallet.size + 1}"
+//                        hasMap["walletAddress"] = address
+//                        listWallet.add(
+//                            0,
+//                            WalletModel(
+//                                walletName,
+//                                address,
+//                                0,
+//                                content,
+//                                privateKey.toByteArray().toHexString(false),
+//                                true
+//                            )
+//                        )
+//                        listWallet.forEachIndexed { index, walletModel ->
+//                            walletModel.walletIndex = index
+//                        }
+//                        appPreference.saveListWallet(listWallet)
+//                        hasMap["walletName"] = walletName
+//                        hasMap["code"] = CODE_SUCCESS
+//                        hasMap["messages"] = "Import tài khoản thành công"
+//                        channel?.invokeMethod("importWalletCallback", hasMap)
+//                    } else {
+//                        hasMap["walletAddress"] = ""
+//                        hasMap["walletName"] = ""
+//                        hasMap["code"] = CODE_ERROR
+//                        hasMap["messages"] = "Tài khoản đã tồn tại"
+//                        channel?.invokeMethod("importWalletCallback", hasMap)
+//                    }
                 }
                 TYPE_WALLET_PRIVATE_KEY -> {
-                    val privateKey = PrivateKey(content.toHexBytes())
-                    val publicKey = privateKey.getPublicKeySecp256k1(false)
-                    val address = AnyAddress(publicKey, coinType).description()
-                    val listWallet = ArrayList<WalletModel>()
-                    listWallet.addAll(appPreference.getListWallet())
-                    if (listWallet.firstOrNull { it.walletAddress == address } == null) {
-                        val walletName = "Account ${listWallet.size + 1}"
-                        hasMap["walletAddress"] = address
-                        listWallet.add(
-                            0,
-                            WalletModel(
-                                walletName,
-                                address,
-                                0,
-                                "",
-                                content,
-                                true
-                            )
-                        )
-                        listWallet.forEachIndexed { index, walletModel ->
-                            walletModel.walletIndex = index
-                        }
-                        appPreference.saveListWallet(listWallet)
-                        hasMap["walletName"] = walletName
-                        hasMap["code"] = CODE_SUCCESS
-                        hasMap["messages"] = "Import tài khoản thành công"
-                        channel?.invokeMethod("importWalletCallback", hasMap)
-                    } else {
-                        hasMap["walletAddress"] = ""
-                        hasMap["walletName"] = ""
-                        hasMap["code"] = CODE_ERROR
-                        hasMap["messages"] = "Tài khoản đã tồn tại"
-                        channel?.invokeMethod("importWalletCallback", hasMap)
-                    }
+//                    val privateKey = PrivateKey(content.toHexBytes())
+//                    val publicKey = privateKey.getPublicKeySecp256k1(false)
+//                    val address = AnyAddress(publicKey, coinType).description()
+//                    val listWallet = ArrayList<WalletModel>()
+//                    listWallet.addAll(appPreference.getListWallet())
+//                    if (listWallet.firstOrNull { it.walletAddress == address } == null) {
+//                        val walletName = "Account ${listWallet.size + 1}"
+//                        hasMap["walletAddress"] = address
+//                        listWallet.add(
+//                            0,
+//                            WalletModel(
+//                                walletName,
+//                                address,
+//                                0,
+//                                "",
+//                                content,
+//                                true
+//                            )
+//                        )
+//                        listWallet.forEachIndexed { index, walletModel ->
+//                            walletModel.walletIndex = index
+//                        }
+//                        appPreference.saveListWallet(listWallet)
+//                        hasMap["walletName"] = walletName
+//                        hasMap["code"] = CODE_SUCCESS
+//                        hasMap["messages"] = "Import tài khoản thành công"
+//                        channel?.invokeMethod("importWalletCallback", hasMap)
+//                    } else {
+//                        hasMap["walletAddress"] = ""
+//                        hasMap["walletName"] = ""
+//                        hasMap["code"] = CODE_ERROR
+//                        hasMap["messages"] = "Tài khoản đã tồn tại"
+//                        channel?.invokeMethod("importWalletCallback", hasMap)
+//                    }
                 }
                 else -> {
                     hasMap["walletAddress"] = ""
@@ -496,19 +491,19 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun generateWallet() {
-        val appPreference = AppPreference(this)
-        val wallet = HDWallet(128, "")
-        val seedPhrase = wallet.mnemonic()
-        val address = wallet.getAddressForCoin(coinType)
-        val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
-        val walletName = "Account ${appPreference.getListWallet().size + 1}"
-
-        val hasMap = HashMap<String, String>()
-        hasMap["walletName"] = walletName
-        hasMap["passPhrase"] = seedPhrase
-        hasMap["walletAddress"] = address
-        hasMap["privateKey"] = privateKey.toByteArray().toHexString(false)
-        channel?.invokeMethod("generateWalletCallback", hasMap)
+//        val appPreference = AppPreference(this)
+//        val wallet = HDWallet(128, "")
+//        val seedPhrase = wallet.mnemonic()
+//        val address = wallet.getAddressForCoin(coinType)
+//        val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
+//        val walletName = "Account ${appPreference.getListWallet().size + 1}"
+//
+//        val hasMap = HashMap<String, String>()
+//        hasMap["walletName"] = walletName
+//        hasMap["passPhrase"] = seedPhrase
+//        hasMap["walletAddress"] = address
+//        hasMap["privateKey"] = privateKey.toByteArray().toHexString(false)
+//        channel?.invokeMethod("generateWalletCallback", hasMap)
     }
 
     private fun storeWallet(
@@ -852,12 +847,32 @@ class MainActivity : FlutterFragmentActivity() {
         gasLimit: String,
         amount: String
     ) {
-        val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = true
-        hasMap["signedTransaction"] =
-            "f86b1985e8d4a5100082520894fc0f99bb0105b164ce317384e8415b953d4ae115865af3107a40008081e6a03f5872ca808076dfb9fde759c6a840c2c62532e3b3b65721b8ef5aaa2d734ba5a01acef3da2f4edec5f0717dd8225e2f058cbecdc446b5339475907e6d955c77e0"
-        channel?.invokeMethod("signTransactionCallback", hasMap)
+//        val wallet = HDWallet(seedPhrase, "")
+//        val coinEth: CoinType = CoinType.SMARTCHAIN
+//        val secretPrivateKey = wallet.getKeyForCoin(coinEth)
+//        val signerInput = Ethereum.SigningInput.newBuilder().apply {
+//            this.nonce = ByteString.copyFrom(BigInteger("20").toByteArray())
+//            this.chainId = ByteString.copyFrom(BigInteger("97").toByteArray())
+//            this.gasPrice = BigInteger("1000000000000").toByteString() // decimal 3600000000
+//            this.gasLimit = BigInteger("21000").toByteString()     // decimal 21000
+//            this.toAddress = "0xFC0f99Bb0105b164Ce317384E8415B953D4Ae115"
+//            this.transaction = Ethereum.Transaction.newBuilder().apply {
+//                transfer = Ethereum.Transaction.Transfer.newBuilder().apply {
+//                    amount = BigInteger("100000000000000").toByteString()
+//                }.build()
+//            }.build()
+//            this.privateKey = ByteString.copyFrom(secretPrivateKey.data())
+//        }.build()
+//
+//        val output =
+//            AnySigner.sign(signerInput, CoinType.SMARTCHAIN, Ethereum.SigningOutput.parser())
+//        val value = toHexString(output.encoded.toByteArray())
+//        val hasMap = HashMap<String, Any>()
+//        hasMap["isSuccess"] = true
+//        hasMap["signedTransaction"] = value
+//        channel?.invokeMethod("signTransactionCallback", hasMap)
     }
+
 }
 
 private fun String.hexStringToByteArray(): ByteArray {

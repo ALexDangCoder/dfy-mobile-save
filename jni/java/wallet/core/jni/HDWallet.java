@@ -1,0 +1,106 @@
+// Copyright © 2017-2021 Trust Wallet.
+//
+// This file is part of Trust. The full Trust copyright notice, including
+// terms governing use, modification, and redistribution, is contained in the
+// file LICENSE at the root of the source code distribution tree.
+//
+// This is a GENERATED FILE, changes made here WILL BE LOST.
+//
+
+package wallet.core.jni;
+
+import java.security.InvalidParameterException;
+import java.util.HashSet;
+
+public class HDWallet {
+    private long nativeHandle;
+
+    private HDWallet() {
+        nativeHandle = 0;
+    }
+
+    static HDWallet createFromNative(long nativeHandle) {
+        HDWallet instance = new HDWallet();
+        instance.nativeHandle = nativeHandle;
+        HDWalletPhantomReference.register(instance, nativeHandle);
+        return instance;
+    }
+
+    static native long nativeCreate(int strength, String passphrase);
+    static native long nativeCreateWithMnemonic(String mnemonic, String passphrase);
+    static native long nativeCreateWithMnemonicCheck(String mnemonic, String passphrase, boolean check);
+    static native long nativeCreateWithEntropy(byte[] entropy, String passphrase);
+    static native void nativeDelete(long handle);
+
+    public static native PublicKey getPublicKeyFromExtended(String extended, CoinType coin, String derivationPath);
+    public native byte[] seed();
+    public native String mnemonic();
+    public native byte[] entropy();
+    public native PrivateKey getMasterKey(Curve curve);
+    public native PrivateKey getKeyForCoin(CoinType coin);
+    public native String getAddressForCoin(CoinType coin);
+    public native PrivateKey getKey(CoinType coin, String derivationPath);
+    public native PrivateKey getDerivedKey(CoinType coin, int account, int change, int address);
+    public native String getExtendedPrivateKey(Purpose purpose, CoinType coin, HDVersion version);
+    public native String getExtendedPublicKey(Purpose purpose, CoinType coin, HDVersion version);
+
+    public HDWallet(int strength, String passphrase) {
+        nativeHandle = nativeCreate(strength, passphrase);
+        if (nativeHandle == 0) {
+            throw new InvalidParameterException();
+        }
+
+        HDWalletPhantomReference.register(this, nativeHandle);
+    }
+
+    public HDWallet(String mnemonic, String passphrase) {
+        nativeHandle = nativeCreateWithMnemonic(mnemonic, passphrase);
+        if (nativeHandle == 0) {
+            throw new InvalidParameterException();
+        }
+
+        HDWalletPhantomReference.register(this, nativeHandle);
+    }
+
+    public HDWallet(String mnemonic, String passphrase, boolean check) {
+        nativeHandle = nativeCreateWithMnemonicCheck(mnemonic, passphrase, check);
+        if (nativeHandle == 0) {
+            throw new InvalidParameterException();
+        }
+
+        HDWalletPhantomReference.register(this, nativeHandle);
+    }
+
+    public HDWallet(byte[] entropy, String passphrase) {
+        nativeHandle = nativeCreateWithEntropy(entropy, passphrase);
+        if (nativeHandle == 0) {
+            throw new InvalidParameterException();
+        }
+
+        HDWalletPhantomReference.register(this, nativeHandle);
+    }
+
+}
+
+class HDWalletPhantomReference extends java.lang.ref.PhantomReference<HDWallet> {
+    private static java.util.Set<HDWalletPhantomReference> references = new HashSet<HDWalletPhantomReference>();
+    private static java.lang.ref.ReferenceQueue<HDWallet> queue = new java.lang.ref.ReferenceQueue<HDWallet>();
+    private long nativeHandle;
+
+    private HDWalletPhantomReference(HDWallet referent, long nativeHandle) {
+        super(referent, queue);
+        this.nativeHandle = nativeHandle;
+    }
+
+    static void register(HDWallet referent, long nativeHandle) {
+        references.add(new HDWalletPhantomReference(referent, nativeHandle));
+    }
+
+    public static void doDeletes() {
+        HDWalletPhantomReference ref = (HDWalletPhantomReference) queue.poll();
+        for (; ref != null; ref = (HDWalletPhantomReference) queue.poll()) {
+            HDWallet.nativeDelete(ref.nativeHandle);
+            references.remove(ref);
+        }
+    }
+}

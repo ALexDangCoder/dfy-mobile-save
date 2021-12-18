@@ -1,0 +1,15 @@
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/CMakeFiles/install/local.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/CMakeFiles/install/strip.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/CMakeFiles/install.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/CMakeFiles/list_install_components.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/CMakeFiles/edit_cache.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/CMakeFiles/TrustWalletCore.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/CMakeFiles/protobuf.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/trezor-crypto/CMakeFiles/install/local.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/trezor-crypto/CMakeFiles/install/strip.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/trezor-crypto/CMakeFiles/install.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/trezor-crypto/CMakeFiles/list_install_components.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/trezor-crypto/CMakeFiles/rebuild_cache.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/trezor-crypto/CMakeFiles/edit_cache.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86/trezor-crypto/CMakeFiles/TrezorCrypto.dir

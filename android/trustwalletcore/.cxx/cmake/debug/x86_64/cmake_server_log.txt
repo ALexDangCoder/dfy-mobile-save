@@ -1,0 +1,395 @@
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"supportedProtocolVersions":[{"isExperimental":true,"major":1,"minor":1}],"type":"hello"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {
+  "type": "handshake",
+  "cookie": "gradle-cmake-cookie",
+  "protocolVersion": {
+    "isExperimental": true,
+    "major": 1,
+    "minor": 1
+  },
+  "sourceDirectory": "/Users/hoang/dfy-mobile",
+  "buildDirectory": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86_64",
+  "generator": "Ninja"
+}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"gradle-cmake-cookie","inReplyTo":"handshake","type":"reply"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {
+  "type": "configure",
+  "cacheArguments": [
+    "",
+    "-DCMAKE_FIND_ROOT_PATH\u003d/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/prefab/x86_64/prefab",
+    "-DCMAKE_TOOLCHAIN_FILE\u003d/Users/hoang/Library/Android/sdk/ndk/21.2.6472646/build/cmake/android.toolchain.cmake",
+    "-DANDROID_ABI\u003dx86_64",
+    "-DANDROID_NDK\u003d/Users/hoang/Library/Android/sdk/ndk/21.2.6472646",
+    "-DANDROID_PLATFORM\u003dandroid-23",
+    "-DCMAKE_ANDROID_ARCH_ABI\u003dx86_64",
+    "-DCMAKE_ANDROID_NDK\u003d/Users/hoang/Library/Android/sdk/ndk/21.2.6472646",
+    "-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON",
+    "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/Users/hoang/dfy-mobile/build/trustwalletcore/intermediates/cmake/debug/obj/x86_64",
+    "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003d/Users/hoang/dfy-mobile/build/trustwalletcore/intermediates/cmake/debug/obj/x86_64",
+    "-DCMAKE_MAKE_PROGRAM\u003d/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+    "-DCMAKE_SYSTEM_NAME\u003dAndroid",
+    "-DCMAKE_SYSTEM_VERSION\u003d23",
+    "-DCMAKE_BUILD_TYPE\u003dRelease"
+  ]
+}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Check for working C compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Check for working C compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang
+CMAKE SERVER: Check for working C compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":33,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Check for working C compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang -- works","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Check for working C compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang -- works
+CMAKE SERVER: Check for working C compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang -- works
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting C compiler ABI info","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting C compiler ABI info
+CMAKE SERVER: Detecting C compiler ABI info
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":65,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting C compiler ABI info - done","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting C compiler ABI info - done
+CMAKE SERVER: Detecting C compiler ABI info - done
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting C compile features","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting C compile features
+CMAKE SERVER: Detecting C compile features
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":96,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":126,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":155,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting C compile features - done","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting C compile features - done
+CMAKE SERVER: Detecting C compile features - done
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Check for working CXX compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Check for working CXX compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++
+CMAKE SERVER: Check for working CXX compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":184,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Check for working CXX compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ -- works","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Check for working CXX compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ -- works
+CMAKE SERVER: Check for working CXX compiler: /Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ -- works
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting CXX compiler ABI info","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting CXX compiler ABI info
+CMAKE SERVER: Detecting CXX compiler ABI info
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":211,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting CXX compiler ABI info - done","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting CXX compiler ABI info - done
+CMAKE SERVER: Detecting CXX compiler ABI info - done
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting CXX compile features","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting CXX compile features
+CMAKE SERVER: Detecting CXX compile features
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":237,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":262,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":287,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":311,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting CXX compile features - done","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting CXX compile features - done
+CMAKE SERVER: Detecting CXX compile features - done
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":334,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Boost version: 1.76.0","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Boost version: 1.76.0
+CMAKE SERVER: Boost version: 1.76.0
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Configuring for JNI","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Configuring for JNI
+CMAKE SERVER: Configuring for JNI
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":950,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":1000,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Configuring done","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Configuring done
+CMAKE SERVER: Configuring done
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","type":"reply"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"type":"compute"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"compute","progressCurrent":500,"progressMaximum":1000,"progressMessage":"Generating","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"compute","progressCurrent":1000,"progressMaximum":1000,"progressMessage":"Generating","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"compute","message":"Generating done","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Generating done
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"compute","type":"reply"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"type":"cmakeInputs"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"buildFiles":[{"isCMake":true,"isTemporary":false,"sources":["../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineSystem.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Determine.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeSystem.cmake.in","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeSystemSpecificInitialize.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Initialize.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCCompiler.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompiler.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Determine-C.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android/Determine-Compiler.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeFindBinUtils.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-FindBinUtils.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCCompiler.cmake.in","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCXXCompiler.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompiler.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Determine-CXX.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android/Determine-Compiler.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeFindBinUtils.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-FindBinUtils.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCXXCompiler.cmake.in","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeSystemSpecificInformation.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeGenericSystem.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Linux.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/UnixPaths.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCInformation.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeLanguageInformation.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-C.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/CMakeCommonCompilerMacros.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/GNU.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/CMakeCommonCompilerMacros.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang-C.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCommonLanguageInclude.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeTestCCompiler.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeTestCompilerCommon.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompilerABI.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeParseImplicitLinkInfo.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCCompilerABI.c","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompileFeatures.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Internal/FeatureTesting.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-C-FeatureTests.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-C-FeatureTests.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-C-FeatureTests.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCCompiler.cmake.in","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCXXInformation.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeLanguageInformation.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang-CXX.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCommonLanguageInclude.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeTestCXXCompiler.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeTestCompilerCommon.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompilerABI.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeParseImplicitLinkInfo.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCXXCompilerABI.cpp","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompileFeatures.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Internal/FeatureTesting.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-FeatureTests.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-TestableFeatures.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-FeatureTests.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-TestableFeatures.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-FeatureTests.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-TestableFeatures.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-FeatureTests.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-TestableFeatures.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCXXCompiler.cmake.in","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/GNUInstallDirs.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/FindBoost.cmake","../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/ExternalProject.cmake"]},{"isCMake":false,"isTemporary":false,"sources":["CMakeLists.txt","../Library/Android/sdk/ndk/21.2.6472646/build/cmake/android.toolchain.cmake","../Library/Android/sdk/ndk/21.2.6472646/build/cmake/platforms.cmake","../Library/Android/sdk/ndk/21.2.6472646/build/cmake/android.toolchain.cmake","cmake/Protobuf.cmake","swift/cpp.xcconfig.in","trezor-crypto/CMakeLists.txt"]},{"isCMake":false,"isTemporary":true,"sources":["android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/3.10.2/CMakeSystem.cmake","android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/3.10.2/CMakeCCompiler.cmake","android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake","android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/feature_tests.c","android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/feature_tests.c","android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/feature_tests.c","android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/3.10.2/CMakeCCompiler.cmake","android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/feature_tests.cxx","android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/feature_tests.cxx","android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/feature_tests.cxx","android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/feature_tests.cxx","android/trustwalletcore/.cxx/cmake/debug/x86_64/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake"]}],"cmakeRootDirectory":"/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10","cookie":"","inReplyTo":"cmakeInputs","sourceDirectory":"/Users/hoang/dfy-mobile","type":"reply"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"type":"codemodel"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"configurations":[{"name":"Release","projects":[{"buildDirectory":"/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86_64","name":"TrustWalletCore","sourceDirectory":"/Users/hoang/dfy-mobile","targets":[{"artifacts":["/Users/hoang/dfy-mobile/build/trustwalletcore/intermediates/cmake/debug/obj/x86_64/libTrustWalletCore.so"],"buildDirectory":"/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86_64","fileGroups":[{"compileFlags":"-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -Wall","defines":["TrustWalletCore_EXPORTS"],"includePath":[{"path":"/Users/hoang/dfy-mobile/build/local/include"},{"path":"/Users/hoang/dfy-mobile/build/local/src/protobuf/protobuf-3.14.0/src"},{"path":"/Users/hoang/dfy-mobile/include"},{"path":"/Users/hoang/dfy-mobile/src"},{"path":"/Users/hoang/dfy-mobile/jni/cpp"},{"path":"/Users/hoang/dfy-mobile/trezor-crypto/include"},{"isSystem":true,"path":"/usr/local/include"}],"isGenerated":false,"language":"C","sources":["jni/cpp/AnySigner.c","jni/cpp/generated/AES.c","jni/cpp/generated/AESPaddingMode.c","jni/cpp/generated/Account.c","jni/cpp/generated/AnyAddress.c","jni/cpp/generated/Base58.c","jni/cpp/generated/BitcoinAddress.c","jni/cpp/generated/BitcoinScript.c","jni/cpp/generated/BitcoinSigHashType.c","jni/cpp/generated/Blockchain.c","jni/cpp/generated/CoinType.c","jni/cpp/generated/CoinTypeConfiguration.c","jni/cpp/generated/Curve.c","jni/cpp/generated/EthereumAbi.c","jni/cpp/generated/EthereumAbiFunction.c","jni/cpp/generated/EthereumAbiValue.c","jni/cpp/generated/EthereumChainID.c","jni/cpp/generated/EthereumFee.c","jni/cpp/generated/FIOAccount.c","jni/cpp/generated/GroestlcoinAddress.c","jni/cpp/generated/HDVersion.c","jni/cpp/generated/HDWallet.c","jni/cpp/generated/HRP.c","jni/cpp/generated/Hash.c","jni/cpp/generated/Mnemonic.c","jni/cpp/generated/NEARAccount.c","jni/cpp/generated/PrivateKey.c","jni/cpp/generated/PublicKey.c","jni/cpp/generated/PublicKeyType.c","jni/cpp/generated/Purpose.c","jni/cpp/generated/RippleXAddress.c","jni/cpp/generated/SS58AddressType.c","jni/cpp/generated/SegwitAddress.c","jni/cpp/generated/SolanaAddress.c","jni/cpp/generated/StellarMemoType.c","jni/cpp/generated/StellarPassphrase.c","jni/cpp/generated/StellarVersionByte.c","jni/cpp/generated/StoredKey.c","jni/cpp/generated/StoredKeyEncryptionLevel.c","jni/cpp/generated/THORChainSwap.c"]},{"isGenerated":false,"sources":["src/Aeternity/Address.h","src/Aeternity/Entry.h","src/Aeternity/Identifiers.h","src/Aeternity/Signer.h","src/Aeternity/Transaction.h","src/Aion/Address.h","src/Aion/Entry.h","src/Aion/RLP.h","src/Aion/Signer.h","src/Aion/Transaction.h","src/Algorand/Address.h","src/Algorand/AssetTransfer.h","src/Algorand/BaseTransaction.h","src/Algorand/BinaryCoding.h","src/Algorand/Entry.h","src/Algorand/OptInAssetTransaction.h","src/Algorand/Signer.h","src/Algorand/Transfer.h","src/Base32.h","src/Base58.h","src/Base58Address.h","src/Base64.h","src/Bech32.h","src/Bech32Address.h","src/Binance/Address.h","src/Binance/Entry.h","src/Binance/Serialization.h","src/Binance/Signer.h","src/BinaryCoding.h","src/Bitcoin/Address.h","src/Bitcoin/Amount.h","src/Bitcoin/CashAddress.h","src/Bitcoin/Entry.h","src/Bitcoin/FeeCalculator.h","src/Bitcoin/InputSelector.h","src/Bitcoin/OpCodes.h","src/Bitcoin/OutPoint.h","src/Bitcoin/Script.h","src/Bitcoin/SegwitAddress.h","src/Bitcoin/SigHashType.h","src/Bitcoin/SignatureBuilder.h","src/Bitcoin/SignatureVersion.h","src/Bitcoin/Signer.h","src/Bitcoin/SigningInput.h","src/Bitcoin/Transaction.h","src/Bitcoin/TransactionBuilder.h","src/Bitcoin/TransactionInput.h","src/Bitcoin/TransactionOutput.h","src/Bitcoin/TransactionPlan.h","src/Bitcoin/TransactionSigner.h","src/Bitcoin/UTXO.h","src/Cardano/AddressV2.h","src/Cardano/AddressV3.h","src/Cardano/Entry.h","src/Cbor.h","src/Coin.h","src/CoinEntry.h","src/Cosmos/Address.h","src/Cosmos/Entry.h","src/Cosmos/JsonSerialization.h","src/Cosmos/Protobuf/bank_tx.pb.h","src/Cosmos/Protobuf/coin.pb.h","src/Cosmos/Protobuf/crypto_multisig.pb.h","src/Cosmos/Protobuf/crypto_secp256k1_keys.pb.h","src/Cosmos/Protobuf/distribution_tx.pb.h","src/Cosmos/Protobuf/ibc_applications_transfer_tx.pb.h","src/Cosmos/Protobuf/ibc_core_client.pb.h","src/Cosmos/Protobuf/staking_tx.pb.h","src/Cosmos/Protobuf/tx.pb.h","src/Cosmos/Protobuf/tx_signing.pb.h","src/Cosmos/ProtobufSerialization.h","src/Cosmos/Signer.h","src/Crc.h","src/Data.h","src/Decred/Address.h","src/Decred/Entry.h","src/Decred/OutPoint.h","src/Decred/Signer.h","src/Decred/Transaction.h","src/Decred/TransactionBuilder.h","src/Decred/TransactionInput.h","src/Decred/TransactionOutput.h","src/DerivationPath.h","src/EOS/Action.h","src/EOS/Address.h","src/EOS/Asset.h","src/EOS/Entry.h","src/EOS/KeyType.h","src/EOS/Name.h","src/EOS/PackedTransaction.h","src/EOS/Prefixes.h","src/EOS/Serialization.h","src/EOS/Signer.h","src/EOS/Transaction.h","src/Elrond/Address.h","src/Elrond/Entry.h","src/Elrond/Serialization.h","src/Elrond/Signer.h","src/Encrypt.h","src/Ethereum/ABI.h","src/Ethereum/ABI/Array.h","src/Ethereum/ABI/Bytes.h","src/Ethereum/ABI/Function.h","src/Ethereum/ABI/ParamAddress.h","src/Ethereum/ABI/ParamBase.h","src/Ethereum/ABI/ParamFactory.h","src/Ethereum/ABI/ParamNumber.h","src/Ethereum/ABI/ParamStruct.h","src/Ethereum/ABI/Parameters.h","src/Ethereum/ABI/Tuple.h","src/Ethereum/ABI/ValueDecoder.h","src/Ethereum/ABI/ValueEncoder.h","src/Ethereum/Address.h","src/Ethereum/AddressChecksum.h","src/Ethereum/ContractCall.h","src/Ethereum/Entry.h","src/Ethereum/Fee.h","src/Ethereum/RLP.h","src/Ethereum/Signer.h","src/Ethereum/Transaction.h","src/FIO/Action.h","src/FIO/Actor.h","src/FIO/Address.h","src/FIO/Encryption.h","src/FIO/Entry.h","src/FIO/NewFundsRequest.h","src/FIO/Signer.h","src/FIO/Transaction.h","src/FIO/TransactionBuilder.h","src/Filecoin/Address.h","src/Filecoin/Entry.h","src/Filecoin/Signer.h","src/Filecoin/Transaction.h","src/Groestlcoin/Address.h","src/Groestlcoin/Entry.h","src/Groestlcoin/Signer.h","src/Groestlcoin/Transaction.h","src/HDWallet.h","src/Harmony/Address.h","src/Harmony/Entry.h","src/Harmony/Signer.h","src/Harmony/Staking.h","src/Harmony/Transaction.h","src/Hash.h","src/HexCoding.h","src/Icon/Address.h","src/Icon/AddressType.h","src/Icon/Entry.h","src/Icon/Signer.h","src/IoTeX/Address.h","src/IoTeX/Entry.h","src/IoTeX/Signer.h","src/IoTeX/Staking.h","src/KeyPair.h","src/Keystore/AESParameters.h","src/Keystore/Account.h","src/Keystore/EncryptionParameters.h","src/Keystore/PBKDF2Parameters.h","src/Keystore/ScryptParameters.h","src/Keystore/StoredKey.h","src/Kusama/Address.h","src/Kusama/Entry.h","src/Mnemonic.h","src/NEAR/Account.h","src/NEAR/Address.h","src/NEAR/Entry.h","src/NEAR/Serialization.h","src/NEAR/Signer.h","src/NEO/Address.h","src/NEO/CoinReference.h","src/NEO/Entry.h","src/NEO/ISerializable.h","src/NEO/MinerTransaction.h","src/NEO/OpCode.h","src/NEO/ReadData.h","src/NEO/Script.h","src/NEO/Serializable.h","src/NEO/Signer.h","src/NEO/Transaction.h","src/NEO/TransactionAttribute.h","src/NEO/TransactionAttributeUsage.h","src/NEO/TransactionOutput.h","src/NEO/TransactionType.h","src/NEO/Witness.h","src/NULS/Address.h","src/NULS/BinaryCoding.h","src/NULS/Entry.h","src/NULS/Signer.h","src/Nano/Address.h","src/Nano/Entry.h","src/Nano/Signer.h","src/Nebulas/Address.h","src/Nebulas/Entry.h","src/Nebulas/Signer.h","src/Nebulas/Transaction.h","src/Nimiq/Address.h","src/Nimiq/Entry.h","src/Nimiq/Signer.h","src/Nimiq/Transaction.h","src/Oasis/Address.h","src/Oasis/Entry.h","src/Oasis/Signer.h","src/Oasis/Transaction.h","src/Ontology/Address.h","src/Ontology/Asset.h","src/Ontology/Entry.h","src/Ontology/Ong.h","src/Ontology/OngTxBuilder.h","src/Ontology/Ont.h","src/Ontology/OntTxBuilder.h","src/Ontology/OpCode.h","src/Ontology/ParamsBuilder.h","src/Ontology/SigData.h","src/Ontology/Signer.h","src/Ontology/Transaction.h","src/Polkadot/Address.h","src/Polkadot/Entry.h","src/Polkadot/Extrinsic.h","src/Polkadot/ScaleCodec.h","src/Polkadot/Signer.h","src/PrivateKey.h","src/PublicKey.h","src/Result.h","src/Ripple/Address.h","src/Ripple/BinaryCoding.h","src/Ripple/Entry.h","src/Ripple/Signer.h","src/Ripple/Transaction.h","src/Ripple/XAddress.h","src/SS58Address.h","src/Solana/Address.h","src/Solana/Entry.h","src/Solana/Program.h","src/Solana/Signer.h","src/Solana/Transaction.h","src/Stellar/Address.h","src/Stellar/Entry.h","src/Stellar/Signer.h","src/THORChain/Entry.h","src/THORChain/Signer.h","src/THORChain/Swap.h","src/Tezos/Address.h","src/Tezos/BinaryCoding.h","src/Tezos/Entry.h","src/Tezos/Forging.h","src/Tezos/OperationList.h","src/Tezos/Signer.h","src/Theta/Coins.h","src/Theta/Entry.h","src/Theta/Signer.h","src/Theta/Transaction.h","src/Tron/Address.h","src/Tron/Entry.h","src/Tron/Protobuf/TronInternal.pb.h","src/Tron/Serialization.h","src/Tron/Signer.h","src/VeChain/Clause.h","src/VeChain/Entry.h","src/VeChain/Signer.h","src/VeChain/Transaction.h","src/Waves/Address.h","src/Waves/BinaryCoding.h","src/Waves/Entry.h","src/Waves/Signer.h","src/Waves/Transaction.h","src/XXHash64.h","src/Zcash/Entry.h","src/Zcash/Signer.h","src/Zcash/TAddress.h","src/Zcash/Transaction.h","src/Zcash/TransactionBuilder.h","src/Zilliqa/Address.h","src/Zilliqa/AddressChecksum.h","src/Zilliqa/Entry.h","src/Zilliqa/Protobuf/ZilliqaMessage.pb.h","src/Zilliqa/Signer.h","src/proto/Aeternity.pb.h","src/proto/Aion.pb.h","src/proto/Algorand.pb.h","src/proto/Binance.pb.h","src/proto/Bitcoin.pb.h","src/proto/Common.pb.h","src/proto/Cosmos.pb.h","src/proto/Decred.pb.h","src/proto/EOS.pb.h","src/proto/Elrond.pb.h","src/proto/Ethereum.pb.h","src/proto/FIO.pb.h","src/proto/Filecoin.pb.h","src/proto/Harmony.pb.h","src/proto/Icon.pb.h","src/proto/IoTeX.pb.h","src/proto/NEAR.pb.h","src/proto/NEO.pb.h","src/proto/NULS.pb.h","src/proto/Nano.pb.h","src/proto/Nebulas.pb.h","src/proto/Nimiq.pb.h","src/proto/Oasis.pb.h","src/proto/Ontology.pb.h","src/proto/Polkadot.pb.h","src/proto/Ripple.pb.h","src/proto/Solana.pb.h","src/proto/Stellar.pb.h","src/proto/THORChainSwap.pb.h","src/proto/Tezos.pb.h","src/proto/Theta.pb.h","src/proto/Tron.pb.h","src/proto/VeChain.pb.h","src/proto/Waves.pb.h","src/proto/Zilliqa.pb.h","src/uint256.h","jni/cpp/AnySigner.h","jni/cpp/TWJNI.h","jni/cpp/TWJNIData.h","jni/cpp/TWJNIString.h","jni/cpp/generated/AES.h","jni/cpp/generated/AESPaddingMode.h","jni/cpp/generated/Account.h","jni/cpp/generated/AnyAddress.h","jni/cpp/generated/Base58.h","jni/cpp/generated/BitcoinAddress.h","jni/cpp/generated/BitcoinScript.h","jni/cpp/generated/BitcoinSigHashType.h","jni/cpp/generated/Blockchain.h","jni/cpp/generated/CoinType.h","jni/cpp/generated/CoinTypeConfiguration.h","jni/cpp/generated/Curve.h","jni/cpp/generated/EthereumAbi.h","jni/cpp/generated/EthereumAbiFunction.h","jni/cpp/generated/EthereumAbiValue.h","jni/cpp/generated/EthereumChainID.h","jni/cpp/generated/EthereumFee.h","jni/cpp/generated/FIOAccount.h","jni/cpp/generated/GroestlcoinAddress.h","jni/cpp/generated/HDVersion.h","jni/cpp/generated/HDWallet.h","jni/cpp/generated/HRP.h","jni/cpp/generated/Hash.h","jni/cpp/generated/Mnemonic.h","jni/cpp/generated/NEARAccount.h","jni/cpp/generated/PrivateKey.h","jni/cpp/generated/PublicKey.h","jni/cpp/generated/PublicKeyType.h","jni/cpp/generated/Purpose.h","jni/cpp/generated/RippleXAddress.h","jni/cpp/generated/SS58AddressType.h","jni/cpp/generated/SegwitAddress.h","jni/cpp/generated/SolanaAddress.h","jni/cpp/generated/StellarMemoType.h","jni/cpp/generated/StellarPassphrase.h","jni/cpp/generated/StellarVersionByte.h","jni/cpp/generated/StoredKey.h","jni/cpp/generated/StoredKeyEncryptionLevel.h","jni/cpp/generated/THORChainSwap.h"]},{"compileFlags":"-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -Wshorten-64-to-32 -O2 -DNDEBUG  -fPIC -fvisibility=hidden   -Wall -std=gnu++1z","defines":["TrustWalletCore_EXPORTS"],"includePath":[{"path":"/Users/hoang/dfy-mobile/build/local/include"},{"path":"/Users/hoang/dfy-mobile/build/local/src/protobuf/protobuf-3.14.0/src"},{"path":"/Users/hoang/dfy-mobile/include"},{"path":"/Users/hoang/dfy-mobile/src"},{"path":"/Users/hoang/dfy-mobile/jni/cpp"},{"path":"/Users/hoang/dfy-mobile/trezor-crypto/include"},{"isSystem":true,"path":"/usr/local/include"}],"isGenerated":false,"language":"CXX","sources":["src/Cosmos/Protobuf/bank_tx.pb.cc","src/Cosmos/Protobuf/coin.pb.cc","src/Cosmos/Protobuf/crypto_multisig.pb.cc","src/Cosmos/Protobuf/crypto_secp256k1_keys.pb.cc","src/Cosmos/Protobuf/distribution_tx.pb.cc","src/Cosmos/Protobuf/ibc_applications_transfer_tx.pb.cc","src/Cosmos/Protobuf/ibc_core_client.pb.cc","src/Cosmos/Protobuf/staking_tx.pb.cc","src/Cosmos/Protobuf/tx.pb.cc","src/Cosmos/Protobuf/tx_signing.pb.cc","src/Tron/Protobuf/TronInternal.pb.cc","src/Zilliqa/Protobuf/ZilliqaMessage.pb.cc","src/proto/Aeternity.pb.cc","src/proto/Aion.pb.cc","src/proto/Algorand.pb.cc","src/proto/Binance.pb.cc","src/proto/Bitcoin.pb.cc","src/proto/Common.pb.cc","src/proto/Cosmos.pb.cc","src/proto/Decred.pb.cc","src/proto/EOS.pb.cc","src/proto/Elrond.pb.cc","src/proto/Ethereum.pb.cc","src/proto/FIO.pb.cc","src/proto/Filecoin.pb.cc","src/proto/Harmony.pb.cc","src/proto/Icon.pb.cc","src/proto/IoTeX.pb.cc","src/proto/NEAR.pb.cc","src/proto/NEO.pb.cc","src/proto/NULS.pb.cc","src/proto/Nano.pb.cc","src/proto/Nebulas.pb.cc","src/proto/Nimiq.pb.cc","src/proto/Oasis.pb.cc","src/proto/Ontology.pb.cc","src/proto/Polkadot.pb.cc","src/proto/Ripple.pb.cc","src/proto/Solana.pb.cc","src/proto/Stellar.pb.cc","src/proto/THORChainSwap.pb.cc","src/proto/Tezos.pb.cc","src/proto/Theta.pb.cc","src/proto/Tron.pb.cc","src/proto/VeChain.pb.cc","src/proto/Waves.pb.cc","src/proto/Zilliqa.pb.cc","src/Aeternity/Address.cpp","src/Aeternity/Entry.cpp","src/Aeternity/Signer.cpp","src/Aeternity/Transaction.cpp","src/Aion/Address.cpp","src/Aion/Entry.cpp","src/Aion/Signer.cpp","src/Aion/Transaction.cpp","src/Algorand/Address.cpp","src/Algorand/AssetTransfer.cpp","src/Algorand/Entry.cpp","src/Algorand/OptInAssetTransaction.cpp","src/Algorand/Signer.cpp","src/Algorand/Transfer.cpp","src/Base58.cpp","src/Base64.cpp","src/Bech32.cpp","src/Bech32Address.cpp","src/Binance/Address.cpp","src/Binance/Entry.cpp","src/Binance/Serialization.cpp","src/Binance/Signer.cpp","src/BinaryCoding.cpp","src/Bitcoin/Address.cpp","src/Bitcoin/CashAddress.cpp","src/Bitcoin/Entry.cpp","src/Bitcoin/FeeCalculator.cpp","src/Bitcoin/InputSelector.cpp","src/Bitcoin/OutPoint.cpp","src/Bitcoin/Script.cpp","src/Bitcoin/SegwitAddress.cpp","src/Bitcoin/SignatureBuilder.cpp","src/Bitcoin/Signer.cpp","src/Bitcoin/SigningInput.cpp","src/Bitcoin/Transaction.cpp","src/Bitcoin/TransactionBuilder.cpp","src/Bitcoin/TransactionInput.cpp","src/Bitcoin/TransactionOutput.cpp","src/Bitcoin/TransactionSigner.cpp","src/Cardano/AddressV2.cpp","src/Cardano/AddressV3.cpp","src/Cardano/Entry.cpp","src/Cbor.cpp","src/Coin.cpp","src/Cosmos/Address.cpp","src/Cosmos/Entry.cpp","src/Cosmos/JsonSerialization.cpp","src/Cosmos/ProtobufSerialization.cpp","src/Cosmos/Signer.cpp","src/Crc.cpp","src/Data.cpp","src/Decred/Address.cpp","src/Decred/Entry.cpp","src/Decred/OutPoint.cpp","src/Decred/Signer.cpp","src/Decred/Transaction.cpp","src/Decred/TransactionInput.cpp","src/Decred/TransactionOutput.cpp","src/DerivationPath.cpp","src/EOS/Action.cpp","src/EOS/Address.cpp","src/EOS/Asset.cpp","src/EOS/Entry.cpp","src/EOS/Name.cpp","src/EOS/PackedTransaction.cpp","src/EOS/Signer.cpp","src/EOS/Transaction.cpp","src/Elrond/Address.cpp","src/Elrond/Entry.cpp","src/Elrond/Serialization.cpp","src/Elrond/Signer.cpp","src/Encrypt.cpp","src/Ethereum/ABI/Array.cpp","src/Ethereum/ABI/Bytes.cpp","src/Ethereum/ABI/Function.cpp","src/Ethereum/ABI/ParamAddress.cpp","src/Ethereum/ABI/ParamBase.cpp","src/Ethereum/ABI/ParamFactory.cpp","src/Ethereum/ABI/ParamNumber.cpp","src/Ethereum/ABI/ParamStruct.cpp","src/Ethereum/ABI/Parameters.cpp","src/Ethereum/ABI/Tuple.cpp","src/Ethereum/ABI/ValueDecoder.cpp","src/Ethereum/ABI/ValueEncoder.cpp","src/Ethereum/Address.cpp","src/Ethereum/AddressChecksum.cpp","src/Ethereum/ContractCall.cpp","src/Ethereum/Entry.cpp","src/Ethereum/Fee.cpp","src/Ethereum/RLP.cpp","src/Ethereum/Signer.cpp","src/Ethereum/Transaction.cpp","src/FIO/Action.cpp","src/FIO/Actor.cpp","src/FIO/Address.cpp","src/FIO/Encryption.cpp","src/FIO/Entry.cpp","src/FIO/NewFundsRequest.cpp","src/FIO/Signer.cpp","src/FIO/Transaction.cpp","src/FIO/TransactionBuilder.cpp","src/Filecoin/Address.cpp","src/Filecoin/Entry.cpp","src/Filecoin/Signer.cpp","src/Filecoin/Transaction.cpp","src/Generated/CoinInfoData.cpp","src/Generated/TWHRP.cpp","src/Groestlcoin/Address.cpp","src/Groestlcoin/Entry.cpp","src/Groestlcoin/Signer.cpp","src/HDWallet.cpp","src/Harmony/Address.cpp","src/Harmony/Entry.cpp","src/Harmony/Signer.cpp","src/Harmony/Staking.cpp","src/Harmony/Transaction.cpp","src/Hash.cpp","src/Icon/Address.cpp","src/Icon/Entry.cpp","src/Icon/Signer.cpp","src/IoTeX/Address.cpp","src/IoTeX/Entry.cpp","src/IoTeX/Signer.cpp","src/IoTeX/Staking.cpp","src/Keystore/AESParameters.cpp","src/Keystore/Account.cpp","src/Keystore/EncryptionParameters.cpp","src/Keystore/PBKDF2Parameters.cpp","src/Keystore/ScryptParameters.cpp","src/Keystore/StoredKey.cpp","src/Kusama/Entry.cpp","src/Mnemonic.cpp","src/NEAR/Account.cpp","src/NEAR/Address.cpp","src/NEAR/Entry.cpp","src/NEAR/Serialization.cpp","src/NEAR/Signer.cpp","src/NEO/Address.cpp","src/NEO/Entry.cpp","src/NEO/ReadData.cpp","src/NEO/Script.cpp","src/NEO/Signer.cpp","src/NEO/Transaction.cpp","src/NULS/Address.cpp","src/NULS/Entry.cpp","src/NULS/Signer.cpp","src/Nano/Address.cpp","src/Nano/Entry.cpp","src/Nano/Signer.cpp","src/Nebulas/Address.cpp","src/Nebulas/Entry.cpp","src/Nebulas/Signer.cpp","src/Nebulas/Transaction.cpp","src/Nimiq/Address.cpp","src/Nimiq/Entry.cpp","src/Nimiq/Signer.cpp","src/Nimiq/Transaction.cpp","src/Oasis/Address.cpp","src/Oasis/Entry.cpp","src/Oasis/Signer.cpp","src/Oasis/Transaction.cpp","src/Ontology/Address.cpp","src/Ontology/Entry.cpp","src/Ontology/Ong.cpp","src/Ontology/OngTxBuilder.cpp","src/Ontology/Ont.cpp","src/Ontology/OntTxBuilder.cpp","src/Ontology/ParamsBuilder.cpp","src/Ontology/SigData.cpp","src/Ontology/Signer.cpp","src/Ontology/Transaction.cpp","src/Polkadot/Entry.cpp","src/Polkadot/Extrinsic.cpp","src/Polkadot/Signer.cpp","src/PrivateKey.cpp","src/PublicKey.cpp","src/Ripple/Address.cpp","src/Ripple/Entry.cpp","src/Ripple/Signer.cpp","src/Ripple/Transaction.cpp","src/Ripple/XAddress.cpp","src/Solana/Address.cpp","src/Solana/Entry.cpp","src/Solana/Program.cpp","src/Solana/Signer.cpp","src/Solana/Transaction.cpp","src/Stellar/Address.cpp","src/Stellar/Entry.cpp","src/Stellar/Signer.cpp","src/THORChain/Entry.cpp","src/THORChain/Signer.cpp","src/THORChain/Swap.cpp","src/THORChain/TWSwap.cpp","src/Tezos/Address.cpp","src/Tezos/BinaryCoding.cpp","src/Tezos/Entry.cpp","src/Tezos/Forging.cpp","src/Tezos/OperationList.cpp","src/Tezos/Signer.cpp","src/Theta/Entry.cpp","src/Theta/Signer.cpp","src/Theta/Transaction.cpp","src/Tron/Address.cpp","src/Tron/Entry.cpp","src/Tron/Serialization.cpp","src/Tron/Signer.cpp","src/VeChain/Entry.cpp","src/VeChain/Signer.cpp","src/VeChain/Transaction.cpp","src/Waves/Address.cpp","src/Waves/Entry.cpp","src/Waves/Signer.cpp","src/Waves/Transaction.cpp","src/Zcash/Entry.cpp","src/Zcash/Signer.cpp","src/Zcash/TAddress.cpp","src/Zcash/Transaction.cpp","src/Zilliqa/Address.cpp","src/Zilliqa/AddressChecksum.cpp","src/Zilliqa/Entry.cpp","src/Zilliqa/Signer.cpp","src/interface/TWAES.cpp","src/interface/TWAccount.cpp","src/interface/TWAnyAddress.cpp","src/interface/TWAnySigner.cpp","src/interface/TWBase58.cpp","src/interface/TWBitcoin.cpp","src/interface/TWBitcoinAddress.cpp","src/interface/TWBitcoinScript.cpp","src/interface/TWCoinType.cpp","src/interface/TWData.cpp","src/interface/TWEthereumAbi.cpp","src/interface/TWEthereumAbiFunction.cpp","src/interface/TWEthereumAbiValue.cpp","src/interface/TWEthereumFee.cpp","src/interface/TWFIOAccount.cpp","src/interface/TWGroestlcoinAddress.cpp","src/interface/TWHDVersion.cpp","src/interface/TWHDWallet.cpp","src/interface/TWHash.cpp","src/interface/TWMnemonic.cpp","src/interface/TWNEARAccount.cpp","src/interface/TWPrivateKey.cpp","src/interface/TWPublicKey.cpp","src/interface/TWRippleXAddress.cpp","src/interface/TWSegwitAddress.cpp","src/interface/TWSolanaAddress.cpp","src/interface/TWStoredKey.cpp","src/interface/TWString+Hex.cpp","src/interface/TWString.cpp","jni/cpp/Random.cpp","jni/cpp/TWJNIData.cpp","jni/cpp/TWJNIString.cpp"]}],"fullName":"libTrustWalletCore.so","linkFlags":"-Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libgcc_real.a -Wl,--exclude-libs,libatomic.a -static-libstdc++ -Wl,--build-id -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments","linkLibraries":"trezor-crypto/libTrezorCrypto.a libprotobuf.a -llog -latomic -lm","linkPath":"-L/Users/hoang/dfy-mobile/build/local/lib","linkerLanguage":"CXX","name":"TrustWalletCore","sourceDirectory":"/Users/hoang/dfy-mobile","sysroot":"/Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/sysroot","type":"SHARED_LIBRARY"},{"artifacts":["/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86_64/libprotobuf.a"],"buildDirectory":"/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86_64","fileGroups":[{"isGenerated":false,"sources":["build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/any.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/any.pb.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/api.pb.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/arena.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/arenastring.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/compiler/importer.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/compiler/parser.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/descriptor.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/descriptor.pb.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/descriptor_database.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/duration.pb.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/dynamic_message.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/empty.pb.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/extension_set.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/field_mask.pb.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/generated_message_reflection.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/generated_message_util.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/implicit_weak_message.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/coded_stream.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/gzip_stream.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/printer.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/strtod.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/tokenizer.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/zero_copy_stream.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/zero_copy_stream_impl.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/zero_copy_stream_impl_lite.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/map_field.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/message.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/message_lite.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/parse_context.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/reflection_ops.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/repeated_field.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/service.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/source_context.pb.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/struct.pb.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/bytestream.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/common.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/int128.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/once.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/status.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/statusor.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/stringpiece.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/stringprintf.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/strutil.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/substitute.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/time.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/text_format.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/timestamp.pb.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/type.pb.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/unknown_field_set.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/delimited_message_util.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/field_comparator.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/field_mask_util.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/datapiece.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/default_value_objectwriter.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/error_listener.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/field_mask_utility.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/json_escaping.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/json_objectwriter.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/json_stream_parser.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/object_writer.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/proto_writer.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/protostream_objectsource.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/protostream_objectwriter.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/type_info.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/type_info_test_helper.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/utility.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/json_util.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/message_differencer.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/time_util.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/type_resolver_util.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/wire_format.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/wire_format_lite.h","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/wrappers.pb.h"]},{"compileFlags":"-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -Wshorten-64-to-32 -O2 -DNDEBUG  -fPIC -fvisibility=hidden   -DHAVE_PTHREAD=1 -Wno-inconsistent-missing-override -Wno-shorten-64-to-32 -std=gnu++1z","includePath":[{"path":"/Users/hoang/dfy-mobile/build/local/src/protobuf/protobuf-3.14.0/src"}],"isGenerated":false,"language":"CXX","sources":["build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/any.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/any.pb.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/any_lite.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/api.pb.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/arena.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/arenastring.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/compiler/importer.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/compiler/parser.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/descriptor.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/descriptor.pb.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/descriptor_database.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/duration.pb.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/dynamic_message.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/empty.pb.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/extension_set.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/extension_set_heavy.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/field_mask.pb.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/generated_enum_util.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/generated_message_reflection.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/generated_message_table_driven.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/generated_message_table_driven_lite.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/generated_message_util.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/implicit_weak_message.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/coded_stream.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/gzip_stream.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/io_win32.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/printer.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/strtod.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/tokenizer.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/zero_copy_stream.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/zero_copy_stream_impl.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/io/zero_copy_stream_impl_lite.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/map.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/map_field.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/message.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/message_lite.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/parse_context.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/reflection_ops.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/repeated_field.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/service.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/source_context.pb.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/struct.pb.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/bytestream.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/common.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/int128.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/status.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/statusor.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/stringpiece.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/stringprintf.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/structurally_valid.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/strutil.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/substitute.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/stubs/time.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/text_format.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/timestamp.pb.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/type.pb.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/unknown_field_set.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/delimited_message_util.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/field_comparator.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/field_mask_util.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/datapiece.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/default_value_objectwriter.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/error_listener.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/field_mask_utility.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/json_escaping.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/json_objectwriter.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/json_stream_parser.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/object_writer.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/proto_writer.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/protostream_objectsource.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/protostream_objectwriter.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/type_info.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/type_info_test_helper.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/internal/utility.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/json_util.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/message_differencer.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/time_util.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/util/type_resolver_util.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/wire_format.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/wire_format_lite.cc","build/local/src/protobuf/protobuf-3.14.0/src/google/protobuf/wrappers.pb.cc"]}],"fullName":"libprotobuf.a","linkerLanguage":"CXX","name":"protobuf","sourceDirectory":"/Users/hoang/dfy-mobile","sysroot":"/Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/sysroot","type":"STATIC_LIBRARY"},{"artifacts":["/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86_64/trezor-crypto/libTrezorCrypto.a"],"buildDirectory":"/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/x86_64/trezor-crypto","fileGroups":[{"compileFlags":"-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -W -Wall -Wextra -Wimplicit-function-declaration -Wredundant-decls -Wstrict-prototypes -Wundef -Wshadow -Wpointer-arith -Wformat -Wreturn-type -Wsign-compare -Wmultichar -Wformat-nonliteral -Winit-self -Wuninitialized -Wformat-security -Wno-missing-braces -Werror","includePath":[{"path":"/Users/hoang/dfy-mobile/build/local/include"},{"path":"/Users/hoang/dfy-mobile/trezor-crypto/include"},{"path":"/Users/hoang/dfy-mobile/trezor-crypto/src"}],"isGenerated":false,"language":"C","sources":["crypto/bignum.c","crypto/ecdsa.c","crypto/curves.c","crypto/secp256k1.c","crypto/rand.c","crypto/hmac.c","crypto/bip32.c","crypto/bip39.c","crypto/pbkdf2.c","crypto/base58.c","crypto/base32.c","crypto/address.c","crypto/script.c","crypto/ripemd160.c","crypto/sha2.c","crypto/sha3.c","crypto/hasher.c","crypto/aes/aescrypt.c","crypto/aes/aeskey.c","crypto/aes/aestab.c","crypto/aes/aes_modes.c","crypto/ed25519-donna/curve25519-donna-32bit.c","crypto/ed25519-donna/curve25519-donna-helpers.c","crypto/ed25519-donna/modm-donna-32bit.c","crypto/ed25519-donna/ed25519-donna-basepoint-table.c","crypto/ed25519-donna/ed25519-donna-32bit-tables.c","crypto/ed25519-donna/ed25519-donna-impl-base.c","crypto/ed25519-donna/ed25519.c","crypto/ed25519-donna/curve25519-donna-scalarmult-base.c","crypto/ed25519-donna/ed25519-sha3.c","crypto/ed25519-donna/ed25519-keccak.c","crypto/ed25519-donna/ed25519-blake2b.c","crypto/sodium/private/fe_25_5/fe.c","crypto/sodium/private/ed25519_ref10.c","crypto/sodium/private/ed25519_ref10_fe_25_5.c","crypto/sodium/keypair.c","crypto/monero/base58.c","crypto/monero/serialize.c","crypto/monero/range_proof.c","crypto/blake256.c","crypto/blake2b.c","crypto/blake2s.c","crypto/chacha_drbg.c","crypto/chacha20poly1305/chacha20poly1305.c","crypto/chacha20poly1305/chacha_merged.c","crypto/chacha20poly1305/poly1305-donna.c","crypto/chacha20poly1305/rfc7539.c","crypto/rc4.c","crypto/nano.c","crypto/nem.c","crypto/cash_addr.c","crypto/memzero.c","crypto/scrypt.c","crypto/nist256p1.c","crypto/groestl.c","crypto/hmac_drbg.c","crypto/rfc6979.c","crypto/schnorr.c","crypto/shamir.c"]}],"fullName":"libTrezorCrypto.a","linkerLanguage":"C","name":"TrezorCrypto","sourceDirectory":"/Users/hoang/dfy-mobile/trezor-crypto","sysroot":"/Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/sysroot","type":"STATIC_LIBRARY"}]}]}],"cookie":"","inReplyTo":"codemodel","type":"reply"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
