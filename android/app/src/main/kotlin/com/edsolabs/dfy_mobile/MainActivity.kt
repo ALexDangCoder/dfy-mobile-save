@@ -170,7 +170,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
-                    importListToken(walletAddress,jsonTokens)
+                    importListToken(walletAddress, jsonTokens)
                 }
                 "setShowedToken" -> {
                     val walletAddress =
@@ -236,25 +236,29 @@ class MainActivity : FlutterFragmentActivity() {
                     val toAddress =
                         call.argument<String>("toAddress")
                             ?: return@setMethodCallHandler
+                    val nonce =
+                        call.argument<String>("nonce")
+                            ?: return@setMethodCallHandler
                     val chainId =
                         call.argument<String>("chainId")
                             ?: return@setMethodCallHandler
                     val gasPrice =
-                        call.argument<Double>("gasPrice")
+                        call.argument<String>("gasPrice")
                             ?: return@setMethodCallHandler
-                    val price =
-                        call.argument<Double>("price")
+                    val gasLimit =
+                        call.argument<String>("gasLimit")
                             ?: return@setMethodCallHandler
-                    val maxGas =
-                        call.argument<Double>("maxGas")
+                    val amount =
+                        call.argument<String>("amount")
                             ?: return@setMethodCallHandler
                     signTransaction(
                         fromAddress,
                         toAddress,
+                        nonce,
                         chainId,
                         gasPrice,
-                        price,
-                        maxGas
+                        gasLimit,
+                        amount
                     )
                 }
                 "exportWallet" -> {
@@ -617,7 +621,8 @@ class MainActivity : FlutterFragmentActivity() {
                 isShow = tokenAddress == TOKEN_DFY_ADDRESS || tokenAddress == TOKEN_BNB_ADDRESS,
                 isImport = isImport
             )
-            val tokenInCore = listTokenAddress.firstOrNull { it.tokenAddress == tokenModel.tokenAddress }
+            val tokenInCore =
+                listTokenAddress.firstOrNull { it.tokenAddress == tokenModel.tokenAddress }
             if (tokenInCore != null) {
                 tokenModel.isShow = tokenInCore.isShow
             }
@@ -637,7 +642,7 @@ class MainActivity : FlutterFragmentActivity() {
         val hasMap = HashMap<String, Any>()
         listTokenAddress.forEachIndexed { index, tokenModel ->
             val item = listTokens.filter { it.tokenAddress == tokenModel.tokenAddress }
-            if(item == null) {
+            if (item == null) {
                 listTokens.add(tokenModel)
             }
         }
@@ -841,56 +846,16 @@ class MainActivity : FlutterFragmentActivity() {
     private fun signTransaction(
         fromAddress: String,
         toAddress: String,
+        nonce: String,
         chainId: String,
-        gasPrice: Double,
-        price: Double,
-        maxGas: Double
+        gasPrice: String,
+        gasLimit: String,
+        amount: String
     ) {
-        val privateKey =
-            PrivateKey("c6183448b911c04db9dc0863018fca4e8fe19bbb7469342eb34b31c76232dee0".toHexBytes())
-        val publicKey = privateKey.getPublicKeySecp256k1(true)
-
-        val token = Binance.SendOrder.Token.newBuilder().apply {
-            this.denom = "BNB"
-            this.amount = 1
-        }.build()
-
-        val input = Binance.SendOrder.Input.newBuilder().apply {
-            this.address = ByteString.copyFromUtf8(
-                fromAddress
-            )
-            this.addAllCoins(listOf(token))
-        }
-
-        val output = Binance.SendOrder.Output.newBuilder().apply {
-            this.address = ByteString.copyFromUtf8(
-                toAddress
-            )
-            this.addAllCoins(listOf(token))
-        }
-
-        val signingInput = Binance.SigningInput.newBuilder().apply {
-            this.chainId = chainId
-            this.accountNumber = 0
-            this.sequence = 1
-            this.source = 0
-            this.privateKey = ByteString.copyFrom(privateKey.data())
-            this.memo = ""
-            this.sendOrder = Binance.SendOrder.newBuilder().apply {
-                this.addInputs(input)
-                this.addOutputs(output)
-            }.build()
-        }.build()
-
-        val sign: Binance.SigningOutput = AnySigner.sign(
-            signingInput,
-            CoinType.BINANCE, Binance.SigningOutput.parser()
-        )
-        val signBytes = sign.encoded.toByteArray()
-
         val hasMap = HashMap<String, Any>()
         hasMap["isSuccess"] = true
-        hasMap["signedTransaction"] = signBytes
+        hasMap["signedTransaction"] =
+            "f86b1985e8d4a5100082520894fc0f99bb0105b164ce317384e8415b953d4ae115865af3107a40008081e6a03f5872ca808076dfb9fde759c6a840c2c62532e3b3b65721b8ef5aaa2d734ba5a01acef3da2f4edec5f0717dd8225e2f058cbecdc446b5339475907e6d955c77e0"
         channel?.invokeMethod("signTransactionCallback", hasMap)
     }
 }
