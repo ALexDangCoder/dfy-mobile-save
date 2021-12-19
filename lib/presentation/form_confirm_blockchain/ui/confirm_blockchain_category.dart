@@ -4,8 +4,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
-import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
-import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -15,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 
 enum TYPE_CONFIRM {
   SEND_NFT,
@@ -253,8 +251,8 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                               gasLimit:
                                   (double.parse(_txtGasLimit.text) * 1000000000)
                                       .toString(),
-                              amount:
-                                  ((widget.amount ?? 0) * 1000000000).toString(),
+                              amount: ((widget.amount ?? 0) * 1000000000)
+                                  .toString(),
                             );
                             break;
                           case TYPE_CONFIRM.SEND_NFT:
