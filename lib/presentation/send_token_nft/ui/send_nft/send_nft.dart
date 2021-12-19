@@ -135,6 +135,7 @@ class _SendNftState extends State<SendNft> {
                               context,
                               MaterialPageRoute(
                                 builder: (_) {
+                                  //handle todo fix gaslimit
                                   return ConfirmBlockchainCategory(
                                     nameWallet: 'TestWallet',
                                     nameTokenWallet: 'BNB',
@@ -148,6 +149,7 @@ class _SendNftState extends State<SendNft> {
                                     cubitCategory: null,
                                     gasPriceFirstFetch: sendNftCubit.gasPrice,
                                     gasFeeFirstFetch: 30,
+                                    gasLimitFirstFetch: 3,
                                   );
                                 },
                               ),
