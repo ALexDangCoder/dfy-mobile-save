@@ -203,5 +203,9 @@
   "err_invalid_wallet_add": "Invalid wallet address",
   "err_not_owner_nft": "You are not the owner of this collectible, so you can not add it",
   "err_none_exist_nft": "Nonexistent token",
-  "name_characters": "Name can be no more than 20 characters"
+  "name_characters": "Name can be no more than 20 characters",
+  "gas_limit_required": "Gas limit is required",
+  "invalid_gas_limit": "Invalid Gas limit",
+  "gas_price_required": "Gas price is required",
+  "invalid_gas_price": "Invalid Gas price"
 }

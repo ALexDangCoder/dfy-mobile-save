@@ -88,6 +88,11 @@ class FormFieldBlockChain extends StatelessWidget {
                   border: InputBorder.none,
                 ),
                 onChanged: (value) {
+                  if(formGasFee == FORM_GAS_FEE.LIMIT) {
+                    cubit.validateGasLimit(value);
+                  } else {
+                    cubit.validateGasPrice(value);
+                  }
                   late double result;
                   late double valueHandle;
                   if (value.isEmpty) {

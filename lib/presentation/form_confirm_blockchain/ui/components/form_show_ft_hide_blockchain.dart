@@ -47,35 +47,39 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                 builder: (context, snapshot) {
                   return snapshot.data ?? false
                       ? Container(
-                    height: 331.h,
-                    width: 343.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(16.r)),
-                      border: Border.all(
-                          color: const Color.fromRGBO(255, 255, 255, 0.1)),
-                    ),
-                    padding: EdgeInsets.only(
-                      top: 8.h,
-                      left: 16.w,
-                      // right: 16.w,
-                      bottom: 24.h,
-                    ),
-                  )
+                          height: 331.h,
+                          width: 343.w,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16.r)),
+                            border: Border.all(
+                                color:
+                                    const Color.fromRGBO(255, 255, 255, 0.1)),
+                          ),
+                          padding: EdgeInsets.only(
+                            top: 8.h,
+                            left: 16.w,
+                            // right: 16.w,
+                            bottom: 24.h,
+                          ),
+                        )
                       : Container(
-                    padding: EdgeInsets.only(
-                      top: 8.h,
-                      left: 16.w,
-                      right: 16.w,
-                      bottom: 12.h,
-                    ),
-                    height: 78.h,
-                    width: 343.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(16.r)),
-                      border: Border.all(
-                          color: const Color.fromRGBO(255, 255, 255, 0.1)),
-                    ),
-                  );
+                          padding: EdgeInsets.only(
+                            top: 8.h,
+                            left: 16.w,
+                            right: 16.w,
+                            bottom: 12.h,
+                          ),
+                          height: 78.h,
+                          width: 343.w,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16.r)),
+                            border: Border.all(
+                                color:
+                                    const Color.fromRGBO(255, 255, 255, 0.1)),
+                          ),
+                        );
                 },
               ),
 
@@ -85,34 +89,34 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                 builder: (context, snapshot) {
                   return snapshot.data ?? false
                       ? Positioned(
-                    top: 48.h,
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            cubit.isShowCustomizeFee(isShow: false);
-                          },
-                          child: btnHideCustomize(),
-                        ),
-                        spaceH16,
-                        // Text('HUY', style: TextStyle(color: Colors.white),)
-                        Container(
-                          width: 343.w,
-                          height: 1.h,
-                          color: Colors.white.withOpacity(0.1),
+                          top: 48.h,
+                          child: Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  cubit.isShowCustomizeFee(isShow: false);
+                                },
+                                child: btnHideCustomize(),
+                              ),
+                              spaceH16,
+                              // Text('HUY', style: TextStyle(color: Colors.white),)
+                              Container(
+                                width: 343.w,
+                                height: 1.h,
+                                color: Colors.white.withOpacity(0.1),
+                              )
+                            ],
+                          ),
                         )
-                      ],
-                    ),
-                  )
                       : Positioned(
-                    top: 48.h,
-                    child: GestureDetector(
-                      onTap: () {
-                        cubit.isShowCustomizeFee(isShow: true);
-                      },
-                      child: btnShowCustomize(),
-                    ),
-                  );
+                          top: 48.h,
+                          child: GestureDetector(
+                            onTap: () {
+                              cubit.isShowCustomizeFee(isShow: true);
+                            },
+                            child: btnShowCustomize(),
+                          ),
+                        );
                 },
               ),
               Positioned(
@@ -129,25 +133,25 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                   builder: (context, snapshot) {
                     return snapshot.data ?? gasFeeFirstFetch < balanceWallet
                         ? StreamBuilder<String>(
-                      initialData: gasFeeFirstFetch.toString(),
-                      stream: cubit.txtGasFeeWhenEstimatingStream,
-                      builder: (context, snapshot) {
-                        return txtGasFeeNotWarning(
-                          snapshot:
-                          snapshot.data ?? gasFeeFirstFetch.toString(),
-                        );
-                      },
-                    )
+                            initialData: gasFeeFirstFetch.toString(),
+                            stream: cubit.txtGasFeeWhenEstimatingStream,
+                            builder: (context, snapshot) {
+                              return txtGasFeeNotWarning(
+                                snapshot: snapshot.data ??
+                                    gasFeeFirstFetch.toString(),
+                              );
+                            },
+                          )
                         : StreamBuilder<String>(
-                      initialData: gasFeeFirstFetch.toString(),
-                      stream: cubit.txtGasFeeWhenEstimatingStream,
-                      builder: (context, snapshot) {
-                        return txtGasFeeWarning(
-                          snapshot:
-                          snapshot.data ?? gasFeeFirstFetch.toString(),
-                        );
-                      },
-                    );
+                            initialData: gasFeeFirstFetch.toString(),
+                            stream: cubit.txtGasFeeWhenEstimatingStream,
+                            builder: (context, snapshot) {
+                              return txtGasFeeWarning(
+                                snapshot: snapshot.data ??
+                                    gasFeeFirstFetch.toString(),
+                              );
+                            },
+                          );
                   },
                 ),
               ),
@@ -156,52 +160,59 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                 builder: (context, snapshot) {
                   return snapshot.data ?? false
                       ? Container(
-                    // color: Colors.red,
-                    // top: 99.h,
-                    margin: EdgeInsets.only(
-                      top: 50.h,
-                      left: 16.w,
-                      right: 1.w,
-                    ),
-                    child: Column(
-                      children: [
-                        spaceH16,
-                        FormFieldBlockChain(
-                          txtController: txtGasLimit,
-                          formGasFee: FORM_GAS_FEE.LIMIT,
-                          cubit: cubit,
-                          balanceFetchFirst: balanceWallet,
-                          numHandle: txtGasLimit.text,
-                        ),
-                        spaceH16,
-                        FormFieldBlockChain(
-                          txtController: txtGasPrice,
-                          formGasFee: FORM_GAS_FEE.PRICE,
-                          cubit: cubit,
-                          balanceFetchFirst: balanceWallet,
-                          numHandle: txtGasPrice.text,
-                        ),
-                        spaceH24,
-                        GestureDetector(
-                          onTap: () {
-                            txtGasPrice.text = gasPriceFirstFetch.toString();
-                            txtGasLimit.text = gasLimitFirstFetch.toString();
-                            cubit.isSufficientGasFeeSink
-                                .add(gasFeeFirstFetch < balanceWallet);
-                            cubit.txtGasFeeWhenEstimatingSink
-                                .add(gasFeeFirstFetch.toString());
-                          },
-                          child: btnReset(),
-                        ),
-                      ],
-                    ),
-                  )
+                          // color: Colors.red,
+                          // top: 99.h,
+                          margin: EdgeInsets.only(
+                            top: 50.h,
+                            left: 16.w,
+                            right: 1.w,
+                          ),
+                          child: Column(
+                            children: [
+                              spaceH16,
+                              FormFieldBlockChain(
+                                txtController: txtGasLimit,
+                                formGasFee: FORM_GAS_FEE.LIMIT,
+                                cubit: cubit,
+                                balanceFetchFirst: balanceWallet,
+                                numHandle: txtGasLimit.text,
+                              ),
+                              showWarningGasLimit(),
+                              spaceH16,
+                              FormFieldBlockChain(
+                                txtController: txtGasPrice,
+                                formGasFee: FORM_GAS_FEE.PRICE,
+                                cubit: cubit,
+                                balanceFetchFirst: balanceWallet,
+                                numHandle: txtGasPrice.text,
+                              ),
+                              showWarningGasPrice(),
+                              spaceH24,
+                              GestureDetector(
+                                onTap: () {
+                                  txtGasPrice.text =
+                                      gasPriceFirstFetch.toString();
+                                  txtGasLimit.text =
+                                      gasLimitFirstFetch.toString();
+                                  cubit.isSufficientGasFeeSink
+                                      .add(gasFeeFirstFetch < balanceWallet);
+                                  cubit.txtGasFeeWhenEstimatingSink
+                                      .add(gasFeeFirstFetch.toString());
+                                  cubit.isEnableBtnSink.add(gasFeeFirstFetch < balanceWallet);
+                                },
+                                child: btnReset(),
+                              ),
+                            ],
+                          ),
+                        )
                       : Container();
                 },
               ),
             ],
           ),
-          SizedBox(height: 24.h,),
+          SizedBox(
+            height: 24.h,
+          ),
         ],
       ),
     );
@@ -290,6 +301,60 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
         const Color.fromRGBO(70, 188, 255, 1),
         14.sp,
         FontWeight.w400,
+      ),
+    );
+  }
+
+  Widget showWarningGasPrice() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: StreamBuilder(
+        stream: cubit.showWarningGasPrice.stream,
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          return Visibility(
+            visible: snapshot.data ?? false,
+            child: StreamBuilder<String>(
+              stream: cubit.txtWarningGasPrice.stream,
+              builder: (context, snapshot) {
+                return Text(
+                  snapshot.data ?? '',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromRGBO(255, 108, 108, 1),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget showWarningGasLimit() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: StreamBuilder(
+        stream: cubit.showWarningGasLimit.stream,
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          return Visibility(
+            visible: snapshot.data ?? false,
+            child: StreamBuilder<String>(
+              stream: cubit.txtWarningGasLimit.stream,
+              builder: (context, snapshot) {
+                return Text(
+                  snapshot.data ?? '',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromRGBO(255, 108, 108, 1),
+                  ),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }

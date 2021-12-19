@@ -1,4 +1,5 @@
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +15,59 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   final _isCustomizeGasFee = BehaviorSubject<bool>.seeded(false);
   final _txtGasFeeWhenEstimating = BehaviorSubject<String>();
   final _gasPrice = BehaviorSubject<double>();
+
+  //validate form
+  final txtWarningGasLimit = BehaviorSubject<String>.seeded('');
+  final txtWarningGasPrice = BehaviorSubject<String>.seeded('');
+  final showWarningGasLimit = BehaviorSubject<bool>.seeded(false);
+  final showWarningGasPrice = BehaviorSubject<bool>.seeded(false);
+
+  //flag to enable btn
+  bool _flagGasPrice = false;
+  bool _flagGasLimit = false;
+  bool _flagSufficientFee = false;
+
+  final regexMoney = RegExp(r'^-?(?:0|[1-9]\d{0,2}(?:,?\d{3})*)(?:\.\d+)?$');
+
+  void validateGasLimit(String value) {
+    if (value.isEmpty) {
+      _flagGasLimit = false;
+      txtWarningGasLimit.sink.add(S.current.gas_limit_required);
+      showWarningGasLimit.sink.add(true);
+      isEnableBtnSink.add(false);
+    } else if (!regexMoney.hasMatch(value)) {
+      _flagGasLimit = false;
+      txtWarningGasLimit.sink.add(S.current.invalid_gas_limit);
+      showWarningGasLimit.sink.add(true);
+      isEnableBtnSink.add(false);
+    } else {
+      _flagGasLimit = true;
+      showWarningGasLimit.sink.add(false);
+      if(_flagGasLimit && _flagGasPrice && _flagSufficientFee) {
+        isEnableBtnSink.add(true);
+      }
+    }
+  }
+
+  void validateGasPrice(String value) {
+    if (value.isEmpty) {
+      _flagGasPrice = false;
+      txtWarningGasPrice.sink.add(S.current.gas_price_required);
+      showWarningGasPrice.sink.add(true);
+      isEnableBtnSink.add(false);
+    } else if (!regexMoney.hasMatch(value)) {
+      _flagGasPrice = false;
+      txtWarningGasPrice.sink.add(S.current.invalid_gas_price);
+      showWarningGasPrice.sink.add(true);
+      isEnableBtnSink.add(false);
+    } else {
+      _flagGasPrice = true;
+      showWarningGasPrice.sink.add(false);
+      if(_flagGasPrice && _flagSufficientFee && _flagGasLimit) {
+        isEnableBtnSink.add(true);
+      }
+    }
+  }
 
   //web3
 
@@ -61,9 +115,17 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
 
   void isSufficientGasFee({required double gasFee, required double balance}) {
     if (gasFee < balance) {
+      //nếu phí giao dịch bé hơn số dư thì không báo đỏ
       isSufficientGasFeeSink.add(false);
+      _flagSufficientFee = true;
+      if(_flagSufficientFee && _flagGasLimit && _flagGasPrice) {
+        isEnableBtnSink.add(true);
+      }
     } else {
+      //ngược lại
       isSufficientGasFeeSink.add(true);
+      isEnableBtnSink.add(false);
+      _flagSufficientFee = false;
     }
   }
 
@@ -76,9 +138,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         // print(methodCall.arguments);
         isSuccess = await methodCall.arguments['isSuccess'];
         signedTransaction = await methodCall.arguments['signedTransaction'];
-        print(signedTransaction);
         if (isSuccess) {
-          print(signedTransaction);
           Web3Utils().sendRawTransaction(transaction: signedTransaction);
           emit(FormBlockchainSendTokenSuccess());
         } else {
