@@ -117,14 +117,14 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   void isSufficientGasFee({required double gasFee, required double balance}) {
     if (gasFee < balance) {
       //nếu phí giao dịch bé hơn số dư thì không báo đỏ
-      isSufficientGasFeeSink.add(false);
+      isSufficientGasFeeSink.add(true);
       _flagSufficientFee = true;
       if(_flagSufficientFee && _flagGasLimit && _flagGasPrice) {
         isEnableBtnSink.add(true);
       }
     } else {
       //ngược lại
-      isSufficientGasFeeSink.add(true);
+      isSufficientGasFeeSink.add(false);
       isEnableBtnSink.add(false);
       _flagSufficientFee = false;
     }
