@@ -66,6 +66,11 @@ extension AppDelegate {
         if call.method == "getListWallets" {
             result(getListWallets())
         }
+        if call.method == "getTokens" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
+                result(getTokens(walletAddress: walletAddress))
+            }
+        }
 //        if call.method == "checkPassword" {
 //            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
 //                result(checkPassword(password: password))
@@ -107,7 +112,7 @@ extension AppDelegate {
         let wallet = HDWallet(strength: 128, passphrase: "")
         let seedPhrase = wallet!.mnemonic
         let address = wallet?.getAddressForCoin(coin: .smartChain)
-        let walletName = "Account 1"
+        let walletName = "Account \(SharedPreference.shared.getListWallet().count + 1)"
         let privateKey = (wallet?.getKeyForCoin(coin: .smartChain).data)!.hexEncodedString()
         var params: [String: Any] = [:]
         params["walletName"] = walletName
@@ -152,30 +157,16 @@ extension AppDelegate {
         return params
     }
     
-    private func getTokens(walletAddress: String) -> [[String: Any]] {
-        var params: [[String: Any]] = []
-        let array: [UInt8] = Array("0x753EE7D5FdBD248fED37add0C951211E03a7DA15".utf8)
-        let param1: [String: Any] = [
-            "tokenFullName": "BitCoin",
-            "tokenShortName": "BTC",
-            "tokenAddress": "0x753EE7D5FdBD248fED37add0C951211E03a7DA15",
-            "iconToken": array,
-        ]
-        params.append(param1)
-        let param2: [String: Any] = [
-            "tokenFullName": "Binance",
-            "tokenShortName": "BNB",
-            "tokenAddress": "0x753EE7D5FdBD248fED37add0C951211E03a7DA15",
-            "iconToken": array,
-        ]
-        params.append(param2)
-        chatChanel?.invokeMethod("getTokensCallback", arguments: params)
-        return params
-    }
-    
     private func storeWallet(seedPhrase: String, walletName: String, privateKey: String, walletAddress: String) -> [String: Any] {
         var params: [String: Any] = [:]
         params["isSuccess"] = true
+        var listWallet = [WalletModel]()
+        listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+        listWallet.insert(WalletModel(walletName: walletName, walletAddress: walletAddress, walletIndex: 0, seedPhrase: seedPhrase, privateKey: privateKey), at: 0)
+        for (index, wallet) in listWallet.enumerated() {
+            wallet.walletIndex = index
+        }
+        SharedPreference.shared.saveListWallet(listWallet: listWallet)
         chatChanel?.invokeMethod("storeWalletCallback", arguments: params)
         return params
     }
@@ -199,7 +190,17 @@ extension AppDelegate {
     
     private func getListWallets() -> [[String: Any]] {
         var listParam: [[String: Any]] = []
+        SharedPreference.shared.getListWallet().forEach { walletModel in
+            listParam.append(walletModel.toWalletParam())
+        }
+        chatChanel?.invokeMethod("getListWalletsCallback", arguments: listParam)
         return listParam
+    }
+    
+    private func getTokens(walletAddress: String) -> [[String: Any]] {
+        var listParam: [[String: Any]] = []
+        chatChanel?.invokeMethod("getTokensCallback", arguments: listParam)
+        return []
     }
 
     private func getConfigWallet() -> [String: Any] {
