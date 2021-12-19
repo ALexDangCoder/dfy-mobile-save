@@ -102,7 +102,8 @@ class FormFieldBlockChain extends StatelessWidget {
                     valueHandle = double.parse(value);
                   }
                   result = (valueHandle * double.parse(numHandle)) / pow(10, 9);
-                  cubit.isEstimatingGasFee(Validator.toExact(result));
+                  // cubit.isEstimatingGasFee(Validator.toExact(result));
+                  cubit.isEstimatingGasFee(result.toString());
                   cubit.isSufficientGasFee(
                     gasFee: result,
                     balance: balanceFetchFirst,
