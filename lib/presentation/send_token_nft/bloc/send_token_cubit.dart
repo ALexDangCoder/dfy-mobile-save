@@ -1,12 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'send_token_state.dart';
@@ -26,10 +23,17 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   late double gasPrice;
   late double estimateGasFee;
 
-  //Web3
-  //handle token
-  Future<void> getBalanceWallet({required String ofAddress}) async {
-    balanceWallet = await Web3Utils().getBalanceOfBnb(ofAddress: ofAddress);
+
+  Future<void> getBalance(String walletAddress, ModelToken token) async {
+    if (token.nameShortToken == 'BNB') {
+      balanceWallet =
+          await Web3Utils().getBalanceOfBnb(ofAddress: walletAddress);
+    } else {
+      balanceWallet = await Web3Utils().getBalanceOfToken(
+        ofAddress: walletAddress,
+        tokenAddress: token.tokenAddress,
+      );
+    }
   }
 
   Future<void> getGasPrice() async {
@@ -63,7 +67,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   final BehaviorSubject<bool> _isCustomizeFee = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isSufficientToken = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isShowCFBlockChain =
-      BehaviorSubject<bool>.seeded(true);
+      BehaviorSubject<bool>.seeded(false);
 
   //stream below regex amount form and address
   final BehaviorSubject<bool> _isValidAddressForm =

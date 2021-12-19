@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:Dfy/data/web3/abi/nft.g.dart';
@@ -11,9 +10,9 @@ import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:convert/convert.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:convert/convert.dart';
 
 class ImportNftResponse {
   bool isSuccess;
@@ -254,7 +253,6 @@ class Web3Utils {
   Future<double> getBalanceOfToken({
     required String ofAddress,
     required String tokenAddress,
-    String? password,
   }) async {
     final token =
         Token(address: EthereumAddress.fromHex(tokenAddress), client: client);
@@ -380,8 +378,8 @@ class Web3Utils {
       sender: EthereumAddress.fromHex(from),
       to: EthereumAddress.fromHex(to),
       value: EtherAmount.fromUnitAndValue(
-        EtherUnit.gwei,
-        (value * 1000000000).toInt(),
+        EtherUnit.ether,
+        value.toInt(),
       ),
     );
     return '$amount';

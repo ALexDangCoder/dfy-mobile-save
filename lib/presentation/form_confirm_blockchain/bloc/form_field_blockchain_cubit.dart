@@ -108,14 +108,14 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   }) async {
     try {
       final data = {
-        'walletAddress': '0xf5e281A56650bb992ebaB15B41583303fE9804e7',
-        'tokenAddress': '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
-        'toAddress': '0x400BB436FFe5F4285e77575F00Ec7D06cE438f3B',
-        'nonce': '39',
-        'chainId': '97',
-        'gasPrice': '1000000000000',
-        'gasLimit': '100000',
-        'amount': '10000000000000000000000',
+        'walletAddress': walletAddress,
+        'tokenAddress': tokenAddress,
+        'toAddress': toAddress,
+        'nonce': nonce,
+        'chainId': chainId,
+        'gasPrice': gasPrice,
+        'gasLimit': gasLimit,
+        'amount': amount,
       };
       await trustWalletChannel.invokeMethod('signTransaction', data);
     } on PlatformException {
