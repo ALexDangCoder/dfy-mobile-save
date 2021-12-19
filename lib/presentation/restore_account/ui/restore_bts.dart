@@ -104,6 +104,9 @@ class _RestoreAccountState extends State<RestoreAccount> {
             ),
           );
         }
+        if (state is ExceptionState) {
+          _showDialog(state.message, S.current.please_try_again);
+        }
       },
       builder: (ctx, _) {
         return GestureDetector(
@@ -609,6 +612,68 @@ class _RestoreAccountState extends State<RestoreAccount> {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+  void _showDialog(String alert, String text) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                36.0.r,
+              ),
+            ),
+          ),
+          backgroundColor: AppTheme.getInstance().selectDialogColor(),
+          title: Column(
+            children: [
+              Text(
+                alert,
+                style: textNormalCustom(
+                  Colors.white,
+                  20,
+                  FontWeight.w700,
+                ),
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              Text(
+                text,
+                style: textNormalCustom(
+                  Colors.white,
+                  12,
+                  FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            Divider(
+              height: 1.h,
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            Center(
+              child: TextButton(
+                child: Text(
+                  S.current.ok,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().fillColor(),
+                    20,
+                    FontWeight.w700,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ],
         );
       },
     );

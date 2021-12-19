@@ -151,7 +151,8 @@ class RestoreCubit extends Cubit<RestoreState> {
       };
       await trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
-      throw CommonException();
+      emit(ExceptionState(S.current.something_went_wrong));
+      throw AppException(S.current.error, S.current.something_went_wrong);
     }
   }
 
