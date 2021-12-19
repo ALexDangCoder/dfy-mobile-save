@@ -141,6 +141,7 @@ class _SendNftState extends State<SendNft> {
                                     nameTokenWallet: 'BNB',
                                     balanceWallet: 0.64,
                                     typeConfirm: TYPE_CONFIRM.SEND_NFT,
+                                    tokenAddress: '',
                                     addressFrom: '0xfff',
                                     addressTo: '0xfff',
                                     imageWallet: ImageAssets.symbol,

@@ -33,6 +33,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     required this.nameTokenWallet,
     required this.balanceWallet,
     required this.typeConfirm,
+    required this.tokenAddress,
     required this.addressFrom,
     required this.addressTo,
     required this.imageWallet,
@@ -51,6 +52,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
   //this field depend on name token
   final String? nameToken;
   final String addressFrom;
+  final String tokenAddress;
   final String addressTo;
   final double? amount;
   final String nameWallet;
@@ -269,16 +271,15 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                               1000000000)
                                           .toString(),
                                       nonce: nonce.toString(),
-                                      gasLimit:
-                                          (double.parse(_txtGasLimit.text) *
-                                                  1000000000)
-                                              .toString(),
-                                      amount:
-                                          ((widget.amount ?? 0) * 1000000000)
-                                              .toString(),
-                                      tokenAddress: '',
-                                      walletAddress: '',
-                                      chainId: '',
+                                      gasLimit: double.parse(_txtGasLimit.text)
+                                          .toString(),
+                                      amount: ((widget.amount ?? 0) *
+                                              1000000000000000000)
+                                          .toString(),
+                                      // 1000000000000000000 -> 1 dfy
+                                      tokenAddress: widget.tokenAddress,
+                                      walletAddress: widget.addressFrom,
+                                      chainId: '97',
                                     );
                                     break;
                                   case TYPE_CONFIRM.SEND_NFT:

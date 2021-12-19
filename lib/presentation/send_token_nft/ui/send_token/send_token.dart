@@ -47,7 +47,7 @@ class _SendTokenState extends State<SendToken> {
     //   to: fakeToAddress,
     //   value: 1000,
     // );
-    tokenCubit.getBalanceWallet(ofAddress: widget.walletAddress);
+    tokenCubit.getBalance(widget.walletAddress);
     tokenCubit.getGasPrice();
     // trustWalletChannel
     //     .setMethodCallHandler(tokenCubit.nativeMethodCallBackTrustWallet);
@@ -165,6 +165,7 @@ class _SendTokenState extends State<SendToken> {
                                 nameTokenWallet: 'BNB',
                                 balanceWallet: tokenCubit.balanceWallet,
                                 typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
+                                tokenAddress: widget.modelToken.tokenAddress,
                                 addressFrom: widget.walletAddress,
                                 addressTo: txtToAddressToken.text,
                                 imageWallet: ImageAssets.symbol,
@@ -173,8 +174,9 @@ class _SendTokenState extends State<SendToken> {
                                 cubitCategory: tokenCubit,
                                 gasPriceFirstFetch:
                                     tokenCubit.gasPrice / 1000000000,
-                                gasFeeFirstFetch:
-                                ((tokenCubit.gasPrice * tokenCubit.estimateGasFee) / 1000000000),
+                                gasFeeFirstFetch: ((tokenCubit.gasPrice *
+                                        tokenCubit.estimateGasFee) /
+                                    1000000000),
                                 gasLimitFirstFetch: tokenCubit.estimateGasFee,
                               );
                             },
