@@ -42,8 +42,15 @@ class _SendTokenState extends State<SendToken> {
     txtToAddressToken = TextEditingController();
     txtAmount = TextEditingController();
     tokenCubit = SendTokenCubit();
-    tokenCubit.getBalance(widget.walletAddress);
+    // tokenCubit.getEstimateGas(
+    //   from: fakeFromAddress,
+    //   to: fakeToAddress,
+    //   value: 1000,
+    // );
+    tokenCubit.getBalanceWallet(ofAddress: widget.walletAddress);
     tokenCubit.getGasPrice();
+    // trustWalletChannel
+    //     .setMethodCallHandler(tokenCubit.nativeMethodCallBackTrustWallet);
   }
 
   @override
@@ -154,7 +161,6 @@ class _SendTokenState extends State<SendToken> {
                           MaterialPageRoute(
                             builder: (_) {
                               return ConfirmBlockchainCategory(
-                                modelToken: widget.modelToken,
                                 nameWallet: widget.walletName,
                                 nameTokenWallet: 'BNB',
                                 balanceWallet: tokenCubit.balanceWallet,
@@ -168,7 +174,8 @@ class _SendTokenState extends State<SendToken> {
                                 gasPriceFirstFetch:
                                     tokenCubit.gasPrice / 1000000000,
                                 gasFeeFirstFetch:
-                                    tokenCubit.estimateGasFee / 1000000000,
+                                ((tokenCubit.gasPrice * tokenCubit.estimateGasFee) / 1000000000),
+                                gasLimitFirstFetch: tokenCubit.estimateGasFee,
                               );
                             },
                           ),

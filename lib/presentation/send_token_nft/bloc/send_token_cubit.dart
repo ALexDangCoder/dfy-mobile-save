@@ -21,7 +21,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   bool _flagQuantity = false;
   late double balanceWallet;
   late double gasPrice;
-  late double estimateGasFee;
+  late double estimateGasFee; //gas limit
 
 
   Future<void> getBalance(String walletAddress) async {
