@@ -4,11 +4,12 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_fail.dart';
-import 'package:Dfy/presentation/import_account/bloc/import_cubit.dart';
-import 'package:Dfy/presentation/import_account/bloc/import_state.dart';
-import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully_have_wallet.dart';
+import 'package:Dfy/presentation/import_account/bloc/import_cubit.dart';
+import 'package:Dfy/presentation/import_account/bloc/import_state.dart';
+import 'package:Dfy/presentation/import_account/ui/choice_import_dialog.dart';
+import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -18,9 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
-import 'choice_import_dialog.dart';
 
 const String PASS_PHRASE = 'PASS_PHRASE';
 const String PRIVATE_KEY = 'PRIVATE_KEY';
@@ -86,6 +84,9 @@ class _ImportAccountState extends State<ImportAccount> {
               },
             ),
           );
+        }
+        if (state is ExceptionState) {
+          _showDialog(state.message, S.current.please_try_again);
         }
       },
       builder: (ctx, _) {
@@ -420,7 +421,68 @@ class _ImportAccountState extends State<ImportAccount> {
       },
     );
   }
-
+  void _showDialog(String alert, String text) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                36.0.r,
+              ),
+            ),
+          ),
+          backgroundColor: AppTheme.getInstance().selectDialogColor(),
+          title: Column(
+            children: [
+              Text(
+                alert,
+                style: textNormalCustom(
+                  Colors.white,
+                  20,
+                  FontWeight.w700,
+                ),
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              Text(
+                text,
+                style: textNormalCustom(
+                  Colors.white,
+                  12,
+                  FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            Divider(
+              height: 1.h,
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            Center(
+              child: TextButton(
+                child: Text(
+                  S.current.ok,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().fillColor(),
+                    20,
+                    FontWeight.w700,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
   Widget warningSeedPhrase() {
     return StreamBuilder<bool>(
       stream: importCubit.seedStream,

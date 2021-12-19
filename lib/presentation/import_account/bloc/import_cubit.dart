@@ -101,7 +101,7 @@ class ImportCubit extends Cubit<ImportState> {
       final data = {'type': type, 'content': content};
       await trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
-      throw CommonException();
+      throw AppException(S.current.error, S.current.something_went_wrong);
     }
   }
 

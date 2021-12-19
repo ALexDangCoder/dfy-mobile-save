@@ -1,3 +1,4 @@
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,6 +15,14 @@ class NavState extends RestoreState {
 }
 
 class ErrorState extends RestoreState {
+  @override
+  List<Object?> get props => [];
+}
+class ExceptionState extends RestoreState {
+  String message;
+
+  ExceptionState(this.message);
+
   @override
   List<Object?> get props => [];
 }
