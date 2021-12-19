@@ -251,10 +251,10 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                   .toString(),
                               nonce: nonce.toString(),
                               gasLimit:
-                                  (double.parse(_txtGasLimit.text) * 1000000000000000000)
+                                  (double.parse(_txtGasLimit.text) * 1000000000)
                                       .toString(),
                               amount:
-                                  ((widget.amount ?? 0) * 1000000000000000000).toString(),
+                                  ((widget.amount ?? 0) * 1000000000).toString(),
                             );
                             break;
                           case TYPE_CONFIRM.SEND_NFT:
