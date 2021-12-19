@@ -24,16 +24,8 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   late double estimateGasFee;
 
 
-  Future<void> getBalance(String walletAddress, ModelToken token) async {
-    if (token.nameShortToken == 'BNB') {
-      balanceWallet =
-          await Web3Utils().getBalanceOfBnb(ofAddress: walletAddress);
-    } else {
-      balanceWallet = await Web3Utils().getBalanceOfToken(
-        ofAddress: walletAddress,
-        tokenAddress: token.tokenAddress,
-      );
-    }
+  Future<void> getBalance(String walletAddress) async {
+    balanceWallet = await Web3Utils().getBalanceOfBnb(ofAddress: walletAddress);
   }
 
   Future<void> getGasPrice() async {

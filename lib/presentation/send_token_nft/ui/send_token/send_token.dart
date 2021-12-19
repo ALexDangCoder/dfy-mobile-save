@@ -42,7 +42,7 @@ class _SendTokenState extends State<SendToken> {
     txtToAddressToken = TextEditingController();
     txtAmount = TextEditingController();
     tokenCubit = SendTokenCubit();
-    tokenCubit.getBalance(widget.walletAddress, widget.modelToken);
+    tokenCubit.getBalance(widget.walletAddress);
     tokenCubit.getGasPrice();
   }
 
@@ -156,8 +156,7 @@ class _SendTokenState extends State<SendToken> {
                               return ConfirmBlockchainCategory(
                                 modelToken: widget.modelToken,
                                 nameWallet: widget.walletName,
-                                nameTokenWallet:
-                                    widget.modelToken.nameShortToken,
+                                nameTokenWallet: 'BNB',
                                 balanceWallet: tokenCubit.balanceWallet,
                                 typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
                                 addressFrom: widget.walletAddress,
