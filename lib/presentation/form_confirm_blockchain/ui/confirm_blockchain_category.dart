@@ -138,6 +138,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
         bloc: cubitFormCustomizeGasFee,
         builder: (context, state) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.black,
             body: Align(
               alignment: Alignment.bottomCenter,
