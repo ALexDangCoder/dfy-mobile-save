@@ -54,6 +54,7 @@ class TokenItem extends StatelessWidget {
             builder: (context) => TokenDetail(
               walletAddress: walletAddress,
               token: modelToken,
+              walletName: bloc.nameWallet,
               bloc: TokenDetailBloc(
                 walletAddress: walletAddress,
               ),

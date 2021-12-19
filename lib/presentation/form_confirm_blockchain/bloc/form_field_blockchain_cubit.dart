@@ -1,7 +1,10 @@
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/main.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:web3dart/web3dart.dart';
 
 part 'form_field_blockchain_state.dart';
 
@@ -38,8 +41,9 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   Sink<String> get txtGasFeeWhenEstimatingSink => _txtGasFeeWhenEstimating.sink;
 
   Future<void> getGasPrice() async {
-    final double result = await Web3Utils().getGasPrice();
-    gasPriceSink.add(result);
+    final result = await Web3Utils().getGasPrice();
+    final double gasPrice = double.parse(result) / 1000000000;
+    gasPriceSink.add(gasPrice);
   }
   //function
   void isShowCustomizeFee({required bool isShow}) {
@@ -59,6 +63,57 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       isSufficientGasFeeSink.add(false);
     } else {
       isSufficientGasFeeSink.add(true);
+    }
+  }
+
+  ///SEND TOKEN
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    bool isSuccess = false;
+    String signedTransaction = '';
+    switch (methodCall.method) {
+      case 'signTransactionCallback':
+      // print(methodCall.arguments);
+        isSuccess = await methodCall.arguments['isSuccess'];
+        signedTransaction = await methodCall.arguments['signedTransaction'];
+        if(isSuccess) {
+          Web3Utils().sendRawTransaction(transaction: signedTransaction);
+          emit(FormBlockchainSendTokenSuccess());
+        } else {
+          emit(FormBlockchainSendTokenFail());
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  Future<int> getNonceWeb3({required String walletAddress}) async {
+    final result =
+    await Web3Utils().getTransactionCount(address: walletAddress);
+    return result.count;
+  }
+
+  Future<void> signTransaction({
+    required String fromAddress,
+    required String toAddress,
+    required String nonce,
+    required String gasPrice,
+    required String gasLimit,
+    required String amount,
+  }) async {
+    try {
+      final data = {
+        'fromAddress': fromAddress,
+        'toAddress': toAddress,
+        'nonce': nonce,
+        'chainId': '97',
+        'gasPrice': gasPrice,
+        'gasLimit': gasLimit,
+        'amount': amount,
+      };
+      await trustWalletChannel.invokeMethod('signTransaction', data);
+    } on PlatformException {
+      //todo
     }
   }
 

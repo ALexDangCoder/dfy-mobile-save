@@ -22,12 +22,14 @@ class TokenDetail extends StatelessWidget {
   final ModelToken token;
   final TokenDetailBloc bloc;
   final String walletAddress;
+  final String? walletName;
 
   const TokenDetail({
     Key? key,
     required this.bloc,
     required this.token,
     required this.walletAddress,
+    this.walletName,
   }) : super(
           key: key,
         );
@@ -156,6 +158,7 @@ class TokenDetail extends StatelessWidget {
                                     backgroundColor: Colors.transparent,
                                     builder: (_) {
                                       return SendToken(
+                                        walletName: walletName ?? '',
                                         modelToken: modelToken,
                                         walletAddress: walletAddress,
                                       );
