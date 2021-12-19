@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
@@ -44,6 +45,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     this.nameToken,
     this.amount,
     this.quantity,
+    this.modelToken,
   }) : super(key: key);
 
   final TYPE_CONFIRM typeConfirm;
@@ -61,6 +63,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
   final double gasFeeFirstFetch;
   final double gasLimitFirstFetch;
   final String imageWallet;
+  final ModelToken? modelToken ;
   final dynamic cubitCategory;
 
   @override
@@ -263,6 +266,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                     );
                                     await cubitFormCustomizeGasFee
                                         .signTransaction(
+                                      tokenAddress: widget.modelToken!.tokenAddress,
                                       fromAddress: widget.addressFrom,
                                       toAddress: widget.addressTo,
                                       gasPrice: (widget.gasPriceFirstFetch *
