@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
@@ -41,6 +42,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     this.nameToken,
     this.amount,
     this.quantity,
+    this.modelToken,
   }) : super(key: key);
 
   final TYPE_CONFIRM typeConfirm;
@@ -58,6 +60,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
   final double gasFeeFirstFetch;
   final String imageWallet;
   final dynamic cubitCategory;
+  final ModelToken? modelToken;
 
   @override
   _ConfirmBlockchainCategoryState createState() =>
@@ -241,9 +244,10 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                               walletAddress: widget.addressFrom,
                             );
                             await cubitFormCustomizeGasFee.signTransaction(
-                              walletAddress: '',
-                              tokenAddress: '',
-                              chainId: '',
+                              walletAddress: widget.addressFrom,
+                              tokenAddress:
+                                  widget.modelToken?.tokenAddress ?? '',
+                              chainId: '97',
                               toAddress: widget.addressTo,
                               gasPrice: (widget.gasPriceFirstFetch * 1000000000)
                                   .toString(),
@@ -251,8 +255,9 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                               gasLimit:
                                   (double.parse(_txtGasLimit.text) * 1000000000)
                                       .toString(),
-                              amount: ((widget.amount ?? 0) * 1000000000)
-                                  .toString(),
+                              amount:
+                                  ((widget.amount ?? 0) * 1000000000000000000)
+                                      .toString(),
                             );
                             break;
                           case TYPE_CONFIRM.SEND_NFT:

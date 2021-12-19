@@ -162,6 +162,7 @@ class _SendTokenState extends State<SendToken> {
                           MaterialPageRoute(
                             builder: (_) {
                               return ConfirmBlockchainCategory(
+                                modelToken: widget.modelToken,
                                 nameWallet: widget.walletName,
                                 nameTokenWallet: 'BNB',
                                 balanceWallet: tokenCubit.balanceWallet,
