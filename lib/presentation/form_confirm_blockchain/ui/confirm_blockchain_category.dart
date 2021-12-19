@@ -40,6 +40,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     required this.cubitCategory,
     required this.gasPriceFirstFetch,
     required this.gasFeeFirstFetch,
+    required this.gasLimitFirstFetch,
     this.nameToken,
     this.amount,
     this.quantity,
@@ -58,6 +59,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
   final double balanceWallet;
   final double gasPriceFirstFetch;
   final double gasFeeFirstFetch;
+  final double gasLimitFirstFetch;
   final String imageWallet;
   final dynamic cubitCategory;
 
@@ -79,9 +81,8 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
   @override
   void initState() {
     _txtGasLimit = TextEditingController(
-        text:
-            ((widget.gasFeeFirstFetch * 1000000000) / widget.gasPriceFirstFetch)
-                .toString());
+      text: widget.gasLimitFirstFetch.toString(),
+    );
     _txtGasPrice =
         TextEditingController(text: widget.gasPriceFirstFetch.toString());
     _informationWallet = InformationWallet(
@@ -225,12 +226,13 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                               FormShowFtHideCfBlockchain(
                                 nameToken: widget.nameTokenWallet,
                                 cubit: cubitFormCustomizeGasFee,
-                                gasFeeFirstFetch: widget.gasFeeFirstFetch,
+                                gasFeeFirstFetch: (widget.gasLimitFirstFetch *
+                                        widget.gasPriceFirstFetch) /
+                                    1000000000,
                                 gasPriceFirstFetch: widget.gasPriceFirstFetch,
-                                gasLimitFirstFetch:
-                                    (widget.gasFeeFirstFetch * 1000000000) /
-                                        widget.gasPriceFirstFetch,
-                                balanceWallet: widget.balanceWallet - widget.amount!.toDouble(),
+                                gasLimitFirstFetch: widget.gasLimitFirstFetch,
+                                balanceWallet: widget.balanceWallet -
+                                    widget.amount!.toDouble(),
                                 txtGasLimit: _txtGasLimit,
                                 txtGasPrice: _txtGasPrice,
                               ),
@@ -240,14 +242,18 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                       ),
                     ),
                     StreamBuilder<bool>(
-                        initialData:
-                            widget.gasFeeFirstFetch < widget.balanceWallet,
+                        initialData: ((widget.gasLimitFirstFetch *
+                                    widget.gasPriceFirstFetch) /
+                                1000000000) <
+                            widget.balanceWallet,
                         stream: cubitFormCustomizeGasFee.isEnableBtnStream,
                         builder: (context, snapshot) {
                           return GestureDetector(
                             onTap: () async {
                               if (snapshot.data ??
-                                  (widget.gasFeeFirstFetch <
+                                  (((widget.gasLimitFirstFetch *
+                                              widget.gasPriceFirstFetch) /
+                                          1000000000) <
                                       widget.balanceWallet)) {
                                 switch (widget.typeConfirm) {
                                   case TYPE_CONFIRM.SEND_TOKEN:
