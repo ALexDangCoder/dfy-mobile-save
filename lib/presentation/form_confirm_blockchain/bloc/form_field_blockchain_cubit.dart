@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:web3dart/web3dart.dart';
 
 part 'form_field_blockchain_state.dart';
 
@@ -15,6 +14,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   final _isCustomizeGasFee = BehaviorSubject<bool>.seeded(false);
   final _txtGasFeeWhenEstimating = BehaviorSubject<String>();
   final _gasPrice = BehaviorSubject<double>();
+
   //web3
 
   //stream
@@ -45,6 +45,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     final double gasPrice = double.parse(result) / 1000000000;
     gasPriceSink.add(gasPrice);
   }
+
   //function
   void isShowCustomizeFee({required bool isShow}) {
     isCustomizeGasFeeSink.add(isShow);
@@ -72,11 +73,11 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     String signedTransaction = '';
     switch (methodCall.method) {
       case 'signTransactionCallback':
-      // print(methodCall.arguments);
+        // print(methodCall.arguments);
         isSuccess = await methodCall.arguments['isSuccess'];
         signedTransaction = await methodCall.arguments['signedTransaction'];
         print(signedTransaction);
-        if(isSuccess) {
+        if (isSuccess) {
           print(signedTransaction);
           Web3Utils().sendRawTransaction(transaction: signedTransaction);
           emit(FormBlockchainSendTokenSuccess());
@@ -91,33 +92,34 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
 
   Future<int> getNonceWeb3({required String walletAddress}) async {
     final result =
-    await Web3Utils().getTransactionCount(address: walletAddress);
+        await Web3Utils().getTransactionCount(address: walletAddress);
     return result.count;
   }
 
   Future<void> signTransaction({
-    required String fromAddress,
+    required String walletAddress,
+    required String tokenAddress,
     required String toAddress,
     required String nonce,
+    required String chainId,
     required String gasPrice,
     required String gasLimit,
     required String amount,
   }) async {
     try {
       final data = {
-        'fromAddress': fromAddress,
-        'toAddress': toAddress,
-        'nonce': nonce,
+        'walletAddress': '0xf5e281A56650bb992ebaB15B41583303fE9804e7',
+        'tokenAddress': '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
+        'toAddress': '0x400BB436FFe5F4285e77575F00Ec7D06cE438f3B',
+        'nonce': '39',
         'chainId': '97',
-        'gasPrice': gasPrice,
-        'gasLimit': gasLimit,
-        'amount': amount,
+        'gasPrice': '1000000000000',
+        'gasLimit': '100000',
+        'amount': '10000000000000000000000',
       };
       await trustWalletChannel.invokeMethod('signTransaction', data);
     } on PlatformException {
       //todo
     }
   }
-
-
 }

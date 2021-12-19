@@ -399,8 +399,8 @@ class Web3Utils {
   // }
 
   void sendRawTransaction({required String transaction}) {
-    final List<int> listInt = hex.decode(transaction);
-    final Uint8List signedTransaction = Uint8List.fromList(listInt);
+    Uint8List bytes = Uint8List.fromList(hex.decode(transaction));
+    final Uint8List signedTransaction = Uint8List.fromList(bytes);
     client.sendRawTransaction(signedTransaction);
   }
 
