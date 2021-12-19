@@ -160,6 +160,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   Future<void> signTransaction({
     required String fromAddress,
     required String toAddress,
+    required String tokenAddress,
     required String nonce,
     required String gasPrice,
     required String gasLimit,
@@ -167,9 +168,10 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   }) async {
     try {
       final data = {
-        'fromAddress': fromAddress,
+        'walletAddress': fromAddress,
         'toAddress': toAddress,
         'nonce': nonce,
+        'tokenAddress': tokenAddress,
         'chainId': '97',
         'gasPrice': gasPrice,
         'gasLimit': gasLimit,
