@@ -49,15 +49,23 @@ extension AppDelegate {
                 result(generateWallet())
         }
         if call.method == "storeWallet" {
-            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] {
-                result(storeWallet(seedPhrase: seedPhrase, walletName: walletName))
+            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] as? String {
+                result(storeWallet(seedPhrase: seedPhrase, walletName: walletName, privateKey: privateKey, walletAddress: walletAddress))
             }
         }
-//        if call.method == "setConfig" {
-//            if let arguments = call.arguments as? [String: Any], let isAppLock = arguments["isAppLock"] as? Bool, let isFaceID = arguments["isFaceID"] as? Bool, let password = arguments["password"] as? String {
-//                result(setConfig(appLock: isAppLock,faceID: isFaceID,password: password))
-//            }
-//        }
+        if call.method == "setConfig" {
+            if let arguments = call.arguments as? [String: Any], let isAppLock = arguments["isAppLock"] as? Bool, let isFaceID = arguments["isFaceID"] as? Bool {
+                result(setConfig(appLock: isAppLock,faceID: isFaceID))
+            }
+        }
+        if call.method == "savePassword" {
+            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
+                result(savePassword(password: password))
+            }
+        }
+        if call.method == "getListWallets" {
+            result(getListWallets())
+        }
 //        if call.method == "checkPassword" {
 //            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
 //                result(checkPassword(password: password))
@@ -165,18 +173,33 @@ extension AppDelegate {
         return params
     }
     
-    private func storeWallet(seedPhrase: String, walletName: String) -> [String: Any] {
+    private func storeWallet(seedPhrase: String, walletName: String, privateKey: String, walletAddress: String) -> [String: Any] {
         var params: [String: Any] = [:]
         params["isSuccess"] = true
         chatChanel?.invokeMethod("storeWalletCallback", arguments: params)
         return params
     }
     
-    private func setConfig(appLock: Bool, faceID: Bool, password: String) -> [String: Any] {
+    private func setConfig(appLock: Bool, faceID: Bool) -> [String: Any] {
         var params: [String: Any] = [:]
         params["isSuccess"] = true
         chatChanel?.invokeMethod("setConfigCallback", arguments: params)
         return params
+    }
+    
+    private func savePassword(password: String) -> [String: Any] {
+        if (!password.isEmpty) {
+            var params: [String: Any] = [:]
+            params["isSuccess"] = true
+            chatChanel?.invokeMethod("savePasswordCallback", arguments: params)
+            return params
+        }
+        return [:]
+    }
+    
+    private func getListWallets() -> [[String: Any]] {
+        var listParam: [[String: Any]] = []
+        return listParam
     }
 
     private func getConfigWallet() -> [String: Any] {

@@ -12,7 +12,7 @@ import '../../../../main.dart';
 class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BLocCreateSeedPhrase(this.passWord) : super(SeedInitialState());
 
-  BehaviorSubject<String> nameWallet = BehaviorSubject();
+  BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isCheckBoxCreateSeedPhrase =
       BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isCheckBoxCreateSeedPhraseConfirm =
