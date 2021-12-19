@@ -4,7 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
-import 'package:Dfy/utils/extensions/validator.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -103,7 +103,8 @@ class FormFieldBlockChain extends StatelessWidget {
                   }
                   result = (valueHandle * double.parse(numHandle)) / pow(10, 9);
                   // cubit.isEstimatingGasFee(Validator.toExact(result));
-                  cubit.isEstimatingGasFee(result.toString());
+                  Decimal convertedNum = Decimal.parse(result.toString());
+                  cubit.isEstimatingGasFee(convertedNum.toString());
                   cubit.isSufficientGasFee(
                     gasFee: result,
                     balance: balanceFetchFirst,
