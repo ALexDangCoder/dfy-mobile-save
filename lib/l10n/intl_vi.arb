@@ -202,6 +202,10 @@
   "err_invalid_wallet_add": "Địa chỉ không hợp lệ",
   "err_not_owner_nft": "Bạn không phải là chủ sở hữu của bộ sưu tập này, vì vậy bạn không thể thêm nó",
   "err_none_exist_nft": "Mã thông báo không tồn tại",
-  "name_characters": "Tên không được quá 20 ký tự"
+  "name_characters": "Tên không được quá 20 ký tự",
+  "gas_limit_required": "Phí gas giới hạn bắt buộc",
+  "invalid_gas_limit": "Phí gas giới hạn không hợp lệ",
+  "gas_price_required": "Phí gas bắt buộc",
+  "invalid_gas_price": "Phí gas không hợp lệ"
 
 }
