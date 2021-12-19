@@ -175,7 +175,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                                 formGasFee: FORM_GAS_FEE.LIMIT,
                                 cubit: cubit,
                                 balanceFetchFirst: balanceWallet,
-                                numHandle: txtGasLimit.text,
+                                numHandle: txtGasPrice.text,
                               ),
                               showWarningGasLimit(),
                               spaceH16,
@@ -184,7 +184,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                                 formGasFee: FORM_GAS_FEE.PRICE,
                                 cubit: cubit,
                                 balanceFetchFirst: balanceWallet,
-                                numHandle: txtGasPrice.text,
+                                numHandle: txtGasLimit.text,
                               ),
                               showWarningGasPrice(),
                               spaceH24,
@@ -199,6 +199,8 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
                                   cubit.txtGasFeeWhenEstimatingSink
                                       .add(gasFeeFirstFetch.toString());
                                   cubit.isEnableBtnSink.add(gasFeeFirstFetch < balanceWallet);
+                                  cubit.validateGasPrice(gasPriceFirstFetch.toString());
+                                  cubit.validateGasLimit(gasLimitFirstFetch.toString());
                                 },
                                 child: btnReset(),
                               ),

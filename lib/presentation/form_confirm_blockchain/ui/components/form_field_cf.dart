@@ -32,6 +32,7 @@ class FormFieldBlockChain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(numHandle);
     return SizedBox(
       height: 64.h,
       // padding: EdgeInsets.only(left: 16.w),
@@ -106,6 +107,11 @@ class FormFieldBlockChain extends StatelessWidget {
                     gasFee: result,
                     balance: balanceFetchFirst,
                   );
+                  if(formGasFee == FORM_GAS_FEE.LIMIT) {
+                    cubit.validateGasLimit(value);
+                  } else {
+                    cubit.validateGasPrice(value);
+                  }
                 },
               ),
             ),
