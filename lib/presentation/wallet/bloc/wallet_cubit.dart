@@ -67,6 +67,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   BehaviorSubject<String> warningTextNft = BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String> warningTextIdNft = BehaviorSubject<String>.seeded('');
   String errorWhenImportNft = '';
 
   //handle call nft from web3
@@ -77,7 +78,15 @@ class WalletCubit extends BaseCubit<WalletState> {
   }) async {
     emit(ImportNftLoading());
     if (id != null) {
-      //todo handle when user not fill ID
+      final resultWhenCall =
+      await client.importNFT(contract: contract, address: address, id: id);
+      if (!resultWhenCall.isSuccess) {
+        emit(ImportNftFail());
+        errorWhenImportNft = resultWhenCall.message;
+        btnSubject.sink.add(false);
+      } else {
+        await emitJsonNftToWalletCore(contract: contract, address: address);
+      }
     } else {
       final resultWhenCall =
           await client.importNFT(contract: contract, address: address);
@@ -219,16 +228,39 @@ class WalletCubit extends BaseCubit<WalletState> {
   List<HistoryNFT> listHistory = [];
   double? price = 0.0;
 
+  bool _flagNftAddress = false;
+  bool _flagIdNft = true;
+
   void checkValidateAddress({required String value}) {
     if (value.isEmpty) {
+      _flagNftAddress = false;
       btnSubject.sink.add(false);
       warningTextNft.sink.add(S.current.address_required);
     } else if (!regexAddress.hasMatch(value)) {
+      _flagNftAddress = false;
       btnSubject.sink.add(false);
       warningTextNft.sink.add(S.current.invalid_address);
     } else {
+      _flagNftAddress = true;
       warningTextNft.sink.add('');
-      btnSubject.sink.add(true);
+      if(_flagNftAddress && _flagIdNft) {
+        btnSubject.sink.add(true);
+      }
+    }
+  }
+
+  final regexId = RegExp(r'^[0-9]*$');
+  void checkValidateIdNft({required String value}) {
+    if(!regexId.hasMatch(value)) {
+      _flagIdNft = false;
+      warningTextIdNft.sink.add(S.current.invalid_id_nft);
+      btnSubject.sink.add(false);
+    } else {
+      _flagIdNft = true;
+      warningTextIdNft.sink.add('');
+      if(_flagIdNft && _flagNftAddress) {
+        btnSubject.sink.add(true);
+      }
     }
   }
 

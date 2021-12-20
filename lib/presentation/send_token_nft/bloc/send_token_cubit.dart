@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
@@ -41,10 +42,15 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     required String from,
     required String to,
     required double value,
+    required ModelToken token,
   }) async {
-    final result =
-        await Web3Utils().getEstimateGasPrice(from: from, to: to, value: value);
-    estimateGasFee = double.parse(result);
+    if (token.nameShortToken == 'BNB') {
+      final result = await Web3Utils()
+          .getEstimateGasPrice(from: from, to: to, value: value);
+      estimateGasFee = double.parse(result);
+    } else {
+      estimateGasFee = 45000;
+    }
   }
 
   //handle nft pending api
