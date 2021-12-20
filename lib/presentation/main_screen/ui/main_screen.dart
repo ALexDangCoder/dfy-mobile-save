@@ -107,6 +107,7 @@ class _MainScreenState extends BaseState<MainScreen> {
           _lastQuitTime = DateTime.now();
           return Future.value(false);
         } else {
+          await SystemNavigator.pop();
           return Future.value(true);
         }
       },
