@@ -36,6 +36,7 @@ fun Context.chooseWallet(channel: MethodChannel?, walletAddress: String) {
         walletModel.walletIndex = index
     }
     appPreference.saveListWallet(listWallet)
+    hasMap["isSuccess"] = true
     channel?.invokeMethod("chooseWalletCallBack", hasMap)
 }
 
