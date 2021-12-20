@@ -405,7 +405,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   void getTokenInfoByAddressList({
     required List<TokenInf> res,
-  }) {
+  })  {
     final List<ModelToken> listJson = [];
     for (final value in res) {
       listJson.add(
@@ -471,7 +471,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       case 'importListTokenCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
         if (isSuccess) {
-          await getTokens(
+          getTokens(
             addressWalletCore,
           );
         }
@@ -552,7 +552,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           addressWallet.add(addressWalletCore);
           walletName.add(nameWallet);
           await getListCategory();
-          await getNFT(addressWalletCore);
+          getNFT(addressWalletCore);
         }
         break;
       case 'getNFTCallback':
@@ -590,10 +590,10 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  Future<void> getConfig() async {
+  void getConfig() {
     try {
       final data = {};
-      await trustWalletChannel.invokeMethod('getConfig', data);
+      trustWalletChannel.invokeMethod('getConfig', data);
     } on PlatformException {}
   }
 
@@ -639,25 +639,25 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  Future<void> getTokens(String walletAddress) async {
+  void getTokens(String walletAddress) {
     try {
       final data = {
         'walletAddress': walletAddress,
       };
-      await trustWalletChannel.invokeMethod('getTokens', data);
+       trustWalletChannel.invokeMethod('getTokens', data);
     } on PlatformException {
       //nothing
     }
   }
 
-  Future<void> getNFT(
+  void getNFT(
     String walletAddress,
-  ) async {
+  ) {
     try {
       final data = {
         'walletAddress': walletAddress,
       };
-      await trustWalletChannel.invokeMethod('getNFT', data);
+       trustWalletChannel.invokeMethod('getNFT', data);
     } on PlatformException {}
   }
 
