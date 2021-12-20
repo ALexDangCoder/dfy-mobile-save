@@ -22,7 +22,7 @@ import java.security.InvalidParameterException
 
 fun Context.chooseWallet(channel: MethodChannel?, walletAddress: String) {
     val appPreference = AppPreference(this)
-    val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
+    val hasMap = HashMap<String, Any>()
     val listWallet = ArrayList<WalletModel>()
     val listWalletInCore = appPreference.getListWallet()
     listWalletInCore.forEachIndexed { index, walletModel ->
