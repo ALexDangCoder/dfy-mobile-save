@@ -1,7 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
-import 'package:Dfy/presentation/restore_account/ui/restore_bts.dart';
+import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
