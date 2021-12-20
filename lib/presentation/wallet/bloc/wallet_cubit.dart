@@ -87,7 +87,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         btnSubject.sink.add(false);
       } else {
         await emitJsonNftToWalletCore(
-            contract: contract, address: address, id: id);
+            contract: contract, address: address, id: id,);
       }
     } else {
       final resultWhenCall =
@@ -852,13 +852,22 @@ class WalletCubit extends BaseCubit<WalletState> {
     required String address,
   }) async {
     Map<String, dynamic> result = {};
-    result = await Web3Utils()
-        .getCollectionInfo(contract: contract, address: address);
-    // result.putIfAbsent('walletAddress', () => address);
-    await importNftIntoWalletCore(
-      jsonNft: json.encode(result),
-      address: address,
-    );
+    if(id != null) {
+      result = await Web3Utils()
+          .getCollectionInfo(contract: contract, address: address, id: id);
+      await importNftIntoWalletCore(
+        jsonNft: json.encode(result),
+        address: address,
+      );
+    } else {
+      result = await Web3Utils()
+          .getCollectionInfo(contract: contract, address: address);
+      // result.putIfAbsent('walletAddress', () => address);
+      await importNftIntoWalletCore(
+        jsonNft: json.encode(result),
+        address: address,
+      );
+    }
   }
 
   Future<CollectionNft> fetchCollection() async {

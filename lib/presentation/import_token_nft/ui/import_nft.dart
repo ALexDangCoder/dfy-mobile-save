@@ -149,37 +149,46 @@ class _BodyState extends State<_Body> {
                   builder: (context, snapshot) {
                     return snapshot.data ?? false
                         ? ButtonGradient(
-                            onPressed: () async {
-                              widget.bloc.checkImportNft(
-                                contract: _contractController.text,
-                                address: widget.bloc.addressWalletCore,
-                              );
-                            },
-                            gradient: RadialGradient(
-                              center: const Alignment(0.5, -0.5),
-                              radius: 4,
-                              colors:
-                                  AppTheme.getInstance().gradientButtonColor(),
-                            ),
-                            child: Text(
-                              S.current.import,
-                              style: textNormal(
-                                AppTheme.getInstance().textThemeColor(),
-                                20,
-                              ),
-                            ),
-                          )
-                        : ErrorButton(
-                            child: Center(
-                              child: Text(
-                                S.current.import,
-                                style: textNormal(
-                                  AppTheme.getInstance().textThemeColor(),
-                                  20,
-                                ),
-                              ),
-                            ),
+                      onPressed: () async {
+                        if (_idController.text.isEmpty) {
+                          widget.bloc.checkImportNft(
+                            contract: _contractController.text,
+                            address: widget.bloc.addressWalletCore,
                           );
+                        } else {
+                          final id = int.parse(_idController.text);
+                          widget.bloc.checkImportNft(
+                            contract: _contractController.text,
+                            address: widget.bloc.addressWalletCore,
+                            id: id,
+                          );
+                        }
+                      },
+                      gradient: RadialGradient(
+                        center: const Alignment(0.5, -0.5),
+                        radius: 4,
+                        colors:
+                        AppTheme.getInstance().gradientButtonColor(),
+                      ),
+                      child: Text(
+                        S.current.import,
+                        style: textNormal(
+                          AppTheme.getInstance().textThemeColor(),
+                          20,
+                        ),
+                      ),
+                    )
+                        : ErrorButton(
+                      child: Center(
+                        child: Text(
+                          S.current.import,
+                          style: textNormal(
+                            AppTheme.getInstance().textThemeColor(),
+                            20,
+                          ),
+                        ),
+                      ),
+                    );
                   },
                 ),
               ),
