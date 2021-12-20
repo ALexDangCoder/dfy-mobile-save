@@ -134,6 +134,7 @@ class _BodyState extends State<_Body> {
                           controller: _idController,
                           nftAddress: _contractController.text,
                         ),
+                        warningTextId(),
                         const SizedBox(
                           height: 429,
                         ),
@@ -190,44 +191,64 @@ class _BodyState extends State<_Body> {
     );
   }
 
-  StreamBuilder<String> warningTxtAddress() {
-    return StreamBuilder<String>(
-      stream: widget.bloc.warningTextNft,
-      builder: (context, snapshot) {
+  Widget warningTxtAddress() {
+    return StreamBuilder(
+      stream: widget.bloc.isShowWarnAddressNft,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Visibility(
-          visible: snapshot.data?.isNotEmpty ?? false,
-          child: SizedBox(
-            width: 343.w,
-            child: Text(
-              snapshot.data ?? '',
-              style: textNormal(
-                Colors.red,
-                14,
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                width: 343.w,
+                // height: 30.h,
+                child: StreamBuilder<String>(
+                  stream: widget.bloc.warningAddressNft,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromRGBO(255, 108, 108, 1),
+                      ),
+                    );
+                  },
+                ),
               ),
-              textAlign: TextAlign.start,
-            ),
+            ],
           ),
         );
       },
     );
   }
 
-  StreamBuilder<String> warningTextId() {
-    return StreamBuilder<String>(
-      stream: widget.bloc.warningTextIdNft,
-      builder: (context, snapshot) {
+  Widget warningTextId() {
+    return StreamBuilder(
+      stream: widget.bloc.isShowWarnIDNft,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Visibility(
-          visible: snapshot.data?.isNotEmpty ?? false,
-          child: SizedBox(
-            width: 343.w,
-            child: Text(
-              snapshot.data ?? '',
-              style: textNormal(
-                Colors.red,
-                14,
+          visible: snapshot.data ?? false,
+          child: Column(
+            children: [
+              SizedBox(
+                width: 343.w,
+                // height: 30.h,
+                child: StreamBuilder<String>(
+                  stream: widget.bloc.warningTextIdNft,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromRGBO(255, 108, 108, 1),
+                      ),
+                    );
+                  },
+                ),
               ),
-              textAlign: TextAlign.start,
-            ),
+            ],
           ),
         );
       },

@@ -66,7 +66,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  BehaviorSubject<String> warningTextNft = BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String> warningAddressNft = BehaviorSubject<String>.seeded('');
   BehaviorSubject<String> warningTextIdNft = BehaviorSubject<String>.seeded('');
   String errorWhenImportNft = '';
 
@@ -230,20 +230,26 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   bool _flagNftAddress = false;
   bool _flagIdNft = true;
-
+  
+  //validate import nft form
+  BehaviorSubject<bool> isShowWarnAddressNft = BehaviorSubject<bool>.seeded(false);
+  BehaviorSubject<bool> isShowWarnIDNft = BehaviorSubject<bool>.seeded(false);
+  String currentAddressNft = '';
   void checkValidateAddress({required String value}) {
     if (value.isEmpty) {
+      isShowWarnAddressNft.sink.add(true);
       _flagNftAddress = false;
       btnSubject.sink.add(false);
-      warningTextNft.sink.add(S.current.address_required);
+      warningAddressNft.sink.add(S.current.address_required);
     } else if (!regexAddress.hasMatch(value)) {
+      isShowWarnAddressNft.sink.add(true);
       _flagNftAddress = false;
       btnSubject.sink.add(false);
-      warningTextNft.sink.add(S.current.invalid_address);
+      warningAddressNft.sink.add(S.current.invalid_address);
     } else {
       _flagNftAddress = true;
-      warningTextNft.sink.add('');
       if(_flagNftAddress && _flagIdNft) {
+        isShowWarnAddressNft.sink.add(false);
         btnSubject.sink.add(true);
       }
     }
@@ -253,12 +259,15 @@ class WalletCubit extends BaseCubit<WalletState> {
   void checkValidateIdNft({required String value}) {
     if(!regexId.hasMatch(value)) {
       _flagIdNft = false;
+      isShowWarnIDNft.sink.add(true);
       warningTextIdNft.sink.add(S.current.invalid_id_nft);
       btnSubject.sink.add(false);
     } else {
+      isShowWarnIDNft.sink.add(true);
       _flagIdNft = true;
       warningTextIdNft.sink.add('');
       if(_flagIdNft && _flagNftAddress) {
+        isShowWarnIDNft.sink.add(false);
         btnSubject.sink.add(true);
       }
     }
