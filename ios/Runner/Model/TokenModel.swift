@@ -7,6 +7,17 @@
 
 import Foundation
 
+struct TokenDTO: Decodable {
+    var walletAddress: String?
+    var tokenAddress: String?
+    var nameToken: String?
+    var iconToken: String?
+    var nameShortToken: String?
+    var decimal: Int?
+    var exchangeRate: Double?
+    var isImport: Bool?
+}
+
 class TokenModel {
     var walletAddress = ""
     var tokenAddress = ""
@@ -28,6 +39,18 @@ class TokenModel {
         self.exchangeRate = exchangeRate
         self.isShow = isShow
         self.isImport = isImport
+    }
+    
+    init(param: [String: Any]) {
+        self.walletAddress = param["walletAddress"] as! String
+        self.tokenAddress = param["tokenAddress"] as! String
+        self.tokenFullName = param["tokenFullName"] as! String
+        self.iconUrl = param["iconUrl"] as! String
+        self.symbol = param["symbol"] as! String
+        self.decimal = param["decimal"] as! Int
+        self.exchangeRate = param["exchangeRate"] as! Double
+        self.isShow = param["isShow"] as! Bool
+        self.isImport = param["isImport"] as! Bool
     }
     
     func toDict() -> [String: Any] {

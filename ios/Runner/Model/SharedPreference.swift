@@ -52,7 +52,12 @@ class SharedPreference {
     }
     
     func getListTokens() -> [TokenModel] {
-        return userDefault.object(forKey: "listTokens") as? [TokenModel] ?? []
+        let listParam = userDefault.object(forKey: "listTokens") as? [[String: Any]] ?? []
+        var listTokens = [TokenModel]()
+        listParam.forEach { tokenParam in
+            listTokens.append(TokenModel(param: tokenParam))
+        }
+        return listTokens
     }
     
     func saveListTokens(listTokens: [TokenModel]) {
