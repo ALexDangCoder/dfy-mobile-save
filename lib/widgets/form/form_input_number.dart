@@ -9,12 +9,16 @@ class FormInputNumber extends StatelessWidget {
   final String urlIcon1;
   final WalletCubit bloc;
   final String hint;
+  final String nftAddress;
+  final TextEditingController controller;
 
   const FormInputNumber({
     Key? key,
     required this.urlIcon1,
     required this.bloc,
     required this.hint,
+    required this.nftAddress,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -43,34 +47,11 @@ class FormInputNumber extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(bottom: 1.h, right: 5.w),
               child: TextFormField(
+                controller: controller,
                 maxLength: 100,
-                onChanged: (value) async {
-                  if (value.isNotEmpty) {
-                    final res = await Web3Utils().importNFT(
-                      contract: bloc.contractSubject.valueOrNull ?? '',
-                      address: bloc.addressWallet.value,
-                      id: int.parse(value),
-                    );
-                    if (res.isSuccess) {
-                      bloc.warningTextNft.sink.add('');
-                    } else {
-                      bloc.warningTextNft.sink.add(res.message);
-                    }
-                    bloc.btnSubject.sink.add(res.isSuccess);
-                  }
-                },
-                onFieldSubmitted: (value) async {
-                  final res = await Web3Utils().importNFT(
-                    contract: bloc.contractSubject.valueOrNull ?? '',
-                    address: bloc.addressWallet.value,
-                    id: int.parse(value),
-                  );
-                  if (res.isSuccess) {
-                    bloc.warningTextNft.sink.add('');
-                  } else {
-                    bloc.warningTextNft.sink.add(res.message);
-                  }
-                  bloc.btnSubject.sink.add(res.isSuccess);
+                onChanged: (value)  {
+                  bloc.checkValidateIdNft(value: value);
+                  bloc.checkValidateAddress(value: nftAddress);
                 },
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(

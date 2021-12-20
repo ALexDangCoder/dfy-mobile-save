@@ -209,5 +209,6 @@
   "invalid_gas_limit": "Invalid Gas limit",
   "gas_price_required": "Gas price is required",
   "invalid_gas_price": "Invalid Gas price",
-  "no_result_found": "No result found"
+  "no_result_found": "No result found",
+  "invalid_id_nft": "Invalid ID"
 }
