@@ -207,5 +207,6 @@
   "invalid_gas_limit": "Phí gas giới hạn không hợp lệ",
   "gas_price_required": "Phí gas bắt buộc",
   "invalid_gas_price": "Phí gas không hợp lệ",
-  "no_result_found": "Không tìm thấy kết quả"
+  "no_result_found": "Không tìm thấy kết quả",
+  "invalid_id_nft": "ID không hợp lệ"
 }
