@@ -154,6 +154,7 @@ class _SendTokenState extends State<SendToken> {
                           txtAmount.text,
                         ),
                         token: widget.modelToken,
+                        context: context,
                       );
                       //check validate before go to next screen
                       if (tokenCubit.checkAddressFtAmount()) {
@@ -175,9 +176,10 @@ class _SendTokenState extends State<SendToken> {
                                 cubitCategory: tokenCubit,
                                 gasPriceFirstFetch:
                                     tokenCubit.gasPrice / 1000000000,
-                                gasFeeFirstFetch: (((tokenCubit.gasPrice / 1000000000) *
-                                        tokenCubit.estimateGasFee) /
-                                    1000000000),
+                                gasFeeFirstFetch:
+                                    (((tokenCubit.gasPrice / 1000000000) *
+                                            tokenCubit.estimateGasFee) /
+                                        1000000000),
                                 gasLimitFirstFetch: tokenCubit.estimateGasFee,
                               );
                             },
