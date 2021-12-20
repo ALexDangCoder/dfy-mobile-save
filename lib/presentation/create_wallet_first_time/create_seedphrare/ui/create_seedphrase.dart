@@ -89,6 +89,7 @@ class _BodyState extends State<_Body> {
           if (needName) {
             nameWalletController.text = widget.bloc.walletNameCore;
             needName = false;
+            widget.bloc.nameWallet.sink.add(widget.bloc.walletNameCore);
           }
           return GestureDetector(
             onTap: () {
@@ -204,7 +205,8 @@ class _BodyState extends State<_Body> {
                                       ),
                                       onChanged: (value) {
                                         widget.bloc.nameWallet.sink.add(value);
-                                        widget.bloc.isNameWallet.sink.add(value);
+                                        widget.bloc.isNameWallet.sink
+                                            .add(value);
                                         widget.bloc.validateNameWallet(value);
                                       },
                                       decoration: InputDecoration(

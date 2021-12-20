@@ -638,36 +638,36 @@ class WalletCubit extends BaseCubit<WalletState> {
     } on PlatformException {}
   }
 
-  Future<void> chooseWallet({
+  void chooseWallet({
     required String walletAddress,
-  }) async {
+  }) {
     try {
       final data = {
         'walletAddress': walletAddress,
       };
-      await trustWalletChannel.invokeMethod('chooseWallet', data);
+      trustWalletChannel.invokeMethod('chooseWallet', data);
     } on PlatformException {}
   }
 
-  Future<void> changeNameWallet({
+  void changeNameWallet({
     required String walletAddress,
     required String walletName,
-  }) async {
+  }) {
     try {
       final data = {
         'walletAddress': walletAddress,
         'walletName': walletName,
       };
-      await trustWalletChannel.invokeMethod('changeNameWallet', data);
+      trustWalletChannel.invokeMethod('changeNameWallet', data);
     } on PlatformException {}
   }
 
-  Future<void> earseWallet({required String walletAddress}) async {
+  void earseWallet({required String walletAddress}) {
     try {
       final data = {
         'walletAddress': walletAddress,
       };
-      await trustWalletChannel.invokeMethod('earseWallet', data);
+      trustWalletChannel.invokeMethod('earseWallet', data);
     } on PlatformException {}
   }
 

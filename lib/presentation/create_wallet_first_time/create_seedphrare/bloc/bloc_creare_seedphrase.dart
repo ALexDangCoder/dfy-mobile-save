@@ -135,28 +135,28 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     } on PlatformException {}
   }
 
-  Future<void> savePassword({
+  void savePassword({
     required String password,
-  }) async {
+  }) {
     try {
       final data = {
         'password': password,
       };
 
-      await trustWalletChannel.invokeMethod('savePassword', data);
+      trustWalletChannel.invokeMethod('savePassword', data);
     } on PlatformException {}
   }
 
-  Future<void> setConfig({
+  void setConfig({
     required bool isAppLock,
     required bool isFaceID,
-  }) async {
+  }) {
     try {
       final data = {
         'isAppLock': isAppLock,
         'isFaceID': isFaceID,
       };
-      await trustWalletChannel.invokeMethod('setConfig', data);
+      trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {}
   }
 
@@ -175,10 +175,10 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         emit(SeedNavState());
         break;
       case 'setConfigCallback':
-        bool isSuccess = await methodCall.arguments['isSuccess'];
+       // bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       case 'savePasswordCallback':
-        bool isSuccess = await methodCall.arguments['isSuccess'];
+       // bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       default:
         break;
