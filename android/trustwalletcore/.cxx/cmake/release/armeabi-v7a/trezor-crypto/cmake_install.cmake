@@ -1,4 +1,4 @@
-# Install script for directory: /Users/hoang/AndroidStudioProjects/test_import_wallet_1/wallet-core/trezor-crypto
+# Install script for directory: /Users/hoang/dfy-mobile/wallet-core/trezor-crypto
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,10 +38,10 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/trezor-crypto/libTrezorCrypto.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/armeabi-v7a/trezor-crypto/libTrezorCrypto.a")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/wallet-core/trezor-crypto/include/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/Users/hoang/dfy-mobile/wallet-core/trezor-crypto/include/")
 endif()
 

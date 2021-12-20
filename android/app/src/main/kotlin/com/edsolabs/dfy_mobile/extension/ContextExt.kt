@@ -607,7 +607,7 @@ fun Context.importNft(
     channel?.invokeMethod("importNftCallback", hasMap)
 }
 
-fun Context.signTransaction(
+fun Context.signTransactionToken(
     channel: MethodChannel?,
     walletAddress: String,
     tokenAddress: String,
@@ -677,4 +677,52 @@ fun Context.signTransaction(
         hasMap["signedTransaction"] = ""
     }
     channel?.invokeMethod("signTransactionCallback", hasMap)
+}
+
+fun Context.signTransactionNft(
+    channel: MethodChannel?,
+    walletAddress: String,
+    tokenAddress: String,
+    toAddress: String,
+    nonce: String,
+    chainId: String,
+    gasPrice: String,
+    gasLimit: String,
+    tokenId: String
+) {
+    val hasMap = HashMap<String, Any>()
+    val walletModel =
+        AppPreference(this).getListWallet().firstOrNull { it.walletAddress == walletAddress }
+    if (walletModel != null && walletModel.privateKey.isNotEmpty()) {
+        val signingInput = Ethereum.SigningInput.newBuilder().apply {
+            this.privateKey =
+                ByteString.copyFrom(PrivateKey(walletModel.privateKey.toHexBytes()).data())
+            this.toAddress = tokenAddress
+            this.chainId = ByteString.copyFrom(BigInteger(chainId).toByteArray())
+            this.nonce = ByteString.copyFrom(BigInteger(nonce).toByteArray())
+            this.gasPrice = BigInteger(
+                gasPrice.toDouble().toLong().toString()
+            ).toByteString()
+            this.gasLimit = BigInteger(
+                gasLimit.toDouble().toLong().toString()
+            ).toByteString()
+            transaction = Ethereum.Transaction.newBuilder().apply {
+                erc721Transfer = Ethereum.Transaction.ERC721Transfer.newBuilder().apply {
+                    this.from = walletAddress
+                    this.to = toAddress
+                    this.tokenId = BigInteger(tokenId).toByteString()
+                }.build()
+            }.build()
+        }
+
+        val output =
+            AnySigner.sign(signingInput.build(), CoinType.SMARTCHAIN, Ethereum.SigningOutput.parser())
+        val value = output.encoded.toByteArray().toHexString(false)
+        hasMap["isSuccess"] = true
+        hasMap["signedTransaction"] = value
+    } else {
+        hasMap["isSuccess"] = false
+        hasMap["signedTransaction"] = ""
+    }
+    channel?.invokeMethod("signTransactionNftCallback", hasMap)
 }

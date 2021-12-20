@@ -153,6 +153,7 @@ class _SendTokenState extends State<SendToken> {
                         value: double.parse(
                           txtAmount.text,
                         ),
+                        token: widget.modelToken,
                       );
                       //check validate before go to next screen
                       if (tokenCubit.checkAddressFtAmount()) {

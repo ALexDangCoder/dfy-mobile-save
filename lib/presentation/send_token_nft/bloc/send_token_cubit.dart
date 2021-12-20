@@ -23,7 +23,6 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   late double gasPrice;
   late double estimateGasFee; //gas limit
 
-
   Future<void> getBalance(String walletAddress) async {
     balanceWallet = await Web3Utils().getBalanceOfBnb(ofAddress: walletAddress);
   }
@@ -37,10 +36,15 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     required String from,
     required String to,
     required double value,
+    required ModelToken token,
   }) async {
-    final result =
-        await Web3Utils().getEstimateGasPrice(from: from, to: to, value: value);
-    estimateGasFee = double.parse(result);
+    if (token.nameShortToken == 'BNB') {
+      final result = await Web3Utils()
+          .getEstimateGasPrice(from: from, to: to, value: value);
+      estimateGasFee = double.parse(result);
+    } else {
+      estimateGasFee = 45000;
+    }
   }
 
   //handle nft pending api

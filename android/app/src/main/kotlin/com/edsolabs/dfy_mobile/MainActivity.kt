@@ -259,7 +259,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val amount =
                         call.argument<String>("amount")
                             ?: return@setMethodCallHandler
-                    this.signTransaction(
+                    this.signTransactionToken(
                         channel = channel,
                         walletAddress = walletAddress,
                         tokenAddress = tokenAddress,
@@ -287,4 +287,6 @@ class MainActivity : FlutterFragmentActivity() {
             }
         }
     }
+
+
 }

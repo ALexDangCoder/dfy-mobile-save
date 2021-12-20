@@ -1,13 +1,17 @@
 {
   "abi": "X86_64",
-  "abiPlatformVersion": 23,
-  "buildSettings": {
-    "environmentVariables": []
+  "info": {
+    "abi": "X86_64",
+    "bitness": 64,
+    "deprecated": false,
+    "default": true
   },
+  "originalCxxBuildFolder": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64",
+  "cxxBuildFolder": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64",
+  "abiPlatformVersion": 23,
   "cmake": {
-    "cmakeArtifactsBaseFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64",
-    "cmakeServerLogFile": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64/cmake_server_log.txt",
-    "cmakeWrappingBaseFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cxx/release/x86_64",
+    "cmakeWrappingBaseFolder": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cxx/release/x86_64",
+    "cmakeArtifactsBaseFolder": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64",
     "effectiveConfiguration": {
       "name": "traditional-android-studio-cmake-environment",
       "description": "Composite reified CMakeSettings configuration",
@@ -15,13 +19,13 @@
       "inheritEnvironments": [
         "ndk"
       ],
-      "buildRoot": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64",
+      "buildRoot": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64",
       "cmakeToolchain": "/Users/hoang/Library/Android/sdk/ndk/21.2.6472646/build/cmake/android.toolchain.cmake",
       "cmakeExecutable": "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake",
       "variables": [
         {
           "name": "CMAKE_FIND_ROOT_PATH",
-          "value": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/prefab/x86_64/prefab"
+          "value": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/prefab/x86_64/prefab"
         },
         {
           "name": "CMAKE_TOOLCHAIN_FILE",
@@ -53,7 +57,11 @@
         },
         {
           "name": "CMAKE_LIBRARY_OUTPUT_DIRECTORY",
-          "value": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/build/trustwalletcore/intermediates/cmake/release/obj/x86_64"
+          "value": "/Users/hoang/dfy-mobile/build/trustwalletcore/intermediates/cmake/release/obj/x86_64"
+        },
+        {
+          "name": "CMAKE_RUNTIME_OUTPUT_DIRECTORY",
+          "value": "/Users/hoang/dfy-mobile/build/trustwalletcore/intermediates/cmake/release/obj/x86_64"
         },
         {
           "name": "CMAKE_MAKE_PROGRAM",
@@ -72,47 +80,73 @@
           "value": "Release"
         }
       ]
-    }
+    },
+    "cmakeServerLogFile": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64/cmake_server_log.txt"
   },
-  "cxxBuildFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64",
-  "info": {
-    "abi": "X86_64",
-    "bitness": 64,
-    "deprecated": false,
-    "default": true
-  },
-  "originalCxxBuildFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64",
   "variant": {
     "buildSystemArgumentList": [
       "-DCMAKE_BUILD_TYPE\u003dRelease"
     ],
+    "cFlagsList": [],
+    "cppFlagsList": [],
+    "variantName": "release",
+    "objFolder": "/Users/hoang/dfy-mobile/build/trustwalletcore/intermediates/cmake/release/obj",
+    "soFolder": "/Users/hoang/dfy-mobile/build/trustwalletcore/intermediates/cmake/release/lib",
+    "isDebuggableEnabled": false,
+    "validAbiList": [
+      "ARMEABI_V7A",
+      "ARM64_V8A",
+      "X86",
+      "X86_64"
+    ],
     "buildTargetSet": [],
     "implicitBuildTargetSet": [],
-    "cFlagsList": [],
     "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
-    "cppFlagsList": [],
-    "isDebuggableEnabled": false,
     "module": {
-      "buildSystem": "CMAKE",
-      "cmake": {
-        "cmakeExe": "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake",
-        "minimumCmakeVersion": "3.10.2",
-        "ninjaExe": "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja"
-      },
-      "cmakeToolchainFile": "/Users/hoang/Library/Android/sdk/ndk/21.2.6472646/build/cmake/android.toolchain.cmake",
-      "cxxFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx",
+      "cxxFolder": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx",
+      "splitsAbiFilterSet": [],
+      "intermediatesFolder": "/Users/hoang/dfy-mobile/build/trustwalletcore/intermediates",
       "gradleModulePathName": ":trustwalletcore",
-      "intermediatesFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/build/trustwalletcore/intermediates",
-      "makeFile": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/wallet-core/CMakeLists.txt",
-      "moduleBuildFile": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/build.gradle",
-      "moduleRootFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore",
+      "moduleRootFolder": "/Users/hoang/dfy-mobile/android/trustwalletcore",
+      "moduleBuildFile": "/Users/hoang/dfy-mobile/android/trustwalletcore/build.gradle",
+      "makeFile": "/Users/hoang/dfy-mobile/wallet-core/CMakeLists.txt",
+      "buildSystem": "CMAKE",
+      "ndkFolder": "/Users/hoang/Library/Android/sdk/ndk/21.2.6472646",
+      "ndkVersion": "21.2.6472646",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
       "ndkDefaultAbiList": [
         "ARMEABI_V7A",
         "ARM64_V8A",
         "X86",
         "X86_64"
       ],
-      "ndkFolder": "/Users/hoang/Library/Android/sdk/ndk/21.2.6472646",
+      "ndkDefaultStl": "LIBCXX_STATIC",
+      "ndkMetaPlatforms": {
+        "min": 16,
+        "max": 29,
+        "aliases": {
+          "20": 19,
+          "25": 24,
+          "J": 16,
+          "J-MR1": 17,
+          "J-MR2": 18,
+          "K": 19,
+          "L": 21,
+          "L-MR1": 22,
+          "M": 23,
+          "N": 24,
+          "N-MR1": 24,
+          "O": 26,
+          "O-MR1": 27,
+          "P": 28,
+          "Q": 29
+        }
+      },
       "ndkMetaAbiList": [
         {
           "abi": "ARMEABI_V7A",
@@ -139,46 +173,15 @@
           "default": true
         }
       ],
-      "ndkMetaPlatforms": {
-        "min": 16,
-        "max": 29,
-        "aliases": {
-          "20": 19,
-          "25": 24,
-          "J": 16,
-          "J-MR1": 17,
-          "J-MR2": 18,
-          "K": 19,
-          "L": 21,
-          "L-MR1": 22,
-          "M": 23,
-          "N": 24,
-          "N-MR1": 24,
-          "O": 26,
-          "O-MR1": 27,
-          "P": 28,
-          "Q": 29
-        }
+      "originalCmakeToolchainFile": "/Users/hoang/Library/Android/sdk/ndk/21.2.6472646/build/cmake/android.toolchain.cmake",
+      "cmakeToolchainFile": "/Users/hoang/Library/Android/sdk/ndk/21.2.6472646/build/cmake/android.toolchain.cmake",
+      "cmake": {
+        "isValidCmakeAvailable": true,
+        "cmakeExe": "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake",
+        "minimumCmakeVersion": "3.10.2",
+        "ninjaExe": "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "isPreferCmakeFileApiEnabled": true
       },
-      "ndkSupportedAbiList": [
-        "ARMEABI_V7A",
-        "ARM64_V8A",
-        "X86",
-        "X86_64"
-      ],
-      "ndkDefaultStl": "LIBCXX_STATIC",
-      "ndkVersion": "21.2.6472646",
-      "project": {
-        "compilerSettingsCacheFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/.cxx",
-        "cxxFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/.cxx",
-        "isBuildOnlyTargetAbiEnabled": true,
-        "isCmakeBuildCohabitationEnabled": false,
-        "isNativeCompilerSettingsCacheEnabled": false,
-        "rootBuildGradleFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android",
-        "sdkFolder": "/Users/hoang/Library/Android/sdk",
-        "isPrefabEnabled": false
-      },
-      "splitsAbiFilterSet": [],
       "stlSharedObjectMap": {
         "LIBCXX_SHARED": {
           "ARMEABI_V7A": "/Users/hoang/Library/Android/sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so",
@@ -189,18 +192,24 @@
         "LIBCXX_STATIC": {},
         "NONE": {},
         "SYSTEM": {}
-      }
+      },
+      "project": {
+        "rootBuildGradleFolder": "/Users/hoang/dfy-mobile/android",
+        "cxxFolder": "/Users/hoang/dfy-mobile/android/.cxx",
+        "compilerSettingsCacheFolder": "/Users/hoang/dfy-mobile/android/.cxx",
+        "sdkFolder": "/Users/hoang/Library/Android/sdk",
+        "isNativeCompilerSettingsCacheEnabled": false,
+        "isBuildOnlyTargetAbiEnabled": true,
+        "isCmakeBuildCohabitationEnabled": false,
+        "isPrefabEnabled": false,
+        "isV2NativeModelEnabled": true
+      },
+      "nativeBuildOutputLevel": "QUIET"
     },
-    "objFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/build/trustwalletcore/intermediates/cmake/release/obj",
-    "variantName": "release",
-    "validAbiList": [
-      "ARMEABI_V7A",
-      "ARM64_V8A",
-      "X86",
-      "X86_64"
-    ],
-    "prefabDirectory": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/prefab",
-    "prefabPackageDirectoryList": []
+    "prefabDirectory": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/prefab"
   },
-  "prefabFolder": "/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/prefab/x86_64"
+  "buildSettings": {
+    "environmentVariables": []
+  },
+  "prefabFolder": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/prefab/x86_64"
 }

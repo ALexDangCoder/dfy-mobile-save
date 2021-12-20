@@ -90,7 +90,7 @@ rule C_STATIC_LIBRARY_LINKER__TrezorCrypto
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake -H/Users/hoang/AndroidStudioProjects/test_import_wallet_1/wallet-core -B/Users/hoang/AndroidStudioProjects/test_import_wallet_1/android/trustwalletcore/.cxx/cmake/release/x86_64
+  command = /Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake -H/Users/hoang/dfy-mobile/wallet-core -B/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64
   description = Re-running CMake...
   generator = 1
 
