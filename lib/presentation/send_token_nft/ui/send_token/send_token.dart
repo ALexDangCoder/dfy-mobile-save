@@ -161,6 +161,7 @@ class _SendTokenState extends State<SendToken> {
                           MaterialPageRoute(
                             builder: (_) {
                               return ConfirmBlockchainCategory(
+                                modelToken: widget.modelToken,
                                 nameWallet: widget.walletName,
                                 nameTokenWallet: 'BNB',
                                 balanceWallet: tokenCubit.balanceWallet,
@@ -171,8 +172,11 @@ class _SendTokenState extends State<SendToken> {
                                 amount: double.parse(txtAmount.text),
                                 nameToken: 'BNB',
                                 cubitCategory: tokenCubit,
-                                gasPriceFirstFetch: tokenCubit.gasPrice / 1000000000,
-                                gasFeeFirstFetch: tokenCubit.estimateGasFee / 1000000000,
+                                gasPriceFirstFetch:
+                                    tokenCubit.gasPrice / 1000000000,
+                                gasFeeFirstFetch:
+                                ((tokenCubit.gasPrice * tokenCubit.estimateGasFee) / 1000000000),
+                                gasLimitFirstFetch: tokenCubit.estimateGasFee,
                               );
                             },
                           ),

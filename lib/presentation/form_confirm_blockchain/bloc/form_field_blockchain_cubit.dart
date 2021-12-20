@@ -117,14 +117,14 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   void isSufficientGasFee({required double gasFee, required double balance}) {
     if (gasFee < balance) {
       //nếu phí giao dịch bé hơn số dư thì không báo đỏ
-      isSufficientGasFeeSink.add(false);
+      isSufficientGasFeeSink.add(true);
       _flagSufficientFee = true;
       if(_flagSufficientFee && _flagGasLimit && _flagGasPrice) {
         isEnableBtnSink.add(true);
       }
     } else {
       //ngược lại
-      isSufficientGasFeeSink.add(true);
+      isSufficientGasFeeSink.add(false);
       isEnableBtnSink.add(false);
       _flagSufficientFee = false;
     }
@@ -160,6 +160,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   Future<void> signTransaction({
     required String fromAddress,
     required String toAddress,
+    required String tokenAddress,
     required String nonce,
     required String gasPrice,
     required String gasLimit,
@@ -167,9 +168,10 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   }) async {
     try {
       final data = {
-        'fromAddress': fromAddress,
+        'walletAddress': fromAddress,
         'toAddress': toAddress,
         'nonce': nonce,
+        'tokenAddress': tokenAddress,
         'chainId': '97',
         'gasPrice': gasPrice,
         'gasLimit': gasLimit,

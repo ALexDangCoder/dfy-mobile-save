@@ -26,6 +26,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  #handle number
+  decimal: ^2.0.0
+
   # Dart
   dartx: ^0.7.1
   flutter_html: ^2.1.1

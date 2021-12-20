@@ -12,15 +12,16 @@ import '../../../../main.dart';
 class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BLocCreateSeedPhrase(this.passWord) : super(SeedInitialState());
 
-  BehaviorSubject<String> nameWallet = BehaviorSubject();
+  BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('');
+  BehaviorSubject<String> isNameWallet = BehaviorSubject.seeded('value');
   BehaviorSubject<bool> isCheckBoxCreateSeedPhrase =
       BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isCheckBoxCreateSeedPhraseConfirm =
-      BehaviorSubject.seeded(true);
+      BehaviorSubject.seeded(false);
   BehaviorSubject<String> messStream = BehaviorSubject.seeded('');
 
   BehaviorSubject<bool> isCheckButtonCreate = BehaviorSubject.seeded(true);
-  BehaviorSubject<bool> isCheckButton = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckButtonConfirm = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckData = BehaviorSubject.seeded(false);
   BehaviorSubject<List<String>> listTitle = BehaviorSubject.seeded([]);
   BehaviorSubject<List<String>> listSeedPhrase = BehaviorSubject.seeded([]);
@@ -53,9 +54,9 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
 
   void getIsSeedPhraseImport2() {
     if (getIsSeedPhraseImport() && isCheckBoxCreateSeedPhraseConfirm.value) {
-      isCheckButton.sink.add(true);
+      isCheckButtonConfirm.sink.add(true);
     } else {
-      isCheckButton.sink.add(false);
+      isCheckButtonConfirm.sink.add(false);
     }
   }
 
@@ -206,6 +207,12 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   void dispose() {
     isCheckBoxCreateSeedPhrase.close();
     isCheckBoxCreateSeedPhraseConfirm.close();
+    nameWallet.close();
+    messStream.close();
+    isSeedPhraseImportFailed.close();
+    isCheckTouchID.close();
+    isNameWallet.close();
+
     listTitle.close();
     listSeedPhrase.close();
   }
