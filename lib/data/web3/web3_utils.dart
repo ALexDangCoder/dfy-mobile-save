@@ -411,7 +411,7 @@ class Web3Utils {
         to: EthereumAddress.fromHex(to),
         value: EtherAmount.fromUnitAndValue(
           EtherUnit.wei,
-          amount * 1000000000000000000,
+          BigInt.from(amount * 1000000000000000000),
         ),
       );
       return '$gasLimit';
