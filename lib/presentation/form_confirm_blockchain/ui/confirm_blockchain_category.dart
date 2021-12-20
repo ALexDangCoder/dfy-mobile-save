@@ -236,9 +236,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                               FormShowFtHideCfBlockchain(
                                 nameToken: widget.nameTokenWallet,
                                 cubit: cubitFormCustomizeGasFee,
-                                gasFeeFirstFetch: (widget.gasLimitFirstFetch *
-                                        widget.gasPriceFirstFetch) /
-                                    1000000000,
+                                gasFeeFirstFetch: widget.gasFeeFirstFetch,
                                 gasPriceFirstFetch: widget.gasPriceFirstFetch,
                                 gasLimitFirstFetch: widget.gasLimitFirstFetch,
                                 balanceWallet: balanceWallet,
@@ -252,14 +250,14 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                     ),
                     StreamBuilder<bool>(
                         initialData: widget.gasFeeFirstFetch <
-                            widget.balanceWallet,
+                              balanceWallet,
                         stream: cubitFormCustomizeGasFee.isEnableBtnStream,
                         builder: (context, snapshot) {
                           return GestureDetector(
                             onTap: () async {
                               if (snapshot.data ??
                                   (widget.gasFeeFirstFetch <
-                                      widget.balanceWallet)) {
+                                      balanceWallet)) {
                                 switch (widget.typeConfirm) {
                                   case TYPE_CONFIRM.SEND_TOKEN:
                                     final nonce = await cubitFormCustomizeGasFee
@@ -303,7 +301,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                               title: S.current.approve,
                               isEnable: snapshot.data ??
                                   (widget.gasFeeFirstFetch <
-                                      widget.balanceWallet),
+                                      balanceWallet),
                             ),
                           );
                         }),
