@@ -139,17 +139,17 @@ class RestoreCubit extends Cubit<RestoreState> {
     }
   }
 
-  Future<void> importWallet({
+  void importWallet({
     required String type,
     required String content,
     String? password,
-  }) async {
+  }) {
     try {
       final data = {
         'type': type,
         'content': content,
       };
-      await trustWalletChannel.invokeMethod('importWallet', data);
+      trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
       emit(ExceptionState(S.current.something_went_wrong));
       throw AppException(S.current.error, S.current.something_went_wrong);
