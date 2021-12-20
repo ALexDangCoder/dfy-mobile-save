@@ -80,6 +80,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
   final FormFieldBlockchainCubit cubitFormCustomizeGasFee =
       FormFieldBlockchainCubit();
   late int nonce;
+  late double balanceWallet;
 
   @override
   void initState() {
@@ -88,10 +89,16 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
     );
     _txtGasPrice =
         TextEditingController(text: widget.gasPriceFirstFetch.toString());
+    //if token != bnb will not subtract else subtract, do not delete this line
+    if(widget.nameToken != 'BNB') {
+      balanceWallet = widget.balanceWallet;
+    } else {
+      balanceWallet = widget.balanceWallet - widget.amount!.toDouble();
+    }
     _informationWallet = InformationWallet(
       nameWallet: widget.nameWallet,
       fromAddress: widget.addressFrom.formatAddressWallet(),
-      amount: widget.balanceWallet - widget.amount!.toDouble(),
+      amount: balanceWallet,
       nameToken: widget.nameTokenWallet,
       imgWallet: widget.imageWallet,
     );
