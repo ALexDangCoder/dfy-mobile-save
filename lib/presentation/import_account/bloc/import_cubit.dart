@@ -93,13 +93,13 @@ class ImportCubit extends Cubit<ImportState> {
     }
   }
 
-  Future<void> importWallet({
+  void importWallet({
     required String type,
     required String content,
-  }) async {
+  }) {
     try {
       final data = {'type': type, 'content': content};
-      await trustWalletChannel.invokeMethod('importWallet', data);
+      trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
       throw AppException(S.current.error, S.current.something_went_wrong);
     }

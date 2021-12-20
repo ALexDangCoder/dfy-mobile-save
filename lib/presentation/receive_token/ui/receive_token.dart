@@ -122,7 +122,7 @@ class _ReceiveState extends State<Receive> {
                           child: Image.asset(ImageAssets.defiText),
                         ),
                         SizedBox(
-                          height: 13.17.h,
+                          height: 12.h,
                         ),
                         StreamBuilder(
                           stream: receiveCubit.amountStream,
@@ -143,7 +143,6 @@ class _ReceiveState extends State<Receive> {
                           height: 11.h,
                         ),
                         SizedBox(
-                          height: 39.h,
                           width: 232.w,
                           child: Text(
                             widget.walletAddress,
