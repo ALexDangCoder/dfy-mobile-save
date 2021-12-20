@@ -241,8 +241,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                     1000000000,
                                 gasPriceFirstFetch: widget.gasPriceFirstFetch,
                                 gasLimitFirstFetch: widget.gasLimitFirstFetch,
-                                balanceWallet: widget.balanceWallet -
-                                    widget.amount!.toDouble(),
+                                balanceWallet: balanceWallet,
                                 txtGasLimit: _txtGasLimit,
                                 txtGasPrice: _txtGasPrice,
                               ),
