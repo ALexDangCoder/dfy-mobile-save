@@ -134,7 +134,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     bool isSuccess = false;
     String signedTransaction = '';
     switch (methodCall.method) {
-      case 'signTransactionCallback':
+      case 'signTransactionTokenCallback':
         // print(methodCall.arguments);
         isSuccess = await methodCall.arguments['isSuccess'];
         signedTransaction = await methodCall.arguments['signedTransaction'];
@@ -156,7 +156,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     return result.count;
   }
 
-  Future<void> signTransaction({
+  Future<void> signTransactionToken({
     required String walletAddress,
     required String tokenAddress,
     required String toAddress,
@@ -177,7 +177,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         'gasLimit': gasLimit,
         'amount': amount,
       };
-      await trustWalletChannel.invokeMethod('signTransaction', data);
+      await trustWalletChannel.invokeMethod('signTransactionToken', data);
     } on PlatformException {
       //todo
     }

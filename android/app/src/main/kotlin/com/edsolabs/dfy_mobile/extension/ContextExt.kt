@@ -676,7 +676,7 @@ fun Context.signTransactionToken(
         hasMap["isSuccess"] = false
         hasMap["signedTransaction"] = ""
     }
-    channel?.invokeMethod("signTransactionCallback", hasMap)
+    channel?.invokeMethod("signTransactionTokenCallback", hasMap)
 }
 
 fun Context.signTransactionNft(

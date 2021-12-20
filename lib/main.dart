@@ -90,19 +90,19 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
+  dynamic nativeMethodCallHandler(MethodCall methodCall)  {
     switch (methodCall.method) {
       case 'getConfigCallback':
-        await PrefsService.saveAppLockConfig(
-          methodCall.arguments['isAppLock'].toString(),
-        );
-        await PrefsService.saveFaceIDConfig(
-          methodCall.arguments['isFaceID'].toString(),
-        );
-        if (methodCall.arguments['isWalletExist']) {
-          await PrefsService.saveFirstAppConfig('false');
-          print('isWalletExit ${methodCall.arguments['isWalletExist']}');
-        }
+        // await PrefsService.saveAppLockConfig(
+        //   methodCall.arguments['isAppLock'].toString(),
+        // );
+        // await PrefsService.saveFaceIDConfig(
+        //   methodCall.arguments['isFaceID'].toString(),
+        // );
+        // if (methodCall.arguments['isWalletExist']) {
+        //   await PrefsService.saveFirstAppConfig('false');
+        //   print('isWalletExit ${methodCall.arguments['isWalletExist']}');
+        // }
         break;
       case 'importNftCallback':
         print('importNftCallback ${methodCall.arguments}');
@@ -113,8 +113,11 @@ class _MyAppState extends State<MyApp> {
       case 'getTokensCallback':
         print('getTokensCallback ${methodCall.arguments}');
         break;
-      case 'signTransactionCallback':
-        print('signTransactionCallback ${methodCall.arguments}');
+      case 'signTransactionTokenCallback':
+        print('signTransactionTokenCallback ${methodCall.arguments}');
+        break;
+      case 'signTransactionNftCallback':
+        print('signTransactionNftCallback ${methodCall.arguments}');
         break;
     }
   }
@@ -147,11 +150,11 @@ class _MyAppState extends State<MyApp> {
     } on PlatformException {}
   }
 
-  Future<void> signTransaction() async {
+  Future<void> signTransactionToken() async {
     try {
       final data = {
         'walletAddress': '',
-        'fromAddress': '',
+        'tokenAddress': '',
         'toAddress': '',
         'nonce': '',
         'chainId': '',
@@ -159,7 +162,23 @@ class _MyAppState extends State<MyApp> {
         'gasLimit': '',
         'amount': '',
       };
-      await trustWalletChannel.invokeMethod('signTransaction', data);
+      await trustWalletChannel.invokeMethod('signTransactionToken', data);
+    } on PlatformException {}
+  }
+
+  void signTransactionNft() {
+    try {
+      final data = {
+        'walletAddress': '0xf5e281A56650bb992ebaB15B41583303fE9804e7',
+        'tokenAddress': '0xaB05Ab79C0F440ad982B1405536aBc8094C80AfB',
+        'toAddress': '0xaB05Ab79C0F440ad982B1405536aBc8094C80AfB',
+        'nonce': '46',
+        'chainId': '97',
+        'gasPrice': '1000000000000',
+        'gasLimit': '100000',
+        'tokenId': '3',
+      };
+      trustWalletChannel.invokeMethod('signTransactionNft', data);
     } on PlatformException {}
   }
 

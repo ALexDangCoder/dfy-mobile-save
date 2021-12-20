@@ -272,7 +272,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                       walletAddress: widget.addressFrom,
                                     );
                                     await cubitFormCustomizeGasFee
-                                        .signTransaction(
+                                        .signTransactionToken(
                                       toAddress: widget.addressTo,
                                       gasPrice: (widget.gasPriceFirstFetch *
                                               1000000000)

@@ -234,7 +234,7 @@ class MainActivity : FlutterFragmentActivity() {
                             ?: return@setMethodCallHandler
                     this.getNFT(channel = channel, walletAddress = walletAddress)
                 }
-                "signTransaction" -> {
+                "signTransactionToken" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
@@ -269,6 +269,43 @@ class MainActivity : FlutterFragmentActivity() {
                         gasPrice = gasPrice,
                         gasLimit = gasLimit,
                         amount = amount
+                    )
+                }
+                "signTransactionNft" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    val toAddress =
+                        call.argument<String>("toAddress")
+                            ?: return@setMethodCallHandler
+                    val tokenAddress =
+                        call.argument<String>("tokenAddress")
+                            ?: return@setMethodCallHandler
+                    val nonce =
+                        call.argument<String>("nonce")
+                            ?: return@setMethodCallHandler
+                    val chainId =
+                        call.argument<String>("chainId")
+                            ?: return@setMethodCallHandler
+                    val gasPrice =
+                        call.argument<String>("gasPrice")
+                            ?: return@setMethodCallHandler
+                    val gasLimit =
+                        call.argument<String>("gasLimit")
+                            ?: return@setMethodCallHandler
+                    val tokenId =
+                        call.argument<String>("tokenId")
+                            ?: return@setMethodCallHandler
+                    this.signTransactionNft(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        tokenAddress = tokenAddress,
+                        toAddress = toAddress,
+                        nonce = nonce,
+                        chainId = chainId,
+                        gasPrice = gasPrice,
+                        gasLimit = gasLimit,
+                        tokenId = tokenId
                     )
                 }
                 "exportWallet" -> {
