@@ -109,11 +109,6 @@ class FormFieldBlockChain extends StatelessWidget {
                     gasFee: result,
                     balance: balanceFetchFirst,
                   );
-                  if(formGasFee == FORM_GAS_FEE.LIMIT) {
-                    cubit.validateGasLimit(value);
-                  } else {
-                    cubit.validateGasPrice(value);
-                  }
                 },
               ),
             ),
