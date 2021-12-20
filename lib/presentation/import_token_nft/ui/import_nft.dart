@@ -92,6 +92,7 @@ class _BodyState extends State<_Body> {
           });
         } else if (state is ImportNftLoading) {
           _showLoading();
+          // Navigator.pop(context);
         } else {
           _showDialog(
             alert: widget.bloc.errorWhenImportNft,
@@ -122,32 +123,17 @@ class _BodyState extends State<_Body> {
                           hint: S.current.contract_address,
                           urlIcon2: ImageAssets.ic_qr_code,
                           bloc: widget.bloc,
+                          idNft: _idController.text,
                         ),
                         spaceH4,
-                        StreamBuilder<String>(
-                          stream: widget.bloc.warningTextNft,
-                          builder: (context, snapshot) {
-                            return Visibility(
-                              visible: snapshot.data?.isNotEmpty ?? false,
-                              child: SizedBox(
-                                width: 343.w,
-                                child: Text(
-                                  snapshot.data ?? '',
-                                  style: textNormal(
-                                    Colors.red,
-                                    14,
-                                  ),
-                                  textAlign: TextAlign.start,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                        warningTxtAddress(),
                         spaceH16,
                         FormInputNumber(
                           urlIcon1: ImageAssets.ic_id,
                           bloc: widget.bloc,
                           hint: S.current.enter_id,
+                          controller: _idController,
+                          nftAddress: _contractController.text,
                         ),
                         const SizedBox(
                           height: 429,
@@ -199,6 +185,50 @@ class _BodyState extends State<_Body> {
               ),
               spaceH38,
             ],
+          ),
+        );
+      },
+    );
+  }
+
+  StreamBuilder<String> warningTxtAddress() {
+    return StreamBuilder<String>(
+      stream: widget.bloc.warningTextNft,
+      builder: (context, snapshot) {
+        return Visibility(
+          visible: snapshot.data?.isNotEmpty ?? false,
+          child: SizedBox(
+            width: 343.w,
+            child: Text(
+              snapshot.data ?? '',
+              style: textNormal(
+                Colors.red,
+                14,
+              ),
+              textAlign: TextAlign.start,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  StreamBuilder<String> warningTextId() {
+    return StreamBuilder<String>(
+      stream: widget.bloc.warningTextIdNft,
+      builder: (context, snapshot) {
+        return Visibility(
+          visible: snapshot.data?.isNotEmpty ?? false,
+          child: SizedBox(
+            width: 343.w,
+            child: Text(
+              snapshot.data ?? '',
+              style: textNormal(
+                Colors.red,
+                14,
+              ),
+              textAlign: TextAlign.start,
+            ),
           ),
         );
       },
@@ -260,6 +290,7 @@ class _BodyState extends State<_Body> {
                   ),
                 ),
                 onPressed: () {
+                  Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
               ),

@@ -241,8 +241,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                     1000000000,
                                 gasPriceFirstFetch: widget.gasPriceFirstFetch,
                                 gasLimitFirstFetch: widget.gasLimitFirstFetch,
-                                balanceWallet: widget.balanceWallet -
-                                    widget.amount!.toDouble(),
+                                balanceWallet: balanceWallet,
                                 txtGasLimit: _txtGasLimit,
                                 txtGasPrice: _txtGasPrice,
                               ),
@@ -252,18 +251,14 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                       ),
                     ),
                     StreamBuilder<bool>(
-                        initialData: ((widget.gasLimitFirstFetch *
-                                    widget.gasPriceFirstFetch) /
-                                1000000000) <
+                        initialData: widget.gasFeeFirstFetch <
                             widget.balanceWallet,
                         stream: cubitFormCustomizeGasFee.isEnableBtnStream,
                         builder: (context, snapshot) {
                           return GestureDetector(
                             onTap: () async {
                               if (snapshot.data ??
-                                  (((widget.gasLimitFirstFetch *
-                                              widget.gasPriceFirstFetch) /
-                                          1000000000) <
+                                  (widget.gasFeeFirstFetch <
                                       widget.balanceWallet)) {
                                 switch (widget.typeConfirm) {
                                   case TYPE_CONFIRM.SEND_TOKEN:

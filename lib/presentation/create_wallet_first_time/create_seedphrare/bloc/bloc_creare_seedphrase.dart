@@ -17,7 +17,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BehaviorSubject<bool> isCheckBoxCreateSeedPhrase =
       BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isCheckBoxCreateSeedPhraseConfirm =
-      BehaviorSubject.seeded(false);
+      BehaviorSubject.seeded(true);
   BehaviorSubject<String> messStream = BehaviorSubject.seeded('');
 
   BehaviorSubject<bool> isCheckButtonCreate = BehaviorSubject.seeded(true);
@@ -86,7 +86,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   void resetPassPhrase() {
     getStringToList(passPhrase);
     listSeedPhrase.value.clear();
-    isCheckBoxCreateSeedPhraseConfirm.sink.add(false);
+    isCheckBoxCreateSeedPhraseConfirm.sink.add(true);
   }
 
   void getStringToList(String passPhrase) {

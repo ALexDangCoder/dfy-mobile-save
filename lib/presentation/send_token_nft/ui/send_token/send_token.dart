@@ -176,7 +176,7 @@ class _SendTokenState extends State<SendToken> {
                                 cubitCategory: tokenCubit,
                                 gasPriceFirstFetch:
                                     tokenCubit.gasPrice / 1000000000,
-                                gasFeeFirstFetch: ((tokenCubit.gasPrice *
+                                gasFeeFirstFetch: (((tokenCubit.gasPrice / 1000000000) *
                                         tokenCubit.estimateGasFee) /
                                     1000000000),
                                 gasLimitFirstFetch: tokenCubit.estimateGasFee,
