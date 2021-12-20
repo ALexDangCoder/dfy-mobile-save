@@ -141,6 +141,7 @@
   "amount": "Số lượng",
   "status": "Trạng thái",
   "gas_fee": "Phí Gas",
+  "confirm_required": "Xác nhận mật khẩu là bắt buộc",
   "time": "Thời gian",
   "txh_id": "Txh ID",
   "nonce": "Nonce",
