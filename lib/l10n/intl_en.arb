@@ -207,5 +207,6 @@
   "gas_limit_required": "Gas limit is required",
   "invalid_gas_limit": "Invalid Gas limit",
   "gas_price_required": "Gas price is required",
-  "invalid_gas_price": "Invalid Gas price"
+  "invalid_gas_price": "Invalid Gas price",
+  "no_result_found": "No result found"
 }

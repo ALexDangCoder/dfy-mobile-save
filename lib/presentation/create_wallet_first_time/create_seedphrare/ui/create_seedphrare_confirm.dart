@@ -311,11 +311,11 @@ class _BodyState extends State<_Body> {
                     }
                   },
                   child: StreamBuilder(
-                    stream: bLocCreateSeedPhrase.isCheckButton,
+                    stream: bLocCreateSeedPhrase.isCheckButtonConfirm,
                     builder: (context, AsyncSnapshot<bool> snapshot) {
                       return ButtonGold(
                         title: S.current.continue_s,
-                        isEnable: bLocCreateSeedPhrase.isCheckButton.value,
+                        isEnable: bLocCreateSeedPhrase.isCheckButtonConfirm.value,
                       );
                     },
                   ),
