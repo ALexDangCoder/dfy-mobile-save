@@ -153,6 +153,8 @@ class _SendTokenState extends State<SendToken> {
                         value: double.parse(
                           txtAmount.text,
                         ),
+                        token: widget.modelToken,
+                        context: context,
                       );
                       //check validate before go to next screen
                       if (tokenCubit.checkAddressFtAmount()) {
@@ -170,12 +172,14 @@ class _SendTokenState extends State<SendToken> {
                                 addressTo: txtToAddressToken.text,
                                 imageWallet: ImageAssets.symbol,
                                 amount: double.parse(txtAmount.text),
-                                nameToken: 'BNB',
+                                nameToken: widget.modelToken.nameShortToken,
                                 cubitCategory: tokenCubit,
                                 gasPriceFirstFetch:
                                     tokenCubit.gasPrice / 1000000000,
                                 gasFeeFirstFetch:
-                                ((tokenCubit.gasPrice * tokenCubit.estimateGasFee) / 1000000000),
+                                    (((tokenCubit.gasPrice / 1000000000) *
+                                            tokenCubit.estimateGasFee) /
+                                        1000000000),
                                 gasLimitFirstFetch: tokenCubit.estimateGasFee,
                               );
                             },

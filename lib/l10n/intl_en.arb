@@ -55,7 +55,7 @@
   "no_data": "No data",
   "paste": "Paste",
   "warning_seed": "Secret seed phrases contain 12, 15, 18, 21, or 24 words",
-  "out_app": "Press again Back Button exit",
+  "out_app": "Press Back again to exit",
   "approve": "Approve",
   "send": "Send",
   "txh_id": "Txh ID",
@@ -140,6 +140,7 @@
   "warn_pw_validate": "Password must include at least a number, an upper case, a lower case and a special character",
   "warn_cf_pw": "Confirm password did not match",
   "warn_old_pw_not_match": "Old password is incorrect",
+  "confirm_required": "Confirm password must required",
   "login": "Login",
   "new_wallet": "New wallet",
   "confirm": "Confirm",
@@ -207,5 +208,7 @@
   "gas_limit_required": "Gas limit is required",
   "invalid_gas_limit": "Invalid Gas limit",
   "gas_price_required": "Gas price is required",
-  "invalid_gas_price": "Invalid Gas price"
+  "invalid_gas_price": "Invalid Gas price",
+  "no_result_found": "No result found",
+  "invalid_id_nft": "Invalid ID"
 }

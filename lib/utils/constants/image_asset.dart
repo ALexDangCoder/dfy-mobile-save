@@ -33,6 +33,7 @@ class ImageAssets {
   static const String defiText = '$baseImg/defi_text.png';
   static const String ic_save = '$baseImg/ic_save.png';
   static const String ic_search = '$baseImg/ic_search.png';
+  static const String img_search_empty = '$baseImg/img_search_empty.png';
   static const String ic_set_amount = '$baseImg/ic_set_amount.png';
   static const String ic_share = '$baseImg/ic_share.png';
   static const String ic_wallet = '$baseImg/ic_wallet.png';

@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -34,35 +35,54 @@ class _ChooseTokenState extends State<ChooseToken> {
           line,
           StreamBuilder(
             stream: widget.bloc.getListTokenModel,
-            builder: (context, snapshot) {
-              return Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.only(
-                    top: 24.h,
-                  ),
-                  itemCount: widget.bloc.getListTokenModel.value.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        final FocusScopeNode currentFocus =
-                            FocusScope.of(context);
-                        if (!currentFocus.hasPrimaryFocus) {
-                          currentFocus.unfocus();
-                        }
-                      },
-                      child: SizedBox(
-                        height: 73,
-                        width: 322,
-                        child: showItemToken(
-                          widget.bloc.getListTokenModel.value[index]
-                              .nameShortToken,
-                          index,
+            builder: (context, AsyncSnapshot<List<ModelToken>> snapshot) {
+              if (snapshot.data?.isEmpty ?? false) {
+                return Center(
+                  child: Column(
+                    children: [
+                      spaceH40,
+                      Image.asset(ImageAssets.img_search_empty),
+                      Text(
+                        S.current.no_result_found,
+                        style: textNormalCustom(
+                          Colors.white.withOpacity(0.7),
+                          20.sp,
+                          FontWeight.w700,
                         ),
-                      ),
-                    );
-                  },
-                ),
-              );
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                return Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.only(
+                      top: 24.h,
+                    ),
+                    itemCount: widget.bloc.getListTokenModel.value.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          final FocusScopeNode currentFocus =
+                              FocusScope.of(context);
+                          if (!currentFocus.hasPrimaryFocus) {
+                            currentFocus.unfocus();
+                          }
+                        },
+                        child: SizedBox(
+                          height: 73,
+                          width: 322,
+                          child: showItemToken(
+                            widget.bloc.getListTokenModel.value[index]
+                                .nameShortToken,
+                            index,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
             },
           ),
         ],

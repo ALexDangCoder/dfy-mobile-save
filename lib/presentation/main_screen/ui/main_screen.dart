@@ -12,6 +12,7 @@ import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/widgets/bottom_appbar.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 const int tabWalletIndex = 0;
@@ -107,6 +108,7 @@ class _MainScreenState extends BaseState<MainScreen> {
           _lastQuitTime = DateTime.now();
           return Future.value(false);
         } else {
+          await SystemNavigator.pop();
           return Future.value(true);
         }
       },

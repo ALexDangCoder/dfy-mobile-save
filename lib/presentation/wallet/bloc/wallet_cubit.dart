@@ -67,7 +67,9 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   BehaviorSubject<String> warningTextNft = BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String> warningTextIdNft = BehaviorSubject<String>.seeded('');
   String errorWhenImportNft = '';
+
   //handle call nft from web3
   void checkImportNft({
     required String contract,
@@ -76,7 +78,15 @@ class WalletCubit extends BaseCubit<WalletState> {
   }) async {
     emit(ImportNftLoading());
     if (id != null) {
-      //todo handle when user not fill ID
+      final resultWhenCall =
+      await client.importNFT(contract: contract, address: address, id: id);
+      if (!resultWhenCall.isSuccess) {
+        emit(ImportNftFail());
+        errorWhenImportNft = resultWhenCall.message;
+        btnSubject.sink.add(false);
+      } else {
+        await emitJsonNftToWalletCore(contract: contract, address: address);
+      }
     } else {
       final resultWhenCall =
           await client.importNFT(contract: contract, address: address);
@@ -191,16 +201,16 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> addressWallet = BehaviorSubject();
   BehaviorSubject<String> walletName = BehaviorSubject();
   BehaviorSubject<List<ModelToken>> listTokenStream =
-  BehaviorSubject.seeded([]);
+      BehaviorSubject.seeded([]);
   BehaviorSubject<List<CollectionNft>> listNFTStream =
-  BehaviorSubject.seeded([]);
-
+      BehaviorSubject.seeded([]);
 
   int randomAvatar() {
     final Random rd = Random();
 
     return rd.nextInt(10);
   }
+
   double total(List<ModelToken> list) {
     double total = 0;
     for (int i = 0; i < list.length; i++) {
@@ -218,16 +228,39 @@ class WalletCubit extends BaseCubit<WalletState> {
   List<HistoryNFT> listHistory = [];
   double? price = 0.0;
 
+  bool _flagNftAddress = false;
+  bool _flagIdNft = true;
+
   void checkValidateAddress({required String value}) {
     if (value.isEmpty) {
+      _flagNftAddress = false;
       btnSubject.sink.add(false);
       warningTextNft.sink.add(S.current.address_required);
     } else if (!regexAddress.hasMatch(value)) {
+      _flagNftAddress = false;
       btnSubject.sink.add(false);
       warningTextNft.sink.add(S.current.invalid_address);
     } else {
+      _flagNftAddress = true;
       warningTextNft.sink.add('');
-      btnSubject.sink.add(true);
+      if(_flagNftAddress && _flagIdNft) {
+        btnSubject.sink.add(true);
+      }
+    }
+  }
+
+  final regexId = RegExp(r'^[0-9]*$');
+  void checkValidateIdNft({required String value}) {
+    if(!regexId.hasMatch(value)) {
+      _flagIdNft = false;
+      warningTextIdNft.sink.add(S.current.invalid_id_nft);
+      btnSubject.sink.add(false);
+    } else {
+      _flagIdNft = true;
+      warningTextIdNft.sink.add('');
+      if(_flagIdNft && _flagNftAddress) {
+        btnSubject.sink.add(true);
+      }
     }
   }
 
@@ -379,7 +412,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         getTokenInfoByAddressList(res: res);
       },
       error: (error) {
-         getTokens(addressWalletCore);
+        getTokens(addressWalletCore);
       },
     );
   }
@@ -404,7 +437,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   void getTokenInfoByAddressList({
     required List<TokenInf> res,
-  })  {
+  }) {
     final List<ModelToken> listJson = [];
     for (final value in res) {
       listJson.add(
@@ -454,8 +487,8 @@ class WalletCubit extends BaseCubit<WalletState> {
       }
     }
   }
-  final List<NftInfo> listNftInfo = [];
 
+  final List<NftInfo> listNftInfo = [];
 
   ///Wallet Core
 
@@ -498,7 +531,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'chooseWalletCallBack':
         //final bool chooseWalletCallBack =
-          //  await methodCall.arguments['isSuccess'];
+        //  await methodCall.arguments['isSuccess'];
         break;
       case 'checkTokenCallback':
         isHaveToken = await methodCall.arguments['isExist'];
@@ -531,7 +564,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         await getBalanceOFToken(listTokenFromWalletCore);
         getExchangeRateFromServer(listTokenFromWalletCore);
         totalBalance.add(total(listTokenFromWalletCore));
-        getListTokenModel.add(listSwitch);
+        sortList(listSwitch);
         listTokenStream.add(listTokenFromWalletCore);
         break;
 
@@ -596,36 +629,36 @@ class WalletCubit extends BaseCubit<WalletState> {
     } on PlatformException {}
   }
 
-  Future<void> chooseWallet({
+  void chooseWallet({
     required String walletAddress,
-  }) async {
+  }) {
     try {
       final data = {
         'walletAddress': walletAddress,
       };
-      await trustWalletChannel.invokeMethod('chooseWallet', data);
+      trustWalletChannel.invokeMethod('chooseWallet', data);
     } on PlatformException {}
   }
 
-  Future<void> changeNameWallet({
+  void changeNameWallet({
     required String walletAddress,
     required String walletName,
-  }) async {
+  }) {
     try {
       final data = {
         'walletAddress': walletAddress,
         'walletName': walletName,
       };
-      await trustWalletChannel.invokeMethod('changeNameWallet', data);
+      trustWalletChannel.invokeMethod('changeNameWallet', data);
     } on PlatformException {}
   }
 
-  Future<void> earseWallet({required String walletAddress}) async {
+  void earseWallet({required String walletAddress}) {
     try {
       final data = {
         'walletAddress': walletAddress,
       };
-      await trustWalletChannel.invokeMethod('earseWallet', data);
+      trustWalletChannel.invokeMethod('earseWallet', data);
     } on PlatformException {}
   }
 
@@ -679,7 +712,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     try {
       final data = {
         'jsonTokens': jsonTokens,
-        'walletAddress':addressWalletCore,
+        'walletAddress': addressWalletCore,
       };
       await trustWalletChannel.invokeMethod('importListToken', data);
     } on PlatformException {}

@@ -40,7 +40,7 @@ class RestoreCubit extends Cubit<RestoreState> {
   bool confirmPasswordField = false;
   bool seedField = false;
   bool privateField = false;
-  bool checkBoxValue = false;
+  bool checkBoxValue = true;
   String newPassword = '';
 
   /// button subject
@@ -139,17 +139,17 @@ class RestoreCubit extends Cubit<RestoreState> {
     }
   }
 
-  Future<void> importWallet({
+  void importWallet({
     required String type,
     required String content,
     String? password,
-  }) async {
+  }) {
     try {
       final data = {
         'type': type,
         'content': content,
       };
-      await trustWalletChannel.invokeMethod('importWallet', data);
+      trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
       emit(ExceptionState(S.current.something_went_wrong));
       throw AppException(S.current.error, S.current.something_went_wrong);
@@ -189,19 +189,19 @@ class RestoreCubit extends Cubit<RestoreState> {
       validateSink.add(true);
       txtWarningNewPWSink.add(S.current.warn_pw_8_15);
       btnSink.add(false);
-      ckcSink.add(false);
+      //ckcSink.add(false);
     } else if (value.isEmpty) {
       newPasswordField = false;
       validateSink.add(true);
       txtWarningNewPWSink.add(S.current.password_is_required);
       btnSink.add(false);
-      ckcSink.add(false);
+      //ckcSink.add(false);
     } else if (!Validator.validateStructure(value)) {
       newPasswordField = false;
       validateSink.add(true);
       txtWarningNewPWSink.add(S.current.warn_pw_validate);
       btnSink.add(false);
-      ckcSink.add(false);
+      //ckcSink.add(false);
     } else {
       validateSink.add(false);
       newPasswordField = true;
@@ -221,7 +221,7 @@ class RestoreCubit extends Cubit<RestoreState> {
         seedSink.add(true);
         txtWarningSeedSink.add(S.current.seed_required);
         btnSink.add(false);
-        ckcSink.add(false);
+        //ckcSink.add(false);
       } else {
         final int len = value.split(' ').length;
         bool flag;
@@ -245,7 +245,7 @@ class RestoreCubit extends Cubit<RestoreState> {
           seedSink.add(true);
           txtWarningSeedSink.add(S.current.warning_seed);
           btnSink.add(false);
-          ckcSink.add(false);
+          //ckcSink.add(false);
         }
       }
     } else {
@@ -254,7 +254,7 @@ class RestoreCubit extends Cubit<RestoreState> {
         seedSink.add(true);
         txtWarningSeedSink.add(S.current.private_required);
         btnSink.add(false);
-        ckcSink.add(false);
+        //ckcSink.add(false);
       } else {
         final int len = value.length;
         if (len == 64 && !value.contains(' ')) {
@@ -271,25 +271,25 @@ class RestoreCubit extends Cubit<RestoreState> {
           seedSink.add(true);
           txtWarningSeedSink.add(S.current.private_warning);
           btnSink.add(false);
-          ckcSink.add(false);
+          // ckcSink.add(false);
         }
       }
     }
   }
 
   void showTxtWarningConfirmPW(String value, {required String newPW}) {
-    if (value != newPW) {
+    if (value != newPW && value.isNotEmpty) {
       confirmPasswordField = false;
       matchSink.add(true);
-      txtWarningConfirmPWSink.add(S.current.not_match);
+      txtWarningConfirmPWSink.add(S.current.warn_cf_pw);
       btnSink.add(false);
-      ckcSink.add(false);
+      //ckcSink.add(false);
     } else if (value.isEmpty) {
       confirmPasswordField = false;
       matchSink.add(true);
-      txtWarningConfirmPWSink.add(S.current.password_is_required);
+      txtWarningConfirmPWSink.add(S.current.confirm_required);
       btnSink.add(false);
-      ckcSink.add(false);
+      //ckcSink.add(false);
     } else {
       matchSink.add(false);
       confirmPasswordField = true;

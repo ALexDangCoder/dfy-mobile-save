@@ -13,6 +13,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BLocCreateSeedPhrase(this.passWord) : super(SeedInitialState());
 
   BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('');
+  BehaviorSubject<String> isNameWallet = BehaviorSubject.seeded('value');
   BehaviorSubject<bool> isCheckBoxCreateSeedPhrase =
       BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isCheckBoxCreateSeedPhraseConfirm =
@@ -20,7 +21,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BehaviorSubject<String> messStream = BehaviorSubject.seeded('');
 
   BehaviorSubject<bool> isCheckButtonCreate = BehaviorSubject.seeded(true);
-  BehaviorSubject<bool> isCheckButton = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckButtonConfirm = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckData = BehaviorSubject.seeded(false);
   BehaviorSubject<List<String>> listTitle = BehaviorSubject.seeded([]);
   BehaviorSubject<List<String>> listSeedPhrase = BehaviorSubject.seeded([]);
@@ -53,9 +54,9 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
 
   void getIsSeedPhraseImport2() {
     if (getIsSeedPhraseImport() && isCheckBoxCreateSeedPhraseConfirm.value) {
-      isCheckButton.sink.add(true);
+      isCheckButtonConfirm.sink.add(true);
     } else {
-      isCheckButton.sink.add(false);
+      isCheckButtonConfirm.sink.add(false);
     }
   }
 
@@ -85,7 +86,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   void resetPassPhrase() {
     getStringToList(passPhrase);
     listSeedPhrase.value.clear();
-    isCheckBoxCreateSeedPhraseConfirm.sink.add(false);
+    isCheckBoxCreateSeedPhraseConfirm.sink.add(true);
   }
 
   void getStringToList(String passPhrase) {
@@ -134,28 +135,28 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     } on PlatformException {}
   }
 
-  Future<void> savePassword({
+  void savePassword({
     required String password,
-  }) async {
+  }) {
     try {
       final data = {
         'password': password,
       };
 
-      await trustWalletChannel.invokeMethod('savePassword', data);
+      trustWalletChannel.invokeMethod('savePassword', data);
     } on PlatformException {}
   }
 
-  Future<void> setConfig({
+  void setConfig({
     required bool isAppLock,
     required bool isFaceID,
-  }) async {
+  }) {
     try {
       final data = {
         'isAppLock': isAppLock,
         'isFaceID': isFaceID,
       };
-      await trustWalletChannel.invokeMethod('setConfig', data);
+      trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {}
   }
 
@@ -174,10 +175,10 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         emit(SeedNavState());
         break;
       case 'setConfigCallback':
-        bool isSuccess = await methodCall.arguments['isSuccess'];
+       // bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       case 'savePasswordCallback':
-        bool isSuccess = await methodCall.arguments['isSuccess'];
+       // bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       default:
         break;
@@ -206,6 +207,12 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   void dispose() {
     isCheckBoxCreateSeedPhrase.close();
     isCheckBoxCreateSeedPhraseConfirm.close();
+    nameWallet.close();
+    messStream.close();
+    isSeedPhraseImportFailed.close();
+    isCheckTouchID.close();
+    isNameWallet.close();
+
     listTitle.close();
     listSeedPhrase.close();
   }

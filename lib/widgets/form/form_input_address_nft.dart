@@ -14,6 +14,7 @@ class FormInputAddressNFT extends StatelessWidget {
   final String urlIcon2;
   final WalletCubit bloc;
   final String hint;
+  final String idNft;
   final TextEditingController controller;
 
   const FormInputAddressNFT({
@@ -21,6 +22,7 @@ class FormInputAddressNFT extends StatelessWidget {
     required this.urlIcon1,
     required this.urlIcon2,
     required this.bloc,
+    required this.idNft,
     required this.hint,
     required this.controller,
   }) : super(key: key);
@@ -56,6 +58,7 @@ class FormInputAddressNFT extends StatelessWidget {
                 maxLength: 100,
                 onChanged: (value) {
                   bloc.checkValidateAddress(value: value);
+                  bloc.checkValidateIdNft(value: idNft);
                 },
                 controller: controller,
                 cursorColor: AppTheme.getInstance().whiteColor(),

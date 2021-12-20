@@ -104,8 +104,9 @@ class _SelectAccState extends State<SelectAcc> {
                           padding: EdgeInsets.zero,
                           itemCount: snapshot.data?.length,
                           itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
+                            return MaterialButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
                                 widget.bloc.chooseWallet(
                                   walletAddress:
                                       snapshot.data?[index].addressWallet ?? '',
