@@ -43,7 +43,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
           .getEstimateGasPrice(from: from, to: to, value: value);
       estimateGasFee = double.parse(result);
     } else {
-      estimateGasFee = 45000;
+      estimateGasFee = 53433;
     }
   }
 
