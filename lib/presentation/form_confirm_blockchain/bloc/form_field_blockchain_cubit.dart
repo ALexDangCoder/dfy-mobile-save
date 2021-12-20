@@ -43,7 +43,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     } else {
       _flagGasLimit = true;
       showWarningGasLimit.sink.add(false);
-      if(_flagGasLimit && _flagGasPrice && _flagSufficientFee) {
+      if (_flagGasLimit && _flagGasPrice && _flagSufficientFee) {
         isEnableBtnSink.add(true);
       }
     }
@@ -63,7 +63,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     } else {
       _flagGasPrice = true;
       showWarningGasPrice.sink.add(false);
-      if(_flagGasPrice && _flagSufficientFee && _flagGasLimit) {
+      if (_flagGasPrice && _flagSufficientFee && _flagGasLimit) {
         isEnableBtnSink.add(true);
       }
     }
@@ -117,10 +117,8 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     if (gasFee < balance) {
       //nếu phí giao dịch bé hơn số dư thì không báo đỏ
       isSufficientGasFeeSink.add(true);
-      _flagSufficientFee = true;
-      if(_flagSufficientFee && _flagGasLimit && _flagGasPrice) {
-        isEnableBtnSink.add(true);
-      }
+
+      isEnableBtnSink.add(true);
     } else {
       //ngược lại
       isSufficientGasFeeSink.add(false);
