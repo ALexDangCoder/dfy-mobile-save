@@ -66,7 +66,8 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  BehaviorSubject<String> warningAddressNft = BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String> warningAddressNft =
+      BehaviorSubject<String>.seeded('');
   BehaviorSubject<String> warningTextIdNft = BehaviorSubject<String>.seeded('');
   String errorWhenImportNft = '';
 
@@ -79,13 +80,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     emit(ImportNftLoading());
     if (id != null) {
       final resultWhenCall =
-      await client.importNFT(contract: contract, address: address, id: id);
+          await client.importNFT(contract: contract, address: address, id: id);
       if (!resultWhenCall.isSuccess) {
         emit(ImportNftFail());
         errorWhenImportNft = resultWhenCall.message;
         btnSubject.sink.add(false);
       } else {
-        await emitJsonNftToWalletCore(contract: contract, address: address);
+        await emitJsonNftToWalletCore(
+            contract: contract, address: address, id: id);
       }
     } else {
       final resultWhenCall =
@@ -230,11 +232,13 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   bool _flagNftAddress = false;
   bool _flagIdNft = true;
-  
+
   //validate import nft form
-  BehaviorSubject<bool> isShowWarnAddressNft = BehaviorSubject<bool>.seeded(false);
+  BehaviorSubject<bool> isShowWarnAddressNft =
+      BehaviorSubject<bool>.seeded(false);
   BehaviorSubject<bool> isShowWarnIDNft = BehaviorSubject<bool>.seeded(false);
   String currentAddressNft = '';
+
   void checkValidateAddress({required String value}) {
     if (value.isEmpty) {
       isShowWarnAddressNft.sink.add(true);
@@ -248,7 +252,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       warningAddressNft.sink.add(S.current.invalid_address);
     } else {
       _flagNftAddress = true;
-      if(_flagNftAddress && _flagIdNft) {
+      if (_flagNftAddress && _flagIdNft) {
         isShowWarnAddressNft.sink.add(false);
         btnSubject.sink.add(true);
       }
@@ -256,8 +260,9 @@ class WalletCubit extends BaseCubit<WalletState> {
   }
 
   final regexId = RegExp(r'^[0-9]*$');
+
   void checkValidateIdNft({required String value}) {
-    if(!regexId.hasMatch(value)) {
+    if (!regexId.hasMatch(value)) {
       _flagIdNft = false;
       isShowWarnIDNft.sink.add(true);
       warningTextIdNft.sink.add(S.current.invalid_id_nft);
@@ -266,7 +271,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       isShowWarnIDNft.sink.add(true);
       _flagIdNft = true;
       warningTextIdNft.sink.add('');
-      if(_flagIdNft && _flagNftAddress) {
+      if (_flagIdNft && _flagNftAddress) {
         isShowWarnIDNft.sink.add(false);
         btnSubject.sink.add(true);
       }
