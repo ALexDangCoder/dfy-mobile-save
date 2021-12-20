@@ -12,6 +12,28 @@ class SharedPreference {
     
     let userDefault = UserDefaults.standard
     
+    func appLock() -> Bool {
+        return userDefault.bool(forKey: "isAppLock")
+    }
+    
+    func faceId() -> Bool {
+        return userDefault.bool(forKey: "isFaceId")
+    }
+    
+    func setConfig(isAppLock: Bool, isFaceId: Bool) {
+        userDefault.set(isAppLock, forKey: "isAppLock")
+        userDefault.set(isFaceId, forKey: "isFaceId")
+    }
+    
+    func getPassword() -> String {
+        let password = userDefault.string(forKey: "password")
+        return password ?? ""
+    }
+    
+    func savePassword(password: String) {
+        userDefault.set(password, forKey: "password")
+    }
+    
     func getListWallet() -> [WalletModel] {
         let listParam = userDefault.object(forKey: "listWallet") as? [[String: Any]] ?? []
         var listWallet = [WalletModel]()
@@ -27,5 +49,17 @@ class SharedPreference {
             listParam.append(wallet.toDict())
         }
         userDefault.set(listParam, forKey: "listWallet")
+    }
+    
+    func getListTokens() -> [TokenModel] {
+        return userDefault.object(forKey: "listTokens") as? [TokenModel] ?? []
+    }
+    
+    func saveListTokens(listTokens: [TokenModel]) {
+        var listParam = [[String: Any]]()
+        listTokens.forEach { tokenModel in
+            listParam.append(tokenModel.toDict())
+        }
+        userDefault.set(listParam, forKey: "listTokens")
     }
 }
