@@ -90,19 +90,19 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  dynamic nativeMethodCallHandler(MethodCall methodCall)  {
+  Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'getConfigCallback':
-        // await PrefsService.saveAppLockConfig(
-        //   methodCall.arguments['isAppLock'].toString(),
-        // );
-        // await PrefsService.saveFaceIDConfig(
-        //   methodCall.arguments['isFaceID'].toString(),
-        // );
-        // if (methodCall.arguments['isWalletExist']) {
-        //   await PrefsService.saveFirstAppConfig('false');
-        //   print('isWalletExit ${methodCall.arguments['isWalletExist']}');
-        // }
+        await PrefsService.saveAppLockConfig(
+          methodCall.arguments['isAppLock'].toString(),
+        );
+        await PrefsService.saveFaceIDConfig(
+          methodCall.arguments['isFaceID'].toString(),
+        );
+        if (methodCall.arguments['isWalletExist']) {
+          await PrefsService.saveFirstAppConfig('false');
+          print('isWalletExit ${methodCall.arguments['isWalletExist']}');
+        }
         break;
       case 'importNftCallback':
         print('importNftCallback ${methodCall.arguments}');
@@ -166,7 +166,7 @@ class _MyAppState extends State<MyApp> {
     } on PlatformException {}
   }
 
-  void signTransactionNft() {
+  Future<void> signTransactionNft() async {
     try {
       final data = {
         'walletAddress': '0xf5e281A56650bb992ebaB15B41583303fE9804e7',
@@ -178,7 +178,8 @@ class _MyAppState extends State<MyApp> {
         'gasLimit': '100000',
         'tokenId': '3',
       };
-      trustWalletChannel.invokeMethod('signTransactionNft', data);
+
+      await trustWalletChannel.invokeMethod('signTransactionNft', data);
     } on PlatformException {}
   }
 
