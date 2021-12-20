@@ -206,6 +206,6 @@
   "gas_limit_required": "Phí gas giới hạn bắt buộc",
   "invalid_gas_limit": "Phí gas giới hạn không hợp lệ",
   "gas_price_required": "Phí gas bắt buộc",
-  "invalid_gas_price": "Phí gas không hợp lệ"
-
+  "invalid_gas_price": "Phí gas không hợp lệ",
+  "no_result_found": "Không tìm thấy kết quả"
 }

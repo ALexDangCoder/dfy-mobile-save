@@ -68,6 +68,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   BehaviorSubject<String> warningTextNft = BehaviorSubject<String>.seeded('');
   String errorWhenImportNft = '';
+
   //handle call nft from web3
   void checkImportNft({
     required String contract,
@@ -191,16 +192,16 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> addressWallet = BehaviorSubject();
   BehaviorSubject<String> walletName = BehaviorSubject();
   BehaviorSubject<List<ModelToken>> listTokenStream =
-  BehaviorSubject.seeded([]);
+      BehaviorSubject.seeded([]);
   BehaviorSubject<List<CollectionNft>> listNFTStream =
-  BehaviorSubject.seeded([]);
-
+      BehaviorSubject.seeded([]);
 
   int randomAvatar() {
     final Random rd = Random();
 
     return rd.nextInt(10);
   }
+
   double total(List<ModelToken> list) {
     double total = 0;
     for (int i = 0; i < list.length; i++) {
@@ -379,7 +380,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         getTokenInfoByAddressList(res: res);
       },
       error: (error) {
-         getTokens(addressWalletCore);
+        getTokens(addressWalletCore);
       },
     );
   }
@@ -404,7 +405,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   void getTokenInfoByAddressList({
     required List<TokenInf> res,
-  })  {
+  }) {
     final List<ModelToken> listJson = [];
     for (final value in res) {
       listJson.add(
@@ -454,8 +455,8 @@ class WalletCubit extends BaseCubit<WalletState> {
       }
     }
   }
-  final List<NftInfo> listNftInfo = [];
 
+  final List<NftInfo> listNftInfo = [];
 
   ///Wallet Core
 
@@ -498,7 +499,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'chooseWalletCallBack':
         //final bool chooseWalletCallBack =
-          //  await methodCall.arguments['isSuccess'];
+        //  await methodCall.arguments['isSuccess'];
         break;
       case 'checkTokenCallback':
         isHaveToken = await methodCall.arguments['isExist'];
@@ -531,7 +532,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         await getBalanceOFToken(listTokenFromWalletCore);
         getExchangeRateFromServer(listTokenFromWalletCore);
         totalBalance.add(total(listTokenFromWalletCore));
-        getListTokenModel.add(listSwitch);
+        sortList(listSwitch);
         listTokenStream.add(listTokenFromWalletCore);
         break;
 
@@ -679,7 +680,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     try {
       final data = {
         'jsonTokens': jsonTokens,
-        'walletAddress':addressWalletCore,
+        'walletAddress': addressWalletCore,
       };
       await trustWalletChannel.invokeMethod('importListToken', data);
     } on PlatformException {}
