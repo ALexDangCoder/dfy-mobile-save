@@ -6,6 +6,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -145,8 +146,16 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
         listener: (context, state) {
           if (state is FormBlockchainSendTokenSuccess ||
               state is FormBlockchainSendNftSuccess) {
-            Navigator.pop(context);
-            Navigator.pop(context, true);
+            // Navigator.pop(context);
+            // Navigator.pop(context);
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const MainScreen(
+                  index: 1,
+                ),
+              ),
+              (route) => route.isFirst,
+            );
           } else {
             _showDialog(alert: S.current.failed);
           }
