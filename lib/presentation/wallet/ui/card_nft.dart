@@ -99,6 +99,7 @@ class _CardNFTState extends State<CardNFT> {
           Navigator.pop(context);
         },
         child: NFTDetail(
+          nameWallet: cubit.nameWallet,
           nftInfo: widget.objNFT,
           listHistory: cubit.listHistory,
           walletAddress: widget.walletAddress,

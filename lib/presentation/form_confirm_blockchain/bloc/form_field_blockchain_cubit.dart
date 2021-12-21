@@ -133,7 +133,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     bool isSuccess = false;
     String signedTransaction = '';
     switch (methodCall.method) {
-      case 'signTransactionCallback':
+      case 'signTransactionTokenCallback':
         // print(methodCall.arguments);
         isSuccess = await methodCall.arguments['isSuccess'];
         signedTransaction = await methodCall.arguments['signedTransaction'];
@@ -142,6 +142,18 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
           emit(FormBlockchainSendTokenSuccess());
         } else {
           emit(FormBlockchainSendTokenFail());
+        }
+        break;
+      case 'signTransactionNftCallback':
+        bool isSuccess = false;
+        String signedTransaction = '';
+        isSuccess = await methodCall.arguments['isSuccess'];
+        signedTransaction = await methodCall.arguments['signedTransaction'];
+        if(isSuccess) {
+          Web3Utils().sendRawTransaction(transaction: signedTransaction);
+          emit(FormBlockchainSendNftSuccess());
+        } else {
+          emit(FormBlockchainSendNftFail());
         }
         break;
       default:
@@ -154,7 +166,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         await Web3Utils().getTransactionCount(address: walletAddress);
     return result.count;
   }
-
+  //sign token
   Future<void> signTransaction({
     required String fromAddress,
     required String toAddress,
@@ -175,9 +187,37 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         'gasLimit': gasLimit,
         'amount': amount,
       };
-      await trustWalletChannel.invokeMethod('signTransaction', data);
+      await trustWalletChannel.invokeMethod('signTransactionToken', data);
     } on PlatformException {
       //todo
     }
   }
+
+  //sign Nft
+  Future<void> signTransactionNFT({
+    required String fromAddress,
+    required String toAddress,
+    required String contractNft,
+    required String nonce,
+    required String gasPrice,
+    required String gasLimit,
+    required String nftID,
+  }) async {
+    try {
+      final data = {
+        'walletAddress': fromAddress,
+        'tokenAddress': contractNft,
+        'toAddress': toAddress,
+        'nonce': nonce,
+        'chainId': '97',
+        'gasPrice': gasPrice,
+        'gasLimit': gasLimit,
+        'tokenId': nftID,
+      };
+      await trustWalletChannel.invokeMethod('signTransactionNft', data);
+    } on PlatformException {
+      //todo
+    }
+  }
+
 }

@@ -1,12 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
-import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
-import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -46,6 +45,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     this.amount,
     this.quantity,
     this.modelToken,
+    this.nftInfo,
   }) : super(key: key);
 
   final TYPE_CONFIRM typeConfirm;
@@ -63,7 +63,9 @@ class ConfirmBlockchainCategory extends StatefulWidget {
   final double gasFeeFirstFetch;
   final double gasLimitFirstFetch;
   final String imageWallet;
-  final ModelToken? modelToken ;
+  final ModelToken? modelToken;
+  final NftInfo? nftInfo;
+
   final dynamic cubitCategory;
 
   @override
@@ -90,7 +92,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
     _txtGasPrice =
         TextEditingController(text: widget.gasPriceFirstFetch.toString());
     //if token != bnb will not subtract else subtract, do not delete this line
-    if(widget.nameToken != 'BNB') {
+    if (widget.nameToken != 'BNB') {
       balanceWallet = widget.balanceWallet;
     } else {
       balanceWallet = widget.balanceWallet - widget.amount!.toDouble();
@@ -141,7 +143,8 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
       },
       child: BlocConsumer<FormFieldBlockchainCubit, FormFieldBlockchainState>(
         listener: (context, state) {
-          if (state is FormBlockchainSendTokenSuccess) {
+          if (state is FormBlockchainSendTokenSuccess ||
+              state is FormBlockchainSendNftSuccess) {
             Navigator.pop(context);
             Navigator.pop(context, true);
           } else {
@@ -249,15 +252,13 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                       ),
                     ),
                     StreamBuilder<bool>(
-                        initialData: widget.gasFeeFirstFetch <
-                              balanceWallet,
+                        initialData: widget.gasFeeFirstFetch < balanceWallet,
                         stream: cubitFormCustomizeGasFee.isEnableBtnStream,
                         builder: (context, snapshot) {
                           return GestureDetector(
                             onTap: () async {
                               if (snapshot.data ??
-                                  (widget.gasFeeFirstFetch <
-                                      balanceWallet)) {
+                                  (widget.gasFeeFirstFetch < balanceWallet)) {
                                 switch (widget.typeConfirm) {
                                   case TYPE_CONFIRM.SEND_TOKEN:
                                     final nonce = await cubitFormCustomizeGasFee
@@ -266,7 +267,8 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                     );
                                     await cubitFormCustomizeGasFee
                                         .signTransaction(
-                                      tokenAddress: widget.modelToken!.tokenAddress,
+                                      tokenAddress:
+                                          widget.modelToken!.tokenAddress,
                                       fromAddress: widget.addressFrom,
                                       toAddress: widget.addressTo,
                                       gasPrice: (widget.gasPriceFirstFetch *
@@ -283,6 +285,26 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                     );
                                     break;
                                   case TYPE_CONFIRM.SEND_NFT:
+                                    final nonce = await cubitFormCustomizeGasFee
+                                        .getNonceWeb3(
+                                      walletAddress: widget.addressFrom,
+                                    );
+                                    await cubitFormCustomizeGasFee
+                                        .signTransactionNFT(
+                                      fromAddress: widget.addressFrom,
+                                      toAddress: widget.addressTo,
+                                      contractNft: widget.nftInfo?.contract ??
+                                          'contract',
+                                      nonce: nonce.toString(),
+                                      gasLimit:
+                                          (double.parse(_txtGasLimit.text) *
+                                                  1000000000)
+                                              .toString(),
+                                      gasPrice: (widget.gasPriceFirstFetch *
+                                              1000000000)
+                                          .toString(),
+                                      nftID: widget.nftInfo?.id ?? 'id',
+                                    );
                                     break;
                                   case TYPE_CONFIRM.SEND_OFFER:
                                     break;
@@ -300,8 +322,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                             child: ButtonGold(
                               title: S.current.approve,
                               isEnable: snapshot.data ??
-                                  (widget.gasFeeFirstFetch <
-                                      balanceWallet),
+                                  (widget.gasFeeFirstFetch < balanceWallet),
                             ),
                           );
                         }),
