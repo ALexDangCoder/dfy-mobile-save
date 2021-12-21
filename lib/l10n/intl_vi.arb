@@ -13,6 +13,7 @@
   "wallet_secret": "Seed phrase",
   "tab_wallet": "Wallet",
   "tab_pawn": "Pawn",
+  "tab_home": "Home",
   "tab_market_place": "Marketplace",
   "confirm": "Xác Nhận",
   "set_amount": "Đặt số lượng",
