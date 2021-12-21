@@ -35,7 +35,7 @@ class CreateSuccessfully extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
-      body: Column(
+      body: ListView(
         children: [
           SizedBox(
             height: 48.h,
@@ -179,8 +179,6 @@ class _BodyState extends State<_Body> {
                     ),
                   ),
                 );
-                print(widget.bLocCreateSeedPhrase.isCheckAppLock.value);
-                print(widget.bLocCreateSeedPhrase.isCheckTouchID.value);
                 widget.bLocCreateSeedPhrase.setConfig(
                   isAppLock: widget.bLocCreateSeedPhrase.isCheckAppLock.value,
                   isFaceID: widget.bLocCreateSeedPhrase.isCheckTouchID.value,
@@ -194,6 +192,7 @@ class _BodyState extends State<_Body> {
               ),
             ),
           ),
+          spaceH38,
         ],
       ),
     );

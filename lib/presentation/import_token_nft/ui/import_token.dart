@@ -29,7 +29,7 @@ class ImportTokenScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
-      body: Column(
+      body: ListView(
         children: [
           SizedBox(
             height: 48.h,

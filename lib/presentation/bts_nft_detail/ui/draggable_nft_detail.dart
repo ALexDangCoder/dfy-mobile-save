@@ -6,6 +6,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -25,11 +26,13 @@ class NFTDetail extends StatefulWidget {
     required this.listHistory,
     required this.walletAddress,
     required this.nameWallet,
+    required this.walletCubit,
   }) : super(key: key);
   final NftInfo nftInfo;
   final List<HistoryNFT> listHistory;
   final String walletAddress;
   final String nameWallet;
+  final WalletCubit walletCubit;
 
   @override
   _NFTDetailState createState() => _NFTDetailState();
@@ -62,8 +65,7 @@ class _NFTDetailState extends State<NFTDetail> {
   Widget build(BuildContext context) {
     final nft = widget.nftInfo;
     return DraggableScrollableSheet(
-      maxChildSize: 0.95,
-      initialChildSize: 0.46,
+      maxChildSize: 0.9,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
           decoration: BoxDecoration(
@@ -344,7 +346,6 @@ class _NFTDetailState extends State<NFTDetail> {
         // );
       },
       child: Container(
-        height: 68.h,
         decoration: BoxDecoration(
           color: AppTheme.getInstance().bgBtsColor(),
           border: Border(
@@ -421,17 +422,21 @@ class _NFTDetailState extends State<NFTDetail> {
         buildColumnButton(
           path: second,
           callback: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (context) => SendNft(
-                nftInfo: widget.nftInfo,
-                addressFrom: widget.walletAddress,
-                imageWallet: '',
-                nameWallet: widget.nameWallet,
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SendNft(
+                  nftInfo: widget.nftInfo,
+                  addressFrom: widget.walletAddress,
+                  imageWallet: '',
+                  nameWallet: widget.nameWallet,
+                ),
               ),
-            );
+            ).whenComplete(() {
+              widget.walletCubit.getNFT(
+                widget.walletAddress,
+              );
+            });
           },
         ),
       ],
