@@ -149,12 +149,12 @@ class RemoveNft extends StatelessWidget {
                                           );
                                           cubit.listNFTStream.sink
                                               .add(cubit.listNFTStream.value);
-                                          // if (cubit.listNftInfo.isEmpty) {
-                                          //   cubit.listNftFromWalletCore
-                                          //       .removeAt(indexCollection);
-                                          //   cubit.listNFTStream.add(
-                                          //       cubit.listNftFromWalletCore);
-                                          // }
+                                          if (cubit.listNftInfo.isEmpty) {
+                                            cubit.listNftFromWalletCore
+                                                .removeAt(indexCollection);
+                                            cubit.listNFTStream.add(
+                                                cubit.listNftFromWalletCore);
+                                          }
                                           Navigator.pop(context);
                                         },
                                         child: SizedBox(
