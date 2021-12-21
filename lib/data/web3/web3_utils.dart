@@ -484,10 +484,15 @@ class Web3Utils {
   //       final amount = await token
   // }
 
-  void sendRawTransaction({required String transaction}) {
+  Future<bool> sendRawTransaction({required String transaction}) async {
     final List<int> listInt = hex.decode(transaction);
     final Uint8List signedTransaction = Uint8List.fromList(listInt);
-    client.sendRawTransaction(signedTransaction);
+    try {
+      await client.sendRawTransaction(signedTransaction);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   //Token detail
