@@ -6,6 +6,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
@@ -146,6 +147,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
         }
       },
       child: BlocConsumer<FormFieldBlockchainCubit, FormFieldBlockchainState>(
+        //todo this listener
         listener: (context, state) {
           if (state is FormBlockchainSendNftSuccess) {
             showDialog(
@@ -154,11 +156,14 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 backgroundColor: Colors.transparent,
                 content: TransactionSubmitSuccess(),
               ),
-            );
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Navigator.pop(context);
+            ).then((value) => Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 1,
+                    ),
+                  ),
+                  (route) => route.isFirst,
+                ));
           } else if (state is FormBlockchainSendNftLoading) {
             showDialog(
               context: context,
@@ -174,11 +179,14 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 backgroundColor: Colors.transparent,
                 content: TransactionSubmitFail(),
               ),
-            );
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Navigator.pop(context);
+            ).then((value) => Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 1,
+                    ),
+                  ),
+                  (route) => route.isFirst,
+                ));
           } else if (state is FormBlockchainSendTokenLoading) {
             showDialog(
               context: context,
