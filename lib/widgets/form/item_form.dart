@@ -66,7 +66,11 @@ class ItemForm extends StatelessWidget {
               maxLines: 10,
               cursorColor: Colors.white,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(right: 3.w),
+                contentPadding: EdgeInsets.only(
+                  right: 3.w,
+                  top: 16.h,
+                  bottom: 16.h,
+                ),
                 hintText: hint,
                 hintStyle: textNormal(
                   Colors.grey,
