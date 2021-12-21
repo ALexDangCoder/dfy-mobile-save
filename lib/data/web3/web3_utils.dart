@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:Dfy/data/web3/abi/nft.g.dart';
@@ -11,6 +12,7 @@ import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:convert/convert.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -253,6 +255,7 @@ class Web3Utils {
   Future<double> getBalanceOfToken({
     required String ofAddress,
     required String tokenAddress,
+    String? password,
   }) async {
     final token =
         Token(address: EthereumAddress.fromHex(tokenAddress), client: client);
@@ -378,11 +381,96 @@ class Web3Utils {
       sender: EthereumAddress.fromHex(from),
       to: EthereumAddress.fromHex(to),
       value: EtherAmount.fromUnitAndValue(
-        EtherUnit.ether,
-        value.toInt(),
+        EtherUnit.gwei,
+        (value * 1000000000).toInt(),
       ),
     );
     return '$amount';
+  }
+
+  Future<bool> checkValidAddress(String address) async {
+    try {
+      final ethAddress = EthereumAddress.fromHex(address);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  Future<String> getTokenGasLimit({
+    required String contract,
+    required String symbol,
+    required String from,
+    required String to,
+    required double amount,
+    required BuildContext context,
+  }) async {
+    if (symbol == 'BNB') {
+      final gasLimit = await client.estimateGas(
+        sender: EthereumAddress.fromHex(from),
+        to: EthereumAddress.fromHex(to),
+        value: EtherAmount.fromUnitAndValue(
+          EtherUnit.wei,
+          BigInt.from(amount * 1000000000000000000),
+        ),
+      );
+      return '$gasLimit';
+    } else {
+      final abiCode = await DefaultAssetBundle.of(context)
+          .loadString('assets/abi/erc20_abi.json');
+      final deployContract = DeployedContract(
+        ContractAbi.fromJson(abiCode, symbol),
+        EthereumAddress.fromHex(contract),
+      );
+      final transferFunction = deployContract.function('transfer');
+      final sendAmount = BigInt.from(amount * 1000000000000000000);
+      final transferTransaction = Transaction.callContract(
+        contract: deployContract,
+        function: transferFunction,
+        parameters: [
+          EthereumAddress.fromHex(to),
+          sendAmount,
+        ],
+      );
+      final gasLimit = await client.estimateGas(
+        sender: EthereumAddress.fromHex(from),
+        to: EthereumAddress.fromHex(contract),
+        data: transferTransaction.data,
+      );
+      return '$gasLimit';
+    }
+  }
+
+  Future<String> getNftGasLimit({
+    required String from,
+    required String to,
+    required String contract,
+    required String symbol,
+    required int id,
+    required BuildContext context,
+  }) async {
+    final abiCode = await DefaultAssetBundle.of(context)
+        .loadString('assets/abi/erc721_abi.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, symbol),
+      EthereumAddress.fromHex(contract),
+    );
+    final transferFunction = deployContract.function('transferFrom');
+    final transferTransaction = Transaction.callContract(
+      contract: deployContract,
+      function: transferFunction,
+      parameters: [
+        EthereumAddress.fromHex(from),
+        EthereumAddress.fromHex(to),
+        BigInt.from(id),
+      ],
+    );
+    final gasLimit = await client.estimateGas(
+      sender: EthereumAddress.fromHex(from),
+      to: EthereumAddress.fromHex(contract),
+      data: transferTransaction.data,
+    );
+    return '$gasLimit';
   }
 
   // Future<double> getTokenEstimateGas({
@@ -397,8 +485,8 @@ class Web3Utils {
   // }
 
   void sendRawTransaction({required String transaction}) {
-    Uint8List bytes = Uint8List.fromList(hex.decode(transaction));
-    final Uint8List signedTransaction = Uint8List.fromList(bytes);
+    final List<int> listInt = hex.decode(transaction);
+    final Uint8List signedTransaction = Uint8List.fromList(listInt);
     client.sendRawTransaction(signedTransaction);
   }
 

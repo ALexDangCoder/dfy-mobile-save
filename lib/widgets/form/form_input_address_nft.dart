@@ -57,6 +57,7 @@ class FormInputAddressNFT extends StatelessWidget {
               child: TextFormField(
                 maxLength: 100,
                 onChanged: (value) {
+                  bloc.currentAddressNft = value;
                   bloc.checkValidateAddress(value: value);
                   bloc.checkValidateIdNft(value: idNft);
                 },
