@@ -47,7 +47,7 @@ class _SendTokenState extends State<SendToken> {
     //   to: fakeToAddress,
     //   value: 1000,
     // );
-    tokenCubit.getBalance(widget.walletAddress);
+    tokenCubit.getBalanceWallet(ofAddress: widget.walletAddress);
     tokenCubit.getGasPrice();
     // trustWalletChannel
     //     .setMethodCallHandler(tokenCubit.nativeMethodCallBackTrustWallet);

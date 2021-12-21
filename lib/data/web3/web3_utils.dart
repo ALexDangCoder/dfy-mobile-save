@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:Dfy/data/web3/abi/nft.g.dart';
@@ -437,7 +436,8 @@ class Web3Utils {
         to: EthereumAddress.fromHex(contract),
         data: transferTransaction.data,
       );
-      return '$gasLimit';
+      final valueHundredMore = BigInt.from(100) + gasLimit;
+      return '$valueHundredMore';
     }
   }
 
@@ -470,7 +470,8 @@ class Web3Utils {
       to: EthereumAddress.fromHex(contract),
       data: transferTransaction.data,
     );
-    return '$gasLimit';
+    final valueHundredMore = BigInt.from(100) + gasLimit;
+    return '$valueHundredMore';
   }
 
   // Future<double> getTokenEstimateGas({

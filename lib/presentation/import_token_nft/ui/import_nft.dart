@@ -63,7 +63,6 @@ class _BodyState extends State<_Body> {
     _idController.addListener(() {
       widget.bloc.idSubject.sink.add(_idController.text);
     });
-    widget.bloc.warningTextNft.sink.add('');
   }
 
   @override

@@ -143,6 +143,9 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
           emit(FormBlockchainSendTokenFail());
         }
         break;
+      case 'signTransactionNftCallback':
+        //todo HUY
+        break;
       default:
         break;
     }
@@ -154,7 +157,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     return result.count;
   }
 
-  Future<void> signTransactionToken({
+  void signTransactionToken({
     required String walletAddress,
     required String tokenAddress,
     required String toAddress,
@@ -163,7 +166,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     required String gasPrice,
     required String gasLimit,
     required String amount,
-  }) async {
+  }) {
     try {
       final data = {
         'walletAddress': walletAddress,
@@ -175,9 +178,35 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         'gasLimit': gasLimit,
         'amount': amount,
       };
-      await trustWalletChannel.invokeMethod('signTransactionToken', data);
+      trustWalletChannel.invokeMethod('signTransactionToken', data);
     } on PlatformException {
       //todo
     }
   }
+
+  void signTransactionNft({
+    required String walletAddress,
+    required String tokenAddress,
+    required String toAddress,
+    required String nonce,
+    required String chainId,
+    required String gasPrice,
+    required String gasLimit,
+    required String tokenId,
+  }) {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+        'tokenAddress': tokenAddress,
+        'toAddress': toAddress,
+        'nonce': nonce,
+        'chainId': chainId,
+        'gasPrice': gasPrice,
+        'gasLimit': gasLimit,
+        'tokenId': tokenId,
+      };
+      trustWalletChannel.invokeMethod('signTransactionNft', data);
+    } on PlatformException {}
+  }
+
 }
