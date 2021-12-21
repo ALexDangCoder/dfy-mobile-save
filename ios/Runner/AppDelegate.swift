@@ -44,11 +44,11 @@ extension AppDelegate {
 //                result(getListWallet(password: password))
 //            }
 //        }
-//        if call.method == "getPriceTokenResponse" {
-//            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
-//                result(getNFT(walletAddress: walletAddress))
-//            }
-//        }
+        if call.method == "getNFT" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
+                result(getNFT(walletAddress: walletAddress))
+            }
+        }
         if call.method == "getTokens" {
             if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
                 result(getTokens(walletAddress: walletAddress))
@@ -125,7 +125,8 @@ extension AppDelegate {
         }
         if call.method == "importNft" {
             if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let jsonNft = arguments["jsonNft"] as? String {
-                
+                print("Mother fukcer \(jsonNft)")
+                result(importNft(jsonNft: jsonNft, walletAddress: walletAddress))
             }
         }
         if call.method == "exportWallet" {
@@ -138,11 +139,21 @@ extension AppDelegate {
                 result(importWallet(type: type, content: content))
             }
         }
-//        if call.method == "earseAllWallet" {
-//            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String {
-//                result(eraseAllWallet(type: type))
-//            }
-//        }
+        if call.method == "deleteNft" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let collectionAddress = arguments["collectionAddress"] as? String, let nftId = arguments["nftId"] as? String {
+                result(deleteNft(walletAddress: walletAddress, collectionAddress: collectionAddress, nftId: nftId))
+            }
+        }
+        if call.method == "deleteCollection" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let collectionAddress = arguments["collectionAddress"] as? String {
+                result(deleteCollection(walletAddress: walletAddress, collectionAddress: collectionAddress))
+            }
+        }
+        if call.method == "earseAllWallet" {
+            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String {
+                result(eraseAllWallet(type: type))
+            }
+        }
 //
         result(FlutterMethodNotImplemented)
 //
@@ -179,18 +190,26 @@ extension AppDelegate {
     
     private func getNFT(walletAddress: String) -> [[String: Any]] {
         var params: [[String: Any]] = []
-        let param1: [String: Any] = [
-            "nftName": "walletName1",
-            "walletAddress": "0x753EE7D5FdBD248fED37add0C951211E03a7DA15",
-            "iconNFT": [],
-        ]
-        params.append(param1)
-        let param2: [String: Any] = [
-            "walletName": "walletName2",
-            "walletAddress": "0x753EE7D5FdBD248fED37add0C951211E03a7DA15",
-            "iconNFT": [],
-        ]
-        params.append(param2)
+        SharedPreference.shared.getListNft().forEach { nftModel in
+            if (nftModel.walletAddress == walletAddress) {
+                var nftParam = [String: Any]()
+                nftParam["walletAddress"] = nftModel.walletAddress
+                nftParam["collectionAddress"] = nftModel.collectionAddress
+                nftParam["nftName"] = nftModel.nftName
+                nftParam["symbol"] = nftModel.symbol
+                var listNftParams = [[String: Any]]()
+                nftModel.item.forEach { nftItemModel in
+                    var dataListNft = [String: Any]()
+                    dataListNft["id"] = nftItemModel.id
+                    dataListNft["contract"] = nftItemModel.contract
+                    dataListNft["uri"] = nftItemModel.uri
+                    listNftParams.append(dataListNft)
+                }
+                nftParam["listNft"] = listNftParams
+                params.append(nftParam)
+            }
+        }
+        print("mother fucker \(params)")
         chatChanel?.invokeMethod("getNFTCallback", arguments: params)
         return params
     }
@@ -302,6 +321,7 @@ extension AppDelegate {
         var params: [String: Any] = [:]
         params["isSuccess"] = true
         params["type"] = type
+        SharedPreference.shared.eraseWallet()
         chatChanel?.invokeMethod("earseAllWalletCallback", arguments: params)
         return params 
     }
@@ -370,7 +390,6 @@ extension AppDelegate {
             let data = listObjectTokens[index]
             let tokenAddress = data.tokenAddress ?? ""
             let tokenModel = TokenModel(walletAddress: data.walletAddress ?? "", tokenAddress: data.tokenAddress ?? "", tokenFullName: data.nameToken ?? "", iconUrl: data.iconToken ?? "", symbol: data.nameShortToken ?? "", decimal: data.decimal ?? 0, exchangeRate: data.exchangeRate ?? 0.0, isShow: tokenAddress == TOKEN_BNB_ADDRESS || tokenAddress == TOKEN_DFY_ADDRESS, isImport: data.isImport ?? false)
-            print("TEST \(tokenModel.toDict())")
             let tokenInCore = listTokenAddress.first(where: {$0.tokenAddress == tokenModel.tokenAddress})
             if let token = tokenInCore {
                 tokenModel.isShow = token.isShow
@@ -394,7 +413,6 @@ extension AppDelegate {
         }
         listTokens.append(contentsOf: listTokenOther)
         SharedPreference.shared.saveListTokens(listTokens: listTokens)
-        print("Mother fucker \(listTokens.count)")
         param["isSuccess"] = true
         chatChanel?.invokeMethod("importListTokenCallback", arguments: param)
         return param
@@ -443,18 +461,18 @@ extension AppDelegate {
     
     private func importWallet(type: String, content: String) -> [String: Any] {
         var param = [String: Any]()
-        do {
-            switch type {
-            case self.TYPE_WALLET_SEED_PHRASE:
-                let wallet = HDWallet(mnemonic: content, passphrase: "")
-                let address = wallet?.getAddressForCoin(coin: .smartChain)
-                let privateKey = (wallet?.getKeyForCoin(coin: .smartChain).data)!.hexEncodedString()
+        switch type {
+        case self.TYPE_WALLET_SEED_PHRASE:
+            let wallet = HDWallet(mnemonic: content, passphrase: "")
+            if let wallet = wallet {
+                let address = wallet.getAddressForCoin(coin: .smartChain)
+                let privateKey = (wallet.getKeyForCoin(coin: .smartChain).data).hexEncodedString()
                 var listWallet = [WalletModel]()
                 listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
                 if (listWallet.first(where: {$0.walletAddress == address}) == nil) {
                     let walletName = "Account \(listWallet.count + 1)"
                     param["walletAddress"] = address
-                    listWallet.insert(WalletModel(walletName: walletName, walletAddress: address ?? "", walletIndex: 0, seedPhrase: content, privateKey: privateKey, isImportWallet: true), at: 0)
+                    listWallet.insert(WalletModel(walletName: walletName, walletAddress: address, walletIndex: 0, seedPhrase: content, privateKey: privateKey, isImportWallet: true), at: 0)
                     for (index, walletModel) in listWallet.enumerated() {
                         walletModel.walletIndex  = index
                     }
@@ -472,26 +490,128 @@ extension AppDelegate {
                     chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                     return param
                 }
-            default:
+            } else {
                 param["walletAddress"] = ""
                 param["walletName"] = ""
                 param["code"] = CODE_ERROR
-                param["messages"] = "Có lỗi xảy ra vui lòng thử lại."
+                param["messages"] = "Lỗi seed phrase vui lòng thử lại"
                 chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                 return param
             }
-        } catch {
-            param["walletAddress"] = ""
-            param["walletName"] = ""
-            param["code"] = CODE_ERROR
-            param["messages"] = (type == TYPE_WALLET_SEED_PHRASE) ? "Lỗi seed phrase vui lòng thử lại" : "Lỗi private key vui lòng thử lại"
-            chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+        case self.TYPE_WALLET_PRIVATE_KEY:
+            if let privateKeyData = content.hexadecimal {
+                let privateKey = PrivateKey(data: privateKeyData)
+                if let privKey = privateKey {
+                    let publicKey = privKey.getPublicKeySecp256k1(compressed: false)
+                    let address = AnyAddress(publicKey: publicKey, coin: .smartChain)
+                    var listWallet = [WalletModel]()
+                    listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+                    if (listWallet.first(where: {$0.walletAddress == "\(address)"}) == nil) {
+                        let walletName = "Account \(listWallet.count + 1)"
+                        param["walletAddress"] = "\(address)"
+                        listWallet.insert(WalletModel(walletName: walletName, walletAddress: "\(address)", walletIndex: 0, seedPhrase: "", privateKey: content, isImportWallet: true), at: 0)
+                        for (index, walletModel) in listWallet.enumerated() {
+                            walletModel.walletIndex = index
+                        }
+                        SharedPreference.shared.saveListWallet(listWallet: listWallet)
+                        param["walletName"] = walletName
+                        param["code"] = CODE_SUCCESS
+                        param["messages"] = "Import tài khoản thành công"
+                        chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+                        return param
+                    } else {
+                        param["walletAddress"] = ""
+                        param["walletName"] = ""
+                        param["code"] = CODE_ERROR
+                        param["messages"] = "Tài khoản đã tồn tại"
+                        chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+                        return param
+                    }
+                } else {
+                    param["walletAddress"] = ""
+                    param["walletName"] = ""
+                    param["code"] = CODE_ERROR
+                    param["messages"] = "Lỗi private key vui lòng thử lại"
+                    chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+                    return param
+                }
+            } else {
+                param["walletAddress"] = ""
+                param["walletName"] = ""
+                param["code"] = CODE_ERROR
+                param["messages"] = "Lỗi private key vui lòng thử lại"
+                chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+                return param
+            }
+        default:
             return param
         }
     }
     
-    private func importNft(jsonNft: String, walletAddress: String) {
-        
+    private func importNft(jsonNft: String, walletAddress: String) -> [String: Any] {
+        var listNftSupport = [NftModel]()
+        let jsonData = jsonNft.data(using: .utf8)
+        let objectNft = try! JSONDecoder().decode(NftDTO.self, from: jsonData!)
+        let contractNft = objectNft.contract ?? ""
+        var checkItemNft = SharedPreference.shared.getListNft().first(where: {$0.walletAddress == walletAddress && $0.collectionAddress == contractNft})
+        if checkItemNft == nil {
+            let listItem = objectNft.listNft?.map{ItemNftModel(id: $0.id ?? "", contract: $0.contract ?? "", uri: $0.uri ?? "")}
+            checkItemNft = NftModel(walletAddress: walletAddress, collectionAddress: objectNft.contract ?? "", nftName: objectNft.name ?? "", symbol: objectNft.symbol ?? "", item: listItem ?? [])
+        } else {
+            let listNftItem = objectNft.listNft ?? []
+            listNftItem.forEach { (nftItemJson) in
+                let id = nftItemJson.id ?? ""
+                if (checkItemNft?.item.first(where: {$0.id == id}) == nil) {
+                    checkItemNft?.item.append(ItemNftModel(id: nftItemJson.id ?? "", contract: nftItemJson.contract ?? "", uri: nftItemJson.uri ?? ""))
+                }
+            }
+        }
+        listNftSupport.append(checkItemNft!)
+        let param: [String: Any] = ["isSuccess": true]
+        SharedPreference.shared.saveListNft(listNft: listNftSupport)
+        chatChanel?.invokeMethod("importNftCallback", arguments: param)
+        return param
+    }
+    
+    private func deleteNft(walletAddress: String, collectionAddress: String, nftId: String) -> [String: Any] {
+        var listCollection = [NftModel]()
+        var isDeleteSuccess = false
+        SharedPreference.shared.getListNft().forEach { it in
+            if it.walletAddress == walletAddress && it.collectionAddress == collectionAddress {
+                var listNft = [ItemNftModel]()
+                it.item.forEach { nft in
+                    if nft.id == nftId {
+                        isDeleteSuccess = true
+                    } else {
+                        listNft.append(nft)
+                    }
+                }
+                if !listNft.isEmpty {
+                    let data = NftModel(walletAddress: walletAddress, collectionAddress: collectionAddress, nftName: it.nftName, symbol: it.symbol, item: listNft)
+                    listCollection.append(data)
+                }
+            }
+        }
+        SharedPreference.shared.saveListNft(listNft: listCollection)
+        let param: [String: Any] = ["isSuccess": isDeleteSuccess]
+        chatChanel?.invokeMethod("setDeleteNftCallback", arguments: param)
+        return param
+    }
+    
+    private func deleteCollection(walletAddress: String, collectionAddress: String) -> [String: Any] {
+        var listNft = [NftModel]()
+        var isDeleteSuccess = false
+        SharedPreference.shared.getListNft().forEach { collection in
+            if collection.walletAddress != walletAddress && collection.collectionAddress != collectionAddress {
+                listNft.append(collection)
+            } else {
+                isDeleteSuccess = true
+            }
+        }
+        SharedPreference.shared.saveListNft(listNft: listNft)
+        let param: [String: Any] = ["isSuccess": isDeleteSuccess]
+        chatChanel?.invokeMethod("setDeleteCollectionCallback", arguments: param)
+        return param
     }
 }
 
@@ -510,4 +630,29 @@ extension Data {
         let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
         return self.map { String(format: format, $0) }.joined()
     }
+}
+
+extension String {
+    
+    /// Create `Data` from hexadecimal string representation
+    ///
+    /// This creates a `Data` object from hex string. Note, if the string has any spaces or non-hex characters (e.g. starts with '<' and with a '>'), those are ignored and only hex characters are processed.
+    ///
+    /// - returns: Data represented by this hexadecimal string.
+    
+    var hexadecimal: Data? {
+        var data = Data(capacity: count / 2)
+        
+        let regex = try! NSRegularExpression(pattern: "[0-9a-f]{1,2}", options: .caseInsensitive)
+        regex.enumerateMatches(in: self, range: NSRange(startIndex..., in: self)) { match, _, _ in
+            let byteString = (self as NSString).substring(with: match!.range)
+            let num = UInt8(byteString, radix: 16)!
+            data.append(num)
+        }
+        
+        guard data.count > 0 else { return nil }
+        
+        return data
+    }
+    
 }
