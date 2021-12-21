@@ -343,7 +343,6 @@ class _NFTDetailState extends State<NFTDetail> {
         // );
       },
       child: Container(
-        height: 68.h,
         decoration: BoxDecoration(
           color: AppTheme.getInstance().bgBtsColor(),
           border: Border(
