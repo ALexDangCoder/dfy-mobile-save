@@ -16,9 +16,11 @@ class CardNFT extends StatefulWidget {
     Key? key,
     required this.objNFT,
     required this.walletAddress,
+    required this.walletCubit,
   }) : super(key: key);
   final NftInfo objNFT;
   final String walletAddress;
+  final WalletCubit walletCubit;
 
   @override
   State<StatefulWidget> createState() => _CardNFTState();
@@ -102,6 +104,7 @@ class _CardNFTState extends State<CardNFT> {
           nftInfo: widget.objNFT,
           listHistory: cubit.listHistory,
           walletAddress: widget.walletAddress, nameWallet: '',
+          walletCubit: widget.walletCubit,
         ),
       ),
     ).whenComplete(() => Navigator.pop(context));
