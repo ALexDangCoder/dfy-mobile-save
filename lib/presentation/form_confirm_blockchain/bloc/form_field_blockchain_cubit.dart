@@ -144,7 +144,16 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         }
         break;
       case 'signTransactionNftCallback':
-        //todo HUY
+        bool isSuccess = false;
+        String signedTransaction = '';
+        isSuccess = await methodCall.arguments['isSuccess'];
+        signedTransaction = await methodCall.arguments['signedTransaction'];
+        if(isSuccess) {
+          Web3Utils().sendRawTransaction(transaction: signedTransaction);
+          emit(FormBlockchainSendNftSuccess());
+        } else {
+          emit(FormBlockchainSendNftFail());
+        }
         break;
       default:
         break;
@@ -178,35 +187,38 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         'gasLimit': gasLimit,
         'amount': amount,
       };
-      trustWalletChannel.invokeMethod('signTransactionToken', data);
+       trustWalletChannel.invokeMethod('signTransactionToken', data);
     } on PlatformException {
       //todo
     }
   }
 
-  void signTransactionNft({
-    required String walletAddress,
-    required String tokenAddress,
+  //sign Nft
+  Future<void> signTransactionNFT({
+    required String fromAddress,
     required String toAddress,
+    required String contractNft,
     required String nonce,
     required String chainId,
     required String gasPrice,
     required String gasLimit,
-    required String tokenId,
-  }) {
+    required String nftID,
+  }) async {
     try {
       final data = {
-        'walletAddress': walletAddress,
-        'tokenAddress': tokenAddress,
+        'walletAddress': fromAddress,
+        'tokenAddress': contractNft,
         'toAddress': toAddress,
         'nonce': nonce,
         'chainId': chainId,
         'gasPrice': gasPrice,
         'gasLimit': gasLimit,
-        'tokenId': tokenId,
+        'tokenId': nftID,
       };
-      trustWalletChannel.invokeMethod('signTransactionNft', data);
-    } on PlatformException {}
+      await trustWalletChannel.invokeMethod('signTransactionNft', data);
+    } on PlatformException {
+      //todo
+    }
   }
 
 }

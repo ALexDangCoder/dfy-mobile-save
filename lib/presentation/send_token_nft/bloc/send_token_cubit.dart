@@ -20,7 +20,6 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   // 3 boolean below check validate
   bool _flagAddress = false;
   bool _flagAmount = false;
-  bool _flagQuantity = false;
   late double balanceWallet;
   late double gasPrice;
   late double estimateGasFee; //gas limit
@@ -67,6 +66,25 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     // } else {
     //   estimateGasFee = 45000;
     // }
+  }
+  late double gasLimitNft;
+  Future<void> getGasLimitNft({
+    required String fromAddress,
+    required String toAddress,
+    required String contract,
+    required String symbol,
+    required String id,
+    required BuildContext context,
+  }) async {
+    final result = await Web3Utils().getNftGasLimit(
+      from: fromAddress,
+      to: toAddress,
+      contract: contract,
+      symbol: symbol,
+      id: int.parse(id),
+      context: context,
+    );
+    gasLimitNft = double.parse(result);
   }
 
   //handle nft pending api
@@ -160,6 +178,60 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   int? amountToken;
   String passwordToken = '';
   String passwordNft = '';
+
+  final regexAddress = RegExp(r'^0x[a-fA-F0-9]{40}$');
+
+  //check validate form send nft
+  bool _flagNftAddress = false;
+  bool _flagQuantity = false;
+
+  void checkValidateAddress({required String value}) {
+    if (value.isEmpty) {
+      isValidAddressFormSink.add(true);
+      _flagNftAddress = false;
+      isShowCFBlockChainSink.add(false);
+      txtInvalidAddressFormSink.add(S.current.address_required);
+    } else if (!regexAddress.hasMatch(value)) {
+      isValidAddressFormSink.add(true);
+      _flagNftAddress = false;
+      isShowCFBlockChainSink.add(false);
+      txtInvalidAddressFormSink.add(S.current.invalid_address);
+    } else {
+      _flagNftAddress = true;
+      isValidAddressFormSink.add(false);
+      if (_flagNftAddress && _flagQuantity) {
+        isShowCFBlockChainSink.add(true);
+      }
+    }
+  }
+
+  final regexId = RegExp(r'^[0-9]*$');
+
+  void checkValidateQuantity(
+      {required String value, required String quantityCopy}) {
+    if (value.isEmpty) {
+      _flagQuantity = false;
+      isValidQuantityFormSink.add(true);
+      txtInvalidQuantityFormSink.add(S.current.required_quantity);
+      isShowCFBlockChainSink.add(false);
+    } else if (!regexId.hasMatch(value)) {
+      _flagQuantity = false;
+      isValidQuantityFormSink.add(true);
+      txtInvalidQuantityFormSink.add(S.current.invalid_quantity);
+      isShowCFBlockChainSink.add(false);
+    } else if (int.parse(value) > int.parse(quantityCopy)) {
+      _flagQuantity = false;
+      isValidQuantityFormSink.add(true);
+      txtInvalidQuantityFormSink.add(S.current.warning_big_quantity);
+      isShowCFBlockChainSink.add(false);
+    } else {
+      _flagQuantity = true;
+      isValidQuantityFormSink.add(false);
+      if (_flagQuantity && _flagNftAddress) {
+        isShowCFBlockChainSink.add(true);
+      }
+    }
+  }
 
   //handle send token screen
   //check have value will enable button

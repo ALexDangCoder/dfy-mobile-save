@@ -1,11 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -33,7 +33,6 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     required this.nameTokenWallet,
     required this.balanceWallet,
     required this.typeConfirm,
-    required this.tokenAddress,
     required this.addressFrom,
     required this.addressTo,
     required this.imageWallet,
@@ -45,6 +44,7 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     this.amount,
     this.quantity,
     this.modelToken,
+    this.nftInfo,
   }) : super(key: key);
 
   final TYPE_CONFIRM typeConfirm;
@@ -52,7 +52,6 @@ class ConfirmBlockchainCategory extends StatefulWidget {
   //this field depend on name token
   final String? nameToken;
   final String addressFrom;
-  final String tokenAddress;
   final String addressTo;
   final double? amount;
   final String nameWallet;
@@ -63,8 +62,10 @@ class ConfirmBlockchainCategory extends StatefulWidget {
   final double gasFeeFirstFetch;
   final double gasLimitFirstFetch;
   final String imageWallet;
-  final dynamic cubitCategory;
   final ModelToken? modelToken;
+  final NftInfo? nftInfo;
+
+  final dynamic cubitCategory;
 
   @override
   _ConfirmBlockchainCategoryState createState() =>
@@ -141,7 +142,8 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
       },
       child: BlocConsumer<FormFieldBlockchainCubit, FormFieldBlockchainState>(
         listener: (context, state) {
-          if (state is FormBlockchainSendTokenSuccess) {
+          if (state is FormBlockchainSendTokenSuccess ||
+              state is FormBlockchainSendNftSuccess) {
             Navigator.pop(context);
             Navigator.pop(context, true);
           } else {
@@ -275,21 +277,31 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                               1000000000000000000)
                                           .toString(),
                                       // 1000000000000000000 -> 1 dfy
-                                      tokenAddress: widget.tokenAddress,
+                                      tokenAddress: widget.modelToken!.tokenAddress,
                                       walletAddress: widget.addressFrom,
                                       chainId: '97',
                                     );
                                     break;
                                   case TYPE_CONFIRM.SEND_NFT:
-                                    cubitFormCustomizeGasFee.signTransactionNft(
-                                      walletAddress: '',
-                                      tokenAddress: '',
-                                      toAddress: '',
-                                      nonce: '',
-                                      chainId: '',
-                                      gasPrice: '',
-                                      gasLimit: '',
-                                      tokenId: '',
+                                    final nonce = await cubitFormCustomizeGasFee
+                                        .getNonceWeb3(
+                                      walletAddress: widget.addressFrom,
+                                    );
+                                    await cubitFormCustomizeGasFee
+                                        .signTransactionNFT(
+                                      fromAddress: widget.addressFrom,
+                                      toAddress: widget.addressTo,
+                                      contractNft: widget.nftInfo?.contract ??
+                                          'contract',
+                                      nonce: nonce.toString(),
+                                      gasLimit:
+                                          (double.parse(_txtGasLimit.text) *
+                                                  1000000000)
+                                              .toString(),
+                                      gasPrice: (widget.gasPriceFirstFetch *
+                                              1000000000)
+                                          .toString(),
+                                      nftID: widget.nftInfo?.id ?? 'id',
                                     );
                                     break;
                                   case TYPE_CONFIRM.SEND_OFFER:
