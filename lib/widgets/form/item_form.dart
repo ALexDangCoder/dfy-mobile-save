@@ -44,30 +44,80 @@ class ItemForm extends StatelessWidget {
         ),
         child: Container(
           width: 343.w,
-          padding: EdgeInsets.only(
-            top: 10.h,
-            bottom: 10.h,
-            right: 10.w,
-          ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(20.r),
             ),
             color: AppTheme.getInstance().itemBtsColors(),
           ),
+          child: Center(
+            child: TextFormField(
+              controller: controller,
+              style: textNormal(
+                Colors.white,
+                16,
+              ),
+              textAlignVertical: TextAlignVertical.center,
+              onChanged: (value) {
+                cubit?.showTxtWarningSeed(value, FormType.PASS_PHRASE);
+                importCubit?.showTxtWarningSeed(value, FormType.PASS_PHRASE);
+              },
+              minLines: 1,
+              maxLines: 10,
+              cursorColor: Colors.white,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(right: 3.w),
+                hintText: hint,
+                hintStyle: textNormal(
+                  Colors.grey,
+                  16,
+                ),
+                suffixIcon: InkWell(
+                  onTap: callback,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 13.h),
+                    child: Text(
+                      S.current.paste,
+                      style: textNormal(AppTheme.getInstance().fillColor(), 16)
+                          .copyWith(
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
+                prefixIcon: ImageIcon(
+                  AssetImage(prefix),
+                  color: Colors.white,
+                ),
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+        ),
+      );
+    } else if (formType == FormType.PRIVATE_KEY) {
+      return Container(
+        height: 64.h,
+        width: 343.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
+          ),
+          color: AppTheme.getInstance().itemBtsColors(),
+        ),
+        child: Center(
           child: TextFormField(
             controller: controller,
+            obscureText: isShow,
+            textAlignVertical: TextAlignVertical.center,
             style: textNormal(
               Colors.white,
               16,
             ),
-            textAlignVertical: TextAlignVertical.center,
             onChanged: (value) {
-              cubit?.showTxtWarningSeed(value, FormType.PASS_PHRASE);
-              importCubit?.showTxtWarningSeed(value, FormType.PASS_PHRASE);
+              cubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
+              importCubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
             },
-            minLines: 1,
-            maxLines: 10,
             cursorColor: Colors.white,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.only(right: 3.w),
@@ -81,7 +131,7 @@ class ItemForm extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(top: 13.h),
                   child: Text(
-                    S.current.paste,
+                    suffix,
                     style: textNormal(AppTheme.getInstance().fillColor(), 16)
                         .copyWith(
                       fontWeight: FontWeight.w400,
@@ -98,172 +148,106 @@ class ItemForm extends StatelessWidget {
           ),
         ),
       );
-    } else if (formType == FormType.PRIVATE_KEY) {
-      return Container(
-        height: 64.h,
-        width: 343.w,
-        padding: EdgeInsets.only(
-          top: 10.h,
-          bottom: 12.h,
-          right: 10.w,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.r),
-          ),
-          color: AppTheme.getInstance().itemBtsColors(),
-        ),
-        child: TextFormField(
-          controller: controller,
-          obscureText: isShow,
-          textAlignVertical: TextAlignVertical.center,
-          style: textNormal(
-            Colors.white,
-            16,
-          ),
-          onChanged: (value) {
-            cubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
-            importCubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
-          },
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(right: 3.w),
-            hintText: hint,
-            hintStyle: textNormal(
-              Colors.grey,
-              16,
-            ),
-            suffixIcon: InkWell(
-              onTap: callback,
-              child: Padding(
-                padding: EdgeInsets.only(top: 13.h),
-                child: Text(
-                  suffix,
-                  style: textNormal(AppTheme.getInstance().fillColor(), 16)
-                      .copyWith(
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-            ),
-            prefixIcon: ImageIcon(
-              AssetImage(prefix),
-              color: Colors.white,
-            ),
-            border: InputBorder.none,
-          ),
-        ),
-      );
     } else if (formType == FormType.AMOUNT) {
       return Container(
         height: 64.h,
         width: 343.w,
-        padding: EdgeInsets.only(
-          top: 12.h,
-          bottom: 12.h,
-        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(20.r),
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
-        child: Row(
-          children: [
-            Expanded(
-              child: TextFormField(
-                textAlignVertical: TextAlignVertical.center,
-                controller: controller,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'(^\-?\d*\.?\d*)'))
-                ],
-                style: textNormal(
-                  Colors.white,
-                  16,
-                ),
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                  hintText: hint,
-                  hintStyle: textNormal(
-                    Colors.grey,
-                    16,
-                  ),
-                  suffixIcon: InkWell(
-                    onTap: callback,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: Text(
-                        suffix,
-                        style: textNormal(
-                          Colors.grey,
-                          16,
-                        ),
-                      ),
+        child: Center(
+          child: TextFormField(
+            textAlignVertical: TextAlignVertical.center,
+            controller: controller,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'(^\-?\d*\.?\d*)'))
+            ],
+            style: textNormal(
+              Colors.white,
+              16,
+            ),
+            cursorColor: Colors.white,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: textNormal(
+                Colors.grey,
+                16,
+              ),
+              suffixIcon: InkWell(
+                onTap: callback,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10.h),
+                  child: Text(
+                    suffix,
+                    style: textNormal(
+                      Colors.grey,
+                      16,
                     ),
                   ),
-                  prefixIcon: ImageIcon(
-                    AssetImage(prefix),
-                    color: Colors.white,
-                  ),
-                  border: InputBorder.none,
                 ),
               ),
+              prefixIcon: ImageIcon(
+                AssetImage(prefix),
+                color: Colors.white,
+              ),
+              border: InputBorder.none,
             ),
-          ],
+          ),
         ),
       );
     } else {
       return Container(
         height: 64.h,
         width: 343.w,
-        padding: EdgeInsets.only(
-          top: 10.h,
-          bottom: 12.h,
-        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(20.r),
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
-        child: TextFormField(
-          controller: controller,
-          obscureText: isShow,
-          textAlignVertical: TextAlignVertical.center,
-          style: textNormal(
-            Colors.white,
-            16,
-          ),
-          onChanged: passType == PassType.CON
-              ? (value) {
-                  cubit?.showTxtWarningConfirmPW(
-                    value,
-                    newPW: cubit?.newPassword ?? '',
-                  );
-                }
-              : (value) {
-                  cubit?.showTxtWarningNewPW(value);
-                },
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: textNormal(
-              Colors.grey,
+        child: Center(
+          child: TextFormField(
+            controller: controller,
+            obscureText: isShow,
+            textAlignVertical: TextAlignVertical.center,
+            style: textNormal(
+              Colors.white,
               16,
             ),
-            suffixIcon: InkWell(
-              onTap: callback,
-              child: ImageIcon(
-                AssetImage(suffix),
-                color: Colors.grey,
+            onChanged: passType == PassType.CON
+                ? (value) {
+                    cubit?.showTxtWarningConfirmPW(
+                      value,
+                      newPW: cubit?.newPassword ?? '',
+                    );
+                  }
+                : (value) {
+                    cubit?.showTxtWarningNewPW(value);
+                  },
+            cursorColor: Colors.white,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: textNormal(
+                Colors.grey,
+                16,
               ),
+              suffixIcon: InkWell(
+                onTap: callback,
+                child: ImageIcon(
+                  AssetImage(suffix),
+                  color: Colors.grey,
+                ),
+              ),
+              prefixIcon: ImageIcon(
+                AssetImage(prefix),
+                color: Colors.white,
+              ),
+              border: InputBorder.none,
             ),
-            prefixIcon: ImageIcon(
-              AssetImage(prefix),
-              color: Colors.white,
-            ),
-            border: InputBorder.none,
           ),
         ),
       );
