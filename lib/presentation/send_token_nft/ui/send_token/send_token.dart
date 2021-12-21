@@ -168,7 +168,6 @@ class _SendTokenState extends State<SendToken> {
                                 nameTokenWallet: 'BNB',
                                 balanceWallet: tokenCubit.balanceWallet,
                                 typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
-                                tokenAddress: widget.modelToken.tokenAddress,
                                 addressFrom: widget.walletAddress,
                                 addressTo: txtToAddressToken.text,
                                 imageWallet: ImageAssets.symbol,

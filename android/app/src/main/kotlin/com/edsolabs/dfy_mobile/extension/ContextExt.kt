@@ -716,13 +716,23 @@ fun Context.signTransactionNft(
         }
 
         val output =
-            AnySigner.sign(signingInput.build(), CoinType.SMARTCHAIN, Ethereum.SigningOutput.parser())
+            AnySigner.sign(
+                signingInput.build(),
+                CoinType.SMARTCHAIN,
+                Ethereum.SigningOutput.parser()
+            )
         val value = output.encoded.toByteArray().toHexString(false)
         hasMap["isSuccess"] = true
         hasMap["signedTransaction"] = value
+        hasMap["walletAddress"] = walletAddress
+        hasMap["collectionAddress"] = tokenAddress
+        hasMap["nftId"] = tokenId
     } else {
         hasMap["isSuccess"] = false
         hasMap["signedTransaction"] = ""
+        hasMap["walletAddress"] = ""
+        hasMap["collectionAddress"] = ""
+        hasMap["nftId"] = ""
     }
     channel?.invokeMethod("signTransactionNftCallback", hasMap)
 }

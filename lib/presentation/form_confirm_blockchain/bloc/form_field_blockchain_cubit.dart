@@ -144,12 +144,22 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         }
         break;
       case 'signTransactionNftCallback':
-        bool isSuccess = false;
-        String signedTransaction = '';
-        isSuccess = await methodCall.arguments['isSuccess'];
-        signedTransaction = await methodCall.arguments['signedTransaction'];
-        if(isSuccess) {
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+        final String signedTransaction =
+            await methodCall.arguments['signedTransaction'];
+        final String walletAddress =
+            await methodCall.arguments['walletAddress'];
+        final String collectionAddress =
+            await methodCall.arguments['collectionAddress'];
+        final String nftId = await methodCall.arguments['nftId'];
+
+        if (isSuccess) {
           Web3Utils().sendRawTransaction(transaction: signedTransaction);
+          //todo check call back send web3 success delete nft
+          deleteNft(
+              walletAddress: walletAddress,
+              collectionAddress: collectionAddress,
+              nftId: nftId);
           emit(FormBlockchainSendNftSuccess());
         } else {
           emit(FormBlockchainSendNftFail());
@@ -187,14 +197,14 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         'gasLimit': gasLimit,
         'amount': amount,
       };
-       trustWalletChannel.invokeMethod('signTransactionToken', data);
+      trustWalletChannel.invokeMethod('signTransactionToken', data);
     } on PlatformException {
       //todo
     }
   }
 
   //sign Nft
-  Future<void> signTransactionNFT({
+  void signTransactionNFT({
     required String fromAddress,
     required String toAddress,
     required String contractNft,
@@ -203,7 +213,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     required String gasPrice,
     required String gasLimit,
     required String nftID,
-  }) async {
+  }) {
     try {
       final data = {
         'walletAddress': fromAddress,
@@ -215,10 +225,26 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         'gasLimit': gasLimit,
         'tokenId': nftID,
       };
-      await trustWalletChannel.invokeMethod('signTransactionNft', data);
+      trustWalletChannel.invokeMethod('signTransactionNft', data);
     } on PlatformException {
       //todo
     }
   }
 
+  void deleteNft({
+    required String walletAddress,
+    required String collectionAddress,
+    required String nftId,
+  }) {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+        'nftId': nftId,
+        'collectionAddress': collectionAddress,
+      };
+      trustWalletChannel.invokeMethod('deleteNft', data);
+    } on PlatformException {
+      //todo
+    }
+  }
 }
