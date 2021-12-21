@@ -403,6 +403,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                                           QRViewExample(
                                                         controller:
                                                             privateKeyController,
+                                                        restoreCubit:
+                                                            restoreCubit,
                                                       ),
                                                     ),
                                                   );
@@ -616,6 +618,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
       },
     );
   }
+
   void _showDialog(String alert, String text) {
     showDialog(
       context: context,
