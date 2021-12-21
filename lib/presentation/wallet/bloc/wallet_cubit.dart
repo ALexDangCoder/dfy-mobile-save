@@ -87,7 +87,10 @@ class WalletCubit extends BaseCubit<WalletState> {
         btnSubject.sink.add(false);
       } else {
         await emitJsonNftToWalletCore(
-            contract: contract, address: address, id: id,);
+          contract: contract,
+          address: address,
+          id: id,
+        );
       }
     } else {
       final resultWhenCall =
@@ -608,6 +611,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         final List<CollectionNft> listCollectionNFT = [];
         int index = 0;
         for (final element in data) {
+          print('element: $element');
           listCollectionNFT.add(CollectionNft.fromJson(element));
           //get nft list in each collection
           for (final nftItem in listCollectionNFT[index].listNft ?? []) {
@@ -852,7 +856,7 @@ class WalletCubit extends BaseCubit<WalletState> {
     required String address,
   }) async {
     Map<String, dynamic> result = {};
-    if(id != null) {
+    if (id != null) {
       result = await Web3Utils()
           .getCollectionInfo(contract: contract, address: address, id: id);
       await importNftIntoWalletCore(
