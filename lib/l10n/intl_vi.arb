@@ -13,6 +13,7 @@
   "wallet_secret": "Seed phrase",
   "tab_wallet": "Wallet",
   "tab_pawn": "Pawn",
+  "tab_home": "Home",
   "tab_market_place": "Marketplace",
   "confirm": "Xác Nhận",
   "set_amount": "Đặt số lượng",
@@ -172,9 +173,9 @@
   "seed_required": "Seed phrase bí mật không được để trống",
   "private_required": "Private key không được để trống",
   "private_warning": "Private key không hợp lệ",
-  "you_can_only": "You can ONLY recover this wallet with your ",
-  "secret_private": "Secret Seed Phrase/Private Key. ",
-  "dfy_secret_private": "DeFi For You does not have your Secret Seed Phrase/Private Key.",
+  "you_can_only": "Bạn CHỈ có thể khôi phục ví này với ",
+  "secret_private": "Secret Seed Phrase/Private Key ",
+  "dfy_secret_private": "của ban. DeFi For You không có Secret Seed Phrase/Private Key của bạn.",
   "tran_submit": "Giao dịch đã được gửi",
   "waiting_for_cf": "Chờ đợi sự xác nhận",
   "send_nft": "Gửi NFT",
@@ -212,5 +213,7 @@
   "invalid_id_nft": "ID không hợp lệ",
   "invalid_quantity": "Số lượng không hợp lệ",
   "required_quantity": "Số lượng bắt buộc",
-  "warning_big_quantity": "Số lượng này lớn hơn số lượng cho phép"
+  "warning_big_quantity": "Số lượng này lớn hơn số lượng cho phép",
+  "transaction_success": "Giao dịch thành công",
+  "transaction_fail": "Giao dịch thất bại"
 }

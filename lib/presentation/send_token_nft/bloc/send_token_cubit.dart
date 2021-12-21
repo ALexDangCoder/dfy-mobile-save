@@ -264,6 +264,9 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
+
+  //regex
+  final regexAmount = RegExp(r'^\d+((.)|(.\d{0,5})?)$');
   void checkHaveVLAmountFormToken(
     String value, {
     required double amountBalance,

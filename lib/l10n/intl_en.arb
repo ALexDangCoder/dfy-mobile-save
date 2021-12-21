@@ -8,6 +8,7 @@
   "search": "Search...",
   "tab_wallet": "Wallet",
   "tab_pawn": "Pawn",
+  "tab_home": "Home",
   "tab_market_place": "Marketplace",
   "tab_staking": "Staking ",
   "seed_phrase": "Seed phrase",
@@ -213,5 +214,7 @@
   "invalid_id_nft": "Invalid ID",
   "invalid_quantity": "Invalid quantity",
   "required_quantity": "Quantity is required",
-  "warning_big_quantity": "Quantity can not greater than available copy"
+  "warning_big_quantity": "Quantity can not greater than available copy",
+  "transaction_success": "Transaction completed",
+  "transaction_fail": "Transaction failed"
 }

@@ -13,6 +13,8 @@ class ImageAssets {
   static const String icTabPawnSelected = '$baseImg/ic_tab_pawn_selected.svg';
   static const String icTabPawnUnselected =
       '$baseImg/ic_tab_pawn_unselected.svg';
+  static const String icTabHomeUnselected = '$baseImg/ic_tab_home_unselected.svg';
+  static const String icTabHomeSelected = '$baseImg/ic_tab_home_selected.svg';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';
@@ -77,6 +79,9 @@ class ImageAssets {
   static const String icWalletTabU = '$baseImg/ic_wallet_tab_unselected.svg';
   static const String imgEmpty = '$baseImg/img_empty.png';
   static const String imgTabHome = '$baseImg/img_tab_home.png';
+
+  static const String failSubmit = '$baseImg/failsubmit.png';
+  static const String successSubmit = '$baseImg/successsubmit.png';
 
   static const String ic_to = '$baseImg/ic_to.png';
   static const String ic_pending = '$baseImg/ic_pending.png';

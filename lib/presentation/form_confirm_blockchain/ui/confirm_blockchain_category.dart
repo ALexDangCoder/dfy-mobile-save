@@ -6,6 +6,9 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -144,20 +147,63 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
       },
       child: BlocConsumer<FormFieldBlockchainCubit, FormFieldBlockchainState>(
         listener: (context, state) {
-          if (state is FormBlockchainSendTokenSuccess ||
-              state is FormBlockchainSendNftSuccess) {
-            // Navigator.pop(context);
-            // Navigator.pop(context);
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => const MainScreen(
-                  index: 1,
-                ),
+          if (state is FormBlockchainSendNftSuccess) {
+            showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmitSuccess(),
               ),
-              (route) => route.isFirst,
+            );
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.pop(context);
+          } else if (state is FormBlockchainSendNftLoading) {
+            showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmit(),
+              ),
+            );
+          } else if (state is FormBlockchainSendNftFail) {
+            showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmitFail(),
+              ),
+            );
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.pop(context);
+          } else if (state is FormBlockchainSendTokenLoading) {
+            showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmit(),
+              ),
+            );
+          } else if (state is FormBlockchainSendTokenSuccess) {
+            showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmitSuccess(),
+              ),
             );
           } else {
-            _showDialog(alert: S.current.failed);
+            //todo send token fail
+            showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmitFail(),
+              ),
+            );
           }
         },
         bloc: cubitFormCustomizeGasFee,
@@ -344,69 +390,6 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
     );
   }
 
-  //fake to demo
-  void _showDialog({String? alert, String? text}) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                36.0.r,
-              ),
-            ),
-          ),
-          backgroundColor: AppTheme.getInstance().selectDialogColor(),
-          title: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Text(
-                  alert ?? S.current.password_is_not_correct,
-                  style: textNormalCustom(
-                    Colors.white,
-                    20.sp,
-                    FontWeight.w700,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              spaceH16,
-              Text(
-                text ?? S.current.please_try_again,
-                style: textNormalCustom(
-                  Colors.white,
-                  12.sp,
-                  FontWeight.w400,
-                ),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            Divider(
-              height: 1.h,
-              color: AppTheme.getInstance().divideColor(),
-            ),
-            Center(
-              child: TextButton(
-                child: Text(
-                  S.current.ok,
-                  style: textNormalCustom(
-                    AppTheme.getInstance().fillColor(),
-                    20.sp,
-                    FontWeight.w700,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+//fake to demo
+
 }

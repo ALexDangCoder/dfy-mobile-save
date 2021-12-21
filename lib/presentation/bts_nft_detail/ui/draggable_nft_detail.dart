@@ -65,8 +65,7 @@ class _NFTDetailState extends State<NFTDetail> {
   Widget build(BuildContext context) {
     final nft = widget.nftInfo;
     return DraggableScrollableSheet(
-      maxChildSize: 0.95,
-      initialChildSize: 0.46,
+      maxChildSize: 0.9,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
           decoration: BoxDecoration(
@@ -347,7 +346,6 @@ class _NFTDetailState extends State<NFTDetail> {
         // );
       },
       child: Container(
-        height: 68.h,
         decoration: BoxDecoration(
           color: AppTheme.getInstance().bgBtsColor(),
           border: Border(
