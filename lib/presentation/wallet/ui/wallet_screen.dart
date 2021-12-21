@@ -237,6 +237,7 @@ class _WalletState extends State<WalletScreen>
                             physics: const AlwaysScrollableScrollPhysics(),
                             child: Column(
                               children: [
+                                spaceH24,
                                 StreamBuilder(
                                   stream: cubit.listTokenStream,
                                   builder: (
@@ -245,6 +246,7 @@ class _WalletState extends State<WalletScreen>
                                   ) {
                                     if (snapshot.data?.isNotEmpty ?? true) {
                                       return ListView.builder(
+                                        padding: EdgeInsets.zero,
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
@@ -292,6 +294,7 @@ class _WalletState extends State<WalletScreen>
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
+                              spaceH24,
                               StreamBuilder<List<CollectionNft>>(
                                 stream: cubit.listNFTStream,
                                 builder: (
@@ -300,6 +303,7 @@ class _WalletState extends State<WalletScreen>
                                 ) {
                                   if (snapshot.data?.isNotEmpty ?? true) {
                                     return ListView.builder(
+                                      padding: EdgeInsets.zero,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,

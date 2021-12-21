@@ -67,4 +67,19 @@ class SharedPreference {
         }
         userDefault.set(listParam, forKey: "listTokens")
     }
+    
+    func getListNft() -> [NftModel] {
+        let listParam = userDefault.object(forKey: "listNft") as? [[String: Any]] ?? []
+        let listNft = listParam.map{NftModel(param: $0)}
+        return listNft
+    }
+    
+    func saveListNft(listNft: [NftModel]) {
+        let listParam = listNft.map{$0.toDict()}
+        userDefault.set(listParam, forKey: "listNft")
+    }
+    
+    func eraseWallet() {
+        userDefault.set([], forKey: "listWallet")
+    }
 }

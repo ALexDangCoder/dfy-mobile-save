@@ -128,8 +128,7 @@ class _QRViewExampleState extends State<QRViewExample> {
             ),
           );
         } else {
-          widget.controller.text =
-              result!.code!.substring(0, result!.code!.length - 1);
+          widget.controller.text = result?.code ?? '';
           widget.importCubit?.showTxtWarningSeed(
             widget.controller.text,
             FormType.PRIVATE_KEY,
