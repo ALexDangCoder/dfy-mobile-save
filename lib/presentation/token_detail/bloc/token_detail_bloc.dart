@@ -89,9 +89,11 @@ class TokenDetailBloc {
   }
 
   ///showLoading
-  Future<void> checkShowLoading() async {
+  Future<void> checkShowLoading(ModelToken token) async {
     _showLoadingSubject.sink.add(true);
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
+    await getToken(token);
+    await getHistory(token.tokenAddress);
     _showLoadingSubject.sink.add(false);
   }
 
