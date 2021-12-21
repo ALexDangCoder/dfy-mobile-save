@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -113,10 +114,23 @@ class _SelectAccState extends State<SelectAcc> {
                                 );
                                 widget.bloc.click(index);
                                 if (widget.typeScreen2 == TypeScreen2.detail) {
-                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const MainScreen(
+                                        index: 1,
+                                      ),
+                                    ),
+                                  );
                                 } else {
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const MainScreen(
+                                        index: 1,
+                                      ),
+                                    ),
+                                  );
                                 }
                               },
                               onLongPress: () {

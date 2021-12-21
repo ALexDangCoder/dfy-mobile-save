@@ -166,6 +166,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         await Web3Utils().getTransactionCount(address: walletAddress);
     return result.count;
   }
+
   //sign token
   Future<void> signTransaction({
     required String fromAddress,
@@ -219,5 +220,4 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       //todo
     }
   }
-
 }
