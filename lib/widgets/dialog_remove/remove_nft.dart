@@ -35,7 +35,6 @@ class RemoveNft extends StatelessWidget {
       child: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxHeight: 410.h,
             maxWidth: 312.w,
           ),
           child: Center(
@@ -60,6 +59,7 @@ class RemoveNft extends StatelessWidget {
                     clipBehavior: Clip.none,
                     children: [
                       Column(
+                        mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           SizedBox(
