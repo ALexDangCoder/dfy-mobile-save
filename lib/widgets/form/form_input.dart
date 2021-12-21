@@ -80,7 +80,10 @@ class FormInput extends StatelessWidget {
                   },
                 ),
               ).whenComplete(
-                () => controller.text = bloc.tokenAddressText.value,
+                () => {
+                  controller.text = bloc.tokenAddressText.value,
+                  bloc.validateAddressFunc(bloc.tokenAddressText.value),
+                },
               );
             },
             child: SizedBox(
