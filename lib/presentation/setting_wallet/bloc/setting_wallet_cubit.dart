@@ -22,7 +22,8 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
     PrefsService.getFaceIDConfig() == 'true' ? true : false,
   );
   final BehaviorSubject<String> textLockSetting =
-      BehaviorSubject<String>.seeded(S.current.lock);
+      BehaviorSubject<String>.seeded(
+          PrefsService.getAppLockConfig() == 'true' ? S.current.lock : '');
   final BehaviorSubject<bool> isSwitchAppLockOn = BehaviorSubject<bool>.seeded(
     PrefsService.getAppLockConfig() == 'true' ? true : false,
   );
@@ -47,7 +48,7 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
   }
 
   void isShowOrHideLockTxt(bool value) {
-    if(value) {
+    if (value) {
       textLockSetting.sink.add(S.current.lock);
     } else {
       textLockSetting.sink.add('');
@@ -60,6 +61,7 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
       await PrefsService.saveAppLockConfig('true');
     } else {
       await PrefsService.saveAppLockConfig('false');
+      textLockSetting.sink.add('');
     }
   }
 
@@ -91,6 +93,11 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
       case 'setConfigCallback':
         //todo
         isSuccess = await methodCall.arguments['isSuccess'];
+        break;
+      case 'getConfigCallback':
+        late bool isAppLock;
+        late bool isFaceID;
+        isAppLock = await methodCall.arguments;
         break;
       default:
         break;

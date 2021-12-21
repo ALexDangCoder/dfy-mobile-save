@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrase.dart';
@@ -37,6 +38,8 @@ class _SettingWalletState extends State<SettingWallet> {
 
   @override
   void initState() {
+    trustWalletChannel
+        .setMethodCallHandler(widget.cubitSetting.nativeMethodCallBackTrustWallet);
     super.initState();
   }
 
@@ -235,7 +238,7 @@ class _SettingWalletState extends State<SettingWallet> {
                       index: 2,
                     ),
                   ),
-                      (route) => route.isFirst,
+                  (route) => route.isFirst,
                 );
               },
               child: Text(
