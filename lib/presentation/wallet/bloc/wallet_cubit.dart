@@ -598,7 +598,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           addressWallet.add(addressWalletCore);
           walletName.add(nameWallet);
           await getListCategory();
-          getNFT(addressWalletCore);
+          await getNFT(addressWalletCore);
         }
         break;
       case 'getNFTCallback':
@@ -696,14 +696,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  void getNFT(
+  Future<void> getNFT(
     String walletAddress,
-  ) {
+  ) async {
     try {
       final data = {
         'walletAddress': walletAddress,
       };
-       trustWalletChannel.invokeMethod('getNFT', data);
+      await trustWalletChannel.invokeMethod('getNFT', data);
     } on PlatformException {}
   }
 
