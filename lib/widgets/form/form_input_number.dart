@@ -51,7 +51,7 @@ class FormInputNumber extends StatelessWidget {
                 maxLength: 100,
                 onChanged: (value)  {
                   bloc.checkValidateIdNft(value: value);
-                  bloc.checkValidateAddress(value: nftAddress);
+                  bloc.checkValidateAddress(value: bloc.currentAddressNft);
                 },
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(

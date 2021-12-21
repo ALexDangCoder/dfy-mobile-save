@@ -7,6 +7,15 @@ import WalletCore
     
     var chatChanel: FlutterMethodChannel?
     
+    private let TYPE_WALLET_SEED_PHRASE = "PASS_PHRASE"
+    private let TYPE_WALLET_PRIVATE_KEY = "PRIVATE_KEY"
+    
+    private let TOKEN_DFY_ADDRESS = "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
+    private let TOKEN_BNB_ADDRESS = "0x0000000000000000000000000000000000000000"
+    
+    private let CODE_SUCCESS = 200
+    private let CODE_ERROR = 400
+    
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -40,37 +49,95 @@ extension AppDelegate {
 //                result(getNFT(walletAddress: walletAddress))
 //            }
 //        }
-//        if call.method == "getTokens" {
-//            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
-//                result(getTokens(walletAddress: walletAddress))
-//            }
-//        }
+        if call.method == "getTokens" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
+                result(getTokens(walletAddress: walletAddress))
+            }
+        }
         if call.method == "generateWallet" {
                 result(generateWallet())
         }
         if call.method == "storeWallet" {
-            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] {
-                result(storeWallet(seedPhrase: seedPhrase, walletName: walletName))
+            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] as? String {
+                result(storeWallet(seedPhrase: seedPhrase, walletName: walletName, privateKey: privateKey, walletAddress: walletAddress))
             }
         }
-//        if call.method == "setConfig" {
-//            if let arguments = call.arguments as? [String: Any], let isAppLock = arguments["isAppLock"] as? Bool, let isFaceID = arguments["isFaceID"] as? Bool, let password = arguments["password"] as? String {
-//                result(setConfig(appLock: isAppLock,faceID: isFaceID,password: password))
-//            }
-//        }
-//        if call.method == "checkPassword" {
-//            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
-//                result(checkPassword(password: password))
-//            }
-//        }
+        if call.method == "setConfig" {
+            if let arguments = call.arguments as? [String: Any], let isAppLock = arguments["isAppLock"] as? Bool, let isFaceID = arguments["isFaceID"] as? Bool {
+                result(setConfig(appLock: isAppLock,faceID: isFaceID))
+            }
+        }
+        if call.method == "savePassword" {
+            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
+                result(savePassword(password: password))
+            }
+        }
+        if call.method == "getListWallets" {
+            result(getListWallets())
+        }
+        if call.method == "importToken" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let tokenFullName = arguments["tokenFullName"] as? String, let iconToken = arguments["iconToken"] as? String, let symbol = arguments["symbol"] as? String, let decimal = arguments["decimal"] as? Int, let exchangeRate = arguments["exchangeRate"] as? Double, let isImport = arguments["isImport"] as? Bool {
+                result(importToken(walletAddress: walletAddress, tokenAddress: tokenAddress, tokenFullName: tokenFullName, iconToken: iconToken, symbol: symbol, decimal: decimal, exchangeRate: exchangeRate, isImport: isImport))
+            }
+        }
+        if call.method == "checkPassword" {
+            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
+                result(checkPassword(password: password))
+            }
+        }
         if call.method == "getConfig" {
             result(getConfigWallet())
         }
-//        if call.method == "earseWallet" {
-//            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
-//                result(eraseWallet(walletAddress: walletAddress))
-//            }
-//        }
+        if call.method == "changePassword" {
+            if let arguments = call.arguments as? [String: Any], let oldPassword = arguments["oldPassword"] as? String, let newPassword = arguments["newPassword"] as? String {
+                result(changePassWordWallet(oldPassword: oldPassword, newPassword: newPassword))
+            }
+        }
+        if call.method == "earseWallet" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
+                result(eraseWallet(walletAddress: walletAddress))
+            }
+        }
+        if call.method == "changeNameWallet" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let walletName = arguments["walletName"] as? String {
+                result(changeNameWallet(walletAddress: walletAddress, walletName: walletName))
+            }
+        }
+        if call.method == "chooseWallet" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
+                result(chooseWallet(walletAddress: walletAddress))
+            }
+        }
+        if call.method == "checkToken" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String {
+                result(checkToken(walletAddress: walletAddress, tokenAddress: tokenAddress))
+            }
+        }
+        if call.method == "importListToken" {
+            if let arguments = call.arguments as? [String: Any], let jsonTokens = arguments["jsonTokens"] as? String, let walletAddress = arguments["walletAddress"] as? String {
+                result(importListToken(walletAddress: walletAddress, jsonTokens: jsonTokens))
+            }
+        }
+        if call.method == "setShowedToken" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let isShow = arguments["isShow"] as? Bool, let isImport = arguments["isImport"] as? Bool {
+                result(setShowedToken(walletAddress: walletAddress, tokenAddress: tokenAddress, isShow: isShow, isImport: isImport))
+            }
+        }
+        if call.method == "importNft" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let jsonNft = arguments["jsonNft"] as? String {
+                
+            }
+        }
+        if call.method == "exportWallet" {
+            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String, let walletAddress = arguments["walletAddress"] as? String {
+                result(exportWallet(password: password, walletAddress: walletAddress))
+            }
+        }
+        if call.method == "importWallet" {
+            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String, let content = arguments["content"] as? String {
+                result(importWallet(type: type, content: content))
+            }
+        }
 //        if call.method == "earseAllWallet" {
 //            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String {
 //                result(eraseAllWallet(type: type))
@@ -90,7 +157,7 @@ extension AppDelegate {
 extension AppDelegate {
     private func checkPassword(password: String) -> [String: Any] {
         var params: [String: Any] = [:]
-        params["isCorrect"] = !password.isEmpty
+        params["isCorrect"] = password == SharedPreference.shared.getPassword()
         chatChanel?.invokeMethod("checkPasswordCallback", arguments: params)
         return params
     }
@@ -99,7 +166,7 @@ extension AppDelegate {
         let wallet = HDWallet(strength: 128, passphrase: "")
         let seedPhrase = wallet!.mnemonic
         let address = wallet?.getAddressForCoin(coin: .smartChain)
-        let walletName = "Account 1"
+        let walletName = "Account \(SharedPreference.shared.getListWallet().count + 1)"
         let privateKey = (wallet?.getKeyForCoin(coin: .smartChain).data)!.hexEncodedString()
         var params: [String: Any] = [:]
         params["walletName"] = walletName
@@ -107,22 +174,6 @@ extension AppDelegate {
         params["privateKey"] = privateKey
         params["passPhrase"] = seedPhrase
         chatChanel?.invokeMethod("generateWalletCallback", arguments: params)
-        return params
-    }
-    
-    private func getListWallet(password: String) -> [[String: Any]] {
-        var params: [[String: Any]] = []
-        let param1: [String: Any] = [
-            "walletName": "walletName1",
-            "walletAddress": "0x753EE7D5FdBD248fED37add0C951211E03a7DA15",
-        ]
-        params.append(param1)
-        let param2: [String: Any] = [
-                    "walletName": "walletName2",
-                    "walletAddress": "0x753EE7D5FdBD248fED37add0C951211E03a7DA15",
-                ]
-        params.append(param2)
-        chatChanel?.invokeMethod("getListWalletsCallback", arguments: params)
         return params
     }
     
@@ -144,53 +195,105 @@ extension AppDelegate {
         return params
     }
     
-    private func getTokens(walletAddress: String) -> [[String: Any]] {
-        var params: [[String: Any]] = []
-        let array: [UInt8] = Array("0x753EE7D5FdBD248fED37add0C951211E03a7DA15".utf8)
-        let param1: [String: Any] = [
-            "tokenFullName": "BitCoin",
-            "tokenShortName": "BTC",
-            "tokenAddress": "0x753EE7D5FdBD248fED37add0C951211E03a7DA15",
-            "iconToken": array,
-        ]
-        params.append(param1)
-        let param2: [String: Any] = [
-            "tokenFullName": "Binance",
-            "tokenShortName": "BNB",
-            "tokenAddress": "0x753EE7D5FdBD248fED37add0C951211E03a7DA15",
-            "iconToken": array,
-        ]
-        params.append(param2)
-        chatChanel?.invokeMethod("getTokensCallback", arguments: params)
-        return params
-    }
-    
-    private func storeWallet(seedPhrase: String, walletName: String) -> [String: Any] {
+    private func storeWallet(seedPhrase: String, walletName: String, privateKey: String, walletAddress: String) -> [String: Any] {
         var params: [String: Any] = [:]
         params["isSuccess"] = true
+        var listWallet = [WalletModel]()
+        listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+        listWallet.insert(WalletModel(walletName: walletName, walletAddress: walletAddress, walletIndex: 0, seedPhrase: seedPhrase, privateKey: privateKey), at: 0)
+        for (index, wallet) in listWallet.enumerated() {
+            wallet.walletIndex = index
+        }
+        SharedPreference.shared.saveListWallet(listWallet: listWallet)
         chatChanel?.invokeMethod("storeWalletCallback", arguments: params)
         return params
     }
     
-    private func setConfig(appLock: Bool, faceID: Bool, password: String) -> [String: Any] {
+    private func setConfig(appLock: Bool, faceID: Bool) -> [String: Any] {
         var params: [String: Any] = [:]
         params["isSuccess"] = true
+        SharedPreference.shared.setConfig(isAppLock: appLock, isFaceId: faceID)
         chatChanel?.invokeMethod("setConfigCallback", arguments: params)
         return params
+    }
+    
+    private func savePassword(password: String) -> [String: Any] {
+        if (!password.isEmpty) {
+            var params: [String: Any] = [:]
+            params["isSuccess"] = true
+            SharedPreference.shared.savePassword(password: password)
+            chatChanel?.invokeMethod("savePasswordCallback", arguments: params)
+            return params
+        }
+        chatChanel?.invokeMethod("savePasswordCallback", arguments: [:])
+        return [:]
+    }
+    
+    private func getListWallets() -> [[String: Any]] {
+        var listParam: [[String: Any]] = []
+        SharedPreference.shared.getListWallet().forEach { walletModel in
+            listParam.append(walletModel.toWalletParam())
+        }
+        chatChanel?.invokeMethod("getListWalletsCallback", arguments: listParam)
+        return listParam
+    }
+    
+    private func getTokens(walletAddress: String) -> [[String: Any]] {
+        var listParam: [[String: Any]] = []
+        SharedPreference.shared.getListTokens().forEach { tokenModel in
+            if tokenModel.walletAddress == walletAddress {
+                listParam.append(tokenModel.toDict())
+            }
+        }
+        chatChanel?.invokeMethod("getTokensCallback", arguments: listParam)
+        return listParam
     }
 
     private func getConfigWallet() -> [String: Any] {
         var params: [String: Any] = [:]
-        params["isAppLock"] = true
-        params["isFaceID"] = true
-        params["isWalletExist"] = true
+        params["isAppLock"] = SharedPreference.shared.appLock()
+        params["isFaceID"] = SharedPreference.shared.faceId()
+        params["isWalletExist"] = !SharedPreference.shared.getListWallet().isEmpty
         chatChanel?.invokeMethod("getConfigCallback", arguments: params)
         return params 
+    }
+    
+    private func changePassWordWallet(oldPassword: String, newPassword: String) -> [String: Any] {
+        var params: [String: Any] = [:]
+        params["isSuccess"] = oldPassword == SharedPreference.shared.getPassword()
+        if SharedPreference.shared.getPassword() == oldPassword {
+            SharedPreference.shared.savePassword(password: newPassword)
+        }
+        chatChanel?.invokeMethod("changePasswordCallback", arguments: params)
+        return params
+    }
+    
+    private func changeNameWallet(walletAddress: String, walletName: String) -> [String: Any] {
+        var params: [String: Any] = [:]
+        let wallet = SharedPreference.shared.getListWallet().first { $0.walletAddress == walletAddress }
+        if wallet != nil && !walletName.isEmpty {
+            var listWallet = [WalletModel]()
+            listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+            listWallet.first{ $0.walletAddress == walletAddress }?.walletName = walletName
+            SharedPreference.shared.saveListWallet(listWallet: listWallet)
+            params["isSuccess"] = true
+        } else {
+            params["false"] = true
+        }
+        chatChanel?.invokeMethod("changeNameWalletCallBack", arguments: params)
+        return params
     }
 
     private func eraseWallet(walletAddress: String) -> [String: Any] {
         var params: [String: Any] = [:]
         params["isSuccess"] = true
+        var listWallet = [WalletModel]()
+        for (index, wallet) in SharedPreference.shared.getListWallet().enumerated() {
+            if (walletAddress != wallet.walletAddress) {
+                listWallet.append(wallet)
+            }
+        }
+        SharedPreference.shared.saveListWallet(listWallet: listWallet)
         chatChanel?.invokeMethod("earseWalletCallback", arguments: params)
         return params
     }
@@ -201,6 +304,194 @@ extension AppDelegate {
         params["type"] = type
         chatChanel?.invokeMethod("earseAllWalletCallback", arguments: params)
         return params 
+    }
+    
+    private func chooseWallet(walletAddress: String) -> [[String: Any]] {
+        var listParams = [[String: Any]]()
+        var listWallet = [WalletModel]()
+        let listWalletInCore = SharedPreference.shared.getListWallet()
+        listWalletInCore.forEach { (walletModel) in
+            if (walletAddress == walletModel.walletAddress) {
+                listWallet.insert(walletModel, at: 0)
+            } else {
+                listWallet.append(walletModel)
+            }
+        }
+        for (index, walletModel) in listWallet.enumerated() {
+            walletModel.walletIndex = index
+        }
+        SharedPreference.shared.saveListWallet(listWallet: listWallet)
+        listWallet.forEach { walletModel in
+            listParams.append(walletModel.toWalletParam())
+        }
+        chatChanel?.invokeMethod("chooseWalletCallBack", arguments: listParams)
+        return listParams
+    }
+    
+    private func importToken(walletAddress: String,
+                             tokenAddress: String,
+                             tokenFullName: String,
+                             iconToken: String,
+                             symbol: String,
+                             decimal: Int,
+                             exchangeRate: Double,
+                             isImport: Bool) -> [String: Any] {
+        var param = [String: Any]()
+        var listTokens = [TokenModel]()
+        listTokens.append(contentsOf: SharedPreference.shared.getListTokens())
+        if listTokens.first(where: { $0.walletAddress == walletAddress && $0.tokenAddress == tokenAddress && $0.isShow }) == nil {
+            listTokens.append(TokenModel(walletAddress: walletAddress, tokenAddress: tokenAddress, tokenFullName: tokenFullName, iconUrl: iconToken, symbol: symbol, decimal: decimal, exchangeRate: exchangeRate, isShow: true, isImport: isImport))
+            SharedPreference.shared.saveListTokens(listTokens: listTokens)
+            param["isSuccess"] = true
+        } else {
+            param["isSuccess"] = false
+        }
+        chatChanel?.invokeMethod("importTokenCallback", arguments: param)
+        return param
+    }
+    
+    private func checkToken(walletAddress: String, tokenAddress: String) -> [String: Any] {
+        var param = [String: Any]()
+        param["isExist"] = SharedPreference.shared.getListTokens().first(where: { $0.walletAddress == walletAddress && $0.tokenAddress == tokenAddress && $0.isShow }) != nil
+        chatChanel?.invokeMethod("checkTokenCallback", arguments: param)
+        return param
+    }
+    
+    private func importListToken(walletAddress: String, jsonTokens: String) -> [String: Any] {
+        let listAllToken = SharedPreference.shared.getListTokens()
+        let listTokenAddress = listAllToken.filter {$0.walletAddress == walletAddress}
+        let listTokenOther = listAllToken.filter {$0.walletAddress != walletAddress}
+        
+        var listTokens = [TokenModel]()
+        let jsonData = jsonTokens.data(using: .utf8)
+        let listObjectTokens = try! JSONDecoder().decode([TokenDTO].self, from: jsonData!)
+        var index = 0
+        while (index < listObjectTokens.count) {
+            let data = listObjectTokens[index]
+            let tokenAddress = data.tokenAddress ?? ""
+            let tokenModel = TokenModel(walletAddress: data.walletAddress ?? "", tokenAddress: data.tokenAddress ?? "", tokenFullName: data.nameToken ?? "", iconUrl: data.iconToken ?? "", symbol: data.nameShortToken ?? "", decimal: data.decimal ?? 0, exchangeRate: data.exchangeRate ?? 0.0, isShow: tokenAddress == TOKEN_BNB_ADDRESS || tokenAddress == TOKEN_DFY_ADDRESS, isImport: data.isImport ?? false)
+            print("TEST \(tokenModel.toDict())")
+            let tokenInCore = listTokenAddress.first(where: {$0.tokenAddress == tokenModel.tokenAddress})
+            if let token = tokenInCore {
+                tokenModel.isShow = token.isShow
+            }
+            switch tokenAddress {
+            case TOKEN_DFY_ADDRESS:
+                listTokens.insert(tokenModel, at: 0)
+            case TOKEN_BNB_ADDRESS:
+                listTokens.insert(tokenModel, at: 1)
+            default:
+                listTokens.append(tokenModel)
+            }
+            index+=1
+        }
+        var param = [String: Any]()
+        listTokenAddress.forEach { (tokenModel) in
+            let item = listTokens.filter{ $0.tokenAddress == tokenModel.tokenAddress }
+            if item == nil {
+                listTokens.append(tokenModel)
+            }
+        }
+        listTokens.append(contentsOf: listTokenOther)
+        SharedPreference.shared.saveListTokens(listTokens: listTokens)
+        print("Mother fucker \(listTokens.count)")
+        param["isSuccess"] = true
+        chatChanel?.invokeMethod("importListTokenCallback", arguments: param)
+        return param
+    }
+    
+    private func setShowedToken(walletAddress: String, tokenAddress: String, isShow: Bool, isImport: Bool) -> [String: Any] {
+        var param = [String: Any]()
+        if (tokenAddress != TOKEN_DFY_ADDRESS || tokenAddress != TOKEN_BNB_ADDRESS) {
+            var listToken = [TokenModel]()
+            if isImport {
+                SharedPreference.shared.getListTokens().forEach { (tokenModel) in
+                    if tokenModel.walletAddress != walletAddress || tokenModel.tokenAddress != tokenAddress {
+                        listToken.append(tokenModel)
+                    }
+                }
+            } else {
+                listToken.append(contentsOf: SharedPreference.shared.getListTokens())
+                listToken.first(where: {$0.walletAddress == walletAddress && $0.tokenAddress == tokenAddress})?.isShow = isShow
+            }
+            SharedPreference.shared.saveListTokens(listTokens: listToken)
+            param["isSuccess"] = true
+        } else {
+            param["isSuccess"] = false
+        }
+        chatChanel?.invokeMethod("setShowedTokenCallback", arguments: param)
+        return param
+    }
+    
+    private func exportWallet(password: String, walletAddress: String) -> [String: Any] {
+        if (password == SharedPreference.shared.getPassword()) {
+            var param = [String: Any]()
+            SharedPreference.shared.getListWallet().forEach { walletModel in
+                if walletModel.walletAddress == walletAddress {
+                    param = [
+                        "walletAddress": walletModel.walletAddress,
+                        "privateKey": walletModel.privateKey,
+                        "passPhrase": walletModel.seedPhrase,
+                    ]
+                }
+            }
+            chatChanel?.invokeMethod("exportWalletCallBack", arguments: param)
+            return param
+        }
+        return [:]
+    }
+    
+    private func importWallet(type: String, content: String) -> [String: Any] {
+        var param = [String: Any]()
+        do {
+            switch type {
+            case self.TYPE_WALLET_SEED_PHRASE:
+                let wallet = HDWallet(mnemonic: content, passphrase: "")
+                let address = wallet?.getAddressForCoin(coin: .smartChain)
+                let privateKey = (wallet?.getKeyForCoin(coin: .smartChain).data)!.hexEncodedString()
+                var listWallet = [WalletModel]()
+                listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+                if (listWallet.first(where: {$0.walletAddress == address}) == nil) {
+                    let walletName = "Account \(listWallet.count + 1)"
+                    param["walletAddress"] = address
+                    listWallet.insert(WalletModel(walletName: walletName, walletAddress: address ?? "", walletIndex: 0, seedPhrase: content, privateKey: privateKey, isImportWallet: true), at: 0)
+                    for (index, walletModel) in listWallet.enumerated() {
+                        walletModel.walletIndex  = index
+                    }
+                    SharedPreference.shared.saveListWallet(listWallet: listWallet)
+                    param["walletName"] = walletName
+                    param["code"] = CODE_SUCCESS
+                    param["messages"] = "Import tài khoản thành công"
+                    chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+                    return param
+                } else {
+                    param["walletAddress"] = ""
+                    param["walletName"] = ""
+                    param["code"] = CODE_ERROR
+                    param["messages"] = "Tài khoản đã tồn tại"
+                    chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+                    return param
+                }
+            default:
+                param["walletAddress"] = ""
+                param["walletName"] = ""
+                param["code"] = CODE_ERROR
+                param["messages"] = "Có lỗi xảy ra vui lòng thử lại."
+                chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+                return param
+            }
+        } catch {
+            param["walletAddress"] = ""
+            param["walletName"] = ""
+            param["code"] = CODE_ERROR
+            param["messages"] = (type == TYPE_WALLET_SEED_PHRASE) ? "Lỗi seed phrase vui lòng thử lại" : "Lỗi private key vui lòng thử lại"
+            chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+            return param
+        }
+    }
+    
+    private func importNft(jsonNft: String, walletAddress: String) {
+        
     }
 }
 

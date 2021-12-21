@@ -66,7 +66,8 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  BehaviorSubject<String> warningTextNft = BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String> warningAddressNft =
+      BehaviorSubject<String>.seeded('');
   BehaviorSubject<String> warningTextIdNft = BehaviorSubject<String>.seeded('');
   String errorWhenImportNft = '';
 
@@ -79,13 +80,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     emit(ImportNftLoading());
     if (id != null) {
       final resultWhenCall =
-      await client.importNFT(contract: contract, address: address, id: id);
+          await client.importNFT(contract: contract, address: address, id: id);
       if (!resultWhenCall.isSuccess) {
         emit(ImportNftFail());
         errorWhenImportNft = resultWhenCall.message;
         btnSubject.sink.add(false);
       } else {
-        await emitJsonNftToWalletCore(contract: contract, address: address);
+        await emitJsonNftToWalletCore(
+            contract: contract, address: address, id: id,);
       }
     } else {
       final resultWhenCall =
@@ -231,34 +233,46 @@ class WalletCubit extends BaseCubit<WalletState> {
   bool _flagNftAddress = false;
   bool _flagIdNft = true;
 
+  //validate import nft form
+  BehaviorSubject<bool> isShowWarnAddressNft =
+      BehaviorSubject<bool>.seeded(false);
+  BehaviorSubject<bool> isShowWarnIDNft = BehaviorSubject<bool>.seeded(false);
+  String currentAddressNft = '';
+
   void checkValidateAddress({required String value}) {
     if (value.isEmpty) {
+      isShowWarnAddressNft.sink.add(true);
       _flagNftAddress = false;
       btnSubject.sink.add(false);
-      warningTextNft.sink.add(S.current.address_required);
+      warningAddressNft.sink.add(S.current.address_required);
     } else if (!regexAddress.hasMatch(value)) {
+      isShowWarnAddressNft.sink.add(true);
       _flagNftAddress = false;
       btnSubject.sink.add(false);
-      warningTextNft.sink.add(S.current.invalid_address);
+      warningAddressNft.sink.add(S.current.invalid_address);
     } else {
       _flagNftAddress = true;
-      warningTextNft.sink.add('');
-      if(_flagNftAddress && _flagIdNft) {
+      if (_flagNftAddress && _flagIdNft) {
+        isShowWarnAddressNft.sink.add(false);
         btnSubject.sink.add(true);
       }
     }
   }
 
   final regexId = RegExp(r'^[0-9]*$');
+
   void checkValidateIdNft({required String value}) {
-    if(!regexId.hasMatch(value)) {
+    if (!regexId.hasMatch(value)) {
       _flagIdNft = false;
+      isShowWarnIDNft.sink.add(true);
       warningTextIdNft.sink.add(S.current.invalid_id_nft);
       btnSubject.sink.add(false);
     } else {
+      isShowWarnIDNft.sink.add(true);
       _flagIdNft = true;
       warningTextIdNft.sink.add('');
-      if(_flagIdNft && _flagNftAddress) {
+      if (_flagIdNft && _flagNftAddress) {
+        isShowWarnIDNft.sink.add(false);
         btnSubject.sink.add(true);
       }
     }
@@ -629,36 +643,36 @@ class WalletCubit extends BaseCubit<WalletState> {
     } on PlatformException {}
   }
 
-  Future<void> chooseWallet({
+  void chooseWallet({
     required String walletAddress,
-  }) async {
+  }) {
     try {
       final data = {
         'walletAddress': walletAddress,
       };
-      await trustWalletChannel.invokeMethod('chooseWallet', data);
+      trustWalletChannel.invokeMethod('chooseWallet', data);
     } on PlatformException {}
   }
 
-  Future<void> changeNameWallet({
+  void changeNameWallet({
     required String walletAddress,
     required String walletName,
-  }) async {
+  }) {
     try {
       final data = {
         'walletAddress': walletAddress,
         'walletName': walletName,
       };
-      await trustWalletChannel.invokeMethod('changeNameWallet', data);
+      trustWalletChannel.invokeMethod('changeNameWallet', data);
     } on PlatformException {}
   }
 
-  Future<void> earseWallet({required String walletAddress}) async {
+  void earseWallet({required String walletAddress}) {
     try {
       final data = {
         'walletAddress': walletAddress,
       };
-      await trustWalletChannel.invokeMethod('earseWallet', data);
+      trustWalletChannel.invokeMethod('earseWallet', data);
     } on PlatformException {}
   }
 
@@ -838,13 +852,22 @@ class WalletCubit extends BaseCubit<WalletState> {
     required String address,
   }) async {
     Map<String, dynamic> result = {};
-    result = await Web3Utils()
-        .getCollectionInfo(contract: contract, address: address);
-    // result.putIfAbsent('walletAddress', () => address);
-    await importNftIntoWalletCore(
-      jsonNft: json.encode(result),
-      address: address,
-    );
+    if(id != null) {
+      result = await Web3Utils()
+          .getCollectionInfo(contract: contract, address: address, id: id);
+      await importNftIntoWalletCore(
+        jsonNft: json.encode(result),
+        address: address,
+      );
+    } else {
+      result = await Web3Utils()
+          .getCollectionInfo(contract: contract, address: address);
+      // result.putIfAbsent('walletAddress', () => address);
+      await importNftIntoWalletCore(
+        jsonNft: json.encode(result),
+        address: address,
+      );
+    }
   }
 
   Future<CollectionNft> fetchCollection() async {

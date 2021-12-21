@@ -7,6 +7,7 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -43,14 +44,32 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     required String to,
     required double value,
     required ModelToken token,
+    required BuildContext context,
   }) async {
-    if (token.nameShortToken == 'BNB') {
-      final result = await Web3Utils()
-          .getEstimateGasPrice(from: from, to: to, value: value);
-      estimateGasFee = double.parse(result);
-    } else {
-      estimateGasFee = 45000;
-    }
+    final result = await Web3Utils().getTokenGasLimit(
+      contract: token.tokenAddress,
+      symbol: token.nameShortToken,
+      from: from,
+      to: to,
+      amount: value,
+      context: context,
+    );
+    estimateGasFee = double.parse(result);
+    // if (token.nameShortToken == 'BNB') {
+    //   // final result = await Web3Utils()
+    //   //     .getEstimateGasPrice(from: from, to: to, value: value);
+    //   final result = await Web3Utils().getTokenGasLimit(
+    //     contract: token.tokenAddress,
+    //     symbol: token.nameShortToken,
+    //     from: from,
+    //     to: to,
+    //     amount: value,
+    //     context: context,
+    //   );
+    //   estimateGasFee = double.parse(result);
+    // } else {
+    //   estimateGasFee = 45000;
+    // }
   }
 
   //handle nft pending api
