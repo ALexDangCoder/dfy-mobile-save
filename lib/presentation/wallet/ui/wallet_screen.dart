@@ -74,13 +74,6 @@ class _WalletState extends State<WalletScreen>
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    cubit.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final String addressWallet = cubit.addressWalletCore;
     if (widget.index == 1) {
@@ -229,11 +222,14 @@ class _WalletState extends State<WalletScreen>
                         child: RefreshIndicator(
                           onRefresh: () async {
                             await cubit.getBalanceOFToken(
-                                cubit.listTokenFromWalletCore,);
+                              cubit.listTokenFromWalletCore,
+                            );
                             cubit.getExchangeRateFromServer(
-                                cubit.listTokenFromWalletCore,);
+                              cubit.listTokenFromWalletCore,
+                            );
                             cubit.totalBalance.add(
-                                cubit.total(cubit.listTokenFromWalletCore),);
+                              cubit.total(cubit.listTokenFromWalletCore),
+                            );
                             cubit.listTokenStream
                                 .add(cubit.listTokenFromWalletCore);
                           },
@@ -250,8 +246,7 @@ class _WalletState extends State<WalletScreen>
                                     if (snapshot.data?.isNotEmpty ?? true) {
                                       return ListView.builder(
                                         physics:
-                                            const
-                                            NeverScrollableScrollPhysics(),
+                                            const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data?.length ?? 0,
                                         itemBuilder: (context, index) {
@@ -321,18 +316,17 @@ class _WalletState extends State<WalletScreen>
                                     );
                                   } else if (snapshot.data?.isEmpty ?? true) {
                                     return const SizedBox();
-                                  } else {
-                                    return SizedBox(
-                                      height: 100.h,
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 3.r,
-                                          color: AppTheme.getInstance()
-                                              .whiteColor(),
-                                        ),
-                                      ),
-                                    );
                                   }
+                                  return SizedBox(
+                                    height: 100.h,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 3.r,
+                                        color:
+                                            AppTheme.getInstance().whiteColor(),
+                                      ),
+                                    ),
+                                  );
                                 },
                               ),
                               ImportToken(
