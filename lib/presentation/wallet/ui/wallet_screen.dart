@@ -24,7 +24,6 @@ import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
 import 'package:Dfy/presentation/wallet/ui/token_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/change_wallet_name.dart';
-import 'package:Dfy/widgets/pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -72,13 +71,6 @@ class _WalletState extends State<WalletScreen>
       fToast.init(context);
       cubit.getListWallets();
     }
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    cubit.close();
-    super.dispose();
   }
 
   @override
@@ -230,11 +222,14 @@ class _WalletState extends State<WalletScreen>
                         child: RefreshIndicator(
                           onRefresh: () async {
                             await cubit.getBalanceOFToken(
-                                cubit.listTokenFromWalletCore);
+                              cubit.listTokenFromWalletCore,
+                            );
                             cubit.getExchangeRateFromServer(
-                                cubit.listTokenFromWalletCore);
+                              cubit.listTokenFromWalletCore,
+                            );
                             cubit.totalBalance.add(
-                                cubit.total(cubit.listTokenFromWalletCore));
+                              cubit.total(cubit.listTokenFromWalletCore),
+                            );
                             cubit.listTokenStream
                                 .add(cubit.listTokenFromWalletCore);
                           },
@@ -321,18 +316,17 @@ class _WalletState extends State<WalletScreen>
                                     );
                                   } else if (snapshot.data?.isEmpty ?? true) {
                                     return const SizedBox();
-                                  } else {
-                                    return SizedBox(
-                                      height: 100.h,
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 3.r,
-                                          color: AppTheme.getInstance()
-                                              .whiteColor(),
-                                        ),
-                                      ),
-                                    );
                                   }
+                                  return SizedBox(
+                                    height: 100.h,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 3.r,
+                                        color:
+                                            AppTheme.getInstance().whiteColor(),
+                                      ),
+                                    ),
+                                  );
                                 },
                               ),
                               ImportToken(

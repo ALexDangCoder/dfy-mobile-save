@@ -126,10 +126,10 @@ class _MyAppState extends State<MyApp> {
     getConfig();
   }
 
-  Future<void> getConfig() async {
+  void getConfig() {
     try {
       final data = {};
-      await trustWalletChannel.invokeMethod('getConfig', data);
+      trustWalletChannel.invokeMethod('getConfig', data);
     } on PlatformException {}
   }
 
