@@ -43,7 +43,6 @@ class TokenDetail extends StatelessWidget {
       builder: (context, snapshot) {
         final isShow = snapshot.data ?? false;
         if (isShow) {
-          bloc.getHistory(token.tokenAddress);
           return Blur(
             blur: 1,
             colorOpacity: 0.1,
@@ -51,7 +50,6 @@ class TokenDetail extends StatelessWidget {
             child: bottomSheet(context),
           );
         } else {
-          bloc.getHistory(token.tokenAddress);
           return bottomSheet(context);
         }
       },
@@ -166,7 +164,7 @@ class TokenDetail extends StatelessWidget {
                                   ).then(
                                     (value) => {
                                       if (value)
-                                        bloc.checkShowLoading()
+                                        bloc.checkShowLoading(token)
                                       else
                                         null
                                     },

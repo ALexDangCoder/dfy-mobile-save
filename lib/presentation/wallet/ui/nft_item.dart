@@ -146,7 +146,7 @@ class _NFTItemState extends State<NFTItem> {
                       child: Padding(
                         padding: EdgeInsets.only(
                           bottom: 16.h,
-                          left: 16.w,
+                          right: 16.w,
                         ),
                         child: CardNFT(
                           objNFT: widget.bloc.listNftInfo[index],
