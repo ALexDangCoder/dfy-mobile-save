@@ -11,3 +11,11 @@ class FormBlockchainSendTokenSuccess extends FormFieldBlockchainState {
 class FormBlockchainSendTokenFail extends FormFieldBlockchainState {
 
 }
+
+class FormBlockchainSendNftSuccess extends FormFieldBlockchainState{
+
+}
+
+class FormBlockchainSendNftFail extends FormFieldBlockchainState{
+
+}
