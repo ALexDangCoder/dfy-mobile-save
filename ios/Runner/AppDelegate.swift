@@ -461,18 +461,18 @@ extension AppDelegate {
     
     private func importWallet(type: String, content: String) -> [String: Any] {
         var param = [String: Any]()
-        do {
-            switch type {
-            case self.TYPE_WALLET_SEED_PHRASE:
-                let wallet = try HDWallet(mnemonic: content, passphrase: "")
-                let address = wallet?.getAddressForCoin(coin: .smartChain)
-                let privateKey = (wallet?.getKeyForCoin(coin: .smartChain).data)!.hexEncodedString()
+        switch type {
+        case self.TYPE_WALLET_SEED_PHRASE:
+            let wallet = HDWallet(mnemonic: content, passphrase: "")
+            if let wallet = wallet {
+                let address = wallet.getAddressForCoin(coin: .smartChain)
+                let privateKey = (wallet.getKeyForCoin(coin: .smartChain).data).hexEncodedString()
                 var listWallet = [WalletModel]()
                 listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
                 if (listWallet.first(where: {$0.walletAddress == address}) == nil) {
                     let walletName = "Account \(listWallet.count + 1)"
                     param["walletAddress"] = address
-                    listWallet.insert(WalletModel(walletName: walletName, walletAddress: address ?? "", walletIndex: 0, seedPhrase: content, privateKey: privateKey, isImportWallet: true), at: 0)
+                    listWallet.insert(WalletModel(walletName: walletName, walletAddress: address, walletIndex: 0, seedPhrase: content, privateKey: privateKey, isImportWallet: true), at: 0)
                     for (index, walletModel) in listWallet.enumerated() {
                         walletModel.walletIndex  = index
                     }
@@ -490,20 +490,60 @@ extension AppDelegate {
                     chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                     return param
                 }
-            default:
+            } else {
                 param["walletAddress"] = ""
                 param["walletName"] = ""
                 param["code"] = CODE_ERROR
-                param["messages"] = "Có lỗi xảy ra vui lòng thử lại."
+                param["messages"] = "Lỗi seed phrase vui lòng thử lại"
                 chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                 return param
             }
-        } catch {
-            param["walletAddress"] = ""
-            param["walletName"] = ""
-            param["code"] = CODE_ERROR
-            param["messages"] = (type == TYPE_WALLET_SEED_PHRASE) ? "Lỗi seed phrase vui lòng thử lại" : "Lỗi private key vui lòng thử lại"
-            chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+        case self.TYPE_WALLET_PRIVATE_KEY:
+            if let privateKeyData = content.hexadecimal {
+                let privateKey = PrivateKey(data: privateKeyData)
+                if let privKey = privateKey {
+                    let publicKey = privKey.getPublicKeySecp256k1(compressed: false)
+                    let address = AnyAddress(publicKey: publicKey, coin: .smartChain)
+                    var listWallet = [WalletModel]()
+                    listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+                    if (listWallet.first(where: {$0.walletAddress == "\(address)"}) == nil) {
+                        let walletName = "Account \(listWallet.count + 1)"
+                        param["walletAddress"] = "\(address)"
+                        listWallet.insert(WalletModel(walletName: walletName, walletAddress: "\(address)", walletIndex: 0, seedPhrase: "", privateKey: content, isImportWallet: true), at: 0)
+                        for (index, walletModel) in listWallet.enumerated() {
+                            walletModel.walletIndex = index
+                        }
+                        SharedPreference.shared.saveListWallet(listWallet: listWallet)
+                        param["walletName"] = walletName
+                        param["code"] = CODE_SUCCESS
+                        param["messages"] = "Import tài khoản thành công"
+                        chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+                        return param
+                    } else {
+                        param["walletAddress"] = ""
+                        param["walletName"] = ""
+                        param["code"] = CODE_ERROR
+                        param["messages"] = "Tài khoản đã tồn tại"
+                        chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+                        return param
+                    }
+                } else {
+                    param["walletAddress"] = ""
+                    param["walletName"] = ""
+                    param["code"] = CODE_ERROR
+                    param["messages"] = "Lỗi private key vui lòng thử lại"
+                    chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+                    return param
+                }
+            } else {
+                param["walletAddress"] = ""
+                param["walletName"] = ""
+                param["code"] = CODE_ERROR
+                param["messages"] = "Lỗi private key vui lòng thử lại"
+                chatChanel?.invokeMethod("importWalletCallback", arguments: param)
+                return param
+            }
+        default:
             return param
         }
     }
@@ -590,4 +630,29 @@ extension Data {
         let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
         return self.map { String(format: format, $0) }.joined()
     }
+}
+
+extension String {
+    
+    /// Create `Data` from hexadecimal string representation
+    ///
+    /// This creates a `Data` object from hex string. Note, if the string has any spaces or non-hex characters (e.g. starts with '<' and with a '>'), those are ignored and only hex characters are processed.
+    ///
+    /// - returns: Data represented by this hexadecimal string.
+    
+    var hexadecimal: Data? {
+        var data = Data(capacity: count / 2)
+        
+        let regex = try! NSRegularExpression(pattern: "[0-9a-f]{1,2}", options: .caseInsensitive)
+        regex.enumerateMatches(in: self, range: NSRange(startIndex..., in: self)) { match, _, _ in
+            let byteString = (self as NSString).substring(with: match!.range)
+            let num = UInt8(byteString, radix: 16)!
+            data.append(num)
+        }
+        
+        guard data.count > 0 else { return nil }
+        
+        return data
+    }
+    
 }
