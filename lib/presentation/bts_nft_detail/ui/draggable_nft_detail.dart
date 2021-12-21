@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
@@ -25,10 +24,12 @@ class NFTDetail extends StatefulWidget {
     required this.nftInfo,
     required this.listHistory,
     required this.walletAddress,
+    required this.nameWallet,
   }) : super(key: key);
   final NftInfo nftInfo;
   final List<HistoryNFT> listHistory;
   final String walletAddress;
+  final String nameWallet;
 
   @override
   _NFTDetailState createState() => _NFTDetailState();
@@ -424,7 +425,12 @@ class _NFTDetailState extends State<NFTDetail> {
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
               context: context,
-              builder: (context) => const SendNft(),
+              builder: (context) => SendNft(
+                nftInfo: widget.nftInfo,
+                addressFrom: widget.walletAddress,
+                imageWallet: '',
+                nameWallet: widget.nameWallet,
+              ),
             );
           },
         ),

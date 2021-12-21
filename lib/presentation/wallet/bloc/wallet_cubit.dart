@@ -238,7 +238,7 @@ class WalletCubit extends BaseCubit<WalletState> {
       BehaviorSubject<bool>.seeded(false);
   BehaviorSubject<bool> isShowWarnIDNft = BehaviorSubject<bool>.seeded(false);
   String currentAddressNft = '';
-
+  //when import nft
   void checkValidateAddress({required String value}) {
     if (value.isEmpty) {
       isShowWarnAddressNft.sink.add(true);

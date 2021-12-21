@@ -1,5 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
@@ -10,9 +12,20 @@ import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 
 class SendNft extends StatefulWidget {
-  const SendNft({Key? key}) : super(key: key);
+  const SendNft({
+    Key? key,
+    required this.nameWallet,
+    required this.nftInfo,
+    required this.addressFrom,
+    required this.imageWallet,
+  }) : super(key: key);
+  final String addressFrom;
+  final NftInfo nftInfo;
+  final String nameWallet;
+  final String imageWallet;
 
   @override
   _SendNftState createState() => _SendNftState();
@@ -22,13 +35,18 @@ class _SendNftState extends State<SendNft> {
   late TextEditingController txtToAddressNft;
   late TextEditingController txtQuantity;
   late SendTokenCubit sendNftCubit;
-  final String fakeFromAddress = '0xFE5788e2...EB7144fd0';
-  int maxQuantityFirstFetch = 10;
+  late double balanceWallet;
+  late double gasPrice;
+  late double estimateGasFee;
+
+  // int maxQuantityFirstFetch = 10;
 
   @override
   void initState() {
     super.initState();
     sendNftCubit = SendTokenCubit();
+    sendNftCubit.getGasPrice();
+    sendNftCubit.getBalanceWallet(ofAddress: widget.addressFrom);
     sendNftCubit.getGasPrice();
     txtToAddressNft = TextEditingController();
     txtQuantity = TextEditingController();
@@ -44,6 +62,7 @@ class _SendNftState extends State<SendNft> {
         }
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.black,
         body: Align(
           alignment: Alignment.bottomCenter,
@@ -68,7 +87,7 @@ class _SendNftState extends State<SendNft> {
                         children: [
                           spaceH24,
                           formShowFtAddress(
-                            hintText: '0xf94138c9...43FE932eA',
+                            hintText: widget.addressFrom.formatAddressWallet(),
                             readOnly: true,
                             prefixImg: ImageAssets.ic_from,
                             suffixImg: '',
@@ -89,9 +108,8 @@ class _SendNftState extends State<SendNft> {
                                   ),
                                 ),
                               ).then(
-                                (_) => sendNftCubit.checkHaveVlAddressFormToken(
-                                  txtToAddressNft.text,
-                                  type: typeSend.SEND_NFT,
+                                (_) => sendNftCubit.checkValidateAddress(
+                                  value: txtToAddressNft.text,
                                 ),
                               );
                             },
@@ -123,40 +141,46 @@ class _SendNftState extends State<SendNft> {
                         title: S.current.continue_s,
                         isEnable: snapshot.data ?? true,
                       ),
-                      onTap: () {
+                      onTap: () async {
                         if (snapshot.data ?? false) {
-                          sendNftCubit.checkValidAddress(txtToAddressNft.text);
-                          sendNftCubit.checkValidQuantity(
-                            txtQuantity.text,
-                            quantityFirstFetch: maxQuantityFirstFetch,
+                          await sendNftCubit.getGasLimitNft(
+                            fromAddress: widget.addressFrom,
+                            toAddress: txtToAddressNft.text,
+                            contract: widget.nftInfo.contract ?? 'contract',
+                            symbol:
+                                widget.nftInfo.collectionSymbol ?? 'symbol',
+                            id: widget.nftInfo.id ?? 'id',
+                            context: context,
                           );
-                          if (sendNftCubit.checkAddressFtQuantity()) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) {
-                                  //handle todo fix gaslimit
-                                  return ConfirmBlockchainCategory(
-                                    nameWallet: 'TestWallet',
-                                    nameTokenWallet: 'BNB',
-                                    balanceWallet: 0.64,
-                                    typeConfirm: TYPE_CONFIRM.SEND_NFT,
-                                    addressFrom: '0xfff',
-                                    addressTo: '0xfff',
-                                    imageWallet: ImageAssets.symbol,
-                                    quantity: 10,
-                                    nameToken: 'BNB',
-                                    cubitCategory: null,
-                                    gasPriceFirstFetch: sendNftCubit.gasPrice,
-                                    gasFeeFirstFetch: 30,
-                                    gasLimitFirstFetch: 3,
-                                  );
-                                },
-                              ),
-                            );
-                          } else {
-                            //nothing
-                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) {
+                                //handle todo fix gaslimit
+                                return ConfirmBlockchainCategory(
+                                  nameWallet: 'Account',
+                                  nameTokenWallet: 'BNB',
+                                  balanceWallet: sendNftCubit.balanceWallet,
+                                  typeConfirm: TYPE_CONFIRM.SEND_NFT,
+                                  addressFrom: widget.addressFrom,
+                                  addressTo: txtToAddressNft.text,
+                                  imageWallet: ImageAssets.symbol,
+                                  quantity: int.parse(txtQuantity.text),
+                                  nameToken: 'BNB',
+                                  cubitCategory: sendNftCubit,
+                                  gasPriceFirstFetch:
+                                      sendNftCubit.gasPrice / 1000000000,
+                                  gasFeeFirstFetch:
+                                      ((sendNftCubit.gasPrice / 1000000000) *
+                                              sendNftCubit.gasLimitNft) /
+                                          1000000000,
+                                  gasLimitFirstFetch: sendNftCubit.gasLimitNft,
+                                  amount: 0,
+                                  nftInfo: widget.nftInfo,
+                                );
+                              },
+                            ),
+                          );
                         } else {
                           //nothing
                         }
@@ -195,17 +219,17 @@ class _SendNftState extends State<SendNft> {
         child: TextFormField(
           controller: readOnly ? null : txtToAddressNft,
           onChanged: (value) {
-            sendNftCubit.checkHaveVlAddressFormToken(
-              value,
-              type: typeSend.SEND_NFT,
+            sendNftCubit.checkValidateAddress(
+              value: value,
             );
+            sendNftCubit.checkValidateQuantity(
+                value: txtQuantity.text, quantityCopy: '1');
           },
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
             16.sp,
           ),
           cursorColor: AppTheme.getInstance().textThemeColor(),
-          // controller: controller,
           textAlignVertical: TextAlignVertical.center,
           readOnly: readOnly,
           decoration: InputDecoration(
@@ -255,10 +279,9 @@ class _SendNftState extends State<SendNft> {
       child: Center(
         child: TextFormField(
           onChanged: (value) {
-            sendNftCubit.checkHaveVLQuantityFormNFT(value);
-            sendNftCubit.checkHaveVlAddressFormToken(
-              txtToAddressNft.text,
-              type: typeSend.SEND_NFT,
+            sendNftCubit.checkValidateQuantity(value: value, quantityCopy: '1');
+            sendNftCubit.checkValidateAddress(
+              value: txtToAddressNft.text,
             );
           },
           keyboardType: TextInputType.number,
@@ -290,7 +313,7 @@ class _SendNftState extends State<SendNft> {
                   : Padding(
                       padding: EdgeInsets.only(right: 20.w, top: 16.h),
                       child: Text(
-                        '${S.current.of_all} $maxQuantityFirstFetch',
+                        '${S.current.of_all} 1',
                         style: textNormal(
                           AppTheme.getInstance().textThemeColor(),
                           16.sp,
