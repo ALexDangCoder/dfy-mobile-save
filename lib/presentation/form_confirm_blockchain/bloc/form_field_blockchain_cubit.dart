@@ -135,23 +135,35 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     switch (methodCall.method) {
       case 'signTransactionTokenCallback':
         // print(methodCall.arguments);
+        emit(FormBlockchainSendTokenLoading());
         isSuccess = await methodCall.arguments['isSuccess'];
         signedTransaction = await methodCall.arguments['signedTransaction'];
         if (isSuccess) {
-          Web3Utils().sendRawTransaction(transaction: signedTransaction);
-          emit(FormBlockchainSendTokenSuccess());
+          final result = await Web3Utils()
+              .sendRawTransaction(transaction: signedTransaction);
+          if (result) {
+            emit(FormBlockchainSendTokenSuccess());
+          } else {
+            emit(FormBlockchainSendTokenFail());
+          }
         } else {
           emit(FormBlockchainSendTokenFail());
         }
         break;
       case 'signTransactionNftCallback':
+        emit(FormBlockchainSendNftLoading());
         bool isSuccess = false;
         String signedTransaction = '';
         isSuccess = await methodCall.arguments['isSuccess'];
         signedTransaction = await methodCall.arguments['signedTransaction'];
-        if(isSuccess) {
-          Web3Utils().sendRawTransaction(transaction: signedTransaction);
-          emit(FormBlockchainSendNftSuccess());
+        if (isSuccess) {
+          final result = await Web3Utils()
+              .sendRawTransaction(transaction: signedTransaction);
+          if (result) {
+            emit(FormBlockchainSendNftSuccess());
+          } else {
+            emit(FormBlockchainSendNftFail());
+          }
         } else {
           emit(FormBlockchainSendNftFail());
         }

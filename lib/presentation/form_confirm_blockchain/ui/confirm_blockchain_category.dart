@@ -144,20 +144,19 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
       },
       child: BlocConsumer<FormFieldBlockchainCubit, FormFieldBlockchainState>(
         listener: (context, state) {
-          if (state is FormBlockchainSendTokenSuccess ||
-              state is FormBlockchainSendNftSuccess) {
-            // Navigator.pop(context);
-            // Navigator.pop(context);
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => const MainScreen(
-                  index: 1,
-                ),
-              ),
-              (route) => route.isFirst,
-            );
+          if (state is FormBlockchainSendNftSuccess) {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          } else if(state is FormBlockchainSendNftLoading) {
+
+          } else if(state is FormBlockchainSendNftFail) {
+
+          } else if(state is FormBlockchainSendTokenLoading) {
+
+          } else if(state is FormBlockchainSendTokenSuccess) {
+
           } else {
-            _showDialog(alert: S.current.failed);
+            //todo send token fail
           }
         },
         bloc: cubitFormCustomizeGasFee,

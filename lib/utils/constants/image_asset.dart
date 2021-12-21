@@ -78,6 +78,9 @@ class ImageAssets {
   static const String imgEmpty = '$baseImg/img_empty.png';
   static const String imgTabHome = '$baseImg/img_tab_home.png';
 
+  static const String failSubmit = '$baseImg/failsubmit.png';
+  static const String successSubmit = '$baseImg/successsubmit.png';
+
   static const String ic_to = '$baseImg/ic_to.png';
   static const String ic_pending = '$baseImg/ic_pending.png';
   static const String ic_key24 = '$baseImg/key.png';

@@ -212,5 +212,7 @@
   "invalid_id_nft": "ID không hợp lệ",
   "invalid_quantity": "Số lượng không hợp lệ",
   "required_quantity": "Số lượng bắt buộc",
-  "warning_big_quantity": "Số lượng này lớn hơn số lượng cho phép"
+  "warning_big_quantity": "Số lượng này lớn hơn số lượng cho phép",
+  "transaction_success": "Giao dịch thành công",
+  "transaction_fail": "Giao dịch thất bại"
 }

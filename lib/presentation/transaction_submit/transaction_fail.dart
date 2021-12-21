@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -26,17 +27,13 @@ class TransanctionSubmitFail extends StatelessWidget {
             child: SizedBox(
               width: 24.w,
               height: 24.h,
-              child: CircularProgressIndicator(
-                backgroundColor: AppTheme.getInstance().disableColor(),
-                strokeWidth: 3.w,
-                color: AppTheme.getInstance().fillColor(),
-              ),
+              child: Image.asset(ImageAssets.failSubmit),
             ),
           ),
           spaceH5,
           Expanded(
             child: Text(
-              S.current.tran_submit,
+              S.current.transaction_fail,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
                 16.sp,
