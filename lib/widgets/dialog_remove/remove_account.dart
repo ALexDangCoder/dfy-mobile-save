@@ -28,7 +28,6 @@ class RemoveAcc extends StatelessWidget {
       child: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            // maxHeight: 400.h,
             maxWidth: 312.w,
           ),
           child: Center(
@@ -46,7 +45,6 @@ class RemoveAcc extends StatelessWidget {
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     maxWidth: 312.w,
-                    minHeight: 278.h,
                   ),
                   child: Stack(
                     clipBehavior: Clip.none,

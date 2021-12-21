@@ -27,7 +27,6 @@ class RemoveToken extends StatelessWidget {
         child: Center(
           child: Container(
             constraints: BoxConstraints(
-              // maxHeight: 400.h,
               maxWidth: 312.w,
             ),
             child: Center(
@@ -45,7 +44,6 @@ class RemoveToken extends StatelessWidget {
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       maxWidth: 312.w,
-                      minHeight: 278.h,
                     ),
                     child: Stack(
                       alignment: Alignment.topCenter,

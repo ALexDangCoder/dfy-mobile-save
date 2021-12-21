@@ -52,7 +52,6 @@ class RemoveNft extends StatelessWidget {
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     maxWidth: 312.w,
-                    minHeight: 278.h,
                   ),
                   child: Stack(
                     alignment: Alignment.topCenter,
@@ -100,7 +99,7 @@ class RemoveNft extends StatelessWidget {
                                 border: Border(
                                   top: BorderSide(
                                     color: AppTheme.getInstance().divideColor(),
-                                    width: 1.w,
+                                    width: 1.h,
                                   ),
                                 ),
                               ),
