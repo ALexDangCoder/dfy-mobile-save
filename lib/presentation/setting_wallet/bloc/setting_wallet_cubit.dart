@@ -18,10 +18,15 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
   //     PrefsService.getAppLockConfig() == 'true' ? true : false;
 
   final BehaviorSubject<bool> isSwitchFingerFtFaceIdOn =
-      BehaviorSubject<bool>();
+      BehaviorSubject<bool>.seeded(
+    PrefsService.getFaceIDConfig() == 'true' ? true : false,
+  );
   final BehaviorSubject<String> textLockSetting =
-      BehaviorSubject<String>.seeded(S.current.lock);
-  final BehaviorSubject<bool> isSwitchAppLockOn = BehaviorSubject<bool>();
+      BehaviorSubject<String>.seeded(
+          PrefsService.getAppLockConfig() == 'true' ? S.current.lock : '');
+  final BehaviorSubject<bool> isSwitchAppLockOn = BehaviorSubject<bool>.seeded(
+    PrefsService.getAppLockConfig() == 'true' ? true : false,
+  );
 
   //stream
   Stream<bool> get isSwitchFingerFtFaceIdOnStream =>
@@ -56,6 +61,7 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
       await PrefsService.saveAppLockConfig('true');
     } else {
       await PrefsService.saveAppLockConfig('false');
+      textLockSetting.sink.add('');
     }
   }
 
@@ -79,9 +85,7 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
       await PrefsService.saveAppLockConfig(isAppLock.toString());
       await PrefsService.saveFaceIDConfig(isFaceID.toString());
       await trustWalletChannel.invokeMethod('setConfig', data);
-    } on PlatformException {
-      //todo
-    }
+    } on PlatformException {}
   }
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
@@ -93,10 +97,7 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
       case 'getConfigCallback':
         late bool isAppLock;
         late bool isFaceID;
-        isAppLock = await methodCall.arguments['isAppLock'];
-        isFaceID = await methodCall.arguments['isFaceID'];
-        isSwitchAppLockOnSink.add(isAppLock);
-        isSwitchFingerFtFaceIdOnSink.add(isFaceID);
+        isAppLock = await methodCall.arguments;
         break;
       default:
         break;
