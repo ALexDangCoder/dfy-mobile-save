@@ -1,6 +1,7 @@
 package com.edsolabs.dfy_mobile.extension
 
 import android.content.Context
+import android.util.Log
 import com.edsolabs.dfy_mobile.Constant
 import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
 import com.edsolabs.dfy_mobile.data.model.ItemNftModel
@@ -628,16 +629,16 @@ fun Context.signTransactionToken(
                     this.nonce = ByteString.copyFrom(BigInteger(nonce).toByteArray())
                     this.chainId = ByteString.copyFrom(BigInteger(chainId).toByteArray())
                     this.gasPrice = BigInteger(
-                        gasPrice.toDouble().toLong().toString()
+                        gasPrice
                     ).toByteString() // decimal 3600000000
                     this.gasLimit = BigInteger(
-                        gasLimit.toDouble().toLong().toString()
+                        gasLimit
                     ).toByteString()     // decimal 21000
                     this.toAddress = toAddress
                     this.transaction = Ethereum.Transaction.newBuilder().apply {
                         transfer = Ethereum.Transaction.Transfer.newBuilder().apply {
                             this.amount =
-                                BigInteger(amount.toDouble().toLong().toString()).toByteString()
+                                BigInteger(amount).toByteString()
                         }.build()
                     }.build()
                     this.privateKey =
@@ -649,17 +650,17 @@ fun Context.signTransactionToken(
                     this.nonce = ByteString.copyFrom(BigInteger(nonce).toByteArray())
                     this.chainId = ByteString.copyFrom(BigInteger(chainId).toByteArray())
                     this.gasPrice = BigInteger(
-                        gasPrice.toDouble().toLong().toString()
+                        gasPrice
                     ).toByteString() // decimal 3600000000
                     this.gasLimit = BigInteger(
-                        gasLimit.toDouble().toLong().toString()
+                        gasLimit
                     ).toByteString()     // decimal 21000
                     this.toAddress = tokenAddress
                     this.transaction = Ethereum.Transaction.newBuilder().apply {
                         erc20Transfer = Ethereum.Transaction.ERC20Transfer.newBuilder().apply {
                             this.to = toAddress
                             this.amount =
-                                BigInteger(amount.toDouble().toLong().toString()).toByteString()
+                                BigInteger(amount).toByteString()
                         }.build()
                     }.build()
                     this.privateKey =
@@ -701,10 +702,10 @@ fun Context.signTransactionNft(
             this.chainId = ByteString.copyFrom(BigInteger(chainId).toByteArray())
             this.nonce = ByteString.copyFrom(BigInteger(nonce).toByteArray())
             this.gasPrice = BigInteger(
-                gasPrice.toDouble().toLong().toString()
+                gasPrice
             ).toByteString()
             this.gasLimit = BigInteger(
-                gasLimit.toDouble().toLong().toString()
+                gasLimit
             ).toByteString()
             transaction = Ethereum.Transaction.newBuilder().apply {
                 erc721Transfer = Ethereum.Transaction.ERC721Transfer.newBuilder().apply {

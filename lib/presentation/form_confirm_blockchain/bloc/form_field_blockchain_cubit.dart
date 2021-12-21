@@ -132,6 +132,8 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     bool isSuccess = false;
     String signedTransaction = '';
     switch (methodCall.method) {
+      case 'setDeleteNftCallback':
+        break;
       case 'signTransactionTokenCallback':
         // print(methodCall.arguments);
         isSuccess = await methodCall.arguments['isSuccess'];
@@ -187,6 +189,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     required String amount,
   }) {
     try {
+      final String newAmount = handleAmount(amount);
       final data = {
         'walletAddress': walletAddress,
         'tokenAddress': tokenAddress,
@@ -195,7 +198,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         'chainId': chainId,
         'gasPrice': gasPrice,
         'gasLimit': gasLimit,
-        'amount': amount,
+        'amount': newAmount,
       };
       trustWalletChannel.invokeMethod('signTransactionToken', data);
     } on PlatformException {
@@ -247,4 +250,30 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       //todo
     }
   }
+
+  String handleAmount(String amount) {
+    final parts = amount.split('.');
+    if (amount.isEmpty) {
+      return '0';
+    } else {
+      if (parts.length == 1) {
+        return '${amount}000000000000000000';
+      } else if (parts.length > 1) {
+        if (parts[1].length >= 18) {
+          return parts[0] + parts[1].substring(0, 18);
+        } else {
+          final String valueAmount = parts[0];
+          final String valueDecimal = parts[1];
+          final buffer = StringBuffer();
+          for (var i = valueDecimal.length; i < 18; i++) {
+            buffer.write('0');
+          }
+          return valueAmount + valueDecimal + buffer.toString();
+        }
+      } else {
+        return '0';
+      }
+    }
+  }
+
 }

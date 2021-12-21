@@ -6,7 +6,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/components/form_show_ft_hide_blockchain.dart';
-import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -144,18 +143,10 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
       },
       child: BlocConsumer<FormFieldBlockchainCubit, FormFieldBlockchainState>(
         listener: (context, state) {
-          if (state is FormBlockchainSendTokenSuccess) {
+          if (state is FormBlockchainSendTokenSuccess ||
+              state is FormBlockchainSendNftSuccess) {
             Navigator.pop(context);
             Navigator.pop(context, true);
-          } else if (state is FormBlockchainSendNftSuccess) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => const MainScreen(
-                  index: 2,
-                ),
-              ),
-              (route) => route.isFirst,
-            );
           } else {
             _showDialog(alert: S.current.failed);
           }
@@ -279,13 +270,13 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                       toAddress: widget.addressTo,
                                       gasPrice: (widget.gasPriceFirstFetch *
                                               1000000000)
+                                          .toInt()
                                           .toString(),
                                       nonce: nonce.toString(),
                                       gasLimit: double.parse(_txtGasLimit.text)
+                                          .toInt()
                                           .toString(),
-                                      amount: ((widget.amount ?? 0) *
-                                              1000000000000000000)
-                                          .toString(),
+                                      amount: (widget.amount).toString(),
                                       // 1000000000000000000 -> 1 dfy
                                       tokenAddress:
                                           widget.modelToken!.tokenAddress,
@@ -305,9 +296,11 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                           'contract',
                                       nonce: nonce.toString(),
                                       gasLimit: double.parse(_txtGasLimit.text)
+                                          .toInt()
                                           .toString(),
                                       gasPrice: (widget.gasPriceFirstFetch *
                                               1000000000)
+                                          .toInt()
                                           .toString(),
                                       nftID: widget.nftInfo?.id ?? 'id',
                                       chainId: '97',
