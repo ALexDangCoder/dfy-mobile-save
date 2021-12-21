@@ -8,7 +8,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 
 @immutable
 class CustomBottomHomeAppbar extends StatefulWidget {
@@ -45,16 +45,16 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    widget.mainCubit.indexSink.add(tabWalletIndex);
+                    widget.mainCubit.indexSink.add(tabHomeIndex);
                   },
                   child: itemBottomBar(
                     ImageAssets.svgAssets(
-                      snapshot.data == tabWalletIndex
-                          ? ImageAssets.icTabWalletSelected
-                          : ImageAssets.icTabWalletUnSelected,
+                      snapshot.data == tabHomeIndex
+                          ? ImageAssets.icTabHomeSelected
+                          : ImageAssets.icTabHomeUnselected,
                     ),
-                    S.current.tab_wallet,
-                    snapshot.data == tabWalletIndex,
+                    S.current.tab_home,
+                    snapshot.data == tabHomeIndex,
                   ),
                 ),
               ),
@@ -77,17 +77,16 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    widget.mainCubit.indexSink.add(tabHomeIndex);
+                    widget.mainCubit.indexSink.add(tabWalletIndex);
                   },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Image.asset(
-                        icHomeTab,
-                        height: 93.h,
-                        fit: BoxFit.cover,
-                      )
-                    ],
+                  child: itemBottomBar(
+                    ImageAssets.svgAssets(
+                      snapshot.data == tabWalletIndex
+                          ? ImageAssets.icTabWalletSelected
+                          : ImageAssets.icTabWalletUnSelected,
+                    ),
+                    S.current.tab_wallet,
+                    snapshot.data == tabWalletIndex,
                   ),
                 ),
               ),
