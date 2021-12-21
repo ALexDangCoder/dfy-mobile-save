@@ -234,7 +234,7 @@ class _WalletState extends State<WalletScreen>
                                 .add(cubit.listTokenFromWalletCore);
                           },
                           child: SingleChildScrollView(
-                            physics: const ScrollPhysics(),
+                            physics: const AlwaysScrollableScrollPhysics(),
                             child: Column(
                               children: [
                                 StreamBuilder(

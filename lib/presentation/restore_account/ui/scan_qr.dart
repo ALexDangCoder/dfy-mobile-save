@@ -3,13 +3,23 @@ import 'dart:io';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/import_account/bloc/import_cubit.dart';
+import 'package:Dfy/presentation/restore_account/bloc/restore_cubit.dart';
+import 'package:Dfy/widgets/form/item_form.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRViewExample extends StatefulWidget {
-  const QRViewExample({Key? key, required this.controller}) : super(key: key);
+  const QRViewExample({
+    Key? key,
+    required this.controller,
+    this.restoreCubit,
+    this.importCubit,
+  }) : super(key: key);
   final TextEditingController controller;
+  final RestoreCubit? restoreCubit;
+  final ImportCubit? importCubit;
 
   @override
   State<StatefulWidget> createState() => _QRViewExampleState();
@@ -119,6 +129,14 @@ class _QRViewExampleState extends State<QRViewExample> {
           );
         } else {
           widget.controller.text = result?.code ?? '';
+          widget.importCubit?.showTxtWarningSeed(
+            widget.controller.text,
+            FormType.PRIVATE_KEY,
+          );
+          widget.restoreCubit?.showTxtWarningSeed(
+            widget.controller.text,
+            FormType.PRIVATE_KEY,
+          );
           Navigator.pop(context);
         }
       });
