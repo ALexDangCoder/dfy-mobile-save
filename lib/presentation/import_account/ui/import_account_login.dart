@@ -299,6 +299,7 @@ class _ImportAccountState extends State<ImportAccount> {
                                                       QRViewExample(
                                                     controller:
                                                         privateKeyController,
+                                                        importCubit: importCubit,
                                                   ),
                                                 ),
                                               );
@@ -421,6 +422,7 @@ class _ImportAccountState extends State<ImportAccount> {
       },
     );
   }
+
   void _showDialog(String alert, String text) {
     showDialog(
       context: context,
@@ -483,6 +485,7 @@ class _ImportAccountState extends State<ImportAccount> {
       },
     );
   }
+
   Widget warningSeedPhrase() {
     return StreamBuilder<bool>(
       stream: importCubit.seedStream,
