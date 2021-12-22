@@ -244,6 +244,10 @@ class _ImportAccountState extends State<ImportAccount> {
                                               );
                                               seedPhraseController.text =
                                                   data?.text ?? '';
+                                              importCubit.showTxtWarningSeed(
+                                                seedPhraseController.text,
+                                                FormType.PASS_PHRASE,
+                                              );
                                             },
                                           )
                                         : ItemForm(
@@ -261,6 +265,10 @@ class _ImportAccountState extends State<ImportAccount> {
                                               );
                                               privateKeyController.text =
                                                   data?.text ?? '';
+                                              importCubit.showTxtWarningSeed(
+                                                privateKeyController.text,
+                                                FormType.PRIVATE_KEY,
+                                              );
                                             },
                                           );
                                   },
@@ -299,7 +307,7 @@ class _ImportAccountState extends State<ImportAccount> {
                                                       QRViewExample(
                                                     controller:
                                                         privateKeyController,
-                                                        importCubit: importCubit,
+                                                    importCubit: importCubit,
                                                   ),
                                                 ),
                                               );

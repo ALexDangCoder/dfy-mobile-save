@@ -215,6 +215,6 @@
   "invalid_quantity": "Invalid quantity",
   "required_quantity": "Quantity is required",
   "warning_big_quantity": "Quantity can not greater than available copy",
-  "transaction_success": "Transaction completed",
-  "transaction_fail": "Transaction failed"
+  "import_duplicate": "The account you're are trying to import is a duplicate",
+  "not_import": "Can not get wallet address"
 }
