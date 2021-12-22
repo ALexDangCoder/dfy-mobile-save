@@ -128,7 +128,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
               S.current.add_wallet,
               style: TextStyle(
                 fontWeight: FontWeight.w700,
-                fontSize: 20.sp,
+                fontSize: 20,
                 color: const Color.fromRGBO(228, 172, 26, 1),
               ),
             ),

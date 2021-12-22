@@ -38,7 +38,7 @@ class CreateSuccessfully extends StatelessWidget {
       body: ListView(
         children: [
           SizedBox(
-            height: 48.h,
+            height: 8.h,
           ),
           _Body(
             bLocCreateSeedPhrase: bLocCreateSeedPhrase,
@@ -103,7 +103,7 @@ class _BodyState extends State<_Body> {
                   ? S.current.success
                   : S.current.success_import,
               style: TextStyle(
-                fontSize: 20.sp,
+                fontSize: 20,
                 color: AppTheme.getInstance().whiteColor(),
                 fontWeight: FontWeight.bold,
               ),
@@ -129,7 +129,7 @@ class _BodyState extends State<_Body> {
                     style: TextStyle(
                       color: AppTheme.getInstance().whiteColor(),
                       fontWeight: FontWeight.bold,
-                      fontSize: 32.sp,
+                      fontSize: 32,
                     ),
                   ),
                   SizedBox(

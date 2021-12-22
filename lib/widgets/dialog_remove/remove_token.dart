@@ -62,7 +62,7 @@ class RemoveToken extends StatelessWidget {
                                 S.current.are_you_sure_token,
                                 style: textNormal(
                                   null,
-                                  20.sp,
+                                  20,
                                 ).copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -76,7 +76,7 @@ class RemoveToken extends StatelessWidget {
                                 S.current.this_will_also,
                                 style: textNormal(
                                   null,
-                                  12.sp,
+                                  12,
                                 ).copyWith(
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -171,7 +171,7 @@ class RemoveToken extends StatelessWidget {
                                               style: textNormal(
                                                 AppTheme.getInstance()
                                                     .fillColor(),
-                                                20.sp,
+                                                20,
                                               ).copyWith(
                                                 fontWeight: FontWeight.w700,
                                                 fontStyle: FontStyle.normal,

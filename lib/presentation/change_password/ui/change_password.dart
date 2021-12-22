@@ -293,7 +293,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   alert ?? S.current.password_is_not_correct,
                   style: textNormalCustom(
                     Colors.white,
-                    20.sp,
+                    20,
                     FontWeight.w700,
                   ),
                   textAlign: TextAlign.center,
@@ -304,7 +304,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 text ?? S.current.please_try_again,
                 style: textNormalCustom(
                   Colors.white,
-                  12.sp,
+                  12,
                   FontWeight.w400,
                 ),
               ),
@@ -321,7 +321,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   S.current.ok,
                   style: textNormalCustom(
                     AppTheme.getInstance().fillColor(),
-                    20.sp,
+                    20,
                     FontWeight.w700,
                   ),
                 ),
