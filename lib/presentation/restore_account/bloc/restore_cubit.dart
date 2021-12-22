@@ -125,11 +125,14 @@ class RestoreCubit extends Cubit<RestoreState> {
       case 'importWalletCallback':
         final walletName = methodCall.arguments['walletName'];
         final walletAddress = methodCall.arguments['walletAddress'];
-        //message = methodCall.arguments['message'];
         final code = methodCall.arguments['code'];
         wallet = Wallet(name: walletName, address: walletAddress);
-        if (walletName == null || walletAddress == null || code == 400) {
-          emit(ErrorState());
+        if (code == 401) {
+          emit(ErrorState(S.current.import_duplicate));
+        } else if (code == 402) {
+          emit(ErrorState(S.current.not_import));
+        } else if (code == 400) {
+          emit(ErrorState(S.current.something_went_wrong));
         } else {
           emit(NavState());
         }
@@ -142,12 +145,13 @@ class RestoreCubit extends Cubit<RestoreState> {
   void importWallet({
     required String type,
     required String content,
-    String? password,
+    required String typeEarseWallet,
   }) {
     try {
       final data = {
         'type': type,
         'content': content,
+        'typeEarseWallet': typeEarseWallet,
       };
       trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
@@ -221,7 +225,6 @@ class RestoreCubit extends Cubit<RestoreState> {
         seedSink.add(true);
         txtWarningSeedSink.add(S.current.seed_required);
         btnSink.add(false);
-        //ckcSink.add(false);
       } else {
         final int len = value.split(' ').length;
         bool flag;
@@ -245,7 +248,6 @@ class RestoreCubit extends Cubit<RestoreState> {
           seedSink.add(true);
           txtWarningSeedSink.add(S.current.warning_seed);
           btnSink.add(false);
-          //ckcSink.add(false);
         }
       }
     } else {
@@ -254,7 +256,6 @@ class RestoreCubit extends Cubit<RestoreState> {
         seedSink.add(true);
         txtWarningSeedSink.add(S.current.private_required);
         btnSink.add(false);
-        //ckcSink.add(false);
       } else {
         final int len = value.length;
         if (len == 64 && !value.contains(' ')) {
@@ -271,7 +272,6 @@ class RestoreCubit extends Cubit<RestoreState> {
           seedSink.add(true);
           txtWarningSeedSink.add(S.current.private_warning);
           btnSink.add(false);
-          // ckcSink.add(false);
         }
       }
     }
@@ -325,10 +325,12 @@ class RestoreCubit extends Cubit<RestoreState> {
       return false;
     }
   }
+
   ///setFirstTime
   Future<void> setFirstTime() async {
     await PrefsService.saveFirstAppConfig('false');
   }
+
   void dispose() {
     _behaviorSubject.close();
     _stringSubject.close();

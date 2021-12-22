@@ -15,9 +15,9 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('');
   BehaviorSubject<String> isNameWallet = BehaviorSubject.seeded('value');
   BehaviorSubject<bool> isCheckBoxCreateSeedPhrase =
-  BehaviorSubject.seeded(true);
+      BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isCheckBoxCreateSeedPhraseConfirm =
-  BehaviorSubject.seeded(true);
+      BehaviorSubject.seeded(true);
   BehaviorSubject<String> messStream = BehaviorSubject.seeded('');
 
   BehaviorSubject<bool> isCheckButtonCreate = BehaviorSubject.seeded(true);
@@ -29,7 +29,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BehaviorSubject<bool> isCheckAppLock = BehaviorSubject.seeded(true);
 
   BehaviorSubject<bool> isSeedPhraseImportFailed =
-  BehaviorSubject.seeded(false);
+      BehaviorSubject.seeded(false);
 
   Future<void> setFirstTime() async {
     await PrefsService.saveFirstAppConfig('false');
@@ -89,7 +89,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     indices.shuffle();
     final int newCount = listTitle1.length;
     final List<String> randomList =
-    indices.take(newCount).map((i) => listTitle1[i]).toList();
+        indices.take(newCount).map((i) => listTitle1[i]).toList();
     listTitle.sink.add(randomList);
   }
 
@@ -110,6 +110,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     required String privateKey,
     required String walletName,
     required String walletAddress,
+    String? typeEarseWallet,
   }) async {
     try {
       final data = {
@@ -117,14 +118,17 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         'walletName': walletName,
         'privateKey': privateKey,
         'walletAddress': walletAddress,
+        'typeEarseWallet': typeEarseWallet
       };
       await trustWalletChannel.invokeMethod('storeWallet', data);
     } on PlatformException {}
   }
 
-  Future<void> generateWallet() async {
+  Future<void> generateWallet(String? typeEarseWallet) async {
     try {
-      final data = {};
+      final data = {
+        'typeEarseWallet': typeEarseWallet
+      };
       await trustWalletChannel.invokeMethod('generateWallet', data);
     } on PlatformException {}
   }
@@ -169,10 +173,10 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         emit(SeedNavState());
         break;
       case 'setConfigCallback':
-      // bool isSuccess = await methodCall.arguments['isSuccess'];
+        // bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       case 'savePasswordCallback':
-      // bool isSuccess = await methodCall.arguments['isSuccess'];
+        // bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       default:
         break;

@@ -51,7 +51,6 @@ class _CustomDialogState extends State<ChoiceDialog> {
                 _cubit.validateSink.add(false);
                 _cubit.seedSink.add(false);
                 _cubit.ckcSink.add(true);
-                _cubit.btnSink.add(true);
                 widget.controller2.clear();
               }
               _cubit.boolSink.add(false);
@@ -85,7 +84,6 @@ class _CustomDialogState extends State<ChoiceDialog> {
                 );
                 _cubit.matchSink.add(false);
                 _cubit.validateSink.add(false);
-                _cubit.btnSink.add(true);
                 _cubit.ckcSink.add(true);
                 _cubit.seedSink.add(false);
                 widget.controller1.clear();
