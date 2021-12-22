@@ -566,15 +566,15 @@ fun Context.importNft(
     val listNftSupport = ArrayList<NftModel>()
 
     val objectNft = JSONObject(jsonNft)
-    val contractNft = objectNft.getString("contract")
-    var checkItemNft = appPreference.getListNft()
-        .firstOrNull { it.walletAddress == walletAddress && it.collectionAddress == contractNft }
+
+    val listAllCollection = appPreference.getListNft()
+    val checkItemNft = listAllCollection.firstOrNull { it.walletAddress == walletAddress }
     if (checkItemNft == null) {
-        checkItemNft = NftModel()
-        checkItemNft.walletAddress = walletAddress
-        checkItemNft.collectionAddress = objectNft.getString("contract")
-        checkItemNft.nftName = objectNft.getString("name")
-        checkItemNft.symbol = objectNft.getString("symbol")
+        val nftModel = NftModel()
+        nftModel.walletAddress = walletAddress
+        nftModel.collectionAddress = objectNft.getString("contract")
+        nftModel.nftName = objectNft.getString("name")
+        nftModel.symbol = objectNft.getString("symbol")
         val listNftJson = objectNft.getJSONArray("listNft")
         var size = 0
         val listNft = ArrayList<ItemNftModel>()
@@ -589,9 +589,11 @@ fun Context.importNft(
             )
             size++
         }
-        checkItemNft.item = listNft
+        nftModel.item = listNft
+        listNftSupport.add(nftModel)
     } else {
-        checkItemNft.let {
+        val contractNft = objectNft.getString("contract")
+        if (checkItemNft.collectionAddress == contractNft) {
             val listNftJson = objectNft.getJSONArray("listNft")
             var size = 0
             val listNft = ArrayList<ItemNftModel>()
@@ -609,10 +611,33 @@ fun Context.importNft(
                 }
                 size++
             }
-            it.item.addAll(listNft)
+            checkItemNft.item.addAll(listNft)
+            listNftSupport.add(checkItemNft)
+        } else {
+            val nftModel = NftModel()
+            nftModel.walletAddress = walletAddress
+            nftModel.collectionAddress = objectNft.getString("contract")
+            nftModel.nftName = objectNft.getString("name")
+            nftModel.symbol = objectNft.getString("symbol")
+            val listNftJson = objectNft.getJSONArray("listNft")
+            var size = 0
+            val listNft = ArrayList<ItemNftModel>()
+            while (size < listNftJson.length()) {
+                val data = listNftJson.getJSONObject(size)
+                listNft.add(
+                    ItemNftModel(
+                        id = data.getString("id"),
+                        contract = data.getString("contract"),
+                        uri = data.getString("uri")
+                    )
+                )
+                size++
+            }
+            nftModel.item = listNft
+            listNftSupport.add(nftModel)
         }
     }
-    listNftSupport.add(checkItemNft)
+    listNftSupport.addAll(listAllCollection.filter { it.walletAddress != walletAddress })
     val hasMap = HashMap<String, Any>()
     appPreference.saveListNft(listNftSupport)
     hasMap["isSuccess"] = true
