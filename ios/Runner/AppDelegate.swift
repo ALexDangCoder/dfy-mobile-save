@@ -18,6 +18,8 @@ import BigInt
     
     private let CODE_SUCCESS = 200
     private let CODE_ERROR = 400
+    private let CODE_ERROR_DUPLICATE = 401
+    private let CODE_ERROR_WALLET = 402
     
   override func application(
     _ application: UIApplication,
@@ -151,11 +153,11 @@ extension AppDelegate {
                 result(deleteCollection(walletAddress: walletAddress, collectionAddress: collectionAddress))
             }
         }
-        if call.method == "earseAllWallet" {
-            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String {
-                result(eraseAllWallet(type: type))
-            }
-        }
+//        if call.method == "earseAllWallet" {
+//            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String {
+//                result(eraseAllWallet(type: type))
+//            }
+//        }
         if call.method == "signTransactionNft" {
             if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let toAddress = arguments["toAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let tokenId = arguments["tokenId"] as? String {
                 result(signTransactionNft(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, tokenId: tokenId))
@@ -325,14 +327,14 @@ extension AppDelegate {
         return params
     }
 
-    private func eraseAllWallet(type: String) -> [String: Any] {
-        var params: [String: Any] = [:]
-        params["isSuccess"] = true
-        params["type"] = type
-        SharedPreference.shared.eraseWallet()
-        chatChanel?.invokeMethod("earseAllWalletCallback", arguments: params)
-        return params 
-    }
+//    private func eraseAllWallet(type: String) -> [String: Any] {
+//        var params: [String: Any] = [:]
+//        params["isSuccess"] = true
+//        params["type"] = type
+//        SharedPreference.shared.eraseWallet()
+//        chatChanel?.invokeMethod("earseAllWalletCallback", arguments: params)
+//        return params 
+//    }
     
     private func chooseWallet(walletAddress: String) -> [[String: Any]] {
         var listParams = [[String: Any]]()
@@ -489,22 +491,19 @@ extension AppDelegate {
                     SharedPreference.shared.saveListWallet(listWallet: listWallet)
                     param["walletName"] = walletName
                     param["code"] = CODE_SUCCESS
-                    param["messages"] = "Import tài khoản thành công"
                     chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                     return param
                 } else {
                     param["walletAddress"] = ""
                     param["walletName"] = ""
-                    param["code"] = CODE_ERROR
-                    param["messages"] = "Tài khoản đã tồn tại"
+                    param["code"] = CODE_ERROR_DUPLICATE
                     chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                     return param
                 }
             } else {
                 param["walletAddress"] = ""
                 param["walletName"] = ""
-                param["code"] = CODE_ERROR
-                param["messages"] = "Lỗi seed phrase vui lòng thử lại"
+                param["code"] = CODE_ERROR_WALLET
                 chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                 return param
             }
@@ -528,14 +527,12 @@ extension AppDelegate {
                         SharedPreference.shared.saveListWallet(listWallet: listWallet)
                         param["walletName"] = walletName
                         param["code"] = CODE_SUCCESS
-                        param["messages"] = "Import tài khoản thành công"
                         chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                         return param
                     } else {
                         param["walletAddress"] = ""
                         param["walletName"] = ""
-                        param["code"] = CODE_ERROR
-                        param["messages"] = "Tài khoản đã tồn tại"
+                        param["code"] = CODE_ERROR_DUPLICATE
                         chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                         return param
                     }
@@ -543,15 +540,13 @@ extension AppDelegate {
                     param["walletAddress"] = ""
                     param["walletName"] = ""
                     param["code"] = CODE_ERROR
-                    param["messages"] = "Lỗi private key vui lòng thử lại"
                     chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                     return param
                 }
             } else {
                 param["walletAddress"] = ""
                 param["walletName"] = ""
-                param["code"] = CODE_ERROR
-                param["messages"] = "Lỗi private key vui lòng thử lại"
+                param["code"] = CODE_ERROR_WALLET
                 chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                 return param
             }
