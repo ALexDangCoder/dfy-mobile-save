@@ -184,13 +184,11 @@ fun Context.importWallet(
                     appPreference.saveListWallet(listWallet)
                     hasMap["walletName"] = walletName
                     hasMap["code"] = Constant.CODE_SUCCESS
-                    hasMap["messages"] = "Import account successfully"
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 } else {
                     hasMap["walletAddress"] = ""
                     hasMap["walletName"] = ""
-                    hasMap["code"] = Constant.CODE_ERROR
-                    hasMap["messages"] = "The account you're are trying to import is a duplicate"
+                    hasMap["code"] = Constant.CODE_ERROR_DUPLICATE
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 }
             }
@@ -222,13 +220,11 @@ fun Context.importWallet(
                     appPreference.saveListWallet(listWallet)
                     hasMap["walletName"] = walletName
                     hasMap["code"] = Constant.CODE_SUCCESS
-                    hasMap["messages"] = "Import account successfully"
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 } else {
                     hasMap["walletAddress"] = ""
                     hasMap["walletName"] = ""
-                    hasMap["code"] = Constant.CODE_ERROR
-                    hasMap["messages"] = "The account you're are trying to import is a duplicate"
+                    hasMap["code"] = Constant.CODE_ERROR_DUPLICATE
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 }
             }
@@ -236,16 +232,13 @@ fun Context.importWallet(
                 hasMap["walletAddress"] = ""
                 hasMap["walletName"] = ""
                 hasMap["code"] = Constant.CODE_ERROR
-                hasMap["messages"] = "An error occurred, please try again."
                 channel?.invokeMethod("importWalletCallback", hasMap)
             }
         }
     } catch (e: InvalidParameterException) {
         hasMap["walletAddress"] = ""
         hasMap["walletName"] = ""
-        hasMap["code"] = Constant.CODE_ERROR
-        hasMap["messages"] =
-            if (type == Constant.TYPE_WALLET_SEED_PHRASE) "Can not get wallet address" else "Can not get wallet address"
+        hasMap["code"] = Constant.CODE_ERROR_WALLET
         channel?.invokeMethod("importWalletCallback", hasMap)
     }
 }
