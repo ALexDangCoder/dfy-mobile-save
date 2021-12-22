@@ -128,7 +128,7 @@ class _WalletState extends State<WalletScreen>
                           onPressed: () {},
                           icon: Icon(
                             Icons.menu,
-                            size: 24,
+                            size: 24.sp,
                             color: Colors.white,
                           ),
                         ),
@@ -173,7 +173,7 @@ class _WalletState extends State<WalletScreen>
                           },
                           icon: Icon(
                             Icons.settings_outlined,
-                            size: 24,
+                            size: 24.sp,
                             color: Colors.white,
                           ),
                         ),
@@ -461,7 +461,7 @@ class _WalletState extends State<WalletScreen>
                     child: ImageIcon(
                       const AssetImage(ImageAssets.ic_edit),
                       color: Colors.white,
-                      size: 24,
+                      size: 24.sp,
                     ),
                   ),
                 ],

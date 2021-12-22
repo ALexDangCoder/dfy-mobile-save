@@ -12,4 +12,6 @@ object Constant {
 
     const val CODE_SUCCESS = 200
     const val CODE_ERROR = 400
+    const val CODE_ERROR_DUPLICATE = 401
+    const val CODE_ERROR_WALLET = 402
 }
