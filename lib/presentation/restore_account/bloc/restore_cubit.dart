@@ -142,12 +142,13 @@ class RestoreCubit extends Cubit<RestoreState> {
   void importWallet({
     required String type,
     required String content,
-    String? password,
+    required String typeEarseWallet,
   }) {
     try {
       final data = {
         'type': type,
         'content': content,
+        'typeEarseWallet': typeEarseWallet,
       };
       trustWalletChannel.invokeMethod('importWallet', data);
     } on PlatformException {
@@ -325,10 +326,12 @@ class RestoreCubit extends Cubit<RestoreState> {
       return false;
     }
   }
+
   ///setFirstTime
   Future<void> setFirstTime() async {
     await PrefsService.saveFirstAppConfig('false');
   }
+
   void dispose() {
     _behaviorSubject.close();
     _stringSubject.close();

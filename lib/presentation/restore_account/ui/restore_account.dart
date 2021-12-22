@@ -26,7 +26,9 @@ const String PRIVATE_KEY = 'PRIVATE_KEY';
 class RestoreAccount extends StatefulWidget {
   const RestoreAccount({
     Key? key,
+    this.typeEarseWallet,
   }) : super(key: key);
+  final String? typeEarseWallet;
 
   @override
   _RestoreAccountState createState() => _RestoreAccountState();
@@ -545,6 +547,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                         content: flag
                                             ? seedPhraseController.text
                                             : privateKeyController.text,
+                                        typeEarseWallet:
+                                            widget.typeEarseWallet ?? '',
                                       );
                                     }
                                   },
