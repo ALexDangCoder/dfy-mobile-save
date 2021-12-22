@@ -494,7 +494,7 @@ class _WalletState extends State<WalletScreen>
           child: Row(
             children: [
               GestureDetector(
-                onLongPress: () {
+                onTap: () {
                   Clipboard.setData(
                     ClipboardData(text: cubit.addressWalletCore),
                   ).then((_) {
