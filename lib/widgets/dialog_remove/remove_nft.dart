@@ -70,7 +70,7 @@ class RemoveNft extends StatelessWidget {
                               S.current.are_you_sure_nft,
                               style: textNormal(
                                 null,
-                                20.sp,
+                                20,
                               ).copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -84,7 +84,7 @@ class RemoveNft extends StatelessWidget {
                               S.current.this_will_also,
                               style: textNormal(
                                 null,
-                                12.sp,
+                                12,
                               ).copyWith(
                                 fontWeight: FontWeight.w400,
                               ),
@@ -161,7 +161,7 @@ class RemoveNft extends StatelessWidget {
                                             S.current.remove,
                                             style: textNormal(
                                               const Color(0xffE4AC1A),
-                                              20.sp,
+                                              20,
                                             ).copyWith(
                                               fontWeight: FontWeight.w700,
                                               fontStyle: FontStyle.normal,

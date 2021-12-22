@@ -44,7 +44,7 @@ class TokenSuccessfully extends StatelessWidget {
                     S.current.token_successfully,
                     style: textNormalCustom(
                       AppTheme.getInstance().whiteColor(),
-                      20.sp,
+                      20,
                       FontWeight.bold,
                     ),
                   ),
@@ -73,7 +73,7 @@ class TokenSuccessfully extends StatelessWidget {
                             S.current.congratulation,
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
-                              32.sp,
+                              32,
                               FontWeight.bold,
                             ),
                           ),

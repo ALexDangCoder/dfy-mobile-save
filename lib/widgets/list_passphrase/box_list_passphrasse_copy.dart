@@ -58,7 +58,7 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
                   S.current.your_seed,
                   style: textNormal(
                     Colors.white,
-                    16.sp,
+                    16,
                   ),
                 ),
                 GestureDetector(

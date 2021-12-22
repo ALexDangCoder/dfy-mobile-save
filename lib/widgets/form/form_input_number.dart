@@ -56,7 +56,7 @@ class FormInputNumber extends StatelessWidget {
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
                   AppTheme.getInstance().whiteColor(),
-                  16.sp,
+                  16,
                 ),
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -64,7 +64,7 @@ class FormInputNumber extends StatelessWidget {
                   hintText: hint,
                   hintStyle: textNormal(
                     Colors.white.withOpacity(0.5),
-                    16.sp,
+                    16,
                   ),
                   border: InputBorder.none,
                 ),

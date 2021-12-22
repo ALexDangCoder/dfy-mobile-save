@@ -30,7 +30,7 @@ class CheckBoxSeedphraseConfirm extends StatelessWidget {
                   width: 24.w,
                   height: 24.h,
                   child: Transform.scale(
-                    scale: 1.sp,
+                    scale: 1,
                     child: Checkbox(
                       fillColor: MaterialStateProperty.all(
                         AppTheme.getInstance().fillColor(),
@@ -62,7 +62,7 @@ class CheckBoxSeedphraseConfirm extends StatelessWidget {
                 title,
                 style: textNormal(
                   AppTheme.getInstance().textThemeColor(),
-                  14.sp,
+                  14,
                 ),
               ),
             ),

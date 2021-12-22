@@ -72,7 +72,7 @@ class _NFTItemState extends State<NFTItem> {
                   _customTileExpanded
                       ? const AssetImage(ImageAssets.ic_line_down)
                       : const AssetImage(ImageAssets.ic_line_right),
-                  size: 24.sp,
+                  size: 24,
                   color: Colors.white,
                 ),
               ),

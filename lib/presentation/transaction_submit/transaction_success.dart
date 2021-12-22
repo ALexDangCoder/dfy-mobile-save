@@ -36,7 +36,7 @@ class TransactionSubmitSuccess extends StatelessWidget {
               S.current.transaction_success,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
-                16.sp,
+                16,
                 FontWeight.w600,
               ),
             ),

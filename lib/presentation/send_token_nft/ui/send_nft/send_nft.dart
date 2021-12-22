@@ -227,7 +227,7 @@ class _SendNftState extends State<SendNft> {
           },
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
-            16.sp,
+            16,
           ),
           cursorColor: AppTheme.getInstance().textThemeColor(),
           textAlignVertical: TextAlignVertical.center,
@@ -236,7 +236,7 @@ class _SendNftState extends State<SendNft> {
             hintText: hintText,
             hintStyle: textNormal(
               AppTheme.getInstance().disableColor(),
-              14.sp,
+              14,
             ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -289,14 +289,14 @@ class _SendNftState extends State<SendNft> {
           controller: txtQuantity,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
-            16.sp,
+            16,
           ),
           cursorColor: AppTheme.getInstance().textThemeColor(),
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: textNormal(
               AppTheme.getInstance().disableColor(),
-              14.sp,
+              14,
             ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -316,7 +316,7 @@ class _SendNftState extends State<SendNft> {
                         '${S.current.of_all} 1',
                         style: textNormal(
                           AppTheme.getInstance().textThemeColor(),
-                          16.sp,
+                          16,
                         ).copyWith(fontWeight: FontWeight.w400),
                       ),
                     ),
@@ -355,7 +355,7 @@ class _SendNftState extends State<SendNft> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         AppTheme.getInstance().failTransactionColors(),
-                        12.sp,
+                        12,
                         FontWeight.w400,
                       ),
                     );
@@ -392,7 +392,7 @@ class _SendNftState extends State<SendNft> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         AppTheme.getInstance().failTransactionColors(),
-                        12.sp,
+                        12,
                         FontWeight.w400,
                       ),
                     );

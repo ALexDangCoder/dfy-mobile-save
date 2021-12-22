@@ -53,7 +53,7 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
                         ? S.current.success
                         : S.current.success_import,
                     style: TextStyle(
-                      fontSize: 20.sp,
+                      fontSize: 20,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -82,7 +82,7 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
                             style: TextStyle(
                               color: AppTheme.getInstance().whiteColor(),
                               fontWeight: FontWeight.bold,
-                              fontSize: 32.sp,
+                              fontSize: 32,
                             ),
                           ),
                           SizedBox(

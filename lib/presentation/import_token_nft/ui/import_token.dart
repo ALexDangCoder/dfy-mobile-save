@@ -76,7 +76,7 @@ class ImportTokenScreen extends StatelessWidget {
                             S.current.import_token,
                             style: textNormalCustom(
                               null,
-                              20.sp,
+                              20,
                               FontWeight.bold,
                             ),
                           ),
@@ -104,7 +104,7 @@ class ImportTokenScreen extends StatelessWidget {
                                 S.current.enter_token,
                                 style: textNormalCustom(
                                   null,
-                                  14.sp,
+                                  14,
                                   FontWeight.bold,
                                 ),
                               ),
@@ -116,7 +116,7 @@ class ImportTokenScreen extends StatelessWidget {
                                 S.current.choose_token,
                                 style: textNormalCustom(
                                   null,
-                                  14.sp,
+                                  14,
                                   FontWeight.bold,
                                 ),
                               ),
