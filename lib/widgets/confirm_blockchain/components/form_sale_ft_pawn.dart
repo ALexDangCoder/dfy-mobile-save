@@ -62,12 +62,12 @@ class FormSaleFtPawn extends StatelessWidget {
                   txtRight: '$quantity',
                   styleLeft: textNormalCustom(
                     AppTheme.getInstance().currencyDetailTokenColor(),
-                    16.sp,
+                    16,
                     FontWeight.w400,
                   ),
                   styleRight: textNormalCustom(
                     AppTheme.getInstance().whiteColor(),
-                    16.sp,
+                    16,
                     FontWeight.w400,
                   ),
                 ),
@@ -77,12 +77,12 @@ class FormSaleFtPawn extends StatelessWidget {
                   txtRight: formatValue.format(pricePerOne),
                   styleLeft: textNormalCustom(
                     AppTheme.getInstance().currencyDetailTokenColor(),
-                    16.sp,
+                    16,
                     FontWeight.w400,
                   ),
                   styleRight: textNormalCustom(
                     AppTheme.getInstance().whiteColor(),
-                    16.sp,
+                    16,
                     FontWeight.w400,
                   ),
                 ),
@@ -92,12 +92,12 @@ class FormSaleFtPawn extends StatelessWidget {
                   txtRight: '${formatValue.format(totalPayment)} DFY',
                   styleLeft: textNormalCustom(
                     AppTheme.getInstance().currencyDetailTokenColor(),
-                    16.sp,
+                    16,
                     FontWeight.w400,
                   ),
                   styleRight: textNormalCustom(
                     AppTheme.getInstance().fillColor(),
-                    20.sp,
+                    20,
                     FontWeight.w600,
                   ),
                 ),
@@ -126,12 +126,12 @@ class FormSaleFtPawn extends StatelessWidget {
                 txtRight: '$loanToVl%',
                 styleLeft: textNormalCustom(
                   AppTheme.getInstance().currencyDetailTokenColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
                 styleRight: textNormalCustom(
                   AppTheme.getInstance().textThemeColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
               ),
@@ -141,12 +141,12 @@ class FormSaleFtPawn extends StatelessWidget {
                 txtRight: '${formatValue.format(loanAmount)} DFY',
                 styleLeft: textNormalCustom(
                   AppTheme.getInstance().currencyDetailTokenColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
                 styleRight: textNormalCustom(
                   AppTheme.getInstance().whiteColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
               ),
@@ -156,12 +156,12 @@ class FormSaleFtPawn extends StatelessWidget {
                 txtRight: '${formatValue.format(interestRate)} %',
                 styleLeft: textNormalCustom(
                   AppTheme.getInstance().currencyDetailTokenColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
                 styleRight: textNormalCustom(
                   AppTheme.getInstance().whiteColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
               ),
@@ -171,12 +171,12 @@ class FormSaleFtPawn extends StatelessWidget {
                 txtRight: '${formatValue.format(ltvLiquidThreshold)} %',
                 styleLeft: textNormalCustom(
                   AppTheme.getInstance().currencyDetailTokenColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
                 styleRight: textNormalCustom(
                   AppTheme.getInstance().whiteColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
               ),
@@ -186,12 +186,12 @@ class FormSaleFtPawn extends StatelessWidget {
                 txtRight: '${formatValue.format(duration)} months',
                 styleLeft: textNormalCustom(
                   AppTheme.getInstance().currencyDetailTokenColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
                 styleRight: textNormalCustom(
                   AppTheme.getInstance().whiteColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
               ),
@@ -201,12 +201,12 @@ class FormSaleFtPawn extends StatelessWidget {
                 txtRight: '$repaymentCurrent',
                 styleLeft: textNormalCustom(
                   AppTheme.getInstance().currencyDetailTokenColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
                 styleRight: textNormalCustom(
                   AppTheme.getInstance().whiteColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
               ),
@@ -216,12 +216,12 @@ class FormSaleFtPawn extends StatelessWidget {
                 txtRight: '$recurringInterest',
                 styleLeft: textNormalCustom(
                   AppTheme.getInstance().currencyDetailTokenColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
                 styleRight: textNormalCustom(
                   AppTheme.getInstance().whiteColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
               ),

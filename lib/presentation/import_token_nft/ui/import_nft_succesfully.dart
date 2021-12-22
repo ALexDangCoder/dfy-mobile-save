@@ -43,7 +43,7 @@ class NFTSuccessfully extends StatelessWidget {
                     S.current.nft_successfully,
                     style: textNormalCustom(
                       Colors.white,
-                      20.sp,
+                      20,
                       FontWeight.bold,
                     ),
                   ),
@@ -72,7 +72,7 @@ class NFTSuccessfully extends StatelessWidget {
                             S.current.congratulation,
                             style: textNormalCustom(
                               Colors.white,
-                              32.sp,
+                              32,
                               FontWeight.bold,
                             ),
                           ),

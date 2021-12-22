@@ -50,7 +50,7 @@ class FromText extends StatelessWidget {
                   title.handleString(),
                   style: textNormal(
                     AppTheme.getInstance().whiteColor(),
-                    16.sp,
+                    16,
                   ),
                 ),
               ),
