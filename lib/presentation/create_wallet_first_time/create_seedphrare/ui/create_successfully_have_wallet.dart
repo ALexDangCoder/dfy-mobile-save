@@ -52,10 +52,10 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
                     type == KeyType.CREATE
                         ? S.current.success
                         : S.current.success_import,
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                    style: textNormalCustom(
+                      Colors.white,
+                      20,
+                      FontWeight.bold,
                     ),
                   ),
                 ),
@@ -79,10 +79,10 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
                           spaceH20,
                           Text(
                             S.current.congratulation,
-                            style: TextStyle(
-                              color: AppTheme.getInstance().whiteColor(),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 32,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              32,
+                              FontWeight.bold,
                             ),
                           ),
                           SizedBox(
@@ -95,7 +95,7 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
                 ),
                 Center(
                   child: GestureDetector(
-                    onTap: ()  {
+                    onTap: () {
                       if (type == KeyType.CREATE_HAVE_WALLET) {
                         Navigator.push(
                           context,
@@ -107,7 +107,7 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
                           ),
                         );
                       } else {
-                         Navigator.push(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => MainScreen(
