@@ -49,7 +49,7 @@ class FromSwitchFace extends StatelessWidget {
             title,
             style: textNormal(
               AppTheme.getInstance().whiteColor(),
-              16.sp,
+              16,
             ),
           ),
         ),

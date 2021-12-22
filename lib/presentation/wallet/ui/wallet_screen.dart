@@ -74,6 +74,12 @@ class _WalletState extends State<WalletScreen>
   }
 
   @override
+  void dispose() {
+    cubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final String addressWallet = cubit.addressWalletCore;
     if (widget.index == 1) {
@@ -494,7 +500,7 @@ class _WalletState extends State<WalletScreen>
           child: Row(
             children: [
               GestureDetector(
-                onLongPress: () {
+                onTap: () {
                   Clipboard.setData(
                     ClipboardData(text: cubit.addressWalletCore),
                   ).then((_) {

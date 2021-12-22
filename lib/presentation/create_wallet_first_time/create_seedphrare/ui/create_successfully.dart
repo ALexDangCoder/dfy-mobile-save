@@ -35,10 +35,36 @@ class CreateSuccessfully extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.only(top: 16.h),
+        color: AppTheme.getInstance().bgBtsColor(),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainScreen(
+                  index: 1,
+                  wallet: wallet,
+                ),
+              ),
+            );
+            bLocCreateSeedPhrase.setConfig(
+              isAppLock: bLocCreateSeedPhrase.isCheckAppLock.value,
+              isFaceID: bLocCreateSeedPhrase.isCheckTouchID.value,
+            );
+            bLocCreateSeedPhrase.savePassword(password: passWord);
+          },
+          child: ButtonGold(
+            title: S.current.complete,
+            isEnable: true,
+          ),
+        ),
+      ),
       body: ListView(
         children: [
           SizedBox(
-            height: 48.h,
+            height: 8.h,
           ),
           _Body(
             bLocCreateSeedPhrase: bLocCreateSeedPhrase,
@@ -92,7 +118,7 @@ class _BodyState extends State<_Body> {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
             height: 18.h,
@@ -103,7 +129,7 @@ class _BodyState extends State<_Body> {
                   ? S.current.success
                   : S.current.success_import,
               style: TextStyle(
-                fontSize: 20.sp,
+                fontSize: 20,
                 color: AppTheme.getInstance().whiteColor(),
                 fontWeight: FontWeight.bold,
               ),
@@ -112,87 +138,75 @@ class _BodyState extends State<_Body> {
           spaceH20,
           line,
           spaceH24,
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 228.h,
-                    width: 305.w,
-                    child: Image.asset(ImageAssets.frameGreen),
-                  ),
-                  SizedBox(
-                    height: 22.h,
-                  ),
-                  Text(
-                    S.current.congratulation,
-                    style: TextStyle(
-                      color: AppTheme.getInstance().whiteColor(),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32.sp,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 111.h,
-                  ),
-                  StreamBuilder(
-                    stream: widget.bLocCreateSeedPhrase.isCheckTouchID,
-                    builder: (context, AsyncSnapshot<bool> snapshot) {
-                      return FromSwitchFace(
-                        bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
-                        title: S.current.use_face,
-                        isCheck: snapshot.data ?? false,
-                        urlPrefixIcon: ImageAssets.ic_face_id,
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  StreamBuilder(
-                    stream: widget.bLocCreateSeedPhrase.isCheckAppLock,
-                    builder: (context, AsyncSnapshot<bool> snapshot) {
-                      return FromSwitchAppLock(
-                        bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
-                        title: S.current.wallet_app_lock,
-                        isCheck: snapshot.data ?? false,
-                        urlPrefixIcon: ImageAssets.ic_lock,
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: 56.h,
-                  ),
-                ],
-              ),
+          SizedBox(
+            height: 228.h,
+            width: 305.w,
+            child: Image.asset(ImageAssets.frameGreen),
+          ),
+          SizedBox(
+            height: 22.h,
+          ),
+          Text(
+            S.current.congratulation,
+            style: TextStyle(
+              color: AppTheme.getInstance().whiteColor(),
+              fontWeight: FontWeight.bold,
+              fontSize: 32,
             ),
           ),
-          Center(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MainScreen(
-                      index: 1,
-                      wallet: widget.wallet,
-                    ),
-                  ),
-                );
-                widget.bLocCreateSeedPhrase.setConfig(
-                  isAppLock: widget.bLocCreateSeedPhrase.isCheckAppLock.value,
-                  isFaceID: widget.bLocCreateSeedPhrase.isCheckTouchID.value,
-                );
-                widget.bLocCreateSeedPhrase
-                    .savePassword(password: widget.passWord);
-              },
-              child: ButtonGold(
-                title: S.current.complete,
-                isEnable: true,
-              ),
-            ),
+          SizedBox(
+            height: 111.h,
           ),
-          spaceH38,
+          StreamBuilder(
+            stream: widget.bLocCreateSeedPhrase.isCheckTouchID,
+            builder: (context, AsyncSnapshot<bool> snapshot) {
+              return FromSwitchFace(
+                bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
+                title: S.current.use_face,
+                isCheck: snapshot.data ?? false,
+                urlPrefixIcon: ImageAssets.ic_face_id,
+              );
+            },
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          StreamBuilder(
+            stream: widget.bLocCreateSeedPhrase.isCheckAppLock,
+            builder: (context, AsyncSnapshot<bool> snapshot) {
+              return FromSwitchAppLock(
+                bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
+                title: S.current.wallet_app_lock,
+                isCheck: snapshot.data ?? false,
+                urlPrefixIcon: ImageAssets.ic_lock,
+              );
+            },
+          ),
+          // Center(
+          //   child: GestureDetector(
+          //     onTap: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => MainScreen(
+          //             index: 1,
+          //             wallet: widget.wallet,
+          //           ),
+          //         ),
+          //       );
+          //       widget.bLocCreateSeedPhrase.setConfig(
+          //         isAppLock: widget.bLocCreateSeedPhrase.isCheckAppLock.value,
+          //         isFaceID: widget.bLocCreateSeedPhrase.isCheckTouchID.value,
+          //       );
+          //       widget.bLocCreateSeedPhrase
+          //           .savePassword(password: widget.passWord);
+          //     },
+          //     child: ButtonGold(
+          //       title: S.current.complete,
+          //       isEnable: true,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

@@ -36,7 +36,7 @@ class TransactionSubmitFail extends StatelessWidget {
               S.current.transaction_fail,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
-                16.sp,
+                16,
                 FontWeight.w600,
               ),
             ),

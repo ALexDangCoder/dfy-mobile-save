@@ -60,15 +60,22 @@ class MainActivity : FlutterFragmentActivity() {
                         walletName = walletName
                     )
                 }
-                "earseAllWallet" -> {
-                    val type = call.argument<String>("type") ?: return@setMethodCallHandler
-                    this.earseAllWallet(channel = channel, type = type)
-                }
+//                "earseAllWallet" -> {
+//                    val type = call.argument<String>("type") ?: return@setMethodCallHandler
+//                    this.earseAllWallet(channel = channel, type = type)
+//                }
                 "importWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
                     val content = call.argument<String>("content")
                         ?: return@setMethodCallHandler
-                    this.importWallet(channel = channel, type = type, content = content)
+                    val typeEarseWallet = call.argument<String>("typeEarseWallet")
+                        ?: ""
+                    this.importWallet(
+                        channel = channel,
+                        type = type,
+                        content = content,
+                        typeEarseWallet = typeEarseWallet
+                    )
                 }
                 "getListWallets" -> {
                     this.getListWallets(channel = channel)
@@ -85,12 +92,15 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("walletAddress") ?: return@setMethodCallHandler
                     val privateKey =
                         call.argument<String>("privateKey") ?: return@setMethodCallHandler
+                    val typeEarseWallet =
+                        call.argument<String>("typeEarseWallet") ?: ""
                     this.storeWallet(
                         channel = channel,
                         seedPhrase = seedPhrase,
                         walletName = walletName,
                         walletAddress = walletAddress,
-                        privateKey = privateKey
+                        privateKey = privateKey,
+                        typeEarseWallet = typeEarseWallet,
                     )
                 }
                 "chooseWallet" -> {

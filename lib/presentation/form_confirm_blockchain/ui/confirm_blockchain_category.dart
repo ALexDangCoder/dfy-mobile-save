@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -11,7 +10,6 @@ import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -196,6 +194,8 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               ),
             );
           } else if (state is FormBlockchainSendTokenSuccess) {
+            //Pop loading dialog
+            Navigator.pop(context);
             showDialog(
               context: context,
               builder: (_) => const AlertDialog(
@@ -203,22 +203,31 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 content: TransactionSubmitSuccess(),
               ),
             );
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Navigator.pop(context, true);
+            //Pop success dialog
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pop(context);
+              //Pop confirm blockchain
+              Navigator.pop(context);
+              //Pop confirm SendToken
+              Navigator.pop(context,true);
+            });
           } else {
-            //todo send token fail
+            //Pop loading dialog
+            Navigator.pop(context);
             showDialog(
               context: context,
-              builder: (_) {
-                return const AlertDialog(
-                  backgroundColor: Colors.transparent,
-                  content: TransactionSubmitFail(),
-                );
-              });
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Navigator.pop(context, true);
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmitFail(),
+              ),
+            );
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pop(context);
+              //Pop confirm blockchain
+              Navigator.pop(context);
+              //Pop confirm SendToken
+              Navigator.pop(context,true);
+            });
           }
         },
         bloc: cubitFormCustomizeGasFee,

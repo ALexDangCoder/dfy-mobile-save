@@ -286,7 +286,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
               obscureText: snapshot.data ?? false,
               style: textNormal(
                 AppTheme.getInstance().textThemeColor(),
-                16.sp,
+                16,
               ),
               cursorColor: AppTheme.getInstance().textThemeColor(),
               controller: password,
@@ -294,7 +294,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 hintText: hintText,
                 hintStyle: textNormal(
                   AppTheme.getInstance().disableColor(),
-                  14.sp,
+                  14,
                 ),
                 suffixIcon: InkWell(
                   onTap: () {
@@ -361,7 +361,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 hintText: hintText,
                 hintStyle: textNormal(
                   AppTheme.getInstance().disableColor(),
-                  14.sp,
+                  14,
                 ),
                 suffixIcon: InkWell(
                   onTap: () {

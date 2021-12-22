@@ -231,7 +231,7 @@ class _SendTokenState extends State<SendToken> {
           textAlignVertical: TextAlignVertical.center,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
-            16.sp,
+            16,
           ),
           cursorColor: AppTheme.getInstance().textThemeColor(),
           decoration: InputDecoration(
@@ -239,12 +239,12 @@ class _SendTokenState extends State<SendToken> {
             hintStyle: readOnly
                 ? textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),
-                    16.sp,
+                    16,
                     FontWeight.w400,
                   )
                 : textNormal(
                     AppTheme.getInstance().disableColor(),
-                    14.sp,
+                    14,
                   ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -301,14 +301,14 @@ class _SendTokenState extends State<SendToken> {
           textAlignVertical: TextAlignVertical.center,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
-            16.sp,
+            16,
           ),
           cursorColor: Colors.white,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: textNormal(
               AppTheme.getInstance().disableColor(),
-              14.sp,
+              14,
             ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -381,7 +381,7 @@ class _SendTokenState extends State<SendToken> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         const Color.fromRGBO(255, 108, 108, 1),
-                        12.sp,
+                        12,
                         FontWeight.w400,
                       ),
                     );
@@ -418,7 +418,7 @@ class _SendTokenState extends State<SendToken> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         const Color.fromRGBO(255, 108, 108, 1),
-                        12.sp,
+                        12,
                         FontWeight.w400,
                       ),
                     );

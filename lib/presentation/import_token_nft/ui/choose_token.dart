@@ -46,7 +46,7 @@ class _ChooseTokenState extends State<ChooseToken> {
                         S.current.no_result_found,
                         style: textNormalCustom(
                           Colors.white.withOpacity(0.7),
-                          20.sp,
+                          20,
                           FontWeight.w700,
                         ),
                       )
@@ -108,7 +108,7 @@ class _ChooseTokenState extends State<ChooseToken> {
               widget.bloc.getListTokenModel.value[index].nameToken,
               style: textNormalCustom(
                 Colors.white,
-                16.sp,
+                16,
                 FontWeight.w600,
               ),
             ),
@@ -119,7 +119,7 @@ class _ChooseTokenState extends State<ChooseToken> {
           widget.bloc.getListTokenModel.value[index].nameShortToken,
           style: textNormalCustom(
             const Color.fromRGBO(255, 255, 255, 0.5),
-            16.sp,
+            16,
             FontWeight.w400,
           ),
           textAlign: TextAlign.start,
@@ -153,7 +153,7 @@ class _ChooseTokenState extends State<ChooseToken> {
               widget.bloc.getListTokenModel.value[index].nameToken,
               style: textNormalCustom(
                 Colors.white,
-                16.sp,
+                16,
                 FontWeight.w600,
               ),
             ),
@@ -164,7 +164,7 @@ class _ChooseTokenState extends State<ChooseToken> {
           widget.bloc.getListTokenModel.value[index].nameShortToken,
           style: textNormalCustom(
             const Color.fromRGBO(255, 255, 255, 0.5),
-            16.sp,
+            16,
             FontWeight.w400,
           ),
         ),

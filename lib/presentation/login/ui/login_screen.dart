@@ -53,11 +53,10 @@ class _LoginScreenState extends State<LoginScreen> {
     _cubit.getConfig();
     _cubit.checkBiometrics();
   }
-
   @override
   void dispose() {
-    controller.dispose();
     _cubit.close();
+    controller.dispose();
     super.dispose();
   }
 
@@ -295,7 +294,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(
+                          Navigator.of(context)
+                              .push(
                             HeroDialogRoute(
                               builder: (context) {
                                 return const AlertPopUp(
@@ -304,7 +304,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               isNonBackground: false,
                             ),
-                          );
+                          )
+                              .whenComplete(() {
+                            trustWalletChannel.setMethodCallHandler(
+                              _cubit.nativeMethodCallBackTrustWallet,
+                            );
+                          });
                         },
                         child: Text(
                           S.current.new_wallet,
@@ -330,7 +335,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(
+                          Navigator.of(context)
+                              .push(
                             HeroDialogRoute(
                               builder: (context) {
                                 return const AlertPopUp(
@@ -339,7 +345,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               isNonBackground: false,
                             ),
-                          );
+                          )
+                              .whenComplete(() {
+                            trustWalletChannel.setMethodCallHandler(
+                              _cubit.nativeMethodCallBackTrustWallet,
+                            );
+                          });
                         },
                         child: Text(
                           S.current.import_seed_phrase,
@@ -363,7 +374,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _showDialog({String? alert, String? text}) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext ctx) {
         // return object of type Dialog
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -413,7 +424,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(ctx).pop();
                 },
               ),
             ),

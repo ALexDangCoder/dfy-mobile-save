@@ -44,9 +44,7 @@ class _SelectAccState extends State<SelectAcc> {
       backgroundColor: Colors.transparent,
       body: ListView(
         children: [
-          SizedBox(
-            height: 48.h,
-          ),
+          spaceH8,
           Container(
             height: 764.h,
             width: 375.w,
@@ -85,7 +83,7 @@ class _SelectAccState extends State<SelectAcc> {
                           S.current.select_acc,
                           style: textNormalCustom(
                             Colors.white,
-                            20.sp,
+                            20,
                             FontWeight.bold,
                           ),
                         ),
@@ -206,7 +204,7 @@ class _SelectAccState extends State<SelectAcc> {
                                                               style:
                                                                   textNormalCustom(
                                                                 null,
-                                                                16.sp,
+                                                                16,
                                                                 FontWeight.w700,
                                                               ),
                                                             ),
@@ -225,7 +223,7 @@ class _SelectAccState extends State<SelectAcc> {
                                                                 textNormalCustom(
                                                               AppTheme.getInstance()
                                                                   .whiteWithOpacityFireZero(),
-                                                              14.sp,
+                                                              14,
                                                               FontWeight.w400,
                                                             ),
                                                           ),
@@ -235,7 +233,7 @@ class _SelectAccState extends State<SelectAcc> {
                                                         '${snapshot.data?[index].amountWallet?.toStringAsFixed(5)} BNB',
                                                         style: textNormalCustom(
                                                           null,
-                                                          16.sp,
+                                                          16,
                                                           FontWeight.w400,
                                                         ),
                                                       ),
@@ -277,7 +275,7 @@ class _SelectAccState extends State<SelectAcc> {
                                                               style: textNormal(
                                                                 AppTheme.getInstance()
                                                                     .whiteWithOpacityFireZero(),
-                                                                11.sp,
+                                                                11,
                                                               ).copyWith(
                                                                 height: 1.2,
                                                               ),
