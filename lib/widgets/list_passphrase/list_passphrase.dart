@@ -24,11 +24,15 @@ class ListPassPhrase extends StatelessWidget {
           runSpacing: 12.h,
           children: List<Widget>.generate(
             listTitle.length,
-            (int index) {
+                (int index) {
               return GestureDetector(
                 onTap: () {
                   bLocCreateSeedPhrase.addListBoxSeedPhrase(listTitle[index]);
                   bLocCreateSeedPhrase.removeListSeedPhrase(index);
+                  if (listTitle.isEmpty) {
+                    bLocCreateSeedPhrase.getCheck();
+                    bLocCreateSeedPhrase.getIsSeedPhraseImport();
+                  }
                 },
                 child: ItemSeedPhrase(title: listTitle[index]),
               );

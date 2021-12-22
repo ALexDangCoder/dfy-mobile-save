@@ -41,11 +41,17 @@ class BoxListPassWordPhraseConfirm extends StatelessWidget {
           runSpacing: 12.h,
           children: List<Widget>.generate(
             listTitle.length,
-            (int index) {
+                (int index) {
               return GestureDetector(
                 onTap: () {
                   bLocCreateSeedPhrase.addListSeedPhrase(listTitle[index]);
                   bLocCreateSeedPhrase.removeListBoxSeedPhrase(index);
+
+                  if (listTitle.length != 12) {
+                    bLocCreateSeedPhrase.isSeedPhraseImportFailed.sink
+                        .add(false);
+                    bLocCreateSeedPhrase.isCheckButtonConfirm.sink.add(false);
+                  }
                 },
                 child: ItemSeedPhrase(
                   title: '${index + 1}. ${listTitle[index]}',
