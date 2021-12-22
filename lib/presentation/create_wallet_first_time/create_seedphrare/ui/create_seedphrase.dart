@@ -35,7 +35,7 @@ class CreateSeedPhrase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (bloc.passPhrase.isEmpty) {
-      bloc.generateWallet();
+      bloc.generateWallet(typeEarseWallet);
     }
     trustWalletChannel.setMethodCallHandler(
       bloc.nativeMethodCallBackTrustWallet,
