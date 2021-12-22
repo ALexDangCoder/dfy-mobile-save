@@ -154,14 +154,16 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 backgroundColor: Colors.transparent,
                 content: TransactionSubmitSuccess(),
               ),
-            ).then((value) => Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
-                    ),
+            ).then(
+              (value) => Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const MainScreen(
+                    index: 1,
                   ),
-                  (route) => route.isFirst,
-                ));
+                ),
+                (route) => route.isFirst,
+              ),
+            );
           } else if (state is FormBlockchainSendNftLoading) {
             showDialog(
               context: context,
@@ -209,7 +211,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               //Pop confirm blockchain
               Navigator.pop(context);
               //Pop confirm SendToken
-              Navigator.pop(context,true);
+              Navigator.pop(context, true);
             });
           } else {
             //Pop loading dialog
@@ -226,7 +228,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               //Pop confirm blockchain
               Navigator.pop(context);
               //Pop confirm SendToken
-              Navigator.pop(context,true);
+              Navigator.pop(context, true);
             });
           }
         },

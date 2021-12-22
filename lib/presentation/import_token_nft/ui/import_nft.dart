@@ -3,7 +3,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft_succesfully.dart';
-import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
@@ -150,46 +149,46 @@ class _BodyState extends State<_Body> {
                   builder: (context, snapshot) {
                     return snapshot.data ?? false
                         ? ButtonGradient(
-                      onPressed: () async {
-                        if (_idController.text.isEmpty) {
-                          widget.bloc.checkImportNft(
-                            contract: _contractController.text,
-                            address: widget.bloc.addressWalletCore,
-                          );
-                        } else {
-                          final id = int.parse(_idController.text);
-                          widget.bloc.checkImportNft(
-                            contract: _contractController.text,
-                            address: widget.bloc.addressWalletCore,
-                            id: id,
-                          );
-                        }
-                      },
-                      gradient: RadialGradient(
-                        center: const Alignment(0.5, -0.5),
-                        radius: 4,
-                        colors:
-                        AppTheme.getInstance().gradientButtonColor(),
-                      ),
-                      child: Text(
-                        S.current.import,
-                        style: textNormal(
-                          AppTheme.getInstance().textThemeColor(),
-                          20,
-                        ),
-                      ),
-                    )
+                            onPressed: () async {
+                              if (_idController.text.isEmpty) {
+                                widget.bloc.checkImportNft(
+                                  contract: _contractController.text,
+                                  address: widget.bloc.addressWalletCore,
+                                );
+                              } else {
+                                final id = int.parse(_idController.text);
+                                widget.bloc.checkImportNft(
+                                  contract: _contractController.text,
+                                  address: widget.bloc.addressWalletCore,
+                                  id: id,
+                                );
+                              }
+                            },
+                            gradient: RadialGradient(
+                              center: const Alignment(0.5, -0.5),
+                              radius: 4,
+                              colors:
+                                  AppTheme.getInstance().gradientButtonColor(),
+                            ),
+                            child: Text(
+                              S.current.import,
+                              style: textNormal(
+                                AppTheme.getInstance().textThemeColor(),
+                                20,
+                              ),
+                            ),
+                          )
                         : ErrorButton(
-                      child: Center(
-                        child: Text(
-                          S.current.import,
-                          style: textNormal(
-                            AppTheme.getInstance().textThemeColor(),
-                            20,
-                          ),
-                        ),
-                      ),
-                    );
+                            child: Center(
+                              child: Text(
+                                S.current.import,
+                                style: textNormal(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  20,
+                                ),
+                              ),
+                            ),
+                          );
                   },
                 ),
               ),
@@ -217,10 +216,10 @@ class _BodyState extends State<_Body> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 108, 108, 1),
+                      style: textNormalCustom(
+                        const Color.fromRGBO(255, 108, 108, 1),
+                        14,
+                        FontWeight.w400,
                       ),
                     );
                   },
@@ -249,10 +248,10 @@ class _BodyState extends State<_Body> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 108, 108, 1),
+                      style: textNormalCustom(
+                        const Color.fromRGBO(255, 108, 108, 1),
+                        14,
+                        FontWeight.w400,
                       ),
                     );
                   },

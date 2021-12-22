@@ -109,11 +109,6 @@ class _SetupPassWordState extends State<SetupPassWord> {
                       ),
                       onTap: () {
                         if (snapshot.data ?? false) {
-                          // isValidPassCubit.showTxtWarningNewPW(password.text);
-                          // isValidPassCubit.showTxtWarningConfirmPW(
-                          //   confirmPassword.text,
-                          //   newPW: password.text,
-                          // );
                           if (isValidPassCubit.validateAll()) {
                             Navigator.push(
                               context,

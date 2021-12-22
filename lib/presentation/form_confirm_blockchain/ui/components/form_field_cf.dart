@@ -73,7 +73,8 @@ class FormFieldBlockChain extends StatelessWidget {
               child: TextFormField(
                 // textAlignVertical: TextAlignVertical.center,
                 textAlign: TextAlign.right,
-                keyboardType: TextInputType.number,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 controller: txtController,
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor(),
@@ -89,6 +90,11 @@ class FormFieldBlockChain extends StatelessWidget {
                   border: InputBorder.none,
                 ),
                 onChanged: (value) {
+                  if (formGasFee == FORM_GAS_FEE.LIMIT) {
+                    cubit.validateGasLimit(value);
+                  } else {
+                    cubit.validateGasPrice(value);
+                  }
                   late double result;
                   late double valueHandle;
                   if (value.isEmpty) {

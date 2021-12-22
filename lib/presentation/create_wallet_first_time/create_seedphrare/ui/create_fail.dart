@@ -13,9 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateFail extends StatelessWidget {
-  const CreateFail({Key? key, required this.type, this.message}) : super(key: key);
+  const CreateFail({Key? key, required this.type}) : super(key: key);
   final KeyType type;
-  final String? message;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +49,7 @@ class CreateFail extends StatelessWidget {
                         ? S.current.create_new_wallet_failed
                         : S.current.import_new_wallet_failed,
                     style: textNormalCustom(
-                      AppTheme.getInstance().textThemeColor(),
+                      Colors.white,
                       20,
                       FontWeight.bold,
                     ),
@@ -74,18 +73,15 @@ class CreateFail extends StatelessWidget {
                             child: Image.asset(ImageAssets.img_fail),
                           ),
                           spaceH20,
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
-                            child: Center(
-                              child: Text(
-                                message ?? '',
-                                style: TextStyle(
-                                  color: AppTheme.getInstance().whiteColor(),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 32,
-                                ),
-                                textAlign: TextAlign.center,
+                          Center(
+                            child: Text(
+                              S.current.oopps_omething_went_wrong,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().whiteColor(),
+                                32,
+                                FontWeight.bold,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                           SizedBox(

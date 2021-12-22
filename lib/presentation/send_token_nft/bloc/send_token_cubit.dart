@@ -276,7 +276,13 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       isShowCFBlockChainSink.add(false);
       isValidAmountFormSink.add(true);
       txtInvalidAmountSink.add(S.current.amount_required);
-    } else if (double.parse(value) > amountBalance) {
+    } else if(!regexAmount.hasMatch(value)) {
+      _flagAmount = false;
+      isShowCFBlockChainSink.add(false);
+      isValidAmountFormSink.add(true);
+      txtInvalidAmountSink.add(S.current.amount_invalid);
+    }
+    else if (double.parse(value) > amountBalance) {
       _flagAmount = false;
       isShowCFBlockChainSink.add(false);
       isValidAmountFormSink.add(true);
