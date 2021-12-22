@@ -553,11 +553,10 @@ fun Context.importNft(
 ) {
     val appPreference = AppPreference(this)
     val listNftSupport = ArrayList<NftModel>()
+
     val objectNft = JSONObject(jsonNft)
     val contractNft = objectNft.getString("contract")
-    var checkItemNft =
-        appPreference.getListNft()
-            .firstOrNull { it.walletAddress == walletAddress && it.collectionAddress == contractNft }
+    var checkItemNft = appPreference.getListNft().firstOrNull { it.walletAddress == walletAddress && it.collectionAddress == contractNft }
     if (checkItemNft == null) {
         checkItemNft = NftModel()
         checkItemNft.walletAddress = walletAddress
