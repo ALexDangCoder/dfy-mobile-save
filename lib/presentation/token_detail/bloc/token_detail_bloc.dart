@@ -1,3 +1,4 @@
+
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/model/transaction.dart';
 import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
@@ -92,13 +93,13 @@ class TokenDetailBloc {
   Future<void> checkShowLoading(ModelToken token) async {
     _showLoadingSubject.sink.add(true);
     await Future.delayed(const Duration(seconds: 1));
-    await getToken(token);
+    await getToken(token: token);
     await getHistory(token.tokenAddress);
     _showLoadingSubject.sink.add(false);
   }
 
   ///GET TOKEN DETAIL
-  Future<void> getToken(ModelToken token) async {
+  Future<void> getToken({required ModelToken token}) async {
     if (token.nameShortToken == 'BNB') {
       token.balanceToken = await _web3client.getBalanceOfBnb(
         ofAddress: walletAddress,
