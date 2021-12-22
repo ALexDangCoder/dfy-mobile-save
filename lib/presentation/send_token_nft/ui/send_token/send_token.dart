@@ -10,6 +10,7 @@ import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendToken extends StatefulWidget {
@@ -296,7 +297,7 @@ class _SendTokenState extends State<SendToken> {
             );
           },
           controller: txtAmount,
-          keyboardType: TextInputType.number,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
           textAlignVertical: TextAlignVertical.center,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
@@ -314,7 +315,8 @@ class _SendTokenState extends State<SendToken> {
               child: (isAmount && !isQuantity)
                   ? InkWell(
                       onTap: () {
-                        txtAmount.text = modelToken!.balanceToken.toString();
+                        txtAmount.text =
+                            modelToken!.balanceToken.toStringAsFixed(4);
                         tokenCubit.checkHaveVLAmountFormToken(
                           txtAmount.text,
                           amountBalance: widget.modelToken.balanceToken,

@@ -24,7 +24,7 @@ class CheckPassCubit extends Cubit<CheckPassState> {
       BehaviorSubject<String>.seeded('');
   final BehaviorSubject<bool> _showConfirmPW =
       BehaviorSubject<bool>.seeded(true);
-  final BehaviorSubject<bool> _isEnableBtn = BehaviorSubject<bool>.seeded(true);
+  final BehaviorSubject<bool> _isEnableBtn = BehaviorSubject<bool>.seeded(false);
 
   //stream
   Stream<bool> get isEnableBtnStream => _isEnableBtn.stream;
