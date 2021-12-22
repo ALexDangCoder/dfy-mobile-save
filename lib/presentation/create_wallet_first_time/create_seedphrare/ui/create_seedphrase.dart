@@ -23,11 +23,13 @@ enum TypeScreen { one, two }
 class CreateSeedPhrase extends StatelessWidget {
   final BLocCreateSeedPhrase bloc;
   final TypeScreen type;
+  final String? typeEarseWallet;
 
   const CreateSeedPhrase({
     Key? key,
     required this.bloc,
     required this.type,
+    this.typeEarseWallet,
   }) : super(key: key);
 
   @override
@@ -49,6 +51,7 @@ class CreateSeedPhrase extends StatelessWidget {
           _Body(
             bloc: bloc,
             typeScreen: type,
+            typeEarseWallet: typeEarseWallet,
           ),
         ],
       ),
@@ -61,9 +64,11 @@ class _Body extends StatefulWidget {
     Key? key,
     required this.bloc,
     required this.typeScreen,
+    this.typeEarseWallet,
   }) : super(key: key);
   final BLocCreateSeedPhrase bloc;
   final TypeScreen typeScreen;
+  final String? typeEarseWallet;
 
   @override
   _BodyState createState() => _BodyState();
@@ -303,6 +308,7 @@ class _BodyState extends State<_Body> {
                                 return CreateSeedPhraseConfirm(
                                   typeScreen: widget.typeScreen,
                                   bLocCreateSeedPhrase: widget.bloc,
+                                  typeEarseWallet: widget.typeEarseWallet,
                                 );
                               },
                             ),

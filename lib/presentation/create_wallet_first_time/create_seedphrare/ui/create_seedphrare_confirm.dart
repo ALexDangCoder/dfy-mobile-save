@@ -25,10 +25,12 @@ class CreateSeedPhraseConfirm extends StatelessWidget {
     Key? key,
     required this.bLocCreateSeedPhrase,
     required this.typeScreen,
+    this.typeEarseWallet,
   }) : super(key: key);
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
   final TypeScreen typeScreen;
+  final String? typeEarseWallet;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class CreateSeedPhraseConfirm extends StatelessWidget {
         child: _Body(
           typeScreen: typeScreen,
           bLocCreateSeedPhrase: bLocCreateSeedPhrase,
+          typeEarseWallet: typeEarseWallet,
         ),
       ),
     );
@@ -51,10 +54,12 @@ class _Body extends StatefulWidget {
     Key? key,
     required this.bLocCreateSeedPhrase,
     required this.typeScreen,
+    this.typeEarseWallet,
   }) : super(key: key);
 
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
   final TypeScreen typeScreen;
+  final String? typeEarseWallet;
 
   @override
   _BodyState createState() => _BodyState();
@@ -222,13 +227,13 @@ class _BodyState extends State<_Body> {
                           StreamBuilder(
                             stream: bLocCreateSeedPhrase.listSeedPhrase,
                             builder: (
-                                context,
-                                AsyncSnapshot<List<String>> snapshot,
-                                ) {
+                              context,
+                              AsyncSnapshot<List<String>> snapshot,
+                            ) {
                               final listSeedPhrase = snapshot.data;
                               return Container(
                                 margin:
-                                EdgeInsets.only(right: 16.w, left: 16.w),
+                                    EdgeInsets.only(right: 16.w, left: 16.w),
                                 child: BoxListPassWordPhraseConfirm(
                                   listTitle: listSeedPhrase ?? [],
                                   bLocCreateSeedPhrase: bLocCreateSeedPhrase,
@@ -239,20 +244,20 @@ class _BodyState extends State<_Body> {
                           spaceH4,
                           StreamBuilder(
                             stream:
-                            bLocCreateSeedPhrase.isSeedPhraseImportFailed,
+                                bLocCreateSeedPhrase.isSeedPhraseImportFailed,
                             builder: (context, AsyncSnapshot<bool> snapshot) {
                               return Container(
                                 margin:
-                                EdgeInsets.only(right: 16.w, left: 16.w),
+                                    EdgeInsets.only(right: 16.w, left: 16.w),
                                 width: 343.w,
                                 child: snapshot.data ?? false
                                     ? Text(
-                                  S.current.invalid_order,
-                                  style: textNormal(
-                                    Colors.red,
-                                    14.sp,
-                                  ),
-                                )
+                                        S.current.invalid_order,
+                                        style: textNormal(
+                                          Colors.red,
+                                          14.sp,
+                                        ),
+                                      )
                                     : null,
                               );
                             },
@@ -261,9 +266,9 @@ class _BodyState extends State<_Body> {
                           StreamBuilder(
                             stream: bLocCreateSeedPhrase.listTitle,
                             builder: (
-                                BuildContext context,
-                                AsyncSnapshot<List<String>> snapshot,
-                                ) {
+                              BuildContext context,
+                              AsyncSnapshot<List<String>> snapshot,
+                            ) {
                               final listTitle = snapshot.data;
                               return ListPassPhrase(
                                 listTitle: listTitle ?? [],
@@ -296,6 +301,7 @@ class _BodyState extends State<_Body> {
                         walletName: bLocCreateSeedPhrase.nameWallet.value,
                         walletAddress: bLocCreateSeedPhrase.walletAddress,
                         privateKey: bLocCreateSeedPhrase.privateKey,
+                        typeEarseWallet: widget.typeEarseWallet ?? '',
                       );
                     }
                   },
@@ -305,7 +311,7 @@ class _BodyState extends State<_Body> {
                       return ButtonGold(
                         title: S.current.continue_s,
                         isEnable:
-                        bLocCreateSeedPhrase.isCheckButtonConfirm.value,
+                            bLocCreateSeedPhrase.isCheckButtonConfirm.value,
                       );
                     },
                   ),

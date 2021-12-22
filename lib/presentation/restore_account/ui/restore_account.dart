@@ -42,7 +42,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
   bool isShowNewPass = true;
   bool isShowConPass = true;
   int checkBox = 1;
-  bool isEnable = true;
+  bool isEnable = false;
   bool tickCheckBox = true;
   FormType type = FormType.PASS_PHRASE;
   late final TextEditingController passwordController;
@@ -101,7 +101,10 @@ class _RestoreAccountState extends State<RestoreAccount> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return const CreateFail(type: KeyType.IMPORT);
+                return CreateFail(
+                  type: KeyType.IMPORT,
+                  message: state.message,
+                );
               },
             ),
           );

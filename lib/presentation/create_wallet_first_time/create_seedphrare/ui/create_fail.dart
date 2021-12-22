@@ -13,8 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateFail extends StatelessWidget {
-  const CreateFail({Key? key, required this.type}) : super(key: key);
+  const CreateFail({Key? key, required this.type, this.message}) : super(key: key);
   final KeyType type;
+  final String? message;
 
   @override
   Widget build(BuildContext context) {
@@ -73,15 +74,18 @@ class CreateFail extends StatelessWidget {
                             child: Image.asset(ImageAssets.img_fail),
                           ),
                           spaceH20,
-                          Center(
-                            child: Text(
-                              S.current.oopps_omething_went_wrong,
-                              style: TextStyle(
-                                color: AppTheme.getInstance().whiteColor(),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 32,
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: Center(
+                              child: Text(
+                                message ?? '',
+                                style: TextStyle(
+                                  color: AppTheme.getInstance().whiteColor(),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 32,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
                           SizedBox(

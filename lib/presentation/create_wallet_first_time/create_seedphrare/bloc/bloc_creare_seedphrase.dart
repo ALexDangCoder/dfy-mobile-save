@@ -110,6 +110,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     required String privateKey,
     required String walletName,
     required String walletAddress,
+    String? typeEarseWallet,
   }) async {
     try {
       final data = {
@@ -117,6 +118,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         'walletName': walletName,
         'privateKey': privateKey,
         'walletAddress': walletAddress,
+        'typeEarseWallet': typeEarseWallet
       };
       await trustWalletChannel.invokeMethod('storeWallet', data);
     } on PlatformException {}

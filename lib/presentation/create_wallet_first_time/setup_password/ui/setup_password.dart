@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SetupPassWord extends StatefulWidget {
-  const SetupPassWord({Key? key}) : super(key: key);
+  const SetupPassWord({Key? key, this.typeEarseWallet}) : super(key: key);
+  final String? typeEarseWallet;
 
   @override
   _SetupPassWordState createState() => _SetupPassWordState();
@@ -41,7 +42,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      resizeToAvoidBottomInset:  false,
+      resizeToAvoidBottomInset: false,
       body: Align(
         alignment: Alignment.bottomCenter,
         child: GestureDetector(
@@ -119,9 +120,9 @@ class _SetupPassWordState extends State<SetupPassWord> {
                               MaterialPageRoute(
                                 builder: (context) {
                                   return CreateSeedPhrase(
-                                    bloc:
-                                    BLocCreateSeedPhrase(password.text),
+                                    bloc: BLocCreateSeedPhrase(password.text),
                                     type: TypeScreen.two,
+                                    typeEarseWallet: widget.typeEarseWallet,
                                   );
                                 },
                               ),

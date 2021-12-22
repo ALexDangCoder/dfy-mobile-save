@@ -238,7 +238,9 @@ class _AlertPopUpState extends State<AlertPopUp> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const SetupPassWord(),
+                                              const SetupPassWord(
+                                            typeEarseWallet: ERASE_WALLET,
+                                          ),
                                         ),
                                       ).then((_) => Navigator.pop(context));
                                     },
