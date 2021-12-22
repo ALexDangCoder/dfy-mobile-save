@@ -128,10 +128,10 @@ class _BodyState extends State<_Body> {
               widget.type == KeyType.CREATE
                   ? S.current.success
                   : S.current.success_import,
-              style: TextStyle(
-                fontSize: 20,
-                color: AppTheme.getInstance().whiteColor(),
-                fontWeight: FontWeight.bold,
+              style: textNormalCustom(
+                AppTheme.getInstance().whiteColor(),
+                20,
+                FontWeight.bold,
               ),
             ),
           ),
@@ -148,10 +148,10 @@ class _BodyState extends State<_Body> {
           ),
           Text(
             S.current.congratulation,
-            style: TextStyle(
-              color: AppTheme.getInstance().whiteColor(),
-              fontWeight: FontWeight.bold,
-              fontSize: 32,
+            style: textNormalCustom(
+              AppTheme.getInstance().whiteColor(),
+              32,
+              FontWeight.bold,
             ),
           ),
           SizedBox(

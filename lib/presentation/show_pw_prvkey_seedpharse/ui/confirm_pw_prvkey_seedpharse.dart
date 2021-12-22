@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -204,10 +202,10 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
                   builder: (context, snapshot) {
                     return Text(
                       snapshot.data ?? '',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 108, 108, 1),
+                      style: textNormalCustom(
+                        const Color.fromRGBO(255, 108, 108, 1),
+                        12,
+                        FontWeight.w400,
                       ),
                     );
                   },

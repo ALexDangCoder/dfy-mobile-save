@@ -1,3 +1,4 @@
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/model_token.dart';
@@ -36,7 +37,8 @@ class TokenDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bloc.getToken(token);
+    bloc.getToken(token: token);
+    bloc.getHistory(token.tokenAddress);
     return StreamBuilder<bool>(
       stream: bloc.showLoadingStream,
       initialData: false,
@@ -67,7 +69,7 @@ class TokenDetail extends StatelessWidget {
             children: [
               RefreshIndicator(
                 onRefresh: () async {
-                  await bloc.getToken(token);
+                  await bloc.getToken(token: token);
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -165,7 +167,9 @@ class TokenDetail extends StatelessWidget {
                                     (value) => {
                                       if (value)
                                         {
-                                          bloc.getToken(token),
+                                          bloc.getToken(
+                                            token: token,
+                                          ),
                                           bloc.getHistory(token.tokenAddress)
                                         }
                                       else

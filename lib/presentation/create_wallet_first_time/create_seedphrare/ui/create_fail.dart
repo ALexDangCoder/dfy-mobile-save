@@ -45,14 +45,13 @@ class CreateFail extends StatelessWidget {
                 Center(
                   child: Text(
                     (KeyType.CREATE == type ||
-                            KeyType.CREATE_HAVE_WALLET == type
-                    )
+                            KeyType.CREATE_HAVE_WALLET == type)
                         ? S.current.create_new_wallet_failed
                         : S.current.import_new_wallet_failed,
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                    style: textNormalCustom(
+                      Colors.white,
+                      20,
+                      FontWeight.bold,
                     ),
                   ),
                 ),
@@ -77,10 +76,10 @@ class CreateFail extends StatelessWidget {
                           Center(
                             child: Text(
                               S.current.oopps_omething_went_wrong,
-                              style: TextStyle(
-                                color: AppTheme.getInstance().whiteColor(),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 32,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().whiteColor(),
+                                32,
+                                FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
                             ),
