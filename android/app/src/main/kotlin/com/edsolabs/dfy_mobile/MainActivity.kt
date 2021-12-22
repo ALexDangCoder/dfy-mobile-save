@@ -81,7 +81,9 @@ class MainActivity : FlutterFragmentActivity() {
                     this.getListWallets(channel = channel)
                 }
                 "generateWallet" -> {
-                    this.generateWallet(channel = channel)
+                    val typeEarseWallet =
+                        call.argument<String>("typeEarseWallet") ?: ""
+                    this.generateWallet(channel = channel, typeEarseWallet = typeEarseWallet)
                 }
                 "storeWallet" -> {
                     val seedPhrase =
