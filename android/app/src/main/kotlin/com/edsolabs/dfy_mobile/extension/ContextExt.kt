@@ -1,7 +1,6 @@
 package com.edsolabs.dfy_mobile.extension
 
 import android.content.Context
-import android.util.Log
 import com.edsolabs.dfy_mobile.Constant
 import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
 import com.edsolabs.dfy_mobile.data.model.ItemNftModel
@@ -146,7 +145,12 @@ fun Context.earseWallet(channel: MethodChannel?, walletAddress: String) {
 }
 
 
-fun Context.importWallet(channel: MethodChannel?, type: String, content: String) {
+fun Context.importWallet(
+    channel: MethodChannel?,
+    type: String,
+    content: String,
+    typeEarseWallet: String
+) {
     val appPreference = AppPreference(this)
     val coinType: CoinType = CoinType.SMARTCHAIN
     val hasMap = HashMap<String, Any>()
@@ -157,7 +161,9 @@ fun Context.importWallet(channel: MethodChannel?, type: String, content: String)
                 val address = wallet.getAddressForCoin(coinType)
                 val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
                 val listWallet = ArrayList<WalletModel>()
-                listWallet.addAll(appPreference.getListWallet())
+                if ((typeEarseWallet == Constant.TYPE_EARSE_WALLET).not()) {
+                    listWallet.addAll(appPreference.getListWallet())
+                }
                 if (listWallet.firstOrNull { it.walletAddress == address } == null) {
                     val walletName = "Account ${listWallet.size + 1}"
                     hasMap["walletAddress"] = address
@@ -178,13 +184,13 @@ fun Context.importWallet(channel: MethodChannel?, type: String, content: String)
                     appPreference.saveListWallet(listWallet)
                     hasMap["walletName"] = walletName
                     hasMap["code"] = Constant.CODE_SUCCESS
-                    hasMap["messages"] = "Import tài khoản thành công"
+                    hasMap["messages"] = "Import account successfully"
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 } else {
                     hasMap["walletAddress"] = ""
                     hasMap["walletName"] = ""
                     hasMap["code"] = Constant.CODE_ERROR
-                    hasMap["messages"] = "Tài khoản đã tồn tại"
+                    hasMap["messages"] = "The account you're are trying to import is a duplicate"
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 }
             }
@@ -193,7 +199,9 @@ fun Context.importWallet(channel: MethodChannel?, type: String, content: String)
                 val publicKey = privateKey.getPublicKeySecp256k1(false)
                 val address = AnyAddress(publicKey, coinType).description()
                 val listWallet = ArrayList<WalletModel>()
-                listWallet.addAll(appPreference.getListWallet())
+                if ((typeEarseWallet == Constant.TYPE_EARSE_WALLET).not()) {
+                    listWallet.addAll(appPreference.getListWallet())
+                }
                 if (listWallet.firstOrNull { it.walletAddress == address } == null) {
                     val walletName = "Account ${listWallet.size + 1}"
                     hasMap["walletAddress"] = address
@@ -214,13 +222,13 @@ fun Context.importWallet(channel: MethodChannel?, type: String, content: String)
                     appPreference.saveListWallet(listWallet)
                     hasMap["walletName"] = walletName
                     hasMap["code"] = Constant.CODE_SUCCESS
-                    hasMap["messages"] = "Import tài khoản thành công"
+                    hasMap["messages"] = "Import account successfully"
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 } else {
                     hasMap["walletAddress"] = ""
                     hasMap["walletName"] = ""
                     hasMap["code"] = Constant.CODE_ERROR
-                    hasMap["messages"] = "Tài khoản đã tồn tại"
+                    hasMap["messages"] = "The account you're are trying to import is a duplicate"
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 }
             }
@@ -228,7 +236,7 @@ fun Context.importWallet(channel: MethodChannel?, type: String, content: String)
                 hasMap["walletAddress"] = ""
                 hasMap["walletName"] = ""
                 hasMap["code"] = Constant.CODE_ERROR
-                hasMap["messages"] = "Có lỗi xảy ra vui lòng thử lại."
+                hasMap["messages"] = "An error occurred, please try again."
                 channel?.invokeMethod("importWalletCallback", hasMap)
             }
         }
@@ -237,7 +245,7 @@ fun Context.importWallet(channel: MethodChannel?, type: String, content: String)
         hasMap["walletName"] = ""
         hasMap["code"] = Constant.CODE_ERROR
         hasMap["messages"] =
-            if (type == Constant.TYPE_WALLET_SEED_PHRASE) "Lỗi seed phrase vui lòng thử lại" else "Lỗi private key vui lòng thử lại"
+            if (type == Constant.TYPE_WALLET_SEED_PHRASE) "Can not get wallet address" else "Can not get wallet address"
         channel?.invokeMethod("importWalletCallback", hasMap)
     }
 }
@@ -277,13 +285,16 @@ fun Context.storeWallet(
     seedPhrase: String,
     walletName: String,
     walletAddress: String,
-    privateKey: String
+    privateKey: String,
+    typeEarseWallet: String
 ) {
     val appPreference = AppPreference(this)
     val hasMap = HashMap<String, Any>()
     hasMap["isSuccess"] = true
     val listWallet = ArrayList<WalletModel>()
-    listWallet.addAll(appPreference.getListWallet())
+    if ((typeEarseWallet == Constant.TYPE_EARSE_WALLET).not()) {
+        listWallet.addAll(appPreference.getListWallet())
+    }
     listWallet.add(
         0,
         WalletModel(
@@ -556,7 +567,8 @@ fun Context.importNft(
 
     val objectNft = JSONObject(jsonNft)
     val contractNft = objectNft.getString("contract")
-    var checkItemNft = appPreference.getListNft().firstOrNull { it.walletAddress == walletAddress && it.collectionAddress == contractNft }
+    var checkItemNft = appPreference.getListNft()
+        .firstOrNull { it.walletAddress == walletAddress && it.collectionAddress == contractNft }
     if (checkItemNft == null) {
         checkItemNft = NftModel()
         checkItemNft.walletAddress = walletAddress
