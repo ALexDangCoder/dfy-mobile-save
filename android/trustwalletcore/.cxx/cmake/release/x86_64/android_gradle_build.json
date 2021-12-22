@@ -1,0 +1,68 @@
+{
+  "stringTable": {},
+  "buildFiles": [
+    "/Users/hoang/dfy-mobile/wallet-core/CMakeLists.txt",
+    "/Users/hoang/dfy-mobile/wallet-core/trezor-crypto/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+      "-C",
+      "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+    "-C",
+    "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "TrustWalletCore-Release-x86_64": {
+      "buildCommandComponents": [
+        "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64",
+        "TrustWalletCore"
+      ],
+      "buildType": "release",
+      "abi": "x86_64",
+      "artifactName": "TrustWalletCore",
+      "output": "/Users/hoang/dfy-mobile/build/trustwalletcore/intermediates/cmake/release/obj/x86_64/libTrustWalletCore.so",
+      "runtimeFiles": []
+    },
+    "TrezorCrypto-Release-x86_64": {
+      "buildCommandComponents": [
+        "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64",
+        "TrezorCrypto"
+      ],
+      "buildType": "release",
+      "abi": "x86_64",
+      "artifactName": "TrezorCrypto",
+      "output": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64/trezor-crypto/libTrezorCrypto.a"
+    },
+    "protobuf-Release-x86_64": {
+      "buildCommandComponents": [
+        "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64",
+        "protobuf"
+      ],
+      "buildType": "release",
+      "abi": "x86_64",
+      "artifactName": "protobuf",
+      "output": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64/libprotobuf.a"
+    }
+  },
+  "toolchains": {},
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": [
+    "cc",
+    "cpp"
+  ]
+}

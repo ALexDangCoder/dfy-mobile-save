@@ -33,7 +33,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 30
-
+    ndkVersion '21.2.6472646'
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -44,6 +44,8 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
+        ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
     }
 
     signingConfigs {
@@ -62,8 +64,6 @@ android {
         }
     }
 
-    ndkVersion "23.0.7599858"
-
     buildTypes {
         debug {
             debuggable true
@@ -72,6 +72,9 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
+            ndk {
+                abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
+            }
         }
         release {
             debuggable false
@@ -81,7 +84,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             ndk {
-                debugSymbolLevel 'FULL'
+                abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
             }
         }
     }
@@ -117,11 +120,13 @@ flutter {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.trustwallet:wallet-core:2.6.30'
     implementation 'com.github.takuji31.Koreference:koreference:2.0.0'
     implementation 'com.github.takuji31.Koreference:koreference-gson:2.0.0'
     implementation 'com.github.takuji31.Koreference:koreference-observable:2.0.0'
     implementation "com.google.code.gson:gson:2.8.5"
+//    implementation 'com.trustwallet:wallet-core:2.6.30'
+    implementation 'io.grpc:grpc-protobuf:1.34.0'
+    implementation project(':trustwalletcore')
 //    debugImplementation "com.github.whataa:pandora:androidx_v2.1.0"
 //    releaseImplementation "com.github.whataa:pandora-no-op:v2.0.3"
 

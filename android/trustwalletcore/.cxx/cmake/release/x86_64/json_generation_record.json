@@ -1,0 +1,23 @@
+[
+  {
+    "level": "INFO",
+    "message": "Start JSON generation. Platform version: 23 min SDK version: x86_64",
+    "file": "/Users/hoang/dfy-mobile/wallet-core/CMakeLists.txt",
+    "tag": "release|x86_64",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "JSON \u0027/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/x86_64/android_gradle_build.json\u0027 was up-to-date",
+    "file": "/Users/hoang/dfy-mobile/wallet-core/CMakeLists.txt",
+    "tag": "release|x86_64",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "JSON generation completed without problems",
+    "file": "/Users/hoang/dfy-mobile/wallet-core/CMakeLists.txt",
+    "tag": "release|x86_64",
+    "diagnosticCode": "UNKNOWN"
+  }
+]

@@ -1,0 +1,15 @@
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/install/local.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/install/strip.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/install.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/list_install_components.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/TrustWalletCore.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/protobuf.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/trezor-crypto/CMakeFiles/install/local.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/trezor-crypto/CMakeFiles/install/strip.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/trezor-crypto/CMakeFiles/install.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/trezor-crypto/CMakeFiles/list_install_components.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/trezor-crypto/CMakeFiles/rebuild_cache.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/trezor-crypto/CMakeFiles/edit_cache.dir
+/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/armeabi-v7a/trezor-crypto/CMakeFiles/TrezorCrypto.dir

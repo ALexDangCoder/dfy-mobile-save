@@ -1,0 +1,58 @@
+{
+  "buildFiles": [
+    "/Users/hoang/dfy-mobile/wallet-core/CMakeLists.txt",
+    "/Users/hoang/dfy-mobile/wallet-core/trezor-crypto/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+      "-C",
+      "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+    "-C",
+    "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "protobuf-Release-arm64-v8a": {
+      "artifactName": "protobuf",
+      "buildCommandComponents": [
+        "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/arm64-v8a",
+        "protobuf"
+      ],
+      "abi": "arm64-v8a",
+      "output": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/arm64-v8a/libprotobuf.a",
+      "runtimeFiles": []
+    },
+    "TrezorCrypto-Release-arm64-v8a": {
+      "artifactName": "TrezorCrypto",
+      "buildCommandComponents": [
+        "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/arm64-v8a",
+        "TrezorCrypto"
+      ],
+      "abi": "arm64-v8a",
+      "output": "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/arm64-v8a/trezor-crypto/libTrezorCrypto.a",
+      "runtimeFiles": []
+    },
+    "TrustWalletCore-Release-arm64-v8a": {
+      "artifactName": "TrustWalletCore",
+      "buildCommandComponents": [
+        "/Users/hoang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/release/arm64-v8a",
+        "TrustWalletCore"
+      ],
+      "abi": "arm64-v8a",
+      "output": "/Users/hoang/dfy-mobile/build/trustwalletcore/intermediates/cmake/release/obj/arm64-v8a/libTrustWalletCore.so",
+      "runtimeFiles": []
+    }
+  }
+}

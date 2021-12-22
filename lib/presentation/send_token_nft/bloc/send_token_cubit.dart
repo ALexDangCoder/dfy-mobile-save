@@ -1,9 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';

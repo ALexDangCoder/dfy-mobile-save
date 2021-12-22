@@ -251,10 +251,9 @@ class _SelectAccState extends State<SelectAcc> {
                                                             false
                                                         ? Container(
                                                             width: 65.w,
-                                                            height: 22.h,
                                                             padding:
-                                                                EdgeInsets.only(
-                                                              top: 3.h,
+                                                                EdgeInsets.symmetric(
+                                                              vertical: 4.h,
                                                             ),
                                                             decoration:
                                                                 BoxDecoration(
@@ -279,6 +278,8 @@ class _SelectAccState extends State<SelectAcc> {
                                                                 AppTheme.getInstance()
                                                                     .whiteWithOpacityFireZero(),
                                                                 11.sp,
+                                                              ).copyWith(
+                                                                height: 1.2,
                                                               ),
                                                               textAlign:
                                                                   TextAlign

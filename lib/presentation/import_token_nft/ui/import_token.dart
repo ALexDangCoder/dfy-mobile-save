@@ -101,22 +101,26 @@ class ImportTokenScreen extends StatelessWidget {
                       child: TabBar(
                         tabs: [
                           Tab(
-                            child: Text(
-                              S.current.enter_token,
-                              style: textNormalCustom(
-                                null,
-                                14.sp,
-                                FontWeight.bold,
+                            child: FittedBox(
+                              child: Text(
+                                S.current.enter_token,
+                                style: textNormalCustom(
+                                  null,
+                                  14.sp,
+                                  FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                           Tab(
-                            child: Text(
-                              S.current.choose_token,
-                              style: textNormalCustom(
-                                null,
-                                14.sp,
-                                FontWeight.bold,
+                            child: FittedBox(
+                              child: Text(
+                                S.current.choose_token,
+                                style: textNormalCustom(
+                                  null,
+                                  14.sp,
+                                  FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),

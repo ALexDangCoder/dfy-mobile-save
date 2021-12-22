@@ -5,7 +5,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:web3dart/web3dart.dart';
 
 part 'form_field_blockchain_state.dart';
 
@@ -133,6 +132,8 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     bool isSuccess = false;
     String signedTransaction = '';
     switch (methodCall.method) {
+      case 'setDeleteNftCallback':
+        break;
       case 'signTransactionTokenCallback':
         // print(methodCall.arguments);
         emit(FormBlockchainSendTokenLoading());
@@ -151,19 +152,23 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         }
         break;
       case 'signTransactionNftCallback':
-        emit(FormBlockchainSendNftLoading());
-        bool isSuccess = false;
-        String signedTransaction = '';
-        isSuccess = await methodCall.arguments['isSuccess'];
-        signedTransaction = await methodCall.arguments['signedTransaction'];
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+        final String signedTransaction =
+            await methodCall.arguments['signedTransaction'];
+        final String walletAddress =
+            await methodCall.arguments['walletAddress'];
+        final String collectionAddress =
+            await methodCall.arguments['collectionAddress'];
+        final String nftId = await methodCall.arguments['nftId'];
+
         if (isSuccess) {
-          final result = await Web3Utils()
-              .sendRawTransaction(transaction: signedTransaction);
-          if (result) {
-            emit(FormBlockchainSendNftSuccess());
-          } else {
-            emit(FormBlockchainSendNftFail());
-          }
+          Web3Utils().sendRawTransaction(transaction: signedTransaction);
+          //todo check call back send web3 success delete nft
+          deleteNft(
+              walletAddress: walletAddress,
+              collectionAddress: collectionAddress,
+              nftId: nftId);
+          emit(FormBlockchainSendNftSuccess());
         } else {
           emit(FormBlockchainSendNftFail());
         }
@@ -179,57 +184,102 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     return result.count;
   }
 
-  //sign token
-  Future<void> signTransaction({
-    required String fromAddress,
-    required String toAddress,
+  void signTransactionToken({
+    required String walletAddress,
     required String tokenAddress,
+    required String toAddress,
     required String nonce,
+    required String chainId,
     required String gasPrice,
     required String gasLimit,
     required String amount,
-  }) async {
+  }) {
     try {
+      final String newAmount = handleAmount(amount);
       final data = {
-        'walletAddress': fromAddress,
+        'walletAddress': walletAddress,
+        'tokenAddress': tokenAddress,
         'toAddress': toAddress,
         'nonce': nonce,
-        'tokenAddress': tokenAddress,
-        'chainId': '97',
+        'chainId': chainId,
         'gasPrice': gasPrice,
         'gasLimit': gasLimit,
-        'amount': amount,
+        'amount': newAmount,
       };
-      await trustWalletChannel.invokeMethod('signTransactionToken', data);
+      trustWalletChannel.invokeMethod('signTransactionToken', data);
     } on PlatformException {
       //todo
     }
   }
 
   //sign Nft
-  Future<void> signTransactionNFT({
+  void signTransactionNFT({
     required String fromAddress,
     required String toAddress,
     required String contractNft,
     required String nonce,
+    required String chainId,
     required String gasPrice,
     required String gasLimit,
     required String nftID,
-  }) async {
+  }) {
     try {
       final data = {
         'walletAddress': fromAddress,
         'tokenAddress': contractNft,
         'toAddress': toAddress,
         'nonce': nonce,
-        'chainId': '97',
+        'chainId': chainId,
         'gasPrice': gasPrice,
         'gasLimit': gasLimit,
         'tokenId': nftID,
       };
-      await trustWalletChannel.invokeMethod('signTransactionNft', data);
+      trustWalletChannel.invokeMethod('signTransactionNft', data);
     } on PlatformException {
       //todo
     }
   }
+
+  void deleteNft({
+    required String walletAddress,
+    required String collectionAddress,
+    required String nftId,
+  }) {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+        'nftId': nftId,
+        'collectionAddress': collectionAddress,
+      };
+      trustWalletChannel.invokeMethod('deleteNft', data);
+    } on PlatformException {
+      //todo
+    }
+  }
+
+  String handleAmount(String amount) {
+    final parts = amount.split('.');
+    if (amount.isEmpty) {
+      return '0';
+    } else {
+      if (parts.length == 1) {
+        return '${amount}000000000000000000';
+      } else if (parts.length > 1) {
+        if (parts[1].length >= 18) {
+          return parts[0] + parts[1].substring(0, 18);
+        } else {
+          final String valueAmount = parts[0];
+          final String valueDecimal = parts[1];
+          final buffer = StringBuffer();
+          for (var i = valueDecimal.length; i < 18; i++) {
+            buffer.write('0');
+          }
+          return valueAmount + valueDecimal + buffer.toString();
+        }
+      } else {
+        return '0';
+      }
+    }
+  }
+
 }

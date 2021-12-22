@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:Dfy/data/web3/abi/nft.g.dart';
@@ -11,10 +10,10 @@ import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:convert/convert.dart';
 
 class ImportNftResponse {
   bool isSuccess;
@@ -437,7 +436,8 @@ class Web3Utils {
         to: EthereumAddress.fromHex(contract),
         data: transferTransaction.data,
       );
-      return '$gasLimit';
+      final valueHundredMore = BigInt.from(100) + gasLimit;
+      return '$valueHundredMore';
     }
   }
 
@@ -470,7 +470,8 @@ class Web3Utils {
       to: EthereumAddress.fromHex(contract),
       data: transferTransaction.data,
     );
-    return '$gasLimit';
+    final valueHundredMore = BigInt.from(100) + gasLimit;
+    return '$valueHundredMore';
   }
 
   // Future<double> getTokenEstimateGas({

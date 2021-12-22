@@ -1,0 +1,2 @@
+/Users/hoang/dfy-mobile/wallet-core/CMakeLists.txt
+/Users/hoang/dfy-mobile/wallet-core/trezor-crypto/CMakeLists.txt

@@ -1,0 +1,2 @@
+ninja: Entering directory `/Users/hoang/dfy-mobile/android/trustwalletcore/.cxx/cmake/debug/arm64-v8a'
+ninja: no work to do.
