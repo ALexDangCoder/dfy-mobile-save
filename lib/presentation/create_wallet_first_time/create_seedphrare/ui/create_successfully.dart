@@ -38,7 +38,7 @@ class CreateSuccessfully extends StatelessWidget {
       body: ListView(
         children: [
           SizedBox(
-            height: 48.h,
+            height: 8.h,
           ),
           _Body(
             bLocCreateSeedPhrase: bLocCreateSeedPhrase,
