@@ -121,14 +121,14 @@ fun Context.changeNameWallet(channel: MethodChannel?, walletAddress: String, wal
     channel?.invokeMethod("changeNameWalletCallBack", hasMap)
 }
 
-fun Context.earseAllWallet(channel: MethodChannel?, type: String) {
-    val appPreference = AppPreference(this)
-    val hasMap = HashMap<String, Any>()
-    appPreference.earseAllWallet()
-    hasMap["isSuccess"] = true
-    hasMap["type"] = type
-    channel?.invokeMethod("earseAllWalletCallback", hasMap)
-}
+//fun Context.earseAllWallet(channel: MethodChannel?, type: String) {
+//    val appPreference = AppPreference(this)
+//    val hasMap = HashMap<String, Any>()
+//    appPreference.earseAllWallet()
+//    hasMap["isSuccess"] = true
+//    hasMap["type"] = type
+//    channel?.invokeMethod("earseAllWalletCallback", hasMap)
+//}
 
 fun Context.earseWallet(channel: MethodChannel?, walletAddress: String) {
     val appPreference = AppPreference(this)
