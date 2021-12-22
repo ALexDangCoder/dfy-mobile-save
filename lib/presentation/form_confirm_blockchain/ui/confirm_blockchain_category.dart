@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -11,7 +10,6 @@ import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
