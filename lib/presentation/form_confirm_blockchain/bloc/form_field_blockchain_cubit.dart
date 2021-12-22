@@ -27,15 +27,15 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   bool _flagGasLimit = false;
   bool _flagSufficientFee = false;
 
-  final regexMoney = RegExp(r'^-?(?:0|[1-9]\d{0,2}(?:,?\d{3})*)(?:\.\d+)?$');
+  final regexAmount = RegExp(r'^\d+((.)|(.\d{0,5})?)$');
 
   void validateGasLimit(String value) {
-    if (value.isEmpty) {
+    if (value.isEmpty || (double.parse(value) == 0)) {
       _flagGasLimit = false;
       txtWarningGasLimit.sink.add(S.current.gas_limit_required);
       showWarningGasLimit.sink.add(true);
       isEnableBtnSink.add(false);
-    } else if (!regexMoney.hasMatch(value)) {
+    } else if (!regexAmount.hasMatch(value)) {
       _flagGasLimit = false;
       txtWarningGasLimit.sink.add(S.current.invalid_gas_limit);
       showWarningGasLimit.sink.add(true);
@@ -50,12 +50,12 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   }
 
   void validateGasPrice(String value) {
-    if (value.isEmpty) {
+    if (value.isEmpty || (double.parse(value) == 0)) {
       _flagGasPrice = false;
       txtWarningGasPrice.sink.add(S.current.gas_price_required);
       showWarningGasPrice.sink.add(true);
       isEnableBtnSink.add(false);
-    } else if (!regexMoney.hasMatch(value)) {
+    } else if (!regexAmount.hasMatch(value)) {
       _flagGasPrice = false;
       txtWarningGasPrice.sink.add(S.current.invalid_gas_price);
       showWarningGasPrice.sink.add(true);
