@@ -225,6 +225,7 @@ class _NFTDetailState extends State<NFTDetail> {
                         builder: (ctx, snapshot) {
                           final int len = snapshot.data ?? initLen;
                           return ListView.builder(
+                            padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: len,
