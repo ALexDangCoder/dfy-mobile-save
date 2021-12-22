@@ -28,7 +28,7 @@ class CheckBoxCreateSeedPhrase extends StatelessWidget {
               stream: bLocCreateSeedPhrase.isCheckBoxCreateSeedPhrase,
               builder: (context, AsyncSnapshot<bool> snapshot) {
                 return Transform.scale(
-                  scale: 1.sp,
+                  scale: 1,
                   child: Checkbox(
                     fillColor: MaterialStateProperty.all(
                       AppTheme.getInstance().fillColor(),
@@ -63,7 +63,7 @@ class CheckBoxCreateSeedPhrase extends StatelessWidget {
                 title,
                 style: textNormal(
                   AppTheme.getInstance().textThemeColor(),
-                  14.sp,
+                  14,
                 ),
               ),
             ),

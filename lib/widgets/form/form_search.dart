@@ -54,7 +54,7 @@ class _FormSearchState extends State<FormSearch> {
               cursorColor: AppTheme.getInstance().whiteColor(),
               style: textNormal(
                 AppTheme.getInstance().whiteColor(),
-                16.sp,
+                16,
               ),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(bottom: 4.h),
@@ -62,7 +62,7 @@ class _FormSearchState extends State<FormSearch> {
                 hintText: widget.hint,
                 hintStyle: textNormal(
                   Colors.white.withOpacity(0.5),
-                  16.sp,
+                  16,
                 ),
                 border: InputBorder.none,
               ),

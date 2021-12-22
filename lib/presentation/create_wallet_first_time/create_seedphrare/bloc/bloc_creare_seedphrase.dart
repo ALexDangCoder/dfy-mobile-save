@@ -15,9 +15,9 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BehaviorSubject<String> nameWallet = BehaviorSubject.seeded('');
   BehaviorSubject<String> isNameWallet = BehaviorSubject.seeded('value');
   BehaviorSubject<bool> isCheckBoxCreateSeedPhrase =
-      BehaviorSubject.seeded(true);
+  BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isCheckBoxCreateSeedPhraseConfirm =
-      BehaviorSubject.seeded(true);
+  BehaviorSubject.seeded(true);
   BehaviorSubject<String> messStream = BehaviorSubject.seeded('');
 
   BehaviorSubject<bool> isCheckButtonCreate = BehaviorSubject.seeded(true);
@@ -29,7 +29,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BehaviorSubject<bool> isCheckAppLock = BehaviorSubject.seeded(true);
 
   BehaviorSubject<bool> isSeedPhraseImportFailed =
-      BehaviorSubject.seeded(false);
+  BehaviorSubject.seeded(false);
 
   Future<void> setFirstTime() async {
     await PrefsService.saveFirstAppConfig('false');
@@ -45,15 +45,9 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   bool configSuccess = false;
   bool isSuccess = false;
 
-  bool getIsSeedPhraseImport() {
-    if (listTitle.value.isNotEmpty) {
-      return false;
-    }
-    return true;
-  }
-
-  void getIsSeedPhraseImport2() {
-    if (getIsSeedPhraseImport() && isCheckBoxCreateSeedPhraseConfirm.value) {
+  void getIsSeedPhraseImport() {
+    if (!isSeedPhraseImportFailed.value &&
+        isCheckBoxCreateSeedPhraseConfirm.value) {
       isCheckButtonConfirm.sink.add(true);
     } else {
       isCheckButtonConfirm.sink.add(false);
@@ -95,7 +89,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
     indices.shuffle();
     final int newCount = listTitle1.length;
     final List<String> randomList =
-        indices.take(newCount).map((i) => listTitle1[i]).toList();
+    indices.take(newCount).map((i) => listTitle1[i]).toList();
     listTitle.sink.add(randomList);
   }
 
@@ -175,10 +169,10 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
         emit(SeedNavState());
         break;
       case 'setConfigCallback':
-       // bool isSuccess = await methodCall.arguments['isSuccess'];
+      // bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       case 'savePasswordCallback':
-       // bool isSuccess = await methodCall.arguments['isSuccess'];
+      // bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
       default:
         break;
