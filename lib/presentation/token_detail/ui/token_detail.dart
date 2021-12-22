@@ -164,7 +164,10 @@ class TokenDetail extends StatelessWidget {
                                   ).then(
                                     (value) => {
                                       if (value)
-                                        bloc.checkShowLoading(token)
+                                        {
+                                          bloc.getToken(token),
+                                          bloc.getHistory(token.tokenAddress)
+                                        }
                                       else
                                         null
                                     },
