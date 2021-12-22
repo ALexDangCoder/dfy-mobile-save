@@ -161,7 +161,7 @@ fun Context.importWallet(
                 val address = wallet.getAddressForCoin(coinType)
                 val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
                 val listWallet = ArrayList<WalletModel>()
-                if ((typeEarseWallet == Constant.TYPE_EARSE_WALLET).not()) {
+                if (typeEarseWallet != Constant.TYPE_EARSE_WALLET) {
                     listWallet.addAll(appPreference.getListWallet())
                 }
                 if (listWallet.firstOrNull { it.walletAddress == address } == null) {
@@ -197,7 +197,7 @@ fun Context.importWallet(
                 val publicKey = privateKey.getPublicKeySecp256k1(false)
                 val address = AnyAddress(publicKey, coinType).description()
                 val listWallet = ArrayList<WalletModel>()
-                if ((typeEarseWallet == Constant.TYPE_EARSE_WALLET).not()) {
+                if (typeEarseWallet != Constant.TYPE_EARSE_WALLET) {
                     listWallet.addAll(appPreference.getListWallet())
                 }
                 if (listWallet.firstOrNull { it.walletAddress == address } == null) {
@@ -256,14 +256,17 @@ fun Context.getListWallets(channel: MethodChannel?) {
     channel?.invokeMethod("getListWalletsCallback", hasMap)
 }
 
-fun Context.generateWallet(channel: MethodChannel?) {
+fun Context.generateWallet(
+    channel: MethodChannel?, typeEarseWallet: String
+) {
     val appPreference = AppPreference(this)
     val coinType: CoinType = CoinType.SMARTCHAIN
     val wallet = HDWallet(128, "")
     val seedPhrase = wallet.mnemonic()
     val address = wallet.getAddressForCoin(coinType)
     val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
-    val walletName = "Account ${appPreference.getListWallet().size + 1}"
+    val walletName =
+        if (typeEarseWallet != Constant.TYPE_EARSE_WALLET) "Account ${appPreference.getListWallet().size + 1}" else "Account 1"
 
     val hasMap = HashMap<String, String>()
     hasMap["walletName"] = walletName
@@ -285,7 +288,7 @@ fun Context.storeWallet(
     val hasMap = HashMap<String, Any>()
     hasMap["isSuccess"] = true
     val listWallet = ArrayList<WalletModel>()
-    if ((typeEarseWallet == Constant.TYPE_EARSE_WALLET).not()) {
+    if (typeEarseWallet != Constant.TYPE_EARSE_WALLET) {
         listWallet.addAll(appPreference.getListWallet())
     }
     listWallet.add(
