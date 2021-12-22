@@ -206,11 +206,18 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
             //todo send token fail
             showDialog(
               context: context,
-              builder: (_) => const AlertDialog(
-                backgroundColor: Colors.transparent,
-                content: TransactionSubmitFail(),
-              ),
+              builder: (_) {
+                Future.delayed(Duration(seconds: 2), () {
+                  Navigator.of(context).pop(true);
+                });
+                return const AlertDialog(
+                  backgroundColor: Colors.transparent,
+                  content: TransactionSubmitFail(),
+                );
+              }
             );
+            Navigator.pop(context);
+            Navigator.pop(context, true);
           }
         },
         bloc: cubitFormCustomizeGasFee,
