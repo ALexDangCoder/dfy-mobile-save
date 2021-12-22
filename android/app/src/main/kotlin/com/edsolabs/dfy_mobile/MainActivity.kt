@@ -69,7 +69,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val content = call.argument<String>("content")
                         ?: return@setMethodCallHandler
                     val typeEarseWallet = call.argument<String>("typeEarseWallet")
-                        ?: return@setMethodCallHandler
+                        ?: ""
                     this.importWallet(
                         channel = channel,
                         type = type,
@@ -93,7 +93,7 @@ class MainActivity : FlutterFragmentActivity() {
                     val privateKey =
                         call.argument<String>("privateKey") ?: return@setMethodCallHandler
                     val typeEarseWallet =
-                        call.argument<String>("typeEarseWallet") ?: return@setMethodCallHandler
+                        call.argument<String>("typeEarseWallet") ?: ""
                     this.storeWallet(
                         channel = channel,
                         seedPhrase = seedPhrase,
