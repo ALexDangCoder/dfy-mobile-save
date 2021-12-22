@@ -30,17 +30,15 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: ListView(
         children: [
-          SizedBox(
-            height: 48.h,
-          ),
+          spaceH8,
           Container(
             height: 764.h,
             width: 375.w,
             decoration: BoxDecoration(
               color: const Color(0xff3e3d5c),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.h),
-                topRight: Radius.circular(30.h),
+                topLeft: Radius.circular(30.r),
+                topRight: Radius.circular(30.r),
               ),
             ),
             child: Column(

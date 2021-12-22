@@ -31,9 +31,7 @@ class ImportTokenScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: ListView(
         children: [
-          SizedBox(
-            height: 48.h,
-          ),
+          spaceH8,
           DefaultTabController(
             length: 2,
             child: Container(

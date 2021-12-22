@@ -44,9 +44,7 @@ class _SelectAccState extends State<SelectAcc> {
       backgroundColor: Colors.transparent,
       body: ListView(
         children: [
-          SizedBox(
-            height: 48.h,
-          ),
+          spaceH8,
           Container(
             height: 764.h,
             width: 375.w,
