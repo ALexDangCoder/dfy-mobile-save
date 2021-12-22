@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AlertCubit extends Cubit<AlertState> {
   AlertCubit() : super(AlertInitial());
-
+  //todo remove
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     bool isSuccess = false;
     String type;
