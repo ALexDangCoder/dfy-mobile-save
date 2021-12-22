@@ -53,6 +53,11 @@ class _LoginScreenState extends State<LoginScreen> {
     _cubit.getConfig();
     _cubit.checkBiometrics();
   }
+  @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
