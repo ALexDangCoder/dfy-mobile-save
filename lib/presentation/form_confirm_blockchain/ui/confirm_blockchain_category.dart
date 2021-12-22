@@ -10,6 +10,8 @@ import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
@@ -19,7 +21,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 
 enum TYPE_CONFIRM {
   SEND_NFT,
@@ -327,23 +328,22 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                         .getNonceWeb3(
                                       walletAddress: widget.addressFrom,
                                     );
-                                    await cubitFormCustomizeGasFee
-                                        .signTransaction(
-                                      tokenAddress:
-                                          widget.modelToken!.tokenAddress,
-                                      fromAddress: widget.addressFrom,
+                                    cubitFormCustomizeGasFee
+                                        .signTransactionToken(
                                       toAddress: widget.addressTo,
                                       gasPrice: (widget.gasPriceFirstFetch *
                                               1000000000)
+                                          .toInt()
                                           .toString(),
                                       nonce: nonce.toString(),
-                                      gasLimit:
-                                          (double.parse(_txtGasLimit.text) *
-                                                  1000000000)
-                                              .toString(),
-                                      amount:
-                                          ((widget.amount ?? 0) * 1000000000)
-                                              .toString(),
+                                      gasLimit: double.parse(_txtGasLimit.text)
+                                          .toInt()
+                                          .toString(),
+                                      amount: (widget.amount).toString(),
+                                      tokenAddress:
+                                          widget.modelToken!.tokenAddress,
+                                      walletAddress: widget.addressFrom,
+                                      chainId: '97',
                                     );
                                     break;
                                   case TYPE_CONFIRM.SEND_NFT:
@@ -351,21 +351,21 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                         .getNonceWeb3(
                                       walletAddress: widget.addressFrom,
                                     );
-                                    await cubitFormCustomizeGasFee
-                                        .signTransactionNFT(
+                                    cubitFormCustomizeGasFee.signTransactionNFT(
                                       fromAddress: widget.addressFrom,
                                       toAddress: widget.addressTo,
                                       contractNft: widget.nftInfo?.contract ??
                                           'contract',
                                       nonce: nonce.toString(),
-                                      gasLimit:
-                                          (double.parse(_txtGasLimit.text) *
-                                                  1000000000)
-                                              .toString(),
+                                      gasLimit: double.parse(_txtGasLimit.text)
+                                          .toInt()
+                                          .toString(),
                                       gasPrice: (widget.gasPriceFirstFetch *
                                               1000000000)
+                                          .toInt()
                                           .toString(),
                                       nftID: widget.nftInfo?.id ?? 'id',
+                                      chainId: '97',
                                     );
                                     break;
                                   case TYPE_CONFIRM.SEND_OFFER:

@@ -20,8 +20,8 @@ const int tabMarketingPlaceIndex = 3;
 const int tabStakingIndex = 4;
 
 class MainScreen extends BaseScreen {
-  const MainScreen({Key? key, this.index, this.wallet,this.checkExist}) :
-        super(key: key);
+  const MainScreen({Key? key, this.index, this.wallet, this.checkExist})
+      : super(key: key);
   final int? index;
   final Wallet? wallet;
   final bool? checkExist;
