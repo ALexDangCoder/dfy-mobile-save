@@ -72,7 +72,7 @@ class _NFTItemState extends State<NFTItem> {
                   _customTileExpanded
                       ? const AssetImage(ImageAssets.ic_line_down)
                       : const AssetImage(ImageAssets.ic_line_right),
-                  size: 24.sp,
+                  size: 24,
                   color: Colors.white,
                 ),
               ),
@@ -115,8 +115,10 @@ class _NFTItemState extends State<NFTItem> {
               },
               controlAffinity: ListTileControlAffinity.leading,
               children: <Widget>[
-                SizedBox(
+                Container(
+                  padding: EdgeInsets.only(left: 50.w,),
                   height: 140.h,
+                  width: double.infinity,
                   child: ListView.builder(
                     physics: const ClampingScrollPhysics(),
                     shrinkWrap: true,
@@ -144,8 +146,7 @@ class _NFTItemState extends State<NFTItem> {
                       },
                       child: Padding(
                         padding: EdgeInsets.only(
-                          bottom: 16.h,
-                          right: 16.w,
+                          left: 16.w,
                         ),
                         child: CardNFT(
                           objNFT: widget.bloc.listNftInfo[index],

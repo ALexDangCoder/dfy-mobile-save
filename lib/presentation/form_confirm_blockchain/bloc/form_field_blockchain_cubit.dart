@@ -160,15 +160,18 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         final String collectionAddress =
             await methodCall.arguments['collectionAddress'];
         final String nftId = await methodCall.arguments['nftId'];
-
         if (isSuccess) {
-          Web3Utils().sendRawTransaction(transaction: signedTransaction);
-          //todo check call back send web3 success delete nft
-          deleteNft(
-              walletAddress: walletAddress,
-              collectionAddress: collectionAddress,
-              nftId: nftId);
-          emit(FormBlockchainSendNftSuccess());
+          final result = await Web3Utils()
+              .sendRawTransaction(transaction: signedTransaction);
+          if (result) {
+            deleteNft(
+                walletAddress: walletAddress,
+                collectionAddress: collectionAddress,
+                nftId: nftId);
+            emit(FormBlockchainSendNftSuccess());
+          } else {
+            emit(FormBlockchainSendNftFail());
+          }
         } else {
           emit(FormBlockchainSendNftFail());
         }
@@ -281,5 +284,4 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       }
     }
   }
-
 }

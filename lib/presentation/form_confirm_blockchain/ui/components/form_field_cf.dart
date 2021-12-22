@@ -44,7 +44,7 @@ class FormFieldBlockChain extends StatelessWidget {
               S.current.gas_limit,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
-                16.sp,
+                16,
                 FontWeight.w400,
               ),
             )
@@ -53,7 +53,7 @@ class FormFieldBlockChain extends StatelessWidget {
               S.current.gas_price,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
-                16.sp,
+                16,
                 FontWeight.w400,
               ),
             ),
@@ -77,14 +77,14 @@ class FormFieldBlockChain extends StatelessWidget {
                 controller: txtController,
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor(),
-                  16.sp,
+                  16,
                   FontWeight.w400,
                 ),
                 cursorColor: AppTheme.getInstance().textThemeColor(),
                 decoration: InputDecoration(
                   hintStyle: textNormal(
                     AppTheme.getInstance().disableColor(),
-                    16.sp,
+                    16,
                   ),
                   border: InputBorder.none,
                 ),

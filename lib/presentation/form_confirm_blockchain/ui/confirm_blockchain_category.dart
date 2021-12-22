@@ -184,7 +184,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                     ),
                   ),
                   (route) => route.isFirst,
-                ),);
+                ));
           } else if (state is FormBlockchainSendTokenLoading) {
             showDialog(
               context: context,
@@ -204,11 +204,13 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               ),
             );
             //Pop success dialog
-            Navigator.pop(context);
-            //Pop confirm blockchain
-            Navigator.pop(context);
-            //Pop confirm SendToken
-            Navigator.pop(context,true);
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pop(context);
+              //Pop confirm blockchain
+              Navigator.pop(context);
+              //Pop confirm SendToken
+              Navigator.pop(context,true);
+            });
           } else {
             //Pop loading dialog
             Navigator.pop(context);
@@ -219,12 +221,13 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 content: TransactionSubmitFail(),
               ),
             );
-            //Pop fail dialog
-            Navigator.pop(context);
-            //Pop confirm blockchain
-            Navigator.pop(context);
-            //Pop confirm SendToken
-            Navigator.pop(context,true);
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pop(context);
+              //Pop confirm blockchain
+              Navigator.pop(context);
+              //Pop confirm SendToken
+              Navigator.pop(context,true);
+            });
           }
         },
         bloc: cubitFormCustomizeGasFee,

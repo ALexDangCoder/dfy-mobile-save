@@ -228,7 +228,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
           '$snapshot $nameToken',
           style: textNormalCustom(
             AppTheme.getInstance().redColor(),
-            16.sp,
+            16,
             FontWeight.w600,
           ),
         ),
@@ -237,7 +237,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
           S.current.insufficient_balance,
           style: textNormalCustom(
             AppTheme.getInstance().redColor(),
-            12.sp,
+            12,
             FontWeight.w400,
           ),
         ),
@@ -272,7 +272,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
       S.current.hide_customize_fee,
       style: textNormalCustom(
         const Color.fromRGBO(70, 188, 255, 1),
-        14.sp,
+        14,
         FontWeight.w400,
       ),
     );
@@ -289,7 +289,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
         S.current.reset,
         style: textNormalCustom(
           AppTheme.getInstance().textThemeColor(),
-          14.sp,
+          14,
           FontWeight.w400,
         ),
       ),
@@ -301,7 +301,7 @@ class FormShowFtHideCfBlockchain extends StatelessWidget {
       S.current.customize_fee,
       style: textNormalCustom(
         const Color.fromRGBO(70, 188, 255, 1),
-        14.sp,
+        14,
         FontWeight.w400,
       ),
     );

@@ -39,7 +39,7 @@ class TransactionSubmit extends StatelessWidget {
               S.current.tran_submit,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
-                16.sp,
+                16,
                 FontWeight.w600,
               ),
             ),
@@ -49,7 +49,7 @@ class TransactionSubmit extends StatelessWidget {
               S.current.waiting_for_cf,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
-                14.sp,
+                14,
                 FontWeight.w400,
               ),
             ),

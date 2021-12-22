@@ -68,7 +68,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                           S.current.enter_name,
                           style: textNormal(
                             AppTheme.getInstance().whiteColor(),
-                            20.sp,
+                            20,
                           ).copyWith(
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal,
@@ -110,7 +110,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                         AppTheme.getInstance().whiteColor(),
                                     style: textNormal(
                                       AppTheme.getInstance().whiteColor(),
-                                      16.sp,
+                                      16,
                                     ),
                                     onChanged: (value) {
                                       widget.bloc.validateNameWallet(value);
@@ -121,7 +121,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                       hintText: S.current.name_wallet,
                                       hintStyle: textNormal(
                                         Colors.white.withOpacity(0.5),
-                                        16.sp,
+                                        16,
                                       ),
                                       border: InputBorder.none,
                                     ),
@@ -224,7 +224,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                               ? AppTheme.getInstance()
                                                   .fillColor()
                                               : Colors.white.withOpacity(0.5),
-                                          20.sp,
+                                          20,
                                         ).copyWith(
                                           fontWeight: FontWeight.w700,
                                           fontStyle: FontStyle.normal,
@@ -270,7 +270,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                   _mess,
                   style: textNormal(
                     Colors.red,
-                    14.sp,
+                    14,
                   ),
                   textAlign: TextAlign.start,
                 ),
