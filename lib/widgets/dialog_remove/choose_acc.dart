@@ -86,7 +86,7 @@ class ChooseAcc extends StatelessWidget {
                           shrinkWrap: true,
                           itemCount: listWalletCore.length,
                           itemBuilder: (context, index) {
-                            return GestureDetector(
+                            return InkWell(
                               onTap: () {
                                 bloc.sendPrivateKey(index);
                                 Navigator.pop(context);

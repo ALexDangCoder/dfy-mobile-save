@@ -31,7 +31,7 @@ class ButtonGold extends StatelessWidget {
         ),
       ),
       height: 64.h,
-      width: 298.w,
+      width: 343.w,
       child: Center(
         child: Text(
           title,
