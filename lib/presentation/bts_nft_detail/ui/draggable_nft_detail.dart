@@ -13,6 +13,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/column_button/buil_column.dart';
+import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -219,85 +220,101 @@ class _NFTDetailState extends State<NFTDetail> {
                           ],
                         ),
                       ),
-                      StreamBuilder<int>(
-                        initialData: initLen,
-                        stream: bloc.lenStream,
-                        builder: (ctx, snapshot) {
-                          final int len = snapshot.data ?? initLen;
-                          return ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: len,
-                            itemBuilder: (ctx, index) {
-                              return itemTransition(index);
-                            },
-                          );
-                        },
-                      ),
-                      StreamBuilder<bool>(
-                        initialData: initShow,
-                        stream: bloc.showStream,
-                        builder: (ctx, snapshot) {
-                          final isShow = snapshot.data!;
-                          return Visibility(
-                            visible: isShow,
-                            child: InkWell(
-                              onTap: () {
-                                if (widget.listHistory.length >=
-                                    bloc.curLen + 10) {
-                                  bloc.lenSink.add(bloc.curLen + 10);
-                                } else {
-                                  bloc.lenSink.add(widget.listHistory.length);
-                                }
-                                if (bloc.curLen == widget.listHistory.length) {
-                                  bloc.showSink.add(false);
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                  right: 16.w,
-                                  left: 16.w,
-                                ),
-                                height: 60.h,
-                                decoration: BoxDecoration(
-                                  color: AppTheme.getInstance().bgBtsColor(),
-                                  border: Border(
-                                    top: BorderSide(
-                                      color:
-                                          AppTheme.getInstance().divideColor(),
-                                    ),
-                                    bottom: BorderSide(
-                                      color:
-                                          AppTheme.getInstance().divideColor(),
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      ImageAssets.ic_expanded,
-                                      color: AppTheme.getInstance().fillColor(),
-                                    ),
-                                    SizedBox(
-                                      width: 13.15.w,
-                                    ),
-                                    Text(
-                                      S.current.view_more,
-                                      style: textNormalCustom(
-                                        AppTheme.getInstance().fillColor(),
-                                        16,
-                                        FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                       ...[
+                          sizedPngImage(
+                            w: 94,
+                            h: 94,
+                            image: ImageAssets.icNoTransaction,
+                          ),
+                          Text(
+                            S.current.no_transaction,
+                            style: tokenDetailAmount(
+                              color: AppTheme.getInstance()
+                                  .currencyDetailTokenColor(),
+                              fontSize: 20,
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        ],
+                      //Todo when market place
+                      // StreamBuilder<int>(
+                      //   initialData: initLen,
+                      //   stream: bloc.lenStream,
+                      //   builder: (ctx, snapshot) {
+                      //     final int len = snapshot.data ?? initLen;
+                      //     return ListView.builder(
+                      //       padding: EdgeInsets.zero,
+                      //       shrinkWrap: true,
+                      //       physics: const NeverScrollableScrollPhysics(),
+                      //       itemCount: len,
+                      //       itemBuilder: (ctx, index) {
+                      //         return itemTransition(index);
+                      //       },
+                      //     );
+                      //   },
+                      // ),
+                      // StreamBuilder<bool>(
+                      //   initialData: initShow,
+                      //   stream: bloc.showStream,
+                      //   builder: (ctx, snapshot) {
+                      //     final isShow = snapshot.data!;
+                      //     return Visibility(
+                      //       visible: isShow,
+                      //       child: InkWell(
+                      //         onTap: () {
+                      //           if (widget.listHistory.length >=
+                      //               bloc.curLen + 10) {
+                      //             bloc.lenSink.add(bloc.curLen + 10);
+                      //           } else {
+                      //             bloc.lenSink.add(widget.listHistory.length);
+                      //           }
+                      //           if (bloc.curLen == widget.listHistory.length) {
+                      //             bloc.showSink.add(false);
+                      //           }
+                      //         },
+                      //         child: Container(
+                      //           padding: EdgeInsets.only(
+                      //             right: 16.w,
+                      //             left: 16.w,
+                      //           ),
+                      //           height: 60.h,
+                      //           decoration: BoxDecoration(
+                      //             color: AppTheme.getInstance().bgBtsColor(),
+                      //             border: Border(
+                      //               top: BorderSide(
+                      //                 color:
+                      //                     AppTheme.getInstance().divideColor(),
+                      //               ),
+                      //               bottom: BorderSide(
+                      //                 color:
+                      //                     AppTheme.getInstance().divideColor(),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           child: Row(
+                      //             mainAxisAlignment: MainAxisAlignment.center,
+                      //             children: [
+                      //               Image.asset(
+                      //                 ImageAssets.ic_expanded,
+                      //                 color: AppTheme.getInstance().fillColor(),
+                      //               ),
+                      //               SizedBox(
+                      //                 width: 13.15.w,
+                      //               ),
+                      //               Text(
+                      //                 S.current.view_more,
+                      //                 style: textNormalCustom(
+                      //                   AppTheme.getInstance().fillColor(),
+                      //                   16,
+                      //                   FontWeight.w400,
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
                       SizedBox(
                         height: 24.h,
                       ),
