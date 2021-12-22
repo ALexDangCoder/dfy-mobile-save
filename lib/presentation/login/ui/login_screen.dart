@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     _cubit.close();
+    controller.dispose();
     super.dispose();
   }
 
