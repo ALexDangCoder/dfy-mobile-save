@@ -60,10 +60,10 @@ class MainActivity : FlutterFragmentActivity() {
                         walletName = walletName
                     )
                 }
-                "earseAllWallet" -> {
-                    val type = call.argument<String>("type") ?: return@setMethodCallHandler
-                    this.earseAllWallet(channel = channel, type = type)
-                }
+//                "earseAllWallet" -> {
+//                    val type = call.argument<String>("type") ?: return@setMethodCallHandler
+//                    this.earseAllWallet(channel = channel, type = type)
+//                }
                 "importWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
                     val content = call.argument<String>("content")
