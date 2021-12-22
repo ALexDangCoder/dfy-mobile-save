@@ -24,6 +24,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs camera access to scan QR codes</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Please allow access to save photo in your photo library</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>App needs to authenticate using faces.</string>
 	<key>UILaunchStoryboardName</key>

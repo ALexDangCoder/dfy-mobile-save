@@ -14,6 +14,8 @@ import BigInt
     private let TOKEN_DFY_ADDRESS = "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
     private let TOKEN_BNB_ADDRESS = "0x0000000000000000000000000000000000000000"
     
+    private let TYPE_EARSE_WALLET = "earse_wallet"
+    
     private let CODE_SUCCESS = 200
     private let CODE_ERROR = 400
     
@@ -59,8 +61,8 @@ extension AppDelegate {
                 result(generateWallet())
         }
         if call.method == "storeWallet" {
-            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] as? String {
-                result(storeWallet(seedPhrase: seedPhrase, walletName: walletName, privateKey: privateKey, walletAddress: walletAddress))
+            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] as? String, let typeEarseWallet = arguments["typeEarseWallet"] as? String {
+                result(storeWallet(seedPhrase: seedPhrase, walletName: walletName, privateKey: privateKey, walletAddress: walletAddress, typeEarseWallet: typeEarseWallet))
             }
         }
         if call.method == "setConfig" {
@@ -135,8 +137,8 @@ extension AppDelegate {
             }
         }
         if call.method == "importWallet" {
-            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String, let content = arguments["content"] as? String {
-                result(importWallet(type: type, content: content))
+            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String, let content = arguments["content"] as? String, let typeEarseWallet = arguments["typeEarseWallet"] as? String {
+                result(importWallet(type: type, content: content, typeEarseWallet: typeEarseWallet))
             }
         }
         if call.method == "deleteNft" {
@@ -218,11 +220,13 @@ extension AppDelegate {
         return params
     }
     
-    private func storeWallet(seedPhrase: String, walletName: String, privateKey: String, walletAddress: String) -> [String: Any] {
+    private func storeWallet(seedPhrase: String, walletName: String, privateKey: String, walletAddress: String, typeEarseWallet: String) -> [String: Any] {
         var params: [String: Any] = [:]
         params["isSuccess"] = true
         var listWallet = [WalletModel]()
-        listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+        if (typeEarseWallet != TYPE_EARSE_WALLET) {
+            listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+        }
         listWallet.insert(WalletModel(walletName: walletName, walletAddress: walletAddress, walletIndex: 0, seedPhrase: seedPhrase, privateKey: privateKey), at: 0)
         for (index, wallet) in listWallet.enumerated() {
             wallet.walletIndex = index
@@ -463,7 +467,7 @@ extension AppDelegate {
         return [:]
     }
     
-    private func importWallet(type: String, content: String) -> [String: Any] {
+    private func importWallet(type: String, content: String, typeEarseWallet: String) -> [String: Any] {
         var param = [String: Any]()
         switch type {
         case self.TYPE_WALLET_SEED_PHRASE:
@@ -472,7 +476,9 @@ extension AppDelegate {
                 let address = wallet.getAddressForCoin(coin: .smartChain)
                 let privateKey = (wallet.getKeyForCoin(coin: .smartChain).data).hexEncodedString()
                 var listWallet = [WalletModel]()
-                listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+                if (typeEarseWallet != TYPE_EARSE_WALLET) {
+                    listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+                }
                 if (listWallet.first(where: {$0.walletAddress == address}) == nil) {
                     let walletName = "Account \(listWallet.count + 1)"
                     param["walletAddress"] = address
@@ -509,7 +515,9 @@ extension AppDelegate {
                     let publicKey = privKey.getPublicKeySecp256k1(compressed: false)
                     let address = AnyAddress(publicKey: publicKey, coin: .smartChain)
                     var listWallet = [WalletModel]()
-                    listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+                    if (typeEarseWallet != TYPE_EARSE_WALLET) {
+                        listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+                    }
                     if (listWallet.first(where: {$0.walletAddress == "\(address)"}) == nil) {
                         let walletName = "Account \(listWallet.count + 1)"
                         param["walletAddress"] = "\(address)"
