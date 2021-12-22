@@ -219,7 +219,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 content: TransactionSubmitFail(),
               ),
             );
-            //Pop success dialog
+            //Pop fail dialog
             Navigator.pop(context);
             //Pop confirm blockchain
             Navigator.pop(context);
