@@ -184,13 +184,13 @@ fun Context.importWallet(
                     appPreference.saveListWallet(listWallet)
                     hasMap["walletName"] = walletName
                     hasMap["code"] = Constant.CODE_SUCCESS
-                    hasMap["messages"] = "Import tài khoản thành công"
+                    hasMap["messages"] = "Import account successfully"
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 } else {
                     hasMap["walletAddress"] = ""
                     hasMap["walletName"] = ""
                     hasMap["code"] = Constant.CODE_ERROR
-                    hasMap["messages"] = "Tài khoản đã tồn tại"
+                    hasMap["messages"] = "The account you're are trying to import is a duplicate"
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 }
             }
@@ -222,13 +222,13 @@ fun Context.importWallet(
                     appPreference.saveListWallet(listWallet)
                     hasMap["walletName"] = walletName
                     hasMap["code"] = Constant.CODE_SUCCESS
-                    hasMap["messages"] = "Import tài khoản thành công"
+                    hasMap["messages"] = "Import account successfully"
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 } else {
                     hasMap["walletAddress"] = ""
                     hasMap["walletName"] = ""
                     hasMap["code"] = Constant.CODE_ERROR
-                    hasMap["messages"] = "Tài khoản đã tồn tại"
+                    hasMap["messages"] = "The account you're are trying to import is a duplicate"
                     channel?.invokeMethod("importWalletCallback", hasMap)
                 }
             }
@@ -236,7 +236,7 @@ fun Context.importWallet(
                 hasMap["walletAddress"] = ""
                 hasMap["walletName"] = ""
                 hasMap["code"] = Constant.CODE_ERROR
-                hasMap["messages"] = "Có lỗi xảy ra vui lòng thử lại."
+                hasMap["messages"] = "An error occurred, please try again."
                 channel?.invokeMethod("importWalletCallback", hasMap)
             }
         }
@@ -245,7 +245,7 @@ fun Context.importWallet(
         hasMap["walletName"] = ""
         hasMap["code"] = Constant.CODE_ERROR
         hasMap["messages"] =
-            if (type == Constant.TYPE_WALLET_SEED_PHRASE) "Lỗi seed phrase vui lòng thử lại" else "Lỗi private key vui lòng thử lại"
+            if (type == Constant.TYPE_WALLET_SEED_PHRASE) "Can not get wallet address" else "Can not get wallet address"
         channel?.invokeMethod("importWalletCallback", hasMap)
     }
 }
