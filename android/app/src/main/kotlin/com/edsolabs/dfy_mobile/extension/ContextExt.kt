@@ -1,7 +1,6 @@
 package com.edsolabs.dfy_mobile.extension
 
 import android.content.Context
-import android.util.Log
 import com.edsolabs.dfy_mobile.Constant
 import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
 import com.edsolabs.dfy_mobile.data.model.ItemNftModel
@@ -146,7 +145,12 @@ fun Context.earseWallet(channel: MethodChannel?, walletAddress: String) {
 }
 
 
-fun Context.importWallet(channel: MethodChannel?, type: String, content: String) {
+fun Context.importWallet(
+    channel: MethodChannel?,
+    type: String,
+    content: String,
+    typeEarseWallet: String
+) {
     val appPreference = AppPreference(this)
     val coinType: CoinType = CoinType.SMARTCHAIN
     val hasMap = HashMap<String, Any>()
@@ -157,7 +161,9 @@ fun Context.importWallet(channel: MethodChannel?, type: String, content: String)
                 val address = wallet.getAddressForCoin(coinType)
                 val privateKey = ByteString.copyFrom(wallet.getKeyForCoin(coinType).data())
                 val listWallet = ArrayList<WalletModel>()
-                listWallet.addAll(appPreference.getListWallet())
+                if ((typeEarseWallet == Constant.TYPE_EARSE_WALLET).not()) {
+                    listWallet.addAll(appPreference.getListWallet())
+                }
                 if (listWallet.firstOrNull { it.walletAddress == address } == null) {
                     val walletName = "Account ${listWallet.size + 1}"
                     hasMap["walletAddress"] = address
@@ -193,7 +199,9 @@ fun Context.importWallet(channel: MethodChannel?, type: String, content: String)
                 val publicKey = privateKey.getPublicKeySecp256k1(false)
                 val address = AnyAddress(publicKey, coinType).description()
                 val listWallet = ArrayList<WalletModel>()
-                listWallet.addAll(appPreference.getListWallet())
+                if ((typeEarseWallet == Constant.TYPE_EARSE_WALLET).not()) {
+                    listWallet.addAll(appPreference.getListWallet())
+                }
                 if (listWallet.firstOrNull { it.walletAddress == address } == null) {
                     val walletName = "Account ${listWallet.size + 1}"
                     hasMap["walletAddress"] = address
@@ -277,13 +285,16 @@ fun Context.storeWallet(
     seedPhrase: String,
     walletName: String,
     walletAddress: String,
-    privateKey: String
+    privateKey: String,
+    typeEarseWallet: String
 ) {
     val appPreference = AppPreference(this)
     val hasMap = HashMap<String, Any>()
     hasMap["isSuccess"] = true
     val listWallet = ArrayList<WalletModel>()
-    listWallet.addAll(appPreference.getListWallet())
+    if ((typeEarseWallet == Constant.TYPE_EARSE_WALLET).not()) {
+        listWallet.addAll(appPreference.getListWallet())
+    }
     listWallet.add(
         0,
         WalletModel(
@@ -556,7 +567,8 @@ fun Context.importNft(
 
     val objectNft = JSONObject(jsonNft)
     val contractNft = objectNft.getString("contract")
-    var checkItemNft = appPreference.getListNft().firstOrNull { it.walletAddress == walletAddress && it.collectionAddress == contractNft }
+    var checkItemNft = appPreference.getListNft()
+        .firstOrNull { it.walletAddress == walletAddress && it.collectionAddress == contractNft }
     if (checkItemNft == null) {
         checkItemNft = NftModel()
         checkItemNft.walletAddress = walletAddress
