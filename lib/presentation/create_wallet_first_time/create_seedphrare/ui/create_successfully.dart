@@ -62,6 +62,7 @@ class CreateSuccessfully extends StatelessWidget {
         ),
       ),
       body: ListView(
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           SizedBox(
             height: 8.h,
@@ -182,31 +183,6 @@ class _BodyState extends State<_Body> {
               );
             },
           ),
-          // Center(
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //           builder: (context) => MainScreen(
-          //             index: 1,
-          //             wallet: widget.wallet,
-          //           ),
-          //         ),
-          //       );
-          //       widget.bLocCreateSeedPhrase.setConfig(
-          //         isAppLock: widget.bLocCreateSeedPhrase.isCheckAppLock.value,
-          //         isFaceID: widget.bLocCreateSeedPhrase.isCheckTouchID.value,
-          //       );
-          //       widget.bLocCreateSeedPhrase
-          //           .savePassword(password: widget.passWord);
-          //     },
-          //     child: ButtonGold(
-          //       title: S.current.complete,
-          //       isEnable: true,
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

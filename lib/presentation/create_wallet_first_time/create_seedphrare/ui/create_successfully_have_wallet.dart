@@ -29,6 +29,7 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
       body: ListView(
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           spaceH8,
           Container(
