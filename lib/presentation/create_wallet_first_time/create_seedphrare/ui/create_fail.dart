@@ -23,28 +23,29 @@ class CreateFail extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 48.h,
-          ),
-          Container(
-            height: 764.h,
-            width: 375.w,
-            decoration: BoxDecoration(
-              color: const Color(0xff3e3d5c),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.h),
-                topRight: Radius.circular(30.h),
-              ),
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 764.h,
+          width: 375.w,
+          decoration: BoxDecoration(
+            color: const Color(0xff3e3d5c),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.h),
+              topRight: Radius.circular(30.h),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 18.h,
-                ),
-                Center(
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 18.h,
+              ),
+              Center(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                  ),
                   child: Text(
                     (KeyType.CREATE == type ||
                             KeyType.CREATE_HAVE_WALLET == type)
@@ -57,95 +58,95 @@ class CreateFail extends StatelessWidget {
                     ),
                   ),
                 ),
-                spaceH20,
-                line,
-                spaceH24,
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 80.h,
-                          ),
-                          SizedBox(
-                            height: 228.h,
-                            width: 305.w,
-                            child: Image.asset(ImageAssets.img_fail),
-                          ),
-                          spaceH20,
-                          Center(
-                            child: Text(
-                              message ?? '',
-                              style: textNormalCustom(
-                                AppTheme.getInstance().whiteColor(),
-                                32,
-                                FontWeight.w700,
-                              ),
-                              textAlign: TextAlign.center,
+              ),
+              spaceH20,
+              line,
+              spaceH24,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 80.h,
+                        ),
+                        SizedBox(
+                          height: 228.h,
+                          width: 305.w,
+                          child: Image.asset(ImageAssets.img_fail),
+                        ),
+                        spaceH20,
+                        Center(
+                          child: Text(
+                            message ?? '',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              32,
+                              FontWeight.w700,
                             ),
+                            textAlign: TextAlign.center,
                           ),
-                          SizedBox(
-                            height: 213.h,
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: 213.h,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      if (type == KeyType.CREATE) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MainScreen(
-                              index: 3,
-                            ),
+              ),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    if (type == KeyType.CREATE) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MainScreen(
+                            index: 3,
                           ),
-                        );
-                      } else if (type == KeyType.CREATE_HAVE_WALLET) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MainScreen(
-                              index: 1,
-                            ),
+                        ),
+                      );
+                    } else if (type == KeyType.CREATE_HAVE_WALLET) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MainScreen(
+                            index: 1,
                           ),
-                        );
-                      } else if (type == KeyType.IMPORT) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MainScreen(
-                              index: 3,
-                            ),
+                        ),
+                      );
+                    } else if (type == KeyType.IMPORT) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MainScreen(
+                            index: 3,
                           ),
-                        );
-                      } else {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MainScreen(
-                              index: 1,
-                            ),
+                        ),
+                      );
+                    } else {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MainScreen(
+                            index: 1,
                           ),
-                        );
-                      }
-                    },
-                    child: ButtonGold(
-                      title: S.current.complete,
-                      isEnable: true,
-                    ),
+                        ),
+                      );
+                    }
+                  },
+                  child: ButtonGold(
+                    title: S.current.complete,
+                    isEnable: true,
                   ),
                 ),
-                spaceH38,
-              ],
-            ),
+              ),
+              spaceH38,
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

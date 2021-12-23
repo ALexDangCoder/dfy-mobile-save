@@ -43,17 +43,13 @@ class CreateSeedPhrase extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 48.h,
-          ),
-          _Body(
-            bloc: bloc,
-            typeScreen: type,
-            typeEarseWallet: typeEarseWallet,
-          ),
-        ],
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: _Body(
+          bloc: bloc,
+          typeScreen: type,
+          typeEarseWallet: typeEarseWallet,
+        ),
       ),
     );
   }
