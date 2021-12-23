@@ -203,6 +203,7 @@ class _SendTokenState extends State<SendToken> {
                 );
               },
             ),
+            spaceH38,
           ],
         ),
       ),

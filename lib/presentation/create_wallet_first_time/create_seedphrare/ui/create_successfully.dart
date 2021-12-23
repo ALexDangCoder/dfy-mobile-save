@@ -55,9 +55,14 @@ class CreateSuccessfully extends StatelessWidget {
             );
             bLocCreateSeedPhrase.savePassword(password: passWord);
           },
-          child: ButtonGold(
-            title: S.current.complete,
-            isEnable: true,
+          child: Container(
+            margin: EdgeInsets.only(
+              bottom: 38.h,
+            ),
+            child: ButtonGold(
+              title: S.current.complete,
+              isEnable: true,
+            ),
           ),
         ),
       ),

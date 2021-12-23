@@ -5,6 +5,7 @@ import 'package:Dfy/presentation/import_account/bloc/import_cubit.dart';
 import 'package:Dfy/presentation/restore_account/bloc/restore_cubit.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -139,14 +140,18 @@ class ItemForm extends StatelessWidget {
                     ),
                     suffixIcon: InkWell(
                       onTap: callback,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 13.h),
-                        child: Text(
-                          suffix,
-                          style:
-                              textNormal(AppTheme.getInstance().fillColor(), 16)
-                                  .copyWith(
-                            fontWeight: FontWeight.w400,
+                      child: SizedBox(
+                        height: 24.h,
+                        width: 24.w,
+                        child: Center(
+                          child: Text(
+                            suffix,
+                            textAlign: TextAlign.center,
+                            style:
+                                textNormal(AppTheme.getInstance().fillColor(), 16)
+                                    .copyWith(
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                       ),

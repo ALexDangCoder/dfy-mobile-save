@@ -141,7 +141,6 @@ class _RestoreAccountState extends State<RestoreAccount> {
             },
             child: BaseBottomSheet(
               title: S.current.restore_account,
-              isBackNewWallet: true,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Column(
@@ -461,10 +460,10 @@ class _RestoreAccountState extends State<RestoreAccount> {
                     ),
                     spaceH40,
                     Container(
-                      margin: EdgeInsets.only(
-                        left: 23.w,
-                        right: 23.w,
-                      ),
+                      // margin: EdgeInsets.only(
+                      //   left: 16.w,
+                      //   right: 16.w,
+                      // ),
                       child: StreamBuilder<bool>(
                         initialData: isEnable,
                         stream: restoreCubit.btnStream,
