@@ -331,16 +331,35 @@ class _SendTokenState extends State<SendToken> {
                       },
                       child: Padding(
                         padding: EdgeInsets.only(
-                          top: 15.h,
-                          right: 20.w,
+                          // top: 15.h,
+                          right: 15.w,
                         ),
-                        child: Text(
-                          S.current.max,
-                          style: textNormal(
-                            const Color.fromRGBO(228, 172, 26, 1),
-                            16,
-                          ).copyWith(fontWeight: FontWeight.w600),
-                        ),
+                        child: SizedBox(
+                          width: 55.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                S.current.max,
+                                style: textNormal(
+                                  const Color.fromRGBO(228, 172, 26, 1),
+                                  16,
+                                ).copyWith(fontWeight: FontWeight.w600),
+                              ),
+                              spaceW4,
+                              SizedBox(
+                                height: 20.h,
+                                width: 20.h,
+                                child: CircleAvatar(
+                                  radius: 30.0.r,
+                                  backgroundImage:
+                                  NetworkImage(widget.modelToken.iconToken),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                       ),
                     )
                   : Padding(
