@@ -60,6 +60,9 @@ extension AppDelegate {
             }
         }
         if call.method == "generateWallet" {
+            if let arguments = call.arguments as? [String: Any], let typeEarseWallet = arguments["typeEarseWallet"] as? String {
+                
+            }
                 result(generateWallet())
         }
         if call.method == "storeWallet" {
@@ -182,11 +185,11 @@ extension AppDelegate {
         return params
     }
     
-    private func generateWallet() -> [String: Any] {
+    private func generateWallet(typeEarseWallet: String) -> [String: Any] {
         let wallet = HDWallet(strength: 128, passphrase: "")
         let seedPhrase = wallet!.mnemonic
         let address = wallet?.getAddressForCoin(coin: .smartChain)
-        let walletName = "Account \(SharedPreference.shared.getListWallet().count + 1)"
+        let walletName = (typeEarseWallet != TYPE_EARSE_WALLET) ? "Account \(SharedPreference.shared.getListWallet().count + 1)" : "Account 1"
         let privateKey = (wallet?.getKeyForCoin(coin: .smartChain).data)!.hexEncodedString()
         var params: [String: Any] = [:]
         params["walletName"] = walletName
