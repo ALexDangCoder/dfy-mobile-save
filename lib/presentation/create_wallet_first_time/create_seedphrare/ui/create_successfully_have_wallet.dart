@@ -28,107 +28,105 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
-      body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          spaceH8,
-          Container(
-            height: 764.h,
-            width: 375.w,
-            decoration: BoxDecoration(
-              color: const Color(0xff3e3d5c),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.r),
-                topRight: Radius.circular(30.r),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 18.h,
-                ),
-                Center(
-                  child: Text(
-                    type == KeyType.CREATE
-                        ? S.current.success
-                        : S.current.success_import,
-                    style: textNormalCustom(
-                      Colors.white,
-                      20,
-                      FontWeight.bold,
-                    ),
-                  ),
-                ),
-                spaceH20,
-                line,
-                spaceH24,
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 80.h,
-                          ),
-                          SizedBox(
-                            height: 228.h,
-                            width: 305.w,
-                            child: Image.asset(ImageAssets.frameGreen),
-                          ),
-                          spaceH20,
-                          Text(
-                            S.current.congratulation,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              32,
-                              FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 213.h,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      if (type == KeyType.CREATE_HAVE_WALLET) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainScreen(
-                              index: 1,
-                              wallet: wallet,
-                            ),
-                          ),
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainScreen(
-                              index: 1,
-                              wallet: wallet,
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                    child: ButtonGold(
-                      title: S.current.complete,
-                      isEnable: true,
-                    ),
-                  ),
-                ),
-              ],
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 764.h,
+          width: 375.w,
+          decoration: BoxDecoration(
+            color: const Color(0xff3e3d5c),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.r),
+              topRight: Radius.circular(30.r),
             ),
           ),
-        ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 18.h,
+              ),
+              Center(
+                child: Text(
+                  type == KeyType.CREATE
+                      ? S.current.success
+                      : S.current.success_import,
+                  style: textNormalCustom(
+                    Colors.white,
+                    20,
+                    FontWeight.bold,
+                  ),
+                ),
+              ),
+              spaceH20,
+              line,
+              spaceH24,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 80.h,
+                        ),
+                        SizedBox(
+                          height: 228.h,
+                          width: 305.w,
+                          child: Image.asset(ImageAssets.frameGreen),
+                        ),
+                        spaceH20,
+                        Text(
+                          S.current.congratulation,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            32,
+                            FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 213.h,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    if (type == KeyType.CREATE_HAVE_WALLET) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainScreen(
+                            index: 1,
+                            wallet: wallet,
+                          ),
+                        ),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainScreen(
+                            index: 1,
+                            wallet: wallet,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  child: ButtonGold(
+                    title: S.current.complete,
+                    isEnable: true,
+                  ),
+                ),
+              ),
+              spaceH38,
+            ],
+          ),
+        ),
       ),
     );
   }

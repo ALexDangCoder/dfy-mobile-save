@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/model_token.dart';
@@ -13,6 +12,7 @@ import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/blur_popup/blur_overlay.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
+import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -187,7 +187,14 @@ class TokenDetail extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ComingSoon(),
+                              ),
+                            );
+                          },
                           child: Container(
                             height: 48.h,
                             width: 210.h,

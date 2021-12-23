@@ -14,7 +14,6 @@ class ErrorButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 64.h,
-      width: 298.w,
       decoration: BoxDecoration(
         color: AppTheme.getInstance().errorColorButton(),
         borderRadius: BorderRadius.circular(22),

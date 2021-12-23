@@ -53,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _cubit.getConfig();
     _cubit.checkBiometrics();
   }
+
   @override
   void dispose() {
     _cubit.close();
@@ -216,26 +217,32 @@ class _LoginScreenState extends State<LoginScreen> {
                     builder: (context, state) {
                       return GestureDetector(
                         child: enableLogin
-                            ? ButtonRadial(
-                                child: Center(
-                                  child: Text(
-                                    S.current.login,
-                                    style: textNormalCustom(
-                                      Colors.white,
-                                      20,
-                                      FontWeight.w700,
+                            ? Container(
+                                margin: EdgeInsets.symmetric(horizontal: 16.w),
+                                child: ButtonRadial(
+                                  child: Center(
+                                    child: Text(
+                                      S.current.login,
+                                      style: textNormalCustom(
+                                        Colors.white,
+                                        20,
+                                        FontWeight.w700,
+                                      ),
                                     ),
                                   ),
                                 ),
                               )
-                            : ErrorButton(
-                                child: Center(
-                                  child: Text(
-                                    S.current.login,
-                                    style: textNormalCustom(
-                                      Colors.white,
-                                      20,
-                                      FontWeight.w700,
+                            : Container(
+                                margin: EdgeInsets.symmetric(horizontal: 16.w),
+                                child: ErrorButton(
+                                  child: Center(
+                                    child: Text(
+                                      S.current.login,
+                                      style: textNormalCustom(
+                                        Colors.white,
+                                        20,
+                                        FontWeight.w700,
+                                      ),
                                     ),
                                   ),
                                 ),

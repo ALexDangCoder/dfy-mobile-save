@@ -319,27 +319,30 @@ class _NFTDetailState extends State<NFTDetail> {
                       SizedBox(
                         height: 24.h,
                       ),
-                      ButtonGradient(
-                        gradient: RadialGradient(
-                          center: const Alignment(0.5, -0.5),
-                          radius: 4,
-                          colors: AppTheme.getInstance().gradientButtonColor(),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ComingSoon(),
+                      Container(
+                        margin:  EdgeInsets.symmetric(horizontal: 16.w),
+                        child: ButtonGradient(
+                          gradient: RadialGradient(
+                            center: const Alignment(0.5, -0.5),
+                            radius: 4,
+                            colors: AppTheme.getInstance().gradientButtonColor(),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ComingSoon(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            S.current.put_on_market,
+                            style: textNormal(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
+                            ).copyWith(
+                              fontWeight: FontWeight.bold,
                             ),
-                          );
-                        },
-                        child: Text(
-                          S.current.put_on_market,
-                          style: textNormal(
-                            AppTheme.getInstance().textThemeColor(),
-                            20,
-                          ).copyWith(
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
