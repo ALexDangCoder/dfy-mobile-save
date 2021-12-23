@@ -124,9 +124,9 @@ dependencies {
     implementation 'com.github.takuji31.Koreference:koreference-gson:2.0.0'
     implementation 'com.github.takuji31.Koreference:koreference-observable:2.0.0'
     implementation "com.google.code.gson:gson:2.8.5"
-    implementation 'com.trustwallet:wallet-core:2.6.30'
+//    implementation 'com.trustwallet:wallet-core:2.6.30'
     implementation 'io.grpc:grpc-protobuf:1.34.0'
-    //implementation project(':trustwalletcore')
+    implementation project(':trustwalletcore')
 //    debugImplementation "com.github.whataa:pandora:androidx_v2.1.0"
 //    releaseImplementation "com.github.whataa:pandora-no-op:v2.0.3"
 
