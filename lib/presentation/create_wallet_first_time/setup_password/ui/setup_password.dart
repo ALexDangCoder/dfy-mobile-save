@@ -130,9 +130,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                     );
                   },
                 ),
-                SizedBox(
-                  height: 38.h,
-                ),
+                spaceH38,
               ],
             ),
           ),
