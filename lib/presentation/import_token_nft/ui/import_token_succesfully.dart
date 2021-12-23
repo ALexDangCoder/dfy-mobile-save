@@ -14,93 +14,90 @@ class TokenSuccessfully extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 48.h,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 764.h,
+          width: 375.w,
+          decoration: BoxDecoration(
+            // shape: BoxShape.circle,
+            color: AppTheme.getInstance().bgBtsColor(),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.r),
+              topRight: Radius.circular(30.r),
+            ),
           ),
-          Container(
-            height: 764.h,
-            width: 375.w,
-            decoration: BoxDecoration(
-              // shape: BoxShape.circle,
-              color: AppTheme.getInstance().bgBtsColor(),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.r),
-                topRight: Radius.circular(30.r),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 18.h,
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 18.h,
+              Center(
+                child: Text(
+                  S.current.token_successfully,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().whiteColor(),
+                    20,
+                    FontWeight.bold,
+                  ),
                 ),
-                Center(
-                  child: Text(
-                    S.current.token_successfully,
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      20,
-                      FontWeight.bold,
+              ),
+              spaceH20,
+              line,
+              spaceH24,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 56.h,
+                        ),
+                        SizedBox(
+                          height: 228.h,
+                          width: 305.w,
+                          child: Image.asset(ImageAssets.frameGreen),
+                        ),
+                        SizedBox(
+                          height: 22.h,
+                        ),
+                        Text(
+                          S.current.congratulation,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            32,
+                            FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 231.h,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                spaceH20,
-                line,
-                spaceH24,
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 56.h,
-                          ),
-                          SizedBox(
-                            height: 228.h,
-                            width: 305.w,
-                            child: Image.asset(ImageAssets.frameGreen),
-                          ),
-                          SizedBox(
-                            height: 22.h,
-                          ),
-                          Text(
-                            S.current.congratulation,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              32,
-                              FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 231.h,
-                          ),
-                        ],
-                      ),
-                    ),
+              ),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  child: ButtonGold(
+                    title: S.current.complete,
+                    isEnable: true,
                   ),
                 ),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                    child: ButtonGold(
-                      title: S.current.complete,
-                      isEnable: true,
-                    ),
-                  ),
-                ), spaceH38,
-              ],
-            ),
+              ),
+              spaceH38,
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
