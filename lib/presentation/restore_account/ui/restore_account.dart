@@ -141,7 +141,6 @@ class _RestoreAccountState extends State<RestoreAccount> {
             },
             child: BaseBottomSheet(
               title: S.current.restore_account,
-              isBackNewWallet: true,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Column(
