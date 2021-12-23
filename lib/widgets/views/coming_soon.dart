@@ -62,17 +62,20 @@ class ComingSoon extends StatelessWidget {
                   height: 120.h,
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.of(context).pop();
                   },
-                  child: ButtonRadial(
-                    child: Center(
-                      child: Text(
-                        S.current.back,
-                        style: textNormalCustom(
-                          Colors.white,
-                          20,
-                          FontWeight.w700,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: ButtonRadial(
+                      child: Center(
+                        child: Text(
+                          S.current.back,
+                          style: textNormalCustom(
+                            Colors.white,
+                            20,
+                            FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
