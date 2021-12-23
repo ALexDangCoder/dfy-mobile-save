@@ -132,20 +132,38 @@ class _SelectAccState extends State<SelectAcc> {
                                 }
                               },
                               onLongPress: () {
-                                Navigator.of(context).push(
-                                  HeroDialogRoute(
-                                    builder: (context) {
-                                      return RemoveAcc(
-                                        bloc: widget.bloc,
-                                        index: index,
-                                        walletAddress: snapshot
-                                                .data?[index].addressWallet ??
-                                            '',
-                                      );
-                                    },
-                                    isNonBackground: false,
-                                  ),
-                                );
+                                Navigator.of(context)
+                                    .push(
+                                      HeroDialogRoute(
+                                        builder: (context) {
+                                          return RemoveAcc(
+                                            bloc: widget.bloc,
+                                            index: index,
+                                            walletAddress: snapshot.data?[index]
+                                                    .addressWallet ??
+                                                '',
+                                          );
+                                        },
+                                        isNonBackground: false,
+                                      ),
+                                    )
+                                    .whenComplete(
+                                      () => {
+                                        if (widget
+                                            .bloc.listSelectAccBloc.isEmpty)
+                                          {
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const MainScreen(
+                                                  index: 3,
+                                                ),
+                                              ),
+                                            ),
+                                          },
+                                      },
+                                    );
                               },
                               child: Column(
                                 children: [
