@@ -19,7 +19,7 @@ class ButtonGradient extends StatelessWidget {
         onPressed();
       },
       child: Container(
-        width: 298.w,
+        // width: 298.w,
         height: 64.h,
         decoration: BoxDecoration(
           gradient: gradient,

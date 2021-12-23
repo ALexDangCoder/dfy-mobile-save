@@ -159,7 +159,7 @@ class _SelectAccState extends State<SelectAcc> {
                                     child: Container(
                                       width: 357.w,
                                       padding: EdgeInsets.only(
-                                        left: 15.h,
+                                        left: 5.w,
                                       ),
                                       child: Column(
                                         mainAxisAlignment:
@@ -194,7 +194,7 @@ class _SelectAccState extends State<SelectAcc> {
                                                       Row(
                                                         children: [
                                                           SizedBox(
-                                                            width: 80.w,
+                                                            width: 99.w,
                                                             child: Text(
                                                               snapshot
                                                                       .data?[
@@ -249,8 +249,8 @@ class _SelectAccState extends State<SelectAcc> {
                                                             false
                                                         ? Container(
                                                             width: 65.w,
-                                                            padding:
-                                                                EdgeInsets.symmetric(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
                                                               vertical: 4.h,
                                                             ),
                                                             decoration:

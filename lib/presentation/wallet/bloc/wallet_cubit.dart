@@ -192,7 +192,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> tokenDecimal = BehaviorSubject();
   BehaviorSubject<bool> isTokenAddressText = BehaviorSubject.seeded(true);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
-  BehaviorSubject<String> checkDataWallet = BehaviorSubject.seeded('');
+  BehaviorSubject<String> checkDataWallet = BehaviorSubject.seeded('value');
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject();
   BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isImportNftFail = BehaviorSubject.seeded(true);

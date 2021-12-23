@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import WalletCore
+import BigInt
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -13,8 +14,12 @@ import WalletCore
     private let TOKEN_DFY_ADDRESS = "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
     private let TOKEN_BNB_ADDRESS = "0x0000000000000000000000000000000000000000"
     
+    private let TYPE_EARSE_WALLET = "earse_wallet"
+    
     private let CODE_SUCCESS = 200
     private let CODE_ERROR = 400
+    private let CODE_ERROR_DUPLICATE = 401
+    private let CODE_ERROR_WALLET = 402
     
   override func application(
     _ application: UIApplication,
@@ -39,14 +44,14 @@ import WalletCore
 extension AppDelegate {
     private func handleMethodCall(call: FlutterMethodCall, result: FlutterResult) {
         guard self.chatChanel != nil else { return }
-//        if call.method == "getListWallets" {
-//            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String {
-//                result(getListWallet(password: password))
-//            }
-//        }
         if call.method == "getNFT" {
             if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
                 result(getNFT(walletAddress: walletAddress))
+            }
+        }
+        if call.method == "signTransactionToken" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let toAddress = arguments["toAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let amount = arguments["amount"] as? String {
+                result(signTransactionToken(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, amount: amount))
             }
         }
         if call.method == "getTokens" {
@@ -55,11 +60,14 @@ extension AppDelegate {
             }
         }
         if call.method == "generateWallet" {
+            if let arguments = call.arguments as? [String: Any], let typeEarseWallet = arguments["typeEarseWallet"] as? String {
+                
+            }
                 result(generateWallet())
         }
         if call.method == "storeWallet" {
-            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] as? String {
-                result(storeWallet(seedPhrase: seedPhrase, walletName: walletName, privateKey: privateKey, walletAddress: walletAddress))
+            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] as? String, let typeEarseWallet = arguments["typeEarseWallet"] as? String {
+                result(storeWallet(seedPhrase: seedPhrase, walletName: walletName, privateKey: privateKey, walletAddress: walletAddress, typeEarseWallet: typeEarseWallet))
             }
         }
         if call.method == "setConfig" {
@@ -125,7 +133,6 @@ extension AppDelegate {
         }
         if call.method == "importNft" {
             if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let jsonNft = arguments["jsonNft"] as? String {
-                print("Mother fukcer \(jsonNft)")
                 result(importNft(jsonNft: jsonNft, walletAddress: walletAddress))
             }
         }
@@ -135,8 +142,8 @@ extension AppDelegate {
             }
         }
         if call.method == "importWallet" {
-            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String, let content = arguments["content"] as? String {
-                result(importWallet(type: type, content: content))
+            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String, let content = arguments["content"] as? String, let typeEarseWallet = arguments["typeEarseWallet"] as? String {
+                result(importWallet(type: type, content: content, typeEarseWallet: typeEarseWallet))
             }
         }
         if call.method == "deleteNft" {
@@ -149,9 +156,14 @@ extension AppDelegate {
                 result(deleteCollection(walletAddress: walletAddress, collectionAddress: collectionAddress))
             }
         }
-        if call.method == "earseAllWallet" {
-            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String {
-                result(eraseAllWallet(type: type))
+//        if call.method == "earseAllWallet" {
+//            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String {
+//                result(eraseAllWallet(type: type))
+//            }
+//        }
+        if call.method == "signTransactionNft" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let toAddress = arguments["toAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let tokenId = arguments["tokenId"] as? String {
+                result(signTransactionNft(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, tokenId: tokenId))
             }
         }
 //
@@ -173,11 +185,11 @@ extension AppDelegate {
         return params
     }
     
-    private func generateWallet() -> [String: Any] {
+    private func generateWallet(typeEarseWallet: String) -> [String: Any] {
         let wallet = HDWallet(strength: 128, passphrase: "")
         let seedPhrase = wallet!.mnemonic
         let address = wallet?.getAddressForCoin(coin: .smartChain)
-        let walletName = "Account \(SharedPreference.shared.getListWallet().count + 1)"
+        let walletName = (typeEarseWallet != TYPE_EARSE_WALLET) ? "Account \(SharedPreference.shared.getListWallet().count + 1)" : "Account 1"
         let privateKey = (wallet?.getKeyForCoin(coin: .smartChain).data)!.hexEncodedString()
         var params: [String: Any] = [:]
         params["walletName"] = walletName
@@ -209,16 +221,17 @@ extension AppDelegate {
                 params.append(nftParam)
             }
         }
-        print("mother fucker \(params)")
         chatChanel?.invokeMethod("getNFTCallback", arguments: params)
         return params
     }
     
-    private func storeWallet(seedPhrase: String, walletName: String, privateKey: String, walletAddress: String) -> [String: Any] {
+    private func storeWallet(seedPhrase: String, walletName: String, privateKey: String, walletAddress: String, typeEarseWallet: String) -> [String: Any] {
         var params: [String: Any] = [:]
         params["isSuccess"] = true
         var listWallet = [WalletModel]()
-        listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+        if (typeEarseWallet != TYPE_EARSE_WALLET) {
+            listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+        }
         listWallet.insert(WalletModel(walletName: walletName, walletAddress: walletAddress, walletIndex: 0, seedPhrase: seedPhrase, privateKey: privateKey), at: 0)
         for (index, wallet) in listWallet.enumerated() {
             wallet.walletIndex = index
@@ -317,14 +330,14 @@ extension AppDelegate {
         return params
     }
 
-    private func eraseAllWallet(type: String) -> [String: Any] {
-        var params: [String: Any] = [:]
-        params["isSuccess"] = true
-        params["type"] = type
-        SharedPreference.shared.eraseWallet()
-        chatChanel?.invokeMethod("earseAllWalletCallback", arguments: params)
-        return params 
-    }
+//    private func eraseAllWallet(type: String) -> [String: Any] {
+//        var params: [String: Any] = [:]
+//        params["isSuccess"] = true
+//        params["type"] = type
+//        SharedPreference.shared.eraseWallet()
+//        chatChanel?.invokeMethod("earseAllWalletCallback", arguments: params)
+//        return params 
+//    }
     
     private func chooseWallet(walletAddress: String) -> [[String: Any]] {
         var listParams = [[String: Any]]()
@@ -459,7 +472,7 @@ extension AppDelegate {
         return [:]
     }
     
-    private func importWallet(type: String, content: String) -> [String: Any] {
+    private func importWallet(type: String, content: String, typeEarseWallet: String) -> [String: Any] {
         var param = [String: Any]()
         switch type {
         case self.TYPE_WALLET_SEED_PHRASE:
@@ -468,7 +481,9 @@ extension AppDelegate {
                 let address = wallet.getAddressForCoin(coin: .smartChain)
                 let privateKey = (wallet.getKeyForCoin(coin: .smartChain).data).hexEncodedString()
                 var listWallet = [WalletModel]()
-                listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+                if (typeEarseWallet != TYPE_EARSE_WALLET) {
+                    listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+                }
                 if (listWallet.first(where: {$0.walletAddress == address}) == nil) {
                     let walletName = "Account \(listWallet.count + 1)"
                     param["walletAddress"] = address
@@ -479,22 +494,19 @@ extension AppDelegate {
                     SharedPreference.shared.saveListWallet(listWallet: listWallet)
                     param["walletName"] = walletName
                     param["code"] = CODE_SUCCESS
-                    param["messages"] = "Import tài khoản thành công"
                     chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                     return param
                 } else {
                     param["walletAddress"] = ""
                     param["walletName"] = ""
-                    param["code"] = CODE_ERROR
-                    param["messages"] = "Tài khoản đã tồn tại"
+                    param["code"] = CODE_ERROR_DUPLICATE
                     chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                     return param
                 }
             } else {
                 param["walletAddress"] = ""
                 param["walletName"] = ""
-                param["code"] = CODE_ERROR
-                param["messages"] = "Lỗi seed phrase vui lòng thử lại"
+                param["code"] = CODE_ERROR_WALLET
                 chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                 return param
             }
@@ -505,7 +517,9 @@ extension AppDelegate {
                     let publicKey = privKey.getPublicKeySecp256k1(compressed: false)
                     let address = AnyAddress(publicKey: publicKey, coin: .smartChain)
                     var listWallet = [WalletModel]()
-                    listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+                    if (typeEarseWallet != TYPE_EARSE_WALLET) {
+                        listWallet.append(contentsOf: SharedPreference.shared.getListWallet())
+                    }
                     if (listWallet.first(where: {$0.walletAddress == "\(address)"}) == nil) {
                         let walletName = "Account \(listWallet.count + 1)"
                         param["walletAddress"] = "\(address)"
@@ -516,14 +530,12 @@ extension AppDelegate {
                         SharedPreference.shared.saveListWallet(listWallet: listWallet)
                         param["walletName"] = walletName
                         param["code"] = CODE_SUCCESS
-                        param["messages"] = "Import tài khoản thành công"
                         chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                         return param
                     } else {
                         param["walletAddress"] = ""
                         param["walletName"] = ""
-                        param["code"] = CODE_ERROR
-                        param["messages"] = "Tài khoản đã tồn tại"
+                        param["code"] = CODE_ERROR_DUPLICATE
                         chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                         return param
                     }
@@ -531,15 +543,13 @@ extension AppDelegate {
                     param["walletAddress"] = ""
                     param["walletName"] = ""
                     param["code"] = CODE_ERROR
-                    param["messages"] = "Lỗi private key vui lòng thử lại"
                     chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                     return param
                 }
             } else {
                 param["walletAddress"] = ""
                 param["walletName"] = ""
-                param["code"] = CODE_ERROR
-                param["messages"] = "Lỗi private key vui lòng thử lại"
+                param["code"] = CODE_ERROR_WALLET
                 chatChanel?.invokeMethod("importWalletCallback", arguments: param)
                 return param
             }
@@ -611,6 +621,111 @@ extension AppDelegate {
         SharedPreference.shared.saveListNft(listNft: listNft)
         let param: [String: Any] = ["isSuccess": isDeleteSuccess]
         chatChanel?.invokeMethod("setDeleteCollectionCallback", arguments: param)
+        return param
+    }
+    
+    private func signTransactionToken(walletAddress: String,
+                                      tokenAddress: String,
+                                      toAddress: String,
+                                      nonce: String,
+                                      chainId: String,
+                                      gasPrice: String,
+                                      gasLimit: String,
+                                      amount: String) -> [String: Any] {
+        var param = [String: Any]()
+        let walletModel = SharedPreference.shared.getListWallet().first(where: {$0.walletAddress == walletAddress})
+        if let walletModel = walletModel, !walletModel.privateKey.isEmpty {
+            let privateKey = PrivateKey(data: walletModel.privateKey.hexadecimal!)!
+            switch tokenAddress {
+            case TOKEN_BNB_ADDRESS:
+                let signerInput = EthereumSigningInput.with {
+                    $0.nonce = BigInt(nonce)!.serialize()
+                    $0.chainID = BigInt(chainId)!.serialize()
+                    $0.gasPrice = BigInt(gasPrice)!.serialize()
+                    $0.gasLimit = BigInt(gasLimit)!.serialize()
+                    $0.toAddress = toAddress
+                    $0.privateKey = privateKey.data
+                    $0.transaction = EthereumTransaction.with {
+                        $0.transfer = EthereumTransaction.Transfer.with {
+                            $0.amount = BigInt(amount)!.serialize()
+                        }
+                    }
+                }
+                let outputBnb: EthereumSigningOutput = AnySigner.sign(input: signerInput, coin: .smartChain)
+                let value = outputBnb.encoded.hexString
+                param["isSuccess"] = true
+                param["signedTransaction"] = value
+                break
+            default:
+                let signerInput = EthereumSigningInput.with {
+                    $0.nonce = BigInt(nonce)!.serialize()
+                    $0.chainID = BigInt(chainId)!.serialize()
+                    $0.gasPrice = BigInt(gasPrice)!.serialize()
+                    $0.gasLimit = BigInt(gasLimit)!.serialize()
+                    $0.toAddress = tokenAddress
+                    $0.privateKey = privateKey.data
+                    $0.transaction = EthereumTransaction.with {
+                        $0.erc20Transfer = EthereumTransaction.ERC20Transfer.with {
+                            $0.to = toAddress
+                            $0.amount = BigInt(amount)!.serialize()
+                        }
+                    }
+                }
+                let outputBnb: EthereumSigningOutput = AnySigner.sign(input: signerInput, coin: .smartChain)
+                let value = outputBnb.encoded.hexString
+                param["isSuccess"] = true
+                param["signedTransaction"] = value
+                break
+            }
+        } else {
+            param["isSuccess"] = false
+            param["signedTransaction"] = ""
+        }
+        chatChanel?.invokeMethod("signTransactionTokenCallback", arguments: param)
+        return param
+    }
+    
+    private func signTransactionNft(walletAddress: String,
+                                    tokenAddress: String,
+                                    toAddress: String,
+                                    nonce: String,
+                                    chainId: String,
+                                    gasPrice: String,
+                                    gasLimit: String,
+                                    tokenId: String) -> [String: Any] {
+        var param = [String: Any]()
+        let walletModel = SharedPreference.shared.getListWallet().first(where: {$0.walletAddress == walletAddress})
+        if let walletModel = walletModel, !walletModel.privateKey.isEmpty {
+            let privateKey = PrivateKey(data: walletModel.privateKey.hexadecimal!)!
+            let signerInput = EthereumSigningInput.with {
+                $0.nonce = BigInt(nonce)!.serialize()
+                $0.chainID = BigInt(chainId)!.serialize()
+                $0.gasPrice = BigInt(gasPrice)!.serialize()
+                $0.gasLimit = BigInt(gasLimit)!.serialize()
+                $0.toAddress = tokenAddress
+                $0.privateKey = privateKey.data
+                $0.transaction = EthereumTransaction.with {
+                    $0.erc721Transfer = EthereumTransaction.ERC721Transfer.with {
+                        $0.to = toAddress
+                        $0.tokenID = BigInt(tokenId)!.serialize()
+                    }
+                }
+            }
+            let outputBnb: EthereumSigningOutput = AnySigner.sign(input: signerInput, coin: .smartChain)
+            let value = outputBnb.encoded.hexString
+            param["isSuccess"] = true
+            param["signedTransaction"] = value
+            param["walletAddress"] = walletAddress
+            param["collectionAddress"] = tokenAddress
+            param["nftId"] = tokenId
+        } else {
+            param["isSuccess"] = false
+            param["signedTransaction"] = ""
+            param["walletAddress"] = ""
+            param["collectionAddress"] = ""
+            param["nftId"] = ""
+        }
+        chatChanel?.invokeMethod("signTransactionNftCallback", arguments: param)
         return param
     }
 }
