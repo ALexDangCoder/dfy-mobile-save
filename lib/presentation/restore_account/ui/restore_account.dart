@@ -9,7 +9,6 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/c
 import 'package:Dfy/presentation/restore_account/bloc/restore_cubit.dart';
 import 'package:Dfy/presentation/restore_account/bloc/restore_state.dart';
 import 'package:Dfy/presentation/restore_account/ui/choice_dialog.dart';
-import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -63,6 +62,9 @@ class _RestoreAccountState extends State<RestoreAccount> {
     seedPhraseController = TextEditingController();
     passwordController.addListener(() {
       restoreCubit.newPassword = passwordController.text;
+    });
+    confirmPasswordController.addListener(() {
+      restoreCubit.conPassword = confirmPasswordController.text;
     });
   }
 
@@ -459,57 +461,62 @@ class _RestoreAccountState extends State<RestoreAccount> {
                       },
                     ),
                     spaceH40,
-                    Container(
-                      // margin: EdgeInsets.only(
-                      //   left: 16.w,
-                      //   right: 16.w,
-                      // ),
-                      child: StreamBuilder<bool>(
-                        initialData: isEnable,
-                        stream: restoreCubit.btnStream,
-                        builder: (ctx, snapshot) {
-                          isEnable = snapshot.data!;
-                          return isEnable
-                              ? ButtonGradient(
-                                  onPressed: () {
-                                    restoreCubit.showTxtWarningNewPW(
-                                      passwordController.text,
+                    StreamBuilder<bool>(
+                      initialData: isEnable,
+                      stream: restoreCubit.btnStream,
+                      builder: (ctx, snapshot) {
+                        isEnable = snapshot.data!;
+                        return isEnable
+                            ? ButtonGradient(
+                                onPressed: () {
+                                  restoreCubit.showTxtWarningNewPW(
+                                    passwordController.text,
+                                  );
+                                  restoreCubit.showTxtWarningConfirmPW(
+                                    confirmPasswordController.text,
+                                    newPW: passwordController.text,
+                                  );
+                                  if (restoreCubit.type ==
+                                      FormType.PASS_PHRASE) {
+                                    restoreCubit.showTxtWarningSeed(
+                                      seedPhraseController.text,
+                                      restoreCubit.type,
                                     );
-                                    restoreCubit.showTxtWarningConfirmPW(
-                                      confirmPasswordController.text,
-                                      newPW: passwordController.text,
+                                  } else {
+                                    restoreCubit.showTxtWarningSeed(
+                                      privateKeyController.text,
+                                      restoreCubit.type,
                                     );
-                                    if (restoreCubit.type ==
-                                        FormType.PASS_PHRASE) {
-                                      restoreCubit.showTxtWarningSeed(
-                                        seedPhraseController.text,
-                                        restoreCubit.type,
-                                      );
-                                    } else {
-                                      restoreCubit.showTxtWarningSeed(
-                                        privateKeyController.text,
-                                        restoreCubit.type,
-                                      );
-                                    }
-                                    if (restoreCubit.validateAll()) {
-                                      final flag = restoreCubit.strValue ==
-                                          S.current.seed_phrase;
-                                      restoreCubit.importWallet(
-                                        type: flag ? PASS_PHRASE : PRIVATE_KEY,
-                                        content: flag
-                                            ? seedPhraseController.text
-                                            : privateKeyController.text,
-                                        typeEarseWallet:
-                                            widget.typeEarseWallet ?? '',
-                                      );
-                                    }
-                                  },
-                                  gradient: RadialGradient(
-                                    center: const Alignment(0.5, -0.5),
-                                    radius: 4,
-                                    colors: AppTheme.getInstance()
-                                        .gradientButtonColor(),
+                                  }
+                                  if (restoreCubit.validateAll()) {
+                                    final flag = restoreCubit.strValue ==
+                                        S.current.seed_phrase;
+                                    restoreCubit.importWallet(
+                                      type: flag ? PASS_PHRASE : PRIVATE_KEY,
+                                      content: flag
+                                          ? seedPhraseController.text
+                                          : privateKeyController.text,
+                                      typeEarseWallet:
+                                          widget.typeEarseWallet ?? '',
+                                    );
+                                  }
+                                },
+                                gradient: RadialGradient(
+                                  center: const Alignment(0.5, -0.5),
+                                  radius: 4,
+                                  colors: AppTheme.getInstance()
+                                      .gradientButtonColor(),
+                                ),
+                                child: Text(
+                                  S.current.restore,
+                                  style: textNormal(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    20,
                                   ),
+                                ),
+                              )
+                            : ErrorButton(
+                                child: Center(
                                   child: Text(
                                     S.current.restore,
                                     style: textNormal(
@@ -517,20 +524,9 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                       20,
                                     ),
                                   ),
-                                )
-                              : ErrorButton(
-                                  child: Center(
-                                    child: Text(
-                                      S.current.restore,
-                                      style: textNormal(
-                                        AppTheme.getInstance().textThemeColor(),
-                                        20,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                        },
-                      ),
+                                ),
+                              );
+                      },
                     ),
                     spaceH38
                   ],
