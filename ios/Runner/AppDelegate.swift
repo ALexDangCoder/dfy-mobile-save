@@ -61,8 +61,9 @@ extension AppDelegate {
         }
         if call.method == "generateWallet" {
             if let arguments = call.arguments as? [String: Any], let typeEarseWallet = arguments["typeEarseWallet"] as? String {
-                result(generateWallet(typeEarseWallet: typeEarseWallet))
+                
             }
+                result(generateWallet())
         }
         if call.method == "storeWallet" {
             if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] as? String, let typeEarseWallet = arguments["typeEarseWallet"] as? String {
