@@ -12,10 +12,7 @@ import io.flutter.plugin.common.MethodChannel
 import org.json.JSONArray
 import org.json.JSONObject
 import wallet.core.java.AnySigner
-import wallet.core.jni.AnyAddress
-import wallet.core.jni.CoinType
-import wallet.core.jni.HDWallet
-import wallet.core.jni.PrivateKey
+import wallet.core.jni.*
 import wallet.core.jni.proto.Ethereum
 import java.math.BigInteger
 import java.security.InvalidParameterException
