@@ -590,7 +590,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         listWallet.clear();
         final List<dynamic> data = methodCall.arguments;
         if (data.isEmpty) {
-          emit(NavigatorFirst());
+          // emit(NavigatorFirst());
           await PrefsService.saveFirstAppConfig('true');
         } else {
           for (final element in data) {
