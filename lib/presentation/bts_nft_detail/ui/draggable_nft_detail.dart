@@ -14,6 +14,7 @@ import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/column_button/buil_column.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
+import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -220,21 +221,21 @@ class _NFTDetailState extends State<NFTDetail> {
                           ],
                         ),
                       ),
-                       ...[
-                          sizedPngImage(
-                            w: 94,
-                            h: 94,
-                            image: ImageAssets.icNoTransaction,
+                      ...[
+                        sizedPngImage(
+                          w: 94,
+                          h: 94,
+                          image: ImageAssets.icNoTransaction,
+                        ),
+                        Text(
+                          S.current.no_transaction,
+                          style: tokenDetailAmount(
+                            color: AppTheme.getInstance()
+                                .currencyDetailTokenColor(),
+                            fontSize: 20,
                           ),
-                          Text(
-                            S.current.no_transaction,
-                            style: tokenDetailAmount(
-                              color: AppTheme.getInstance()
-                                  .currencyDetailTokenColor(),
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
+                        ),
+                      ],
                       //Todo when market place
                       // StreamBuilder<int>(
                       //   initialData: initLen,
@@ -324,7 +325,14 @@ class _NFTDetailState extends State<NFTDetail> {
                           radius: 4,
                           colors: AppTheme.getInstance().gradientButtonColor(),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ComingSoon(),
+                            ),
+                          );
+                        },
                         child: Text(
                           S.current.put_on_market,
                           style: textNormal(

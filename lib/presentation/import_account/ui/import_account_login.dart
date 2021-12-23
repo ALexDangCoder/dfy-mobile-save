@@ -278,57 +278,6 @@ class _ImportAccountState extends State<ImportAccount> {
                                 ),
                                 warningSeedPhrase(),
                                 SizedBox(
-                                  height: 24.h,
-                                ),
-                                StreamBuilder<FormType>(
-                                  stream: importCubit.typeStream,
-                                  initialData: type,
-                                  builder: (ctx, snapshot) {
-                                    type = snapshot.data!;
-                                    if (type == FormType.PRIVATE_KEY) {
-                                      return Column(
-                                        children: [
-                                          Text(
-                                            S.current.or_scan,
-                                            style: textNormal(
-                                              AppTheme.getInstance()
-                                                  .textThemeColor(),
-                                              16,
-                                            ).copyWith(
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 12.h,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (ctx) =>
-                                                      QRViewExample(
-                                                    controller:
-                                                        privateKeyController,
-                                                    importCubit: importCubit,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            child: Image.asset(
-                                              ImageAssets.ic_qr_code,
-                                            ),
-                                          )
-                                        ],
-                                      );
-                                    } else {
-                                      return SizedBox(
-                                        height: 50.h,
-                                      );
-                                    }
-                                  },
-                                ),
-                                SizedBox(
                                   height: 100.h,
                                 ),
                               ],
@@ -358,12 +307,12 @@ class _ImportAccountState extends State<ImportAccount> {
                   ),
                 ),
                 SizedBox(
-                  height: 150.h,
+                  height: 200.h,
                 ),
                 Container(
                   margin: EdgeInsets.only(
-                    left: 39.w,
-                    right: 39.w,
+                    left: 16.w,
+                    right: 16.w,
                   ),
                   child: StreamBuilder<bool>(
                     initialData: isEnable,
@@ -413,7 +362,7 @@ class _ImportAccountState extends State<ImportAccount> {
                         return ErrorButton(
                           child: Center(
                             child: Text(
-                              S.current.restore,
+                              S.current.import,
                               style: textNormal(
                                 AppTheme.getInstance().textThemeColor(),
                                 20,
