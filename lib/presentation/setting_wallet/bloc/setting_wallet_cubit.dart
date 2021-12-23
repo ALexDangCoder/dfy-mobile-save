@@ -18,15 +18,13 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
   //     PrefsService.getAppLockConfig() == 'true' ? true : false;
 
   final BehaviorSubject<bool> isSwitchFingerFtFaceIdOn =
-      BehaviorSubject<bool>.seeded(
-    PrefsService.getFaceIDConfig() == 'true' ? true : false,
-  );
+      BehaviorSubject<bool>();
   final BehaviorSubject<String> textLockSetting =
-      BehaviorSubject<String>.seeded(
-          PrefsService.getAppLockConfig() == 'true' ? S.current.lock : '');
-  final BehaviorSubject<bool> isSwitchAppLockOn = BehaviorSubject<bool>.seeded(
-    PrefsService.getAppLockConfig() == 'true' ? true : false,
-  );
+      BehaviorSubject<String>();
+  // final BehaviorSubject<bool> isSwitchAppLockOn = BehaviorSubject<bool>.seeded(
+  //   PrefsService.getAppLockConfig() == 'true' ? true : false,
+  // );
+  final BehaviorSubject<bool> isSwitchAppLockOn = BehaviorSubject<bool>();
 
   //stream
   Stream<bool> get isSwitchFingerFtFaceIdOnStream =>
@@ -73,6 +71,10 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
     }
   }
 
+  Future<void> getConfig() async {
+    await trustWalletChannel.invokeListMethod('getConfig', {});
+  }
+
   Future<void> setConfig({
     bool isAppLock = true,
     bool isFaceID = true,
@@ -82,8 +84,6 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
         'isAppLock': isAppLock,
         'isFaceID': isFaceID,
       };
-      await PrefsService.saveAppLockConfig(isAppLock.toString());
-      await PrefsService.saveFaceIDConfig(isFaceID.toString());
       await trustWalletChannel.invokeMethod('setConfig', data);
     } on PlatformException {}
   }
@@ -95,9 +95,13 @@ class SettingWalletCubit extends Cubit<SettingWalletState> {
         isSuccess = await methodCall.arguments['isSuccess'];
         break;
       case 'getConfigCallback':
-        late bool isAppLock;
-        late bool isFaceID;
-        isAppLock = await methodCall.arguments;
+        bool isAppLock = false;
+        bool isFaceID = false;
+        isAppLock = await methodCall.arguments['isAppLock'];
+        isSwitchAppLockOn.sink.add(isAppLock);
+        textLockSetting.sink.add(isAppLock ? S.current.lock : '');
+        isFaceID = await methodCall.arguments['isFaceID'];
+        isSwitchFingerFtFaceIdOn.sink.add(isFaceID);
         break;
       default:
         break;
