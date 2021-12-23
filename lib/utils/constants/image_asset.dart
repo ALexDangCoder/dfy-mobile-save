@@ -116,6 +116,7 @@ class ImageAssets {
   static const String ic_symbol = 'assets/images/symbol.png';
   static const String image_example_pop_up = '$baseImg/pop_image.png';
   static const String image_avatar = '$baseImg/ava_0';
+  static const String image_coming = '$baseImg/img_comming.png';
 
   ///SvgImage
   static const String ic_btn_send_token_svg =

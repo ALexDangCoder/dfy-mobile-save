@@ -79,7 +79,7 @@ class SharedPreference {
         userDefault.set(listParam, forKey: "listNft")
     }
     
-    func eraseWallet() {
-        userDefault.set([], forKey: "listWallet")
-    }
+//    func eraseWallet() {
+//        userDefault.set([], forKey: "listWallet")
+//    }
 }

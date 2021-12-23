@@ -108,10 +108,17 @@ class _SendTokenState extends State<SendToken> {
                               ),
                             ),
                           ).then(
-                            (_) => tokenCubit.checkHaveVlAddressFormToken(
-                              txtToAddressToken.text,
-                              type: typeSend.SEND_TOKEN,
-                            ),
+                            (_) =>
+                            {
+                              txtToAddressToken.text =
+                                  tokenCubit.handleValueFromQR(
+                                      value: txtToAddressToken.text),
+                              tokenCubit.checkHaveVlAddressFormToken(
+                                tokenCubit.handleValueFromQR(
+                                    value: txtToAddressToken.text),
+                                type: typeSend.SEND_TOKEN,
+                              ),
+                            }
                           );
                         },
                       ),
@@ -196,6 +203,7 @@ class _SendTokenState extends State<SendToken> {
                 );
               },
             ),
+            spaceH38,
           ],
         ),
       ),
@@ -324,16 +332,38 @@ class _SendTokenState extends State<SendToken> {
                       },
                       child: Padding(
                         padding: EdgeInsets.only(
-                          top: 15.h,
-                          right: 20.w,
+                          // top: 15.h,
+                          right: 15.w,
                         ),
-                        child: Text(
-                          S.current.max,
-                          style: textNormal(
-                            const Color.fromRGBO(228, 172, 26, 1),
-                            16,
-                          ).copyWith(fontWeight: FontWeight.w600),
-                        ),
+                        child: Container(
+                          constraints: BoxConstraints(
+                            minWidth: 55.w,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                S.current.max,
+                                style: textNormal(
+                                  const Color.fromRGBO(228, 172, 26, 1),
+                                  16,
+                                ).copyWith(fontWeight: FontWeight.w600),
+                              ),
+                              spaceW4,
+                              SizedBox(
+                                height: 20.h,
+                                width: 20.h,
+                                child: CircleAvatar(
+                                  radius: 30.0.r,
+                                  backgroundImage:
+                                  NetworkImage(widget.modelToken.iconToken),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                       ),
                     )
                   : Padding(

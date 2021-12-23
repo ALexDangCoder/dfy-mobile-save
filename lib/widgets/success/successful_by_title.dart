@@ -82,6 +82,7 @@ void showSuccessfulByTitle({
                 ),
               ),
             ),
+            spaceH38,
           ],
         ),
       );

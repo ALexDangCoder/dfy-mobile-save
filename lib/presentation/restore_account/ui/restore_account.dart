@@ -141,7 +141,6 @@ class _RestoreAccountState extends State<RestoreAccount> {
             },
             child: BaseBottomSheet(
               title: S.current.restore_account,
-              isBackNewWallet: true,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Column(
@@ -376,56 +375,6 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                     ),
                                     warningMatchPassword(),
                                     SizedBox(
-                                      height: 24.h,
-                                    ),
-                                    StreamBuilder<List<String>>(
-                                      stream: restoreCubit.listStringStream,
-                                      initialData: listString,
-                                      builder: (ctx, snapshot) {
-                                        listString = snapshot.data!;
-                                        if (listString.length == 1) {
-                                          return Column(
-                                            children: [
-                                              Text(
-                                                S.current.or_scan,
-                                                style: textNormal(
-                                                  AppTheme.getInstance()
-                                                      .textThemeColor(),
-                                                  16,
-                                                ).copyWith(
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 12.h,
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (ctx) =>
-                                                          QRViewExample(
-                                                        controller:
-                                                            privateKeyController,
-                                                        restoreCubit:
-                                                            restoreCubit,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                child: Image.asset(
-                                                  ImageAssets.ic_qr_code,
-                                                ),
-                                              )
-                                            ],
-                                          );
-                                        } else {
-                                          return const SizedBox();
-                                        }
-                                      },
-                                    ),
-                                    SizedBox(
                                       height: 100.h,
                                     ),
                                   ],
@@ -511,10 +460,10 @@ class _RestoreAccountState extends State<RestoreAccount> {
                     ),
                     spaceH40,
                     Container(
-                      margin: EdgeInsets.only(
-                        left: 23.w,
-                        right: 23.w,
-                      ),
+                      // margin: EdgeInsets.only(
+                      //   left: 16.w,
+                      //   right: 16.w,
+                      // ),
                       child: StreamBuilder<bool>(
                         initialData: isEnable,
                         stream: restoreCubit.btnStream,

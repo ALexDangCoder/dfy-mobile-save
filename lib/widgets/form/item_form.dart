@@ -3,6 +3,9 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/import_account/bloc/import_cubit.dart';
 import 'package:Dfy/presentation/restore_account/bloc/restore_cubit.dart';
+import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -110,45 +113,74 @@ class ItemForm extends StatelessWidget {
           color: AppTheme.getInstance().itemBtsColors(),
         ),
         child: Center(
-          child: TextFormField(
-            controller: controller,
-            obscureText: isShow,
-            textAlignVertical: TextAlignVertical.center,
-            style: textNormal(
-              Colors.white,
-              16,
-            ),
-            onChanged: (value) {
-              cubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
-              importCubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
-            },
-            cursorColor: Colors.white,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(right: 3.w),
-              hintText: hint,
-              hintStyle: textNormal(
-                Colors.grey,
-                16,
-              ),
-              suffixIcon: InkWell(
-                onTap: callback,
-                child: Padding(
-                  padding: EdgeInsets.only(top: 13.h),
-                  child: Text(
-                    suffix,
-                    style: textNormal(AppTheme.getInstance().fillColor(), 16)
-                        .copyWith(
-                      fontWeight: FontWeight.w400,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 295.w,
+                child: TextFormField(
+                  controller: controller,
+                  obscureText: isShow,
+                  textAlignVertical: TextAlignVertical.center,
+                  style: textNormal(
+                    Colors.white,
+                    16,
+                  ),
+                  onChanged: (value) {
+                    cubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
+                    importCubit?.showTxtWarningSeed(
+                        value, FormType.PRIVATE_KEY);
+                  },
+                  cursorColor: Colors.white,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(right: 3.w),
+                    hintText: hint,
+                    hintStyle: textNormal(
+                      Colors.grey,
+                      16,
                     ),
+                    suffixIcon: InkWell(
+                      onTap: callback,
+                      child: SizedBox(
+                        height: 24.h,
+                        width: 24.w,
+                        child: Center(
+                          child: Text(
+                            suffix,
+                            textAlign: TextAlign.center,
+                            style:
+                                textNormal(AppTheme.getInstance().fillColor(), 16)
+                                    .copyWith(
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    prefixIcon: ImageIcon(
+                      AssetImage(prefix),
+                      color: Colors.white,
+                    ),
+                    border: InputBorder.none,
                   ),
                 ),
               ),
-              prefixIcon: ImageIcon(
-                AssetImage(prefix),
-                color: Colors.white,
-              ),
-              border: InputBorder.none,
-            ),
+              spaceW12,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => QRViewExample(
+                        controller: controller,
+                        restoreCubit: cubit,
+                        importCubit: importCubit,
+                      ),
+                    ),
+                  );
+                },
+                child: Image.asset(ImageAssets.ic_qr_code),
+              )
+            ],
           ),
         ),
       );

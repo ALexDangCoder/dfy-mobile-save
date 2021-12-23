@@ -43,6 +43,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   Web3Utils client = Web3Utils();
   bool isHaveToken = true;
 
+  String handleValueFromQR({required String value}) {
+    final int index = value.lastIndexOf('0x');
+    final int lastIndex = index + 42;
+    return value.substring(index, lastIndex);
+  }
+
   Future<void> getTokenInfoByAddress({required String tokenAddress}) async {
     final TokenInfoModel? tokenInfoModel =
         await client.getTokenInfo(contractAddress: tokenAddress);
@@ -186,7 +192,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> tokenDecimal = BehaviorSubject();
   BehaviorSubject<bool> isTokenAddressText = BehaviorSubject.seeded(true);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
-  BehaviorSubject<String> checkDataWallet = BehaviorSubject.seeded('');
+  BehaviorSubject<String> checkDataWallet = BehaviorSubject.seeded('value');
   BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject();
   BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isImportNftFail = BehaviorSubject.seeded(true);
@@ -590,7 +596,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         listWallet.clear();
         final List<dynamic> data = methodCall.arguments;
         if (data.isEmpty) {
-          emit(NavigatorFirst());
+          // emit(NavigatorFirst());
           await PrefsService.saveFirstAppConfig('true');
         } else {
           for (final element in data) {
