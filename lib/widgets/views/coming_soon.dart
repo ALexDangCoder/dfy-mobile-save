@@ -61,10 +61,12 @@ class ComingSoon extends StatelessWidget {
                 SizedBox(
                   height: 120.h,
                 ),
-                ButtonRadial(
-                  child: Center(
-                    child: InkWell(
-                      onTap: () => Navigator.of(context).pop(),
+                GestureDetector(
+                  onTap: (){
+                    Navigator.of(context).pop();
+                  },
+                  child: ButtonRadial(
+                    child: Center(
                       child: Text(
                         S.current.back,
                         style: textNormalCustom(

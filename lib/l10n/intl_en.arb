@@ -218,5 +218,5 @@
   "import_duplicate": "The account you're are trying to import is a duplicate",
   "not_import": "Can not get wallet address",
   "feature_coming_soon": "FEATURE \nCOMING SOON!",
-  "back":"back"
+  "back":"Back"
 }
