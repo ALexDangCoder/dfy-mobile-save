@@ -263,6 +263,10 @@ class ItemForm extends StatelessWidget {
                   }
                 : (value) {
                     cubit?.showTxtWarningNewPW(value);
+                    cubit?.showTxtWarningConfirmPW(
+                      cubit?.conPassword ?? '',
+                      newPW: value,
+                    );
                   },
             cursorColor: Colors.white,
             decoration: InputDecoration(
