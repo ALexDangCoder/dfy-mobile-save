@@ -74,16 +74,22 @@ class _MyAppState extends State<MyApp> {
             secondary: AppTheme.getInstance().accentColor(),
           ),
         ),
-        supportedLocales: S.delegate.supportedLocales,
+        localeResolutionCallback: (deviceLocale, supportedLocales) {
+          if (supportedLocales.contains(
+            Locale(deviceLocale?.languageCode ?? 'en'),
+          )) {
+            return deviceLocale;
+          } else {
+            return const Locale.fromSubtags(languageCode: 'en');
+          }
+        },
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        locale: Locale.fromSubtags(
-          languageCode: PrefsService.getLanguage(),
-        ),
+        supportedLocales: S.delegate.supportedLocales,
         onGenerateRoute: AppRouter.generateRoute,
         initialRoute: AppRouter.splash,
       ),
