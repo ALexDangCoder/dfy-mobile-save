@@ -333,79 +333,80 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                       ),
                     ),
                     StreamBuilder<bool>(
-                        initialData: widget.gasFeeFirstFetch < balanceWallet,
-                        stream: cubitFormCustomizeGasFee.isEnableBtnStream,
-                        builder: (context, snapshot) {
-                          return GestureDetector(
-                            onTap: () async {
-                              if (snapshot.data ??
-                                  (widget.gasFeeFirstFetch < balanceWallet)) {
-                                switch (widget.typeConfirm) {
-                                  case TYPE_CONFIRM.SEND_TOKEN:
-                                    final nonce = await cubitFormCustomizeGasFee
-                                        .getNonceWeb3(
-                                      walletAddress: widget.addressFrom,
-                                    );
-                                    cubitFormCustomizeGasFee
-                                        .signTransactionToken(
-                                      toAddress: widget.addressTo,
-                                      gasPrice: (widget.gasPriceFirstFetch *
-                                              1000000000)
-                                          .toInt()
-                                          .toString(),
-                                      nonce: nonce.toString(),
-                                      gasLimit: double.parse(_txtGasLimit.text)
-                                          .toInt()
-                                          .toString(),
-                                      amount: (widget.amount).toString(),
-                                      tokenAddress:
-                                          widget.modelToken!.tokenAddress,
-                                      walletAddress: widget.addressFrom,
-                                      chainId: '97',
-                                    );
-                                    break;
-                                  case TYPE_CONFIRM.SEND_NFT:
-                                    final nonce = await cubitFormCustomizeGasFee
-                                        .getNonceWeb3(
-                                      walletAddress: widget.addressFrom,
-                                    );
-                                    cubitFormCustomizeGasFee.signTransactionNFT(
-                                      fromAddress: widget.addressFrom,
-                                      toAddress: widget.addressTo,
-                                      contractNft: widget.nftInfo?.contract ??
-                                          'contract',
-                                      nonce: nonce.toString(),
-                                      gasLimit: double.parse(_txtGasLimit.text)
-                                          .toInt()
-                                          .toString(),
-                                      gasPrice: (widget.gasPriceFirstFetch *
-                                              1000000000)
-                                          .toInt()
-                                          .toString(),
-                                      nftID: widget.nftInfo?.id ?? 'id',
-                                      chainId: '97',
-                                    );
-                                    break;
-                                  case TYPE_CONFIRM.SEND_OFFER:
-                                    break;
-                                  case TYPE_CONFIRM.BUY_NFT:
-                                    break;
-                                  case TYPE_CONFIRM.PLACE_BID:
-                                    break;
-                                  default:
-                                    break;
-                                }
-                              } else {
-                                //btn disable will not do anything
+                      initialData: widget.gasFeeFirstFetch < balanceWallet,
+                      stream: cubitFormCustomizeGasFee.isEnableBtnStream,
+                      builder: (context, snapshot) {
+                        return GestureDetector(
+                          onTap: () async {
+                            if (snapshot.data ??
+                                (widget.gasFeeFirstFetch < balanceWallet)) {
+                              switch (widget.typeConfirm) {
+                                case TYPE_CONFIRM.SEND_TOKEN:
+                                  final nonce = await cubitFormCustomizeGasFee
+                                      .getNonceWeb3(
+                                    walletAddress: widget.addressFrom,
+                                  );
+                                  cubitFormCustomizeGasFee.signTransactionToken(
+                                    toAddress: widget.addressTo,
+                                    gasPrice:
+                                        (widget.gasPriceFirstFetch * 1000000000)
+                                            .toInt()
+                                            .toString(),
+                                    nonce: nonce.toString(),
+                                    gasLimit: double.parse(_txtGasLimit.text)
+                                        .toInt()
+                                        .toString(),
+                                    amount: (widget.amount).toString(),
+                                    tokenAddress:
+                                        widget.modelToken!.tokenAddress,
+                                    walletAddress: widget.addressFrom,
+                                    chainId: '97',
+                                  );
+                                  break;
+                                case TYPE_CONFIRM.SEND_NFT:
+                                  final nonce = await cubitFormCustomizeGasFee
+                                      .getNonceWeb3(
+                                    walletAddress: widget.addressFrom,
+                                  );
+                                  cubitFormCustomizeGasFee.signTransactionNFT(
+                                    fromAddress: widget.addressFrom,
+                                    toAddress: widget.addressTo,
+                                    contractNft:
+                                        widget.nftInfo?.contract ?? 'contract',
+                                    nonce: nonce.toString(),
+                                    gasLimit: double.parse(_txtGasLimit.text)
+                                        .toInt()
+                                        .toString(),
+                                    gasPrice:
+                                        (widget.gasPriceFirstFetch * 1000000000)
+                                            .toInt()
+                                            .toString(),
+                                    nftID: widget.nftInfo?.id ?? 'id',
+                                    chainId: '97',
+                                  );
+                                  break;
+                                case TYPE_CONFIRM.SEND_OFFER:
+                                  break;
+                                case TYPE_CONFIRM.BUY_NFT:
+                                  break;
+                                case TYPE_CONFIRM.PLACE_BID:
+                                  break;
+                                default:
+                                  break;
                               }
-                            },
-                            child: ButtonGold(
-                              title: S.current.approve,
-                              isEnable: snapshot.data ??
-                                  (widget.gasFeeFirstFetch < balanceWallet),
-                            ),
-                          );
-                        }),
+                            } else {
+                              //btn disable will not do anything
+                            }
+                          },
+                          child: ButtonGold(
+                            title: S.current.approve,
+                            isEnable: snapshot.data ??
+                                (widget.gasFeeFirstFetch < balanceWallet),
+                          ),
+                        );
+                      },
+                    ),
+                    spaceH38,
                   ],
                 ),
               ),

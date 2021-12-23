@@ -125,6 +125,7 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
                     ),
                   ),
                 ),
+                spaceH38,
               ],
             ),
           ),

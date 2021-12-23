@@ -96,7 +96,7 @@ class TokenSuccessfully extends StatelessWidget {
                       isEnable: true,
                     ),
                   ),
-                ),
+                ), spaceH38,
               ],
             ),
           ),
