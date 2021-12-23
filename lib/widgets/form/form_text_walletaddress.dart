@@ -43,11 +43,10 @@ class FromTextWalletAddress extends StatelessWidget {
                 width: 17.5.w,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width / 2,
                 child: Text(
                   title,
                   style: textNormal(
-                   null,
+                    null,
                     16,
                   ),
                 ),
