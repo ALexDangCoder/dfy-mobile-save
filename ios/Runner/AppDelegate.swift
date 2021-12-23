@@ -60,12 +60,14 @@ extension AppDelegate {
             }
         }
         if call.method == "generateWallet" {
-            if let arguments = call.arguments as? [String: Any], let typeEarseWallet = arguments["typeEarseWallet"] as? String {
+            if let arguments = call.arguments as? [String: Any] {
+                let typeEarseWallet = arguments["typeEarseWallet"] as? String ?? ""
                 result(generateWallet(typeEarseWallet: typeEarseWallet))
             }
         }
         if call.method == "storeWallet" {
-            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] as? String, let typeEarseWallet = arguments["typeEarseWallet"] as? String {
+            if let arguments = call.arguments as? [String: Any], let seedPhrase = arguments["seedPhrase"] as? String, let walletName = arguments["walletName"] as? String, let privateKey = arguments["privateKey"] as? String, let walletAddress = arguments["walletAddress"] as? String {
+                let typeEarseWallet = arguments["typeEarseWallet"] as? String ?? ""
                 result(storeWallet(seedPhrase: seedPhrase, walletName: walletName, privateKey: privateKey, walletAddress: walletAddress, typeEarseWallet: typeEarseWallet))
             }
         }
@@ -141,7 +143,8 @@ extension AppDelegate {
             }
         }
         if call.method == "importWallet" {
-            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String, let content = arguments["content"] as? String, let typeEarseWallet = arguments["typeEarseWallet"] as? String {
+            if let arguments = call.arguments as? [String: Any], let type = arguments["type"] as? String, let content = arguments["content"] as? String {
+                let typeEarseWallet = arguments["typeEarseWallet"] as? String ?? ""
                 result(importWallet(type: type, content: content, typeEarseWallet: typeEarseWallet))
             }
         }
