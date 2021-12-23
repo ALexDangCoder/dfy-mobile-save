@@ -48,7 +48,6 @@ class _CustomDialogState extends State<ChoiceDialog> {
                   [S.current.only_desc],
                 );
                 _cubit.seedSink.add(false);
-                _cubit.btnSink.add(true);
                 widget.controller2.clear();
               }
               _cubit.boolSink.add(false);
@@ -81,7 +80,6 @@ class _CustomDialogState extends State<ChoiceDialog> {
                   [S.current.imported],
                 );
                 _cubit.seedSink.add(false);
-                _cubit.btnSink.add(true);
                 widget.controller1.clear();
               }
               _cubit.boolSink.add(false);

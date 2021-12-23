@@ -23,18 +23,19 @@ class ImportCubit extends Cubit<ImportState> {
 
   bool privateField = false;
 
+
   ImportCubit() : super(ImportInitial());
   final BehaviorSubject<List<String>> _behaviorSubject =
-      BehaviorSubject<List<String>>();
+  BehaviorSubject<List<String>>();
   final BehaviorSubject<String> _stringSubject =
-      BehaviorSubject.seeded(S.current.seed_phrase);
+  BehaviorSubject.seeded(S.current.seed_phrase);
   final BehaviorSubject<bool> _boolSubject = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _seedSubject = BehaviorSubject<bool>();
   final BehaviorSubject<FormType> _formTypeSubject =
-      BehaviorSubject.seeded(FormType.PASS_PHRASE);
+  BehaviorSubject.seeded(FormType.PASS_PHRASE);
   final BehaviorSubject<bool> _buttonSubject = BehaviorSubject<bool>();
   final BehaviorSubject<String> _txtWarningSeed =
-      BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String>.seeded('');
 
   ///
   Sink<String> get txtWarningSeedSink => _txtWarningSeed.sink;
@@ -82,8 +83,12 @@ class ImportCubit extends Cubit<ImportState> {
         final walletAddress = methodCall.arguments['walletAddress'];
         final code = methodCall.arguments['code'];
         wallet = Wallet(name: walletName, address: walletAddress);
-        if (walletName == null || walletAddress == null || code == 400) {
-          emit(ErrorState());
+        if (code == 401) {
+          emit(ErrorState(S.current.import_duplicate));
+        } else if (code == 402) {
+          emit(ErrorState(S.current.not_import));
+        } else if (code == 400) {
+          emit(ErrorState(S.current.something_went_wrong));
         } else {
           emit(NavState());
         }
@@ -121,7 +126,9 @@ class ImportCubit extends Cubit<ImportState> {
         txtWarningSeedSink.add(S.current.seed_required);
         btnSink.add(false);
       } else {
-        final int len = value.split(' ').length;
+        final int len = value
+            .split(' ')
+            .length;
         bool flag;
         if (value.contains('  ') || value[value.length - 1] == ' ') {
           flag = false;

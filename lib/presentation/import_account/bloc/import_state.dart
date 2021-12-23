@@ -13,6 +13,10 @@ class NavState extends ImportState {
 }
 
 class ErrorState extends ImportState {
+  final String message;
+
+  ErrorState(this.message);
+
   @override
   List<Object?> get props => [];
 }

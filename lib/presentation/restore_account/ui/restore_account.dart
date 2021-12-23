@@ -26,7 +26,9 @@ const String PRIVATE_KEY = 'PRIVATE_KEY';
 class RestoreAccount extends StatefulWidget {
   const RestoreAccount({
     Key? key,
+    this.typeEarseWallet,
   }) : super(key: key);
+  final String? typeEarseWallet;
 
   @override
   _RestoreAccountState createState() => _RestoreAccountState();
@@ -40,7 +42,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
   bool isShowNewPass = true;
   bool isShowConPass = true;
   int checkBox = 1;
-  bool isEnable = true;
+  bool isEnable = false;
   bool tickCheckBox = true;
   FormType type = FormType.PASS_PHRASE;
   late final TextEditingController passwordController;
@@ -99,7 +101,10 @@ class _RestoreAccountState extends State<RestoreAccount> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return const CreateFail(type: KeyType.IMPORT);
+                return CreateFail(
+                  type: KeyType.IMPORT,
+                  message: state.message,
+                );
               },
             ),
           );
@@ -545,6 +550,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
                                         content: flag
                                             ? seedPhraseController.text
                                             : privateKeyController.text,
+                                        typeEarseWallet:
+                                            widget.typeEarseWallet ?? '',
                                       );
                                     }
                                   },

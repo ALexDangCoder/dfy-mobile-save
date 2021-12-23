@@ -35,7 +35,7 @@ class _ImportAccountState extends State<ImportAccount> {
   List<String> listString = [S.current.only_desc];
   String strValue = S.current.seed_phrase;
   bool isVisible = false;
-  bool isEnable = true;
+  bool isEnable = false;
   FormType type = FormType.PASS_PHRASE;
   late final TextEditingController privateKeyController;
   late final TextEditingController seedPhraseController;
@@ -80,7 +80,10 @@ class _ImportAccountState extends State<ImportAccount> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return const CreateFail(type: KeyType.IMPORT_HAVE_WALLET);
+                return CreateFail(
+                  type: KeyType.IMPORT_HAVE_WALLET,
+                  message: state.message,
+                );
               },
             ),
           );
@@ -244,6 +247,10 @@ class _ImportAccountState extends State<ImportAccount> {
                                               );
                                               seedPhraseController.text =
                                                   data?.text ?? '';
+                                              importCubit.showTxtWarningSeed(
+                                                seedPhraseController.text,
+                                                FormType.PASS_PHRASE,
+                                              );
                                             },
                                           )
                                         : ItemForm(
@@ -261,6 +268,10 @@ class _ImportAccountState extends State<ImportAccount> {
                                               );
                                               privateKeyController.text =
                                                   data?.text ?? '';
+                                              importCubit.showTxtWarningSeed(
+                                                privateKeyController.text,
+                                                FormType.PRIVATE_KEY,
+                                              );
                                             },
                                           );
                                   },
@@ -299,7 +310,7 @@ class _ImportAccountState extends State<ImportAccount> {
                                                       QRViewExample(
                                                     controller:
                                                         privateKeyController,
-                                                        importCubit: importCubit,
+                                                    importCubit: importCubit,
                                                   ),
                                                 ),
                                               );

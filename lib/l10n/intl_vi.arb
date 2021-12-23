@@ -214,6 +214,6 @@
   "invalid_quantity": "Số lượng không hợp lệ",
   "required_quantity": "Số lượng bắt buộc",
   "warning_big_quantity": "Số lượng này lớn hơn số lượng cho phép",
-  "transaction_success": "Giao dịch thành công",
-  "transaction_fail": "Giao dịch thất bại"
+  "import_duplicate": "Tài khoản mà bạn vừa nhập bị trùng trong ví hiện tại",
+  "not_import": "Không thể lấy địa chỉ ví"
 }

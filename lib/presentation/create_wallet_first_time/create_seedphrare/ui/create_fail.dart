@@ -13,8 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateFail extends StatelessWidget {
-  const CreateFail({Key? key, required this.type}) : super(key: key);
+  const CreateFail({Key? key, required this.type, this.message})
+      : super(key: key);
   final KeyType type;
+  final String? message;
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +77,11 @@ class CreateFail extends StatelessWidget {
                           spaceH20,
                           Center(
                             child: Text(
-                              S.current.oopps_omething_went_wrong,
+                              message ?? '',
                               style: textNormalCustom(
                                 AppTheme.getInstance().whiteColor(),
                                 32,
-                                FontWeight.bold,
+                                FontWeight.w700,
                               ),
                               textAlign: TextAlign.center,
                             ),
