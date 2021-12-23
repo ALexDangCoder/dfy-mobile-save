@@ -16,7 +16,6 @@ class BaseBottomSheet extends StatelessWidget {
   final String? text;
   final bool? isImage;
   final Function()? onRightClick;
-  final bool isBackNewWallet;
   final bool isHaveLeftIcon;
   final bool? isLockTextInSetting;
   final Widget? widget;
@@ -29,7 +28,6 @@ class BaseBottomSheet extends StatelessWidget {
     this.onRightClick,
     this.isImage,
     this.isHaveLeftIcon = true,
-    this.isBackNewWallet = false,
     this.isLockTextInSetting = false,
     this.widget,
   }) : super(key: key);
@@ -64,20 +62,9 @@ class BaseBottomSheet extends StatelessWidget {
                       if (isHaveLeftIcon)
                         Flexible(
                           child: InkWell(
-                            onTap: isBackNewWallet
-                                ? () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const MainScreen(
-                                          index: 3,
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                : () {
-                                    Navigator.pop(context);
-                                  },
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
                             child: Container(
                               margin: EdgeInsets.only(
                                 left: 11.w,
