@@ -148,43 +148,49 @@ class _BodyState extends State<_Body> {
                   stream: widget.bloc.btnSubject.stream,
                   builder: (context, snapshot) {
                     return snapshot.data ?? false
-                        ? ButtonGradient(
-                            onPressed: () async {
-                              if (_idController.text.isEmpty) {
-                                widget.bloc.checkImportNft(
-                                  contract: _contractController.text,
-                                  address: widget.bloc.addressWalletCore,
-                                );
-                              } else {
-                                final id = int.parse(_idController.text);
-                                widget.bloc.checkImportNft(
-                                  contract: _contractController.text,
-                                  address: widget.bloc.addressWalletCore,
-                                  id: id,
-                                );
-                              }
-                            },
-                            gradient: RadialGradient(
-                              center: const Alignment(0.5, -0.5),
-                              radius: 4,
-                              colors:
-                                  AppTheme.getInstance().gradientButtonColor(),
-                            ),
-                            child: Text(
-                              S.current.import,
-                              style: textNormal(
-                                AppTheme.getInstance().textThemeColor(),
-                                20,
+                        ? Container(
+                            margin: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: ButtonGradient(
+                              onPressed: () async {
+                                if (_idController.text.isEmpty) {
+                                  widget.bloc.checkImportNft(
+                                    contract: _contractController.text,
+                                    address: widget.bloc.addressWalletCore,
+                                  );
+                                } else {
+                                  final id = int.parse(_idController.text);
+                                  widget.bloc.checkImportNft(
+                                    contract: _contractController.text,
+                                    address: widget.bloc.addressWalletCore,
+                                    id: id,
+                                  );
+                                }
+                              },
+                              gradient: RadialGradient(
+                                center: const Alignment(0.5, -0.5),
+                                radius: 4,
+                                colors: AppTheme.getInstance()
+                                    .gradientButtonColor(),
                               ),
-                            ),
-                          )
-                        : ErrorButton(
-                            child: Center(
                               child: Text(
                                 S.current.import,
                                 style: textNormal(
                                   AppTheme.getInstance().textThemeColor(),
                                   20,
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            margin: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: ErrorButton(
+                              child: Center(
+                                child: Text(
+                                  S.current.import,
+                                  style: textNormal(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    20,
+                                  ),
                                 ),
                               ),
                             ),
