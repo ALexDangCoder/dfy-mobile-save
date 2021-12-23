@@ -27,8 +27,8 @@ class ButtonGold extends StatelessWidget {
           colors: isEnable
               ? AppTheme.getInstance().gradientButtonColor()
               : [
-                  AppTheme.getInstance().disableColor(),
-                  AppTheme.getInstance().disableColor()
+                  AppTheme.getInstance().errorColorButton(),
+                  AppTheme.getInstance().errorColorButton(),
                 ],
         ),
         borderRadius: BorderRadius.all(
