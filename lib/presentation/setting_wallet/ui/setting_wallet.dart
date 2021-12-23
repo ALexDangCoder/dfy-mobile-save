@@ -15,6 +15,7 @@ import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -38,8 +39,9 @@ class _SettingWalletState extends State<SettingWallet> {
 
   @override
   void initState() {
-    trustWalletChannel
-        .setMethodCallHandler(widget.cubitSetting.nativeMethodCallBackTrustWallet);
+    trustWalletChannel.setMethodCallHandler(
+        widget.cubitSetting.nativeMethodCallBackTrustWallet);
+    widget.cubitSetting.getConfig();
     super.initState();
   }
 
@@ -58,6 +60,16 @@ class _SettingWalletState extends State<SettingWallet> {
               child: Column(
                 children: [
                   GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ComingSoon();
+                          },
+                        ),
+                      );
+                    },
                     child: buttonForm(
                       hintText: 'Dapp',
                       prefixIcon: ImageAssets.ic_global,

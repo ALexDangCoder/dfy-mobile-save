@@ -91,13 +91,13 @@ class FormInputAddressNFT extends StatelessWidget {
                     );
                   },
                 ),
-              ).then(
-                (_) {
-                  bloc.currentAddressNft = controller.text;
-                  bloc.checkValidateAddress(value: controller.text);
-                  bloc.checkValidateIdNft(value: idNft);
-                }
-              );
+              ).then((_) {
+                controller.text =
+                    bloc.handleValueFromQR(value: controller.text);
+                bloc.currentAddressNft = controller.text;
+                bloc.checkValidateAddress(value: controller.text);
+                bloc.checkValidateIdNft(value: idNft);
+              });
             },
             child: SizedBox(
               width: 24.w,

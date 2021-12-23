@@ -43,6 +43,12 @@ class WalletCubit extends BaseCubit<WalletState> {
   Web3Utils client = Web3Utils();
   bool isHaveToken = true;
 
+  String handleValueFromQR({required String value}) {
+    final int index = value.lastIndexOf('0x');
+    final int lastIndex = index + 42;
+    return value.substring(index, lastIndex);
+  }
+
   Future<void> getTokenInfoByAddress({required String tokenAddress}) async {
     final TokenInfoModel? tokenInfoModel =
         await client.getTokenInfo(contractAddress: tokenAddress);

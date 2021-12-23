@@ -27,7 +27,7 @@ class ConfirmPwPrvKeySeedpharseCubit
   final LocalAuthentication auth = LocalAuthentication();
   BehaviorSubject<List<AccountModel>> list = BehaviorSubject.seeded([]);
   final BehaviorSubject<bool> _isEnableButton =
-      BehaviorSubject<bool>.seeded(true);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _isSuccessWhenScan =
       BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _showValidatePW =

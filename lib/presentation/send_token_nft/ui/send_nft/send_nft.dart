@@ -108,9 +108,17 @@ class _SendNftState extends State<SendNft> {
                                   ),
                                 ),
                               ).then(
-                                (_) => sendNftCubit.checkValidateAddress(
-                                  value: txtToAddressNft.text,
-                                ),
+                                (_) => {
+                                  txtToAddressNft.text =
+                                      sendNftCubit.handleValueFromQR(
+                                    value: txtToAddressNft.text,
+                                  ),
+                                  sendNftCubit.checkValidateAddress(
+                                    value: sendNftCubit.handleValueFromQR(
+                                      value: txtToAddressNft.text,
+                                    ),
+                                  ),
+                                },
                               );
                             },
                           ),
@@ -147,8 +155,7 @@ class _SendNftState extends State<SendNft> {
                             fromAddress: widget.addressFrom,
                             toAddress: txtToAddressNft.text,
                             contract: widget.nftInfo.contract ?? 'contract',
-                            symbol:
-                                widget.nftInfo.collectionSymbol ?? 'symbol',
+                            symbol: widget.nftInfo.collectionSymbol ?? 'symbol',
                             id: widget.nftInfo.id ?? 'id',
                             context: context,
                           );
