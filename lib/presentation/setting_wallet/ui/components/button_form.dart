@@ -50,7 +50,6 @@ Container switchForm({
           switchScale: 1,
           value: isCheck,
           onChanged: (bool value) {
-            print(value);
             cubit.changeValueFingerFtFaceID(value: value);
             cubit.setConfig(
               isFaceID: value,

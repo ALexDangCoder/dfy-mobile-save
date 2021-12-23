@@ -56,7 +56,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
           ).whenComplete(() => txtController.clear());
         } else {
           _showDialog(
-            alert: S.current.warn_old_pw_not_match,
+            alert: S.current.password_is_not_correct,
           );
         }
       },

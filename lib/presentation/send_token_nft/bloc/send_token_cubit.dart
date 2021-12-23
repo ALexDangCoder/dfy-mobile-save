@@ -436,6 +436,10 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-//handle number with e
+  String handleValueFromQR({required String value}) {
+    final int index = value.lastIndexOf('0x');
+    final int lastIndex = index + 42;
+    return value.substring(index, lastIndex);
+  }
 
 }

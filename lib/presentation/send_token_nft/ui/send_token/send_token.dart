@@ -108,10 +108,17 @@ class _SendTokenState extends State<SendToken> {
                               ),
                             ),
                           ).then(
-                            (_) => tokenCubit.checkHaveVlAddressFormToken(
-                              txtToAddressToken.text,
-                              type: typeSend.SEND_TOKEN,
-                            ),
+                            (_) =>
+                            {
+                              txtToAddressToken.text =
+                                  tokenCubit.handleValueFromQR(
+                                      value: txtToAddressToken.text),
+                              tokenCubit.checkHaveVlAddressFormToken(
+                                tokenCubit.handleValueFromQR(
+                                    value: txtToAddressToken.text),
+                                type: typeSend.SEND_TOKEN,
+                              ),
+                            }
                           );
                         },
                       ),
