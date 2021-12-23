@@ -60,7 +60,8 @@ extension AppDelegate {
             }
         }
         if call.method == "generateWallet" {
-            if let arguments = call.arguments as? [String: Any], let typeEarseWallet = arguments["typeEarseWallet"] as? String {
+            if let arguments = call.arguments as? [String: Any] {
+                let typeEarseWallet = arguments["typeEarseWallet"] as? String ?? ""
                 result(generateWallet(typeEarseWallet: typeEarseWallet))
             }
         }
