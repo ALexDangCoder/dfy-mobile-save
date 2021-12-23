@@ -89,7 +89,7 @@ class _NFTItemState extends State<NFTItem> {
                           style: textNormalCustom(
                             Colors.black,
                             20,
-                            FontWeight.w600,
+                            FontWeight.w900,
                           ),
                         ),
                       ),
@@ -104,6 +104,7 @@ class _NFTItemState extends State<NFTItem> {
                         20,
                         FontWeight.w600,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
