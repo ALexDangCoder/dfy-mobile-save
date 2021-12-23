@@ -334,10 +334,13 @@ class _SendTokenState extends State<SendToken> {
                           // top: 15.h,
                           right: 15.w,
                         ),
-                        child: SizedBox(
-                          width: 55.h,
+                        child: Container(
+                          constraints: BoxConstraints(
+                            minWidth: 55.w,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 S.current.max,
