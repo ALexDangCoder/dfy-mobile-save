@@ -155,9 +155,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     );
                   },
                 ),
-                SizedBox(
-                  height: 38.h,
-                ),
+                spaceH38,
               ],
             ),
           );
