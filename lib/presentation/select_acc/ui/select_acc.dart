@@ -225,6 +225,10 @@ class _SelectAccState extends State<SelectAcc> {
                                                                 16,
                                                                 FontWeight.w700,
                                                               ),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                             ),
                                                           ),
                                                           spaceW4,
