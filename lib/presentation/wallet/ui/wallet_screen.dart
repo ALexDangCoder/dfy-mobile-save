@@ -284,11 +284,11 @@ class _WalletState extends State<WalletScreen>
                         child: Column(
                           children: [
                             spaceH24,
-                            StreamBuilder<List<CollectionNft>>(
+                            StreamBuilder<List<CollectionShow>>(
                               stream: cubit.listNFTStream,
                               builder: (context,
                                   AsyncSnapshot<
-                                      List<CollectionNft>> snapshot,) {
+                                      List<CollectionShow>> snapshot,) {
                                 if (snapshot.data?.isNotEmpty ?? true) {
                                   return ListView.builder(
                                     padding: EdgeInsets.zero,
@@ -301,7 +301,7 @@ class _WalletState extends State<WalletScreen>
                                         walletAddress: cubit.addressWalletCore,
                                         index: index,
                                         bloc: cubit,
-                                        collectionNft: snapshot.data![index],
+                                        collectionShow: snapshot.data![index],
                                       );
                                     },
                                   );
