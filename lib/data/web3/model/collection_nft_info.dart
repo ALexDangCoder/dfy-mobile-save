@@ -19,7 +19,6 @@ class CollectionNft {
   }
 
   CollectionNft.fromJson(dynamic json) {
-    print('Fuck json $json');
     name = json['nftName'];
     symbol = json['symbol'];
     contract = json['collectionAddress'];
