@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                 // if (result != null)
 
                 Text(
-                  'Scan QR code',
+                S.current.scan_qr_code,
                   style: textNormalCustom(
                     Colors.white,
                     20,
@@ -116,7 +117,7 @@ class _QRViewExampleState extends State<QRViewExample> {
         if (result!.code!.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(result?.code ?? 'No data'),
+              content: Text(result?.code ?? S.current.no_data),
             ),
           );
         } else {
