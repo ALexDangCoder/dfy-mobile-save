@@ -1,7 +1,6 @@
 package com.edsolabs.dfy_mobile.extension
 
 import android.content.Context
-import android.util.Log
 import com.edsolabs.dfy_mobile.Constant
 import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
 import com.edsolabs.dfy_mobile.data.model.ItemNftModel
@@ -561,7 +560,7 @@ fun Context.importNft(
     jsonNft: String,
     walletAddress: String
 ) {
-//    Log.d("kiemtra", jsonNft)
+    var code = Constant.CODE_SUCCESS
     val appPreference = AppPreference(this)
     val listCollectionSupport = ArrayList<NftModel>()
 
@@ -618,11 +617,17 @@ fun Context.importNft(
                 }
                 size++
             }
-
+            code = if (listNft.isEmpty()) Constant.CODE_ERROR_DUPLICATE else Constant.CODE_SUCCESS
+            val listNftLocal = ArrayList<ItemNftModel>()
+            checkAddress.item.forEach { item ->
+                if (listNft.firstOrNull { it.id == item.id } == null) {
+                    listNftLocal.add(item)
+                }
+            }
             nftModel.item.addAll(listNft)
+            nftModel.item.addAll(listNftLocal)
             listCollectionSupport.add(nftModel)
             listCollectionSupport.addAll(listAllCollection.filter { it.walletAddress != walletAddress })
-//            Log.d("kiemtra2", listCollectionSupport.toString())
         } else {
             val nftModel = NftModel()
             nftModel.walletAddress = walletAddress
@@ -646,12 +651,11 @@ fun Context.importNft(
             nftModel.item.addAll(listNft)
             listCollectionSupport.add(nftModel)
             listCollectionSupport.addAll(listAllCollection.filter { it.collectionAddress != contractNft })
-//            Log.d("kiemtra3", listCollectionSupport.toString())
         }
     }
     val hasMap = HashMap<String, Any>()
     appPreference.saveListNft(listCollectionSupport)
-    hasMap["isSuccess"] = true
+    hasMap["code"] = code
     channel?.invokeMethod("importNftCallback", hasMap)
 }
 
