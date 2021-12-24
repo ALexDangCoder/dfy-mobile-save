@@ -541,10 +541,22 @@ class WalletCubit extends BaseCubit<WalletState> {
         break;
       case 'importNftCallback':
         final int code = await methodCall.arguments['code'];
-        if (code == 200) {
-          emit(ImportNftSuccess());
-        } else {
-          emit(ImportNftFail());
+        switch (code) {
+          case 200:
+            emit(ImportNftSuccess());
+            break;
+          case 400:
+            emit(ImportNftFail());
+            errorWhenImportNft = S.current.undefine_err_nft;
+            btnSubject.sink.add(false);
+            break;
+          case 401:
+            emit(ImportNftFail());
+            errorWhenImportNft = S.current.duplicated_import_nft;
+            btnSubject.sink.add(false);
+            break;
+          default:
+            break;
         }
         break;
       case 'setDeleteNftCallback':
