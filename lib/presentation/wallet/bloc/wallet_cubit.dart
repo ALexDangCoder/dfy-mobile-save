@@ -872,7 +872,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     } else {
       result = await Web3Utils()
           .getCollectionInfo(contract: contract, address: address);
-      // result.putIfAbsent('walletAddress', () => address);
       await importNftIntoWalletCore(
         jsonNft: json.encode(result),
         address: address,
