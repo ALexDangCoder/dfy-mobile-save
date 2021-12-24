@@ -125,6 +125,9 @@ class _MyAppState extends State<MyApp> {
       case 'signTransactionNftCallback':
         print('signTransactionNftCallback ${methodCall.arguments}');
         break;
+      case 'getNFTCallback':
+        print('getNFTCallback ${methodCall.arguments}');
+        break;
     }
   }
 
@@ -223,7 +226,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> getNFT() async {
     try {
       final data = {
-        'walletAddress': '123',
+        'walletAddress': '0x5D3034094Eb47C3302d5BaE8D8422F34a04E79a5',
       };
       await trustWalletChannel.invokeMethod('getNFT', data);
     } on PlatformException {}
