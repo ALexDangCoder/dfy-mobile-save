@@ -220,5 +220,7 @@
   "feature_coming_soon": "FEATURE \nCOMING SOON!",
   "back":"Back",
   "change_pw_fail": "Old password is incorrect",
-  "change_pword_success": "Password changed"
+  "change_pword_success": "Password changed",
+  "undefine_err_nft": "Undefined Error",
+  "duplicated_import_nft": "Your NFT has been imported"
 }

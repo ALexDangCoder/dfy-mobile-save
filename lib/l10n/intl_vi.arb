@@ -219,5 +219,7 @@
   "feature_coming_soon": "TÍNH NĂNG \nĐANG PHÁT TRIỂN!",
   "back":"Trở về",
   "change_pw_fail": "Mật khẩu cũ không đúng",
-  "change_pword_success": "Đổi mật khẩu thành công"
+  "change_pword_success": "Đổi mật khẩu thành công",
+  "undefine_err_nft": "Lỗi không xác định",
+  "duplicated_import_nft": "NFT đã có"
 }
