@@ -98,7 +98,7 @@ class _NFTItemState extends State<NFTItem> {
                       width: 8.w,
                     ),
                     ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: 240.w),
+                      constraints: BoxConstraints(maxWidth: 230.w),
                       child: Text(
                         widget.collectionShow.name!,
                         style: textNormalCustom(
