@@ -1,3 +1,5 @@
+import 'nft_info_model.dart';
+
 class CollectionNft {
   String? name;
   String? symbol;
@@ -68,4 +70,14 @@ class ListNft {
     data['uri'] = uri;
     return data;
   }
+}
+
+
+class CollectionShow {
+  String? name;
+  String? symbol;
+  String? contract;
+  List<NftInfo>? listNft;
+
+  CollectionShow({this.name,this.symbol,this.contract,this.listNft});
 }
