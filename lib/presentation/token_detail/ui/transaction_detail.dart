@@ -26,7 +26,6 @@ class TransactionHistoryDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bloc.getTransaction(txhId: 'thxID');
     return StreamBuilder<TransactionHistoryDetail>(
       stream: bloc.transactionHistoryStream,
       initialData: TransactionHistoryDetail.init(),

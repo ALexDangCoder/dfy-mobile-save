@@ -1,6 +1,4 @@
-
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/data/web3/model/transaction.dart';
 import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/model_token.dart';
@@ -19,13 +17,13 @@ class TokenDetailBloc {
   });
 
   int minLen = 4;
-  List<TransactionHistory> totalTransactionList = [];
-  List<TransactionHistory> currentTransactionList = [];
+  List<TransactionHistoryDetail> totalTransactionList = [];
+  List<TransactionHistoryDetail> currentTransactionList = [];
 
-  final BehaviorSubject<List<TransactionHistory>> _transactionListSubject =
-      BehaviorSubject();
+  final BehaviorSubject<List<TransactionHistoryDetail>>
+      _transactionListSubject = BehaviorSubject();
 
-  Stream<List<TransactionHistory>> get transactionListStream =>
+  Stream<List<TransactionHistoryDetail>> get transactionListStream =>
       _transactionListSubject.stream;
 
   final BehaviorSubject<bool> _showMoreSubject = BehaviorSubject();
@@ -49,19 +47,25 @@ class TokenDetailBloc {
   ///Get functions
   ///Get list Transaction and detail Transaction
   Future<void> getTransaction({
-    required String txhId,
+    required String walletAddress,
+    required String tokenAddress,
   }) async {
-    final result = await _web3client.getHistoryDetail(txhId: txhId);
-    _transactionHistoryDetailSubject.sink.add(result);
+    final List<TransactionHistoryDetail> listFromData = [];
+    totalTransactionList = listFromData
+        .where((element) =>
+            element.tokenAddress == tokenAddress &&
+            element.walletAddress == walletAddress)
+        .toList();
+    checkData();
   }
 
   Future<void> getHistory(String _tokenAddress) async {
-    final result = await _web3client.getTransactionHistory(
-      ofAddress: walletAddress,
-      tokenAddress: _tokenAddress,
-    );
-    totalTransactionList = result;
-    checkData();
+    // final result = await _web3client.getTransactionHistory(
+    //   ofAddress: walletAddress,
+    //   tokenAddress: _tokenAddress,
+    // );
+    // totalTransactionList = result;
+    // checkData();
   }
 
   ///ShowTransactionHistory

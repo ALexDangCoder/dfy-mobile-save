@@ -38,7 +38,10 @@ class TokenDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bloc.getToken(token: token);
-    bloc.getHistory(token.tokenAddress);
+    bloc.getTransaction(
+      tokenAddress: token.tokenAddress,
+      walletAddress: walletAddress,
+    );
     return StreamBuilder<bool>(
       stream: bloc.showLoadingStream,
       initialData: false,
