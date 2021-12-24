@@ -221,6 +221,6 @@
   "back":"Back",
   "change_pw_fail": "Old password is incorrect",
   "change_pword_success": "Password changed",
-  "undefine_err_nft": "Undefined Error",
+  "undefine_err_nft": "Something went wrong",
   "duplicated_import_nft": "Your Account is duplicated"
 }
