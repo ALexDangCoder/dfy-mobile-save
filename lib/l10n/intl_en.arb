@@ -222,5 +222,5 @@
   "change_pw_fail": "Old password is incorrect",
   "change_pword_success": "Password changed",
   "undefine_err_nft": "Undefined Error",
-  "duplicated_import_nft": "Your NFT has been imported"
+  "duplicated_import_nft": "Your Account is duplicated"
 }
