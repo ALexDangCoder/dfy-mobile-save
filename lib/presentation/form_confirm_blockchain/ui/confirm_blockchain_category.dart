@@ -101,11 +101,13 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
       balanceWallet = widget.balanceWallet - widget.amount!.toDouble();
     }
     _informationWallet = InformationWallet(
+      cubit: cubitFormCustomizeGasFee,
       nameWallet: widget.nameWallet,
       fromAddress: widget.addressFrom.formatAddressWallet(),
       amount: balanceWallet,
       nameToken: widget.nameTokenWallet,
-      imgWallet: widget.imageWallet,
+      // imgWallet: widget.imageWallet,
+
     );
     trustWalletChannel.setMethodCallHandler(
         cubitFormCustomizeGasFee.nativeMethodCallBackTrustWallet);
@@ -235,7 +237,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
         bloc: cubitFormCustomizeGasFee,
         builder: (context, state) {
           return Scaffold(
-            resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: true,
             backgroundColor: Colors.black,
             body: Align(
               alignment: Alignment.bottomCenter,

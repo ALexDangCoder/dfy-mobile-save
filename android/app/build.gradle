@@ -45,7 +45,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
-        ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
+        ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
     }
 
     signingConfigs {
@@ -73,7 +73,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
             ndk {
-                abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
             }
         }
         release {
@@ -84,7 +84,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             ndk {
-                abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
             }
         }
     }
@@ -124,10 +124,7 @@ dependencies {
     implementation 'com.github.takuji31.Koreference:koreference-gson:2.0.0'
     implementation 'com.github.takuji31.Koreference:koreference-observable:2.0.0'
     implementation "com.google.code.gson:gson:2.8.5"
-    implementation 'com.trustwallet:wallet-core:2.6.30'
     implementation 'io.grpc:grpc-protobuf:1.34.0'
-//    implementation project(':trustwalletcore')
-//    debugImplementation "com.github.whataa:pandora:androidx_v2.1.0"
-//    releaseImplementation "com.github.whataa:pandora-no-op:v2.0.3"
-
+//    implementation 'com.trustwallet:wallet-core:2.6.30'
+    implementation project(':trustwalletcore')
 }

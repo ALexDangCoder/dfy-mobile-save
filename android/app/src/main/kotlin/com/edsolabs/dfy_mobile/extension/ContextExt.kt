@@ -1,6 +1,7 @@
 package com.edsolabs.dfy_mobile.extension
 
 import android.content.Context
+import android.util.Log
 import com.edsolabs.dfy_mobile.Constant
 import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
 import com.edsolabs.dfy_mobile.data.model.ItemNftModel
@@ -501,6 +502,7 @@ fun Context.getNFT(
 ) {
     val appPreference = AppPreference(this)
     val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
+//    Log.d("kiemtra5", appPreference.getListNft().toString())
     appPreference.getListNft().forEach {
         if (it.walletAddress == walletAddress) {
             val data = HashMap<String, Any>()
@@ -518,6 +520,7 @@ fun Context.getNFT(
             }
             data["listNft"] = hasMapListNft
             hasMap.add(data)
+//            Log.d("kiemtra6", data.toString())
         }
     }
     channel?.invokeMethod("getNFTCallback", hasMap)
@@ -558,14 +561,15 @@ fun Context.importNft(
     jsonNft: String,
     walletAddress: String
 ) {
+//    Log.d("kiemtra", jsonNft)
     val appPreference = AppPreference(this)
-    val listNftSupport = ArrayList<NftModel>()
+    val listCollectionSupport = ArrayList<NftModel>()
 
     val objectNft = JSONObject(jsonNft)
 
     val listAllCollection = appPreference.getListNft()
-    val checkItemNft = listAllCollection.firstOrNull { it.walletAddress == walletAddress }
-    if (checkItemNft == null) {
+    val checkAddress = listAllCollection.firstOrNull { it.walletAddress == walletAddress }
+    if (checkAddress == null) {
         val nftModel = NftModel()
         nftModel.walletAddress = walletAddress
         nftModel.collectionAddress = objectNft.getString("contract")
@@ -585,18 +589,25 @@ fun Context.importNft(
             )
             size++
         }
-        nftModel.item = listNft
-        listNftSupport.add(nftModel)
+        nftModel.item.addAll(listNft)
+        listCollectionSupport.add(nftModel)
+        listCollectionSupport.addAll(listAllCollection.filter { it.walletAddress != walletAddress })
+//        Log.d("kiemtra1", "first - " + listCollectionSupport.toString())
     } else {
         val contractNft = objectNft.getString("contract")
-        if (checkItemNft.collectionAddress == contractNft) {
+        if (checkAddress.collectionAddress == contractNft) {
+            val nftModel = NftModel()
+            nftModel.walletAddress = walletAddress
+            nftModel.collectionAddress = contractNft
+            nftModel.nftName = objectNft.getString("name")
+            nftModel.symbol = objectNft.getString("symbol")
             val listNftJson = objectNft.getJSONArray("listNft")
             var size = 0
             val listNft = ArrayList<ItemNftModel>()
             while (size < listNftJson.length()) {
                 val data = listNftJson.getJSONObject(size)
                 val id = data.getString("id")
-                if (checkItemNft.item.firstOrNull { it.id != id } == null) {
+                if (checkAddress.item.firstOrNull { it.id != id } == null) {
                     listNft.add(
                         ItemNftModel(
                             id = id,
@@ -607,12 +618,15 @@ fun Context.importNft(
                 }
                 size++
             }
-            checkItemNft.item.addAll(listNft)
-            listNftSupport.add(checkItemNft)
+
+            nftModel.item.addAll(listNft)
+            listCollectionSupport.add(nftModel)
+            listCollectionSupport.addAll(listAllCollection.filter { it.walletAddress != walletAddress })
+//            Log.d("kiemtra2", listCollectionSupport.toString())
         } else {
             val nftModel = NftModel()
             nftModel.walletAddress = walletAddress
-            nftModel.collectionAddress = objectNft.getString("contract")
+            nftModel.collectionAddress = contractNft
             nftModel.nftName = objectNft.getString("name")
             nftModel.symbol = objectNft.getString("symbol")
             val listNftJson = objectNft.getJSONArray("listNft")
@@ -629,13 +643,14 @@ fun Context.importNft(
                 )
                 size++
             }
-            nftModel.item = listNft
-            listNftSupport.add(nftModel)
+            nftModel.item.addAll(listNft)
+            listCollectionSupport.add(nftModel)
+            listCollectionSupport.addAll(listAllCollection.filter { it.collectionAddress != contractNft })
+//            Log.d("kiemtra3", listCollectionSupport.toString())
         }
     }
-    listNftSupport.addAll(listAllCollection.filter { it.walletAddress != walletAddress })
     val hasMap = HashMap<String, Any>()
-    appPreference.saveListNft(listNftSupport)
+    appPreference.saveListNft(listCollectionSupport)
     hasMap["isSuccess"] = true
     channel?.invokeMethod("importNftCallback", hasMap)
 }

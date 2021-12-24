@@ -98,9 +98,12 @@ Container formSetupPassWord({
           return Center(
             child: TextFormField(
               onChanged: (value) {
+                cubit.currentNewPw = value;
+                cubit.showTxtWarningNewPW(value, cfPassword: cubit.confirmPw);
                 cubit.checkHaveValueNewPW(value);
                 cubit.currentCfPW.sink.add(value);
-                cubit.showTxtWarningNewPW(value);
+                cubit.showTxtWarningConfirmPW(cubit.confirmPw,
+                    newPassword: cubit.currentNewPw);
               },
               obscureText: snapshot.data ?? true,
               style: textNormal(
@@ -164,11 +167,14 @@ Container formSetupPassWord({
           return Center(
             child: TextFormField(
               onChanged: (value) {
+                cubit.confirmPw = value;
                 cubit.checkHaveValueConfirmPW(value);
                 cubit.showTxtWarningConfirmPW(
                   value,
                   newPassword: cubit.currentCfPW.value,
                 );
+                cubit.showTxtWarningNewPW(cubit.currentNewPw,
+                    cfPassword: cubit.confirmPw,);
               },
               obscureText: snapshot.data ?? true,
               style: textNormal(

@@ -54,7 +54,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         listener: (context, state) {
           if (state is ChangePasswordSuccess) {
             showSuccessfulByTitle(
-              title: S.current.change_pw_success,
+              title: S.current.change_pword_success,
               callBack: () {
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
@@ -68,7 +68,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               context: context,
             );
           } else {
-            _showDialog(alert: S.current.not_match,);
+            _showDialog(alert: S.current.change_pw_fail,);
           }
         },
         builder: (context, state) {

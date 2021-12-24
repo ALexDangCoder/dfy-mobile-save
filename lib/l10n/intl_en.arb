@@ -219,5 +219,6 @@
   "not_import": "Can not get wallet address",
   "feature_coming_soon": "FEATURE \nCOMING SOON!",
   "back":"Back",
-  "password_is_not_correct": "Password is not correct"
+  "change_pw_fail": "Old password is incorrect",
+  "change_pword_success": "Password changed"
 }

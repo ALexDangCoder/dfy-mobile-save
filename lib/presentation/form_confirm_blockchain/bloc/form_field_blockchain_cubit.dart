@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -29,15 +31,19 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
 
   final regexAmount = RegExp(r'^\d+((.)|(.\d{0,5})?)$');
 
+  bool isAmount(String value) {
+    return regexAmount.hasMatch(value);
+  }
+
   void validateGasLimit(String value) {
-    if (value.isEmpty || (double.parse(value) == 0)) {
-      _flagGasLimit = false;
-      txtWarningGasLimit.sink.add(S.current.gas_limit_required);
-      showWarningGasLimit.sink.add(true);
-      isEnableBtnSink.add(false);
-    } else if (!regexAmount.hasMatch(value)) {
+    if (!regexAmount.hasMatch(value) && value.isNotEmpty) {
       _flagGasLimit = false;
       txtWarningGasLimit.sink.add(S.current.invalid_gas_limit);
+      showWarningGasLimit.sink.add(true);
+      isEnableBtnSink.add(false);
+    } else if (value.isEmpty || (double.parse(value) == 0)) {
+      _flagGasLimit = false;
+      txtWarningGasLimit.sink.add(S.current.gas_limit_required);
       showWarningGasLimit.sink.add(true);
       isEnableBtnSink.add(false);
     } else {
@@ -50,14 +56,14 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   }
 
   void validateGasPrice(String value) {
-    if (value.isEmpty || (double.parse(value) == 0)) {
-      _flagGasPrice = false;
-      txtWarningGasPrice.sink.add(S.current.gas_price_required);
-      showWarningGasPrice.sink.add(true);
-      isEnableBtnSink.add(false);
-    } else if (!regexAmount.hasMatch(value)) {
+    if (!regexAmount.hasMatch(value) && value.isNotEmpty) {
       _flagGasPrice = false;
       txtWarningGasPrice.sink.add(S.current.invalid_gas_price);
+      showWarningGasPrice.sink.add(true);
+      isEnableBtnSink.add(false);
+    } else if (value.isEmpty || (double.parse(value) == 0)) {
+      _flagGasPrice = false;
+      txtWarningGasPrice.sink.add(S.current.gas_price_required);
       showWarningGasPrice.sink.add(true);
       isEnableBtnSink.add(false);
     } else {
@@ -283,5 +289,10 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         return '0';
       }
     }
+  }
+
+  int randomAvatar() {
+    final Random rd = Random();
+    return rd.nextInt(10);
   }
 }

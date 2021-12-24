@@ -17,91 +17,87 @@ class NFTSuccessfully extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
-      body: ListView(
-        children: [
-          SizedBox(
-            height: 48.h,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 764.h,
+          width: 375.w,
+          decoration: BoxDecoration(
+            color: AppTheme.getInstance().bgBtsColor(),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.h),
+              topRight: Radius.circular(30.h),
+            ),
           ),
-          Container(
-            height: 764.h,
-            width: 375.w,
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().bgBtsColor(),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.h),
-                topRight: Radius.circular(30.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 18.h,
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 18.h,
+              Center(
+                child: Text(
+                  S.current.nft_successfully,
+                  style: textNormalCustom(
+                    Colors.white,
+                    20,
+                    FontWeight.bold,
+                  ),
                 ),
-                Center(
-                  child: Text(
-                    S.current.nft_successfully,
-                    style: textNormalCustom(
-                      Colors.white,
-                      20,
-                      FontWeight.bold,
+              ),
+              spaceH20,
+              line,
+              spaceH24,
+              SizedBox(
+                height: 56.h,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 228.h,
+                          width: 305.w,
+                          child: Image.asset(ImageAssets.frameGreen),
+                        ),
+                        SizedBox(
+                          height: 22.h,
+                        ),
+                        Text(
+                          S.current.congratulation,
+                          style: textNormalCustom(
+                            Colors.white,
+                            32,
+                            FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 213.h,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                spaceH20,
-                line,
-                spaceH24,
-                SizedBox(
-                  height: 56.h,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 228.h,
-                            width: 305.w,
-                            child: Image.asset(ImageAssets.frameGreen),
-                          ),
-                          SizedBox(
-                            height: 22.h,
-                          ),
-                          Text(
-                            S.current.congratulation,
-                            style: textNormalCustom(
-                              Colors.white,
-                              32,
-                              FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 213.h,
-                          ),
-                        ],
-                      ),
-                    ),
+              ),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  child: ButtonGold(
+                    title: S.current.complete,
+                    isEnable: true,
                   ),
                 ),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                    child: ButtonGold(
-                      title: S.current.complete,
-                      isEnable: true,
-                    ),
-                  ),
-                ),
-                spaceH38,
-              ],
-            ),
+              ),
+              spaceH38,
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

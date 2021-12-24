@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -435,6 +437,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       return true;
     }
   }
+
 
   String handleValueFromQR({required String value}) {
     final int index = value.lastIndexOf('0x');
