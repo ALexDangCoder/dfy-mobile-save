@@ -148,7 +148,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         if (isSuccess) {
           final result = await Web3Utils()
               .sendRawTransaction(transaction: signedTransaction);
-          if (result) {
+          if (result['isSuccess']) {
             emit(FormBlockchainSendTokenSuccess());
           } else {
             emit(FormBlockchainSendTokenFail());
@@ -169,7 +169,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         if (isSuccess) {
           final result = await Web3Utils()
               .sendRawTransaction(transaction: signedTransaction);
-          if (result) {
+          if (result['isSuccess']) {
             deleteNft(
                 walletAddress: walletAddress,
                 collectionAddress: collectionAddress,
