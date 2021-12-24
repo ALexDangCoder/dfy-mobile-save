@@ -99,7 +99,7 @@ class _NFTItemState extends State<NFTItem> {
                     ),
                     ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxWidth: 260.w
+                        maxWidth: 240.w
                       ),
                       child: Text(
                         widget.collectionNft.name!,
