@@ -50,7 +50,7 @@ class FormFieldBlockChain extends StatelessWidget {
             )
           else
             Text(
-              S.current.gas_price,
+              '${S.current.gas_price} (GWEI)',
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
                 16,

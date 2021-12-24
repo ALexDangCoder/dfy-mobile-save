@@ -1,5 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -13,17 +15,20 @@ class InformationWallet extends StatelessWidget {
     required this.fromAddress,
     required this.amount,
     required this.nameToken,
-    required this.imgWallet,
+    // required this.imgWallet,
+    required this.cubit,
   }) : super(key: key);
 
   final String nameWallet;
   final String fromAddress;
   final double amount;
   final String nameToken;
-  final String imgWallet;
+  // final String imgWallet;
+  final dynamic cubit;
 
   @override
   Widget build(BuildContext context) {
+    final cubitCategory = cubit as FormFieldBlockchainCubit;
     return Container(
       width: 343.w,
       // height: 74.h,
@@ -44,7 +49,9 @@ class InformationWallet extends StatelessWidget {
                 top: 16.h,
                 bottom: 18.h,
               ),
-              child: circularImage(imgWallet),
+              child: circularImage(
+                  '${ImageAssets.image_avatar}${cubitCategory.randomAvatar()}'
+                  '.png'),
             ),
           ),
           spaceW8,
@@ -71,7 +78,7 @@ class InformationWallet extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          flex: 2,
+                          // flex: 2,
                           child: Text(
                             fromAddress,
                             style: const TextStyle(
@@ -90,7 +97,7 @@ class InformationWallet extends StatelessWidget {
                   //hang 2
                   Text(
                     '${S.current.balance}: ${formatValue.format(amount)}'
-                        ' $nameToken',
+                    ' $nameToken',
                     style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
