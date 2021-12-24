@@ -73,8 +73,8 @@ class FormFieldBlockChain extends StatelessWidget {
               child: TextFormField(
                 // textAlignVertical: TextAlignVertical.center,
                 textAlign: TextAlign.right,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true, signed: true,),
                 controller: txtController,
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor(),
@@ -100,16 +100,19 @@ class FormFieldBlockChain extends StatelessWidget {
                   if (value.isEmpty) {
                     valueHandle = 0;
                   } else {
-                    valueHandle = double.parse(value);
+                    if (cubit.isAmount(value)) {
+                      valueHandle = double.parse(value);
+                      result =
+                          (valueHandle * double.parse(numHandle)) / pow(10, 9);
+                      // cubit.isEstimatingGasFee(Validator.toExact(result));
+                      Decimal convertedNum = Decimal.parse(result.toString());
+                      cubit.isEstimatingGasFee(convertedNum.toString());
+                      cubit.isSufficientGasFee(
+                        gasFee: result,
+                        balance: balanceFetchFirst,
+                      );
+                    }
                   }
-                  result = (valueHandle * double.parse(numHandle)) / pow(10, 9);
-                  // cubit.isEstimatingGasFee(Validator.toExact(result));
-                  Decimal convertedNum = Decimal.parse(result.toString());
-                  cubit.isEstimatingGasFee(convertedNum.toString());
-                  cubit.isSufficientGasFee(
-                    gasFee: result,
-                    balance: balanceFetchFirst,
-                  );
                   if (formGasFee == FORM_GAS_FEE.LIMIT) {
                     cubit.validateGasLimit(value);
                   } else {
