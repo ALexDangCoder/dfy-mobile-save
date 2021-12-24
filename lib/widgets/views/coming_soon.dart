@@ -43,8 +43,8 @@ class ComingSoon extends StatelessWidget {
                 ),
                 Image(
                   image: const AssetImage(ImageAssets.image_coming),
-                  height: 342.h,
-                  width: 251.w,
+                  height: 300.h,
+                  width: 200.w,
                 ),
                 SizedBox(
                   height: 39.h,
@@ -53,13 +53,13 @@ class ComingSoon extends StatelessWidget {
                   S.current.feature_coming_soon,
                   style: textNormalCustom(
                     Colors.white,
-                    32,
+                    30,
                     FontWeight.w700,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(
-                  height: 120.h,
+                  height: 124.h,
                 ),
                 GestureDetector(
                   onTap: () {
