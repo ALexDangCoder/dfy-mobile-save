@@ -168,14 +168,8 @@ extension AppDelegate {
                 result(signTransactionNft(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, tokenId: tokenId))
             }
         }
-//
+        
         result(FlutterMethodNotImplemented)
-//
-//
-//        guard call.method == "signTransaction" else {
-//            result(FlutterMethodNotImplemented)
-//            return
-//        }
     }
 }
 
@@ -561,26 +555,38 @@ extension AppDelegate {
     }
     
     private func importNft(jsonNft: String, walletAddress: String) -> [String: Any] {
-        var listNftSupport = [NftModel]()
+        var listCollectionSupport = [NftModel]()
         let jsonData = jsonNft.data(using: .utf8)
         let objectNft = try! JSONDecoder().decode(NftDTO.self, from: jsonData!)
-        let contractNft = objectNft.contract ?? ""
-        var checkItemNft = SharedPreference.shared.getListNft().first(where: {$0.walletAddress == walletAddress && $0.collectionAddress == contractNft})
-        if checkItemNft == nil {
+        let listAllCollection = SharedPreference.shared.getListNft()
+        let checkAddress = listAllCollection.first(where: {$0.walletAddress == walletAddress})
+        if checkAddress == nil {
             let listItem = objectNft.listNft?.map{ItemNftModel(id: $0.id ?? "", contract: $0.contract ?? "", uri: $0.uri ?? "")}
-            checkItemNft = NftModel(walletAddress: walletAddress, collectionAddress: objectNft.contract ?? "", nftName: objectNft.name ?? "", symbol: objectNft.symbol ?? "", item: listItem ?? [])
+            let nftModel = NftModel(walletAddress: walletAddress, collectionAddress: objectNft.contract ?? "", nftName: objectNft.name ?? "", symbol: objectNft.symbol ?? "", item: listItem ?? [])
+            listCollectionSupport.append(nftModel)
+            listCollectionSupport.append(contentsOf: listAllCollection.filter{$0.walletAddress != walletAddress})
         } else {
-            let listNftItem = objectNft.listNft ?? []
-            listNftItem.forEach { (nftItemJson) in
-                let id = nftItemJson.id ?? ""
-                if (checkItemNft?.item.first(where: {$0.id == id}) == nil) {
-                    checkItemNft?.item.append(ItemNftModel(id: nftItemJson.id ?? "", contract: nftItemJson.contract ?? "", uri: nftItemJson.uri ?? ""))
+            let contractNft = objectNft.contract ?? ""
+            if checkAddress!.collectionAddress == contractNft {
+                let nftModel = NftModel(walletAddress: walletAddress, collectionAddress: contractNft, nftName: objectNft.name ?? "", symbol: objectNft.symbol ?? "", item: [])
+                let listNftItem = objectNft.listNft ?? []
+                listNftItem.forEach { (nftItemJson) in
+                    let id = nftItemJson.id ?? ""
+                    if (checkAddress!.item.first(where: {$0.id != id}) == nil) {
+                        nftModel.item.append(ItemNftModel(id: nftItemJson.id ?? "", contract: nftItemJson.contract ?? "", uri: nftItemJson.uri ?? ""))
+                    }
                 }
+                listCollectionSupport.append(nftModel)
+                listCollectionSupport.append(contentsOf: listCollectionSupport.filter{$0.walletAddress != walletAddress})
+            } else {
+                let listItem = objectNft.listNft?.map{ItemNftModel(id: $0.id ?? "", contract: $0.contract ?? "", uri: $0.uri ?? "")}
+                let nftModel = NftModel(walletAddress: walletAddress, collectionAddress: contractNft, nftName: objectNft.name ?? "", symbol: objectNft.symbol ?? "", item: listItem ?? [])
+                listCollectionSupport.append(nftModel)
+                listCollectionSupport.append(contentsOf: listAllCollection.filter{$0.walletAddress != walletAddress})
             }
         }
-        listNftSupport.append(checkItemNft!)
         let param: [String: Any] = ["isSuccess": true]
-        SharedPreference.shared.saveListNft(listNft: listNftSupport)
+        SharedPreference.shared.saveListNft(listNft: listCollectionSupport)
         chatChanel?.invokeMethod("importNftCallback", arguments: param)
         return param
     }
@@ -708,6 +714,7 @@ extension AppDelegate {
                 $0.privateKey = privateKey.data
                 $0.transaction = EthereumTransaction.with {
                     $0.erc721Transfer = EthereumTransaction.ERC721Transfer.with {
+                        $0.from = walletAddress
                         $0.to = toAddress
                         $0.tokenID = BigInt(tokenId)!.serialize()
                     }
@@ -730,11 +737,6 @@ extension AppDelegate {
         chatChanel?.invokeMethod("signTransactionNftCallback", arguments: param)
         return param
     }
-}
-
-extension StringProtocol {
-    var data: Data { .init(utf8) }
-    var bytes: [UInt8] { .init(utf8) }
 }
 
 extension Data {
