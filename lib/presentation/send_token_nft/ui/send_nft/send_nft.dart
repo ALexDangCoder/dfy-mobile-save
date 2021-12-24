@@ -50,6 +50,7 @@ class _SendNftState extends State<SendNft> {
     sendNftCubit.getGasPrice();
     txtToAddressNft = TextEditingController();
     txtQuantity = TextEditingController();
+    txtQuantity.text = '1';
   }
 
   @override

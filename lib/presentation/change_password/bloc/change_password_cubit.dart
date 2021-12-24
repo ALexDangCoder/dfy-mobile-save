@@ -9,8 +9,8 @@ import 'package:rxdart/rxdart.dart';
 part 'change_password_state.dart';
 
 class ChangePasswordCubit extends Cubit<ChangePasswordState> {
-
   ChangePasswordCubit() : super(ChangePasswordInitial());
+
   //declare flag to handle enable btn or disable btn
   int _flagOldPW = 0;
   int _flagNewPW = 0;
@@ -36,7 +36,6 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   final BehaviorSubject<String> _txtWarnCfPW =
       BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> currentCfPW = BehaviorSubject<String>();
-
 
   ///wallet core
   Future<void> changePasswordIntoWalletCore({
@@ -206,14 +205,21 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       }
     }
   }
+  String confirmPw = '';
+  String currentNewPw = '';
 
-  void showTxtWarningNewPW(String value) {
+  void showTxtWarningNewPW(String value, {required String cfPassword}) {
     if ((value.isNotEmpty && value.length < 8) ||
         (value.isNotEmpty && value.length > 15)) {
       validatePWSink.add(true);
       txtWarnNewPWSink.add(S.current.warn_pw_8_15);
       isEnableButtonSink.add(false);
-    } else if (value.isEmpty) {
+    } else if(value != cfPassword) {
+      matchPWSink.add(true);
+      txtWarnCfPWSink.add(S.current.warn_cf_pw);
+      isEnableButtonSink.add(false);
+    }
+    else if (value.isEmpty) {
       validatePWSink.add(true);
       txtWarnNewPWSink.add(S.current.warn_pw_required);
       isEnableButtonSink.add(false);
