@@ -218,5 +218,6 @@
   "not_import": "Không thể lấy địa chỉ ví",
   "feature_coming_soon": "TÍNH NĂNG \nĐANG PHÁT TRIỂN!",
   "back":"Trở về",
-  "password_is_not_correct": "Mật khẩu không đúng"
+  "change_pw_fail": "Mật khẩu cũ không đúng",
+  "change_pword_success": "Đổi mật khẩu thành công"
 }
