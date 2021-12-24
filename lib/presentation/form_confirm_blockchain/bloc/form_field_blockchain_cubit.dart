@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -283,5 +285,10 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         return '0';
       }
     }
+  }
+
+  int randomAvatar() {
+    final Random rd = Random();
+    return rd.nextInt(10);
   }
 }

@@ -42,6 +42,7 @@ class RestoreCubit extends Cubit<RestoreState> {
   bool privateField = false;
   bool checkBoxValue = true;
   String newPassword = '';
+  String conPassword = '';
 
   /// button subject
   Stream<bool> get btnStream => _buttonSubject.stream;
@@ -170,22 +171,6 @@ class RestoreCubit extends Cubit<RestoreState> {
   }
 
   /// check match password
-  void isMatchPW({required String password, required String confirmPW}) {
-    if (password == confirmPW) {
-      matchSink.add(false);
-    } else {
-      matchSink.add(true);
-    }
-  }
-
-  bool isMatch(String value, String confirmValue) {
-    if (Validator.validateStructure(value) && (value == confirmValue)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   void showTxtWarningNewPW(String value) {
     if ((value.isNotEmpty && value.length < 8) ||
         (value.isNotEmpty && value.length > 15)) {
