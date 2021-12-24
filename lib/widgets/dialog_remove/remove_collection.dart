@@ -133,10 +133,10 @@ class RemoveCollection extends StatelessWidget {
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () {
-                                        cubit.listNftFromWalletCore
+                                        cubit.listCollectionShow
                                             .removeAt(index);
                                         cubit.listNFTStream
-                                            .add(cubit.listNftFromWalletCore);
+                                            .add(cubit.listCollectionShow);
                                         cubit.deleteCollection(
                                           walletAddress: walletAddress,
                                           collectionAddress: collectionAddress,
