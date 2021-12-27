@@ -16,6 +16,7 @@ import wallet.core.jni.AnyAddress
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.PrivateKey
+import wallet.core.jni.proto.Ethereum
 import java.math.BigInteger
 import java.security.InvalidParameterException
 
@@ -727,6 +728,7 @@ fun Context.signTransactionToken(
         hasMap["signedTransaction"] = value
         hasMap["walletAddress"] = walletAddress
         hasMap["toAddress"] = toAddress
+        hasMap["tokenAddress"] = tokenAddress
         hasMap["nonce"] = nonce
         hasMap["chainId"] = chainId
         hasMap["gasPrice"] = gasPrice
@@ -737,15 +739,16 @@ fun Context.signTransactionToken(
     } else {
         hasMap["isSuccess"] = false
         hasMap["signedTransaction"] = ""
-        hasMap["walletAddress"] = ""
-        hasMap["toAddress"] = ""
-        hasMap["nonce"] = ""
-        hasMap["chainId"] = ""
-        hasMap["gasPrice"] = ""
-        hasMap["gasLimit"] = ""
-        hasMap["gasFee"] = ""
-        hasMap["amount"] = ""
-        hasMap["symbol"] = ""
+        hasMap["walletAddress"] = walletAddress
+        hasMap["toAddress"] = toAddress
+        hasMap["tokenAddress"] = tokenAddress
+        hasMap["nonce"] = nonce
+        hasMap["chainId"] = chainId
+        hasMap["gasPrice"] = gasPrice
+        hasMap["gasLimit"] = gasLimit
+        hasMap["gasFee"] = gasFee
+        hasMap["amount"] = amount
+        hasMap["symbol"] = symbol
     }
     channel?.invokeMethod("signTransactionTokenCallback", hasMap)
 }

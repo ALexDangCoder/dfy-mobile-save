@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
@@ -143,25 +145,59 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       case 'setDeleteNftCallback':
         break;
       case 'signTransactionTokenCallback':
-        // print(methodCall.arguments);
         emit(FormBlockchainSendTokenLoading());
-        bool isSuccess = await methodCall.arguments['isSuccess'];
-        String signedTransaction =
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+        String status = '';
+        final String signedTransaction =
             await methodCall.arguments['signedTransaction'];
+        final String gasFee = await methodCall.arguments['gasFee'];
+        final String toAddress = await methodCall.arguments['toAddress'];
+        final String nonce = await methodCall.arguments['nonce'];
+        final String walletAddress =
+            await methodCall.arguments['walletAddress'];
+        final String tokenAddress = await methodCall.arguments['tokenAddress'];
+        final String name = S.current.send_token;
+        //todo format date time
+        final String dateTime = DateTime.now().toString();
+        final result = await Web3Utils()
+            .sendRawTransaction(transaction: signedTransaction);
+        txHashToken = result['txHash'];
         if (isSuccess) {
-          final result = await Web3Utils()
-              .sendRawTransaction(transaction: signedTransaction);
-          txHashToken = result['txHash'];
-          //todo handel save data to store
-          await PrefsService().saveHistoryTransaction('');
           if (result['isSuccess']) {
+            status = STATUS_TRANSACTION_SUCCESS;
             emit(FormBlockchainSendTokenSuccess());
           } else {
+            status = STATUS_TRANSACTION_FAIL;
             emit(FormBlockchainSendTokenFail());
           }
         } else {
+          status = STATUS_TRANSACTION_FAIL;
           emit(FormBlockchainSendTokenFail());
         }
+        final String quantity = methodCall.arguments['amount'];
+        final List<DetailHistoryTransaction> listDetailTransaction = [];
+        listDetailTransaction.add(
+          DetailHistoryTransaction(
+            quantity: quantity,
+            status: status,
+            gasFee: gasFee,
+            dateTime: dateTime,
+            txhID: txHashToken,
+            toAddress: toAddress,
+            nonce: nonce,
+            name: name,
+            walletAddress: walletAddress,
+            tokenAddress: tokenAddress,
+            type: TRANSACTION_TOKEN,
+          ),
+        );
+        final transactionHistory = await PrefsService.getHistoryTransaction();
+        if (transactionHistory.isNotEmpty) {
+          listDetailTransaction.addAll(transactionFromJson(transactionHistory));
+        }
+        await PrefsService.saveHistoryTransaction(
+          transactionToJson(listDetailTransaction),
+        );
         break;
       case 'signTransactionNftCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
