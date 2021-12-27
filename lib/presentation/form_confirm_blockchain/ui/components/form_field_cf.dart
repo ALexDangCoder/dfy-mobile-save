@@ -74,7 +74,8 @@ class FormFieldBlockChain extends StatelessWidget {
                 // textAlignVertical: TextAlignVertical.center,
                 textAlign: TextAlign.right,
                 keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true, signed: true,),
+                  decimal: true,
+                ),
                 controller: txtController,
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor(),
