@@ -16,7 +16,6 @@ import wallet.core.jni.AnyAddress
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.PrivateKey
-import wallet.core.jni.proto.Ethereum
 import java.math.BigInteger
 import java.security.InvalidParameterException
 
@@ -668,7 +667,9 @@ fun Context.signTransactionToken(
     chainId: String,
     gasPrice: String,
     gasLimit: String,
-    amount: String
+    gasFee: String,
+    amount: String,
+    symbol: String
 ) {
     val hasMap = HashMap<String, Any>()
     val walletModel =
@@ -680,7 +681,7 @@ fun Context.signTransactionToken(
                     this.nonce = ByteString.copyFrom(BigInteger(nonce).toByteArray())
                     this.chainId = ByteString.copyFrom(BigInteger(chainId).toByteArray())
                     this.gasPrice = BigInteger(
-                        gasPrice
+                        gasPrice.handleAmount(decimal = 9)
                     ).toByteString() // decimal 3600000000
                     this.gasLimit = BigInteger(
                         gasLimit
@@ -689,7 +690,7 @@ fun Context.signTransactionToken(
                     this.transaction = Ethereum.Transaction.newBuilder().apply {
                         transfer = Ethereum.Transaction.Transfer.newBuilder().apply {
                             this.amount =
-                                BigInteger(amount).toByteString()
+                                BigInteger(amount.handleAmount(decimal = 18)).toByteString()
                         }.build()
                     }.build()
                     this.privateKey =
@@ -701,7 +702,7 @@ fun Context.signTransactionToken(
                     this.nonce = ByteString.copyFrom(BigInteger(nonce).toByteArray())
                     this.chainId = ByteString.copyFrom(BigInteger(chainId).toByteArray())
                     this.gasPrice = BigInteger(
-                        gasPrice
+                        gasPrice.handleAmount(decimal = 9)
                     ).toByteString() // decimal 3600000000
                     this.gasLimit = BigInteger(
                         gasLimit
@@ -711,7 +712,7 @@ fun Context.signTransactionToken(
                         erc20Transfer = Ethereum.Transaction.ERC20Transfer.newBuilder().apply {
                             this.to = toAddress
                             this.amount =
-                                BigInteger(amount).toByteString()
+                                BigInteger(amount.handleAmount(decimal = 18)).toByteString()
                         }.build()
                     }.build()
                     this.privateKey =
@@ -724,9 +725,27 @@ fun Context.signTransactionToken(
         val value = output.encoded.toByteArray().toHexString(false)
         hasMap["isSuccess"] = true
         hasMap["signedTransaction"] = value
+        hasMap["walletAddress"] = walletAddress
+        hasMap["toAddress"] = toAddress
+        hasMap["nonce"] = nonce
+        hasMap["chainId"] = chainId
+        hasMap["gasPrice"] = gasPrice
+        hasMap["gasLimit"] = gasLimit
+        hasMap["gasFee"] = gasFee
+        hasMap["amount"] = amount
+        hasMap["symbol"] = symbol
     } else {
         hasMap["isSuccess"] = false
         hasMap["signedTransaction"] = ""
+        hasMap["walletAddress"] = ""
+        hasMap["toAddress"] = ""
+        hasMap["nonce"] = ""
+        hasMap["chainId"] = ""
+        hasMap["gasPrice"] = ""
+        hasMap["gasLimit"] = ""
+        hasMap["gasFee"] = ""
+        hasMap["amount"] = ""
+        hasMap["symbol"] = ""
     }
     channel?.invokeMethod("signTransactionTokenCallback", hasMap)
 }

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:bloc/bloc.dart';
@@ -138,20 +139,21 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
 
   ///SEND TOKEN
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    bool isSuccess = false;
-    String signedTransaction = '';
     switch (methodCall.method) {
       case 'setDeleteNftCallback':
         break;
       case 'signTransactionTokenCallback':
         // print(methodCall.arguments);
         emit(FormBlockchainSendTokenLoading());
-        isSuccess = await methodCall.arguments['isSuccess'];
-        signedTransaction = await methodCall.arguments['signedTransaction'];
+        bool isSuccess = await methodCall.arguments['isSuccess'];
+        String signedTransaction =
+            await methodCall.arguments['signedTransaction'];
         if (isSuccess) {
           final result = await Web3Utils()
               .sendRawTransaction(transaction: signedTransaction);
           txHashToken = result['txHash'];
+          //todo handel save data to store
+          await PrefsService().saveHistoryTransaction('');
           if (result['isSuccess']) {
             emit(FormBlockchainSendTokenSuccess());
           } else {
@@ -207,10 +209,11 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     required String chainId,
     required String gasPrice,
     required String gasLimit,
+    required String gasFee,
     required String amount,
+    required String symbol,
   }) {
     try {
-      final String newAmount = handleAmount(amount);
       final data = {
         'walletAddress': walletAddress,
         'tokenAddress': tokenAddress,
@@ -219,7 +222,9 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         'chainId': chainId,
         'gasPrice': gasPrice,
         'gasLimit': gasLimit,
-        'amount': newAmount,
+        'gasFee': gasFee,
+        'amount': amount,
+        'symbol': symbol,
       };
       trustWalletChannel.invokeMethod('signTransactionToken', data);
     } on PlatformException {
@@ -269,31 +274,6 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       trustWalletChannel.invokeMethod('deleteNft', data);
     } on PlatformException {
       //todo
-    }
-  }
-
-  String handleAmount(String amount) {
-    final parts = amount.split('.');
-    if (amount.isEmpty) {
-      return '0';
-    } else {
-      if (parts.length == 1) {
-        return '${amount}000000000000000000';
-      } else if (parts.length > 1) {
-        if (parts[1].length >= 18) {
-          return parts[0] + parts[1].substring(0, 18);
-        } else {
-          final String valueAmount = parts[0];
-          final String valueDecimal = parts[1];
-          final buffer = StringBuffer();
-          for (var i = valueDecimal.length; i < 18; i++) {
-            buffer.write('0');
-          }
-          return valueAmount + valueDecimal + buffer.toString();
-        }
-      } else {
-        return '0';
-      }
     }
   }
 
