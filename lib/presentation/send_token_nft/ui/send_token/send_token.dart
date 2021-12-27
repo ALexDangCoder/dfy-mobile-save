@@ -12,6 +12,7 @@ import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Dfy/utils/extensions/double_extension.dart';
 
 class SendToken extends StatefulWidget {
   final String walletAddress;
@@ -163,7 +164,7 @@ class _SendTokenState extends State<SendToken> {
                       );
                       //check validate before go to next screen
                       if (tokenCubit.checkAddressFtAmount()) {
-                        await Navigator.push(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) {
@@ -304,7 +305,7 @@ class _SendTokenState extends State<SendToken> {
           controller: txtAmount,
           keyboardType: const TextInputType.numberWithOptions(
             decimal: true,
-            signed: true,
+            // signed: true,
           ),
           textAlignVertical: TextAlignVertical.center,
           style: textNormal(
@@ -323,8 +324,9 @@ class _SendTokenState extends State<SendToken> {
               child: (isAmount && !isQuantity)
                   ? InkWell(
                       onTap: () {
-                        txtAmount.text =
-                            modelToken!.balanceToken.toStringAsFixed(4);
+                        txtAmount.text = modelToken!.balanceToken
+                            .truncateToDecimalPlaces(4)
+                            .toString();
                         tokenCubit.checkHaveVLAmountFormToken(
                           txtAmount.text,
                           amountBalance: widget.modelToken.balanceToken,

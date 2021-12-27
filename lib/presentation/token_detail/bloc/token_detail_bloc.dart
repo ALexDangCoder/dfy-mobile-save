@@ -1,8 +1,7 @@
-
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/data/web3/model/transaction.dart';
-import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
 import 'package:Dfy/domain/repository/price_repository.dart';
@@ -19,13 +18,13 @@ class TokenDetailBloc {
   });
 
   int minLen = 4;
-  List<TransactionHistory> totalTransactionList = [];
-  List<TransactionHistory> currentTransactionList = [];
+  List<DetailHistoryTransaction> totalTransactionList = [];
+  List<DetailHistoryTransaction> currentTransactionList = [];
 
-  final BehaviorSubject<List<TransactionHistory>> _transactionListSubject =
-      BehaviorSubject();
+  final BehaviorSubject<List<DetailHistoryTransaction>>
+      _transactionListSubject = BehaviorSubject();
 
-  Stream<List<TransactionHistory>> get transactionListStream =>
+  Stream<List<DetailHistoryTransaction>> get transactionListStream =>
       _transactionListSubject.stream;
 
   final BehaviorSubject<bool> _showMoreSubject = BehaviorSubject();
@@ -36,10 +35,10 @@ class TokenDetailBloc {
 
   Stream<bool> get showLoadingStream => _showLoadingSubject.stream;
 
-  final BehaviorSubject<TransactionHistoryDetail>
+  final BehaviorSubject<DetailHistoryTransaction>
       _transactionHistoryDetailSubject = BehaviorSubject();
 
-  Stream<TransactionHistoryDetail> get transactionHistoryStream =>
+  Stream<DetailHistoryTransaction> get transactionHistoryStream =>
       _transactionHistoryDetailSubject.stream;
 
   final BehaviorSubject<ModelToken> _tokenSubject = BehaviorSubject();
@@ -49,18 +48,23 @@ class TokenDetailBloc {
   ///Get functions
   ///Get list Transaction and detail Transaction
   Future<void> getTransaction({
-    required String txhId,
+    required String walletAddress,
+    required String tokenAddress,
   }) async {
-    final result = await _web3client.getHistoryDetail(txhId: txhId);
-    _transactionHistoryDetailSubject.sink.add(result);
-  }
-
-  Future<void> getHistory(String _tokenAddress) async {
-    final result = await _web3client.getTransactionHistory(
-      ofAddress: walletAddress,
-      tokenAddress: _tokenAddress,
-    );
-    totalTransactionList = result;
+    final List<DetailHistoryTransaction> listDetailTransaction = [];
+    final transactionHistory = await PrefsService.getHistoryTransaction();
+    if (transactionHistory.isNotEmpty) {
+      transactionFromJson(transactionHistory).forEach(
+        (element) {
+          if (element.walletAddress == walletAddress &&
+              element.tokenAddress == tokenAddress) {
+            listDetailTransaction.add(element);
+          }
+        },
+      );
+    }
+    totalTransactionList = listDetailTransaction;
+    currentTransactionList.clear();
     checkData();
   }
 
@@ -87,15 +91,6 @@ class TokenDetailBloc {
       _showMoreSubject.sink.add(false);
     }
     _transactionListSubject.sink.add(currentTransactionList);
-  }
-
-  ///showLoading
-  Future<void> checkShowLoading(ModelToken token) async {
-    _showLoadingSubject.sink.add(true);
-    await Future.delayed(const Duration(seconds: 1));
-    await getToken(token: token);
-    await getHistory(token.tokenAddress);
-    _showLoadingSubject.sink.add(false);
   }
 
   ///GET TOKEN DETAIL

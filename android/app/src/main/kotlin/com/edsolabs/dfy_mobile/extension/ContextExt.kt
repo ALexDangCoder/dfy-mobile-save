@@ -668,7 +668,9 @@ fun Context.signTransactionToken(
     chainId: String,
     gasPrice: String,
     gasLimit: String,
-    amount: String
+    gasFee: String,
+    amount: String,
+    symbol: String
 ) {
     val hasMap = HashMap<String, Any>()
     val walletModel =
@@ -680,7 +682,7 @@ fun Context.signTransactionToken(
                     this.nonce = ByteString.copyFrom(BigInteger(nonce).toByteArray())
                     this.chainId = ByteString.copyFrom(BigInteger(chainId).toByteArray())
                     this.gasPrice = BigInteger(
-                        gasPrice
+                        gasPrice.handleAmount(decimal = 9)
                     ).toByteString() // decimal 3600000000
                     this.gasLimit = BigInteger(
                         gasLimit
@@ -689,7 +691,7 @@ fun Context.signTransactionToken(
                     this.transaction = Ethereum.Transaction.newBuilder().apply {
                         transfer = Ethereum.Transaction.Transfer.newBuilder().apply {
                             this.amount =
-                                BigInteger(amount).toByteString()
+                                BigInteger(amount.handleAmount(decimal = 18)).toByteString()
                         }.build()
                     }.build()
                     this.privateKey =
@@ -701,7 +703,7 @@ fun Context.signTransactionToken(
                     this.nonce = ByteString.copyFrom(BigInteger(nonce).toByteArray())
                     this.chainId = ByteString.copyFrom(BigInteger(chainId).toByteArray())
                     this.gasPrice = BigInteger(
-                        gasPrice
+                        gasPrice.handleAmount(decimal = 9)
                     ).toByteString() // decimal 3600000000
                     this.gasLimit = BigInteger(
                         gasLimit
@@ -711,7 +713,7 @@ fun Context.signTransactionToken(
                         erc20Transfer = Ethereum.Transaction.ERC20Transfer.newBuilder().apply {
                             this.to = toAddress
                             this.amount =
-                                BigInteger(amount).toByteString()
+                                BigInteger(amount.handleAmount(decimal = 18)).toByteString()
                         }.build()
                     }.build()
                     this.privateKey =
@@ -728,6 +730,16 @@ fun Context.signTransactionToken(
         hasMap["isSuccess"] = false
         hasMap["signedTransaction"] = ""
     }
+    hasMap["walletAddress"] = walletAddress
+    hasMap["toAddress"] = toAddress
+    hasMap["tokenAddress"] = tokenAddress
+    hasMap["nonce"] = nonce
+    hasMap["chainId"] = chainId
+    hasMap["gasPrice"] = gasPrice
+    hasMap["gasLimit"] = gasLimit
+    hasMap["gasFee"] = gasFee
+    hasMap["amount"] = amount
+    hasMap["symbol"] = symbol
     channel?.invokeMethod("signTransactionTokenCallback", hasMap)
 }
 
@@ -740,7 +752,10 @@ fun Context.signTransactionNft(
     chainId: String,
     gasPrice: String,
     gasLimit: String,
-    tokenId: String
+    tokenId: String,
+    gasFee: String,
+    amount: String,
+    symbol: String,
 ) {
     val hasMap = HashMap<String, Any>()
     val walletModel =
@@ -776,15 +791,20 @@ fun Context.signTransactionNft(
         val value = output.encoded.toByteArray().toHexString(false)
         hasMap["isSuccess"] = true
         hasMap["signedTransaction"] = value
-        hasMap["walletAddress"] = walletAddress
-        hasMap["collectionAddress"] = tokenAddress
-        hasMap["nftId"] = tokenId
     } else {
         hasMap["isSuccess"] = false
         hasMap["signedTransaction"] = ""
-        hasMap["walletAddress"] = ""
-        hasMap["collectionAddress"] = ""
-        hasMap["nftId"] = ""
     }
+    hasMap["walletAddress"] = walletAddress
+    hasMap["toAddress"] = toAddress
+    hasMap["collectionAddress"] = tokenAddress
+    hasMap["nonce"] = nonce
+    hasMap["chainId"] = chainId
+    hasMap["gasPrice"] = gasPrice
+    hasMap["gasLimit"] = gasLimit
+    hasMap["gasFee"] = gasFee
+    hasMap["amount"] = amount
+    hasMap["symbol"] = symbol
+    hasMap["nftId"] = tokenId
     channel?.invokeMethod("signTransactionNftCallback", hasMap)
 }

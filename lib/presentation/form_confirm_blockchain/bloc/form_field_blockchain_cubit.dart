@@ -1,8 +1,11 @@
 import 'dart:math';
 
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
@@ -138,28 +141,62 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
 
   ///SEND TOKEN
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    bool isSuccess = false;
-    String signedTransaction = '';
     switch (methodCall.method) {
       case 'setDeleteNftCallback':
         break;
       case 'signTransactionTokenCallback':
-        // print(methodCall.arguments);
         emit(FormBlockchainSendTokenLoading());
-        isSuccess = await methodCall.arguments['isSuccess'];
-        signedTransaction = await methodCall.arguments['signedTransaction'];
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+        String status = '';
+        final String signedTransaction =
+            await methodCall.arguments['signedTransaction'];
+        final String gasFee = await methodCall.arguments['gasFee'];
+        final String toAddress = await methodCall.arguments['toAddress'];
+        final String nonce = await methodCall.arguments['nonce'];
+        final String walletAddress =
+            await methodCall.arguments['walletAddress'];
+        final String tokenAddress = await methodCall.arguments['tokenAddress'];
+        final String quantity = methodCall.arguments['amount'];
+        final String name = S.current.send_token;
+        final String dateTime = DateTime.now().toString();
+        final result = await Web3Utils()
+            .sendRawTransaction(transaction: signedTransaction);
+        txHashToken = result['txHash'];
         if (isSuccess) {
-          final result = await Web3Utils()
-              .sendRawTransaction(transaction: signedTransaction);
-          txHashToken = result['txHash'];
           if (result['isSuccess']) {
+            status = STATUS_TRANSACTION_SUCCESS;
             emit(FormBlockchainSendTokenSuccess());
           } else {
+            status = STATUS_TRANSACTION_FAIL;
             emit(FormBlockchainSendTokenFail());
           }
         } else {
+          status = STATUS_TRANSACTION_FAIL;
           emit(FormBlockchainSendTokenFail());
         }
+        final List<DetailHistoryTransaction> listDetailTransaction = [];
+        listDetailTransaction.add(
+          DetailHistoryTransaction(
+            quantity: quantity,
+            status: status,
+            gasFee: gasFee,
+            dateTime: dateTime,
+            txhID: txHashToken,
+            toAddress: toAddress,
+            nonce: nonce,
+            name: name,
+            walletAddress: walletAddress,
+            tokenAddress: tokenAddress,
+            type: TRANSACTION_TOKEN,
+          ),
+        );
+        final transactionHistory = await PrefsService.getHistoryTransaction();
+        if (transactionHistory.isNotEmpty) {
+          listDetailTransaction.addAll(transactionFromJson(transactionHistory));
+        }
+        await PrefsService.saveHistoryTransaction(
+          transactionToJson(listDetailTransaction),
+        );
         break;
       case 'signTransactionNftCallback':
         final bool isSuccess = await methodCall.arguments['isSuccess'];
@@ -170,23 +207,56 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         final String collectionAddress =
             await methodCall.arguments['collectionAddress'];
         final String nftId = await methodCall.arguments['nftId'];
+        final String quantity = methodCall.arguments['amount'];
+        final String gasFee = await methodCall.arguments['gasFee'];
+        final String toAddress = await methodCall.arguments['toAddress'];
+        final String nonce = await methodCall.arguments['nonce'];
+        final String name = S.current.send_nft;
+        final String dateTime = DateTime.now().toString();
+        String status = '';
+        final result = await Web3Utils()
+            .sendRawTransaction(transaction: signedTransaction);
+        txHashNft = result['txHash'];
         if (isSuccess) {
-          final result = await Web3Utils()
-              .sendRawTransaction(transaction: signedTransaction);
-          txHashNft = result['txHash'];
           if (result['isSuccess']) {
             deleteNft(
               walletAddress: walletAddress,
               collectionAddress: collectionAddress,
               nftId: nftId,
             );
+            status = STATUS_TRANSACTION_SUCCESS;
             emit(FormBlockchainSendNftSuccess());
           } else {
+            status = STATUS_TRANSACTION_FAIL;
             emit(FormBlockchainSendNftFail());
           }
         } else {
+          status = STATUS_TRANSACTION_FAIL;
           emit(FormBlockchainSendNftFail());
         }
+        final List<DetailHistoryTransaction> listDetailTransaction = [];
+        listDetailTransaction.add(
+          DetailHistoryTransaction(
+            quantity: quantity,
+            status: status,
+            gasFee: gasFee,
+            dateTime: dateTime,
+            txhID: txHashToken,
+            toAddress: toAddress,
+            nonce: nonce,
+            name: name,
+            walletAddress: walletAddress,
+            tokenAddress: collectionAddress,
+            type: TRANSACTION_TOKEN,
+          ),
+        );
+        final transactionHistory = await PrefsService.getHistoryTransaction();
+        if (transactionHistory.isNotEmpty) {
+          listDetailTransaction.addAll(transactionFromJson(transactionHistory));
+        }
+        await PrefsService.saveHistoryTransaction(
+          transactionToJson(listDetailTransaction),
+        );
         break;
       default:
         break;
@@ -207,10 +277,11 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     required String chainId,
     required String gasPrice,
     required String gasLimit,
+    required String gasFee,
     required String amount,
+    required String symbol,
   }) {
     try {
-      final String newAmount = handleAmount(amount);
       final data = {
         'walletAddress': walletAddress,
         'tokenAddress': tokenAddress,
@@ -219,7 +290,9 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         'chainId': chainId,
         'gasPrice': gasPrice,
         'gasLimit': gasLimit,
-        'amount': newAmount,
+        'gasFee': gasFee,
+        'amount': amount,
+        'symbol': symbol,
       };
       trustWalletChannel.invokeMethod('signTransactionToken', data);
     } on PlatformException {
@@ -237,6 +310,9 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     required String gasPrice,
     required String gasLimit,
     required String nftID,
+    required String gasFee,
+    required String amount,
+    required String symbol,
   }) {
     try {
       final data = {
@@ -248,6 +324,9 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         'gasPrice': gasPrice,
         'gasLimit': gasLimit,
         'tokenId': nftID,
+        'gasFee': gasFee,
+        'amount': amount,
+        'symbol': symbol,
       };
       trustWalletChannel.invokeMethod('signTransactionNft', data);
     } on PlatformException {
@@ -269,31 +348,6 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       trustWalletChannel.invokeMethod('deleteNft', data);
     } on PlatformException {
       //todo
-    }
-  }
-
-  String handleAmount(String amount) {
-    final parts = amount.split('.');
-    if (amount.isEmpty) {
-      return '0';
-    } else {
-      if (parts.length == 1) {
-        return '${amount}000000000000000000';
-      } else if (parts.length > 1) {
-        if (parts[1].length >= 18) {
-          return parts[0] + parts[1].substring(0, 18);
-        } else {
-          final String valueAmount = parts[0];
-          final String valueDecimal = parts[1];
-          final buffer = StringBuffer();
-          for (var i = valueDecimal.length; i < 18; i++) {
-            buffer.write('0');
-          }
-          return valueAmount + valueDecimal + buffer.toString();
-        }
-      } else {
-        return '0';
-      }
     }
   }
 

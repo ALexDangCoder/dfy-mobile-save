@@ -10,7 +10,7 @@ import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
-import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
@@ -24,7 +24,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
+import "package:meta/meta.dart";
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -236,7 +236,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> idSubject = BehaviorSubject();
   BehaviorSubject<bool> btnSubject = BehaviorSubject.seeded(false);
   final regexAddress = RegExp(r'^0x[a-fA-F0-9]{40}$');
-  List<HistoryNFT> listHistory = [];
+  List<DetailHistoryTransaction> listHistory = [];
   double? price = 0.0;
 
   bool _flagNftAddress = false;
@@ -286,10 +286,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         btnSubject.sink.add(true);
       }
     }
-  }
-
-  Future<void> getTransactionNFTHistory() async {
-    listHistory = await client.getNFTHistory();
   }
 
   String addressWalletCore = '';
@@ -973,6 +969,20 @@ class WalletCubit extends BaseCubit<WalletState> {
     } else {
       isWalletName.sink.add(false);
       messStreamEnterWalletName.sink.add(S.current.name_not_null);
+    }
+  }
+  /// transaction
+  final List<DetailHistoryTransaction> listDetailTransaction = [];
+  Future<void> getTransactionHistory(
+      String walletAddress, String contract) async {
+    final transactionHistory = await PrefsService.getHistoryTransaction();
+    if (transactionHistory.isNotEmpty) {
+      transactionFromJson(transactionHistory).forEach((element) {
+        if (element.walletAddress == walletAddress &&
+            contract == element.tokenAddress) {
+          listDetailTransaction.add(element);
+        }
+      });
     }
   }
 }

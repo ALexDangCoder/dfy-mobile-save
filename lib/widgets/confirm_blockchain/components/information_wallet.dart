@@ -23,6 +23,7 @@ class InformationWallet extends StatelessWidget {
   final String fromAddress;
   final double amount;
   final String nameToken;
+
   // final String imgWallet;
   final dynamic cubit;
 
@@ -66,10 +67,14 @@ class InformationWallet extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(top: 14.h),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
+                          flex: 4,
                           child: Text(
-                            nameWallet,
+                            nameWallet.length > 15
+                                ? nameWallet.substring(0, 10) + '...'
+                                : nameWallet,
                             style: const TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 16,
@@ -78,7 +83,7 @@ class InformationWallet extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          // flex: 2,
+                          flex: 7,
                           child: Text(
                             fromAddress,
                             style: const TextStyle(

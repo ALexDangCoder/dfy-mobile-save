@@ -32,7 +32,6 @@ class FormFieldBlockChain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(numHandle);
     return SizedBox(
       height: 64.h,
       // padding: EdgeInsets.only(left: 16.w),
@@ -74,7 +73,8 @@ class FormFieldBlockChain extends StatelessWidget {
                 // textAlignVertical: TextAlignVertical.center,
                 textAlign: TextAlign.right,
                 keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true, signed: true,),
+                  decimal: true,
+                ),
                 controller: txtController,
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor(),
