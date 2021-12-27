@@ -212,7 +212,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               //Pop confirm blockchain
               Navigator.pop(context);
               //Pop confirm SendToken
-              // txhIDToken = cubitFormCustomizeGasFee.txHashToken;
+              //final txhIDToken = cubitFormCustomizeGasFee.txHashToken;
               Navigator.pop(context, true);
             });
           } else {
@@ -230,6 +230,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               //Pop confirm blockchain
               Navigator.pop(context);
               //Pop confirm SendToken
+              //final txhIDToken = cubitFormCustomizeGasFee.txHashToken;
               Navigator.pop(context, true);
             });
           }
