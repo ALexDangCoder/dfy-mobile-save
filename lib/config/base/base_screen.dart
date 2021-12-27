@@ -34,7 +34,6 @@ abstract class BaseState<T extends BaseScreen> extends State<T> {
     DialogUtils.showAlert(
       content: S.current.unauthorized,
       onConfirm: () {
-        PrefsService.clearAuthData();
         //todo
         // openScreenAndRemoveUtil(context, AppRouter.);
       },
