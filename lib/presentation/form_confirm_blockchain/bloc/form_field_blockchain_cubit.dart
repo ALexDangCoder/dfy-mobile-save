@@ -241,7 +241,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
             status: status,
             gasFee: gasFee,
             dateTime: dateTime,
-            txhID: txHashToken,
+            txhID: txHashNft,
             toAddress: toAddress,
             nonce: nonce,
             name: name,
