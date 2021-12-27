@@ -222,5 +222,6 @@
   "change_pword_success": "Đổi mật khẩu thành công",
   "undefine_err_nft": "Đã xảy ra sự cố",
   "duplicated_import_nft": "Tài khoản bị trùng",
-  "send_token": "Gửi token"
+  "send_token": "Gửi Token",
+  "send_nft": "Gửi NFT"
 }
