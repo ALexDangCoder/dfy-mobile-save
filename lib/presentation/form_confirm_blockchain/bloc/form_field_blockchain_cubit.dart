@@ -133,6 +133,9 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     }
   }
 
+  String txHashNft = '';
+  String txHashToken = '';
+
   ///SEND TOKEN
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     bool isSuccess = false;
@@ -148,6 +151,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         if (isSuccess) {
           final result = await Web3Utils()
               .sendRawTransaction(transaction: signedTransaction);
+          txHashToken = result['txHash'];
           if (result['isSuccess']) {
             emit(FormBlockchainSendTokenSuccess());
           } else {
@@ -169,11 +173,13 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         if (isSuccess) {
           final result = await Web3Utils()
               .sendRawTransaction(transaction: signedTransaction);
+          txHashNft = result['txHash'];
           if (result['isSuccess']) {
             deleteNft(
-                walletAddress: walletAddress,
-                collectionAddress: collectionAddress,
-                nftId: nftId);
+              walletAddress: walletAddress,
+              collectionAddress: collectionAddress,
+              nftId: nftId,
+            );
             emit(FormBlockchainSendNftSuccess());
           } else {
             emit(FormBlockchainSendNftFail());
