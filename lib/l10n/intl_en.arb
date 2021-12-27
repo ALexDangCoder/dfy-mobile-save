@@ -223,5 +223,6 @@
   "change_pword_success": "Password changed",
   "undefine_err_nft": "Something went wrong",
   "duplicated_import_nft": "Your Account is duplicated",
-  "send_token": "Send token"
+  "send_token": "Send Token",
+  "send_nft": "Send NFT"
 }
