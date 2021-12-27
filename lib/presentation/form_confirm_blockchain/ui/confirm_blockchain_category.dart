@@ -107,7 +107,6 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
       amount: balanceWallet,
       nameToken: widget.nameTokenWallet,
       // imgWallet: widget.imageWallet,
-
     );
     trustWalletChannel.setMethodCallHandler(
         cubitFormCustomizeGasFee.nativeMethodCallBackTrustWallet);
@@ -352,10 +351,9 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                   );
                                   cubitFormCustomizeGasFee.signTransactionToken(
                                     toAddress: widget.addressTo,
-                                    gasPrice:
-                                        (widget.gasPriceFirstFetch * 1000000000)
-                                            .toInt()
-                                            .toString(),
+                                    gasPrice: widget.gasPriceFirstFetch
+                                        .toInt()
+                                        .toString(),
                                     nonce: nonce.toString(),
                                     gasLimit: double.parse(_txtGasLimit.text)
                                         .toInt()
@@ -365,6 +363,10 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                         widget.modelToken!.tokenAddress,
                                     walletAddress: widget.addressFrom,
                                     chainId: '97',
+                                    symbol:
+                                        widget.modelToken?.nameShortToken ?? '',
+                                    gasFee:
+                                        '${double.parse(_txtGasLimit.text) / 100000000} ${widget.nameTokenWallet}',
                                   );
                                   break;
                                 case TYPE_CONFIRM.SEND_NFT:

@@ -5,6 +5,39 @@ import com.google.protobuf.ByteString
 import java.math.BigInteger
 import kotlin.experimental.and
 
+fun String.handleAmount(decimal: Int): String {
+    val parts = this.split(".")
+    if (this.isEmpty()) {
+        return "0"
+    } else {
+        if (parts.size == 1) {
+            val buffer = StringBuffer()
+            var size = 0
+            while (size < decimal) {
+                buffer.append("0")
+                size++
+            }
+            return this + buffer.toString()
+        } else if (parts.size > 1) {
+            if (parts[1].length >= decimal) {
+                return parts[0] + parts[1].substring(0, decimal)
+            } else {
+                val valueAmount = parts[0]
+                val valueDecimal = parts[1]
+                val buffer = StringBuffer()
+                var size = valueDecimal.length
+                while (size < decimal) {
+                    buffer.append("0")
+                    size++
+                }
+                return valueAmount + valueDecimal + buffer.toString()
+            }
+        } else {
+            return "0"
+        }
+    }
+}
+
 fun String.hexStringToByteArray(): ByteArray {
     val HEX_CHARS = "0123456789ABCDEF"
     val result = ByteArray(length / 2)
