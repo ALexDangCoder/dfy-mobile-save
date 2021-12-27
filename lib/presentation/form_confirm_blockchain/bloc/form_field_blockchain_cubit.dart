@@ -199,6 +199,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         );
         break;
       case 'signTransactionNftCallback':
+        emit(FormBlockchainSendNftLoading());
         final bool isSuccess = await methodCall.arguments['isSuccess'];
         final String signedTransaction =
             await methodCall.arguments['signedTransaction'];
