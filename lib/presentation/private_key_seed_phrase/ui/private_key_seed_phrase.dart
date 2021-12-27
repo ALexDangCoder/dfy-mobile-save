@@ -4,6 +4,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/dialog_remove/choose_acc.dart';
 import 'package:Dfy/widgets/form/form%20_text_privatekey.dart';
@@ -86,9 +87,9 @@ class _BodyState extends State<_Body> {
                           },
                           child: FromTextWalletAddress(
                             titleCopy: snapshotModel.data?.walletAddress ?? '',
-                            title: widget.bloc.formatText(
-                              snapshotModel.data?.walletAddress ?? '',
-                            ),
+                            title: snapshotModel.data?.walletAddress
+                                    ?.formatAddressWalletConfirm() ??
+                                '',
                             urlSuffixIcon: ImageAssets.ic_line_down,
                             urlPrefixIcon: ImageAssets.ic_address,
                           ),
@@ -98,9 +99,9 @@ class _BodyState extends State<_Body> {
                         ),
                         FromTextPrivateKey(
                           titleCopy: snapshotModel.data?.privateKey ?? '',
-                          title: widget.bloc.formatText(
-                            snapshotModel.data?.privateKey ?? '',
-                          ),
+                          title:
+                            snapshotModel.data?.privateKey?.formatAddressWalletConfirm() ??
+                                '',
                           urlSuffixIcon: ImageAssets.ic_copy,
                           urlPrefixIcon: ImageAssets.ic_key24,
                         ),
