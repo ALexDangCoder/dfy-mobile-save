@@ -150,6 +150,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
         listener: (context, state) {
           if (state is FormBlockchainSendNftSuccess) {
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -167,6 +168,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
             );
           } else if (state is FormBlockchainSendNftLoading) {
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -175,6 +177,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
             );
           } else if (state is FormBlockchainSendNftFail) {
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -190,6 +193,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 ));
           } else if (state is FormBlockchainSendTokenLoading) {
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -200,6 +204,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
             //Pop loading dialog
             Navigator.pop(context);
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -219,6 +224,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
             //Pop loading dialog
             Navigator.pop(context);
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -344,7 +350,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                       stream: cubitFormCustomizeGasFee.isEnableBtnStream,
                       builder: (context, snapshot) {
                         return GestureDetector(
-                          onDoubleTap: () async {
+                          onTap: () async {
                             if (snapshot.data ??
                                 (widget.gasFeeFirstFetch < balanceWallet)) {
                               switch (widget.typeConfirm) {
