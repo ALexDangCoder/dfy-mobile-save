@@ -50,8 +50,8 @@ extension AppDelegate {
             }
         }
         if call.method == "signTransactionToken" {
-            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let toAddress = arguments["toAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let amount = arguments["amount"] as? String {
-                result(signTransactionToken(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, amount: amount))
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let toAddress = arguments["toAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let amount = arguments["amount"] as? String, let gasFee = arguments["gasFee"] as? String, let symbol = arguments["symbol"] as? String {
+                result(signTransactionToken(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, amount: amount, gasFee: gasFee, symbol: symbol))
             }
         }
         if call.method == "getTokens" {
@@ -164,8 +164,8 @@ extension AppDelegate {
 //            }
 //        }
         if call.method == "signTransactionNft" {
-            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let toAddress = arguments["toAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let tokenId = arguments["tokenId"] as? String {
-                result(signTransactionNft(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, tokenId: tokenId))
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let toAddress = arguments["toAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let tokenId = arguments["tokenId"] as? String, let gasFee = arguments["gasFee"] as? String, let symbol = arguments["symbol"] as? String, let amount = arguments["amount"] as? String {
+                result(signTransactionNft(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, tokenId: tokenId, gasFee: gasFee, amount: amount, symbol: symbol))
             }
         }
         
@@ -654,7 +654,7 @@ extension AppDelegate {
                                       chainId: String,
                                       gasPrice: String,
                                       gasLimit: String,
-                                      amount: String) -> [String: Any] {
+                                      amount: String, gasFee: String, symbol: String) -> [String: Any] {
         var param = [String: Any]()
         let walletModel = SharedPreference.shared.getListWallet().first(where: {$0.walletAddress == walletAddress})
         if let walletModel = walletModel, !walletModel.privateKey.isEmpty {
@@ -704,6 +704,16 @@ extension AppDelegate {
             param["isSuccess"] = false
             param["signedTransaction"] = ""
         }
+        param["walletAddress"] = walletAddress
+        param["toAddress"] = toAddress
+        param["tokenAddress"] = tokenAddress
+        param["nonce"] = nonce
+        param["chainId"] = chainId
+        param["gasPrice"] = gasPrice
+        param["gasLimit"] = gasLimit
+        param["gasFee"] = gasFee
+        param["amount"] = amount
+        param["symbol"] = symbol
         chatChanel?.invokeMethod("signTransactionTokenCallback", arguments: param)
         return param
     }
@@ -715,7 +725,7 @@ extension AppDelegate {
                                     chainId: String,
                                     gasPrice: String,
                                     gasLimit: String,
-                                    tokenId: String) -> [String: Any] {
+                                    tokenId: String, gasFee: String, amount: String, symbol: String) -> [String: Any] {
         var param = [String: Any]()
         let walletModel = SharedPreference.shared.getListWallet().first(where: {$0.walletAddress == walletAddress})
         if let walletModel = walletModel, !walletModel.privateKey.isEmpty {
@@ -749,6 +759,17 @@ extension AppDelegate {
             param["collectionAddress"] = ""
             param["nftId"] = ""
         }
+        param["walletAddress"] = walletAddress
+        param["toAddress"] = toAddress
+        param["collectionAddress"] = tokenAddress
+        param["nonce"] = nonce
+        param["chainId"] = chainId
+        param["gasPrice"] = gasPrice
+        param["gasLimit"] = gasLimit
+        param["gasFee"] = gasFee
+        param["amount"] = amount
+        param["symbol"] = symbol
+        param["nftId"] = tokenId
         chatChanel?.invokeMethod("signTransactionNftCallback", arguments: param)
         return param
     }
