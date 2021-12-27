@@ -805,5 +805,6 @@ fun Context.signTransactionNft(
     hasMap["gasFee"] = gasFee
     hasMap["amount"] = amount
     hasMap["symbol"] = symbol
+    hasMap["nftId"] = tokenId
     channel?.invokeMethod("signTransactionNftCallback", hasMap)
 }
