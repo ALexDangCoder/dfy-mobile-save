@@ -101,7 +101,6 @@ Container formSetupPassWord({
                 cubit.currentNewPw = value;
                 cubit.showTxtWarningNewPW(value, cfPassword: cubit.confirmPw);
                 cubit.checkHaveValueNewPW(value);
-                cubit.currentCfPW.sink.add(value);
                 cubit.showTxtWarningConfirmPW(cubit.confirmPw,
                     newPassword: cubit.currentNewPw);
               },
@@ -171,10 +170,10 @@ Container formSetupPassWord({
                 cubit.checkHaveValueConfirmPW(value);
                 cubit.showTxtWarningConfirmPW(
                   value,
-                  newPassword: cubit.currentCfPW.value,
+                  newPassword: cubit.currentNewPw,
                 );
-                cubit.showTxtWarningNewPW(cubit.currentNewPw,
-                    cfPassword: cubit.confirmPw,);
+                // cubit.showTxtWarningNewPW(cubit.currentNewPw,
+                //     cfPassword: cubit.confirmPw,);
               },
               obscureText: snapshot.data ?? true,
               style: textNormal(
