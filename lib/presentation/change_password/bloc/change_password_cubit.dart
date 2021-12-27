@@ -233,12 +233,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   }
 
   void showTxtWarningConfirmPW(String value, {required String newPassword}) {
-    if ((value.isNotEmpty && value.length < 8) ||
-        (value.isNotEmpty && value.length > 15)) {
-      matchPWSink.add(true);
-      txtWarnCfPWSink.add(S.current.warn_pw_8_15);
-      isEnableButtonSink.add(false);
-    } else if (value.isEmpty) {
+    if (value.isEmpty) {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_pw_required);
       isEnableButtonSink.add(false);
