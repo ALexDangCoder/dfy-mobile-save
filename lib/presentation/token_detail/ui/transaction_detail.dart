@@ -30,7 +30,6 @@ class TransactionHistoryDetailScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.only(
                 top: 24.h,
-                bottom: 16.h,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,7 +74,7 @@ class TransactionHistoryDetailScreen extends StatelessWidget {
                   ),
                   textRow(
                     name: S.current.from,
-                    value: transaction.walletAddress?.formatAddress ?? '',
+                    value: transaction.walletAddress?.formatAddress() ?? '',
                   ),
                   textRow(
                     name: S.current.to,
@@ -122,18 +121,21 @@ class TransactionHistoryDetailScreen extends StatelessWidget {
           name: S.current.status,
           value: S.current.transaction_success,
           valueColor: AppTheme.getInstance().successTransactionColors(),
+          needSize: false,
         );
       case '0':
         return textRow(
           name: S.current.status,
           value: S.current.transaction_fail,
           valueColor: AppTheme.getInstance().failTransactionColors(),
+          needSize: false,
         );
       default:
         return textRow(
           name: S.current.status,
           value: S.current.transaction_pending,
           valueColor: AppTheme.getInstance().pendingTransactionColors(),
+          needSize: false,
         );
     }
   }
@@ -143,20 +145,24 @@ class TransactionHistoryDetailScreen extends StatelessWidget {
     required String value,
     Color? valueColor,
     bool showCopy = false,
+    bool needSize = true,
   }) {
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       child: Row(
         children: [
-          Text(
-            '$name : ',
-            style: tokenDetailAmount(
-              color: AppTheme.getInstance().currencyDetailTokenColor(),
-              fontSize: 14,
+          SizedBox(
+            width: needSize ? 70.w : null,
+            child: Text(
+              '$name : ',
+              style: tokenDetailAmount(
+                color: AppTheme.getInstance().currencyDetailTokenColor(),
+                fontSize: 14,
+              ),
             ),
           ),
           Text(
-            showCopy ? value.formatAddress : value,
+            showCopy ? value.formatAddress() : value,
             style: tokenDetailAmount(
               color: valueColor ?? AppTheme.getInstance().textThemeColor(),
               fontSize: 14,
