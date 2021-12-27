@@ -25,6 +25,14 @@ extension FormatAddress on String {
   }
 }
 
+extension FormatAddressConfirm on String {
+  String formatAddressWalletConfirm() {
+    final String result = '${substring(0, 10)}...${substring(
+      length - 9, length,)}';
+    return result;
+  }
+}
+
 
 extension StringParse on String {
   String parseHtml() {
