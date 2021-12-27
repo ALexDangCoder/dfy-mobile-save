@@ -39,11 +39,11 @@ String customCurrency(
 }
 
 extension FormatString on String {
-  String get formatAddress {
+  String formatAddress({int index = 12}) {
     String a = '';
     try {
-      a = '${substring(0, 12)}...${substring(
-        length - 12,
+      a = '${substring(0, index)}...${substring(
+        length - index,
         length,
       )}';
     } catch (e) {

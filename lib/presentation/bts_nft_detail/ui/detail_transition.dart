@@ -89,7 +89,7 @@ class TransactionDetail extends StatelessWidget {
                   ),
                   textRow(
                     name: S.current.from,
-                    value: txhID?.formatAddress ?? '',
+                    value: txhID?.formatAddress() ?? '',
                   ),
                   textRow(
                     name: S.current.to,
@@ -145,7 +145,7 @@ class TransactionDetail extends StatelessWidget {
             ),
           ),
           Text(
-            showCopy ? value.formatAddress : value,
+            showCopy ? value.formatAddress() : value,
             style: tokenDetailAmount(
               color: valueColor ?? AppTheme.getInstance().textThemeColor(),
               fontSize: 16,
