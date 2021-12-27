@@ -485,14 +485,21 @@ class Web3Utils {
   //       final amount = await token
   // }
 
-  Future<bool> sendRawTransaction({required String transaction}) async {
+  Future<Map<String, dynamic>> sendRawTransaction(
+      {required String transaction}) async {
     final List<int> listInt = hex.decode(transaction);
     final Uint8List signedTransaction = Uint8List.fromList(listInt);
     try {
-      await client.sendRawTransaction(signedTransaction);
-      return true;
+      final raw = await client.sendRawTransaction(signedTransaction);
+      return {
+        'isSuccess': true,
+        'txHash': raw,
+      };
     } catch (error) {
-      return false;
+      return {
+        'isSuccess': true,
+        'txHash': '',
+      };
     }
   }
 

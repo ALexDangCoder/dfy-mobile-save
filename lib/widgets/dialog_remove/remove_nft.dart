@@ -138,7 +138,10 @@ class RemoveNft extends StatelessWidget {
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () {
-                                        cubit.listNftInfo.removeAt(index);
+                                        cubit
+                                            .listCollectionShow[indexCollection]
+                                            .listNft!
+                                            .removeAt(index);
                                         cubit.deleteNft(
                                           walletAddress: walletAddress,
                                           collectionAddress: collectionAddress,
@@ -146,11 +149,14 @@ class RemoveNft extends StatelessWidget {
                                         );
                                         cubit.listNFTStream.sink
                                             .add(cubit.listNFTStream.value);
-                                        if (cubit.listNftInfo.isEmpty) {
+                                        if (cubit
+                                            .listCollectionShow[indexCollection]
+                                            .listNft!
+                                            .isEmpty) {
                                           cubit.listNftFromWalletCore
                                               .removeAt(indexCollection);
                                           cubit.listNFTStream
-                                              .add(cubit.listNftFromWalletCore);
+                                              .add(cubit.listCollectionShow);
                                         }
                                         Navigator.pop(context);
                                       },
