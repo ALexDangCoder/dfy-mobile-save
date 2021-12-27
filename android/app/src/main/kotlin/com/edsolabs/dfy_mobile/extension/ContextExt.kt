@@ -726,30 +726,20 @@ fun Context.signTransactionToken(
         val value = output.encoded.toByteArray().toHexString(false)
         hasMap["isSuccess"] = true
         hasMap["signedTransaction"] = value
-        hasMap["walletAddress"] = walletAddress
-        hasMap["toAddress"] = toAddress
-        hasMap["tokenAddress"] = tokenAddress
-        hasMap["nonce"] = nonce
-        hasMap["chainId"] = chainId
-        hasMap["gasPrice"] = gasPrice
-        hasMap["gasLimit"] = gasLimit
-        hasMap["gasFee"] = gasFee
-        hasMap["amount"] = amount
-        hasMap["symbol"] = symbol
     } else {
         hasMap["isSuccess"] = false
         hasMap["signedTransaction"] = ""
-        hasMap["walletAddress"] = walletAddress
-        hasMap["toAddress"] = toAddress
-        hasMap["tokenAddress"] = tokenAddress
-        hasMap["nonce"] = nonce
-        hasMap["chainId"] = chainId
-        hasMap["gasPrice"] = gasPrice
-        hasMap["gasLimit"] = gasLimit
-        hasMap["gasFee"] = gasFee
-        hasMap["amount"] = amount
-        hasMap["symbol"] = symbol
     }
+    hasMap["walletAddress"] = walletAddress
+    hasMap["toAddress"] = toAddress
+    hasMap["tokenAddress"] = tokenAddress
+    hasMap["nonce"] = nonce
+    hasMap["chainId"] = chainId
+    hasMap["gasPrice"] = gasPrice
+    hasMap["gasLimit"] = gasLimit
+    hasMap["gasFee"] = gasFee
+    hasMap["amount"] = amount
+    hasMap["symbol"] = symbol
     channel?.invokeMethod("signTransactionTokenCallback", hasMap)
 }
 
@@ -762,7 +752,10 @@ fun Context.signTransactionNft(
     chainId: String,
     gasPrice: String,
     gasLimit: String,
-    tokenId: String
+    tokenId: String,
+    gasFee: String,
+    amount: String,
+    symbol: String,
 ) {
     val hasMap = HashMap<String, Any>()
     val walletModel =
@@ -798,15 +791,19 @@ fun Context.signTransactionNft(
         val value = output.encoded.toByteArray().toHexString(false)
         hasMap["isSuccess"] = true
         hasMap["signedTransaction"] = value
-        hasMap["walletAddress"] = walletAddress
-        hasMap["collectionAddress"] = tokenAddress
-        hasMap["nftId"] = tokenId
     } else {
         hasMap["isSuccess"] = false
         hasMap["signedTransaction"] = ""
-        hasMap["walletAddress"] = ""
-        hasMap["collectionAddress"] = ""
-        hasMap["nftId"] = ""
     }
+    hasMap["walletAddress"] = walletAddress
+    hasMap["toAddress"] = toAddress
+    hasMap["collectionAddress"] = tokenAddress
+    hasMap["nonce"] = nonce
+    hasMap["chainId"] = chainId
+    hasMap["gasPrice"] = gasPrice
+    hasMap["gasLimit"] = gasLimit
+    hasMap["gasFee"] = gasFee
+    hasMap["amount"] = amount
+    hasMap["symbol"] = symbol
     channel?.invokeMethod("signTransactionNftCallback", hasMap)
 }

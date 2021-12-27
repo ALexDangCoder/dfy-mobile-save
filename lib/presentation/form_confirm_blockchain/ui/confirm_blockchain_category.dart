@@ -212,7 +212,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               //Pop confirm blockchain
               Navigator.pop(context);
               //Pop confirm SendToken
-              // txhIDToken = cubitFormCustomizeGasFee.txHashToken;
+              //final txhIDToken = cubitFormCustomizeGasFee.txHashToken;
               Navigator.pop(context, true);
             });
           } else {
@@ -230,6 +230,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               //Pop confirm blockchain
               Navigator.pop(context);
               //Pop confirm SendToken
+              //final txhIDToken = cubitFormCustomizeGasFee.txHashToken;
               Navigator.pop(context, true);
             });
           }
@@ -386,12 +387,17 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                     gasLimit: double.parse(_txtGasLimit.text)
                                         .toInt()
                                         .toString(),
-                                    gasPrice:
-                                        (widget.gasPriceFirstFetch * 1000000000)
-                                            .toInt()
-                                            .toString(),
+                                    gasPrice: widget.gasPriceFirstFetch
+                                        .toInt()
+                                        .toString(),
                                     nftID: widget.nftInfo?.id ?? 'id',
                                     chainId: '97',
+                                    gasFee:
+                                        '${double.parse(_txtGasLimit.text) / 100000000} ${widget.nameTokenWallet}',
+                                    //todo hardcode amount 1
+                                    amount: widget.quantity.toString(),
+                                    symbol:
+                                        widget.nftInfo?.collectionSymbol ?? '',
                                   );
                                   break;
                                 case TYPE_CONFIRM.SEND_OFFER:

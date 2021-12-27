@@ -1,8 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -13,133 +12,118 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TransactionHistoryDetailScreen extends StatelessWidget {
-  final TokenDetailBloc bloc;
-  final String status;
-  final String thxID;
+  final DetailHistoryTransaction transaction;
 
   const TransactionHistoryDetailScreen({
     Key? key,
-    required this.bloc,
-    required this.thxID,
-    required this.status,
+    required this.transaction,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bloc.getTransaction(txhId: 'thxID');
-    return StreamBuilder<TransactionHistoryDetail>(
-      stream: bloc.transactionHistoryStream,
-      initialData: TransactionHistoryDetail.init(),
-      builder: (context, snapshot) {
-        final transaction = snapshot.data ?? TransactionHistoryDetail.init();
-        return BaseBottomSheet(
-          title: S.current.detail_transaction,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.h),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(
-                    top: 24.h,
-                    bottom: 16.h,
-                  ),
-                  child: Column(
+    return BaseBottomSheet(
+      title: S.current.detail_transaction,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.h),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                top: 24.h,
+                bottom: 16.h,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          textRow(
-                            name: S.current.amount,
-                            value: transaction.amount.toString(),
-                          ),
-                          transactionStatsWidget(status),
-                        ],
-                      ),
                       textRow(
-                        name: S.current.gas_fee,
-                        value: customCurrency(
-                          amount: transaction.gasFee,
-                          digit: 8,
-                          type: 'BNB',
-                        ),
+                        name: S.current.amount,
+                        value: transaction.quantity ?? '0',
                       ),
-                      textRow(
-                        name: S.current.time,
-                        value: DateTime.parse(transaction.time ?? '')
-                            .stringFromDateTime,
-                      ),
+                      transactionStatsWidget(transaction.status ?? ''),
                     ],
                   ),
-                ),
-                Divider(
-                  color: AppTheme.getInstance().divideColor(),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                    top: 24.h,
-                    bottom: 16.h,
+                  textRow(
+                    name: S.current.gas_fee,
+                    value: transaction.gasFee ?? '',
                   ),
-                  child: Column(
-                    children: [
-                      textRow(
-                        name: S.current.txh_id,
-                        value: transaction.txhId ?? '',
-                        showCopy: true,
-                      ),
-                      textRow(
-                        name: S.current.from,
-                        value: transaction.from?.formatAddress ?? '',
-                      ),
-                      textRow(
-                        name: S.current.to,
-                        value: transaction.from ?? '',
-                        showCopy: true,
-                      ),
-                    ],
+                  textRow(
+                    name: S.current.time,
+                    value: DateTime.parse(
+                      transaction.dateTime ?? DateTime.now().toString(),
+                    ).stringFromDateTime,
                   ),
-                ),
-                Divider(
-                  color: AppTheme.getInstance().divideColor(),
-                ),
-                Container(
-                  padding: EdgeInsets.only(top: 16.h, bottom: 36.h),
-                  child: textRow(
-                    name: S.current.nonce,
-                    value: '#${transaction.nonce}',
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    final String url =
-                        'https://bscscan.com/tx/${transaction.txhId}';
-                    await launch(url);
-                  },
-                  child: Text(
-                    S.current.view_on_bscscan,
-                    style: tokenDetailAmount(
-                      fontSize: 16,
-                      color: AppTheme.getInstance().blueColor(),
-                    ),
-                  ),
-                )
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },
+            Divider(
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                top: 24.h,
+                bottom: 16.h,
+              ),
+              child: Column(
+                children: [
+                  textRow(
+                    name: S.current.txh_id,
+                    value: transaction.txhID ?? '',
+                    showCopy: true,
+                  ),
+                  textRow(
+                    name: S.current.from,
+                    value: transaction.walletAddress?.formatAddress ?? '',
+                  ),
+                  textRow(
+                    name: S.current.to,
+                    value: transaction.toAddress ?? '',
+                    showCopy: true,
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 16.h, bottom: 36.h),
+              child: textRow(
+                name: S.current.nonce,
+                value: '#${transaction.nonce}',
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                final String url =
+                    'https://bscscan.com/tx/${transaction.txhID ?? ''}';
+                await launch(url);
+              },
+              child: Text(
+                S.current.view_on_bscscan,
+                style: tokenDetailAmount(
+                  fontSize: 16,
+                  color: AppTheme.getInstance().blueColor(),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
   Widget transactionStatsWidget(String status) {
     switch (status) {
-      case 'success':
+      case '1':
         return textRow(
           name: S.current.status,
           value: S.current.transaction_success,
           valueColor: AppTheme.getInstance().successTransactionColors(),
         );
-      case 'fail':
+      case '0':
         return textRow(
           name: S.current.status,
           value: S.current.transaction_fail,
