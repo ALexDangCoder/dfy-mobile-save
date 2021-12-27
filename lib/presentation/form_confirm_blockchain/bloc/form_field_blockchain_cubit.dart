@@ -156,8 +156,8 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         final String walletAddress =
             await methodCall.arguments['walletAddress'];
         final String tokenAddress = await methodCall.arguments['tokenAddress'];
+        final String quantity = methodCall.arguments['amount'];
         final String name = S.current.send_token;
-        //todo format date time
         final String dateTime = DateTime.now().toString();
         final result = await Web3Utils()
             .sendRawTransaction(transaction: signedTransaction);
@@ -174,7 +174,6 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
           status = STATUS_TRANSACTION_FAIL;
           emit(FormBlockchainSendTokenFail());
         }
-        final String quantity = methodCall.arguments['amount'];
         final List<DetailHistoryTransaction> listDetailTransaction = [];
         listDetailTransaction.add(
           DetailHistoryTransaction(
@@ -208,23 +207,56 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         final String collectionAddress =
             await methodCall.arguments['collectionAddress'];
         final String nftId = await methodCall.arguments['nftId'];
+        final String quantity = methodCall.arguments['amount'];
+        final String gasFee = await methodCall.arguments['gasFee'];
+        final String toAddress = await methodCall.arguments['toAddress'];
+        final String nonce = await methodCall.arguments['nonce'];
+        final String name = S.current.send_nft;
+        final String dateTime = DateTime.now().toString();
+        String status = '';
+        final result = await Web3Utils()
+            .sendRawTransaction(transaction: signedTransaction);
+        txHashNft = result['txHash'];
         if (isSuccess) {
-          final result = await Web3Utils()
-              .sendRawTransaction(transaction: signedTransaction);
-          txHashNft = result['txHash'];
           if (result['isSuccess']) {
             deleteNft(
               walletAddress: walletAddress,
               collectionAddress: collectionAddress,
               nftId: nftId,
             );
+            status = STATUS_TRANSACTION_SUCCESS;
             emit(FormBlockchainSendNftSuccess());
           } else {
+            status = STATUS_TRANSACTION_FAIL;
             emit(FormBlockchainSendNftFail());
           }
         } else {
+          status = STATUS_TRANSACTION_FAIL;
           emit(FormBlockchainSendNftFail());
         }
+        final List<DetailHistoryTransaction> listDetailTransaction = [];
+        listDetailTransaction.add(
+          DetailHistoryTransaction(
+            quantity: quantity,
+            status: status,
+            gasFee: gasFee,
+            dateTime: dateTime,
+            txhID: txHashToken,
+            toAddress: toAddress,
+            nonce: nonce,
+            name: name,
+            walletAddress: walletAddress,
+            tokenAddress: collectionAddress,
+            type: TRANSACTION_TOKEN,
+          ),
+        );
+        final transactionHistory = await PrefsService.getHistoryTransaction();
+        if (transactionHistory.isNotEmpty) {
+          listDetailTransaction.addAll(transactionFromJson(transactionHistory));
+        }
+        await PrefsService.saveHistoryTransaction(
+          transactionToJson(listDetailTransaction),
+        );
         break;
       default:
         break;
@@ -278,6 +310,9 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     required String gasPrice,
     required String gasLimit,
     required String nftID,
+    required String gasFee,
+    required String amount,
+    required String symbol,
   }) {
     try {
       final data = {
@@ -289,6 +324,9 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         'gasPrice': gasPrice,
         'gasLimit': gasLimit,
         'tokenId': nftID,
+        'gasFee': gasFee,
+        'amount': amount,
+        'symbol': symbol,
       };
       trustWalletChannel.invokeMethod('signTransactionNft', data);
     } on PlatformException {
