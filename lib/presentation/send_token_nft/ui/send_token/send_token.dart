@@ -164,7 +164,7 @@ class _SendTokenState extends State<SendToken> {
                       );
                       //check validate before go to next screen
                       if (tokenCubit.checkAddressFtAmount()) {
-                        await Navigator.push(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) {

@@ -9,17 +9,17 @@ String transactionToJson(List<DetailHistoryTransaction> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class DetailHistoryTransaction {
-  final String? quantity;
-  final String? status;
-  final String? gasFee;
-  final String? dateTime;
-  final String? txhID;
-  final String? toAddress;
-  final String? nonce;
-  final String? name;
-  final String? walletAddress;
-  final String? tokenAddress;
-  final String? type;
+  String? quantity = '';
+  String? status = '';
+  String? gasFee = '';
+  String? dateTime = DateTime.now().toString();
+  String? txhID = '';
+  String? toAddress = '';
+  String? nonce = '';
+  String? name = '';
+  String? walletAddress = '';
+  String? tokenAddress = '';
+  String? type = '';
 
   DetailHistoryTransaction({
     this.quantity,
@@ -34,6 +34,8 @@ class DetailHistoryTransaction {
     this.tokenAddress,
     this.type,
   });
+
+  DetailHistoryTransaction.init();
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'walletAddress': walletAddress,

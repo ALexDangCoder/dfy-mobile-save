@@ -10,12 +10,13 @@ enum TypeIsHaveAmount {
 }
 
 class FormAddFtAmount extends StatelessWidget {
-  const FormAddFtAmount({
+  FormAddFtAmount({
     this.amount,
     this.quantity,
     required this.typeForm,
     required this.from,
     required this.to,
+    this.nameToken,
     Key? key,
   }) : super(key: key);
   final String from;
@@ -23,6 +24,7 @@ class FormAddFtAmount extends StatelessWidget {
   final String? amount;
   final int? quantity;
   final TypeIsHaveAmount typeForm;
+  String? nameToken;
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +55,16 @@ class FormAddFtAmount extends StatelessWidget {
                 ),
                 spaceH16,
                 bothTxtFormAddFtAmount(
+                  isYellowText: true,
                   txtLeft: S.current.amount,
-                  txtRight: amount.toString(),
+                  txtRight: amount.toString() + ' ${nameToken}',
                 ),
               ],
             ),
           ),
         ),
       );
-    } else if(typeForm == TypeIsHaveAmount.HAVE_QUANTITY) {
+    } else if (typeForm == TypeIsHaveAmount.HAVE_QUANTITY) {
       return Container(
         margin: EdgeInsets.only(
           left: 10.w,
@@ -88,16 +91,16 @@ class FormAddFtAmount extends StatelessWidget {
                 ),
                 spaceH16,
                 bothTxtFormAddFtAmount(
+                  isYellowText: true,
                   txtLeft: S.current.quantity,
-                  txtRight: quantity.toString(),
+                  txtRight: quantity.toString() + ' ${S.current.of_all} ' + '1',
                 ),
               ],
             ),
           ),
         ),
       );
-    }
-    else {
+    } else {
       return ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: 250.w,
@@ -111,9 +114,15 @@ class FormAddFtAmount extends StatelessWidget {
           ),
           child: Column(
             children: [
-              bothTxtFormAddFtAmount(txtLeft: S.current.from, txtRight: from,),
+              bothTxtFormAddFtAmount(
+                txtLeft: S.current.from,
+                txtRight: from,
+              ),
               spaceH16,
-              bothTxtFormAddFtAmount(txtLeft: S.current.to, txtRight: to,),
+              bothTxtFormAddFtAmount(
+                txtLeft: S.current.to,
+                txtRight: to,
+              ),
             ],
           ),
         ),
@@ -122,6 +131,7 @@ class FormAddFtAmount extends StatelessWidget {
   }
 
   Row bothTxtFormAddFtAmount({
+    bool isYellowText = false,
     required String txtLeft,
     required String txtRight,
   }) {
@@ -137,17 +147,29 @@ class FormAddFtAmount extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(
-          flex: 2,
-          child: Text(
-            txtRight,
-            style: textNormalCustom(
-              Colors.white,
-              16,
-              FontWeight.w400,
-            ),
-          ),
-        )
+        isYellowText
+            ? Expanded(
+                flex: 2,
+                child: Text(
+                  txtRight,
+                  style: textNormalCustom(
+                    Color(0xffE4AC1A),
+                    20,
+                    FontWeight.w600,
+                  ),
+                ),
+              )
+            : Expanded(
+                flex: 2,
+                child: Text(
+                  txtRight,
+                  style: textNormalCustom(
+                    Colors.white,
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+              )
       ],
     );
   }

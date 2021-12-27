@@ -1,6 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/web3/model/transaction.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/transaction_detail.dart';
@@ -22,7 +22,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<TransactionHistory>>(
+    return StreamBuilder<List<DetailHistoryTransaction>>(
       initialData: const [],
       stream: bloc.transactionListStream,
       builder: (context, snapshot) {
@@ -46,8 +46,8 @@ class TransactionList extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return transactionRow(
                             context: context,
-                            transaction:
-                                snapData?[index] ?? TransactionHistory.init(),
+                            transaction: snapData?[index] ??
+                                DetailHistoryTransaction.init(),
                           );
                         },
                       ),
@@ -135,7 +135,7 @@ class TransactionList extends StatelessWidget {
 
   Widget transactionRow({
     required BuildContext context,
-    required TransactionHistory transaction,
+    required DetailHistoryTransaction transaction,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -152,9 +152,7 @@ class TransactionList extends StatelessWidget {
             MaterialPageRoute(
               builder: (BuildContext context) {
                 return TransactionHistoryDetailScreen(
-                  bloc: bloc,
-                  thxID: 'a',
-                  status: transaction.status ?? '',
+                  transaction: transaction,
                 );
               },
             ),
@@ -192,7 +190,7 @@ class TransactionList extends StatelessWidget {
                       alignment: Alignment.topRight,
                       child: transactionAmountText(
                         status: transaction.status ?? '',
-                        amount: transaction.amount ?? 0,
+                        amount: transaction.quantity ?? '0',
                       ),
                     ),
                   ),
@@ -221,7 +219,7 @@ class TransactionList extends StatelessWidget {
   }
 
   Text transactionAmountText({
-    required double amount,
+    required String amount,
     required String status,
   }) {
     switch (status) {
@@ -237,7 +235,7 @@ class TransactionList extends StatelessWidget {
         return Text(
           '$amount $shortName',
           style: tokenDetailAmount(
-            color: (amount > 0)
+            color: (double.parse(amount) > 0)
                 ? AppTheme.getInstance().successTransactionColors()
                 : AppTheme.getInstance().currencyDetailTokenColor(),
             fontSize: 16,
@@ -256,9 +254,9 @@ class TransactionList extends StatelessWidget {
 
   String getImgStatus(String status) {
     switch (status) {
-      case 'success':
+      case '1':
         return ImageAssets.ic_transaction_success_svg;
-      case 'fail':
+      case '0':
         return ImageAssets.ic_transaction_fail_svg;
       default:
         return ImageAssets.ic_transaction_pending_svg;

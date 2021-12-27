@@ -150,6 +150,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
         listener: (context, state) {
           if (state is FormBlockchainSendNftSuccess) {
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -167,6 +168,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
             );
           } else if (state is FormBlockchainSendNftLoading) {
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -175,6 +177,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
             );
           } else if (state is FormBlockchainSendNftFail) {
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -190,6 +193,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 ));
           } else if (state is FormBlockchainSendTokenLoading) {
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -200,6 +204,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
             //Pop loading dialog
             Navigator.pop(context);
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -212,13 +217,14 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               //Pop confirm blockchain
               Navigator.pop(context);
               //Pop confirm SendToken
-              // txhIDToken = cubitFormCustomizeGasFee.txHashToken;
+              //final txhIDToken = cubitFormCustomizeGasFee.txHashToken;
               Navigator.pop(context, true);
             });
           } else {
             //Pop loading dialog
             Navigator.pop(context);
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
@@ -230,6 +236,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
               //Pop confirm blockchain
               Navigator.pop(context);
               //Pop confirm SendToken
+              //final txhIDToken = cubitFormCustomizeGasFee.txHashToken;
               Navigator.pop(context, true);
             });
           }
@@ -260,26 +267,30 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                       TYPE_CONFIRM.PLACE_BID) ...[
                                 FormAddFtAmount(
                                   typeForm: TypeIsHaveAmount.HAVE_AMOUNT,
-                                  from:
-                                      widget.addressFrom.formatAddressWallet(),
-                                  to: widget.addressTo.formatAddressWallet(),
+                                  from: widget.addressFrom
+                                      .formatAddressWalletConfirm(),
+                                  to: widget.addressTo
+                                      .formatAddressWalletConfirm(),
                                   amount: formatValue.format(widget.amount),
+                                  nameToken: widget.nameToken,
                                 )
                               ] else if (widget.typeConfirm ==
                                   TYPE_CONFIRM.SEND_NFT) ...[
                                 FormAddFtAmount(
                                   typeForm: TypeIsHaveAmount.HAVE_QUANTITY,
-                                  from:
-                                      widget.addressFrom.formatAddressWallet(),
-                                  to: widget.addressTo.formatAddressWallet(),
+                                  from: widget.addressFrom
+                                      .formatAddressWalletConfirm(),
+                                  to: widget.addressTo
+                                      .formatAddressWalletConfirm(),
                                   quantity: widget.quantity,
                                 )
                               ] else ...[
                                 FormAddFtAmount(
                                   typeForm: TypeIsHaveAmount.NO_HAVE_AMOUNT,
-                                  from:
-                                      widget.addressFrom.formatAddressWallet(),
-                                  to: widget.addressTo.formatAddressWallet(),
+                                  from: widget.addressFrom
+                                      .formatAddressWalletConfirm(),
+                                  to: widget.addressTo
+                                      .formatAddressWalletConfirm(),
                                 ),
                               ],
                               const Divider(
