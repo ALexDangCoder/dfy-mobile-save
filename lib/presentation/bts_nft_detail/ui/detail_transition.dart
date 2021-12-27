@@ -20,7 +20,6 @@ class TransactionDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? gasFee = obj.gasFee;
     final String? _time = obj.dateTime;
     final String? txhID = obj.txhID;
     final String? nonce = obj.nonce;
@@ -60,15 +59,11 @@ class TransactionDetail extends StatelessWidget {
                 ),
                 textRow(
                   name: S.current.gas_fee,
-                  value: customCurrency(
-                    amount: gasFee,
-                    digit: 8,
-                    type: 'BNB',
-                  ),
+                  value: obj.gasFee ?? '',
                 ),
                 textRow(
                   name: S.current.time,
-                  value: _time ?? '',
+                  value: DateTime.parse(_time ?? '').stringFromDateTime,
                 ),
               ],
             ),
@@ -84,16 +79,16 @@ class TransactionDetail extends StatelessWidget {
                 children: [
                   textRow(
                     name: S.current.txh_id,
-                    value: txhID ?? '',
+                    value: obj.txhID ?? '',
                     showCopy: true,
                   ),
                   textRow(
                     name: S.current.from,
-                    value: txhID?.formatAddress() ?? '',
+                    value: obj.walletAddress?.formatAddress ?? '',
                   ),
                   textRow(
                     name: S.current.to,
-                    value: txhID ?? '',
+                    value: obj.toAddress ?? '',
                     showCopy: true,
                   ),
                 ],
@@ -145,7 +140,7 @@ class TransactionDetail extends StatelessWidget {
             ),
           ),
           Text(
-            showCopy ? value.formatAddress() : value,
+            showCopy ? value.formatAddress : value,
             style: tokenDetailAmount(
               color: valueColor ?? AppTheme.getInstance().textThemeColor(),
               fontSize: 16,

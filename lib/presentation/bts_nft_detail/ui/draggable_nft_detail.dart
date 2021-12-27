@@ -12,6 +12,7 @@ import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/column_button/buil_column.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -422,7 +423,7 @@ class _NFTDetailState extends State<NFTDetail> {
                 ],
               ),
               Text(
-                objHistory.dateTime ?? '',
+                DateTime.parse(objHistory.dateTime ?? '').stringFromDateTime,
                 style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
               )
             ],
