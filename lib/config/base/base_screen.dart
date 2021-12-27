@@ -20,7 +20,7 @@ abstract class BaseState<T extends BaseScreen> extends State<T> {
 
   void _handleEventBus() {
     eventBus.on<UnAuthEvent>().listen((event) {
-      _showUnAuthDialog();
+      //_showUnAuthDialog();
     }).addTo(_unAuthSubscription);
   }
 
@@ -30,14 +30,14 @@ abstract class BaseState<T extends BaseScreen> extends State<T> {
     super.dispose();
   }
 
-  void _showUnAuthDialog() {
-    DialogUtils.showAlert(
-      content: S.current.unauthorized,
-      onConfirm: () {
-        // PrefsService.clearAuthData();
-        //todo
-        // openScreenAndRemoveUtil(context, AppRouter.);
-      },
-    );
-  }
+  // void _showUnAuthDialog() {
+  //   DialogUtils.showAlert(
+  //     content: S.current.unauthorized,
+  //     onConfirm: () {
+  //       PrefsService.clearAuthData();
+  //       //todo
+  //       // openScreenAndRemoveUtil(context, AppRouter.);
+  //     },
+  //   );
+  // }
 }

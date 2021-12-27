@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
@@ -21,6 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'detail_transition.dart';
+
 class NFTDetail extends StatefulWidget {
   const NFTDetail({
     Key? key,
@@ -31,7 +34,7 @@ class NFTDetail extends StatefulWidget {
     required this.walletCubit,
   }) : super(key: key);
   final NftInfo nftInfo;
-  final List<HistoryNFT> listHistory;
+  final List<DetailHistoryTransaction> listHistory;
   final String walletAddress;
   final String nameWallet;
   final WalletCubit walletCubit;
@@ -54,12 +57,15 @@ class _NFTDetailState extends State<NFTDetail> {
       initLen = 3;
       initShow = true;
       bloc.showSink.add(true);
-    }
-    if (widget.listHistory.length < 3) {
+    } else if (widget.listHistory.length < 3 && widget.listHistory.isNotEmpty) {
       initLen = widget.listHistory.length;
       bloc.lenSink.add(widget.listHistory.length);
       initShow = false;
       bloc.showSink.add(false);
+    } else {
+      bloc.lenSink.add(0);
+      initLen = 0;
+      initShow = false;
     }
   }
 
@@ -169,8 +175,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                 ),
                                 Text(
                                   nft.standard == 'ERC-721'
-                                      ? '1 of 1'
-                                      //TODO
+                                      ? '1 ${S.current.of_all} 1'
                                       : '1 of 10',
                                   style: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
@@ -221,111 +226,114 @@ class _NFTDetailState extends State<NFTDetail> {
                           ],
                         ),
                       ),
-                      ...[
-                        sizedPngImage(
-                          w: 94,
-                          h: 94,
-                          image: ImageAssets.icNoTransaction,
-                        ),
-                        Text(
-                          S.current.no_transaction,
-                          style: tokenDetailAmount(
-                            color: AppTheme.getInstance()
-                                .currencyDetailTokenColor(),
-                            fontSize: 20,
-                          ),
-                        ),
-                      ],
-                      //Todo when market place
-                      // StreamBuilder<int>(
-                      //   initialData: initLen,
-                      //   stream: bloc.lenStream,
-                      //   builder: (ctx, snapshot) {
-                      //     final int len = snapshot.data ?? initLen;
-                      //     return ListView.builder(
-                      //       padding: EdgeInsets.zero,
-                      //       shrinkWrap: true,
-                      //       physics: const NeverScrollableScrollPhysics(),
-                      //       itemCount: len,
-                      //       itemBuilder: (ctx, index) {
-                      //         return itemTransition(index);
-                      //       },
-                      //     );
-                      //   },
-                      // ),
-                      // StreamBuilder<bool>(
-                      //   initialData: initShow,
-                      //   stream: bloc.showStream,
-                      //   builder: (ctx, snapshot) {
-                      //     final isShow = snapshot.data!;
-                      //     return Visibility(
-                      //       visible: isShow,
-                      //       child: InkWell(
-                      //         onTap: () {
-                      //           if (widget.listHistory.length >=
-                      //               bloc.curLen + 10) {
-                      //             bloc.lenSink.add(bloc.curLen + 10);
-                      //           } else {
-                      //             bloc.lenSink.add(widget.listHistory.length);
-                      //           }
-                      //           if (bloc.curLen == widget.listHistory.length) {
-                      //             bloc.showSink.add(false);
-                      //           }
-                      //         },
-                      //         child: Container(
-                      //           padding: EdgeInsets.only(
-                      //             right: 16.w,
-                      //             left: 16.w,
-                      //           ),
-                      //           height: 60.h,
-                      //           decoration: BoxDecoration(
-                      //             color: AppTheme.getInstance().bgBtsColor(),
-                      //             border: Border(
-                      //               top: BorderSide(
-                      //                 color:
-                      //                     AppTheme.getInstance().divideColor(),
-                      //               ),
-                      //               bottom: BorderSide(
-                      //                 color:
-                      //                     AppTheme.getInstance().divideColor(),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //           child: Row(
-                      //             mainAxisAlignment: MainAxisAlignment.center,
-                      //             children: [
-                      //               Image.asset(
-                      //                 ImageAssets.ic_expanded,
-                      //                 color: AppTheme.getInstance().fillColor(),
-                      //               ),
-                      //               SizedBox(
-                      //                 width: 13.15.w,
-                      //               ),
-                      //               Text(
-                      //                 S.current.view_more,
-                      //                 style: textNormalCustom(
-                      //                   AppTheme.getInstance().fillColor(),
-                      //                   16,
-                      //                   FontWeight.w400,
-                      //                 ),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     );
-                      //   },
-                      // ),
+                      StreamBuilder<int>(
+                        initialData: initLen,
+                        stream: bloc.lenStream,
+                        builder: (ctx, snapshot) {
+                          final int len = snapshot.data ?? initLen;
+                          return len == 0
+                              ? Column(
+                                  children: [
+                                    sizedPngImage(
+                                      w: 94,
+                                      h: 94,
+                                      image: ImageAssets.icNoTransaction,
+                                    ),
+                                    Text(
+                                      S.current.no_transaction,
+                                      style: tokenDetailAmount(
+                                        color: AppTheme.getInstance()
+                                            .currencyDetailTokenColor(),
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: len,
+                                  itemBuilder: (ctx, index) {
+                                    return itemTransition(index);
+                                  },
+                                );
+                        },
+                      ),
+                      StreamBuilder<bool>(
+                        initialData: initShow,
+                        stream: bloc.showStream,
+                        builder: (ctx, snapshot) {
+                          final isShow = snapshot.data!;
+                          return Visibility(
+                            visible: isShow,
+                            child: InkWell(
+                              onTap: () {
+                                if (widget.listHistory.length >=
+                                    bloc.curLen + 10) {
+                                  bloc.lenSink.add(bloc.curLen + 10);
+                                } else {
+                                  bloc.lenSink.add(widget.listHistory.length);
+                                }
+                                if (bloc.curLen == widget.listHistory.length) {
+                                  bloc.showSink.add(false);
+                                }
+                              },
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                  right: 16.w,
+                                  left: 16.w,
+                                ),
+                                height: 60.h,
+                                decoration: BoxDecoration(
+                                  color: AppTheme.getInstance().bgBtsColor(),
+                                  border: Border(
+                                    top: BorderSide(
+                                      color:
+                                          AppTheme.getInstance().divideColor(),
+                                    ),
+                                    bottom: BorderSide(
+                                      color:
+                                          AppTheme.getInstance().divideColor(),
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      ImageAssets.ic_expanded,
+                                      color: AppTheme.getInstance().fillColor(),
+                                    ),
+                                    SizedBox(
+                                      width: 13.15.w,
+                                    ),
+                                    Text(
+                                      S.current.view_more,
+                                      style: textNormalCustom(
+                                        AppTheme.getInstance().fillColor(),
+                                        16,
+                                        FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                       SizedBox(
                         height: 24.h,
                       ),
                       Container(
-                        margin:  EdgeInsets.symmetric(horizontal: 16.w),
+                        margin: EdgeInsets.symmetric(horizontal: 16.w),
                         child: ButtonGradient(
                           gradient: RadialGradient(
                             center: const Alignment(0.5, -0.5),
                             radius: 4,
-                            colors: AppTheme.getInstance().gradientButtonColor(),
+                            colors:
+                                AppTheme.getInstance().gradientButtonColor(),
                           ),
                           onPressed: () {
                             Navigator.push(
@@ -362,17 +370,16 @@ class _NFTDetailState extends State<NFTDetail> {
 
   Widget itemTransition(int index) {
     final objHistory = widget.listHistory[index];
-    // final objDetail = bloc.listDetailHistory;
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => TransactionDetail(
-        //       obj: objDetail,
-        //     ),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TransactionDetail(
+              obj: objHistory,
+            ),
+          ),
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -399,14 +406,14 @@ class _NFTDetailState extends State<NFTDetail> {
                   Row(
                     children: [
                       Text(
-                        objHistory.name,
+                        objHistory.name ?? '',
                         style: textValueNFT,
                       ),
                       SizedBox(
                         width: 6.w,
                       ),
                       Image.asset(
-                        bloc.getImgStatus(objHistory.status),
+                        bloc.getImgStatus(objHistory.status ?? ''),
                       ),
                     ],
                   ),
@@ -417,7 +424,7 @@ class _NFTDetailState extends State<NFTDetail> {
                 ],
               ),
               Text(
-                objHistory.time,
+                objHistory.dateTime ?? '',
                 style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
               )
             ],

@@ -38,10 +38,8 @@ class _CardNFTState extends State<CardNFT> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        await cubit.getTransactionNFTHistory().then(
-              (_) => showBoth(context, widget.objNFT.img ?? ''),
-            );
+      onTap: () {
+        showBoth(context, widget.objNFT.img ?? '');
       },
       child: Row(
         children: [
@@ -103,7 +101,8 @@ class _CardNFTState extends State<CardNFT> {
         child: NFTDetail(
           nftInfo: widget.objNFT,
           listHistory: cubit.listHistory,
-          walletAddress: widget.walletAddress, nameWallet: '',
+          walletAddress: widget.walletAddress,
+          nameWallet: '',
           walletCubit: widget.walletCubit,
         ),
       ),
