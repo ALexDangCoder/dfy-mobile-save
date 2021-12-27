@@ -2,7 +2,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -35,7 +34,6 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnCfPW =
       BehaviorSubject<String>.seeded('');
-  final BehaviorSubject<String> currentCfPW = BehaviorSubject<String>();
 
   ///wallet core
   Future<void> changePasswordIntoWalletCore({
@@ -188,14 +186,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchOldPWSink.add(true);
       txtWarnOldPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    }
-
-    // else if (value != passwordOld) {
-    //   matchOldPWSink.add(true);
-    //   txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
-    //   isEnableButtonSink.add(false);
-    // }
-    else {
+    } else {
       matchOldPWSink.add(false);
       _flagOldPW = 1;
       if (_flagCfPW == 1 && _flagNewPW == 1 && _flagOldPW == 1) {
@@ -205,6 +196,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       }
     }
   }
+
   String confirmPw = '';
   String currentNewPw = '';
 
@@ -214,12 +206,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       validatePWSink.add(true);
       txtWarnNewPWSink.add(S.current.warn_pw_8_15);
       isEnableButtonSink.add(false);
-    } else if(value != cfPassword) {
-      matchPWSink.add(true);
-      txtWarnCfPWSink.add(S.current.warn_cf_pw);
-      isEnableButtonSink.add(false);
-    }
-    else if (value.isEmpty) {
+    } else if (value.isEmpty) {
       validatePWSink.add(true);
       txtWarnNewPWSink.add(S.current.warn_pw_required);
       isEnableButtonSink.add(false);
@@ -227,7 +214,14 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       validatePWSink.add(true);
       txtWarnNewPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else {
+    }
+    else if (value != cfPassword) {
+      validatePWSink.add(false);
+      matchPWSink.add(true);
+      txtWarnCfPWSink.add(S.current.warn_cf_pw);
+      isEnableButtonSink.add(false);
+    }
+    else {
       validatePWSink.add(false);
       _flagNewPW = 1;
       if (_flagCfPW == 1 && _flagNewPW == 1 && _flagOldPW == 1) {
@@ -248,11 +242,13 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_pw_required);
       isEnableButtonSink.add(false);
-    } else if (value != newPassword) {
+    }
+    else if (value != newPassword) {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_cf_pw);
       isEnableButtonSink.add(false);
-    } else {
+    }
+    else {
       matchPWSink.add(false);
       _flagCfPW = 1;
       if (_flagCfPW == 1 && _flagNewPW == 1 && _flagOldPW == 1) {
