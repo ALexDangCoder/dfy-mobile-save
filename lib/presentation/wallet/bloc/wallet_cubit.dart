@@ -10,6 +10,7 @@ import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
@@ -236,7 +237,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<String> idSubject = BehaviorSubject();
   BehaviorSubject<bool> btnSubject = BehaviorSubject.seeded(false);
   final regexAddress = RegExp(r'^0x[a-fA-F0-9]{40}$');
-  List<HistoryNFT> listHistory = [];
+  List<DetailHistoryTransaction> listHistory = [];
   double? price = 0.0;
 
   bool _flagNftAddress = false;
@@ -286,10 +287,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         btnSubject.sink.add(true);
       }
     }
-  }
-
-  Future<void> getTransactionNFTHistory() async {
-    listHistory = await client.getNFTHistory();
   }
 
   String addressWalletCore = '';
