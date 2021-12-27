@@ -173,7 +173,10 @@ class TokenDetail extends StatelessWidget {
                                           bloc.getToken(
                                             token: token,
                                           ),
-                                          bloc.getHistory(token.tokenAddress)
+                                          bloc.getTransaction(
+                                            walletAddress: walletAddress,
+                                            tokenAddress: token.tokenAddress,
+                                          )
                                         }
                                       else
                                         null
