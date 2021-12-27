@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
@@ -43,7 +42,7 @@ class TransactionDetail extends StatelessWidget {
                     ),
                     Container(
                       alignment: Alignment.topLeft,
-                      child: isSuccess == SUCCESS
+                      child: isSuccess == STATUS_TRANSACTION_SUCCESS
                           ? textRow(
                               name: S.current.status,
                               value: S.current.transaction_success,
