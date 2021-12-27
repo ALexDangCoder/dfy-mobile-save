@@ -52,10 +52,22 @@ class TokenDetailBloc {
   }) async {
     final List<TransactionHistoryDetail> listFromData = [];
     totalTransactionList = listFromData
-        .where((element) =>
-            element.tokenAddress == tokenAddress &&
-            element.walletAddress == walletAddress)
+        .where(
+          (element) =>
+              element.tokenAddress == tokenAddress &&
+              element.walletAddress == walletAddress,
+        )
         .toList();
+    //todo Clear Fake Data
+    totalTransactionList = [
+      TransactionHistoryDetail.init(),
+      TransactionHistoryDetail.init(),
+      TransactionHistoryDetail.init(),
+      TransactionHistoryDetail.init(),
+      TransactionHistoryDetail.init(),
+      TransactionHistoryDetail.init(),
+      TransactionHistoryDetail.init(),
+    ];
     checkData();
   }
 

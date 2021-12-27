@@ -46,8 +46,8 @@ class TransactionList extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return transactionRow(
                             context: context,
-                            transaction:
-                                snapData?[index] ?? TransactionHistoryDetail.init(),
+                            transaction: snapData?[index] ??
+                                TransactionHistoryDetail.init(),
                           );
                         },
                       ),
@@ -204,8 +204,7 @@ class TransactionList extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    DateTime.parse(transaction.time ?? '')
-                        .stringFromDateTime,
+                    DateTime.parse(transaction.time ?? '').stringFromDateTime,
                     style: tokenDetailAmount(
                       color: AppTheme.getInstance().currencyDetailTokenColor(),
                       fontSize: 14,
