@@ -261,26 +261,30 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                       TYPE_CONFIRM.PLACE_BID) ...[
                                 FormAddFtAmount(
                                   typeForm: TypeIsHaveAmount.HAVE_AMOUNT,
-                                  from:
-                                      widget.addressFrom.formatAddressWallet(),
-                                  to: widget.addressTo.formatAddressWallet(),
+                                  from: widget.addressFrom
+                                      .formatAddressWalletConfirm(),
+                                  to: widget.addressTo
+                                      .formatAddressWalletConfirm(),
                                   amount: formatValue.format(widget.amount),
+                                  nameToken: widget.nameToken,
                                 )
                               ] else if (widget.typeConfirm ==
                                   TYPE_CONFIRM.SEND_NFT) ...[
                                 FormAddFtAmount(
                                   typeForm: TypeIsHaveAmount.HAVE_QUANTITY,
-                                  from:
-                                      widget.addressFrom.formatAddressWallet(),
-                                  to: widget.addressTo.formatAddressWallet(),
+                                  from: widget.addressFrom
+                                      .formatAddressWalletConfirm(),
+                                  to: widget.addressTo
+                                      .formatAddressWalletConfirm(),
                                   quantity: widget.quantity,
                                 )
                               ] else ...[
                                 FormAddFtAmount(
                                   typeForm: TypeIsHaveAmount.NO_HAVE_AMOUNT,
-                                  from:
-                                      widget.addressFrom.formatAddressWallet(),
-                                  to: widget.addressTo.formatAddressWallet(),
+                                  from: widget.addressFrom
+                                      .formatAddressWalletConfirm(),
+                                  to: widget.addressTo
+                                      .formatAddressWalletConfirm(),
                                 ),
                               ],
                               const Divider(
@@ -340,7 +344,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                       stream: cubitFormCustomizeGasFee.isEnableBtnStream,
                       builder: (context, snapshot) {
                         return GestureDetector(
-                          onTap: () async {
+                          onDoubleTap: () async {
                             if (snapshot.data ??
                                 (widget.gasFeeFirstFetch < balanceWallet)) {
                               switch (widget.typeConfirm) {

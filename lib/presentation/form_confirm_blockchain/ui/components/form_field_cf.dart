@@ -32,7 +32,6 @@ class FormFieldBlockChain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(numHandle);
     return SizedBox(
       height: 64.h,
       // padding: EdgeInsets.only(left: 16.w),
