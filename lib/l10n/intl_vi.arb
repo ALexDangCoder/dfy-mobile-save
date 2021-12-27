@@ -221,5 +221,6 @@
   "change_pw_fail": "Mật khẩu cũ không đúng",
   "change_pword_success": "Đổi mật khẩu thành công",
   "undefine_err_nft": "Đã xảy ra sự cố",
-  "duplicated_import_nft": "Tài khoản bị trùng"
+  "duplicated_import_nft": "Tài khoản bị trùng",
+  "send_token": "Gửi token"
 }

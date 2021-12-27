@@ -268,8 +268,14 @@ class MainActivity : FlutterFragmentActivity() {
                     val gasLimit =
                         call.argument<String>("gasLimit")
                             ?: return@setMethodCallHandler
+                    val gasFee =
+                        call.argument<String>("gasFee")
+                            ?: return@setMethodCallHandler
                     val amount =
                         call.argument<String>("amount")
+                            ?: return@setMethodCallHandler
+                    val symbol =
+                        call.argument<String>("symbol")
                             ?: return@setMethodCallHandler
                     this.signTransactionToken(
                         channel = channel,
@@ -280,7 +286,9 @@ class MainActivity : FlutterFragmentActivity() {
                         chainId = chainId,
                         gasPrice = gasPrice,
                         gasLimit = gasLimit,
-                        amount = amount
+                        gasFee = gasFee,
+                        amount = amount,
+                        symbol = symbol
                     )
                 }
                 "signTransactionNft" -> {

@@ -1,5 +1,4 @@
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsService {
@@ -9,7 +8,6 @@ class PrefsService {
   static const _PREF_FACE_ID = 'pref_face_id';
   static const _PREF_FIRST_APP = 'pref_first_app';
 
-  final storage = const FlutterSecureStorage();
   static SharedPreferences? _prefsInstance;
 
   static Future<SharedPreferences> get _instance async =>
@@ -57,17 +55,17 @@ class PrefsService {
     return _prefsInstance?.getString(_PREF_LANGUAGE) ?? VI_CODE;
   }
 
-  Future<void> saveHistoryTransaction(String token) async {
-    await storage.write(key: _PREF_TRANSACTION_HISTORY, value: token);
+  static Future<bool> saveHistoryTransaction(String transaction) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_TRANSACTION_HISTORY, transaction);
   }
 
-  Future<String> getHistoryTransaction() async {
-    return await storage.read(key: _PREF_TRANSACTION_HISTORY) ?? '';
+  static Future<String> getHistoryTransaction() async {
+    return _prefsInstance?.getString(_PREF_TRANSACTION_HISTORY) ?? '';
   }
 
   Future<void> clearData() async {
     await _prefsInstance?.clear();
-    await storage.delete(key: _PREF_TRANSACTION_HISTORY);
     return;
   }
 }
