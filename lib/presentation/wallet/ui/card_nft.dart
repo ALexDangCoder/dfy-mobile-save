@@ -39,12 +39,14 @@ class _CardNFTState extends State<CardNFT> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        cubit
-            .getTransactionHistory(
-              widget.walletAddress,
-              widget.objNFT.contract ?? '',
-            )
-            .then((_) => showBoth(context, widget.objNFT.img ?? ''));
+        //todo ERC-1155
+        // cubit
+        //     .getTransactionHistory(
+        //       widget.walletAddress,
+        //       widget.objNFT.contract ?? '',
+        //     )
+        //     .then((_) => showBoth(context, widget.objNFT.img ?? ''));
+        showBoth(context, widget.objNFT.img ?? '');
       },
       child: Row(
         children: [
