@@ -8,7 +8,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
@@ -91,12 +90,6 @@ class ConfirmPwPrvKeySeedpharseCubit
   List<String> stringToList(String seedPhrase) {
     final List<String> list = seedPhrase.split(' ');
     return list;
-  }
-
-  String formatText(String text) {
-    final String value = '${text.substring(0, 10)}'
-        '...${text.substring(text.length - 10, text.length)}';
-    return value;
   }
 
   void isEnableButton({required String value, String? passwordConfirm}) {

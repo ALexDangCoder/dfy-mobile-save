@@ -79,6 +79,8 @@ class _BodyState extends State<_Body> {
                                   return ChooseAcc(
                                     listWalletCore: widget.bloc.listWalletCore,
                                     bloc: widget.bloc,
+                                    walletAddress:
+                                        snapshotModel.data?.walletAddress ?? '',
                                   );
                                 },
                                 isNonBackground: false,
@@ -99,9 +101,9 @@ class _BodyState extends State<_Body> {
                         ),
                         FromTextPrivateKey(
                           titleCopy: snapshotModel.data?.privateKey ?? '',
-                          title:
-                            snapshotModel.data?.privateKey?.formatAddressWalletConfirm() ??
-                                '',
+                          title: snapshotModel.data?.privateKey
+                                  ?.formatAddressWalletConfirm() ??
+                              '',
                           urlSuffixIcon: ImageAssets.ic_copy,
                           urlPrefixIcon: ImageAssets.ic_key24,
                         ),

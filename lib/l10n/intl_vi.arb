@@ -178,7 +178,6 @@
   "dfy_secret_private": "của ban. DeFi For You không có Secret Seed Phrase/Private Key của bạn.",
   "tran_submit": "Giao dịch đã được gửi",
   "waiting_for_cf": "Chờ đợi sự xác nhận",
-  "send_nft": "Gửi NFT",
   "buy_nft": "Mua NFT",
   "send_offer": "Send Offer",
   "place_a_bid": "Đấu giá",
@@ -217,11 +216,14 @@
   "import_duplicate": "Tài khoản mà bạn vừa nhập bị trùng trong ví hiện tại",
   "not_import": "Không thể lấy địa chỉ ví",
   "feature_coming_soon": "TÍNH NĂNG \nĐANG PHÁT TRIỂN!",
-  "back":"Trở về",
+  "back": "Trở về",
   "change_pw_fail": "Mật khẩu cũ không đúng",
   "change_pword_success": "Đổi mật khẩu thành công",
   "undefine_err_nft": "Đã xảy ra sự cố",
   "duplicated_import_nft": "Tài khoản bị trùng",
   "send_token": "Gửi Token",
-  "send_nft": "Gửi NFT"
+  "send_nft": "Gửi NFT",
+  "copied_address": "Sao chép địa chỉ!",
+  "copied_private_key": "Sao chép private key!",
+  "copied_seed_phrase": "Sao chép seed phrase!"
 }
