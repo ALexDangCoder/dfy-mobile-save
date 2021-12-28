@@ -138,7 +138,6 @@ class ConfirmPwPrvKeySeedpharseCubit
   }
 
   void scanFaceIdFinger({required bool value}) {
-    print(value);
     if (value) {
       emit(ConfirmPWToShowSuccess());
     } else {}

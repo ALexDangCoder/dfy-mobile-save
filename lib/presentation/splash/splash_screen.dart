@@ -42,14 +42,11 @@ class _SplashScreenState extends State<SplashScreen>
 
   void checkAppLock() {
     if(PrefsService.getFirstAppConfig() == 'true'){
-      print('router => firstTime');
       index = 3;
     }
     else if (PrefsService.getAppLockConfig() == 'true') {
-      print('router => Login');
       index = 2;
     } else {
-      print('router => Wallet');
       index = 1;
     }
   }
