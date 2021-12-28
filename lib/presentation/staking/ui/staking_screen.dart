@@ -1,3 +1,4 @@
+import 'package:Dfy/widgets/views/coming_screen.dart';
 import 'package:flutter/material.dart';
 
 class StakingScreen extends StatefulWidget {
@@ -20,8 +21,6 @@ class _StakingState extends State<StakingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(),
-    );
+    return const ComingScreen();
   }
 }

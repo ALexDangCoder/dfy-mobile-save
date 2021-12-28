@@ -179,7 +179,6 @@
   "private_warning": "Invalid private key",
   "tran_submit": "Transaction submitted",
   "waiting_for_cf": "Waiting for confirmation",
-  "send_nft": "Send NFT",
   "buy_nft": "Buy NFT",
   "send_offer": "Send Offer",
   "place_a_bid": "Place a bid",
@@ -200,7 +199,7 @@
   "contract_address": "Contract address",
   "import_new_wallet_failed": "Import new wallet failed",
   "not_exist": "NFT address does not exist or you do not own",
-  "no_support_token" : "The token is not supported yet",
+  "no_support_token": "The token is not supported yet",
   "err_empty_nfts": "Empty list NFT",
   "err_invalid_wallet_add": "Invalid wallet address",
   "err_not_owner_nft": "You are not the owner of this collectible, so you can not add it",
@@ -218,11 +217,14 @@
   "import_duplicate": "The account you're are trying to import is a duplicate",
   "not_import": "Can not get wallet address",
   "feature_coming_soon": "FEATURE \nCOMING SOON!",
-  "back":"Back",
+  "back": "Back",
   "change_pw_fail": "Old password is incorrect",
   "change_pword_success": "Password changed",
   "undefine_err_nft": "Something went wrong",
   "duplicated_import_nft": "Your Account is duplicated",
   "send_token": "Send Token",
-  "send_nft": "Send NFT"
+  "send_nft": "Send NFT",
+  "copied_address": "Copied address!",
+  "copied_private_key": "Copied private key!",
+  "copied_seed_phrase": "Copied seed phrase!"
 }
