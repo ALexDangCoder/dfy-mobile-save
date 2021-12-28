@@ -49,9 +49,14 @@ fun Context.setConfig(channel: MethodChannel?, appLock: Boolean, faceID: Boolean
     channel?.invokeMethod("setConfigCallback", hasMap)
 }
 
-fun Context.exportWallet(channel: MethodChannel?, password: String, walletAddress: String) {
+fun Context.exportWallet(
+    channel: MethodChannel?,
+    password: String,
+    isFaceId: Boolean,
+    walletAddress: String
+) {
     val appPreference = AppPreference(this)
-    if (password == appPreference.password) {
+    if (password == appPreference.password || isFaceId) {
         val hasMap = HashMap<String, Any>()
         appPreference.getListWallet().forEach {
             if (it.walletAddress == walletAddress) {

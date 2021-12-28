@@ -341,15 +341,19 @@ class MainActivity : FlutterFragmentActivity() {
                     )
                 }
                 "exportWallet" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
                     val password =
                         call.argument<String>("password")
                             ?: return@setMethodCallHandler
-                    val walletAddress =
-                        call.argument<String>("walletAddress")
+                    val isFaceId =
+                        call.argument<Boolean>("isFaceId")
                             ?: return@setMethodCallHandler
                     this.exportWallet(
                         channel = channel,
                         password = password,
+                        isFaceId = isFaceId,
                         walletAddress = walletAddress
                     )
                 }
