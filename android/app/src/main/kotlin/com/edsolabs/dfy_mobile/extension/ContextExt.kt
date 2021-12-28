@@ -471,6 +471,8 @@ fun Context.deleteNft(
                 data.item.addAll(listNft)
                 listCollection.add(data)
             }
+        } else {
+            listCollection.add(it)
         }
     }
     appPreference.saveListNft(listCollection)
