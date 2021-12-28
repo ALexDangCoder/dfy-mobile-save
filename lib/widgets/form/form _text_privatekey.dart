@@ -1,11 +1,13 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/widgets/toast/toast_copy.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/widget/Copied.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class FromTextPrivateKey extends StatelessWidget {
+class FromTextPrivateKey extends StatefulWidget {
   final String urlPrefixIcon;
   final String title;
   final String urlSuffixIcon;
@@ -18,6 +20,21 @@ class FromTextPrivateKey extends StatelessWidget {
     required this.urlSuffixIcon,
     required this.titleCopy,
   }) : super(key: key);
+
+  @override
+  State<FromTextPrivateKey> createState() => _FromTextPrivateKeyState();
+}
+
+class _FromTextPrivateKeyState extends State<FromTextPrivateKey> {
+  late FToast fToast;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +54,7 @@ class FromTextPrivateKey extends StatelessWidget {
           Row(
             children: [
               Image.asset(
-                urlPrefixIcon,
+                widget.urlPrefixIcon,
                 height: 20.h,
                 width: 20.14.w,
               ),
@@ -47,7 +64,7 @@ class FromTextPrivateKey extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 child: Text(
-                  title,
+                  widget.title,
                   style: textNormal(
                     null,
                     16,
@@ -58,16 +75,24 @@ class FromTextPrivateKey extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              FlutterClipboard.copy(titleCopy);
-              toast_copy();
+              FlutterClipboard.copy(widget.titleCopy);
+              fToast.showToast(
+                child: Copied(
+                  title: S.current.copied_private_key,
+                ),
+                gravity: ToastGravity.CENTER,
+                toastDuration: const Duration(
+                  seconds: 2,
+                ),
+              );
             },
             child: Container(
-              child: urlSuffixIcon.isNotEmpty
+              child: widget.urlSuffixIcon.isNotEmpty
                   ? Image.asset(
-                urlSuffixIcon,
-                height: 20.67.h,
-                width: 20.14.w,
-              )
+                      widget.urlSuffixIcon,
+                      height: 20.67.h,
+                      width: 20.14.w,
+                    )
                   : null,
             ),
           ),
