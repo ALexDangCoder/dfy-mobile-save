@@ -7,6 +7,7 @@ import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_account.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -229,14 +230,10 @@ class _SelectAccState extends State<SelectAcc> {
                                                         ),
                                                         spaceW4,
                                                         Text(
-                                                          widget.bloc
-                                                              .formatAddress(
-                                                            snapshot
-                                                                    .data?[
-                                                                        index]
-                                                                    .addressWallet ??
-                                                                '',
-                                                          ),
+                                                          snapshot.data?[index]
+                                                                  .addressWallet
+                                                                  ?.formatAddressWallet() ??
+                                                              '',
                                                           style:
                                                               textNormalCustom(
                                                             AppTheme.getInstance()

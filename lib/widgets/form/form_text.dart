@@ -47,7 +47,7 @@ class FromText extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 child: Text(
-                  title.handleString(),
+                  title.formatAddressWalletConfirm(),
                   style: textNormal(
                     AppTheme.getInstance().whiteColor(),
                     16,
