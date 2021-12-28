@@ -50,16 +50,19 @@ class _CardNFTState extends State<CardNFT> {
       },
       child: Row(
         children: [
-          Container(
+          SizedBox(
             height: 102.h,
             width: 92.w,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(widget.objNFT.img ?? ''),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(10.r)),
+              child: CachedNetworkImage(
+                placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.getInstance().bgBtsColor(),
+                  ),
+                ),
+                imageUrl: widget.objNFT.img ?? '',
                 fit: BoxFit.cover,
-              ),
-              borderRadius: BorderRadius.circular(
-                10.r,
               ),
             ),
           ),
