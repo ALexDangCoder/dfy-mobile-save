@@ -591,7 +591,6 @@ fun Context.importNft(
         nftModel.item.addAll(listNft)
         listCollectionSupport.add(nftModel)
         listCollectionSupport.addAll(listAllCollection.filter { it.walletAddress != walletAddress })
-//        Log.d("kiemtra1", "first - " + listCollectionSupport.toString())
     } else {
         val contractNft = objectNft.getString("contract")
         if (checkAddress.collectionAddress == contractNft) {
@@ -606,7 +605,7 @@ fun Context.importNft(
             while (size < listNftJson.length()) {
                 val data = listNftJson.getJSONObject(size)
                 val id = data.getString("id")
-                if (checkAddress.item.firstOrNull { it.id != id } == null) {
+                if (checkAddress.item.firstOrNull { it.id == id } == null) {
                     listNft.add(
                         ItemNftModel(
                             id = id,
