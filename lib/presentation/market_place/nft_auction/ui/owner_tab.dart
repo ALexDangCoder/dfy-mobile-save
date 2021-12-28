@@ -11,7 +11,7 @@ class OwnerTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 20,
+      itemCount: 30,
       itemBuilder: (context, index) {
         return _buildItemOwner(index);
       },

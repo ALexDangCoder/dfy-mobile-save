@@ -15,7 +15,7 @@ class BidTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 20,
+      itemCount: 5,
       itemBuilder: (context, index) {
         return _buildItemBid(index);
       },
