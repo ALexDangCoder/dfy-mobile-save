@@ -305,7 +305,7 @@ class _WalletState extends State<WalletScreen>
                                       );
                                     },
                                   );
-                                } else if (snapshot.data?.isEmpty ?? true) {
+                                } else if (snapshot.data?.isEmpty ?? false) {
                                   return const SizedBox();
                                 }
                                 return SizedBox(
