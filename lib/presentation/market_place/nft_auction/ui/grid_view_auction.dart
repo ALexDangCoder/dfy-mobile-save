@@ -51,7 +51,7 @@ class GridViewAuction extends StatelessWidget {
           title: S.current.nft_on_auction,
           isImage: true,
           text: ImageAssets.ic_close,
-          callback: () {
+          onRightClick: () {
             Navigator.pop(context);
           },
           child: Container(

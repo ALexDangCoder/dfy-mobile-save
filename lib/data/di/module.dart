@@ -1,12 +1,11 @@
 import 'package:Dfy/data/di/flutter_transformer.dart';
 import 'package:Dfy/data/repository_impl/price_repository_impl.dart';
-import 'package:Dfy/data/services/price_service.dart';
-import 'package:Dfy/domain/repository/price_repository.dart';
-import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/data/repository_impl/token_repository_impl.dart';
+import 'package:Dfy/data/services/price_service.dart';
 import 'package:Dfy/data/services/token_service.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/repository/price_repository.dart';
+import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';

@@ -27,7 +27,7 @@ class _NFTListOnSaleState extends State<NFTListOnSale> {
       body: Align(
         alignment: Alignment.bottomCenter,
         child: BaseBottomSheet(
-          callback: () {
+          onRightClick: () {
             showModalBottomSheet(
               backgroundColor: Colors.black,
               isScrollControlled: true,

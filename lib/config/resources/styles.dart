@@ -82,8 +82,6 @@ TextStyle tokenDetailAmount({
     fontWeight: weight,
     fontStyle: FontStyle.normal,
     fontSize: fontSize.sp,
-    fontStyle: fontStyle,
-    fontSize: fontSize,
     decoration: decoration,
   );
 }
@@ -109,11 +107,12 @@ TextStyle textNormalCustom(
     fontSize: fontSize?.sp ?? 14.sp,
   );
 }
+
 TextStyle textNormalCustomUnderline(
-    Color? color,
-    double? fontSize,
-    FontWeight? fontWeight,
-    ) {
+  Color? color,
+  double? fontSize,
+  FontWeight? fontWeight,
+) {
   return GoogleFonts.sen(
     color: color ?? Colors.white,
     fontWeight: fontWeight ?? FontWeight.w500,
@@ -133,12 +132,13 @@ TextStyle textValueNFT = GoogleFonts.sourceSansPro(
   fontWeight: FontWeight.w400,
   fontSize: 16.sp,
 );
-TextStyle richTextBlue = GoogleFonts.sen(
+TextStyle richTextBlue = GoogleFonts.sourceSansPro(
   color: const Color(0xff46BCFF),
   fontWeight: FontWeight.w400,
   fontSize: 16.sp,
   decoration: TextDecoration.underline,
-);TextStyle richTextWhite = GoogleFonts.sen(
+);
+TextStyle richTextWhite = GoogleFonts.sen(
   color: AppTheme.getInstance().textThemeColor(),
   fontWeight: FontWeight.w400,
   fontSize: 16,
@@ -155,4 +155,3 @@ TextStyle unselectLabel = GoogleFonts.sen(
   fontWeight: FontWeight.w600,
   fontSize: 14,
 );
-

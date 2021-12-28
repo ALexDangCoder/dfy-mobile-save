@@ -23,7 +23,7 @@ class _NftListOnPawnState extends State<NftListOnPawn> {
       body: Align(
         alignment: Alignment.bottomCenter,
         child: BaseBottomSheet(
-          callback: () {
+          onRightClick: () {
             showModalBottomSheet(
               backgroundColor: Colors.black,
               isScrollControlled: true,

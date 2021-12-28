@@ -4,6 +4,7 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/model/collection.dart';
 import 'package:Dfy/domain/model/nft_item.dart';
 import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';

@@ -28,14 +28,17 @@ Result<T> runCatching<T>(T Function() block) {
   }
 }
 
-Future<Result<T>> runCatchingAsync<T>(Future<T> Function() block) async {
+Future<Result<E>> runCatchingAsync<T, E>(
+    Future<T> Function() block,
+    E Function(T) map,
+    ) async {
   final connected = await CheckerNetwork.checkNetwork();
   if (!connected) {
     return Result.error(NoNetworkException());
   }
   try {
     final response = await block();
-    return Result.success(response);
+    return Result.success(map(response));
   } catch (e) {
     logger.e(e);
     if (e is DioError) {
@@ -50,3 +53,4 @@ Future<Result<T>> runCatchingAsync<T>(Future<T> Function() block) async {
     }
   }
 }
+

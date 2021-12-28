@@ -360,6 +360,7 @@ class LightApp extends AppColor {
     return unselectedTabLabel;
   }
 
+  @override
   Color titleTabColor() {
     return purple;
   }
@@ -599,6 +600,7 @@ class DarkApp extends AppColor {
     throw UnimplementedError();
   }
 
+  @override
   Color borderItemColor() {
     // TODO: implement borderItemColor
     throw UnimplementedError();

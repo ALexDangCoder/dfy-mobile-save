@@ -1,6 +1,3 @@
-import 'package:Dfy/domain/locals/prefs_service.dart';
-import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/widgets/dialog/dialog_utils.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -30,14 +27,14 @@ abstract class BaseState<T extends BaseScreen> extends State<T> {
     super.dispose();
   }
 
-  // void _showUnAuthDialog() {
-  //   DialogUtils.showAlert(
-  //     content: S.current.unauthorized,
-  //     onConfirm: () {
-  //       PrefsService.clearAuthData();
-  //       //todo
-  //       // openScreenAndRemoveUtil(context, AppRouter.);
-  //     },
-  //   );
-  // }
+// void _showUnAuthDialog() {
+//   DialogUtils.showAlert(
+//     content: S.current.unauthorized,
+//     onConfirm: () {
+//       PrefsService.clearAuthData();
+//       //todo
+//       // openScreenAndRemoveUtil(context, AppRouter.);
+//     },
+//   );
+// }
 }

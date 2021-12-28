@@ -11,6 +11,10 @@ enum MenuType { FEED, NOTIFICATIONS, POLICY, LOGOUT }
 enum AuthMode { LOGIN, REGISTER }
 
 enum AuthType { ACCOUNT, PHONE }
+enum TypePropertiesNFT {SALE, AUCTION,PAWN}
+enum TypeHotAuction { YES, NO }
+enum TypeNFT { HARD_NFT, SOFT_NFT }
+enum TypeImage { IMAGE, VIDEO }
 
 enum PageTransitionType {
   FADE,
@@ -31,7 +35,7 @@ const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';
 
 const String TRANSACTION_TOKEN = '0';
-const String TRANSACTION_NFT= '1';
+const String TRANSACTION_NFT = '1';
 
 const EN_CODE = 'en';
 const VI_CODE = 'vi';

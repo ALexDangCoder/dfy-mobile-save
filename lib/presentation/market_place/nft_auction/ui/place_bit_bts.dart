@@ -23,7 +23,7 @@ class _PlaceBidState extends State<PlaceBid> {
       title: S.current.place_a_bid,
       isImage: true,
       text: ImageAssets.ic_close,
-      callback: () {
+      onRightClick: () {
         Navigator.pop(context);
       },
       child: Container(
@@ -139,23 +139,23 @@ class _PlaceBidState extends State<PlaceBid> {
             colors: AppTheme.getInstance().gradientButtonColor(),
           ),
           onPressed: () {
-            showModalBottomSheet(
-              backgroundColor: Colors.transparent,
-              isScrollControlled: true,
-              context: context,
-              builder: (context) {
-                return const ConfirmBlockchainCategory(
-                  nameWallet: 'TestWallet',
-                  nameTokenWallet: 'BNB',
-                  balanceWallet: 0.64,
-                  typeConfirm: TYPE_CONFIRM.PLACE_BID,
-                  addressFrom: '0xfff',
-                  addressTo: '0xfff',
-                  imageWallet: ImageAssets.symbol,
-                  amount: 50000,
-                );
-              },
-            );
+            // showModalBottomSheet(
+            //   backgroundColor: Colors.transparent,
+            //   isScrollControlled: true,
+            //   context: context,
+            //   builder: (context) {
+            //     return const ConfirmBlockchainCategory(
+            //       nameWallet: 'TestWallet',
+            //       nameTokenWallet: 'BNB',
+            //       balanceWallet: 0.64,
+            //       typeConfirm: TYPE_CONFIRM.PLACE_BID,
+            //       addressFrom: '0xfff',
+            //       addressTo: '0xfff',
+            //       imageWallet: ImageAssets.symbol,
+            //       amount: 50000,
+            //     );
+            //   },
+            // );
           },
           child: Text(
             S.current.place_a_bid,

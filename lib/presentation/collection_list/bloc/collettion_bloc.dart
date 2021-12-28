@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 class CollectionBloc {
   CollectionBloc() {
-    getCollection();
+    //getCollection();
   }
 
   //getlistcollection
@@ -24,20 +24,20 @@ class CollectionBloc {
   BehaviorSubject<bool> isSports = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isMusic = BehaviorSubject.seeded(false);
 
-  CollectionRepository get _collectionRepository => Get.find();
-  List<CollectionResponse> arg = [];
-
-  Future<void> getCollection() async {
-    final Result<List<CollectionResponse>> result =
-        await _collectionRepository.getCollection();
-    result.when(
-      success: (res) {
-        arg = res.toList();
-        list.sink.add(arg);
-      },
-      error: (error) {},
-    );
-  }
+  // CollectionRepository get _collectionRepository => Get.find();
+  // List<CollectionResponse> arg = [];
+  //
+  // Future<void> getCollection() async {
+  //   final Result<List<CollectionResponse>> result =
+  //       await _collectionRepository.getCollection();
+  //   result.when(
+  //     success: (res) {
+  //       arg = res.toList();
+  //       list.sink.add(arg);
+  //     },
+  //     error: (error) {},
+  //   );
+  //}
 
   void dispone() {
     isHardNft.close();

@@ -17,6 +17,7 @@ import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/column_button/buil_column.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/coming_soon.dart';
+import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -200,22 +201,22 @@ class _NFTDetailState extends State<NFTDetail> {
                                 _buildRow(
                                   title: S.current.description,
                                   detail: nft.description?.parseHtml() ?? '',
-                                  type: TextType.NORM,
+                                  type: TextType.NORMAL,
                                 ),
                                 _buildRow(
                                   title: S.current.nft_standard,
                                   detail: nft.standard ?? '',
-                                  type: TextType.NORM,
+                                  type: TextType.NORMAL,
                                 ),
                                 _buildRow(
                                   title: S.current.contract,
                                   detail: nft.contract ?? '',
-                                  type: TextType.RICH,
+                                  type: TextType.RICH_BLUE,
                                 ),
                                 _buildRow(
                                   title: S.current.block_chain,
                                   detail: nft.blockchain ?? '',
-                                  type: TextType.NORM,
+                                  type: TextType.NORMAL,
                                 ),
                                 SizedBox(
                                   height: 24.h,
@@ -498,7 +499,7 @@ class _NFTDetailState extends State<NFTDetail> {
               ),
             ),
           ),
-          if (type == TextType.NORM)
+          if (type == TextType.NORMAL)
             SizedBox(
               width: 225.w,
               child: Align(
@@ -524,7 +525,7 @@ class _NFTDetailState extends State<NFTDetail> {
                             launch('$BSC_SCAN$detail');
                           },
                         text: detail.handleString(),
-                        style: richTextValueNFT,
+                        style: richTextBlue,
                       ),
                     ],
                   ),

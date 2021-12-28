@@ -111,22 +111,22 @@ class _BuyNFTState extends State<BuyNFT> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (BuildContext context) {
-                        return const ConfirmBlockchainCategory(
-                          nameWallet: 'Test wallet',
-                          nameTokenWallet: 'BNB',
-                          balanceWallet: 0.551,
-                          typeConfirm: TYPE_CONFIRM.BUY_NFT,
-                          addressFrom: '0xFE5788e2...EB7144fd0',
-                          addressTo: '0xf94138c9...43FE932eA',
-                          imageWallet: ImageAssets.symbol,
-                        );
-                      },
-                      context: context,
-                    );
+                    // showModalBottomSheet(
+                    //   isScrollControlled: true,
+                    //   backgroundColor: Colors.transparent,
+                    //   builder: (BuildContext context) {
+                    //     return const ConfirmBlockchainCategory(
+                    //       nameWallet: 'Test wallet',
+                    //       nameTokenWallet: 'BNB',
+                    //       balanceWallet: 0.551,
+                    //       typeConfirm: TYPE_CONFIRM.BUY_NFT,
+                    //       addressFrom: '0xFE5788e2...EB7144fd0',
+                    //       addressTo: '0xf94138c9...43FE932eA',
+                    //       imageWallet: ImageAssets.symbol,
+                    //     );
+                    //   },
+                    //   context: context,
+                    // );
                   },
                   child: ButtonGold(
                     title: '${S.current.buy} NFT',

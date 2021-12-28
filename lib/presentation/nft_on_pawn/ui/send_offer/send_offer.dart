@@ -221,22 +221,22 @@ class _SendOfferState extends State<SendOffer> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (_) {
-                        return const ConfirmBlockchainCategory(
-                          nameWallet: 'Test Wallet',
-                          nameTokenWallet: 'BNB',
-                          balanceWallet: 0.551,
-                          typeConfirm: TYPE_CONFIRM.SEND_OFFER,
-                          addressFrom: '0xFE5788e2...EB7144fd0',
-                          addressTo: '0xf94138c9...43FE932eA',
-                          imageWallet: ImageAssets.symbol,
-                        );
-                      },
-                    );
+                    // showModalBottomSheet(
+                    //   context: context,
+                    //   isScrollControlled: true,
+                    //   backgroundColor: Colors.transparent,
+                    //   builder: (_) {
+                    //     return const ConfirmBlockchainCategory(
+                    //       nameWallet: 'Test Wallet',
+                    //       nameTokenWallet: 'BNB',
+                    //       balanceWallet: 0.551,
+                    //       typeConfirm: TYPE_CONFIRM.SEND_OFFER,
+                    //       addressFrom: '0xFE5788e2...EB7144fd0',
+                    //       addressTo: '0xf94138c9...43FE932eA',
+                    //       imageWallet: ImageAssets.symbol,
+                    //     );
+                    //   },
+                    // );
                   },
                   child: ButtonGold(
                     title: S.current.send_offer,
