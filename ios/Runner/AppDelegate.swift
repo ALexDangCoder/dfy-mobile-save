@@ -50,8 +50,8 @@ extension AppDelegate {
             }
         }
         if call.method == "signTransactionToken" {
-            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let toAddress = arguments["toAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let amount = arguments["amount"] as? String {
-                result(signTransactionToken(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, amount: amount))
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let toAddress = arguments["toAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let amount = arguments["amount"] as? String, let gasFee = arguments["gasFee"] as? String, let symbol = arguments["symbol"] as? String {
+                result(signTransactionToken(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, amount: amount, gasFee: gasFee, symbol: symbol))
             }
         }
         if call.method == "getTokens" {
@@ -164,8 +164,8 @@ extension AppDelegate {
 //            }
 //        }
         if call.method == "signTransactionNft" {
-            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let toAddress = arguments["toAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let tokenId = arguments["tokenId"] as? String {
-                result(signTransactionNft(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, tokenId: tokenId))
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let toAddress = arguments["toAddress"] as? String, let tokenAddress = arguments["tokenAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let tokenId = arguments["tokenId"] as? String, let gasFee = arguments["gasFee"] as? String, let symbol = arguments["symbol"] as? String, let amount = arguments["amount"] as? String {
+                result(signTransactionNft(walletAddress: walletAddress, tokenAddress: tokenAddress, toAddress: toAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, tokenId: tokenId, gasFee: gasFee, amount: amount, symbol: symbol))
             }
         }
         
@@ -415,7 +415,7 @@ extension AppDelegate {
         }
         var param = [String: Any]()
         listTokenAddress.forEach { (tokenModel) in
-            let item = listTokens.filter{ $0.tokenAddress == tokenModel.tokenAddress }
+            let item = listTokens.first(where: {$0.tokenAddress == tokenModel.tokenAddress})
             if item == nil {
                 listTokens.append(tokenModel)
             }
@@ -654,7 +654,7 @@ extension AppDelegate {
                                       chainId: String,
                                       gasPrice: String,
                                       gasLimit: String,
-                                      amount: String) -> [String: Any] {
+                                      amount: String, gasFee: String, symbol: String) -> [String: Any] {
         var param = [String: Any]()
         let walletModel = SharedPreference.shared.getListWallet().first(where: {$0.walletAddress == walletAddress})
         if let walletModel = walletModel, !walletModel.privateKey.isEmpty {
@@ -664,13 +664,13 @@ extension AppDelegate {
                 let signerInput = EthereumSigningInput.with {
                     $0.nonce = BigInt(nonce)!.serialize()
                     $0.chainID = BigInt(chainId)!.serialize()
-                    $0.gasPrice = BigInt(gasPrice)!.serialize()
+                    $0.gasPrice = BigInt(gasPrice.handleAmount(decimal: 9))!.serialize()
                     $0.gasLimit = BigInt(gasLimit)!.serialize()
                     $0.toAddress = toAddress
                     $0.privateKey = privateKey.data
                     $0.transaction = EthereumTransaction.with {
                         $0.transfer = EthereumTransaction.Transfer.with {
-                            $0.amount = BigInt(amount)!.serialize()
+                            $0.amount = BigInt(amount.handleAmount(decimal: 18))!.serialize()
                         }
                     }
                 }
@@ -683,14 +683,14 @@ extension AppDelegate {
                 let signerInput = EthereumSigningInput.with {
                     $0.nonce = BigInt(nonce)!.serialize()
                     $0.chainID = BigInt(chainId)!.serialize()
-                    $0.gasPrice = BigInt(gasPrice)!.serialize()
+                    $0.gasPrice = BigInt(gasPrice.handleAmount(decimal: 9))!.serialize()
                     $0.gasLimit = BigInt(gasLimit)!.serialize()
                     $0.toAddress = tokenAddress
                     $0.privateKey = privateKey.data
                     $0.transaction = EthereumTransaction.with {
                         $0.erc20Transfer = EthereumTransaction.ERC20Transfer.with {
                             $0.to = toAddress
-                            $0.amount = BigInt(amount)!.serialize()
+                            $0.amount = BigInt(amount.handleAmount(decimal: 18))!.serialize()
                         }
                     }
                 }
@@ -704,6 +704,16 @@ extension AppDelegate {
             param["isSuccess"] = false
             param["signedTransaction"] = ""
         }
+        param["walletAddress"] = walletAddress
+        param["toAddress"] = toAddress
+        param["tokenAddress"] = tokenAddress
+        param["nonce"] = nonce
+        param["chainId"] = chainId
+        param["gasPrice"] = gasPrice
+        param["gasLimit"] = gasLimit
+        param["gasFee"] = gasFee
+        param["amount"] = amount
+        param["symbol"] = symbol
         chatChanel?.invokeMethod("signTransactionTokenCallback", arguments: param)
         return param
     }
@@ -715,7 +725,7 @@ extension AppDelegate {
                                     chainId: String,
                                     gasPrice: String,
                                     gasLimit: String,
-                                    tokenId: String) -> [String: Any] {
+                                    tokenId: String, gasFee: String, amount: String, symbol: String) -> [String: Any] {
         var param = [String: Any]()
         let walletModel = SharedPreference.shared.getListWallet().first(where: {$0.walletAddress == walletAddress})
         if let walletModel = walletModel, !walletModel.privateKey.isEmpty {
@@ -724,7 +734,7 @@ extension AppDelegate {
                 $0.nonce = BigInt(nonce)!.serialize()
                 $0.chainID = BigInt(chainId)!.serialize()
                 $0.gasPrice = BigInt(gasPrice)!.serialize()
-                $0.gasLimit = BigInt(gasLimit)!.serialize()
+                $0.gasLimit = BigInt(gasLimit.handleAmount(decimal: 9))!.serialize()
                 $0.toAddress = tokenAddress
                 $0.privateKey = privateKey.data
                 $0.transaction = EthereumTransaction.with {
@@ -749,6 +759,17 @@ extension AppDelegate {
             param["collectionAddress"] = ""
             param["nftId"] = ""
         }
+        param["walletAddress"] = walletAddress
+        param["toAddress"] = toAddress
+        param["collectionAddress"] = tokenAddress
+        param["nonce"] = nonce
+        param["chainId"] = chainId
+        param["gasPrice"] = gasPrice
+        param["gasLimit"] = gasLimit
+        param["gasFee"] = gasFee
+        param["amount"] = amount
+        param["symbol"] = symbol
+        param["nftId"] = tokenId
         chatChanel?.invokeMethod("signTransactionNftCallback", arguments: param)
         return param
     }
@@ -768,11 +789,17 @@ extension Data {
 
 extension String {
     
-    /// Create `Data` from hexadecimal string representation
-    ///
-    /// This creates a `Data` object from hex string. Note, if the string has any spaces or non-hex characters (e.g. starts with '<' and with a '>'), those are ignored and only hex characters are processed.
-    ///
-    /// - returns: Data represented by this hexadecimal string.
+    subscript(_ range: CountableRange<Int>) -> String {
+        let start = index(startIndex, offsetBy: max(0, range.lowerBound))
+        let end = index(start, offsetBy: min(self.count - range.lowerBound,
+                                             range.upperBound - range.lowerBound))
+        return String(self[start..<end])
+    }
+
+    subscript(_ range: CountablePartialRangeFrom<Int>) -> String {
+        let start = index(startIndex, offsetBy: max(0, range.lowerBound))
+         return String(self[start...])
+    }
     
     var hexadecimal: Data? {
         var data = Data(capacity: count / 2)
@@ -789,4 +816,37 @@ extension String {
         return data
     }
     
+    func handleAmount(decimal: Int) -> String {
+        let parts = self.split(separator: ".")
+        if self.isEmpty {
+            return "0"
+        } else {
+            if parts.count == 1 {
+                var buffer = ""
+                var size = 0
+                while (size < decimal) {
+                    buffer = buffer + "0"
+                    size+=1
+                }
+                return self + buffer
+            } else if (parts.count > 1) {
+                if parts[1].count >= decimal {
+                    let part = String(parts[1])
+                    return parts[0] + String(part[0..<decimal])
+                } else {
+                    let valueAmount = parts[0]
+                    let valueDecimal = parts[1]
+                    var buffer = ""
+                    var size = valueDecimal.count
+                    while (size < decimal) {
+                        buffer = buffer + "0"
+                        size+=1
+                    }
+                    return valueAmount + valueDecimal + buffer
+                }
+            } else {
+                return "0"
+            }
+        }
+    }
 }
