@@ -1,3 +1,4 @@
+import 'package:Dfy/widgets/views/coming_screen.dart';
 import 'package:flutter/material.dart';
 
 class PawnScreen extends StatefulWidget {
@@ -20,8 +21,6 @@ class _PawnState extends State<PawnScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(color : Colors.amber),
-    );
+    return const ComingScreen();
   }
 }
