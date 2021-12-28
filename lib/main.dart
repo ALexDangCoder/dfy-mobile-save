@@ -107,7 +107,6 @@ class _MyAppState extends State<MyApp> {
         );
         if (methodCall.arguments['isWalletExist']) {
           await PrefsService.saveFirstAppConfig('false');
-          print('isWalletExit ${methodCall.arguments['isWalletExist']}');
         }
         break;
       case 'importNftCallback':
