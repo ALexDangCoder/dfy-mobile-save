@@ -22,58 +22,76 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 16.w, left: 16.w),
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().itemBtsColors(),
-        borderRadius: BorderRadius.all(Radius.circular(20.r)),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 222.h,
+        minWidth: 343.w,
       ),
-      padding: EdgeInsets.only(top: 16.h, left: 13.w, right: 13.w),
-      height: 222.h,
-      width: 343.w,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                S.current.your_seed,
-                style: textNormal(
-               Colors.white,
-                  16.sp,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  FlutterClipboard.copy(bLocCreateSeedPhrase.passPhrase);
-                  toast_copy();
-                },
-                child: Image.asset(
-                  ImageAssets.ic_copy,
-                  height: 17.67.h,
-                  width: 19.14.w,
-                  color: AppTheme.getInstance().fillColor(),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 21.h,
-          ),
-          Wrap(
-            spacing: 5.w,
-            runSpacing: 12.h,
-            children: List<Widget>.generate(
-              listTitle.length,
-              (int index) {
-                return ItemSeedPhrase(
-                  title: ' ${listTitle[index]}',
-                );
-              },
+      child: Container(
+        margin: EdgeInsets.only(
+          right: 16.w,
+          left: 16.w,
+          top: 16.h,
+          bottom: 16.h,
+        ),
+        decoration: BoxDecoration(
+          color: AppTheme.getInstance().itemBtsColors(),
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              20.r,
             ),
           ),
-        ],
+        ),
+        padding: EdgeInsets.only(
+          top: 16.h,
+          left: 13.w,
+          right: 13.w,
+          bottom: 10.h,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  S.current.your_seed,
+                  style: textNormal(
+                    Colors.white,
+                    16,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    FlutterClipboard.copy(bLocCreateSeedPhrase.passPhrase);
+                    toast_copy();
+                  },
+                  child: Image.asset(
+                    ImageAssets.ic_copy,
+                    height: 17.67.h,
+                    width: 19.14.w,
+                    color: AppTheme.getInstance().fillColor(),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 21.h,
+            ),
+            Wrap(
+              spacing: 5.w,
+              runSpacing: 12.h,
+              children: List<Widget>.generate(
+                listTitle.length,
+                (int index) {
+                  return ItemSeedPhrase(
+                    title: ' ${listTitle[index]}',
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -27,107 +28,148 @@ class _ChooseTokenState extends State<ChooseToken> {
         children: [
           spaceH12,
           FormSearch(
-            hint: S.current.search_token,
+            hint: S.current.search,
             bloc: widget.bloc,
-            urlIcon1: ImageAssets.ic_search,
+            urlIcon: ImageAssets.ic_search,
           ),
           spaceH12,
           line,
-          spaceH24,
           StreamBuilder(
             stream: widget.bloc.getListTokenModel,
-            builder: (context, snapshot) {
-              return Expanded(
-                child: ListView.builder(
-                  itemCount: widget.bloc.getListTokenModel.value.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        final FocusScopeNode currentFocus =
-                            FocusScope.of(context);
-
-                        if (!currentFocus.hasPrimaryFocus) {
-                          currentFocus.unfocus();
-                        }
-                      },
-                      child: SizedBox(
-                        height: 73.h,
-                        width: 322.w,
-                        child: ListTileSwitch(
-                          enabled: false,
-                          switchScale: 1,
-                          value: widget
-                                  .bloc.getListTokenModel.value[index].isShow ??
-                              false,
-                          leading: SizedBox(
-                            width: 46.w,
-                            height: 46.h,
-                            child: Image.asset(
-                              widget.bloc.getListTokenModel.value[index]
-                                      .iconToken ??
-                                  '',
-                            ),
-                          ),
-                          onChanged: (value) {
-                            widget.bloc.getListTokenModel.value[index].isShow =
-                                value;
-                            widget.bloc.setShowedToken(
-                              walletAddress: 'walletAddress',
-                              tokenID: widget.bloc.getListTokenModel
-                                      .value[index].tokenId ??
-                                  0,
-                              isShow: value,
-                            );
-                            widget.bloc
-                                .sortList(widget.bloc.getListTokenModel.value);
-                            setState(() {});
-                          },
-                          switchActiveColor: AppTheme.getInstance().fillColor(),
-                          switchType: SwitchType.cupertino,
-                          title: Row(
-                            children: [
-                              Text(
-                                widget.bloc.getListTokenModel.value[index]
-                                        .nameToken ??
-                                    '',
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().whiteColor(),
-                                  16.sp,
-                                  FontWeight.w600,
-                                ),
-                              ),
-                              spaceW6,
-                              Text(
-                                widget.bloc.getListTokenModel.value[index]
-                                        .nameTokenSymbol ??
-                                    '',
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().whiteWithOpacity(),
-                                  18.sp,
-                                  FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                          subtitle: Text(
-                            '${widget.bloc.getListTokenModel.value[index].amountToken?.toStringAsFixed(5)}' +
-                                ' ${widget.bloc.getListTokenModel.value[index].nameTokenSymbol ?? ''} ',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteWithOpacityFireZero(),
-                              16.sp,
-                              FontWeight.w400,
-                            ),
+            builder: (context, AsyncSnapshot<List<ModelToken>> snapshot) {
+              if (snapshot.data?.isEmpty ?? false) {
+                return Center(
+                  child: Column(
+                    children: [
+                      spaceH40,
+                      Image.asset(ImageAssets.img_search_empty),
+                      Text(
+                        S.current.no_result_found,
+                        style: textNormalCustom(
+                          Colors.white.withOpacity(0.7),
+                          20,
+                          FontWeight.w700,
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                return Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.only(
+                      top: 24.h,
+                    ),
+                    itemCount: widget.bloc.getListTokenModel.value.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          final FocusScopeNode currentFocus =
+                              FocusScope.of(context);
+                          if (!currentFocus.hasPrimaryFocus) {
+                            currentFocus.unfocus();
+                          }
+                        },
+                        child: SizedBox(
+                          height: 73,
+                          width: 322,
+                          child: showItemToken(
+                            widget.bloc.getListTokenModel.value[index]
+                                .nameShortToken,
+                            index,
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              );
+                      );
+                    },
+                  ),
+                );
+              }
             },
           ),
         ],
       ),
     );
+  }
+
+  Widget showItemToken(String shortToken, int index) {
+    if (shortToken == 'BNB' || shortToken == 'DFY') {
+      return ListTileSwitch(
+        enabled: false,
+        switchScale: 1,
+        value: widget.bloc.getListTokenModel.value[index].isShow,
+        leading: Image.network(
+          widget.bloc.getListTokenModel.value[index].iconToken,
+        ),
+        onChanged: (value) {},
+        switchActiveColor: Colors.grey,
+        switchType: SwitchType.cupertino,
+        title: Row(
+          children: [
+            Text(
+              widget.bloc.getListTokenModel.value[index].nameToken,
+              style: textNormalCustom(
+                Colors.white,
+                16,
+                FontWeight.w600,
+              ),
+            ),
+            spaceW6,
+          ],
+        ),
+        subtitle: Text(
+          widget.bloc.getListTokenModel.value[index].nameShortToken,
+          style: textNormalCustom(
+            const Color.fromRGBO(255, 255, 255, 0.5),
+            16,
+            FontWeight.w400,
+          ),
+          textAlign: TextAlign.start,
+        ),
+      );
+    } else {
+      return ListTileSwitch(
+        enabled: false,
+        switchScale: 1,
+        value: widget.bloc.getListTokenModel.value[index].isShow,
+        leading: Image.network(
+          widget.bloc.getListTokenModel.value[index].iconToken,
+        ),
+        onChanged: (value) {
+          widget.bloc.getListTokenModel.value[index].isShow = value;
+          widget.bloc.setShowedToken(
+            walletAddress:
+                widget.bloc.getListTokenModel.value[index].walletAddress,
+            isShow: value,
+            tokenAddress:
+                widget.bloc.getListTokenModel.value[index].tokenAddress,
+            isImport: false,
+          );
+          setState(() {});
+        },
+        switchActiveColor: const Color(0xffE4AC1A),
+        switchType: SwitchType.cupertino,
+        title: Row(
+          children: [
+            Text(
+              widget.bloc.getListTokenModel.value[index].nameToken,
+              style: textNormalCustom(
+                Colors.white,
+                16,
+                FontWeight.w600,
+              ),
+            ),
+            spaceW6,
+          ],
+        ),
+        subtitle: Text(
+          widget.bloc.getListTokenModel.value[index].nameShortToken,
+          style: textNormalCustom(
+            const Color.fromRGBO(255, 255, 255, 0.5),
+            16,
+            FontWeight.w400,
+          ),
+        ),
+      );
+    }
   }
 }

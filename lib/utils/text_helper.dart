@@ -39,11 +39,11 @@ String customCurrency(
 }
 
 extension FormatString on String {
-  String get formatAddress {
+  String formatAddress({int index = 12}) {
     String a = '';
     try {
-      a = '${substring(0, 12)}...${substring(
-        length - 12,
+      a = '${substring(0, index)}...${substring(
+        length - index,
         length,
       )}';
     } catch (e) {
@@ -56,7 +56,6 @@ extension FormatString on String {
 extension FormatDate on DateTime {
   String get stringFromDateTime {
     String result = '';
-
     try {
       result = DateFormat('HH:mm dd/MM/yyyy').format(this);
     } catch (e) {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 class ButtonGradient extends StatelessWidget {
   final Widget child;
   final Gradient gradient;
@@ -20,7 +19,7 @@ class ButtonGradient extends StatelessWidget {
         onPressed();
       },
       child: Container(
-        width: 298.w,
+        // width: 298.w,
         height: 64.h,
         decoration: BoxDecoration(
           gradient: gradient,

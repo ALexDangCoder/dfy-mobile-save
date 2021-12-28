@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_nft.dart';
 import 'package:Dfy/presentation/import_token_nft/ui/import_token.dart';
@@ -7,33 +6,63 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImportToken extends StatelessWidget {
-
-final WalletCubit walletCubit;
-
-  const ImportToken({Key? key, required this.title, required this.icon,
-    required this.keyRouter, required this.walletCubit,})
-      : super(key: key);
-
+  const ImportToken({
+    Key? key,
+    required this.title,
+    required this.icon,
+    required this.keyRouter,
+    required this.addressWallet,
+    required this.cubit,
+  }) : super(key: key);
 
   final int keyRouter;
   final String title;
   final String icon;
-
+  final String addressWallet;
+  final WalletCubit cubit;
 
   @override
   Widget build(BuildContext context) {
     void _checkKey() {
-      switch(keyRouter){
+      switch (keyRouter) {
         case 1:
-          showImportToken(context, walletCubit);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return ImportTokenScreen(
+                  bloc: cubit,
+                  addressWallet: addressWallet,
+                );
+              },
+            ),
+          ).whenComplete(
+            () => {
+              cubit.checkShow.clear(),
+              cubit.listTokenFromWalletCore.clear(),
+              cubit.getTokens(cubit.addressWalletCore),
+              cubit.resetImportToken(),
+            },
+          );
           break;
         case 2:
-        showImportNft(context, walletCubit);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return ImportNft(
+                  bloc: cubit,
+                  addressWallet: addressWallet,
+                );
+              },
+            ),
+          );
           break;
       }
     }
+
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         _checkKey();
       },
       child: Column(

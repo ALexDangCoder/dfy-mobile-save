@@ -13,6 +13,8 @@ class ImageAssets {
   static const String icTabPawnSelected = '$baseImg/ic_tab_pawn_selected.svg';
   static const String icTabPawnUnselected =
       '$baseImg/ic_tab_pawn_unselected.svg';
+  static const String icTabHomeUnselected = '$baseImg/ic_tab_home_unselected.svg';
+  static const String icTabHomeSelected = '$baseImg/ic_tab_home_selected.svg';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';
@@ -33,6 +35,7 @@ class ImageAssets {
   static const String defiText = '$baseImg/defi_text.png';
   static const String ic_save = '$baseImg/ic_save.png';
   static const String ic_search = '$baseImg/ic_search.png';
+  static const String img_search_empty = '$baseImg/img_search_empty.png';
   static const String ic_set_amount = '$baseImg/ic_set_amount.png';
   static const String ic_share = '$baseImg/ic_share.png';
   static const String ic_wallet = '$baseImg/ic_wallet.png';
@@ -54,6 +57,7 @@ class ImageAssets {
   static const String faceID = '$baseImg/face_id_icon.png';
   static const String ic_finger = '$baseImg/finger_icon.png';
   static const String frameGreen = '$baseImg/Frame.png';
+  static const String img_fail = '$baseImg/img_fail.png';
   static const String ic_add = '$baseImg/ic_add.png';
   static const String ic_token = '$baseImg/ic_token.png';
   static const String ic_circle = '$baseImg/ic_circle.png';
@@ -78,7 +82,11 @@ class ImageAssets {
   static const String imgEmpty = '$baseImg/img_empty.png';
   static const String imgTabHome = '$baseImg/img_tab_home.png';
 
+  static const String failSubmit = '$baseImg/failsubmit.png';
+  static const String successSubmit = '$baseImg/successsubmit.png';
+
   static const String ic_to = '$baseImg/ic_to.png';
+  static const String ic_pending = '$baseImg/ic_pending.png';
   static const String ic_ckc = '$baseImg/Vector.png';
   static const String ic_key24 = '$baseImg/key.png';
   static const String ic_from = '$baseImg/ic_from.png';
@@ -97,7 +105,7 @@ class ImageAssets {
   static const String plus = '$baseImg/Plus.png';
   static const String import = '$baseImg/Import.png';
   static const String face_id = '$baseImg/face_id.png';
-  //static const String ic_filter = '$baseImg/Filter.png';
+  static const String img_cash = '$baseImg/cash.png';
 
   static const String symbol = '$baseImg/symbol.png';
 
@@ -123,6 +131,8 @@ class ImageAssets {
   static const String img_art = '$baseImg/img_nature.png';
   static const String img_collection = '$baseImg/img_collection.png';
   static const String img_search_empty = '$baseImg/img_search_empty.png';
+  static const String image_avatar = '$baseImg/ava_0';
+  static const String image_coming = '$baseImg/img_comming.png';
 
   static const String img_back = '$baseImg/img_back.png';
    static const String img_filter = '$baseImg/img_filter.png';
@@ -153,9 +163,6 @@ class ImageAssets {
   static const String ic_xls_svg = '$baseImg/ic_xls_svg.svg';
   static const String ic_expand_svg = '$baseImg/ic_expand_svg.svg';
   static const String ic_collapse_svg = '$baseImg/ic_collapse_svg.svg';
-
-
-
 
 
   static SvgPicture svgAssets(

@@ -1,17 +1,18 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/presentation/import_token_nft/ui/import_nft.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateNFT extends StatelessWidget {
+  final WalletCubit walletCubit;
 
-
-final WalletCubit walletCubit;
-  const CreateNFT({Key? key, required this.title, required this.icon, required this.walletCubit,})
-      : super(key: key);
-
-
+  const CreateNFT({
+    Key? key,
+    required this.title,
+    required this.icon,
+    required this.walletCubit,
+  }) : super(key: key);
 
   final String title;
   final String icon;
@@ -19,8 +20,16 @@ final WalletCubit walletCubit;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        showImportNft(context, walletCubit);
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const ComingSoon(
+              );
+            },
+          ),
+        );
       },
       child: Column(
         children: [

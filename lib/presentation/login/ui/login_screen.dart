@@ -1,13 +1,12 @@
 import 'dart:io';
-
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_successfully.dart';
+import 'package:Dfy/presentation/alert_dialog/ui/alert_import_pop_up.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
-import 'package:Dfy/presentation/login/ui/alert_import_pop_up.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
@@ -17,7 +16,6 @@ import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -31,7 +29,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController controller;
-  late LoginCubit _cubit;
+  final LoginCubit _cubit = LoginCubit();
   bool enableLogin = false;
   bool errorText = false;
 
@@ -39,7 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     controller = TextEditingController();
-    _cubit = LoginCubit();
+    trustWalletChannel
+        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
     controller.addListener(() {
       if (mounted) {
         setState(() {
@@ -51,15 +50,14 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     });
-    trustWalletChannel
-        .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
     _cubit.getConfig();
+    _cubit.checkBiometrics();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _cubit.close();
+    controller.dispose();
     super.dispose();
   }
 
@@ -74,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
             FocusScope.of(context).unfocus();
           },
           child: Container(
-            width: 375.w,
+            width: 375.sw,
             height: 812.h,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -89,18 +87,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 113.h,
                   ),
-                  Image(
-                    image: const AssetImage(ImageAssets.ic_symbol),
-                    height: 100.h,
-                    width: 100.w,
+                  const Image(
+                    image: AssetImage(ImageAssets.ic_symbol),
                   ),
                   SizedBox(
                     height: 28.h,
                   ),
-                  Image(
-                    image: const AssetImage(ImageAssets.centered),
-                    width: 237.w,
-                    height: 35.h,
+                  const Image(
+                    image: AssetImage(ImageAssets.centered),
                   ),
                   SizedBox(
                     height: 68.h,
@@ -119,84 +113,66 @@ class _LoginScreenState extends State<LoginScreen> {
                         left: 19.w,
                         right: 19.w,
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 8.h),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.h),
-                              child: ImageIcon(
-                                const AssetImage(ImageAssets.ic_lock),
+                      child: Row(
+                        children: [
+                          ImageIcon(
+                            const AssetImage(ImageAssets.ic_lock),
+                            color: AppTheme.getInstance().whiteColor(),
+                            size: 24,
+                          ),
+                          SizedBox(
+                            width: 20.5.w,
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              onChanged: (value) {
+                                if (value.isEmpty || controller.text.isEmpty) {
+                                  setState(() {
+                                    errorText = true;
+                                  });
+                                } else {
+                                  errorText = false;
+                                }
+                              },
+                              cursorColor: AppTheme.getInstance().whiteColor(),
+                              style: TextStyle(
+                                fontSize: 18,
                                 color: AppTheme.getInstance().whiteColor(),
-                                size: 24.sp,
                               ),
-                            ),
-                            SizedBox(
-                              width: 20.5.w,
-                            ),
-                            Expanded(
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  if (value.isEmpty ||
-                                      controller.text.isEmpty) {
-                                    setState(() {
-                                      errorText = true;
-                                    });
-                                  } else {
-                                    errorText = false;
-                                  }
-                                },
-                                cursorColor:
-                                    AppTheme.getInstance().whiteColor(),
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  color: AppTheme.getInstance().whiteColor(),
+                              controller: controller,
+                              obscureText: _cubit.hidePass,
+                              maxLength: 15,
+                              decoration: InputDecoration(
+                                counterText: '',
+                                hintText: S.current.password,
+                                hintStyle: textNormal(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  18,
                                 ),
-                                controller: controller,
-                                obscureText: _cubit.hidePass,
-                                maxLength: 15,
-                                decoration: InputDecoration(
-                                  counterText: '',
-                                  hintText: S.current.password,
-                                  hintStyle: textNormal(
-                                    AppTheme.getInstance().textThemeColor(),
-                                    18.sp,
+                                border: InputBorder.none,
+                              ),
+                              // onFieldSubmitted: ,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (mounted) {
+                                setState(() {
+                                  _cubit.hidePassword();
+                                });
+                              }
+                            },
+                            child: _cubit.hidePass
+                                ? ImageIcon(
+                                    const AssetImage(ImageAssets.ic_show),
+                                    color: AppTheme.getInstance().suffixColor(),
+                                  )
+                                : ImageIcon(
+                                    const AssetImage(ImageAssets.ic_hide),
+                                    color: AppTheme.getInstance().suffixColor(),
                                   ),
-                                  border: InputBorder.none,
-                                ),
-                                // onFieldSubmitted: ,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.h),
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (mounted) {
-                                    setState(() {
-                                      _cubit.hidePassword();
-                                    });
-                                  }
-                                },
-                                child: _cubit.hidePass
-                                    ? ImageIcon(
-                                        const AssetImage(
-                                          ImageAssets.ic_show,
-                                        ),
-                                        color: AppTheme.getInstance()
-                                            .suffixColor(),
-                                        size: 24.sp,
-                                      )
-                                    : ImageIcon(
-                                        const AssetImage(ImageAssets.ic_hide),
-                                        color: AppTheme.getInstance()
-                                            .suffixColor(),
-                                        size: 24.sp,
-                                      ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -210,8 +186,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text(
                         S.current.password_is_required,
                         style: textNormal(
-                          AppTheme.getInstance().redColor(),
-                          12.sp,
+                          Colors.red,
+                          12,
                         ).copyWith(
                           fontWeight: FontWeight.w400,
                         ),
@@ -221,31 +197,52 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 36.h,
                   ),
-                  BlocBuilder<LoginCubit, LoginState>(
+                  BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
+                    listener: (context, state) {
+                      if (state is LoginPasswordSuccess) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const MainScreen(
+                              index: 1,
+                            ),
+                          ),
+                          (route) => route.isFirst,
+                        );
+                      }
+                      if (state is LoginPasswordError) {
+                        _showDialog();
+                      }
+                    },
                     builder: (context, state) {
                       return GestureDetector(
                         child: enableLogin
-                            ? ButtonRadial(
-                                child: Center(
-                                  child: Text(
-                                    S.current.login,
-                                    style: textNormalCustom(
-                                      Colors.white,
-                                      20.sp,
-                                      FontWeight.w700,
+                            ? Container(
+                                margin: EdgeInsets.symmetric(horizontal: 16.w),
+                                child: ButtonRadial(
+                                  child: Center(
+                                    child: Text(
+                                      S.current.login,
+                                      style: textNormalCustom(
+                                        Colors.white,
+                                        20,
+                                        FontWeight.w700,
+                                      ),
                                     ),
                                   ),
                                 ),
                               )
-                            : ErrorButton(
-                                child: Center(
-                                  child: Text(
-                                    S.current.login,
-                                    style: textNormalCustom(
-                                      Colors.white,
-                                      20.sp,
-                                      FontWeight.w700,
+                            : Container(
+                                margin: EdgeInsets.symmetric(horizontal: 16.w),
+                                child: ErrorButton(
+                                  child: Center(
+                                    child: Text(
+                                      S.current.login,
+                                      style: textNormalCustom(
+                                        Colors.white,
+                                        20,
+                                        FontWeight.w700,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -253,6 +250,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           if (controller.value.text.isNotEmpty && !errorText) {
                             _cubit.checkPasswordWallet(controller.value.text);
+                          }
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  StreamBuilder<bool>(
+                    stream: _cubit.isFaceIDStream,
+                    builder: (context, state) {
+                      return Visibility(
+                        visible: state.data ?? true,
+                        child: BlocListener<LoginCubit, LoginState>(
+                          bloc: _cubit,
+                          listener: (context, state) {
                             if (state is LoginSuccess) {
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
@@ -263,56 +276,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                 (route) => route.isFirst,
                               );
                             }
-                            if (state is LoginError) {
-                              _showDialog();
-                            }
-                          }
-                          if (errorText) {
-                            _showDialog(
-                              alert: S.current.password_is_required,
-                              text: '',
-                            );
-                          }
-                        },
+                          },
+                          child: GestureDetector(
+                            onTap: () {
+                              _cubit.authenticate();
+                            },
+                            child: Platform.isIOS
+                                ? const Image(
+                                    image: AssetImage(ImageAssets.faceID),
+                                  )
+                                : const Image(
+                                    image: AssetImage(ImageAssets.ic_finger),
+                                  ),
+                          ),
+                        ),
                       );
                     },
-                  ),
-                  SizedBox(
-                    height: 40.h,
-                  ),
-                  Visibility(
-                    visible: _cubit.isFaceID,
-                    child: BlocListener<LoginCubit, LoginState>(
-                      bloc: _cubit,
-                      listener: (context, state) {
-                        if (state is LoginSuccess) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => const MainScreen(
-                                index: 1,
-                              ),
-                            ),
-                            (route) => route.isFirst,
-                          );
-                        }
-                      },
-                      child: GestureDetector(
-                        onTap: () {
-                          _cubit.authenticate();
-                        },
-                        child: Platform.isIOS
-                            ? Image(
-                                height: 54.h,
-                                width: 54.w,
-                                image: const AssetImage(ImageAssets.faceID),
-                              )
-                            : Image(
-                                height: 54.h,
-                                width: 54.w,
-                                image: const AssetImage(ImageAssets.ic_finger),
-                              ),
-                      ),
-                    ),
                   ),
                   SizedBox(
                     height: 44.h,
@@ -322,7 +301,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(
+                          Navigator.of(context)
+                              .push(
                             HeroDialogRoute(
                               builder: (context) {
                                 return const AlertPopUp(
@@ -331,13 +311,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               isNonBackground: false,
                             ),
-                          );
+                          )
+                              .whenComplete(() {
+                            trustWalletChannel.setMethodCallHandler(
+                              _cubit.nativeMethodCallBackTrustWallet,
+                            );
+                          });
                         },
                         child: Text(
                           S.current.new_wallet,
                           style: textNormal(
                             Colors.amber,
-                            18.sp,
+                            18,
                           ),
                         ),
                       ),
@@ -357,7 +342,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(
+                          Navigator.of(context)
+                              .push(
                             HeroDialogRoute(
                               builder: (context) {
                                 return const AlertPopUp(
@@ -366,13 +352,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               isNonBackground: false,
                             ),
-                          );
+                          )
+                              .whenComplete(() {
+                            trustWalletChannel.setMethodCallHandler(
+                              _cubit.nativeMethodCallBackTrustWallet,
+                            );
+                          });
                         },
                         child: Text(
                           S.current.import_seed_phrase,
                           style: textNormal(
                             Colors.amber,
-                            18.sp,
+                            18,
                           ),
                         ),
                       ),
@@ -390,7 +381,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _showDialog({String? alert, String? text}) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext ctx) {
         // return object of type Dialog
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -407,7 +398,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 alert ?? S.current.password_is_not_correct,
                 style: textNormalCustom(
                   Colors.white,
-                  20.sp,
+                  20,
                   FontWeight.w700,
                 ),
               ),
@@ -418,7 +409,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 text ?? S.current.please_try_again,
                 style: textNormalCustom(
                   Colors.white,
-                  12.sp,
+                  12,
                   FontWeight.w400,
                 ),
               ),
@@ -435,12 +426,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   S.current.ok,
                   style: textNormalCustom(
                     AppTheme.getInstance().fillColor(),
-                    20.sp,
+                    20,
                     FontWeight.w700,
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(ctx).pop();
                 },
               ),
             ),

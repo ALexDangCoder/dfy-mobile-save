@@ -13,7 +13,7 @@ class ButtonRadial extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 64.h,
-      width: 298.w,
+     // width: 298.w,
       decoration: BoxDecoration(
         gradient:  RadialGradient(
           center: const Alignment(0.5, -0.5),

@@ -1,5 +1,5 @@
 {
   "type": "staging",
-  "base_url": "https://www.google.com/",
-  "base_image_url": "https://www.google.com/"
+  "base_url": "https://staginggw.defiforyou.uk/nft-market-svc/public-api/",
+  "base_image_url": "https://staginggw.defiforyou.uk/nft-market-svc/public-api/"
 }

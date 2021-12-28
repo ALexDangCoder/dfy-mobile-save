@@ -46,14 +46,18 @@ Container switchForm({
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(top: 5.h),
+      child: Center(
         child: ListTileSwitch(
           enabled: false,
           switchScale: 1,
           value: isCheck,
-          onChanged: (bool value) =>
-              cubit.changeValueFingerFtFaceID(value: value),
+          onChanged: (bool value) {
+            cubit.changeValueFingerFtFaceID(value: value);
+            cubit.setConfig(
+              isFaceID: value,
+              isAppLock: cubit.isSwitchAppLockOn.value,
+            );
+          },
           //todo
           leading: SizedBox(
             // height: 20,
@@ -84,17 +88,19 @@ Container switchForm({
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(top: 5.h),
+      child: Center(
         child: ListTileSwitch(
           enabled: false,
           switchScale: 1,
           value: isCheck,
           onChanged: (value) {
+            cubit.isShowOrHideLockTxt(value);
             cubit.changeValueAppLock(value: value);
-            cubit.setIsAppLock(value: value);
+            cubit.setConfig(
+              isFaceID: cubit.isSwitchFingerFtFaceIdOn.value,
+              isAppLock: value,
+            );
           },
-          //todo
           leading: SizedBox(
             // height: 20,
             width: 200,
@@ -113,9 +119,6 @@ Container switchForm({
           ),
           switchActiveColor: AppTheme.getInstance().fillColor(),
           switchType: SwitchType.cupertino,
-          // leading: Image.asset(prefixImg),
-          // switchActiveColor: AppTheme.getInstance().fillColor(),
-          // switchType: SwitchType.cupertino,
         ),
       ),
     );

@@ -25,82 +25,84 @@ class RemoveToken extends StatelessWidget {
       body: BackdropFilter(
         filter: ImageFilter.blur(sigmaY: 1.0, sigmaX: 1.0),
         child: Center(
-          child: ConstrainedBox(
+          child: Container(
             constraints: BoxConstraints(
-              maxHeight: 400.h,
               maxWidth: 312.w,
             ),
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Positioned(
-                  top: 77.h,
-                  child: Center(
-                    child: Hero(
-                      tag: '',
-                      createRectTween: (begin, end) {
-                        return CustomRectTween(begin: begin!, end: end!);
-                      },
-                      child: Material(
-                        color: AppTheme.getInstance().selectDialogColor(),
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(36.r),
-                        ),
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: 312.w,
-                            minHeight: 278.h,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SizedBox(
-                                height: 93.h,
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 34.w),
-                                child: Text(
-                                  S.current.are_you_sure_token,
-                                  style: textNormal(
-                                    null,
-                                    20.sp,
-                                  ).copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
+            child: Center(
+              child: Hero(
+                tag: '',
+                createRectTween: (begin, end) {
+                  return CustomRectTween(begin: begin!, end: end!);
+                },
+                child: Material(
+                  color: AppTheme.getInstance().selectDialogColor(),
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(36.r),
+                  ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: 312.w,
+                    ),
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      clipBehavior: Clip.none,
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              height: 93.h,
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 34.w),
+                              child: Text(
+                                S.current.are_you_sure_token,
+                                style: textNormal(
+                                  null,
+                                  20,
+                                ).copyWith(
+                                  fontWeight: FontWeight.bold,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
-                              spaceH12,
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 34.w),
-                                child: Text(
-                                  S.current.this_will_also,
-                                  style: textNormal(
-                                    null,
-                                    12.sp,
-                                  ).copyWith(
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  textAlign: TextAlign.center,
+                            ),
+                            spaceH12,
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 34.w),
+                              child: Text(
+                                S.current.this_will_also,
+                                style: textNormal(
+                                  null,
+                                  12,
+                                ).copyWith(
+                                  fontWeight: FontWeight.w400,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
-                              spaceH24,
-                              SizedBox(
-                                height: 64.h,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      top: BorderSide(
-                                        color: AppTheme.getInstance()
-                                            .divideColor(),
-                                        width: 1.w,
-                                      ),
+                            ),
+                            spaceH24,
+                            SizedBox(
+                              height: 64.h,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(
+                                      color:
+                                          AppTheme.getInstance().divideColor(),
+                                      width: 1.w,
                                     ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
                                         child: Container(
                                           height: 64.h,
                                           decoration: BoxDecoration(
@@ -112,73 +114,95 @@ class RemoveToken extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Center(
-                                              child: Text(
-                                                S.current.cancel,
-                                                style: textNormal(null, 20.sp)
-                                                    .copyWith(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontStyle: FontStyle.normal,
-                                                ),
-                                                textAlign: TextAlign.center,
+                                          child: Center(
+                                            child: Text(
+                                              S.current.cancel,
+                                              style: textNormal(null, 20.sp)
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
                                               ),
+                                              textAlign: TextAlign.center,
                                             ),
                                           ),
                                         ),
                                       ),
-                                      Expanded(
-                                        child: InkWell(
-                                          onTap: () {
-                                            cubit.listTokenDetailScreen
-                                                .removeAt(index);
-                                            cubit.totalBalance.add(
-                                              cubit.total(
-                                                cubit.listTokenStream.value,
-                                              ),
-                                            );
-                                            cubit.getListTokenItemRemove();
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            S.current.remove,
-                                            style: textNormal(
-                                              AppTheme.getInstance()
-                                                  .fillColor(),
-                                              20.sp,
-                                            ).copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          cubit.setShowedToken(
+                                            walletAddress: cubit
+                                                .listTokenFromWalletCore[index]
+                                                .walletAddress,
+                                            isShow: false,
+                                            tokenAddress: cubit
+                                                .listTokenFromWalletCore[index]
+                                                .tokenAddress,
+                                            isImport: cubit
+                                                .listTokenFromWalletCore[index]
+                                                .isImport,
+                                          );
+                                          cubit.listTokenFromWalletCore
+                                              .removeAt(index);
+                                          cubit.checkShow.removeAt(index);
+                                          cubit.listTokenStream.sink.add(
+                                            cubit.listTokenFromWalletCore,
+                                          );
+                                          cubit.getListTokenModel
+                                              .add(cubit.checkShow);
+                                          cubit.totalBalance.add(
+                                            cubit.total(
+                                              cubit.listTokenFromWalletCore,
                                             ),
-                                            textAlign: TextAlign.center,
+                                          );
+                                          Navigator.pop(context);
+                                          cubit.checkShow.clear();
+                                          cubit.listTokenFromWalletCore.clear();
+                                          cubit.getTokens(
+                                            cubit.addressWalletCore,
+                                          );
+                                        },
+                                        child: SizedBox(
+                                          height: 64.h,
+                                          child: Center(
+                                            child: Text(
+                                              S.current.remove,
+                                              style: textNormal(
+                                                AppTheme.getInstance()
+                                                    .fillColor(),
+                                                20,
+                                              ).copyWith(
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                        Positioned(
+                          top: -77.h,
+                          child: SizedBox(
+                            width: 162.w,
+                            height: 162.h,
+                            child: Image.asset(
+                              ImageAssets.img_delete,
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: 238.h,
-                  child: SizedBox(
-                    width: 162.w,
-                    height: 162.h,
-                    child: Image.asset(
-                      ImageAssets.img_delete,
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
           ),
         ),

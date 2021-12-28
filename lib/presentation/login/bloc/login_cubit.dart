@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/main.dart';
@@ -7,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
-import 'package:optimized_cached_image/optimized_cached_image.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'login_state.dart';
 
@@ -17,7 +16,7 @@ class LoginCubit extends BaseCubit<LoginState> {
   bool hidePass = true;
   bool isAppLock = true;
   bool isFaceID = false;
-
+  BehaviorSubject<bool> isFaceIDStream = BehaviorSubject();
   bool hidePassword() {
     return hidePass = !hidePass;
   }
@@ -27,30 +26,30 @@ class LoginCubit extends BaseCubit<LoginState> {
     bool loginSuccess = false;
     switch (methodCall.method) {
       case 'checkPasswordCallback':
-       loginSuccess = await methodCall.arguments['isCorrect'];
-       if (loginSuccess == true) {
-         emit(LoginSuccess());
-       } else {
-         emit(LoginError('Password was wrong...'));
-       }
+        loginSuccess = await methodCall.arguments['isCorrect'];
+        if (loginSuccess == true) {
+          emit(LoginPasswordSuccess());
+        } else {
+          emit(LoginPasswordError());
+        }
         break;
-      case 'importWalletCallback':
-           break;
+      case 'getConfigCallback':
+        isAppLock = await methodCall.arguments['isAppLock'];
+        isFaceID = await methodCall.arguments['isFaceID'];
+        isFaceIDStream.add(isFaceID);
+        break;
       default:
         break;
     }
   }
 
-  void getConfig() {
-    if (PrefsService.getAppLockConfig() == 'true') {
-      isAppLock = true;
-    } else {
-      isAppLock = false;
-    }
-    if (PrefsService.getFaceIDConfig() == 'true') {
-      isFaceID = true;
-    } else {
-      isFaceID = false;
+  Future<void> getConfig() async {
+    try {
+      final data = {
+      };
+      await trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException {
+      //nothing
     }
   }
 
@@ -60,14 +59,26 @@ class LoginCubit extends BaseCubit<LoginState> {
       final data = {
         'password': password,
       };
-      await  trustWalletChannel.invokeMethod('checkPassword', data);
+      await trustWalletChannel.invokeMethod('checkPassword', data);
     } on PlatformException {
-      log('error');
+      //nothing
     }
   }
 
+  String authorized = 'Not Authorized';
   bool authenticated = false;
   final LocalAuthentication auth = LocalAuthentication();
+
+  Future<void> checkBiometrics() async {
+    final bool canCheckBiometrics = await auth.canCheckBiometrics;
+    //print(canCheckBiometrics);
+    final List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
+    //print(availableBiometrics);
+    if (canCheckBiometrics && isFaceIDStream.value) {
+      await authenticate();
+    }
+  }
 
   Future<void> authenticate() async {
     emit(LoginLoading());

@@ -1,67 +1,72 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/presentation/token_detail/bloc/token_detail_bloc.dart';
 import 'package:Dfy/presentation/token_detail/ui/token_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
-import 'package:Dfy/utils/enum_ext.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class TokenItem extends StatelessWidget {
-  const TokenItem({
+   TokenItem({
     Key? key,
-    required this.symbolUrl,
-    required this.amount,
-    required this.nameToken,
-    required this.price,
     required this.index,
     required this.bloc,
+    required this.modelToken,
+    required this.walletAddress,
   }) : super(key: key);
 
-  final String symbolUrl;
-  final String amount;
-  final String nameToken;
-  final String price;
+  final ModelToken modelToken;
   final int index;
   final WalletCubit bloc;
+  final String walletAddress;
+  final formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
+   final formatBalance = NumberFormat('###,###,###.######', 'en_US');
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    final String price =
+        formatUSD.format(modelToken.balanceToken * modelToken.exchangeRate);
+    return MaterialButton(
+      padding: EdgeInsets.zero,
       onLongPress: () {
-        Navigator.of(context).push(
-          HeroDialogRoute(
-            builder: (context) {
-              return RemoveToken(
-                cubit: bloc,
-                index: index,
-              );
-            },
-            isNonBackground: false,
-          ),
-        );
+        if (modelToken.nameShortToken != 'DFY' &&
+            modelToken.nameShortToken != 'BNB') {
+          Navigator.of(context).push(
+            HeroDialogRoute(
+              builder: (context) {
+                return RemoveToken(
+                  cubit: bloc,
+                  index: index,
+                );
+              },
+              isNonBackground: false,
+            ),
+          );
+        }
       },
-      onTap: () {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          backgroundColor: Colors.transparent,
-          builder: (context) {
-            return TokenDetail(
-              tokenData: 123,
-              bloc: TokenDetailBloc(),
-              tokenType: EnumTokenType.DFY,
-            );
-          },
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TokenDetail(
+              walletAddress: walletAddress,
+              token: modelToken,
+              walletName: bloc.nameWallet,
+              bloc: TokenDetailBloc(
+                walletAddress: walletAddress,
+              ),
+            ),
+          ),
         );
       },
       child: Column(
         children: [
           Divider(
             height: 1.h,
-            color: AppTheme.getInstance().divideColor(),
+            color: const Color(0xFF4b4a60),
           ),
           SizedBox(
             child: Row(
@@ -72,11 +77,26 @@ class TokenItem extends StatelessWidget {
                     top: 19.h,
                     left: 20.w,
                   ),
-                  child: Image(
-                    width: 28.w,
-                    height: 28.h,
-                    image: AssetImage(symbolUrl),
-                  ),
+                  child: modelToken.iconToken.isEmpty
+                      ? CircleAvatar(
+                          backgroundColor: Colors.yellow,
+                          radius: 14.r,
+                          child: Center(
+                            child: Text(
+                              modelToken.nameShortToken.substring(0, 1),
+                              style: textNormalCustom(
+                                Colors.black,
+                                20,
+                                FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Image(
+                          image: NetworkImage(modelToken.iconToken),
+                          width: 28.w,
+                          height: 28.h,
+                        ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(
@@ -88,18 +108,19 @@ class TokenItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '$amount $nameToken',
+                        '${formatBalance.format(modelToken.balanceToken)} '
+                            '${modelToken.nameShortToken}',
                         style: textNormalCustom(
                           Colors.white,
-                          20.sp,
+                          20,
                           FontWeight.w600,
                         ),
                       ),
                       Text(
-                        '\$ $price',
+                        price,
                         style: textNormalCustom(
                           Colors.grey.shade400,
-                          16.sp,
+                          16,
                           FontWeight.w400,
                         ),
                       ),

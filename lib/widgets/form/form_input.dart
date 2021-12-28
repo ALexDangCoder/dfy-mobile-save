@@ -37,16 +37,11 @@ class FormInput extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: 20.w,
-            height: 20.h,
+            width: 24.w,
+            height: 24.h,
             child: Image.asset(
               urlIcon1,
-              width: 20.w,
-              height: 20.h,
             ),
-          ),
-          SizedBox(
-            width: 20.5.w,
           ),
           Expanded(
             child: TextFormField(
@@ -55,19 +50,18 @@ class FormInput extends StatelessWidget {
               cursorColor: AppTheme.getInstance().whiteColor(),
               style: textNormal(
                 AppTheme.getInstance().whiteColor(),
-                16.sp,
+                16,
               ),
-
               onChanged: (value) {
-                bloc.checkAddressNull();
-                bloc.tokenAddressText.sink.add(value);
+                bloc.validateAddressFunc(value);
               },
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
                 counterText: '',
                 hintText: hint,
                 hintStyle: textNormal(
-                  AppTheme.getInstance().whiteWithOpacityFireZero(),
-                  16.sp,
+                  Colors.white.withOpacity(0.5),
+                  16,
                 ),
                 border: InputBorder.none,
               ),
@@ -86,7 +80,10 @@ class FormInput extends StatelessWidget {
                   },
                 ),
               ).whenComplete(
-                () => controller.text = bloc.tokenAddressText.value,
+                () => {
+                  controller.text = bloc.tokenAddressText.value,
+                  bloc.validateAddressFunc(bloc.tokenAddressText.value),
+                },
               );
             },
             child: SizedBox(

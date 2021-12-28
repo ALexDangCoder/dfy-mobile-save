@@ -2,7 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/show_create_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/bloc/check_pass_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SetupPassWord extends StatefulWidget {
-  const SetupPassWord({Key? key}) : super(key: key);
+  const SetupPassWord({Key? key, this.typeEarseWallet}) : super(key: key);
+  final String? typeEarseWallet;
 
   @override
   _SetupPassWordState createState() => _SetupPassWordState();
@@ -39,94 +40,100 @@ class _SetupPassWordState extends State<SetupPassWord> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        final FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
-      child: Container(
-        width: 375.w,
-        height: 764.h,
-        decoration: BoxDecoration(
-          color: AppTheme.getInstance().bgBtsColor(),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.r),
-            topRight: Radius.circular(30.r),
-          ),
-        ),
-        child: Column(
-          children: [
-            header(),
-            Divider(
-              thickness: 1,
-              color: AppTheme.getInstance().divideColor(),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    textShowSetupPass(),
-                    SizedBox(
-                      height: 28.h,
-                    ),
-                    formSetupPassWord(
-                      hintText: S.current.new_pass,
-                    ),
-                    showTextValidatePassword(),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    formSetupPassWordConfirm(
-                      hintText: S.current.con_pass,
-                    ),
-                    showTextValidateMatchPassword(),
-                    SizedBox(
-                      height: 25.h,
-                    ),
-                    ckcBoxAndTextSetupPass(),
-                    SizedBox(
-                      height: 256.h,
-                    ),
-                  ],
-                ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: false,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: GestureDetector(
+          onTap: () {
+            final FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: Container(
+            width: 375.w,
+            height: 764.h,
+            decoration: BoxDecoration(
+              color: AppTheme.getInstance().bgBtsColor(),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.r),
+                topRight: Radius.circular(30.r),
               ),
             ),
-            StreamBuilder<bool>(
-              stream: isValidPassCubit.isEnableBtnStream,
-              builder: (context, snapshot) {
-                return GestureDetector(
-                  child: ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: snapshot.data ?? true,
+            child: Column(
+              children: [
+                header(),
+                Divider(
+                  thickness: 1,
+                  color: AppTheme.getInstance().divideColor(),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        textShowSetupPass(),
+                        SizedBox(
+                          height: 28.h,
+                        ),
+                        formSetupPassWord(
+                          hintText: S.current.new_pass,
+                        ),
+                        showTextValidatePassword(),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        formSetupPassWordConfirm(
+                          hintText: S.current.con_pass,
+                        ),
+                        showTextValidateMatchPassword(),
+                        SizedBox(
+                          height: 25.h,
+                        ),
+                        ckcBoxAndTextSetupPass(),
+                        SizedBox(
+                          height: 256.h,
+                        ),
+                      ],
+                    ),
                   ),
-                  onTap: () {
-                    if (snapshot.data ?? false) {
-                      isValidPassCubit.showTxtWarningNewPW(password.text);
-                      isValidPassCubit.showTxtWarningConfirmPW(
-                        confirmPassword.text,
-                        newPW: password.text,
-                      );
-                      if (isValidPassCubit.validateAll()) {
-                        showCreateSeedPhrase1(
-                          context,
-                          false,
-                          BLocCreateSeedPhrase(password.text),
-                          TypeScreen.tow,
-                        );
-                      } else {
-                        //will not change screen
-                      }
-                    }
+                ),
+                StreamBuilder<bool>(
+                  stream: isValidPassCubit.isEnableBtnStream,
+                  builder: (context, snapshot) {
+                    return GestureDetector(
+                      child: ButtonGold(
+                        title: S.current.continue_s,
+                        isEnable: snapshot.data ?? true,
+                      ),
+                      onTap: () {
+                        if (snapshot.data ?? false) {
+                          if (isValidPassCubit.validateAll()) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return CreateSeedPhrase(
+                                    bloc: BLocCreateSeedPhrase(password.text),
+                                    type: TypeScreen.two,
+                                    typeEarseWallet: widget.typeEarseWallet,
+                                  );
+                                },
+                              ),
+                            );
+                          } else {
+                            //will not change screen
+                          }
+                        }
+                      },
+                    );
                   },
-                );
-              },
+                ),
+                spaceH38,
+              ],
             ),
-            SizedBox(
-              height: 38.h,
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -273,11 +280,12 @@ class _SetupPassWordState extends State<SetupPassWord> {
               textAlignVertical: TextAlignVertical.center,
               onChanged: (value) {
                 isValidPassCubit.checkHaveValuePW(value);
+                isValidPassCubit.showTxtWarningNewPW(value);
               },
               obscureText: snapshot.data ?? false,
               style: textNormal(
                 AppTheme.getInstance().textThemeColor(),
-                16.sp,
+                16,
               ),
               cursorColor: AppTheme.getInstance().textThemeColor(),
               controller: password,
@@ -285,7 +293,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 hintText: hintText,
                 hintStyle: textNormal(
                   AppTheme.getInstance().disableColor(),
-                  14.sp,
+                  14,
                 ),
                 suffixIcon: InkWell(
                   onTap: () {
@@ -338,6 +346,10 @@ class _SetupPassWordState extends State<SetupPassWord> {
               textAlignVertical: TextAlignVertical.center,
               onChanged: (value) {
                 isValidPassCubit.checkHaveValueConfirmPW(value);
+                isValidPassCubit.showTxtWarningConfirmPW(
+                  value,
+                  newPW: password.text,
+                );
               },
               obscureText: snapshot.data ?? false,
               style: textNormal(AppTheme.getInstance().textThemeColor(), 16.sp)
@@ -348,7 +360,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                 hintText: hintText,
                 hintStyle: textNormal(
                   AppTheme.getInstance().disableColor(),
-                  14.sp,
+                  14,
                 ),
                 suffixIcon: InkWell(
                   onTap: () {

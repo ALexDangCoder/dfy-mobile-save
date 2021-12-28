@@ -27,7 +27,7 @@ class FromText extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 15.5.w, vertical: 23.h),
       decoration: BoxDecoration(
         color: AppTheme.getInstance().itemBtsColors(),
-        borderRadius:  BorderRadius.all(
+        borderRadius: BorderRadius.all(
           Radius.circular(20.r),
         ),
       ),
@@ -47,12 +47,10 @@ class FromText extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 child: Text(
-
-                  title.handleString(),
+                  title.formatAddressWalletConfirm(),
                   style: textNormal(
-                    AppTheme.getInstance()
-                        .whiteColor(),
-                    16.sp,
+                    AppTheme.getInstance().whiteColor(),
+                    16,
                   ),
                 ),
               ),

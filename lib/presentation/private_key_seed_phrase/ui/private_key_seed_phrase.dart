@@ -1,139 +1,134 @@
-import 'dart:ui';
-import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/private_key_model.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/private_key_seed_phrase/bloc/private_key_seed_phrase_bloc.dart';
+import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvkey_seedpharse_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/dialog_remove/choose_acc.dart';
-import 'package:Dfy/widgets/form/form%20_text3.dart';
-import 'package:Dfy/widgets/form/form_text4.dart';
-import 'package:Dfy/widgets/list_passphrase/box_list_passphrase_copy2.dart';
+import 'package:Dfy/widgets/form/form%20_text_privatekey.dart';
+import 'package:Dfy/widgets/form/form_text_walletaddress.dart';
+import 'package:Dfy/widgets/list_passphrase/box_list_passphrase_show.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showPrivateKeySeedPhrase(
-  BuildContext context,
-  PrivateKeySeedPhraseBloc bloc,
-) {
-  showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    backgroundColor: Colors.transparent,
-    builder: (context) {
-      return Body(bloc: bloc);
-    },
-  );
+class PrivateKeySeedPhrase extends StatelessWidget {
+  const PrivateKeySeedPhrase({
+    Key? key,
+    required this.bloc,
+  }) : super(key: key);
+  final ConfirmPwPrvKeySeedpharseCubit bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return _Body(
+      bloc: bloc,
+    );
+  }
 }
 
-class Body extends StatefulWidget {
-  const Body({
+class _Body extends StatefulWidget {
+  const _Body({
     Key? key,
     required this.bloc,
   }) : super(key: key);
 
-  final PrivateKeySeedPhraseBloc bloc;
+  final ConfirmPwPrvKeySeedpharseCubit bloc;
 
   @override
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<_Body> {
   late final TextEditingController nameWallet;
 
   @override
   void initState() {
+    widget.bloc.sendPrivateKey(0);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: widget.bloc.index,
-      builder: (context, AsyncSnapshot<int> snapshot) {
-        if (snapshot.hasData) {
-          final index = snapshot.data;
+    return StreamBuilder<PrivateKeyModel>(
+      stream: widget.bloc.privateKeySubject,
+      builder: (context, snapshotModel) {
+        if (snapshotModel.hasData) {
           return BaseBottomSheet(
             title: S.current.prv_key_ft_seed_phr,
             isImage: true,
-            callback: () {
+            onRightClick: () {
               Navigator.pop(context);
               Navigator.pop(context);
             },
             text: ImageAssets.ic_close,
-            child: Container(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w,),
-              child: Column(
-                children: [
-                  spaceH24,
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                HeroDialogRoute(
-                                  builder: (context) {
-                                    return ChooseAcc(
-                                      bloc: widget.bloc,
-                                    );
-                                  },
-                                  isNonBackground: false,
-                                ),
-                              );
-                            },
-                            child: FromText4(
-                              titleCopy: widget.bloc.listWallet[index ?? 0]
-                                      .walletAddress ??
-                                  '',
-                              title: widget.bloc.formatText(
-                                widget.bloc.listWallet[index ?? 0]
-                                        .walletAddress ??
-                                    '',
+            child: Column(
+              children: [
+                spaceH24,
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return ChooseAcc(
+                                    listWalletCore: widget.bloc.listWalletCore,
+                                    bloc: widget.bloc,
+                                  );
+                                },
+                                isNonBackground: false,
                               ),
-                              urlSuffixIcon: ImageAssets.ic_line_down,
-                              urlPrefixIcon: ImageAssets.ic_address,
+                            );
+                          },
+                          child: FromTextWalletAddress(
+                            titleCopy: snapshotModel.data?.walletAddress ?? '',
+                            title: snapshotModel.data?.walletAddress
+                                    ?.formatAddressWalletConfirm() ??
+                                '',
+                            urlSuffixIcon: ImageAssets.ic_line_down,
+                            urlPrefixIcon: ImageAssets.ic_address,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        FromTextPrivateKey(
+                          titleCopy: snapshotModel.data?.privateKey ?? '',
+                          title:
+                            snapshotModel.data?.privateKey?.formatAddressWalletConfirm() ??
+                                '',
+                          urlSuffixIcon: ImageAssets.ic_copy,
+                          urlPrefixIcon: ImageAssets.ic_key24,
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              child: snapshotModel.data?.seedPhrase?.isEmpty ??
+                                      false
+                                  ? const SizedBox.shrink()
+                                  : BoxListPassWordPhraseShow(
+                                      listTitle: widget.bloc.stringToList(
+                                        snapshotModel.data?.seedPhrase ?? '',
+                                      ),
+                                      text:
+                                          snapshotModel.data?.seedPhrase ?? '',
+                                    ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 16.h,
-                          ),
-                          FromText3(
-                            titleCopy:
-                                widget.bloc.listWallet[index ?? 0].privateKey ??
-                                    '',
-                            title: widget.bloc.formatText(
-                              widget.bloc.listWallet[index ?? 0].privateKey ?? '',
-                            ),
-                            urlSuffixIcon: ImageAssets.ic_copy,
-                            urlPrefixIcon: ImageAssets.ic_key24,
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          Column(
-                            children: [
-                              BoxListPassWordPhraseCopy2(
-                                listTitle: widget.bloc.stringToList(
-                                  widget.bloc.listWallet[index ?? 0].seedPhrase ??
-                                      '',
-                                ),
-                                text: widget
-                                        .bloc.listWallet[index ?? 0].seedPhrase ??
-                                    '',
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                          ],
+                        )
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         } else {

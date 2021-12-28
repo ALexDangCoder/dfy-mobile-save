@@ -29,6 +29,7 @@ final spaceH30 = SizedBox(height: 30.h);
 final spaceH35 = SizedBox(height: 35.h);
 final spaceH38 = SizedBox(height: 38.h);
 final spaceH40 = SizedBox(height: 40.h);
+final spaceH46 = SizedBox(height: 46.h);
 final spaceH50 = SizedBox(height: 50.h);
 final spaceH56 = SizedBox(height: 56.h);
 final spaceH60 = SizedBox(height: 60.h);
@@ -59,11 +60,11 @@ final divide = Divider(
 );
 
 TextStyle textNormal(Color? color, double? fontSize) {
-  return GoogleFonts.sen(
+  return GoogleFonts.sourceSansPro(
     color: color ?? Colors.white,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize ?? 14,
+    fontSize: fontSize?.sp ?? 14.sp,
   );
 }
 
@@ -76,9 +77,11 @@ TextStyle tokenDetailAmount({
   FontStyle fontStyle = FontStyle.normal,
   TextDecoration decoration = TextDecoration.none,
 }) {
-  return GoogleFonts.sen(
+  return GoogleFonts.sourceSansPro(
     color: color,
     fontWeight: weight,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize.sp,
     fontStyle: fontStyle,
     fontSize: fontSize,
     decoration: decoration,
@@ -86,11 +89,11 @@ TextStyle tokenDetailAmount({
 }
 
 TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
-  return GoogleFonts.sen(
+  return GoogleFonts.sourceSansPro(
     color: color,
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize,
+    fontSize: fontSize.sp,
   );
 }
 
@@ -99,11 +102,11 @@ TextStyle textNormalCustom(
   double? fontSize,
   FontWeight? fontWeight,
 ) {
-  return GoogleFonts.sen(
+  return GoogleFonts.sourceSansPro(
     color: color ?? Colors.white,
     fontWeight: fontWeight ?? FontWeight.w500,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize ?? 14,
+    fontSize: fontSize?.sp ?? 14.sp,
   );
 }
 TextStyle textNormalCustomUnderline(
@@ -120,20 +123,20 @@ TextStyle textNormalCustomUnderline(
   );
 }
 
-TextStyle textFieldNFT = GoogleFonts.sen(
+TextStyle textFieldNFT = GoogleFonts.sourceSansPro(
   color: AppTheme.getInstance().textThemeColor(),
   fontWeight: FontWeight.w700,
-  fontSize: 16,
+  fontSize: 16.sp,
 );
-TextStyle textValueNFT = GoogleFonts.sen(
+TextStyle textValueNFT = GoogleFonts.sourceSansPro(
   color: AppTheme.getInstance().textThemeColor(),
   fontWeight: FontWeight.w400,
-  fontSize: 16,
+  fontSize: 16.sp,
 );
 TextStyle richTextBlue = GoogleFonts.sen(
   color: const Color(0xff46BCFF),
   fontWeight: FontWeight.w400,
-  fontSize: 16,
+  fontSize: 16.sp,
   decoration: TextDecoration.underline,
 );TextStyle richTextWhite = GoogleFonts.sen(
   color: AppTheme.getInstance().textThemeColor(),

@@ -1,18 +1,30 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
-import 'package:Dfy/presentation/restore_bts/ui/scan_qr.dart';
+import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Dfy/utils/extensions/double_extension.dart';
 
 class SendToken extends StatefulWidget {
-  const SendToken({Key? key}) : super(key: key);
+  final String walletAddress;
+  final ModelToken modelToken;
+  final String walletName;
+
+  const SendToken({
+    Key? key,
+    required this.walletAddress,
+    required this.modelToken,
+    required this.walletName,
+  }) : super(key: key);
 
   @override
   _SendTokenState createState() => _SendTokenState();
@@ -20,7 +32,8 @@ class SendToken extends StatefulWidget {
 
 class _SendTokenState extends State<SendToken> {
   late SendTokenCubit tokenCubit;
-  final String fakeFromAddress = '0xFE5788e2...EB7144fd0';
+
+  // final String fakeToAddress = '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf';
   late TextEditingController txtToAddressToken;
   late TextEditingController txtAmount;
 
@@ -31,16 +44,15 @@ class _SendTokenState extends State<SendToken> {
     txtToAddressToken = TextEditingController();
     txtAmount = TextEditingController();
     tokenCubit = SendTokenCubit();
-
-    trustWalletChannel.setMethodCallHandler(tokenCubit.nativeMethodCallHandler);
-    tokenCubit.sendToken(
-      walletAddress: tokenCubit.walletAddressToken,
-      receiveAddress: tokenCubit.receiveAddressToken,
-      tokenID: tokenCubit.tokenIDToken ?? 0,
-      amount: tokenCubit.amountToken ?? 0,
-      password: '',
-      gasFee: 0,
-    );
+    // tokenCubit.getEstimateGas(
+    //   from: fakeFromAddress,
+    //   to: fakeToAddress,
+    //   value: 1000,
+    // );
+    tokenCubit.getBalanceWallet(ofAddress: widget.walletAddress);
+    tokenCubit.getGasPrice();
+    // trustWalletChannel
+    //     .setMethodCallHandler(tokenCubit.nativeMethodCallBackTrustWallet);
   }
 
   @override
@@ -55,8 +67,8 @@ class _SendTokenState extends State<SendToken> {
       child: BaseBottomSheet(
         isImage: true,
         text: ImageAssets.ic_close,
-        title: '${S.current.send} DFY',
-        callback: () {
+        title: '${S.current.send} ${widget.modelToken.nameShortToken}',
+        onRightClick: () {
           Navigator.pop(context);
         },
         isHaveLeftIcon: false,
@@ -76,7 +88,7 @@ class _SendTokenState extends State<SendToken> {
                       ),
                       formShowFtAddress(
                         // hintText: snapshot.data ?? '',
-                        hintText: '0xFE5788e2...EB7144fd0',
+                        hintText: widget.walletAddress.formatAddressWallet(),
                         readOnly: true,
                         prefixImg: ImageAssets.ic_from,
                         suffixImg: '',
@@ -96,12 +108,16 @@ class _SendTokenState extends State<SendToken> {
                                 controller: txtToAddressToken,
                               ),
                             ),
-                          ).then(
-                            (_) => tokenCubit.checkHaveVlAddressFormToken(
-                              txtToAddressToken.text,
-                              type: typeSend.SEND_TOKEN,
-                            ),
-                          );
+                          ).then((_) => {
+                                txtToAddressToken.text =
+                                    tokenCubit.handleValueFromQR(
+                                        value: txtToAddressToken.text),
+                                tokenCubit.checkHaveVlAddressFormToken(
+                                  tokenCubit.handleValueFromQR(
+                                      value: txtToAddressToken.text),
+                                  type: typeSend.SEND_TOKEN,
+                                ),
+                              });
                         },
                       ),
                       txtWaringAddress(),
@@ -109,6 +125,7 @@ class _SendTokenState extends State<SendToken> {
                         height: 16.h,
                       ),
                       formAmountFtQuantity(
+                        modelToken: widget.modelToken,
                         hintText: S.current.amount,
                         isAmount: true,
                         isQuantity: false,
@@ -131,28 +148,48 @@ class _SendTokenState extends State<SendToken> {
                     title: S.current.continue_s,
                     isEnable: snapshot.data ?? true,
                   ),
-                  onTap: () {
+                  onTap: () async {
                     if (snapshot.data ?? false) {
                       //show warning if appear error
                       tokenCubit.checkValidAddress(txtToAddressToken.text);
                       tokenCubit.checkValidAmount(txtAmount.text);
+                      await tokenCubit.getEstimateGas(
+                        from: widget.walletAddress,
+                        to: txtToAddressToken.text,
+                        value: double.parse(
+                          txtAmount.text,
+                        ),
+                        token: widget.modelToken,
+                        context: context,
+                      );
                       //check validate before go to next screen
                       if (tokenCubit.checkAddressFtAmount()) {
-                        showModalBottomSheet(
-                          backgroundColor: Colors.transparent,
-                          isScrollControlled: true,
-                          builder: (context) => const ConfirmBlockchainCategory(
-                            nameWallet: 'TestWallet',
-                            nameTokenWallet: 'BNB',
-                            balanceWallet: 0.64,
-                            typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
-                            addressFrom: '0xfff',
-                            addressTo: '0xfff',
-                            imageWallet: ImageAssets.symbol,
-                            amount: 5000,
-                            nameToken: 'BNB',
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) {
+                              return ConfirmBlockchainCategory(
+                                modelToken: widget.modelToken,
+                                nameWallet: widget.walletName,
+                                nameTokenWallet: 'BNB',
+                                balanceWallet: tokenCubit.balanceWallet,
+                                typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
+                                addressFrom: widget.walletAddress,
+                                addressTo: txtToAddressToken.text,
+                                imageWallet: ImageAssets.symbol,
+                                amount: double.parse(txtAmount.text),
+                                nameToken: widget.modelToken.nameShortToken,
+                                cubitCategory: tokenCubit,
+                                gasPriceFirstFetch:
+                                    tokenCubit.gasPrice / 1000000000,
+                                gasFeeFirstFetch:
+                                    (((tokenCubit.gasPrice / 1000000000) *
+                                            tokenCubit.estimateGasFee) /
+                                        1000000000),
+                                gasLimitFirstFetch: tokenCubit.estimateGasFee,
+                              );
+                            },
                           ),
-                          context: context,
                         );
                       } else {
                         //nothing
@@ -164,9 +201,7 @@ class _SendTokenState extends State<SendToken> {
                 );
               },
             ),
-            SizedBox(
-              height: 34.h,
-            ),
+            spaceH38,
           ],
         ),
       ),
@@ -202,7 +237,7 @@ class _SendTokenState extends State<SendToken> {
           textAlignVertical: TextAlignVertical.center,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
-            16.sp,
+            16,
           ),
           cursorColor: AppTheme.getInstance().textThemeColor(),
           decoration: InputDecoration(
@@ -210,12 +245,12 @@ class _SendTokenState extends State<SendToken> {
             hintStyle: readOnly
                 ? textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),
-                    16.sp,
+                    16,
                     FontWeight.w400,
                   )
                 : textNormal(
                     AppTheme.getInstance().disableColor(),
-                    14.sp,
+                    14,
                   ),
             suffixIcon: InkWell(
               onTap: callBack,
@@ -247,6 +282,7 @@ class _SendTokenState extends State<SendToken> {
     required bool isAmount,
     required bool isQuantity,
     required String prefixImg,
+    ModelToken? modelToken,
     Function()? callBack,
   }) {
     return Container(
@@ -261,40 +297,75 @@ class _SendTokenState extends State<SendToken> {
       child: Center(
         child: TextFormField(
           onChanged: (value) {
-            tokenCubit.checkHaveVLAmountFormToken(value);
-            tokenCubit.checkHaveVlAddressFormToken(
-              txtToAddressToken.text,
-              type: typeSend.SEND_TOKEN,
+            tokenCubit.checkHaveVLAmountFormToken(
+              value,
+              amountBalance: widget.modelToken.balanceToken,
             );
           },
           controller: txtAmount,
-          keyboardType: TextInputType.number,
+          keyboardType: const TextInputType.numberWithOptions(
+            decimal: true,
+            // signed: true,
+          ),
           textAlignVertical: TextAlignVertical.center,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
-            16.sp,
+            16,
           ),
           cursorColor: Colors.white,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: textNormal(
               AppTheme.getInstance().disableColor(),
-              14.sp,
+              14,
             ),
             suffixIcon: InkWell(
               onTap: callBack,
               child: (isAmount && !isQuantity)
-                  ? Padding(
-                      padding: EdgeInsets.only(
-                        top: 15.h,
-                        right: 20.w,
-                      ),
-                      child: Text(
-                        S.current.max,
-                        style: textNormal(
-                                const Color.fromRGBO(228, 172, 26, 1), 16)
-                            .copyWith(fontWeight: FontWeight.w600),
-                      ),
+                  ? InkWell(
+                      onTap: () {
+                        txtAmount.text = modelToken!.balanceToken
+                            .truncateToDecimalPlaces(4)
+                            .toString();
+                        tokenCubit.checkHaveVLAmountFormToken(
+                          txtAmount.text,
+                          amountBalance: widget.modelToken.balanceToken,
+                        );
+                      },
+                      child: Padding(
+                          padding: EdgeInsets.only(
+                            // top: 15.h,
+                            right: 15.w,
+                          ),
+                          child: Container(
+                            constraints: BoxConstraints(
+                              minWidth: 55.w,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  S.current.max,
+                                  style: textNormal(
+                                    const Color.fromRGBO(228, 172, 26, 1),
+                                    16,
+                                  ).copyWith(fontWeight: FontWeight.w600),
+                                ),
+                                spaceW4,
+                                SizedBox(
+                                  height: 20.h,
+                                  width: 20.h,
+                                  child: CircleAvatar(
+                                    radius: 30.0.r,
+                                    backgroundImage: NetworkImage(
+                                        widget.modelToken.iconToken),
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
                     )
                   : Padding(
                       padding: EdgeInsets.only(top: 15.h, right: 20.w),
@@ -341,7 +412,7 @@ class _SendTokenState extends State<SendToken> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         const Color.fromRGBO(255, 108, 108, 1),
-                        12.sp,
+                        12,
                         FontWeight.w400,
                       ),
                     );
@@ -378,7 +449,7 @@ class _SendTokenState extends State<SendToken> {
                       snapshot.data ?? '',
                       style: textNormalCustom(
                         const Color.fromRGBO(255, 108, 108, 1),
-                        12.sp,
+                        12,
                         FontWeight.w400,
                       ),
                     );

@@ -1,24 +1,18 @@
 package com.edsolabs.dfy_mobile
 
-import com.google.protobuf.ByteString
+import com.edsolabs.dfy_mobile.extension.*
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
-import wallet.core.java.AnySigner
-import wallet.core.jni.CoinType
-import wallet.core.jni.HDWallet
-import wallet.core.jni.proto.Binance
-import kotlin.experimental.and
 
 class MainActivity : FlutterFragmentActivity() {
     init {
         System.loadLibrary("TrustWalletCore")
     }
 
-    private val TYPE_WALLET_SEED_PHRASE = "PASS_PHRASE"
-    private val TYPE_WALLET_PRIVATE_KEY = "PRIVATE_KEY"
     private val CHANNEL_TRUST_WALLET = "flutter/trust_wallet"
+
     private var channel: MethodChannel? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -29,385 +23,339 @@ class MainActivity : FlutterFragmentActivity() {
                 "checkPassword" -> {
                     val password = call.argument<String>("password")
                         ?: return@setMethodCallHandler
-                    checkPassWordWallet(password)
-
+                    this.checkPassWordWallet(channel = channel, password = password)
+                }
+                "changePassword" -> {
+                    val oldPassword = call.argument<String>("oldPassword")
+                        ?: return@setMethodCallHandler
+                    val newPassword = call.argument<String>("newPassword")
+                        ?: return@setMethodCallHandler
+                    this.changePassWordWallet(
+                        channel = channel,
+                        oldPassword = oldPassword,
+                        newPassword = newPassword
+                    )
+                }
+                "savePassword" -> {
+                    val password = call.argument<String>("password")
+                        ?: return@setMethodCallHandler
+                    this.savePassWordWallet(channel = channel, password = password)
                 }
                 "getConfig" -> {
-                    getConfigWallet()
+                    this.getConfigWallet(channel = channel)
                 }
                 "earseWallet" -> {
-                    earseWallet()
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    this.earseWallet(channel = channel, walletAddress = walletAddress)
                 }
+                "changeNameWallet" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    val walletName =
+                        call.argument<String>("walletName") ?: return@setMethodCallHandler
+                    this.changeNameWallet(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        walletName = walletName
+                    )
+                }
+//                "earseAllWallet" -> {
+//                    val type = call.argument<String>("type") ?: return@setMethodCallHandler
+//                    this.earseAllWallet(channel = channel, type = type)
+//                }
                 "importWallet" -> {
                     val type = call.argument<String>("type") ?: return@setMethodCallHandler
                     val content = call.argument<String>("content")
                         ?: return@setMethodCallHandler
-                    val password = call.argument<String>("password")
+                    val typeEarseWallet = call.argument<String>("typeEarseWallet")
                         ?: ""
-                    importWallet(type, content, password)
+                    this.importWallet(
+                        channel = channel,
+                        type = type,
+                        content = content,
+                        typeEarseWallet = typeEarseWallet
+                    )
                 }
                 "getListWallets" -> {
-                    val password = call.argument<String>("password")
-                        ?: return@setMethodCallHandler
-                    getListWallets(password)
+                    this.getListWallets(channel = channel)
                 }
                 "generateWallet" -> {
-                    val password = call.argument<String>("password")
-                        ?: return@setMethodCallHandler
-                    generateWallet(password)
+                    val typeEarseWallet =
+                        call.argument<String>("typeEarseWallet") ?: ""
+                    this.generateWallet(channel = channel, typeEarseWallet = typeEarseWallet)
                 }
                 "storeWallet" -> {
                     val seedPhrase =
                         call.argument<String>("seedPhrase") ?: return@setMethodCallHandler
                     val walletName =
                         call.argument<String>("walletName") ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: ""
-                    storeWallet(seedPhrase, walletName, password)
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    val privateKey =
+                        call.argument<String>("privateKey") ?: return@setMethodCallHandler
+                    val typeEarseWallet =
+                        call.argument<String>("typeEarseWallet") ?: ""
+                    this.storeWallet(
+                        channel = channel,
+                        seedPhrase = seedPhrase,
+                        walletName = walletName,
+                        walletAddress = walletAddress,
+                        privateKey = privateKey,
+                        typeEarseWallet = typeEarseWallet,
+                    )
+                }
+                "chooseWallet" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    this.chooseWallet(channel = channel, walletAddress = walletAddress)
                 }
                 "setConfig" -> {
                     val isAppLock =
-                        call.argument<Boolean>("isAppLock") ?: false
+                        call.argument<Boolean>("isAppLock") ?: true
                     val isFaceID =
                         call.argument<Boolean>("isFaceID") ?: false
-                    val password =
-                        call.argument<String>("password") ?: ""
-                    setConfig(isAppLock, isFaceID, password)
+                    this.setConfig(channel = channel, appLock = isAppLock, faceID = isFaceID)
                 }
-                "getListShowedToken" -> {
+                "checkToken" -> {
                     val walletAddress =
-                        call.argument<String>("walletAddress")
-                            ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: return@setMethodCallHandler
-                    getListShowedToken(walletAddress, password)
-                }
-                "getListShowedNft" -> {
-                    val walletAddress =
-                        call.argument<String>("walletAddress")
-                            ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: return@setMethodCallHandler
-                    getListShowedNft(walletAddress, password)
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
+                    val tokenAddress =
+                        call.argument<String>("tokenAddress") ?: return@setMethodCallHandler
+                    this.checkToken(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        tokenAddress = tokenAddress
+                    )
                 }
                 "importToken" -> {
                     val walletAddress =
-                        call.argument<String>("walletAddress")
-                            ?: return@setMethodCallHandler
+                        call.argument<String>("walletAddress") ?: return@setMethodCallHandler
                     val tokenAddress =
                         call.argument<String>("tokenAddress") ?: return@setMethodCallHandler
+                    val tokenFullName =
+                        call.argument<String>("tokenFullName") ?: return@setMethodCallHandler
+                    val iconToken =
+                        call.argument<String>("iconToken") ?: return@setMethodCallHandler
                     val symbol =
                         call.argument<String>("symbol") ?: return@setMethodCallHandler
                     val decimal =
                         call.argument<Int>("decimal") ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: ""
-                    importToken(walletAddress, tokenAddress, symbol, decimal, password)
+                    val exchangeRate =
+                        call.argument<Double>("exchangeRate") ?: return@setMethodCallHandler
+                    val isImport =
+                        call.argument<Boolean>("isImport") ?: return@setMethodCallHandler
+                    this.importToken(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        tokenAddress = tokenAddress,
+                        tokenFullName = tokenFullName,
+                        iconToken = iconToken,
+                        symbol = symbol,
+                        decimal = decimal,
+                        exchangeRate = exchangeRate,
+                        isImport = isImport
+                    )
                 }
-                "getListSupportedToken" -> {
+                "importListToken" -> {
+                    val jsonTokens =
+                        call.argument<String>("jsonTokens")
+                            ?: return@setMethodCallHandler
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: return@setMethodCallHandler
-                    getListSupportedToken(walletAddress, password)
+                    this.importListToken(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        jsonTokens = jsonTokens
+                    )
                 }
                 "setShowedToken" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
                     val tokenAddress =
-                        call.argument<Int>("tokenAddress")
+                        call.argument<String>("tokenAddress")
                             ?: return@setMethodCallHandler
                     val isShow =
                         call.argument<Boolean>("isShow")
                             ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: ""
-                    setShowedToken(walletAddress, tokenAddress, isShow, password)
+                    val isImport =
+                        call.argument<Boolean>("isImport")
+                            ?: return@setMethodCallHandler
+                    this.setShowedToken(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        tokenAddress = tokenAddress,
+                        isShow = isShow,
+                        isImport = isImport
+                    )
                 }
                 "importNft" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
-                    val nftAddress =
-                        call.argument<String>("nftAddress")
+                    val jsonNft =
+                        call.argument<String>("jsonNft")
                             ?: return@setMethodCallHandler
-                    val nftID =
-                        call.argument<Int>("nftID")
-                            ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: ""
-                    importNft(walletAddress, nftAddress, nftID, password)
+                    this.importNft(
+                        channel = channel,
+                        jsonNft = jsonNft,
+                        walletAddress = walletAddress
+                    )
                 }
-                "setShowedNft" -> {
+                "deleteNft" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
-                    val nftAddress =
-                        call.argument<Int>("nftAddress")
+                    val collectionAddress =
+                        call.argument<String>("collectionAddress")
                             ?: return@setMethodCallHandler
-                    val isShow =
-                        call.argument<Boolean>("isShow")
+                    val nftId =
+                        call.argument<String>("nftId")
                             ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: ""
-                    setShowedNft(walletAddress, nftAddress, isShow, password)
+                    this.deleteNft(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        collectionAddress = collectionAddress,
+                        nftId = nftId
+                    )
                 }
-                "sendToken" -> {
+                "deleteCollection" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
-                    val receiveAddress =
-                        call.argument<String>("receiveAddress") ?: return@setMethodCallHandler
-                    val tokenID =
-                        call.argument<Int>("tokenID") ?: return@setMethodCallHandler
+                    val collectionAddress =
+                        call.argument<String>("collectionAddress")
+                            ?: return@setMethodCallHandler
+                    this.deleteCollection(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        collectionAddress = collectionAddress
+                    )
+                }
+                "getTokens" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    this.getTokens(channel = channel, walletAddress = walletAddress)
+                }
+                "getNFT" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    this.getNFT(channel = channel, walletAddress = walletAddress)
+                }
+                "signTransactionToken" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    val toAddress =
+                        call.argument<String>("toAddress")
+                            ?: return@setMethodCallHandler
+                    val tokenAddress =
+                        call.argument<String>("tokenAddress")
+                            ?: return@setMethodCallHandler
+                    val nonce =
+                        call.argument<String>("nonce")
+                            ?: return@setMethodCallHandler
+                    val chainId =
+                        call.argument<String>("chainId")
+                            ?: return@setMethodCallHandler
+                    val gasPrice =
+                        call.argument<String>("gasPrice")
+                            ?: return@setMethodCallHandler
+                    val gasLimit =
+                        call.argument<String>("gasLimit")
+                            ?: return@setMethodCallHandler
+                    val gasFee =
+                        call.argument<String>("gasFee")
+                            ?: return@setMethodCallHandler
                     val amount =
-                        call.argument<Int>("amount") ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: return@setMethodCallHandler
-                    sendToken(walletAddress, receiveAddress, tokenID, amount, password)
+                        call.argument<String>("amount")
+                            ?: return@setMethodCallHandler
+                    val symbol =
+                        call.argument<String>("symbol")
+                            ?: return@setMethodCallHandler
+                    this.signTransactionToken(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        tokenAddress = tokenAddress,
+                        toAddress = toAddress,
+                        nonce = nonce,
+                        chainId = chainId,
+                        gasPrice = gasPrice,
+                        gasLimit = gasLimit,
+                        gasFee = gasFee,
+                        amount = amount,
+                        symbol = symbol
+                    )
                 }
-                "sendNft" -> {
+                "signTransactionNft" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
-                    val receiveAddress =
-                        call.argument<String>("receiveAddress") ?: return@setMethodCallHandler
-                    val nftID =
-                        call.argument<Int>("nftID") ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: return@setMethodCallHandler
-                    sendNft(walletAddress, receiveAddress, nftID, password)
+                    val toAddress =
+                        call.argument<String>("toAddress")
+                            ?: return@setMethodCallHandler
+                    val tokenAddress =
+                        call.argument<String>("tokenAddress")
+                            ?: return@setMethodCallHandler
+                    val nonce =
+                        call.argument<String>("nonce")
+                            ?: return@setMethodCallHandler
+                    val chainId =
+                        call.argument<String>("chainId")
+                            ?: return@setMethodCallHandler
+                    val gasPrice =
+                        call.argument<String>("gasPrice")
+                            ?: return@setMethodCallHandler
+                    val gasLimit =
+                        call.argument<String>("gasLimit")
+                            ?: return@setMethodCallHandler
+                    val tokenId =
+                        call.argument<String>("tokenId")
+                            ?: return@setMethodCallHandler
+                    val gasFee =
+                        call.argument<String>("gasFee")
+                            ?: return@setMethodCallHandler
+                    val amount =
+                        call.argument<String>("amount")
+                            ?: return@setMethodCallHandler
+                    val symbol =
+                        call.argument<String>("symbol")
+                            ?: return@setMethodCallHandler
+                    this.signTransactionNft(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        tokenAddress = tokenAddress,
+                        toAddress = toAddress,
+                        nonce = nonce,
+                        chainId = chainId,
+                        gasPrice = gasPrice,
+                        gasLimit = gasLimit,
+                        tokenId = tokenId,
+                        gasFee = gasFee,
+                        amount = amount,
+                        symbol = symbol
+                    )
                 }
-                "getTokenDetail" -> {
+                "exportWallet" -> {
+                    val password =
+                        call.argument<String>("password")
+                            ?: return@setMethodCallHandler
                     val walletAddress =
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
-                    val tokenID =
-                        call.argument<Int>("tokenID") ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: return@setMethodCallHandler
-                    getTokenDetail(walletAddress, tokenID, password)
-                }
-                "getNftDetail" -> {
-                    val walletAddress =
-                        call.argument<String>("walletAddress")
-                            ?: return@setMethodCallHandler
-                    val nftID =
-                        call.argument<Int>("nftID") ?: return@setMethodCallHandler
-                    val password =
-                        call.argument<String>("password") ?: return@setMethodCallHandler
-                    getNftDetail(walletAddress, nftID, password)
+                    this.exportWallet(
+                        channel = channel,
+                        password = password,
+                        walletAddress = walletAddress
+                    )
                 }
             }
         }
     }
 
-    private fun checkPassWordWallet(password: String) {
-        val hasMap = HashMap<String, Any>()
-        hasMap["isCorrect"] = password.isNotEmpty()
-        channel?.invokeMethod("checkPasswordCallback", hasMap)
-    }
 
-    private fun getConfigWallet() {
-        val hasMap = HashMap<String, Boolean>()
-        hasMap["isAppLock"] = true
-        hasMap["isFaceID"] = true
-        hasMap["isWalletExist"] = true
-        channel?.invokeMethod("getConfigCallback", hasMap)
-    }
-
-    private fun earseWallet() {
-        val hasMap = HashMap<String, Boolean>()
-        hasMap["isSuccess"] = true
-        channel?.invokeMethod("earseWalletCallback", hasMap)
-    }
-
-    private fun importWallet(type: String, content: String, password: String) {
-        val hasMap = HashMap<String, String>()
-//        //todo validate content
-//        if (type == TYPE_WALLET_SEED_PHRASE) {
-//            //todo content is seed phrase
-//            val wallet = HDWallet(content, "")
-//            val coinType: CoinType = CoinType.SMARTCHAIN
-//            val address = wallet.getAddressForCoin(coinType)
-//            hasMap["walletAddress"] = address
-//        } else if (type == TYPE_WALLET_PRIVATE_KEY) {
-//            //todo content is private key
-//            val wallet = HDWallet(content, "")
-//            val privateKey = wallet.getKeyForCoin(CoinType.SMARTCHAIN)
-//            val publicKeyFalse = privateKey.getPublicKeySecp256k1(false)
-//            val anyAddress = AnyAddress(publicKeyFalse, CoinType.SMARTCHAIN)
-//            val address = anyAddress.data().toHexString()
-//            hasMap["walletAddress"] = address
-//// address = 0xa3dcd899c0f3832dfdfed9479a9d828c6a4eb2a7    it does not has EIP55 address
-//        } else {
-//            return
-//        }
-        //todo check count wallet -> walletName = wallet count + 1
-        hasMap["walletName"] = "walletName"
-        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        channel?.invokeMethod("importWalletCallback", hasMap)
-    }
-
-    private fun getListWallets(password: String) {
-        val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
-        val data1 = HashMap<String, Any>()
-        data1["walletName"] = "walletName1"
-        data1["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        hasMap.add(data1)
-        val data2 = HashMap<String, Any>()
-        data2["walletName"] = "walletName2"
-        data2["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        hasMap.add(data2)
-        channel?.invokeMethod("getListWalletsCallback", hasMap)
-    }
-
-    private fun generateWallet(password: String) {
-        val hasMap = HashMap<String, String>()
-        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        hasMap["privateKey"] = "e507e499158b5b6e1a89ad1e65250f6c38a28d455c37cf23c41f4bdd82436e5a"
-        hasMap["passPhrase"] =
-            "party response give dove tooth master flip video permit game expire token"
-        channel?.invokeMethod("generateWalletCallback", hasMap)
-    }
-
-    private fun storeWallet(seedPhrase: String, walletName: String, storeWallet: String) {
-        val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = true
-        channel?.invokeMethod("storeWalletCallback", hasMap)
-    }
-
-    private fun setConfig(appLock: Boolean, faceID: Boolean, password: String) {
-        val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = true
-        channel?.invokeMethod("setConfigCallback", hasMap)
-    }
-
-    private fun getListShowedToken(walletAddress: String, password: String) {
-        //todo
-        val hasMap = HashMap<String, Any>()
-        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        channel?.invokeMethod("getListShowedTokenCallback", hasMap)
-    }
-
-    private fun getListShowedNft(walletAddress: String, password: String) {
-        //todo
-        val hasMap = HashMap<String, Any>()
-        hasMap["walletAddress"] = "0x753EE7D5FdBD248fED37add0C951211E03a7DA15"
-        channel?.invokeMethod("getListShowedNftCallback", hasMap)
-    }
-
-    private fun importToken(
-        walletAddress: String,
-        tokenAddress: String,
-        symbol: String,
-        decimal: Int,
-        password: String
-    ) {
-        //todo
-        val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = true
-        channel?.invokeMethod("importTokenCallback", hasMap)
-    }
-
-    private fun getListSupportedToken(walletAddress: String, password: String) {
-        //todo
-        val hasMap = HashMap<String, Any>()
-        channel?.invokeMethod("getListSupportedTokenCallback", hasMap)
-    }
-
-    private fun setShowedToken(
-        walletAddress: String,
-        tokenID: Int,
-        show: Boolean,
-        password: String
-    ) {
-        val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = true
-        channel?.invokeMethod("setShowedTokenCallback", hasMap)
-    }
-
-    private fun importNft(walletAddress: String, nftAddress: String, nftID: Int, password: String) {
-        val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = true
-        channel?.invokeMethod("importNftCallback", hasMap)
-    }
-
-    private fun setShowedNft(walletAddress: String, nftID: Int, show: Boolean, password: String) {
-        val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = true
-        channel?.invokeMethod("setShowedNftCallback", hasMap)
-    }
-
-    private fun getTokenDetail(walletAddress: String, tokenID: Int, password: String) {
-        val hasMap = HashMap<String, Any>()
-        channel?.invokeMethod("getTokenDetailCallback", hasMap)
-    }
-
-    private fun getNftDetail(walletAddress: String, nftID: Int, password: String) {
-        val hasMap = HashMap<String, Any>()
-        channel?.invokeMethod("getTokenDetailCallback", hasMap)
-    }
-
-    private fun sendToken(
-        walletAddress: String,
-        receiveAddress: String,
-        tokenID: Int,
-        amount: Int,
-        password: String
-    ) {
-        val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = true
-        channel?.invokeMethod("sendTokenCallback", hasMap)
-    }
-
-    private fun sendNft(
-        walletAddress: String,
-        receiveAddress: String,
-        nftID: Int,
-        password: String
-    ) {
-        val hasMap = HashMap<String, Any>()
-        hasMap["isSuccess"] = true
-        channel?.invokeMethod("sendNftCallback", hasMap)
-    }
-
-    private fun genAddressBySeedPhrase(seedPhrase: String, coinType: CoinType): String {
-        val wallet = HDWallet(seedPhrase, "")
-        return wallet.getAddressForCoin(coinType)
-    }
-
-    private fun genAddressByPrivateKey(privateKey: String, coinType: CoinType): String {
-        val signerInput = Binance.SigningInput.newBuilder().apply {
-            this.privateKey = ByteString.copyFrom(privateKey.hexStringToByteArray())
-        }.build()
-        val signerOutput =
-            AnySigner.sign(signerInput, CoinType.SMARTCHAIN, Binance.SigningOutput.parser())
-        return ""
-    }
-}
-
-private fun String.hexStringToByteArray(): ByteArray {
-    val HEX_CHARS = "0123456789ABCDEF"
-    val result = ByteArray(length / 2)
-    for (i in 0 until length step 2) {
-        val firstIndex = HEX_CHARS.indexOf(this[i].toUpperCase());
-        val secondIndex = HEX_CHARS.indexOf(this[i + 1].toUpperCase());
-        val octet = firstIndex.shl(4).or(secondIndex)
-        result.set(i.shr(1), octet.toByte())
-    }
-    return result
-}
-
-fun ByteArray.toHexString(withPrefix: Boolean = true): String {
-    val stringBuilder = StringBuilder()
-    if (withPrefix) {
-        stringBuilder.append("0x")
-    }
-    for (element in this) {
-        stringBuilder.append(String.format("%02x", element and 0xFF.toByte()))
-    }
-    return stringBuilder.toString()
 }

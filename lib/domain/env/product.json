@@ -1,5 +1,5 @@
 {
   "type": "product",
-  "base_url": "https://www.google.com/",
-  "base_image_url": "https://www.google.com/"
+  "base_url": "https://dev2.gwapi.defiforyou.uk/nft-market-svc/public-api/",
+  "base_image_url": "https://dev2.gwapi.defiforyou.uk/nft-market-svc/public-api/"
 }

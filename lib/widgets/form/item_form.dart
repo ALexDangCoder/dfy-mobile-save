@@ -1,13 +1,16 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/import_account_login_bts/bloc/import_cubit.dart';
-import 'package:Dfy/presentation/restore_bts/bloc/restore_cubit.dart';
+import 'package:Dfy/presentation/import_account/bloc/import_cubit.dart';
+import 'package:Dfy/presentation/restore_account/bloc/restore_cubit.dart';
+import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum FormType { PASS_PHRASE, PASSWORD, PRIVATE_KEY , AMOUNT}
+enum FormType { PASS_PHRASE, PASSWORD, PRIVATE_KEY, AMOUNT }
 enum PassType { NEW, CON }
 
 class ItemForm extends StatelessWidget {
@@ -21,7 +24,8 @@ class ItemForm extends StatelessWidget {
     required this.isShow,
     required this.controller,
     this.cubit,
-    this.passType, this.importCubit,
+    this.passType,
+    this.importCubit,
   }) : super(key: key);
   final String prefix;
   final String hint;
@@ -43,29 +47,165 @@ class ItemForm extends StatelessWidget {
         ),
         child: Container(
           width: 343.w,
-          padding: EdgeInsets.only(
-            top: 10.h,
-            bottom: 10.h,
-            //right: 12.w,
-          ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(20.r),
             ),
             color: AppTheme.getInstance().itemBtsColors(),
           ),
+          child: Center(
+            child: TextFormField(
+              controller: controller,
+              style: textNormal(
+                Colors.white,
+                16,
+              ),
+              textAlignVertical: TextAlignVertical.center,
+              onChanged: (value) {
+                cubit?.showTxtWarningSeed(value, FormType.PASS_PHRASE);
+                importCubit?.showTxtWarningSeed(value, FormType.PASS_PHRASE);
+              },
+              minLines: 1,
+              maxLines: 10,
+              cursorColor: Colors.white,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(
+                  right: 3.w,
+                  top: 16.h,
+                  bottom: 16.h,
+                ),
+                hintText: hint,
+                hintStyle: textNormal(
+                  Colors.grey,
+                  16,
+                ),
+                suffixIcon: InkWell(
+                  onTap: callback,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 13.h),
+                    child: Text(
+                      S.current.paste,
+                      style: textNormal(AppTheme.getInstance().fillColor(), 16)
+                          .copyWith(
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
+                prefixIcon: ImageIcon(
+                  AssetImage(prefix),
+                  color: Colors.white,
+                ),
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+        ),
+      );
+    } else if (formType == FormType.PRIVATE_KEY) {
+      return Container(
+        height: 64.h,
+        width: 343.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
+          ),
+          color: AppTheme.getInstance().itemBtsColors(),
+        ),
+        child: Center(
+          child: Row(
+            children: [
+              SizedBox(
+                width: 295.w,
+                child: TextFormField(
+                  controller: controller,
+                  obscureText: isShow,
+                  textAlignVertical: TextAlignVertical.center,
+                  style: textNormal(
+                    Colors.white,
+                    16,
+                  ),
+                  onChanged: (value) {
+                    cubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
+                    importCubit?.showTxtWarningSeed(
+                        value, FormType.PRIVATE_KEY);
+                  },
+                  cursorColor: Colors.white,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(right: 3.w),
+                    hintText: hint,
+                    hintStyle: textNormal(
+                      Colors.grey,
+                      16,
+                    ),
+                    suffixIcon: InkWell(
+                      onTap: callback,
+                      child: SizedBox(
+                        height: 24.h,
+                        width: 24.w,
+                        child: Center(
+                          child: Text(
+                            suffix,
+                            textAlign: TextAlign.center,
+                            style:
+                                textNormal(AppTheme.getInstance().fillColor(), 16)
+                                    .copyWith(
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    prefixIcon: ImageIcon(
+                      AssetImage(prefix),
+                      color: Colors.white,
+                    ),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              spaceW12,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => QRViewExample(
+                        controller: controller,
+                        restoreCubit: cubit,
+                        importCubit: importCubit,
+                      ),
+                    ),
+                  );
+                },
+                child: Image.asset(ImageAssets.ic_qr_code),
+              )
+            ],
+          ),
+        ),
+      );
+    } else if (formType == FormType.AMOUNT) {
+      return Container(
+        height: 64.h,
+        width: 343.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
+          ),
+          color: AppTheme.getInstance().itemBtsColors(),
+        ),
+        child: Center(
           child: TextFormField(
+            textAlignVertical: TextAlignVertical.center,
             controller: controller,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'(^\-?\d*\.?\d*)'))
+            ],
             style: textNormal(
               Colors.white,
               16,
             ),
-            onChanged: (value) {
-              cubit?.checkSeedField(value);
-              importCubit?.checkSeedField(value);
-            },
-            minLines: 1,
-            maxLines: 10,
             cursorColor: Colors.white,
             decoration: InputDecoration(
               hintText: hint,
@@ -76,12 +216,12 @@ class ItemForm extends StatelessWidget {
               suffixIcon: InkWell(
                 onTap: callback,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 12.h),
+                  padding: EdgeInsets.only(top: 10.h),
                   child: Text(
-                    S.current.paste,
-                    style: textNormal(AppTheme.getInstance().fillColor(), 16)
-                        .copyWith(
-                      fontWeight: FontWeight.w400,
+                    suffix,
+                    style: textNormal(
+                      Colors.grey,
+                      16,
                     ),
                   ),
                 ),
@@ -95,176 +235,59 @@ class ItemForm extends StatelessWidget {
           ),
         ),
       );
-    } else if (formType == FormType.PRIVATE_KEY) {
-      return Container(
-        height: 64.h,
-        width: 343.w,
-        padding: EdgeInsets.only(
-          top: 12.h,
-          bottom: 12.h,
-          //right: 10.w,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.r),
-          ),
-          color: AppTheme.getInstance().itemBtsColors(),
-        ),
-        child: TextFormField(
-          controller: controller,
-          obscureText: isShow,
-          style: textNormal(
-            Colors.white,
-            16,
-          ),
-          onChanged: (value) {
-            cubit?.checkPrivateField(value);
-            importCubit?.checkPrivateField(value);
-          },
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: textNormal(
-              Colors.grey,
-              16,
-            ),
-            suffixIcon: InkWell(
-              onTap: callback,
-              child: Padding(
-                padding: EdgeInsets.only(top: 10.h),
-                child: Text(
-                  suffix,
-                  style: textNormal(AppTheme.getInstance().fillColor(), 16)
-                      .copyWith(
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-            ),
-            prefixIcon: ImageIcon(
-              AssetImage(prefix),
-              color: Colors.white,
-            ),
-            border: InputBorder.none,
-          ),
-        ),
-      );
-    } else if (formType == FormType.AMOUNT) {
-      return Container(
-        height: 64.h,
-        width: 343.w,
-        padding: EdgeInsets.only(
-          top: 12.h,
-          bottom: 12.h,
-          right: 12.w,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.r),
-          ),
-          color: AppTheme.getInstance().itemBtsColors(),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: TextFormField(
-                controller: controller,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'(^\-?\d*\.?\d*)'))
-                ],
-                style: textNormal(
-                  Colors.white,
-                  16,
-                ),
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                  hintText: hint,
-                  hintStyle: textNormal(
-                    Colors.grey,
-                    16,
-                  ),
-                  suffixIcon: InkWell(
-                    onTap: callback,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 8.h),
-                      child: Text(
-                        suffix,
-                        style: textNormal(
-                          AppTheme.getInstance().fillColor(),
-                          16,
-                        ),
-                      ),
-                    ),
-                  ),
-                  prefixIcon: ImageIcon(
-                    AssetImage(prefix),
-                    color: Colors.white,
-                  ),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 11.w,
-            ),
-            Text(
-              'BNB',
-              style: textNormal(
-                Colors.grey,
-                16,
-              ),
-            ),
-          ],
-        ),
-      );
     } else {
       return Container(
         height: 64.h,
         width: 343.w,
-        padding: EdgeInsets.only(
-          top: 12.h,
-          bottom: 12.h,
-        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(20.r),
           ),
           color: AppTheme.getInstance().itemBtsColors(),
         ),
-        child: TextFormField(
-          controller: controller,
-          obscureText: isShow,
-          style: textNormal(
-            Colors.white,
-            16,
-          ),
-          onChanged: passType == PassType.CON
-              ? (value) {
-            cubit?.checkHaveValueConfirmPW(value);
-          }
-              : (value) {
-            cubit?.checkHaveValuePW(value);
-          },
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: textNormal(
-              Colors.grey,
+        child: Center(
+          child: TextFormField(
+            controller: controller,
+            obscureText: isShow,
+            textAlignVertical: TextAlignVertical.center,
+            style: textNormal(
+              Colors.white,
               16,
             ),
-            suffixIcon: InkWell(
-              onTap: callback,
-              child: ImageIcon(
-                AssetImage(suffix),
-                color: Colors.grey,
+            onChanged: passType == PassType.CON
+                ? (value) {
+                    cubit?.showTxtWarningConfirmPW(
+                      value,
+                      newPW: cubit?.newPassword ?? '',
+                    );
+                  }
+                : (value) {
+                    cubit?.showTxtWarningNewPW(value);
+                    cubit?.showTxtWarningConfirmPW(
+                      cubit?.conPassword ?? '',
+                      newPW: value,
+                    );
+                  },
+            cursorColor: Colors.white,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: textNormal(
+                Colors.grey,
+                16,
               ),
+              suffixIcon: InkWell(
+                onTap: callback,
+                child: ImageIcon(
+                  AssetImage(suffix),
+                  color: Colors.grey,
+                ),
+              ),
+              prefixIcon: ImageIcon(
+                AssetImage(prefix),
+                color: Colors.white,
+              ),
+              border: InputBorder.none,
             ),
-            prefixIcon: ImageIcon(
-              AssetImage(prefix),
-              color: Colors.white,
-            ),
-            border: InputBorder.none,
           ),
         ),
       );

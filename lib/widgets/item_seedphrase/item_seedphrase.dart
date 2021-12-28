@@ -11,7 +11,6 @@ class ItemSeedPhrase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30.h,
       decoration: BoxDecoration(
         color: Colors.transparent,
         border: Border.all(

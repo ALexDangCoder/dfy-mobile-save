@@ -1,36 +1,27 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/nft.dart';
+import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/dialog_remove/remove_collection.dart';
 import 'package:Dfy/widgets/dialog_remove/remove_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-final NFT nft = NFT(
-  'Name of NFT',
-  'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
-  Standard.ERC_1155,
-  'https://medium.com/flutter-community/make-text-styling-more-effective-with-richtext-widget-b0e0cb4771ef',
-  'Binance smart chain',
-  '0xd07dc426200000415242343423424261d2461d2430',
-  '#357594',
-);
-
 class NFTItem extends StatefulWidget {
   const NFTItem({
     Key? key,
-    required this.symbolUrl,
-    required this.nameNFT,
     required this.bloc,
     required this.index,
+    required this.walletAddress,
+    required this.collectionShow,
   }) : super(key: key);
-  final String symbolUrl;
-  final String nameNFT;
+  final CollectionShow collectionShow;
   final WalletCubit bloc;
   final int index;
+  final String walletAddress;
 
   @override
   _NFTItemState createState() => _NFTItemState();
@@ -41,20 +32,24 @@ class _NFTItemState extends State<NFTItem> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return MaterialButton(
+      padding: EdgeInsets.zero,
       onLongPress: () {
         Navigator.of(context).push(
           HeroDialogRoute(
             builder: (context) {
-              return RemoveNft(
+              return RemoveCollection(
+                walletAddress: widget.walletAddress,
                 index: widget.index,
                 cubit: widget.bloc,
+                collectionAddress: widget.collectionShow.contract ?? '',
               );
             },
             isNonBackground: false,
           ),
         );
       },
+      onPressed: null,
       child: Column(
         children: [
           Visibility(
@@ -69,16 +64,15 @@ class _NFTItemState extends State<NFTItem> {
               dividerColor: Colors.transparent,
             ),
             child: ExpansionTile(
-              leading: Container(
+              leading: Padding(
                 padding: EdgeInsets.only(
-                  left: 10.w,
                   top: 10.h,
                 ),
                 child: ImageIcon(
                   _customTileExpanded
                       ? const AssetImage(ImageAssets.ic_line_down)
                       : const AssetImage(ImageAssets.ic_line_right),
-                  size: 24.sp,
+                  size: 24,
                   color: Colors.white,
                 ),
               ),
@@ -86,22 +80,33 @@ class _NFTItemState extends State<NFTItem> {
                 height: 67.h,
                 child: Row(
                   children: [
-                    Image(
-                      width: 28.w,
-                      height: 28.h,
-                      image: const AssetImage(
-                        ImageAssets.ic_symbol,
+                    CircleAvatar(
+                      backgroundColor: Colors.yellow,
+                      radius: 14.r,
+                      child: Center(
+                        child: Text(
+                          widget.collectionShow.name!.substring(0, 1),
+                          style: textNormalCustom(
+                            Colors.black,
+                            20,
+                            FontWeight.w900,
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(
                       width: 8.w,
                     ),
-                    Text(
-                      widget.nameNFT,
-                      style: textNormalCustom(
-                        Colors.white,
-                        20.sp,
-                        FontWeight.w600,
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 230.w),
+                      child: Text(
+                        widget.collectionShow.name!,
+                        style: textNormalCustom(
+                          Colors.white,
+                          20,
+                          FontWeight.w600,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -114,21 +119,45 @@ class _NFTItemState extends State<NFTItem> {
               },
               controlAffinity: ListTileControlAffinity.leading,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 52.w,
-                    right: 26.w,
-                    bottom: 16.h,
-                  ),
-                  child: SizedBox(
-                    height: 140.h,
-                    child: ListView.builder(
-                      physics: const ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 6,
-                      itemBuilder: (BuildContext context, int index) => CardNFT(
-                        objNFT: nft,
+                SizedBox(
+                  height: 140.h,
+                  width: double.infinity,
+                  child: ListView.builder(
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: widget.collectionShow.listNft?.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        GestureDetector(
+                      onLongPress: () {
+                        Navigator.of(context).push(
+                          HeroDialogRoute(
+                            builder: (context) {
+                              return RemoveNft(
+                                walletAddress: widget.walletAddress,
+                                index: index,
+                                cubit: widget.bloc,
+                                collectionAddress:
+                                    widget.collectionShow.contract ?? '',
+                                nftId:
+                                    widget.collectionShow.listNft?[index].id ??
+                                        '',
+                                indexCollection: widget.index,
+                              );
+                            },
+                            isNonBackground: false,
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 16.w,
+                        ),
+                        child: CardNFT(
+                          objNFT: widget.collectionShow.listNft![index],
+                          walletAddress: widget.walletAddress,
+                          walletCubit: widget.bloc,
+                        ),
                       ),
                     ),
                   ),

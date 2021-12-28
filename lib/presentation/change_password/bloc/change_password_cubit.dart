@@ -1,7 +1,8 @@
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'change_password_state.dart';
@@ -18,19 +19,58 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   bool _haveValueConfirmPW = false;
 
   final BehaviorSubject<bool> _validatePW = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _changePWSuccess =
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _matchPW = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _matchOldPW = BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _showOldPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _showNewPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _showCfPW = BehaviorSubject<bool>.seeded(true);
   final BehaviorSubject<bool> _isEnableButton =
-  BehaviorSubject<bool>.seeded(true);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<String> _txtWarnOldPW =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnNewPW =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtWarnCfPW =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
+
+  ///wallet core
+  Future<void> changePasswordIntoWalletCore({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    try {
+      final data = {
+        'oldPassword': oldPassword,
+        'newPassword': newPassword,
+      };
+      await trustWalletChannel.invokeMethod('changePassword', data);
+    } on PlatformException {
+      //nothing
+    }
+  }
+
+  // isSuccess: boolean
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'changePasswordCallback':
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+        try {
+          if (isSuccess) {
+            emit(ChangePasswordSuccess());
+          } else {
+            emit(ChangePasswordFail());
+          }
+        } catch (e) {
+          print(e);
+        }
+        break;
+      default:
+        break;
+    }
+  }
 
   //stream
   Stream<bool> get validatePWStream => _validatePW.stream;
@@ -47,6 +87,8 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
 
   Stream<bool> get showCfPWStream => _showCfPW.stream;
 
+  Stream<bool> get changePWSuccessStream => _changePWSuccess.stream;
+
   Stream<String> get txtWarnOldPWStream => _txtWarnOldPW.stream;
 
   Stream<String> get txtWarnNewPWStream => _txtWarnNewPW.stream;
@@ -57,6 +99,8 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   Sink<bool> get validatePWSink => _validatePW.sink;
 
   Sink<bool> get matchPWSink => _matchPW.sink;
+
+  Sink<bool> get changePWSuccessSink => _changePWSuccess.sink;
 
   Sink<bool> get matchOldPWSink => _matchOldPW.sink;
 
@@ -142,10 +186,6 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       matchOldPWSink.add(true);
       txtWarnOldPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else if (value != passwordOld) {
-      matchOldPWSink.add(true);
-      txtWarnOldPWSink.add(S.current.warn_old_pw_not_match);
-      isEnableButtonSink.add(false);
     } else {
       matchOldPWSink.add(false);
       _flagOldPW = 1;
@@ -157,7 +197,10 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     }
   }
 
-  void showTxtWarningNewPW(String value) {
+  String confirmPw = '';
+  String currentNewPw = '';
+
+  void showTxtWarningNewPW(String value, {required String cfPassword}) {
     if ((value.isNotEmpty && value.length < 8) ||
         (value.isNotEmpty && value.length > 15)) {
       validatePWSink.add(true);
@@ -171,7 +214,14 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       validatePWSink.add(true);
       txtWarnNewPWSink.add(S.current.warn_pw_validate);
       isEnableButtonSink.add(false);
-    } else {
+    }
+    else if (value != cfPassword) {
+      validatePWSink.add(false);
+      matchPWSink.add(true);
+      txtWarnCfPWSink.add(S.current.warn_cf_pw);
+      isEnableButtonSink.add(false);
+    }
+    else {
       validatePWSink.add(false);
       _flagNewPW = 1;
       if (_flagCfPW == 1 && _flagNewPW == 1 && _flagOldPW == 1) {
@@ -183,24 +233,17 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   }
 
   void showTxtWarningConfirmPW(String value, {required String newPassword}) {
-    if ((value.isNotEmpty && value.length < 8) ||
-        (value.isNotEmpty && value.length > 15)) {
-      matchPWSink.add(true);
-      txtWarnCfPWSink.add(S.current.warn_pw_8_15);
-      isEnableButtonSink.add(false);
-    } else if (value.isEmpty) {
+    if (value.isEmpty) {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_pw_required);
       isEnableButtonSink.add(false);
-    } else if (!Validator.validateStructure(value)) {
-      matchPWSink.add(true);
-      txtWarnCfPWSink.add(S.current.warn_pw_validate);
-      isEnableButtonSink.add(false);
-    } else if (!(value == newPassword)) {
+    }
+    else if (value != newPassword) {
       matchPWSink.add(true);
       txtWarnCfPWSink.add(S.current.warn_cf_pw);
       isEnableButtonSink.add(false);
-    } else {
+    }
+    else {
       matchPWSink.add(false);
       _flagCfPW = 1;
       if (_flagCfPW == 1 && _flagNewPW == 1 && _flagOldPW == 1) {
@@ -252,11 +295,17 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   }
 
   //check 3 forms is validate -> change screen
-  bool checkAllValidate(
-      {required String oldPWFetch, required String oldPW, required String newPW,
-        required String confirmPW,}) {
-    if (oldPW == oldPWFetch && Validator.validateStructure(newPW) &&
-        Validator.validateStructure(confirmPW) && (newPW == confirmPW)) {
+  bool checkAllValidate({
+    // required String oldPWFetch,
+    required String oldPW,
+    required String newPW,
+    required String confirmPW,
+  }) {
+    if (
+        // oldPW == oldPWFetch &&
+        Validator.validateStructure(newPW) &&
+            Validator.validateStructure(confirmPW) &&
+            (newPW == confirmPW)) {
       return true;
     } else {
       return false;

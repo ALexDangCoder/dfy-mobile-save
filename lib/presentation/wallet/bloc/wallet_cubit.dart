@@ -1,63 +1,296 @@
-import 'dart:math';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:math' hide log;
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/model/collection_nft_info.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
+import 'package:Dfy/data/web3/model/token_info_model.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
-import 'package:Dfy/domain/model/token.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
+import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/model/token_price_model.dart';
+import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/repository/price_repository.dart';
+import 'package:Dfy/domain/repository/token_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/utils/extensions/validator.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
-import 'package:meta/meta.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import "package:meta/meta.dart";
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
 part 'wallet_state.dart';
 
 class WalletCubit extends BaseCubit<WalletState> {
-  WalletCubit() : super(WalletInitial()) {
-    listTokenDetailScreen = listTokenInitial;
-    getListSort();
-    getList();
-    getListTokenItem();
-    getListNFTItem();
+  WalletCubit() : super(WalletInitial());
+
+  //handle validate form
+  final BehaviorSubject<bool> isShowValidateText =
+      BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<String> warningText =
+      BehaviorSubject<String>.seeded('');
+
+  ///web3
+  Web3Utils client = Web3Utils();
+  bool isHaveToken = true;
+
+  String handleValueFromQR({required String value}) {
+    final int index = value.lastIndexOf('0x');
+    final int lastIndex = index + 42;
+    return value.substring(index, lastIndex);
   }
 
-  bool checkLogin = false;
-  List<TokenModel> listStart = [];
+  Future<void> getTokenInfoByAddress({required String tokenAddress}) async {
+    final TokenInfoModel? tokenInfoModel =
+        await client.getTokenInfo(contractAddress: tokenAddress);
+    if (tokenInfoModel != null) {
+      tokenSymbol.sink.add(tokenInfoModel.tokenSymbol ?? 'null');
+      tokenDecimal.sink.add('${tokenInfoModel.decimal ?? 0} ');
+      tokenFullName = tokenInfoModel.name ?? '';
+      if (tokenInfoModel.tokenSymbol!.isNotEmpty) {
+        isTokenEnterAddress.sink.add(true);
+        if (isHaveToken) {
+          isTokenEnterAddress.sink.add(false);
+        }
+      }
+      if (tokenInfoModel.tokenSymbol!.isEmpty) {
+        isTokenEnterAddress.sink.add(false);
+      }
+      isAddressNotExist = false;
+    }
+    if (tokenInfoModel == null) {
+      isAddressNotExist = true;
+    }
+  }
 
-  BehaviorSubject<List<TokenModel>> listTokenStream =
-      BehaviorSubject.seeded([]);
-  BehaviorSubject<List<TokenModel>> listNFTStream = BehaviorSubject.seeded([]);
+  BehaviorSubject<String> warningAddressNft =
+      BehaviorSubject<String>.seeded('');
+  BehaviorSubject<String> warningTextIdNft = BehaviorSubject<String>.seeded('');
+  String errorWhenImportNft = '';
+
+  //handle call nft from web3
+  void checkImportNft({
+    required String contract,
+    required String address,
+    int? id,
+  }) async {
+    emit(ImportNftLoading());
+    if (id != null) {
+      final resultWhenCall =
+          await client.importNFT(contract: contract, address: address, id: id);
+      if (!resultWhenCall.isSuccess) {
+        emit(ImportNftFail());
+        errorWhenImportNft = resultWhenCall.message;
+        btnSubject.sink.add(false);
+      } else {
+        await emitJsonNftToWalletCore(
+          contract: contract,
+          address: address,
+          id: id,
+        );
+      }
+    } else {
+      final resultWhenCall =
+          await client.importNFT(contract: contract, address: address);
+      if (!resultWhenCall.isSuccess) {
+        emit(ImportNftFail());
+        errorWhenImportNft = resultWhenCall.message;
+        btnSubject.sink.add(false);
+      } else {
+        await emitJsonNftToWalletCore(contract: contract, address: address);
+      }
+    }
+  }
+
+  Future<String> getIcon(String addressToken) async {
+    for (final ModelToken value in checkShow) {
+      if (addressToken == value.tokenAddress) {
+        return value.iconToken;
+      }
+    }
+    return '';
+  }
+
+  String nftName = '';
+  String iconNFT = '';
+
+  //todo getNftInfoByAddress
+  Future<void> getNftInfoByAddress({
+    required String nftAddress,
+    int? enterId,
+  }) async {
+    final NftInfo nftInfoModel = await client.getNftInfo(
+      contract: '',
+      id: 12,
+    );
+    nftName = nftInfoModel.name ?? '';
+    // iconNFT = nftInfoModel.link ?? '';
+  }
+
+  Future<double> getWalletDetail({required String walletAddress}) async {
+    final double balanceOfBnb =
+        await client.getBalanceOfBnb(ofAddress: walletAddress);
+    return balanceOfBnb;
+  }
+
+  Future<void> getListWallet({
+    required String addressWallet,
+  }) async {
+    for (final Wallet value in listWallet) {
+      final double balanceOfBnb = await getWalletDetail(
+        walletAddress: value.address ?? '',
+      );
+      if (addressWallet == value.address) {
+        final AccountModel acc = AccountModel(
+          isCheck: true,
+          addressWallet: value.address,
+          amountWallet: balanceOfBnb,
+          imported: value.isImportWallet,
+          nameWallet: value.name,
+          url: '${ImageAssets.image_avatar}${randomAvatar()}'
+              '.png',
+        );
+        listSelectAccBloc.add(acc);
+      } else {
+        final AccountModel acc = AccountModel(
+          isCheck: false,
+          addressWallet: value.address,
+          amountWallet: balanceOfBnb,
+          imported: value.isImportWallet,
+          nameWallet: value.name,
+          url: '${ImageAssets.image_avatar}${randomAvatar()}'
+              '.png',
+        );
+        listSelectAccBloc.add(acc);
+      }
+    }
+    getListAcc();
+  }
+
+  bool checkWalletExist = false;
+  bool isAddressNotExist = false;
+
+  String tokenFullName = '';
+  bool checkLogin = false;
+  List<Wallet> listWallet = [];
+  List<ModelToken> listTokenImport = [];
   BehaviorSubject<String> tokenAddressText = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenDecimal = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenSymbol = BehaviorSubject.seeded('');
+  BehaviorSubject<String> nftEnterID = BehaviorSubject.seeded('');
   BehaviorSubject<String> tokenAddressTextNft = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenSymbolText = BehaviorSubject.seeded('');
-  BehaviorSubject<String> tokenDecimalText = BehaviorSubject.seeded('');
+  BehaviorSubject<String> tokenSymbolText = BehaviorSubject();
+  BehaviorSubject<String> tokenDecimalText = BehaviorSubject();
+  BehaviorSubject<String> tokenSymbol = BehaviorSubject();
+  BehaviorSubject<String> tokenDecimal = BehaviorSubject();
   BehaviorSubject<bool> isTokenAddressText = BehaviorSubject.seeded(true);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
-  BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject.seeded(false);
+  BehaviorSubject<String> checkDataWallet = BehaviorSubject.seeded('value');
+  BehaviorSubject<bool> isTokenEnterAddress = BehaviorSubject();
+  BehaviorSubject<bool> isImportNft = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isImportNftFail = BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isNFT = BehaviorSubject.seeded(true);
-  BehaviorSubject<List<TokenModel>> getListTokenModel =
+  BehaviorSubject<List<ModelToken>> getListTokenModel =
       BehaviorSubject.seeded([]);
   BehaviorSubject<List<AccountModel>> list = BehaviorSubject.seeded([]);
-  BehaviorSubject<String> addressWallet =
-      BehaviorSubject.seeded('0xe77c14cdF13885E1909149B6D9B65734aefDEAEf');
-  BehaviorSubject<String> walletName = BehaviorSubject.seeded('Account 1');
   BehaviorSubject<bool> isWalletName = BehaviorSubject.seeded(true);
-  BehaviorSubject<double> totalBalance = BehaviorSubject();
 
-  void getIsWalletName(String value) {
-    if (Validator.validateNotNull(value)) {
-      isWalletName.sink.add(true);
+  ///Hung
+  final List<ModelToken> checkShow = [];
+  List<ModelToken> listTokenFromWalletCore = [];
+  List<CollectionNft> listNftFromWalletCore = [];
+  BehaviorSubject<double> totalBalance = BehaviorSubject();
+  BehaviorSubject<String> messStreamEnterWalletName =
+      BehaviorSubject.seeded('');
+  BehaviorSubject<String> addressWallet = BehaviorSubject();
+  BehaviorSubject<String> walletName = BehaviorSubject();
+  BehaviorSubject<List<ModelToken>> listTokenStream =
+      BehaviorSubject.seeded([]);
+  BehaviorSubject<List<CollectionShow>> listNFTStream =
+      BehaviorSubject.seeded([]);
+
+  int randomAvatar() {
+    final Random rd = Random();
+
+    return rd.nextInt(10);
+  }
+
+  double total(List<ModelToken> list) {
+    double total = 0;
+    for (int i = 0; i < list.length; i++) {
+      total = total + list[i].exchangeRate * list[i].balanceToken;
+    }
+    totalBalance.add(total);
+    return total;
+  }
+
+  /// Nam
+  BehaviorSubject<String> contractSubject = BehaviorSubject();
+  BehaviorSubject<String> idSubject = BehaviorSubject();
+  BehaviorSubject<bool> btnSubject = BehaviorSubject.seeded(false);
+  final regexAddress = RegExp(r'^0x[a-fA-F0-9]{40}$');
+  List<DetailHistoryTransaction> listHistory = [];
+  double? price = 0.0;
+
+  bool _flagNftAddress = false;
+  bool _flagIdNft = true;
+
+  //validate import nft form
+  BehaviorSubject<bool> isShowWarnAddressNft =
+      BehaviorSubject<bool>.seeded(false);
+  BehaviorSubject<bool> isShowWarnIDNft = BehaviorSubject<bool>.seeded(false);
+  String currentAddressNft = '';
+
+  //when import nft
+  void checkValidateAddress({required String value}) {
+    if (value.isEmpty) {
+      isShowWarnAddressNft.sink.add(true);
+      _flagNftAddress = false;
+      btnSubject.sink.add(false);
+      warningAddressNft.sink.add(S.current.address_required);
+    } else if (!regexAddress.hasMatch(value)) {
+      isShowWarnAddressNft.sink.add(true);
+      _flagNftAddress = false;
+      btnSubject.sink.add(false);
+      warningAddressNft.sink.add(S.current.invalid_address);
     } else {
-      isWalletName.sink.add(false);
+      _flagNftAddress = true;
+      if (_flagNftAddress && _flagIdNft) {
+        isShowWarnAddressNft.sink.add(false);
+        btnSubject.sink.add(true);
+      }
+    }
+  }
+
+  final regexId = RegExp(r'^[0-9]*$');
+
+  void checkValidateIdNft({required String value}) {
+    if (!regexId.hasMatch(value)) {
+      _flagIdNft = false;
+      isShowWarnIDNft.sink.add(true);
+      warningTextIdNft.sink.add(S.current.invalid_id_nft);
+      btnSubject.sink.add(false);
+    } else {
+      isShowWarnIDNft.sink.add(true);
+      _flagIdNft = true;
+      warningTextIdNft.sink.add('');
+      if (_flagIdNft && _flagNftAddress) {
+        isShowWarnIDNft.sink.add(false);
+        btnSubject.sink.add(true);
+      }
     }
   }
 
   String addressWalletCore = '';
-
-  Future<void> getAddressWallet() async {}
+  String nameWallet = '';
+  List<AccountModel> listSelectAccBloc = [];
 
   String formatAddress(String address) {
     if (address.isEmpty) return address;
@@ -69,242 +302,18 @@ class WalletCubit extends BaseCubit<WalletState> {
     return formatAddressWallet;
   }
 
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    Object objToken = {};
-    Object objNFT = {};
-    final bool isImportToken;
-    final bool isSetShowedToken;
-    final bool isImportNft;
-    final bool isSetShowedNft;
-
-    switch (methodCall.method) {
-      case 'importTokenCallback':
-        isImportToken = await methodCall.arguments['isSuccess'];
-
-        break;
-      case 'getListSupportedTokenCallback':
-        //[TokenObject]
-        final a = await methodCall.arguments['TokenObject'];
-
-        break;
-      case 'setShowedTokenCallback':
-        isSetShowedToken = await methodCall.arguments['isSuccess'];
-
-        break;
-      case 'importNftCallback':
-        isImportNft = await methodCall.arguments['isSuccess'];
-
-        break;
-      case 'setShowedNftCallback':
-        isSetShowedNft = await methodCall.arguments['isSuccess'];
-
-        break;
-      case 'getListShowedTokenCallback':
-        objToken = methodCall.arguments['TokenObject'];
-        break;
-      case 'getListShowedNftCallback':
-        objNFT = methodCall.arguments;
-        break;
-      case 'getListWalletsCallback':
-        break;
-      default:
-        break;
-    }
-  }
-
-  Future<void> getListToken(String walletAddress, String password) async {
-    try {
-      final data = {
-        'walletAddress': walletAddress,
-        'password': password,
-      };
-      await trustWalletChannel.invokeMethod('getListShowedToken', data);
-    } on PlatformException {
-      log(e);
-    }
-  }
-
-// list
-  Future<void> getListNFT(
-    String walletAddress, {
-    required String password,
-  }) async {
-    try {
-      final data = {
-        'walletAddress': walletAddress,
-        'password': password,
-      };
-      await trustWalletChannel.invokeMethod('getListShowedNft', data);
-    } on PlatformException {
-      log(e);
-    }
-  }
-
-  void getListTokenItem() {
-    final List<TokenModel> listToken = [];
-    for (final TokenModel value in getListTokenModel.value) {
-      if (value.isShow ?? false) {
-        listToken.add(value);
-      }
-    }
-    listTokenDetailScreen.clear();
-    listTokenDetailScreen.addAll(listToken);
-    listTokenStream.sink.add(listTokenDetailScreen);
-  }
-
-  void addToken(TokenModel tokenModel) {
-    final List<TokenModel> listToken = getListTokenModel.value;
-    listToken.add(tokenModel);
-    getListTokenModel.sink.add(listToken);
-    sortList(getListTokenModel.value);
-  }
-
-  double total(List<TokenModel> list) {
-    double total = 0;
-    for (int i = 0; i < list.length; i++) {
-      total = total + list[i].price!;
-    }
-    return total;
-  }
-
-  void getListTokenItemRemove() {
-    listTokenStream.sink.add(listTokenDetailScreen);
-  }
-
-  void getList() {
+  void getListAcc() {
     list.sink.add(listSelectAccBloc);
   }
 
-  List<AccountModel> listSelectAccBloc = [
-    AccountModel(
-      isCheck: true,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: false,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-    AccountModel(
-      isCheck: false,
-      addressWallet: '0x753EE7D5FdBD248fED37add0C951211E03a7DA15',
-      amountWallet: 21342314,
-      imported: true,
-      nameWallet: 'Account 1',
-      url: 'assets/images/Ellipse 39.png',
-    ),
-  ];
+  void resetImportToken() {
+    tokenSymbol.sink.add(S.current.token_symbol);
+    tokenDecimal.sink.add(S.current.token_decimal);
+    _messSubject.sink.add('');
+    isAddressNotExist = false;
+    isHaveToken = true;
+    emit(NavigatorReset());
+  }
 
   void click(int index) {
     for (final AccountModel value in listSelectAccBloc) {
@@ -314,262 +323,18 @@ class WalletCubit extends BaseCubit<WalletState> {
     list.sink.add(listSelectAccBloc);
   }
 
-  void getListNFTItem() {
-    listNFTStream.sink.add(listNFT);
-  }
-
-  List<TokenModel> listNFT = [
-    TokenModel(
-      nameToken: 'DEFI FOR YOU2',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 3YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR2 YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR 34YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR453 YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR23452345 YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-    TokenModel(
-      nameToken: 'DEFI FOR YOU',
-      iconToken: 'assets/images/Ellipse 39.png',
-    ),
-  ];
-
   String formatNumber(double amount) {
-    return '${amount.toStringAsExponential(5).toString().substring(0, 5)}'
-        ',${amount.toStringAsExponential(5).toString().substring(5, 7)}';
+    return '${amount.toStringAsExponential(5).substring(0, 5)}'
+        ',${amount.toStringAsExponential(5).substring(5, 7)}';
   }
 
-  void checkAddressNull2() {
-    if (tokenAddressTextNft.value == '') {
+  void checkAddressNullNFT() {
+    if (tokenAddressTextNft.value.isEmpty) {
       isNFT.sink.add(false);
     } else {
       isNFT.sink.add(true);
     }
   }
-
-  void getListSort() {
-    final List<TokenModel> list = [];
-    for (final TokenModel value in listTokenInitial) {
-      if (value.isShow ?? false) {
-        list.add(value);
-      }
-    }
-    final Comparator<TokenModel> amountTokenComparator =
-        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
-    list.sort(amountTokenComparator);
-    final List<TokenModel> list1 = [];
-    for (final TokenModel value in listTokenInitial) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-          list1.add(value);
-        }
-      }
-    }
-    list1.sort(amountTokenComparator);
-    list.addAll(list1);
-    for (final TokenModel value in listTokenInitial) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-        } else {
-          list.add(value);
-        }
-      }
-    }
-    listStart.addAll(list);
-    getListTokenModel.sink.add(list);
-  }
-
-  void sortList(List<TokenModel> listSort) {
-    final List<TokenModel> list = [];
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-        list.add(value);
-      }
-    }
-    final Comparator<TokenModel> amountTokenComparator =
-        (b, a) => (a.amountToken ?? 0).compareTo(b.amountToken ?? 0);
-    list.sort(amountTokenComparator);
-    final List<TokenModel> list1 = [];
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-          list1.add(value);
-        }
-      }
-    }
-    list1.sort(amountTokenComparator);
-    list.addAll(list1);
-    for (final TokenModel value in listSort) {
-      if (value.isShow ?? false) {
-      } else {
-        if ((value.amountToken ?? 0) > 0) {
-        } else {
-          list.add(value);
-        }
-      }
-    }
-    getListTokenModel.sink.add(list);
-  }
-
-  void search() {
-    final List<TokenModel> result = [];
-    // listTokenShow1=listToken;
-    for (final TokenModel value in listTokenInitial) {
-      if (value.nameToken!.toLowerCase().contains(
-            textSearch.value.toLowerCase(),
-          )) {
-        result.add(value);
-      }
-    }
-    if (textSearch.value.isEmpty) {
-      getListTokenModel.sink.add(listStart);
-    }
-    if (textSearch.value.isNotEmpty) {
-      getListTokenModel.sink.add(result);
-    }
-  }
-
-  List<TokenModel> listTokenDetailScreen = [];
-  List<TokenModel> listTokenInitial = [
-    TokenModel(
-      price: 342.423,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'TBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 0,
-    ),
-    TokenModel(
-      price: 3421.2223,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'TBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 0,
-    ),
-    TokenModel(
-      price: 34213423,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'TBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 1,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'Bitcoin',
-      nameTokenSymbol: 'BTC',
-      amountToken: 0.2134,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: true,
-      nameToken: 'ABitcoin',
-      nameTokenSymbol: 'BTC',
-      amountToken: 0.324,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'CBitcoin',
-      nameTokenSymbol: 'BTC',
-      amountToken: 2.21321434,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: true,
-      nameToken: 'DBitcoin',
-      nameTokenSymbol: 'BTC',
-      amountToken: 0,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: true,
-      nameToken: 'WBitcoin',
-      nameTokenSymbol: 'BTC3',
-      amountToken: 021342344,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'QBitcoin',
-      nameTokenSymbol: 'BT3C',
-      amountToken: 0,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: true,
-      nameToken: 'UBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 0.213434,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'TBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 0.413423,
-    ),
-    TokenModel(
-      price: 121,
-      tokenId: 21,
-      iconToken: 'assets/images/Ellipse 39.png',
-      isShow: false,
-      nameToken: 'TBitcoin',
-      nameTokenSymbol: 'B3TC',
-      amountToken: 0,
-    ),
-  ];
 
   void checkAddressNull() {
     if (tokenAddressText.value == '') {
@@ -579,26 +344,440 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
+//todo sort list
+  void sortList(List<ModelToken> listSort) {
+    final List<ModelToken> list = [];
+    for (final ModelToken value in listSort) {
+      if (value.isShow) {
+        list.add(value);
+      }
+    }
+    final Comparator<ModelToken> amountTokenComparator =
+        (b, a) => (a.balanceToken).compareTo(b.balanceToken);
+    list.sort(amountTokenComparator);
+    final List<ModelToken> list1 = [];
+    for (final ModelToken value in listSort) {
+      if (value.isShow) {
+      } else {
+        if ((value.balanceToken) > 0) {
+          list1.add(value);
+        }
+      }
+    }
+    list1.sort(amountTokenComparator);
+    list.addAll(list1);
+    for (final ModelToken value in listSort) {
+      if (value.isShow) {
+      } else {
+        if ((value.balanceToken) > 0) {
+        } else {
+          list.add(value);
+        }
+      }
+    }
+    getListTokenModel.sink.add(list);
+  }
+
+//todo search
+  void search() {
+    final List<ModelToken> result = [];
+    for (final ModelToken value in checkShow) {
+      if (value.nameShortToken
+              .toLowerCase()
+              .contains(textSearch.value.toLowerCase()) ||
+          value.nameToken
+              .toLowerCase()
+              .contains(textSearch.value.toLowerCase())) {
+        result.add(value);
+      }
+    }
+
+    if (textSearch.value.isEmpty) {
+      sortList(checkShow);
+    }
+    if (textSearch.value.isNotEmpty) {
+      getListTokenModel.sink.add(result);
+    }
+  }
+
+  TokenRepository get _tokenRepository => Get.find();
+
+  PriceRepository get _priceRepository => Get.find();
+  List<TokenPrice> listTokenExchange = [];
+
+  Future<void> getListPrice(String symbols) async {
+    final Result<List<TokenPrice>> result =
+        await _priceRepository.getListPriceToken(symbols);
+    result.when(
+      success: (res) {
+        if (res.isEmpty) {
+          price = 0;
+        } else {
+          price = res.first.price ?? 0.0;
+          for (final element in res) {
+            listTokenExchange.add(element);
+          }
+        }
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
+  }
+
+  Future<void> getListCategory() async {
+    final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
+    result.when(
+      success: (res) {
+        getTokenInfoByAddressList(res: res);
+      },
+      error: (error) {
+        getTokens(addressWalletCore);
+      },
+    );
+  }
+
+  Stream<TokenInf> getListTokenRealtime(List<TokenInf> listTokenInf) async* {
+    for (int i = 0; i < listTokenInf.length; i++) {
+      yield listTokenInf[i];
+    }
+  }
+
+  Stream<ModelToken> getTokenRealtime(List<ModelToken> listModelToken) async* {
+    for (int i = 0; i < listModelToken.length; i++) {
+      yield listModelToken[i];
+    }
+  }
+
+  Stream<dynamic> getListDynamic(List<dynamic> listModelToken) async* {
+    for (int i = 0; i < listModelToken.length; i++) {
+      yield listModelToken[i];
+    }
+  }
+
+  void getTokenInfoByAddressList({
+    required List<TokenInf> res,
+  }) {
+    final List<ModelToken> listJson = [];
+    for (final value in res) {
+      listJson.add(
+        ModelToken(
+          tokenAddress: value.address ?? '',
+          iconToken: value.iconUrl ?? '',
+          nameShortToken: value.symbol ?? '',
+          nameToken: value.name ?? '',
+          exchangeRate: value.usdExchange ?? 0,
+          walletAddress: addressWalletCore,
+          decimal: 18,
+          isImport: false,
+        ),
+      );
+    }
+    final json = jsonEncode(listJson.map((e) => e.toJson()).toList());
+    importListToken(json);
+  }
+
+  void getExchangeRateFromServer(List<ModelToken> list) {
+    final query = StringBuffer();
+    for (final value in list) {
+      query.write('${value.nameShortToken},');
+    }
+    getListPrice(query.toString());
+    for (int i = 0; i < list.length; i++) {
+      for (int j = 0; j < listTokenExchange.length; j++) {
+        if (list[i].nameShortToken ==
+            listTokenExchange[j].tokenSymbol!.toUpperCase()) {
+          list[i].exchangeRate = listTokenExchange[j].price ?? 0;
+        }
+      }
+    }
+  }
+
+  Future<void> getBalanceOFToken(List<ModelToken> list) async {
+    await for (final value in getTokenRealtime(list)) {
+      if (value.nameShortToken != 'BNB') {
+        value.balanceToken = await client.getBalanceOfToken(
+          ofAddress: addressWalletCore,
+          tokenAddress: value.tokenAddress,
+        );
+      } else {
+        value.balanceToken = await client.getBalanceOfBnb(
+          ofAddress: addressWalletCore,
+        );
+      }
+    }
+  }
+
+  final List<CollectionShow> listCollectionShow = [];
+
+  ///Wallet Core
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'importTokenCallback':
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+        if (isSuccess) {
+          emit(NavigatorSuccessfully());
+        }
+        break;
+      case 'importListTokenCallback':
+        final bool isSuccess = await methodCall.arguments['isSuccess'];
+        if (isSuccess) {
+          getTokens(
+            addressWalletCore,
+          );
+        }
+        break;
+      case 'earseWalletCallback':
+        break;
+      case 'getListSupportedTokenCallback':
+        break;
+      case 'setShowedTokenCallback':
+        // isSetShowedToken = await methodCall.arguments['isSuccess'];
+        break;
+      case 'importNftCallback':
+        final int code = await methodCall.arguments['code'];
+        switch (code) {
+          case 200:
+            emit(ImportNftSuccess());
+            break;
+          case 400:
+            emit(ImportNftFail());
+            errorWhenImportNft = S.current.undefine_err_nft;
+            btnSubject.sink.add(false);
+            break;
+          case 401:
+            emit(ImportNftFail());
+            errorWhenImportNft = S.current.duplicated_import_nft;
+            btnSubject.sink.add(false);
+            break;
+          default:
+            break;
+        }
+        break;
+      case 'setDeleteNftCallback':
+        //final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
+        break;
+      case 'setDeleteCollectionCallback':
+        //final bool isSetDeleteNft = await methodCall.arguments['isSuccess'];
+        break;
+      case 'chooseWalletCallBack':
+        //final bool chooseWalletCallBack =
+        //  await methodCall.arguments['isSuccess'];
+        break;
+      case 'checkTokenCallback':
+        isHaveToken = await methodCall.arguments['isExist'];
+        if (isHaveToken) {
+          isTokenEnterAddress.sink.add(false);
+          _messSubject.sink.add(S.current.already_exist);
+        } else {
+          _messSubject.sink.add('');
+          isTokenEnterAddress.sink.add(true);
+        }
+        break;
+      case 'changeNameWalletCallBack':
+        break;
+      case 'getTokensCallback':
+        listTokenFromWalletCore.clear();
+        checkShow.clear();
+        final List<dynamic> data = methodCall.arguments;
+        for (final element in data) {
+          checkShow.add(ModelToken.fromWalletCore(element));
+        }
+        final List<ModelToken> listSwitch = [];
+        for (final element in checkShow) {
+          if (element.isShow) {
+            listTokenFromWalletCore.add(element);
+          }
+          if (element.isImport == false) {
+            listSwitch.add(element);
+          }
+        }
+        await getBalanceOFToken(listTokenFromWalletCore);
+        getExchangeRateFromServer(listTokenFromWalletCore);
+        totalBalance.add(total(listTokenFromWalletCore));
+        sortList(listSwitch);
+        listTokenStream.add(listTokenFromWalletCore);
+        break;
+
+      case 'getListWalletsCallback':
+        listSelectAccBloc.clear();
+        listWallet.clear();
+        final List<dynamic> data = methodCall.arguments;
+        if (data.isEmpty) {
+          // emit(NavigatorFirst());
+          await PrefsService.saveFirstAppConfig('true');
+        } else {
+          for (final element in data) {
+            listWallet.add(Wallet.fromJson(element));
+          }
+          addressWalletCore = listWallet.first.address!;
+          nameWallet = listWallet.first.name!;
+          addressWallet.add(addressWalletCore);
+          walletName.add(nameWallet);
+          await getListCategory();
+          await getNFT(addressWalletCore);
+        }
+        break;
+      case 'getNFTCallback':
+        listCollectionShow.clear();
+        final List<dynamic> data = methodCall.arguments;
+        final List<CollectionNft> listCollectionNFT = [];
+        for (int index = 0; index < data.length; index++) {
+          listCollectionNFT.add(CollectionNft.fromJson(data[index]));
+          final List<NftInfo> listNftInfo = [];
+          //get nft list in each collection
+          for (final nftItem in listCollectionNFT[index].listNft ?? []) {
+            nftItem as ListNft;
+            if (nftItem.uri != null) {
+              final NftInfo nftInfo = await fetchNft(url: nftItem.uri ?? '');
+              nftInfo.id = nftItem.id;
+              nftInfo.contract =
+                  listCollectionNFT[index].contract ?? 'contract';
+              nftInfo.collectionSymbol =
+                  listCollectionNFT[index].symbol ?? 'symbol';
+              nftInfo.collectionName =
+                  listCollectionNFT[index].name ?? 'name collection';
+              listNftInfo.add(nftInfo);
+            } else {
+              //todo handle uri null
+            }
+          }
+          listCollectionShow.add(
+            CollectionShow(
+              contract: listCollectionNFT[index].contract ?? 'contract',
+              name: listCollectionNFT[index].name ?? 'name collection',
+              symbol: listCollectionNFT[index].symbol ?? 'symbol',
+              listNft: listNftInfo,
+            ),
+          );
+        }
+        listNFTStream.add(listCollectionShow);
+        break;
+      default:
+        break;
+    }
+  }
+
+  void getConfig() {
+    try {
+      final data = {};
+      trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException {}
+  }
+
+  void chooseWallet({
+    required String walletAddress,
+  }) {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+      };
+      trustWalletChannel.invokeMethod('chooseWallet', data);
+    } on PlatformException {}
+  }
+
+  void changeNameWallet({
+    required String walletAddress,
+    required String walletName,
+  }) {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+        'walletName': walletName,
+      };
+      trustWalletChannel.invokeMethod('changeNameWallet', data);
+    } on PlatformException {}
+  }
+
+  void earseWallet({required String walletAddress}) {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+      };
+      trustWalletChannel.invokeMethod('earseWallet', data);
+    } on PlatformException {}
+  }
+
+  Future<void> getListWallets() async {
+    try {
+      final data = {};
+      await trustWalletChannel.invokeMethod('getListWallets', data);
+    } on PlatformException {
+      //nothing
+    }
+  }
+
+  void getTokens(String walletAddress) {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+      };
+      trustWalletChannel.invokeMethod('getTokens', data);
+    } on PlatformException {
+      //nothing
+    }
+  }
+
+  Future<void> getNFT(
+    String walletAddress,
+  ) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+      };
+      await trustWalletChannel.invokeMethod('getNFT', data);
+    } on PlatformException {}
+  }
+
+  Future<void> checkToken({
+    required String walletAddress,
+    required String tokenAddress,
+  }) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+        'tokenAddress': tokenAddress,
+      };
+      await trustWalletChannel.invokeMethod('checkToken', data);
+    } on PlatformException {}
+  }
+
+  Future<void> importListToken(
+    String jsonTokens,
+  ) async {
+    try {
+      final data = {
+        'jsonTokens': jsonTokens,
+        'walletAddress': addressWalletCore,
+      };
+      await trustWalletChannel.invokeMethod('importListToken', data);
+    } on PlatformException {}
+  }
+
   Future<void> importToken({
-    String password = '',
     required String walletAddress,
     required String tokenAddress,
     required String symbol,
     required int decimal,
+    required String tokenFullName,
+    required String iconToken,
+    required double exchangeRate,
+    required bool isImport,
   }) async {
     try {
       final data = {
-        'password': password,
         'walletAddress': walletAddress,
         'tokenAddress': tokenAddress,
         'symbol': symbol,
         'decimal': decimal,
+        'tokenFullName': tokenFullName,
+        'iconToken': iconToken,
+        'exchangeRate': exchangeRate,
+        'isImport': isImport,
       };
       await trustWalletChannel.invokeMethod('importToken', data);
-    } on PlatformException {
-      //todo
-
-    }
+    } on PlatformException {}
   }
 
   Future<void> getListSupportedToken({
@@ -613,67 +792,197 @@ class WalletCubit extends BaseCubit<WalletState> {
       await trustWalletChannel.invokeMethod('getListSupportedToken', data);
     } on PlatformException {
       //todo
-
     }
   }
 
   Future<void> setShowedToken({
-    String password = '',
     required String walletAddress,
-    required int tokenID,
+    required String tokenAddress,
     required bool isShow,
+    required bool isImport,
   }) async {
     try {
       final data = {
-        'password': password,
         'walletAddress': walletAddress,
-        'tokenID': tokenID,
+        'tokenAddress': tokenAddress,
         'isShow': isShow,
+        'isImport': isImport,
       };
       await trustWalletChannel.invokeMethod('setShowedToken', data);
     } on PlatformException {
       //todo
-
     }
   }
 
-  Future<void> importNft({
-    String password = '',
+  Future<void> deleteNft({
     required String walletAddress,
-    required String nftAddress,
-    required int nftID,
+    required String collectionAddress,
+    required String nftId,
   }) async {
     try {
       final data = {
-        'password': password,
         'walletAddress': walletAddress,
-        'nftAddress': nftAddress,
-        'nftID': nftID,
+        'nftId': nftId,
+        'collectionAddress': collectionAddress,
+      };
+      await trustWalletChannel.invokeMethod('deleteNft', data);
+    } on PlatformException {
+      //todo
+    }
+  }
+
+  Future<void> deleteCollection({
+    required String walletAddress,
+    required String collectionAddress,
+  }) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+        'collectionAddress': collectionAddress,
+      };
+      await trustWalletChannel.invokeMethod('deleteCollection', data);
+    } on PlatformException {
+      //todo
+    }
+  }
+
+  Future<void> emitJsonNftToWalletCore({
+    required String contract,
+    int? id,
+    required String address,
+  }) async {
+    Map<String, dynamic> result = {};
+    if (id != null) {
+      result = await Web3Utils()
+          .getCollectionInfo(contract: contract, address: address, id: id);
+      await importNftIntoWalletCore(
+        jsonNft: json.encode(result),
+        address: address,
+      );
+    } else {
+      result = await Web3Utils()
+          .getCollectionInfo(contract: contract, address: address);
+      // result.putIfAbsent('walletAddress', () => address);
+      await importNftIntoWalletCore(
+        jsonNft: json.encode(result),
+        address: address,
+      );
+    }
+  }
+
+  Future<CollectionNft> fetchCollection() async {
+    final response = await http.get(
+      Uri.parse(
+        'https://defiforyou.mypinata.cloud/ipfs/QmQj6bT1VbwVZesexd43vvGxbCGqLaPJycdMZQGdsf6t3c',
+      ),
+    );
+    if (response.statusCode == 200) {
+      return CollectionNft.fromJsonMap(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load Collection');
+    }
+  }
+
+  Future<void> importNftIntoWalletCore({
+    required String jsonNft,
+    required String address,
+  }) async {
+    try {
+      final data = {
+        'jsonNft': jsonNft,
+        'walletAddress': address,
       };
       await trustWalletChannel.invokeMethod('importNft', data);
     } on PlatformException {
       //todo
-
     }
   }
 
-  Future<void> setShowedNft({
-    String password = '',
-    required String walletAddress,
-    required int nftID,
-    required bool isShow,
-  }) async {
-    try {
-      final data = {
-        'password': password,
-        'walletAddress': walletAddress,
-        'isShow': isShow,
-        'nftID': nftID,
-      };
-      await trustWalletChannel.invokeMethod('setShowedNft', data);
-    } on PlatformException {
-      //todo
+  Future<NftInfo> fetchNft({required String url}) async {
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      return NftInfo.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load Nft');
+    }
+  }
 
+  ///VALIDATE ADDRESS
+  final BehaviorSubject<String> _messSubject = BehaviorSubject();
+
+  Stream<String> get messStream => _messSubject.stream;
+
+  final BehaviorSubject<String> _inputSubject = BehaviorSubject();
+
+  Stream<String> get inputStream => _inputSubject.stream;
+  Timer? debounceTime;
+
+  void validateAddressFunc(String _st) {
+    if (debounceTime != null) {
+      if (debounceTime!.isActive) {
+        debounceTime!.cancel();
+      }
+    }
+    if (_st != '') {
+      final regex = RegExp(r'^0x[a-fA-F0-9]{40}$');
+      if (regex.hasMatch(_st)) {
+        trustWalletChannel
+            .setMethodCallHandler(nativeMethodCallBackTrustWallet);
+        debounceTime = Timer(
+          const Duration(milliseconds: 500),
+          () async {
+            await getTokenInfoByAddress(tokenAddress: _st);
+            if (!isAddressNotExist) {
+              await checkToken(
+                walletAddress: addressWalletCore,
+                tokenAddress: _st,
+              );
+            } else {
+              isTokenEnterAddress.sink.add(false);
+              tokenSymbol.sink.add(S.current.token_symbol);
+              tokenDecimal.sink.add(S.current.token_decimal);
+              _messSubject.sink.add(S.current.no_support_token);
+            }
+          },
+        );
+      } else {
+        tokenSymbol.sink.add(S.current.token_symbol);
+        tokenDecimal.sink.add(S.current.token_decimal);
+        isTokenEnterAddress.sink.add(false);
+        _messSubject.sink.add(S.current.invalid_address);
+      }
+    } else {
+      isTokenEnterAddress.sink.add(false);
+      _messSubject.sink.add(S.current.empty_address);
+    }
+  }
+
+  void validateNameWallet(String _name) {
+    if (_name != '') {
+      if (_name.length > 20) {
+        messStreamEnterWalletName.sink.add(S.current.name_characters);
+        isWalletName.sink.add(false);
+      } else {
+        isWalletName.sink.add(true);
+        messStreamEnterWalletName.sink.add('');
+      }
+    } else {
+      isWalletName.sink.add(false);
+      messStreamEnterWalletName.sink.add(S.current.name_not_null);
+    }
+  }
+  /// transaction
+  final List<DetailHistoryTransaction> listDetailTransaction = [];
+  Future<void> getTransactionHistory(
+      String walletAddress, String contract) async {
+    final transactionHistory = await PrefsService.getHistoryTransaction();
+    if (transactionHistory.isNotEmpty) {
+      transactionFromJson(transactionHistory).forEach((element) {
+        if (element.walletAddress == walletAddress &&
+            contract == element.tokenAddress) {
+          listDetailTransaction.add(element);
+        }
+      });
     }
   }
 }

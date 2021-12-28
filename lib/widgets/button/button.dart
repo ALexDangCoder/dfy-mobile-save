@@ -16,28 +16,33 @@ class ButtonGold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 26.w, left: 26.w, bottom: 38.h),
+      margin: EdgeInsets.only(
+        right: 16.w,
+        left: 16.w,
+      ),
       decoration: BoxDecoration(
         gradient: RadialGradient(
           radius: 4.r,
           center: const Alignment(0.5, -0.5),
           colors: isEnable
               ? AppTheme.getInstance().gradientButtonColor()
-              : [AppTheme.getInstance().disableColor()
-            ,AppTheme.getInstance().disableColor()],
+              : [
+                  AppTheme.getInstance().errorColorButton(),
+                  AppTheme.getInstance().errorColorButton(),
+                ],
         ),
-        borderRadius:  BorderRadius.all(
+        borderRadius: BorderRadius.all(
           Radius.circular(22.r),
         ),
       ),
       height: 64.h,
-      width: 298.w,
+      width: 343.w,
       child: Center(
         child: Text(
           title,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
-            20.sp,
+            20,
           ).copyWith(fontWeight: FontWeight.bold),
         ),
       ),

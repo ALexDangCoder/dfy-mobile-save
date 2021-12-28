@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 ///=========== Colors for default when didn't setup app theme ===============
@@ -70,7 +68,12 @@ const divideColor = Color(0xFF8f8fad);
 const unselectedTabLabel = Color(0xFF9997FF);
 
 ///=========== Using to make change app theme ================================
+const bgTranSubmitColor = Color(0xff585782);
+
+///=========== Using to make change app theme ================================
 abstract class AppColor {
+  Color bgTranSubmit();
+
   Color backgroundBTSColor();
 
   Color redColor();
@@ -376,12 +379,18 @@ class LightApp extends AppColor {
   @override
   Color colorTextFieldZeroFire() {
     // TODO: implement colorTextFieldZeroFire
-   return colorTextField.withOpacity(0.5);
+    return colorTextField.withOpacity(0.5);
   }
 
   @override
   Color redColor() {
     return Colors.red;
+  }
+
+  @override
+  Color bgTranSubmit() {
+    // TODO: implement bgTranSubmit
+    return bgTranSubmitColor;
   }
 }
 
@@ -633,6 +642,12 @@ class DarkApp extends AppColor {
   @override
   Color redColor() {
     // TODO: implement redColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color bgTranSubmit() {
+    // TODO: implement bgTranSubmit
     throw UnimplementedError();
   }
 }

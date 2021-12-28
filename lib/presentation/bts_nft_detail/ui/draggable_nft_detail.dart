@@ -1,25 +1,42 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/nft.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/bottom_sheet_receive_token/ui/bts_receive_dfy.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
+import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/column_button/buil_column.dart';
-import 'package:Dfy/widgets/views/row_description.dart';
+import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
+import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NFTDetail extends StatefulWidget {
   const NFTDetail({
     Key? key,
-    required this.nft,
+    required this.nftInfo,
+    required this.listHistory,
+    required this.walletAddress,
+    required this.nameWallet,
+    required this.walletCubit,
   }) : super(key: key);
-  final NFT nft;
+  final NftInfo nftInfo;
+  final List<DetailHistoryTransaction> listHistory;
+  final String walletAddress;
+  final String nameWallet;
+  final WalletCubit walletCubit;
 
   @override
   _NFTDetailState createState() => _NFTDetailState();
@@ -29,53 +46,33 @@ class _NFTDetailState extends State<NFTDetail> {
   late final NFTBloc bloc;
   late int initLen;
   late bool initShow;
-  final List<String> mockData = [
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-    S.current.contract_interaction,
-  ];
 
   @override
   void initState() {
     super.initState();
     bloc = NFTBloc();
-    if (mockData.length >= 3) {
+    if (widget.listHistory.length >= 3) {
       bloc.lenSink.add(3);
       initLen = 3;
       initShow = true;
       bloc.showSink.add(true);
-    }
-    if (mockData.length < 3) {
-      initLen = mockData.length;
-      bloc.lenSink.add(mockData.length);
+    } else if (widget.listHistory.length < 3 && widget.listHistory.isNotEmpty) {
+      initLen = widget.listHistory.length;
+      bloc.lenSink.add(widget.listHistory.length);
       initShow = false;
       bloc.showSink.add(false);
+    } else {
+      bloc.lenSink.add(0);
+      initLen = 0;
+      initShow = false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final nft = widget.nft;
+    final nft = widget.nftInfo;
     return DraggableScrollableSheet(
-      maxChildSize: 0.95,
-      initialChildSize: 0.45,
+      maxChildSize: 0.9,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
           decoration: BoxDecoration(
@@ -112,9 +109,39 @@ class _NFTDetailState extends State<NFTDetail> {
                         ),
                         child: Column(
                           children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Image.asset(ImageAssets.img_card_defi),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 24.h,
+                                  width: 24.w,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.yellow,
+                                    radius: 18.r,
+                                    child: Center(
+                                      child: Text(
+                                        nft.collectionSymbol?.substring(0, 1) ??
+                                            '',
+                                        style: textNormalCustom(
+                                          Colors.black,
+                                          20,
+                                          FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8.w,
+                                ),
+                                Text(
+                                  nft.collectionName ?? '',
+                                  style: textNormalCustom(
+                                    Colors.white,
+                                    16,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: 18.h,
@@ -122,7 +149,7 @@ class _NFTDetailState extends State<NFTDetail> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                nft.name,
+                                nft.name ?? '',
                                 style: textNormal(
                                   AppTheme.getInstance().textThemeColor(),
                                   24,
@@ -134,17 +161,21 @@ class _NFTDetailState extends State<NFTDetail> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  nft.identity,
-                                  style: textNormal(
-                                    AppTheme.getInstance().textThemeColor(),
-                                    20,
-                                  ).copyWith(
-                                    fontWeight: FontWeight.w400,
+                                Expanded(
+                                  child: Text(
+                                    '#${nft.id}',
+                                    style: textNormal(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      20,
+                                    ).copyWith(
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ),
                                 Text(
-                                  '1 of 10',
+                                  nft.standard == 'ERC-721'
+                                      ? '1 ${S.current.of_all} 1'
+                                      : '1 of 10',
                                   style: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
                                     20,
@@ -168,30 +199,23 @@ class _NFTDetailState extends State<NFTDetail> {
                               children: [
                                 _buildRow(
                                   title: S.current.description,
-                                  detail: nft.description,
-                                  type: TextType.NORMAL,
+                                  detail: nft.description?.parseHtml() ?? '',
+                                  type: TextType.NORM,
                                 ),
                                 _buildRow(
                                   title: S.current.nft_standard,
-                                  detail: nft.standard == Standard.ERC_721
-                                      ? 'ERC-721'
-                                      : 'ERC-1155',
-                                  type: TextType.NORMAL,
-                                ),
-                                _buildRow(
-                                  title: S.current.link,
-                                  detail: nft.link,
-                                  type: TextType.RICH_BLUE,
+                                  detail: nft.standard ?? '',
+                                  type: TextType.NORM,
                                 ),
                                 _buildRow(
                                   title: S.current.contract,
-                                  detail: nft.contract,
-                                  type: TextType.RICH_BLUE,
+                                  detail: nft.contract ?? '',
+                                  type: TextType.RICH,
                                 ),
                                 _buildRow(
                                   title: S.current.block_chain,
-                                  detail: nft.blockChain,
-                                  type: TextType.NORMAL,
+                                  detail: nft.blockchain ?? '',
+                                  type: TextType.NORM,
                                 ),
                                 SizedBox(
                                   height: 24.h,
@@ -205,19 +229,34 @@ class _NFTDetailState extends State<NFTDetail> {
                         initialData: initLen,
                         stream: bloc.lenStream,
                         builder: (ctx, snapshot) {
-                          final len = snapshot.data!;
-                          return ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxHeight: len * 66.h,
-                            ),
-                            child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: len,
-                              itemBuilder: (ctx, index) {
-                                return itemTransition(index);
-                              },
-                            ),
-                          );
+                          final int len = snapshot.data ?? initLen;
+                          return len == 0
+                              ? Column(
+                                  children: [
+                                    sizedPngImage(
+                                      w: 94,
+                                      h: 94,
+                                      image: ImageAssets.icNoTransaction,
+                                    ),
+                                    Text(
+                                      S.current.no_transaction,
+                                      style: tokenDetailAmount(
+                                        color: AppTheme.getInstance()
+                                            .currencyDetailTokenColor(),
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: len,
+                                  itemBuilder: (ctx, index) {
+                                    return itemTransition(index);
+                                  },
+                                );
                         },
                       ),
                       StreamBuilder<bool>(
@@ -229,12 +268,13 @@ class _NFTDetailState extends State<NFTDetail> {
                             visible: isShow,
                             child: InkWell(
                               onTap: () {
-                                if (mockData.length >= bloc.curLen + 10) {
+                                if (widget.listHistory.length >=
+                                    bloc.curLen + 10) {
                                   bloc.lenSink.add(bloc.curLen + 10);
                                 } else {
-                                  bloc.lenSink.add(mockData.length);
+                                  bloc.lenSink.add(widget.listHistory.length);
                                 }
-                                if (bloc.curLen == mockData.length) {
+                                if (bloc.curLen == widget.listHistory.length) {
                                   bloc.showSink.add(false);
                                 }
                               },
@@ -285,20 +325,31 @@ class _NFTDetailState extends State<NFTDetail> {
                       SizedBox(
                         height: 24.h,
                       ),
-                      ButtonGradient(
-                        gradient: RadialGradient(
-                          center: const Alignment(0.5, -0.5),
-                          radius: 4,
-                          colors: AppTheme.getInstance().gradientButtonColor(),
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          S.current.put_on_market,
-                          style: textNormal(
-                            AppTheme.getInstance().textThemeColor(),
-                            20,
-                          ).copyWith(
-                            fontWeight: FontWeight.bold,
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: ButtonGradient(
+                          gradient: RadialGradient(
+                            center: const Alignment(0.5, -0.5),
+                            radius: 4,
+                            colors:
+                                AppTheme.getInstance().gradientButtonColor(),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ComingSoon(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            S.current.put_on_market,
+                            style: textNormal(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
+                            ).copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -317,20 +368,19 @@ class _NFTDetailState extends State<NFTDetail> {
   }
 
   Widget itemTransition(int index) {
-    final text = mockData[index];
+    final objHistory = widget.listHistory[index];
     return GestureDetector(
       onTap: () {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          context: context,
-          builder: (context) => const TransactionDetail(
-            detailTransaction: '158.2578',
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TransactionDetail(
+              obj: objHistory,
+            ),
           ),
         );
       },
       child: Container(
-        height: 66.h,
         decoration: BoxDecoration(
           color: AppTheme.getInstance().bgBtsColor(),
           border: Border(
@@ -355,23 +405,25 @@ class _NFTDetailState extends State<NFTDetail> {
                   Row(
                     children: [
                       Text(
-                        text,
+                        objHistory.name ?? '',
                         style: textValueNFT,
                       ),
                       SizedBox(
                         width: 6.w,
                       ),
-                      Image.asset(ImageAssets.ic_tick_circle)
+                      Image.asset(
+                        bloc.getImgStatus(objHistory.status ?? ''),
+                      ),
                     ],
                   ),
                   Text(
-                    '1 of 1',
+                    '1 of ${objHistory.quantity}',
                     style: textValueNFT,
                   ),
                 ],
               ),
               Text(
-                DateTime.now().toIso8601String(),
+                DateTime.parse(objHistory.dateTime ?? '').stringFromDateTime,
                 style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
               )
             ],
@@ -388,13 +440,13 @@ class _NFTDetailState extends State<NFTDetail> {
         buildColumnButton(
           path: first,
           callback: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (context) => const Receive(
-                walletAddress: 'aaaaaaaaaaa',
-                type: TokenType.NFT,
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Receive(
+                  walletAddress: widget.walletAddress,
+                  type: TokenType.NFT,
+                ),
               ),
             );
           },
@@ -405,12 +457,21 @@ class _NFTDetailState extends State<NFTDetail> {
         buildColumnButton(
           path: second,
           callback: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (context) => const SendNft(),
-            );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SendNft(
+                  nftInfo: widget.nftInfo,
+                  addressFrom: widget.walletAddress,
+                  imageWallet: '',
+                  nameWallet: widget.nameWallet,
+                ),
+              ),
+            ).whenComplete(() {
+              widget.walletCubit.getNFT(
+                widget.walletAddress,
+              );
+            });
           },
         ),
       ],
@@ -437,7 +498,7 @@ class _NFTDetailState extends State<NFTDetail> {
               ),
             ),
           ),
-          if (type == TextType.NORMAL)
+          if (type == TextType.NORM)
             SizedBox(
               width: 225.w,
               child: Align(
@@ -450,17 +511,23 @@ class _NFTDetailState extends State<NFTDetail> {
               ),
             )
           else
-            SizedBox(
-              width: 225.w,
-              child: RichText(
-                maxLines: 1,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: detail,
-                      style: richTextBlue,
-                    ),
-                  ],
+            GestureDetector(
+              child: SizedBox(
+                width: 225.w,
+                child: RichText(
+                  maxLines: 1,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            launch('$BSC_SCAN$detail');
+                          },
+                        text: detail.handleString(),
+                        style: richTextValueNFT,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )

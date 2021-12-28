@@ -4,7 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
-import 'package:Dfy/utils/extensions/validator.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -43,16 +43,16 @@ class FormFieldBlockChain extends StatelessWidget {
               S.current.gas_limit,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
-                16.sp,
+                16,
                 FontWeight.w400,
               ),
             )
           else
             Text(
-              S.current.gas_price,
+              '${S.current.gas_price} (GWEI)',
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
-                16.sp,
+                16,
                 FontWeight.w400,
               ),
             ),
@@ -71,40 +71,56 @@ class FormFieldBlockChain extends StatelessWidget {
             child: Center(
               child: TextFormField(
                 // textAlignVertical: TextAlignVertical.center,
-                  textAlign: TextAlign.right,
-                  keyboardType: TextInputType.number,
-                  controller: txtController,
-                  style: textNormalCustom(
-                    AppTheme.getInstance().textThemeColor(),
-                    16.sp,
-                    FontWeight.w400,
-                  ),
-                  cursorColor: AppTheme.getInstance().textThemeColor(),
-                  decoration: InputDecoration(
-                    hintStyle: textNormal(
-                      AppTheme.getInstance().disableColor(),
-                      16.sp,
-                    ),
-                    border: InputBorder.none,
-                  ),
-                  onChanged: (value) {
-                    late double result;
-                    late double valueHandle;
-                    if (value.isEmpty) {
-                      valueHandle = 0;
-                    } else {
-                      valueHandle = double.parse(value);
-                    }
-                    result = (valueHandle * double.parse(numHandle)) / pow(10, 9);
-                    cubit.isEstimatingGasFee(Validator.toExact(result));
-                    cubit.isSufficientGasFee(
-                      gasFee: result,
-                      balance: balanceFetchFirst,
-                    );
-                  },
+                textAlign: TextAlign.right,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
                 ),
+                controller: txtController,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  16,
+                  FontWeight.w400,
+                ),
+                cursorColor: AppTheme.getInstance().textThemeColor(),
+                decoration: InputDecoration(
+                  hintStyle: textNormal(
+                    AppTheme.getInstance().disableColor(),
+                    16,
+                  ),
+                  border: InputBorder.none,
+                ),
+                onChanged: (value) {
+                  if (formGasFee == FORM_GAS_FEE.LIMIT) {
+                    cubit.validateGasLimit(value);
+                  } else {
+                    cubit.validateGasPrice(value);
+                  }
+                  late double result;
+                  late double valueHandle;
+                  if (value.isEmpty) {
+                    valueHandle = 0;
+                  } else {
+                    if (cubit.isAmount(value)) {
+                      valueHandle = double.parse(value);
+                      result =
+                          (valueHandle * double.parse(numHandle)) / pow(10, 9);
+                      // cubit.isEstimatingGasFee(Validator.toExact(result));
+                      Decimal convertedNum = Decimal.parse(result.toString());
+                      cubit.isEstimatingGasFee(convertedNum.toString());
+                      cubit.isSufficientGasFee(
+                        gasFee: result,
+                        balance: balanceFetchFirst,
+                      );
+                    }
+                  }
+                  if (formGasFee == FORM_GAS_FEE.LIMIT) {
+                    cubit.validateGasLimit(value);
+                  } else {
+                    cubit.validateGasPrice(value);
+                  }
+                },
+              ),
             ),
-
           ),
         ],
       ),

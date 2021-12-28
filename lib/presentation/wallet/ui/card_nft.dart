@@ -1,6 +1,8 @@
-import 'package:Dfy/domain/model/nft.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/draggable_nft_detail.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,28 +11,47 @@ class CardNFT extends StatefulWidget {
   const CardNFT({
     Key? key,
     required this.objNFT,
+    required this.walletAddress,
+    required this.walletCubit,
   }) : super(key: key);
-  final NFT objNFT;
+  final NftInfo objNFT;
+  final String walletAddress;
+  final WalletCubit walletCubit;
 
   @override
   State<StatefulWidget> createState() => _CardNFTState();
 }
 
 class _CardNFTState extends State<CardNFT> {
+  late final WalletCubit cubit;
+
+  @override
+  void initState() {
+    cubit = WalletCubit();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showBoth(context);
+        //todo ERC-1155
+        // cubit
+        //     .getTransactionHistory(
+        //       widget.walletAddress,
+        //       widget.objNFT.contract ?? '',
+        //     )
+        //     .then((_) => showBoth(context, widget.objNFT.img ?? ''));
+        showBoth(context, widget.objNFT.img ?? '');
       },
       child: Row(
         children: [
           Container(
             height: 102.h,
-            width: 88.w,
+            width: 92.w,
             decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage(ImageAssets.image_example_pop_up),
+              image: DecorationImage(
+                image: NetworkImage(widget.objNFT.img ?? ''),
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(
@@ -39,14 +60,14 @@ class _CardNFTState extends State<CardNFT> {
             ),
           ),
           SizedBox(
-            width: 16.w,
+            width: 4.w,
           ),
         ],
       ),
     );
   }
 
-  void showBoth(BuildContext context) {
+  void showBoth(BuildContext context, String url) {
     showDialog(
       context: context,
       builder: (context) {
@@ -56,7 +77,15 @@ class _CardNFTState extends State<CardNFT> {
             height: 346.h,
             width: 300.w,
             child: ClipRRect(
-              child: Image.asset(ImageAssets.image_example_pop_up),
+              child: CachedNetworkImage(
+                placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.getInstance().bgBtsColor(),
+                  ),
+                ),
+                imageUrl: url,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         );
@@ -73,7 +102,11 @@ class _CardNFTState extends State<CardNFT> {
           Navigator.pop(context);
         },
         child: NFTDetail(
-          nft: widget.objNFT,
+          nftInfo: widget.objNFT,
+          listHistory: cubit.listDetailTransaction,
+          walletAddress: widget.walletAddress,
+          nameWallet: '',
+          walletCubit: widget.walletCubit,
         ),
       ),
     ).whenComplete(() => Navigator.pop(context));

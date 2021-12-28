@@ -1,91 +1,118 @@
-import 'dart:math' hide log;
-import 'package:Dfy/domain/model/transaction.dart';
-import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/detail_history_nft.dart';
+import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/token_price_model.dart';
+import 'package:Dfy/domain/repository/price_repository.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
-  static const len_mock_data = 83;
-    final List<TransactionModel> mocObject = List.generate(
-    len_mock_data,
-        (index) =>
-        TransactionModel(
-          title: S.current.contract_interaction,
-          amount: Random().nextInt(9999),
-          status: TransactionStatus
-              .values[Random().nextInt(TransactionStatus.values.length)],
-          time: DateTime.now(),
-          txhId: '0xaaa042c0632f4d44c7cea978f22cd02e751a410e',
-          from: '0xaaa042c0632f4d44c7cea978f22cd02e751a410e',
-          to: '0xaaa042c0632f4d44c7cea978f22cd02e751a410e',
-          nonce: Random().nextInt(9999),
-          type: TransactionType.values[Random().nextInt(
-            TransactionType.values.length,)],
-        ),
-  );
-  ///todoClearFakeData
+  final String walletAddress;
+  final Web3Utils _web3client = Web3Utils();
+  final PriceRepository _priceRepository = Get.find();
 
-  int dataListLen = 4;
-  List<TransactionModel> transactionList = [];
+  TokenDetailBloc({
+    required this.walletAddress,
+  });
 
-  final BehaviorSubject<List<TransactionModel>> _transactionListSubject =
-  BehaviorSubject();
+  int minLen = 4;
+  List<DetailHistoryTransaction> totalTransactionList = [];
+  List<DetailHistoryTransaction> currentTransactionList = [];
+
+  final BehaviorSubject<List<DetailHistoryTransaction>>
+      _transactionListSubject = BehaviorSubject();
+
+  Stream<List<DetailHistoryTransaction>> get transactionListStream =>
+      _transactionListSubject.stream;
 
   final BehaviorSubject<bool> _showMoreSubject = BehaviorSubject();
 
-  Stream<List<TransactionModel>> get transactionListStream =>
-      _transactionListSubject.stream;
-
   Stream<bool> get showMoreStream => _showMoreSubject.stream;
 
+  final BehaviorSubject<bool> _showLoadingSubject = BehaviorSubject();
 
+  Stream<bool> get showLoadingStream => _showLoadingSubject.stream;
+
+  final BehaviorSubject<DetailHistoryTransaction>
+      _transactionHistoryDetailSubject = BehaviorSubject();
+
+  Stream<DetailHistoryTransaction> get transactionHistoryStream =>
+      _transactionHistoryDetailSubject.stream;
+
+  final BehaviorSubject<ModelToken> _tokenSubject = BehaviorSubject();
+
+  Stream<ModelToken> get tokenStream => _tokenSubject.stream;
+
+  ///Get functions
+  ///Get list Transaction and detail Transaction
+  Future<void> getTransaction({
+    required String walletAddress,
+    required String tokenAddress,
+  }) async {
+    final List<DetailHistoryTransaction> listDetailTransaction = [];
+    final transactionHistory = await PrefsService.getHistoryTransaction();
+    if (transactionHistory.isNotEmpty) {
+      transactionFromJson(transactionHistory).forEach(
+        (element) {
+          if (element.walletAddress == walletAddress &&
+              element.tokenAddress == tokenAddress) {
+            listDetailTransaction.add(element);
+          }
+        },
+      );
+    }
+    totalTransactionList = listDetailTransaction;
+    currentTransactionList.clear();
+    checkData();
+  }
+
+  ///ShowTransactionHistory
   void checkData() {
-    if (mocObject.length <= dataListLen) {
-      _transactionListSubject.sink.add(mocObject);
-      hideShowMore();
+    if (totalTransactionList.length <= minLen) {
+      _transactionListSubject.sink.add(totalTransactionList);
+      _showMoreSubject.sink.add(false);
     } else {
-      transactionList = mocObject.sublist(0, dataListLen);
-      _transactionListSubject.sink.add(transactionList);
+      currentTransactionList = totalTransactionList.sublist(0, minLen);
+      _transactionListSubject.sink.add(currentTransactionList);
       _showMoreSubject.sink.add(true);
     }
   }
 
   void showMore() {
-    if (mocObject.length - transactionList.length > 10) {
-      transactionList.addAll(
-        mocObject.sublist(transactionList.length, transactionList.length + 10),
+    if (totalTransactionList.length - currentTransactionList.length > 10) {
+      currentTransactionList.addAll(
+        totalTransactionList.sublist(
+            currentTransactionList.length, currentTransactionList.length + 10),
       );
     } else {
-      transactionList = mocObject;
-      hideShowMore();
+      currentTransactionList = totalTransactionList;
+      _showMoreSubject.sink.add(false);
     }
-    _transactionListSubject.sink.add(transactionList);
+    _transactionListSubject.sink.add(currentTransactionList);
   }
 
-  void hideShowMore() {
-    _showMoreSubject.sink.add(false);
-  }
-}
-
-extension StatusExtension on TransactionStatus {
-  String get statusImage {
-    switch (this) {
-      case TransactionStatus.SUCCESS:
-        return ImageAssets.ic_transaction_success_svg;
-      case TransactionStatus.FAILED:
-        return ImageAssets.ic_transaction_fail_svg;
-      case TransactionStatus.PENDING:
-        return ImageAssets.ic_transaction_pending_svg;
+  ///GET TOKEN DETAIL
+  Future<void> getToken({required ModelToken token}) async {
+    if (token.nameShortToken == 'BNB') {
+      token.balanceToken = await _web3client.getBalanceOfBnb(
+        ofAddress: walletAddress,
+      );
+    } else {
+      token.balanceToken = await _web3client.getBalanceOfToken(
+        ofAddress: walletAddress,
+        tokenAddress: token.tokenAddress,
+      );
     }
+    final Result<List<TokenPrice>> result =
+        await _priceRepository.getListPriceToken(token.nameShortToken);
+    result.when(
+      success: (res) {
+        token.exchangeRate = res.first.price ?? 0;
+      },
+      error: (error) {},
+    );
+    _tokenSubject.sink.add(token);
   }
-}
-
-enum TransactionStatus {
-  SUCCESS,
-  FAILED,
-  PENDING,
-}
-enum TransactionType {
-  SEND,
-  RECEIVE,
 }

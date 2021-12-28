@@ -1,10 +1,14 @@
-import 'package:Dfy/main.dart';
+import 'dart:math';
+
+import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 part 'send_token_state.dart';
 
@@ -18,36 +22,104 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   // 3 boolean below check validate
   bool _flagAddress = false;
   bool _flagAmount = false;
-  bool _flagQuantity = false;
+  late double balanceWallet;
+  late double gasPrice;
+  late double estimateGasFee; //gas limit
+
+  //Web3
+  //handle token
+  Future<void> getBalanceWallet({required String ofAddress}) async {
+    balanceWallet = await Web3Utils().getBalanceOfBnb(ofAddress: ofAddress);
+  }
+
+  Future<void> getGasPrice() async {
+    final result = await Web3Utils().getGasPrice();
+    gasPrice = double.parse(result);
+  }
+
+  Future<void> getEstimateGas({
+    required String from,
+    required String to,
+    required double value,
+    required ModelToken token,
+    required BuildContext context,
+  }) async {
+    final result = await Web3Utils().getTokenGasLimit(
+      contract: token.tokenAddress,
+      symbol: token.nameShortToken,
+      from: from,
+      to: to,
+      amount: value,
+      context: context,
+    );
+    estimateGasFee = double.parse(result);
+    // if (token.nameShortToken == 'BNB') {
+    //   // final result = await Web3Utils()
+    //   //     .getEstimateGasPrice(from: from, to: to, value: value);
+    //   final result = await Web3Utils().getTokenGasLimit(
+    //     contract: token.tokenAddress,
+    //     symbol: token.nameShortToken,
+    //     from: from,
+    //     to: to,
+    //     amount: value,
+    //     context: context,
+    //   );
+    //   estimateGasFee = double.parse(result);
+    // } else {
+    //   estimateGasFee = 45000;
+    // }
+  }
+  late double gasLimitNft;
+  Future<void> getGasLimitNft({
+    required String fromAddress,
+    required String toAddress,
+    required String contract,
+    required String symbol,
+    required String id,
+    required BuildContext context,
+  }) async {
+    final result = await Web3Utils().getNftGasLimit(
+      from: fromAddress,
+      to: toAddress,
+      contract: contract,
+      symbol: symbol,
+      id: int.parse(id),
+      context: context,
+    );
+    gasLimitNft = double.parse(result);
+  }
+
+  //handle nft pending api
 
   //3 boolean below check if 3 forms have value
   bool _haveVLAddress = false;
   bool _haveVLQuantity = false;
-  bool _haveVLAmount = false;
+
+  //regex
+  final regex = RegExp(r'^0x[a-fA-F0-9]{40}$');
 
   final BehaviorSubject<String> _formField = BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _formEstimateGasFee = BehaviorSubject<String>();
 
   //both stream below is manage confirm fee token screen
-  final BehaviorSubject<bool> _isCustomizeFee =
-  BehaviorSubject<bool>();
+  final BehaviorSubject<bool> _isCustomizeFee = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isSufficientToken = BehaviorSubject<bool>();
   final BehaviorSubject<bool> _isShowCFBlockChain =
-  BehaviorSubject<bool>.seeded(true);
+      BehaviorSubject<bool>.seeded(false);
 
   //stream below regex amount form and address
   final BehaviorSubject<bool> _isValidAddressForm =
-  BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _isValidAmountForm =
-  BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> _isValidQuantityForm =
-  BehaviorSubject<bool>.seeded(false);
+      BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<String> _txtInvalidAddressForm =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtInvalidAmount =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
   final BehaviorSubject<String> _txtInvalidQuantityForm =
-  BehaviorSubject<String>.seeded('');
+      BehaviorSubject<String>.seeded('');
 
   //stream
   Stream<String> get fromFieldStream => _formField.stream;
@@ -109,19 +181,81 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   String passwordToken = '';
   String passwordNft = '';
 
+  final regexAddress = RegExp(r'^0x[a-fA-F0-9]{40}$');
+
+  //check validate form send nft
+  bool _flagNftAddress = false;
+  bool _flagQuantity = false;
+
+  void checkValidateAddress({required String value}) {
+    if (value.isEmpty) {
+      isValidAddressFormSink.add(true);
+      _flagNftAddress = false;
+      isShowCFBlockChainSink.add(false);
+      txtInvalidAddressFormSink.add(S.current.address_required);
+    } else if (!regexAddress.hasMatch(value)) {
+      isValidAddressFormSink.add(true);
+      _flagNftAddress = false;
+      isShowCFBlockChainSink.add(false);
+      txtInvalidAddressFormSink.add(S.current.invalid_address);
+    } else {
+      _flagNftAddress = true;
+      isValidAddressFormSink.add(false);
+      if (_flagNftAddress && _flagQuantity) {
+        isShowCFBlockChainSink.add(true);
+      }
+    }
+  }
+
+  final regexId = RegExp(r'^[0-9]*$');
+
+  void checkValidateQuantity(
+      {required String value, required String quantityCopy}) {
+    if (value.isEmpty) {
+      _flagQuantity = false;
+      isValidQuantityFormSink.add(true);
+      txtInvalidQuantityFormSink.add(S.current.required_quantity);
+      isShowCFBlockChainSink.add(false);
+    } else if (!regexId.hasMatch(value)) {
+      _flagQuantity = false;
+      isValidQuantityFormSink.add(true);
+      txtInvalidQuantityFormSink.add(S.current.invalid_quantity);
+      isShowCFBlockChainSink.add(false);
+    } else if (int.parse(value) > int.parse(quantityCopy)) {
+      _flagQuantity = false;
+      isValidQuantityFormSink.add(true);
+      txtInvalidQuantityFormSink.add(S.current.warning_big_quantity);
+      isShowCFBlockChainSink.add(false);
+    } else {
+      _flagQuantity = true;
+      isValidQuantityFormSink.add(false);
+      if (_flagQuantity && _flagNftAddress) {
+        isShowCFBlockChainSink.add(true);
+      }
+    }
+  }
+
   //handle send token screen
   //check have value will enable button
   void checkHaveVlAddressFormToken(String value, {required typeSend type}) {
-    if (value.isEmpty) {
-      _haveVLAddress = false;
-    } else {
-      _haveVLAddress = true;
-    }
     if (type == typeSend.SEND_TOKEN) {
-      if (_haveVLAddress && _haveVLAmount) {
-        isShowCFBlockChainSink.add(true);
-      } else {
+      ///validate address
+      if (value.isEmpty) {
+        _flagAddress = false;
         isShowCFBlockChainSink.add(false);
+        isValidAddressFormSink.add(true);
+        txtInvalidAddressFormSink.add(S.current.address_required);
+      } else if (!regex.hasMatch(value)) {
+        _flagAddress = false;
+        isShowCFBlockChainSink.add(false);
+        isValidAddressFormSink.add(true);
+        txtInvalidAddressFormSink.add(S.current.invalid_address);
+      } else {
+        isValidAddressFormSink.add(false);
+        _flagAddress = true;
+        if (_flagAddress && _flagAmount) {
+          isShowCFBlockChainSink.add(true);
+        }
       }
     } else {
       if (_haveVLAddress && _haveVLQuantity) {
@@ -132,17 +266,41 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-  void checkHaveVLAmountFormToken(String value) {
+
+  //regex
+  final regexAmount = RegExp(r'^\d+((.)|(.\d{0,5})?)$');
+  void checkHaveVLAmountFormToken(
+    String value, {
+    required double amountBalance,
+  }) {
     if (value.isEmpty) {
-      _haveVLAmount = false;
-    } else {
-      _haveVLAmount = true;
-    }
-    if (_haveVLAddress && _haveVLAmount) {
-      isShowCFBlockChainSink.add(true);
-    } else {
+      _flagAmount = false;
       isShowCFBlockChainSink.add(false);
+      isValidAmountFormSink.add(true);
+      txtInvalidAmountSink.add(S.current.amount_required);
+    } else if(!regexAmount.hasMatch(value)) {
+      _flagAmount = false;
+      isShowCFBlockChainSink.add(false);
+      isValidAmountFormSink.add(true);
+      txtInvalidAmountSink.add(S.current.amount_invalid);
     }
+    else if (double.parse(value) > amountBalance) {
+      _flagAmount = false;
+      isShowCFBlockChainSink.add(false);
+      isValidAmountFormSink.add(true);
+      txtInvalidAmountSink.add(S.current.insufficient_balance);
+    } else {
+      isValidAmountFormSink.add(false);
+      _flagAmount = true;
+      if (_flagAddress && _flagAmount) {
+        isShowCFBlockChainSink.add(true);
+      }
+    }
+    // if (_haveVLAddress && _flagAmount) {
+    //   isShowCFBlockChainSink.add(true);
+    // } else {
+    //   isShowCFBlockChainSink.add(false);
+    // }
   }
 
   void checkHaveVLQuantityFormNFT(String value) {
@@ -280,69 +438,11 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-  // "walletAddress*: String
-  // receiveAddress*: String
-  // tokenID*: Int
-  // amount*: Int
-  // password: String"
 
-  Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
-    switch (methodCall.method) {
-      case 'sendTokenCallback':
-        final bool isSuccess = await methodCall.arguments['isSuccess'];
-        break;
-      default:
-        break;
-    }
+  String handleValueFromQR({required String value}) {
+    final int index = value.lastIndexOf('0x');
+    final int lastIndex = index + 42;
+    return value.substring(index, lastIndex);
   }
-
-  Future<void> sendNft({
-    required String walletAddress,
-    required String receiveAddress,
-    required int nftID,
-    required int gasFee,
-    String? password,
-  }) async {
-    try {
-      final data = {
-        'walletAddress': walletAddress,
-        'receiveAddress': receiveAddress,
-        'nftID': nftID,
-        'gasFee': gasFee,
-        'password': password,
-        //
-      };
-      await trustWalletChannel.invokeMethod('sendToken', data);
-    } on PlatformException {
-      //todo
-    }
-  }
-
-  Future<void> sendToken({
-    required String walletAddress,
-    required String receiveAddress,
-    required int tokenID,
-    required int amount,
-    required int gasFee,
-    String? password,
-  }) async {
-    try {
-      final data = {
-        'walletAddress': walletAddress,
-        'receiveAddress': receiveAddress,
-        'amount': amount,
-        'tokenID': tokenID,
-        'password': password,
-        'gasFee': gasFee,
-        //todo wallet
-      };
-      //param invokeMethod is api
-      await trustWalletChannel.invokeMethod('sendToken', data);
-    } on PlatformException {
-      //todo
-    }
-  }
-
-//handle number with e
 
 }

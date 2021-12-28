@@ -1,8 +1,6 @@
-
-
-import 'package:Dfy/data/response/collection/collection_response.dart';
-import 'package:Dfy/data/result/result.dart';
-
-mixin CollectionRepository {
-  Future<Result<List<CollectionResponse>>> getCollection();
-}
+// import 'package:Dfy/data/result/result.dart';
+// import 'package:Dfy/data/web3/model/collection_nft_info.dart';
+//
+// mixin CollectionRepository {
+//   Future<Result<CollectionNftInfo>> getCollection();
+// }

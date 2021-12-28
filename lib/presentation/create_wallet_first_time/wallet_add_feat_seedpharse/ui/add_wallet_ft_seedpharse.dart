@@ -1,6 +1,7 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/setup_password/ui/setup_password.dart';
-import 'package:Dfy/presentation/restore_bts/ui/restore_bts.dart';
+import 'package:Dfy/presentation/restore_account/ui/restore_account.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,30 +41,29 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
               color: Color.fromRGBO(255, 255, 255, 0.1),
             ),
             SizedBox(
-              height: 40.h,
+              height: 31.h,
             ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    GestureDetector(
+                    Image.asset(ImageAssets.img_cash),
+                    spaceH46,
+                    InkWell(
                       child: btnAddWallet(),
                       onTap: () {
-                        showModalBottomSheet(
-                          backgroundColor: Colors.transparent,
-                          context: context,
-                          builder: (context) {
-                            return const SetupPassWord();
-                          },
-                          isScrollControlled: true,
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const SetupPassWord();
+                            },
+                          ),
                         );
                       },
                     ),
                     SizedBox(height: 39.h),
-                    GestureDetector(
-                      onTap: () {},
-                      child: btnImportSeedPhrase(),
-                    ),
+                    btnImportSeedPhrase(),
                   ],
                 ),
               ),
@@ -75,27 +75,27 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
   }
 
   Widget btnImportSeedPhrase() {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
-        showModalBottomSheet(
-          backgroundColor: Colors.transparent,
-          context: context,
-          builder: (context) {
-            return const RestoreBTS();
-          },
-          isScrollControlled: true,
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const RestoreAccount();
+            },
+          ),
         );
       },
       child: SizedBox(
-        width: 343.w,
-        // height: 25.h,
+        height: 32.h,
+        width: 323.w,
         child: Center(
           child: Text(
             S.current.pls_import_seed,
-            style: TextStyle(
-              fontSize: 20.sp,
+            style: const TextStyle(
+              fontSize: 20,
               fontWeight: FontWeight.w600,
-              color: const Color.fromRGBO(228, 172, 26, 1),
+              color: Color.fromRGBO(228, 172, 26, 1),
             ),
           ),
         ),
@@ -128,7 +128,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
               S.current.add_wallet,
               style: TextStyle(
                 fontWeight: FontWeight.w700,
-                fontSize: 20.sp,
+                fontSize: 20,
                 color: const Color.fromRGBO(228, 172, 26, 1),
               ),
             ),
@@ -148,7 +148,6 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
       ),
       child: SizedBox(
         width: 343.w,
-        height: 54.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -160,10 +159,10 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
               children: [
                 Text(
                   S.current.wallet,
-                  style: TextStyle(
-                    fontSize: 20.sp,
+                  style: const TextStyle(
+                    fontSize: 20,
                     fontWeight: FontWeight.w700,
-                    color: const Color.fromRGBO(255, 255, 255, 1),
+                    color: Color.fromRGBO(255, 255, 255, 1),
                   ),
                 ),
                 SizedBox(
@@ -171,10 +170,10 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                 ),
                 Text(
                   S.current.smart_chain,
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                  style: const TextStyle(
+                    fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: const Color.fromRGBO(189, 189, 189, 1),
+                    color: Color.fromRGBO(189, 189, 189, 1),
                   ),
                 )
               ],
