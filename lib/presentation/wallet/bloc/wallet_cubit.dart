@@ -616,8 +616,8 @@ class WalletCubit extends BaseCubit<WalletState> {
           nameWallet = listWallet.first.name!;
           addressWallet.add(addressWalletCore);
           walletName.add(nameWallet);
-          await getListCategory();
           getNFT(addressWalletCore);
+          await getListCategory();
         }
         break;
       case 'getNFTCallback':
