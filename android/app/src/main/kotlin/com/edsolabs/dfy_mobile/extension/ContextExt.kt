@@ -49,9 +49,14 @@ fun Context.setConfig(channel: MethodChannel?, appLock: Boolean, faceID: Boolean
     channel?.invokeMethod("setConfigCallback", hasMap)
 }
 
-fun Context.exportWallet(channel: MethodChannel?, password: String, walletAddress: String) {
+fun Context.exportWallet(
+    channel: MethodChannel?,
+    password: String,
+    isFaceId: Boolean,
+    walletAddress: String
+) {
     val appPreference = AppPreference(this)
-    if (password == appPreference.password) {
+    if (password == appPreference.password || isFaceId) {
         val hasMap = HashMap<String, Any>()
         appPreference.getListWallet().forEach {
             if (it.walletAddress == walletAddress) {
@@ -591,7 +596,6 @@ fun Context.importNft(
         nftModel.item.addAll(listNft)
         listCollectionSupport.add(nftModel)
         listCollectionSupport.addAll(listAllCollection.filter { it.walletAddress != walletAddress })
-//        Log.d("kiemtra1", "first - " + listCollectionSupport.toString())
     } else {
         val contractNft = objectNft.getString("contract")
         if (checkAddress.collectionAddress == contractNft) {
@@ -606,7 +610,7 @@ fun Context.importNft(
             while (size < listNftJson.length()) {
                 val data = listNftJson.getJSONObject(size)
                 val id = data.getString("id")
-                if (checkAddress.item.firstOrNull { it.id != id } == null) {
+                if (checkAddress.item.firstOrNull { it.id == id } == null) {
                     listNft.add(
                         ItemNftModel(
                             id = id,
