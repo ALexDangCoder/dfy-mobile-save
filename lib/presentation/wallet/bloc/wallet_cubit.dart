@@ -214,7 +214,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   BehaviorSubject<List<ModelToken>> listTokenStream =
       BehaviorSubject.seeded([]);
   BehaviorSubject<List<CollectionShow>> listNFTStream =
-      BehaviorSubject.seeded([]);
+      BehaviorSubject();
 
   int randomAvatar() {
     final Random rd = Random();
@@ -540,6 +540,7 @@ class WalletCubit extends BaseCubit<WalletState> {
         switch (code) {
           case 200:
             emit(ImportNftSuccess());
+            getNFT(addressWalletCore);
             break;
           case 400:
             emit(ImportNftFail());
@@ -616,7 +617,7 @@ class WalletCubit extends BaseCubit<WalletState> {
           addressWallet.add(addressWalletCore);
           walletName.add(nameWallet);
           await getListCategory();
-          await getNFT(addressWalletCore);
+          getNFT(addressWalletCore);
         }
         break;
       case 'getNFTCallback':
@@ -719,14 +720,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  Future<void> getNFT(
+  void getNFT(
     String walletAddress,
-  ) async {
+  ) {
     try {
       final data = {
         'walletAddress': walletAddress,
       };
-      await trustWalletChannel.invokeMethod('getNFT', data);
+       trustWalletChannel.invokeMethod('getNFT', data);
     } on PlatformException {}
   }
 

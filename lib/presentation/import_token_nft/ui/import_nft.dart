@@ -84,9 +84,7 @@ class _BodyState extends State<_Body> {
                 return const NFTSuccessfully();
               },
             ),
-          ).whenComplete(() async {
-            await widget.bloc.getNFT(widget.bloc.addressWalletCore);
-          });
+          );
         } else if (state is ImportNftLoading) {
           _showLoading();
           // Navigator.pop(context);
