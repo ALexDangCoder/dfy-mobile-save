@@ -566,7 +566,6 @@ extension AppDelegate {
         if checkAddress == nil {
             let listItem = objectNft.listNft?.map{ItemNftModel(id: $0.id ?? "", contract: $0.contract ?? "", uri: $0.uri ?? "")}
             let nftModel = NftModel(walletAddress: walletAddress, collectionAddress: objectNft.contract ?? "", nftName: objectNft.name ?? "", symbol: objectNft.symbol ?? "", item: listItem ?? [])
-            print("Fucker \(nftModel.item.count)")
             listCollectionSupport.append(nftModel)
             listCollectionSupport.append(contentsOf: listAllCollection.filter{$0.walletAddress != walletAddress})
         } else {
@@ -577,7 +576,7 @@ extension AppDelegate {
                 let listNftItem = objectNft.listNft ?? []
                 listNftItem.forEach { (nftItemJson) in
                     let id = nftItemJson.id ?? ""
-                    if (checkAddress!.item.first(where: {$0.id != id}) == nil) {
+                    if (checkAddress!.item.first(where: {$0.id == id}) == nil) {
                         listNft.append(ItemNftModel(id: id, contract: nftItemJson.contract ?? "", uri: nftItemJson.uri ?? ""))
                     }
                 }
