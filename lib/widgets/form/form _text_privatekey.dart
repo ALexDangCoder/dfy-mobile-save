@@ -7,13 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class FromTextPrivateKey extends StatefulWidget {
+class FromTextPrivateKey extends StatelessWidget {
   final String urlPrefixIcon;
   final String title;
   final String urlSuffixIcon;
   final String titleCopy;
 
-  const FromTextPrivateKey({
+  FToast fToast = FToast();
+
+  FromTextPrivateKey({
     Key? key,
     required this.urlPrefixIcon,
     required this.title,
@@ -22,22 +24,8 @@ class FromTextPrivateKey extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FromTextPrivateKey> createState() => _FromTextPrivateKeyState();
-}
-
-class _FromTextPrivateKeyState extends State<FromTextPrivateKey> {
-  late FToast fToast;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    fToast = FToast();
-    fToast.init(context);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    fToast.init(context);
     return Container(
       width: 343.w,
       height: 64.h,
@@ -54,7 +42,7 @@ class _FromTextPrivateKeyState extends State<FromTextPrivateKey> {
           Row(
             children: [
               Image.asset(
-                widget.urlPrefixIcon,
+                urlPrefixIcon,
                 height: 20.h,
                 width: 20.14.w,
               ),
@@ -64,7 +52,7 @@ class _FromTextPrivateKeyState extends State<FromTextPrivateKey> {
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 child: Text(
-                  widget.title,
+                  title,
                   style: textNormal(
                     null,
                     16,
@@ -75,7 +63,7 @@ class _FromTextPrivateKeyState extends State<FromTextPrivateKey> {
           ),
           InkWell(
             onTap: () {
-              FlutterClipboard.copy(widget.titleCopy);
+              FlutterClipboard.copy(titleCopy);
               fToast.showToast(
                 child: Copied(
                   title: S.current.copied_private_key,
@@ -87,13 +75,13 @@ class _FromTextPrivateKeyState extends State<FromTextPrivateKey> {
               );
             },
             child: Container(
-              child: widget.urlSuffixIcon.isNotEmpty
+              child: urlSuffixIcon.isNotEmpty
                   ? Image.asset(
-                      widget.urlSuffixIcon,
+                      urlSuffixIcon,
                       height: 20.67.h,
                       width: 20.14.w,
                     )
-                  : null,
+                  : const SizedBox.shrink(),
             ),
           ),
         ],
