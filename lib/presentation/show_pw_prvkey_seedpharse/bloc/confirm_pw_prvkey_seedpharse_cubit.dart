@@ -68,11 +68,13 @@ class ConfirmPwPrvKeySeedpharseCubit
 
   void getListPrivateKeyAndSeedPhrase({
     required String password,
+    required bool isFaceId,
   }) {
     for (final value in listWalletCore) {
       exportWallet(
         walletAddress: value.address ?? '',
         password: password,
+        isFaceId: isFaceId,
       );
     }
   }
@@ -135,6 +137,12 @@ class ConfirmPwPrvKeySeedpharseCubit
     }
   }
 
+  void scanFaceIdFinger({required bool value}) {
+    if (value) {
+      emit(ConfirmPWToShowSuccess());
+    } else {}
+  }
+
   Future<void> getListWallets() async {
     try {
       final data = {};
@@ -148,11 +156,13 @@ class ConfirmPwPrvKeySeedpharseCubit
   Future<void> exportWallet({
     required String walletAddress,
     required String password,
+    required bool isFaceId,
   }) async {
     try {
       final data = {
         'password': password,
         'walletAddress': walletAddress,
+        'isFaceId': isFaceId,
       };
       await trustWalletChannel.invokeMethod('exportWallet', data);
     } on PlatformException {

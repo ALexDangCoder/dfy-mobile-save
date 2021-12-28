@@ -160,7 +160,8 @@ class RemoveNft extends StatelessWidget {
                                         }
                                         Navigator.pop(context);
                                       },
-                                      child: SizedBox(
+                                      child: Container(
+                                        color: Colors.transparent,
                                         height: 64.h,
                                         child: Center(
                                           child: Text(

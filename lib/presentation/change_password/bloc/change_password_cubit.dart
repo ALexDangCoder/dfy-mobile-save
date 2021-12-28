@@ -64,7 +64,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
             emit(ChangePasswordFail());
           }
         } catch (e) {
-          print(e);
+
         }
         break;
       default:
