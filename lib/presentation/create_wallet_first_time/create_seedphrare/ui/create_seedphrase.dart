@@ -236,7 +236,8 @@ class _BodyState extends State<_Body> {
                                                   .add('');
                                               nameWalletController.text = '';
                                               widget.bloc.validateNameWallet(
-                                                  nameWalletController.text);
+                                                nameWalletController.text,
+                                              );
                                             },
                                             child: Image.asset(
                                               ImageAssets.ic_close,
@@ -259,6 +260,7 @@ class _BodyState extends State<_Body> {
                             title: widget.bloc.walletAddress,
                             urlSuffixIcon: ImageAssets.ic_copy,
                             urlPrefixIcon: ImageAssets.ic_address,
+                            type: TypeText.address,
                           ),
                           SizedBox(
                             height: 16.h,
@@ -267,6 +269,7 @@ class _BodyState extends State<_Body> {
                             title: widget.bloc.privateKey,
                             urlSuffixIcon: ImageAssets.ic_copy,
                             urlPrefixIcon: ImageAssets.ic_key24,
+                            type: TypeText.key,
                           ),
                           SizedBox(
                             height: 20.h,
