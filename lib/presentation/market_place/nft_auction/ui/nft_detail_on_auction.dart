@@ -118,7 +118,7 @@ class _OnAuctionState extends State<OnAuction>
           builder: (context, snapshot) {
             return Visibility(
               child: InkWell(
-                onTap: (){
+                onTap: () {
                   _bloc.viewSink.add(!snapshot.data!);
                 },
                 child: Container(
@@ -235,13 +235,13 @@ class _OnAuctionState extends State<OnAuction>
   Widget _buildButtonPlaceBid(BuildContext context) {
     return ButtonGradient(
       onPressed: () {
-        showModalBottomSheet(
-          backgroundColor: Colors.transparent,
-          isScrollControlled: true,
-          context: context,
-          builder: (context) {
-            return const PlaceBid();
-          },
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const PlaceBid();
+            },
+          ),
         );
       },
       gradient: RadialGradient(
