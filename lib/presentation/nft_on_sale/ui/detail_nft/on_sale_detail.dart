@@ -23,7 +23,7 @@ class OnSale extends StatefulWidget {
 class _OnSaleState extends State<OnSale> with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   final List<Widget> tabPage = const [
-    HistoryTab(),
+    HistoryTab(listHistory: [],),
     OwnerTab(),
   ];
   final List<Tab> titTab = [

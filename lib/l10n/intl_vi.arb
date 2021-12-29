@@ -304,5 +304,8 @@
   "on_auction": "Đang đấu giá",
   "collection_type": "Loại bộ sưu tập",
   "hard_nft_collection": "Hard NFT",
-  "soft_nft_collection": "Soft NFT"
+  "soft_nft_collection": "Soft NFT",
+  "additional": "Thông tin thêm",
+  "nft_id": "NFT Id",
+  "collection_address": "Địa chỉ bộ sưu tập"
 }

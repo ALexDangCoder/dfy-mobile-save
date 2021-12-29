@@ -16,7 +16,7 @@ class _AuctionTabBarState extends State<AuctionTabBar>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   final List<Widget> tabPage = const [
-    HistoryTab(),
+    HistoryTab(listHistory: [],),
     OwnerTab(),
     BidTab(),
   ];
