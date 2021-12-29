@@ -1,3 +1,5 @@
+import 'package:Dfy/config/base/base_custom_scroll_view.dart';
+import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -9,12 +11,17 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
-import 'package:Dfy/widgets/common_bts/base_nft_market.dart';
+import 'package:Dfy/widgets/button/round_button.dart';
 import 'package:Dfy/widgets/count_down_view/ui/nft_countdownn.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+const String EXAMPLE_TITLE = 'Coin Card';
+const String EXAMPLE_IMAGE_URL =
+    'https://toigingiuvedep.vn/wp-content/uploads/2021/06/h'
+    'inh-anh-naruto-chat-ngau-dep.jpg';
 
 class OnAuction extends StatefulWidget {
   const OnAuction({Key? key}) : super(key: key);
@@ -51,57 +58,105 @@ class _OnAuctionState extends State<OnAuction>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
-        child: BaseNFTMarket(
-          title: 'Coin card',
-          image: 'https://toigingiuvedep.vn/wp-content/uploads/2021/06/h'
-              'inh-anh-naruto-chat-ngau-dep.jpg',
-          filterFunc: () {},
-          flagFunc: () {},
-          shareFunc: () {},
-          tabBar: TabBar(
-            controller: _tabController,
-            labelColor: Colors.white,
-            unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
-            indicatorColor: AppTheme.getInstance().titleTabColor(),
-            labelStyle: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-            tabs: titTab,
-          ),
-          body: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-            ),
-            child: TabBarView(
-              controller: _tabController,
-              children: tabPage,
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-            ),
-            child: Column(
-              children: [
-                _priceContainer(),
-                _timeContainer(),
-                spaceH24,
-                _buildButtonPlaceBid(context),
-                spaceH20,
-                _buildButtonBuyOut(context),
-                spaceH18,
-                divide,
-                _buildTable(),
-                spaceH24,
-                divide,
-              ],
-            ),
-          ),
+    return BaseCustomScrollView(
+      bottomBar: Row(
+        children: [
+          Expanded(child: _buildButtonBuyOut(context)),
+          spaceW25,
+          Expanded(child: _buildButtonPlaceBid(context)),
+        ],
+      ),
+      title: EXAMPLE_TITLE,
+      image: EXAMPLE_IMAGE_URL,
+      leading: InkWell(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+          child: roundButton(image: ImageAssets.ic_btn_back_svg),
         ),
+      ),
+      initHeight: 360.h,
+      content: [
+        _cardTitle(title: EXAMPLE_TITLE),
+        _priceContainer(),
+        _timeContainer(),
+        spaceH18,
+        divide,
+        _buildTable(),
+        spaceH24,
+        divide,
+      ],
+      tabBar: TabBar(
+        controller: _tabController,
+        labelColor: Colors.white,
+        unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+        indicatorColor: AppTheme.getInstance().titleTabColor(),
+        labelStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+        tabs: titTab,
+      ),
+      tabBarView: TabBarView(
+        controller: _tabController,
+        children: tabPage,
+      ),
+    );
+  }
+
+  Widget _cardTitle({required String title, int quantity = 1}) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: 8.h,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  EXAMPLE_TITLE,
+                  style: textNormalCustom(null, 24, FontWeight.w600),
+                ),
+              ),
+              //todo when has feature backend
+              // SizedBox(
+              //   width: 25.h,
+              // ),
+              // InkWell(
+              //   onTap: () {},
+              //   child: roundButton(
+              //     image: ImageAssets.ic_flag_svg,
+              //     whiteBackground: true,
+              //   ),
+              // ),
+              // SizedBox(
+              //   width: 20.h,
+              // ),
+              // InkWell(
+              //   onTap: () {},
+              //   child: roundButton(
+              //     image: ImageAssets.ic_share_svg,
+              //     whiteBackground: true,
+              //   ),
+              // ),
+            ],
+          ),
+          Text(
+            '1 of $quantity available',
+            textAlign: TextAlign.left,
+            style: tokenDetailAmount(
+              fontSize: 16,
+            ),
+          ),
+          spaceH12,
+          line,
+        ],
       ),
     );
   }

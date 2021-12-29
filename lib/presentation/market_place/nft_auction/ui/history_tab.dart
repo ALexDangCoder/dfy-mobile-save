@@ -20,7 +20,7 @@ class _HistoryTabState extends State<HistoryTab> {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: 20,
+      itemCount: 0,
       itemBuilder: (context, index) {
         return _buildItemHistory(index);
       },
