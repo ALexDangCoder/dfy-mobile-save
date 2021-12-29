@@ -31,7 +31,7 @@ const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';
 
 const String TRANSACTION_TOKEN = '0';
-const String TRANSACTION_NFT= '1';
+const String TRANSACTION_NFT = '1';
 
 const EN_CODE = 'en';
 const VI_CODE = 'vi';
@@ -49,7 +49,7 @@ const _dtFormat4 = 'yyyy-MM-dd';
 const _dtFormat5 = 'MMM dd, yyyy';
 
 //web3
-const rpcURL = 'https://data-seed-prebsc-1-s1.binance.org:8545';
+const rpcURL = 'https://data-seed-prebsc-1-s1.binance.org:8545'; //testNet
 
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;

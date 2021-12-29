@@ -138,8 +138,8 @@ extension AppDelegate {
             }
         }
         if call.method == "exportWallet" {
-            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String, let walletAddress = arguments["walletAddress"] as? String {
-                result(exportWallet(password: password, walletAddress: walletAddress))
+            if let arguments = call.arguments as? [String: Any], let password = arguments["password"] as? String, let walletAddress = arguments["walletAddress"] as? String, let isFaceId = arguments["isFaceId"] as? Bool {
+                result(exportWallet(password: password, walletAddress: walletAddress, isFaceId: isFaceId))
             }
         }
         if call.method == "importWallet" {
@@ -450,8 +450,8 @@ extension AppDelegate {
         return param
     }
     
-    private func exportWallet(password: String, walletAddress: String) -> [String: Any] {
-        if (password == SharedPreference.shared.getPassword()) {
+    private func exportWallet(password: String, walletAddress: String, isFaceId: Bool) -> [String: Any] {
+        if (password == SharedPreference.shared.getPassword() || isFaceId) {
             var param = [String: Any]()
             SharedPreference.shared.getListWallet().forEach { walletModel in
                 if walletModel.walletAddress == walletAddress {
@@ -622,6 +622,8 @@ extension AppDelegate {
                     let data = NftModel(walletAddress: walletAddress, collectionAddress: collectionAddress, nftName: it.nftName, symbol: it.symbol, item: listNft)
                     listCollection.append(data)
                 }
+            } else {
+                listCollection.append(it)
             }
         }
         SharedPreference.shared.saveListNft(listNft: listCollection)
