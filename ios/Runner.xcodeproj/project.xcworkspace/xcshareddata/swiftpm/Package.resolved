@@ -2,11 +2,11 @@
   "object": {
     "pins": [
       {
-        "package": "BigInt",
-        "repositoryURL": "https://github.com/attaswift/BigInt.git",
+        "package": "WalletCore",
+        "repositoryURL": "https://github.com/trustwallet/wallet-core",
         "state": {
           "branch": "master",
-          "revision": "92a077bc2bb9ca38883b1e9c53c76a88ca5fcf18",
+          "revision": "395819642f56ac4019c5cdb597ce582f37c306e8",
           "version": null
         }
       }
