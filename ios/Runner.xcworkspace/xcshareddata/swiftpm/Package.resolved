@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "WalletCore",
+        "repositoryURL": "https://github.com/trustwallet/wallet-core",
+        "state": {
+          "branch": "master",
+          "revision": "395819642f56ac4019c5cdb597ce582f37c306e8",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
