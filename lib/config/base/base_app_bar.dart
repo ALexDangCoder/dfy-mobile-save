@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BaseAppBar extends SliverAppBar {
   BaseAppBar({
@@ -94,9 +95,10 @@ class BaseSpace extends StatelessWidget {
 
   Widget getTitle(String text) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.symmetric(horizontal: 60.w, vertical: 8.h),
       child: Text(
         text,
+        overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
         style: textNormalCustom(null, 24, FontWeight.w600),
       ),

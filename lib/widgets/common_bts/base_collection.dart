@@ -56,7 +56,7 @@ class BaseCollection extends StatelessWidget {
 }
 
 class BaseSliverHeader extends SliverPersistentHeaderDelegate {
-  final TabBar _tabBar;
+  final Widget _tabBar;
 
   BaseSliverHeader(this._tabBar);
 

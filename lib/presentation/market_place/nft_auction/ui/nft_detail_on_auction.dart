@@ -18,6 +18,11 @@ import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+const String EXAMPLE_TITLE = 'Coin Card';
+const String EXAMPLE_IMAGE_URL =
+    'https://toigingiuvedep.vn/wp-content/uploads/2021/06/h'
+    'inh-anh-naruto-chat-ngau-dep.jpg';
+
 class OnAuction extends StatefulWidget {
   const OnAuction({Key? key}) : super(key: key);
 
@@ -54,28 +59,15 @@ class _OnAuctionState extends State<OnAuction>
   @override
   Widget build(BuildContext context) {
     return BaseCustomScrollView(
-      bottomBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(15.r),
-            topLeft: Radius.circular(15.r),
-          ),
-          border: Border.all(
-            color: AppTheme.getInstance().divideColor(),
-          ),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-        child: Row(
-          children: [
-            Expanded(child: _buildButtonBuyOut(context)),
-            spaceW25,
-            Expanded(child: _buildButtonPlaceBid(context)),
-          ],
-        ),
+      bottomBar: Row(
+        children: [
+          Expanded(child: _buildButtonBuyOut(context)),
+          spaceW25,
+          Expanded(child: _buildButtonPlaceBid(context)),
+        ],
       ),
-      title: 'Coin Card',
-      image: 'https://toigingiuvedep.vn/wp-content/uploads/2021/06/h'
-          'inh-anh-naruto-chat-ngau-dep.jpg',
+      title: EXAMPLE_TITLE,
+      image: EXAMPLE_IMAGE_URL,
       leading: InkWell(
         onTap: () {
           Navigator.pop(context);
@@ -85,59 +77,9 @@ class _OnAuctionState extends State<OnAuction>
           child: roundButton(image: ImageAssets.ic_btn_back_svg),
         ),
       ),
-      actions: const [],
-      initHeight: 300,
+      initHeight: 360.h,
       content: [
-        Container(
-          margin: EdgeInsets.only(
-            top: 8.h,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Coin Card',
-                      style: textNormalCustom(null, 24, FontWeight.w600),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 25.h,
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: roundButton(
-                      image: ImageAssets.ic_flag_svg,
-                      whiteBackground: true,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20.h,
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: roundButton(
-                      image: ImageAssets.ic_share_svg,
-                      whiteBackground: true,
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                '1 of 1 available',
-                textAlign: TextAlign.left,
-                style: tokenDetailAmount(
-                  fontSize: 16,
-                ),
-              ),
-              spaceH12,
-              line,
-            ],
-          ),
-        ),
+        _cardTitle(title: EXAMPLE_TITLE),
         _priceContainer(),
         _timeContainer(),
         spaceH18,
@@ -160,6 +102,61 @@ class _OnAuctionState extends State<OnAuction>
       tabBarView: TabBarView(
         controller: _tabController,
         children: tabPage,
+      ),
+    );
+  }
+
+  Widget _cardTitle({required String title, int quantity = 1}) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: 8.h,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  EXAMPLE_TITLE,
+                  style: textNormalCustom(null, 24, FontWeight.w600),
+                ),
+              ),
+              //todo when has feature backend
+              // SizedBox(
+              //   width: 25.h,
+              // ),
+              // InkWell(
+              //   onTap: () {},
+              //   child: roundButton(
+              //     image: ImageAssets.ic_flag_svg,
+              //     whiteBackground: true,
+              //   ),
+              // ),
+              // SizedBox(
+              //   width: 20.h,
+              // ),
+              // InkWell(
+              //   onTap: () {},
+              //   child: roundButton(
+              //     image: ImageAssets.ic_share_svg,
+              //     whiteBackground: true,
+              //   ),
+              // ),
+            ],
+          ),
+          Text(
+            '1 of $quantity available',
+            textAlign: TextAlign.left,
+            style: tokenDetailAmount(
+              fontSize: 16,
+            ),
+          ),
+          spaceH12,
+          line,
+        ],
       ),
     );
   }

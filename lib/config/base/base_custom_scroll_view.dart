@@ -1,5 +1,4 @@
 import 'package:Dfy/config/base/base_app_bar.dart';
-import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/widgets/common_bts/base_collection.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +11,11 @@ class BaseCustomScrollView extends StatefulWidget {
     required this.image,
     required this.initHeight,
     required this.leading,
-    required this.actions,
+    this.actions = const [],
     required this.title,
-    required this.tabBar,
-    required this.tabBarView,
-    required this.bottomBar,
+    this.tabBar,
+    this.tabBarView,
+    this.bottomBar,
   }) : super(key: key);
   final List<Widget> content;
   final String image;
@@ -24,74 +23,86 @@ class BaseCustomScrollView extends StatefulWidget {
   final Widget leading;
   final String title;
   final List<Widget> actions;
-  final TabBar tabBar;
-  final TabBarView tabBarView;
-  final Widget bottomBar;
+  final Widget? tabBar;
+  final Widget? tabBarView;
+  final Widget? bottomBar;
 
   @override
   _BaseCustomScrollViewState createState() => _BaseCustomScrollViewState();
 }
 
 class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
-  late final ScrollController _controller;
-
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: widget.bottomBar,
-      backgroundColor: AppTheme.getInstance().bgBtsColor(),
+      backgroundColor: Colors.transparent,
       body: SafeArea(
-        child: CustomScrollView(
-          controller: _controller,
-          physics: const ClampingScrollPhysics(),
-          slivers: [
-            BaseAppBar(
-              image: widget.image,
-              title: widget.title,
-              initHeight: widget.initHeight,
-              leading: widget.leading,
-              actions: widget.actions,
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      children: widget.content,
-                    ),
-                  )
-                ],
+        child: Scaffold(
+          backgroundColor: Colors.black,
+          bottomNavigationBar: Container(
+            color: AppTheme.getInstance().bgBtsColor(),
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().bgBtsColor(),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(15.r),
+                  topLeft: Radius.circular(15.r),
+                ),
+                border: Border.all(
+                  color: AppTheme.getInstance().divideColor(),
+                ),
               ),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              child: widget.bottomBar,
             ),
-            SliverPersistentHeader(
-              delegate: BaseSliverHeader(widget.tabBar),
-              pinned: true,
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: 1000.h,
-                      ),
-                      child: SizedBox(
-                        child: widget.tabBarView,
-                      ),
+          ),
+          body: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().bgBtsColor(),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.r),
+                  topRight: Radius.circular(30.r),
+                ),
+              ),
+              child: NestedScrollView(
+                physics: const ScrollPhysics(),
+                headerSliverBuilder: (context, innerScroll) => [
+                  BaseAppBar(
+                    image: widget.image,
+                    title: widget.title,
+                    initHeight: widget.initHeight,
+                    leading: widget.leading,
+                    actions: widget.actions,
+                  ),
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: Column(
+                            children: widget.content,
+                          ),
+                        )
+                      ],
                     ),
                   ),
+                  SliverPersistentHeader(
+                    delegate: BaseSliverHeader(widget.tabBar ?? Container()),
+                    pinned: true,
+                  ),
                 ],
+                body: widget.tabBarView ?? Container(),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

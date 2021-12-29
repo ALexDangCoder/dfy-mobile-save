@@ -7,6 +7,7 @@ import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BidTab extends StatelessWidget {
   const BidTab({Key? key}) : super(key: key);
@@ -14,8 +15,10 @@ class BidTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 5,
+      shrinkWrap: true,
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      physics: const ScrollPhysics(),
+      itemCount: 30,
       itemBuilder: (context, index) {
         return _buildItemBid(index);
       },
