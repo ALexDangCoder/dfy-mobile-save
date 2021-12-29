@@ -84,19 +84,19 @@ class SearchCubit extends BaseCubit<SearchState> {
       name: 'Lamborghi',
       image: 'http://placeimg.com/640/480',
       price: 10000,
-      propertiesNFT: TypePropertiesNFT.AUCTION,
+      marketType: MarketType.AUCTION,
     ),
     NftItem(
       name: 'Lamborghin',
       image: 'http://placeimg.com/640/480',
       price: 10000,
-      propertiesNFT: TypePropertiesNFT.PAWN,
+      marketType: MarketType.PAWN,
     ),
     NftItem(
       name: ' Pink 21',
       image: 'http://placeimg.com/640/480',
       price: 10000,
-      propertiesNFT: TypePropertiesNFT.SALE,
+      marketType: MarketType.SALE,
     ),
   ];
 
