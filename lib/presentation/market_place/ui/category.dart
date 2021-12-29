@@ -39,7 +39,7 @@ class Category extends StatelessWidget {
                   title,
                   style: textNormalCustom(
                     Colors.white,
-                    16.sp,
+                    16,
                     FontWeight.w700,
                   ),
                 ),
