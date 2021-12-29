@@ -49,7 +49,8 @@ const _dtFormat4 = 'yyyy-MM-dd';
 const _dtFormat5 = 'MMM dd, yyyy';
 
 //web3
-const rpcURL = 'https://data-seed-prebsc-1-s1.binance.org:8545'; //testNet
+// const rpcURL = 'https://data-seed-prebsc-1-s1.binance.org:8545'; //testNet
+const rpcURL = 'https://bsc-dataseed1.binance.org:443'; //mainnet
 
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
