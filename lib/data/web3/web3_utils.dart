@@ -6,12 +6,14 @@ import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/model/transaction.dart';
 import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -43,7 +45,7 @@ class Web3Utils {
   factory Web3Utils() => _shared;
 
   //client
-  final client = Web3Client(rpcURL, Client());
+  final client = Web3Client(Get.find<AppConstants>().rpcUrl, Client());
 
   Future<ImportNftResponse> importNFT({
     required String contract,

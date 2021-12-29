@@ -489,13 +489,17 @@ fun Context.deleteCollection(
     val appPreference = AppPreference(this)
     val listNft = ArrayList<NftModel>()
     var isDeleteSuccess = false
-    appPreference.getListNft().forEach {
-        if (it.walletAddress != walletAddress && it.collectionAddress != collectionAddress) {
-            listNft.add(it)
-        } else {
-            isDeleteSuccess = true
+    val listCollectionInLocal = appPreference.getListNft()
+    listCollectionInLocal.forEach {
+        if (it.walletAddress == walletAddress) {
+            if (collectionAddress == it.collectionAddress) {
+                isDeleteSuccess = true
+            } else {
+                listNft.add(it)
+            }
         }
     }
+    listNft.addAll(listCollectionInLocal.filter { it.walletAddress != walletAddress })
     appPreference.saveListNft(listNft)
     val data = HashMap<String, Any>()
     data["isSuccess"] = isDeleteSuccess
