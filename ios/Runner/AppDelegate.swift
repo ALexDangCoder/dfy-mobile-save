@@ -608,24 +608,17 @@ extension AppDelegate {
     private func deleteNft(walletAddress: String, collectionAddress: String, nftId: String) -> [String: Any] {
         var listCollection = [NftModel]()
         var isDeleteSuccess = false
-        SharedPreference.shared.getListNft().forEach { it in
-            if it.walletAddress == walletAddress && it.collectionAddress == collectionAddress {
-                var listNft = [ItemNftModel]()
-                it.item.forEach { nft in
-                    if nft.id == nftId {
-                        isDeleteSuccess = true
-                    } else {
-                        listNft.append(nft)
-                    }
+        let listCollectionInLocal = SharedPreference.shared.getListNft()
+        listCollectionInLocal.forEach { (it) in
+            if it.walletAddress == walletAddress {
+                if collectionAddress == it.collectionAddress {
+                    isDeleteSuccess = true
+                } else {
+                    listCollection.append(it)
                 }
-                if !listNft.isEmpty {
-                    let data = NftModel(walletAddress: walletAddress, collectionAddress: collectionAddress, nftName: it.nftName, symbol: it.symbol, item: listNft)
-                    listCollection.append(data)
-                }
-            } else {
-                listCollection.append(it)
             }
         }
+        listCollection.append(contentsOf: listCollectionInLocal.filter{$0.walletAddress != walletAddress})
         SharedPreference.shared.saveListNft(listNft: listCollection)
         let param: [String: Any] = ["isSuccess": isDeleteSuccess]
         chatChanel?.invokeMethod("setDeleteNftCallback", arguments: param)
