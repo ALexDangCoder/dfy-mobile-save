@@ -11,8 +11,10 @@ import BigInt
     private let TYPE_WALLET_SEED_PHRASE = "PASS_PHRASE"
     private let TYPE_WALLET_PRIVATE_KEY = "PRIVATE_KEY"
     
-    private let TOKEN_DFY_ADDRESS = "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
     private let TOKEN_BNB_ADDRESS = "0x0000000000000000000000000000000000000000"
+    private let TOKEN_DFY_ADDRESS = "0xd98560689c6e748dc37bc410b4d3096b1aa3d8c2"
+//    private let TOKEN_DFY_ADDRESS = "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
+
     
     private let TYPE_EARSE_WALLET = "earse_wallet"
     
@@ -731,8 +733,8 @@ extension AppDelegate {
             let signerInput = EthereumSigningInput.with {
                 $0.nonce = BigInt(nonce)!.serialize()
                 $0.chainID = BigInt(chainId)!.serialize()
-                $0.gasPrice = BigInt(gasPrice)!.serialize()
-                $0.gasLimit = BigInt(gasLimit.handleAmount(decimal: 9))!.serialize()
+                $0.gasPrice = BigInt(gasPrice.handleAmount(decimal: 9))!.serialize()
+                $0.gasLimit = BigInt(gasLimit)!.serialize()
                 $0.toAddress = tokenAddress
                 $0.privateKey = privateKey.data
                 $0.transaction = EthereumTransaction.with {
