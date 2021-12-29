@@ -154,9 +154,6 @@ class _ReceiveState extends State<Receive> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
                         StreamBuilder<String>(
                           stream: receiveCubit.amountStream,
                           builder: (context, snapshot) {
