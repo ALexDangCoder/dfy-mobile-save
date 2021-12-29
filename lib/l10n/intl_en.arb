@@ -98,8 +98,8 @@
   "put_on_market": "Put on market",
   "contract_interaction": "Contract interaction",
   "create_collateral": "Create collateral",
-  "view_more": "View more",
-  "view_less": "View less",
+  "view_more": "See more",
+  "view_less": "See less",
   "show_qr_code": "Show QR code",
   "copy": "Copy Successfully",
   "token_successfully": "Import Token successfully",
@@ -312,5 +312,8 @@
   "undefine_err_nft": "Something went wrong",
   "duplicated_import_nft": "Your Account is duplicated",
   "send_token": "Send Token",
-  "send_nft": "Send NFT"
+  "send_nft": "Send NFT",
+  "additional": "Additional Information",
+  "nft_id": "NFT Id",
+  "collection_address": "Collection address"
 }
