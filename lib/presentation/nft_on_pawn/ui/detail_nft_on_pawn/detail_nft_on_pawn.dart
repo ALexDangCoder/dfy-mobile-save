@@ -23,7 +23,7 @@ class OnPawn extends StatefulWidget {
 class _OnPawnState extends State<OnPawn> with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   final List<Widget> tabPage = const [
-    HistoryTab(),
+    HistoryTab(listHistory: [],),
     OwnerTab(),
   ];
   final List<Tab> titTab = [

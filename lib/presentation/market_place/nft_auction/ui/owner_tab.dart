@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OwnerTab extends StatelessWidget {
   const OwnerTab({Key? key}) : super(key: key);
@@ -10,8 +11,9 @@ class OwnerTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 0,
+      itemCount: 30,
       itemBuilder: (context, index) {
         return _buildItemOwner(index);
       },

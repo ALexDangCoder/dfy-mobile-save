@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/nft_auction/bloc/nft_auction_bloc.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/bid_tab.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/history_tab.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/owner_tab.dart';
@@ -17,8 +18,9 @@ import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-const String EXAMPLE_TITLE = 'Coin Card';
+const String EXAMPLE_TITLE = 'Naruto kkcam allfp lflll alffwl c ';
 const String EXAMPLE_IMAGE_URL =
     'https://toigingiuvedep.vn/wp-content/uploads/2021/06/h'
     'inh-anh-naruto-chat-ngau-dep.jpg';
@@ -34,7 +36,9 @@ class _OnAuctionState extends State<OnAuction>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   final List<Widget> tabPage = const [
-    HistoryTab(),
+    HistoryTab(
+      listHistory: [],
+    ),
     OwnerTab(),
     BidTab(),
   ];
@@ -49,11 +53,13 @@ class _OnAuctionState extends State<OnAuction>
       text: S.current.bidding,
     ),
   ];
+  late final AuctionBloc _bloc;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _bloc = AuctionBloc();
   }
 
   @override
@@ -84,8 +90,73 @@ class _OnAuctionState extends State<OnAuction>
         _timeContainer(),
         spaceH18,
         divide,
-        _buildTable(),
-        spaceH24,
+        spaceH12,
+        _description(
+            'Pharetra etiam libero erat in sit risus at vestibulum nulla. Cras enim nulla neque mauris. Mollis eu lorem '
+            'lectus egestas maecenas mattis id convallis imperdiet.`'),
+        spaceH20,
+        StreamBuilder<bool>(
+          stream: _bloc.viewStream,
+          builder: (context, snapshot) {
+            return Visibility(
+              visible: !snapshot.data!,
+              child: Column(
+                children: [
+                  _rowCollection('DFY', 'BDA collection', true),
+                  spaceH20,
+                  additionalColumn(),
+                  spaceH20,
+                  _buildTable(),
+                  spaceH12,
+                ],
+              ),
+            );
+          },
+        ),
+        StreamBuilder<bool>(
+          stream: _bloc.viewStream,
+          builder: (context, snapshot) {
+            return Visibility(
+              child: InkWell(
+                onTap: () {
+                  _bloc.viewSink.add(!snapshot.data!);
+                },
+                child: Container(
+                  padding: EdgeInsets.only(
+                    right: 16.w,
+                    left: 16.w,
+                  ),
+                  height: 40.h,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      sizedSvgImage(
+                        w: 14,
+                        h: 14,
+                        image: !snapshot.data!
+                            ? ImageAssets.ic_collapse_svg
+                            : ImageAssets.ic_expand_svg,
+                      ),
+                      SizedBox(
+                        width: 13.15.w,
+                      ),
+                      Text(
+                        !snapshot.data!
+                            ? S.current.view_less
+                            : S.current.view_more,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().fillColor(),
+                          16.sp,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
         divide,
       ],
       tabBar: TabBar(
@@ -164,13 +235,13 @@ class _OnAuctionState extends State<OnAuction>
   Widget _buildButtonPlaceBid(BuildContext context) {
     return ButtonGradient(
       onPressed: () {
-        showModalBottomSheet(
-          backgroundColor: Colors.transparent,
-          isScrollControlled: true,
-          context: context,
-          builder: (context) {
-            return const PlaceBid();
-          },
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const PlaceBid();
+            },
+          ),
         );
       },
       gradient: RadialGradient(
@@ -203,26 +274,29 @@ class _OnAuctionState extends State<OnAuction>
     );
   }
 
+  Widget _description(String des) {
+    return Text(
+      des,
+      style: textNormalCustom(
+        AppTheme.getInstance().textThemeColor(),
+        14,
+        FontWeight.w400,
+      ),
+    );
+  }
+
   Widget _buildTable() => Column(
         children: [
-          _desColumn(
-            S.current.description,
-            'Pharetra etiam libero erat in sit risus at vestibulum '
-            'nulla. Cras enim nulla neque mauris. Mollis eu lorem '
-            'lectus egestas maecenas mattis id convallis imperdiet.`',
-          ),
+          buildRow(
+              title: S.current.collection_address,
+              detail: '0xfd223fafw3839399202020d0w9dannac82nfajs2882fba',
+              type: TextType.RICH_BLUE,
+              isShowCopy: true),
           spaceH12,
           buildRow(
-            title: S.current.collection,
-            detail: 'DeFi For You',
+            title: S.current.nft_id,
+            detail: '101033',
             type: TextType.NORMAL,
-          ),
-          spaceH12,
-          buildRow(
-            title: S.current.owner,
-            detail:
-                '0xffffadakakdwqiacmaciqwmcacmiacmaciwcmascmia'.handleString(),
-            type: TextType.RICH_WHITE,
           ),
           spaceH12,
           buildRow(
@@ -233,48 +307,123 @@ class _OnAuctionState extends State<OnAuction>
           ),
           spaceH12,
           buildRow(
-            title: S.current.nft_token_id,
-            detail: '554458',
-            type: TextType.NORMAL,
-          ),
-          spaceH12,
-          buildRow(
             title: S.current.nft_standard,
-            detail: 'ERC-1155',
+            detail: 'ERC-721',
             type: TextType.NORMAL,
           ),
           spaceH12,
           buildRow(
             title: S.current.block_chain,
-            detail: 'Smart chain',
+            detail: 'Binance Smart chain',
             type: TextType.NORMAL,
           ),
         ],
       );
 
-  Column _desColumn(String title, String detail) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            //S.current.description,
-            title,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor().withOpacity(0.7),
-              14,
-              FontWeight.w400,
+  Widget additionalColumn() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          S.current.additional,
+          style: textNormalCustom(
+            AppTheme.getInstance().textThemeColor(),
+            16,
+            FontWeight.w600,
+          ),
+        ),
+        spaceH14,
+        Wrap(
+          spacing: 12.w,
+          runSpacing: 8.h,
+          children: List.generate(
+            10,
+            (index) => SizedBox(
+              height: 50.h,
+              child: Chip(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color:
+                        AppTheme.getInstance().divideColor().withOpacity(0.1),
+                  ),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                backgroundColor: AppTheme.getInstance().bgBtsColor(),
+                label: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'tag $index',
+                      textAlign: TextAlign.left,
+                      style: textNormalCustom(
+                        AppTheme.getInstance()
+                            .textThemeColor()
+                            .withOpacity(0.7),
+                        12,
+                        FontWeight.w400,
+                      ),
+                    ),
+                    spaceH4,
+                    Text(
+                      '${index * index * 10000}',
+                      textAlign: TextAlign.left,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().textThemeColor(),
+                        14,
+                        FontWeight.w400,
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
-          spaceH12,
-          Text(
-            detail,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              14,
-              FontWeight.w400,
+        )
+      ],
+    );
+  }
+
+  Widget _rowCollection(String symbol, String collectionName, bool verify) {
+    return Row(
+      children: [
+        SizedBox(
+          height: 28.h,
+          width: 28.w,
+          child: CircleAvatar(
+            backgroundColor: Colors.yellow,
+            radius: 18.r,
+            child: Center(
+              child: Text(
+                symbol.substring(0, 1),
+                style: textNormalCustom(
+                  Colors.black,
+                  20,
+                  FontWeight.w600,
+                ),
+              ),
             ),
           ),
-        ],
-      );
+        ),
+        SizedBox(
+          width: 8.w,
+        ),
+        Text(
+          collectionName,
+          style: textNormalCustom(
+            Colors.white,
+            16,
+            FontWeight.w400,
+          ),
+        ),
+        SizedBox(
+          width: 8.w,
+        ),
+        if (verify) ...[
+          sizedSvgImage(w: 16.w, h: 16.h, image: ImageAssets.ic_verify_svg)
+        ]
+      ],
+    );
+  }
 
   Container _priceContainer() => Container(
         width: 343.w,
