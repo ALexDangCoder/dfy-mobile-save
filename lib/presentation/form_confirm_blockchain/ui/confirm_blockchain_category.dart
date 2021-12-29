@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -18,6 +19,7 @@ import 'package:Dfy/widgets/confirm_blockchain/components/information_wallet.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 enum TYPE_CONFIRM {
@@ -86,6 +88,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
       FormFieldBlockchainCubit();
   late int nonce;
   late double balanceWallet;
+  final appConstants = Get.find<AppConstants>();
 
   @override
   void initState() {
@@ -368,7 +371,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                     tokenAddress:
                                         widget.modelToken!.tokenAddress,
                                     walletAddress: widget.addressFrom,
-                                    chainId: '97',
+                                    chainId: appConstants.chaninId,
                                     symbol:
                                         widget.modelToken?.nameShortToken ?? '',
                                     gasFee:
@@ -393,7 +396,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                         .toInt()
                                         .toString(),
                                     nftID: widget.nftInfo?.id ?? 'id',
-                                    chainId: '97',
+                                    chainId: appConstants.chaninId,
                                     gasFee:
                                         '${double.parse(_txtGasLimit.text) / 100000000} ${widget.nameTokenWallet}',
                                     //todo hardcode amount 1
