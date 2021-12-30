@@ -102,7 +102,7 @@ class _ChooseTokenState extends State<ChooseToken> {
                           radius: 14.r,
                           child: Center(
                             child: Text(
-                              modelToken.nameShortToken.substring(0, 1),
+                              widget.bloc.getListTokenModel.value[index].nameShortToken.substring(0, 1),
                               style: textNormalCustom(
                                 Colors.black,
                                 20,
@@ -150,7 +150,7 @@ class _ChooseTokenState extends State<ChooseToken> {
                           radius: 14.r,
                           child: Center(
                             child: Text(
-                              modelToken.nameShortToken.substring(0, 1),
+                              widget.bloc.getListTokenModel.value[index].nameShortToken.substring(0, 1),
                               style: textNormalCustom(
                                 Colors.black,
                                 20,
