@@ -12,7 +12,7 @@ import BigInt
     private let TYPE_WALLET_PRIVATE_KEY = "PRIVATE_KEY"
     
     private let TOKEN_BNB_ADDRESS = "0x0000000000000000000000000000000000000000"
-    private let TOKEN_DFY_ADDRESS = "0xd98560689c6e748dc37bc410b4d3096b1aa3d8c2"
+    private let TOKEN_DFY_ADDRESS = "0xD98560689C6e748DC37bc410B4d3096B1aA3D8C2"
 //    private let TOKEN_DFY_ADDRESS = "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
 
     
@@ -373,7 +373,7 @@ extension AppDelegate {
         var param = [String: Any]()
         var listTokens = [TokenModel]()
         listTokens.append(contentsOf: SharedPreference.shared.getListTokens())
-        if listTokens.first(where: { $0.walletAddress == walletAddress && $0.tokenAddress == tokenAddress && $0.isShow }) == nil {
+        if listTokens.first(where: { $0.walletAddress == walletAddress && $0.tokenAddress.lowercased() == tokenAddress.lowercased() && $0.isShow }) == nil {
             listTokens.append(TokenModel(walletAddress: walletAddress, tokenAddress: tokenAddress, tokenFullName: tokenFullName, iconUrl: iconToken, symbol: symbol, decimal: decimal, exchangeRate: exchangeRate, isShow: true, isImport: isImport))
             SharedPreference.shared.saveListTokens(listTokens: listTokens)
             param["isSuccess"] = true
@@ -386,7 +386,7 @@ extension AppDelegate {
     
     private func checkToken(walletAddress: String, tokenAddress: String) -> [String: Any] {
         var param = [String: Any]()
-        param["isExist"] = SharedPreference.shared.getListTokens().first(where: { $0.walletAddress == walletAddress && $0.tokenAddress == tokenAddress && $0.isShow }) != nil
+        param["isExist"] = SharedPreference.shared.getListTokens().first(where: { $0.walletAddress == walletAddress && $0.tokenAddress.lowercased() == tokenAddress.lowercased() && $0.isShow }) != nil
         chatChanel?.invokeMethod("checkTokenCallback", arguments: param)
         return param
     }
