@@ -7,6 +7,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/item/item_collection/item_colection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,6 +34,29 @@ class _CollectionListState extends State<CollectionList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          print('hello');
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+
+            boxShadow: [
+              BoxShadow(
+                color:AppTheme.getInstance().fillColor().withOpacity(0.3),
+                spreadRadius: -5,
+                blurRadius: 15,
+                offset: const Offset(0, 10), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Image.asset(
+            ImageAssets.img_float_btn,
+            fit: BoxFit.fill,
+          ),
+        ),
+      ),
       backgroundColor: Colors.transparent,
       body: Align(
         alignment: Alignment.bottomCenter,

@@ -159,6 +159,7 @@ class ImageAssets {
   static const String img_filter = '$baseImg/img_filter.png';
   static const String ic_filter = '$baseImg/ic_filter.png';
   static const String imgRectangle = '$baseImg/rectangle.png';
+  static const String img_float_btn = '$baseImg/float_btn.png';
 
   ///SvgImage
   static const String ic_btn_send_token_svg =
