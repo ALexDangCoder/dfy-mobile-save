@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/dimen.dart';
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:flutter/material.dart';
 import 'content.dart';
@@ -52,12 +53,14 @@ class BodyDetailCollection extends StatelessWidget {
           owner: owner,
           detailCollectionBloc: detailCollectionBloc,
         ),
+        spaceH10,
         LaunchUrl(
           urlFace: urlFace,
           urlInstagram: urlInstagram,
           urlTelegram: urlTelegram,
           urlTwitter: urlTwitter,
         ),
+        spaceH10,
         NavCollection(
           items: items,
           owners: owners,

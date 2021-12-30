@@ -125,6 +125,8 @@ abstract class AppColor {
 
   Color whiteWithOpacity();
 
+  Color blueText();
+
   Color whiteWithOpacityFireZero();
 
   Color whiteWithOpacitySevenZero();
@@ -418,6 +420,12 @@ class LightApp extends AppColor {
     // TODO: implement amountTextColor
   return amountColor;
   }
+
+  @override
+  Color blueText() {
+    // TODO: implement blueText
+    return const Color(0xff46BCFF);
+  }
 }
 
 class DarkApp extends AppColor {
@@ -693,6 +701,12 @@ class DarkApp extends AppColor {
   @override
   Color amountTextColor() {
     // TODO: implement amountTextColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color blueText() {
+    // TODO: implement blueText
     throw UnimplementedError();
   }
 }

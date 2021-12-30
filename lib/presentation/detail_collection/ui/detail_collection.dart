@@ -186,11 +186,11 @@ class _DetailCollectionState extends State<DetailCollection>
                               ' vulputate. Ornare cursus sed id nibh nisi.'
                               ' Vulputate at dictum pharetra tortor aliquet'
                               ' ornare nisl nisl.',
-                          owner: '0xFE5788e2...EB7144fd0',
-                          category: '0xFE5788e2...EB7144fd0',
-                          title: '0xFE5788e2...EB7144fd0',
-                          nftStandard: '0xFE5788e2...EB7144fd0',
-                          contract: '0xFE5788e2...EB7144fd0',
+                          owner: '0xFE5788e2EB714asdfadsff4fd0',
+                          category: 'adsfasf',
+                          title: '0xFE5788e2ádfdsafdsfasdfsadsdfEB7144fd0',
+                          nftStandard: '0xFE5788e2234523453425EB7144fd0',
+                          contract: '0xFE5788e22345235EB7234532vghvgvghvgvgvh144fd0',
                           owners: '234',
                           items: '12343',
                           volumeTraded: '123324',
@@ -205,37 +205,44 @@ class _DetailCollectionState extends State<DetailCollection>
                 ),
                 Positioned(
                   top: 105.h,
-                  child: Container(
-                    height: 80.h,
-                    width: 80.w,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppTheme.getInstance().bgBtsColor(),
-                        width: 6.w,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        height: 80.w,
+                        width: 80.w,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppTheme.getInstance().bgBtsColor(),
+                            width: 6.w,
+                          ),
+                        ),
+                        child: Container(
+                          clipBehavior: Clip.hardEdge,
+                          width: 74.w,
+                          height: 74.w,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl: 'https://tse1.mm.bing.net/th?id=OIP.'
+                                'OfaVuv27apRglGh0_CL9TQHaEK&pid=Api&P=0&w=340&h=192',
+                            fit: BoxFit.cover,
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        ),
                       ),
-                    ),
-                    child: Container(
-                      clipBehavior: Clip.hardEdge,
-                      width: 74.w,
-                      height: 74.h,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
+                      Positioned(
+                        bottom: 6,
+                        right: 6,
+                        child: true
+                            ? const SizedBox.shrink()
+                            : Image.asset(ImageAssets.ic_dfy),
                       ),
-                      child: CachedNetworkImage(
-                        imageUrl: 'https://tse1.mm.bing.net/th?id=OIP.'
-                            'OfaVuv27apRglGh0_CL9TQHaEK&pid=Api&P=0&w=340&h=192',
-                        fit: BoxFit.cover,
-                        // placeholder: (context, url) => Center(
-                        //   child: CircularProgressIndicator(
-                        //     color: AppTheme.getInstance().whiteColor(),
-                        //   ),
-                        // ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
-                    ),
+                    ],
                   ),
                 ),
               ],

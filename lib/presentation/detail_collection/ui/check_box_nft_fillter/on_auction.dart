@@ -66,7 +66,7 @@ class IsOnAuction extends StatelessWidget {
                   title,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
-                    16.sp,
+                    16,
                   ),
                 ),
               ),

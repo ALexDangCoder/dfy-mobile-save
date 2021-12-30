@@ -73,7 +73,7 @@ class _FilterNFTState extends State<FilterNFT> {
                         padding: EdgeInsets.only(left: 10.w),
                         child: Text(
                           S.current.nft_type,
-                          style: textNormalCustom(null, 20.sp, FontWeight.w600),
+                          style: textNormalCustom(null, 20, FontWeight.w600),
                         ),
                       ),
                       Row(
@@ -96,7 +96,7 @@ class _FilterNFTState extends State<FilterNFT> {
                         padding: EdgeInsets.only(left: 10.w),
                         child: Text(
                           S.current.status,
-                          style: textNormalCustom(null, 20.sp, FontWeight.w600),
+                          style: textNormalCustom(null, 20, FontWeight.w600),
                         ),
                       ),
                       Row(

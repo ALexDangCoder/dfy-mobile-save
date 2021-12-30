@@ -70,14 +70,14 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                         cursorColor: AppTheme.getInstance().whiteColor(),
                         style: textNormal(
                           AppTheme.getInstance().whiteColor(),
-                          14.sp,
+                          14,
                         ),
                         decoration: InputDecoration(
                           counterText: '',
                           hintText: S.current.search,
                           hintStyle: textNormal(
                             AppTheme.getInstance().whiteWithOpacityFireZero(),
-                            14.sp,
+                            14,
                           ),
                           border: InputBorder.none,
                         ),
@@ -157,7 +157,7 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                       S.current.no_result_found,
                       style: textNormalCustom(
                         AppTheme.getInstance().whiteWithOpacity(),
-                        20.sp,
+                        20,
                         FontWeight.bold,
                       ),
                     ),
