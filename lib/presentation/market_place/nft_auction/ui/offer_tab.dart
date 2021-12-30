@@ -9,8 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BidTab extends StatelessWidget {
-  const BidTab({Key? key}) : super(key: key);
+class OfferTab extends StatelessWidget {
+  const OfferTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +20,12 @@ class BidTab extends StatelessWidget {
       physics: const ScrollPhysics(),
       itemCount: 30,
       itemBuilder: (context, index) {
-        return _buildItemBid(index);
+        return _buildItemOffer(index);
       },
     );
   }
 
-  Widget _buildItemBid(int index) {
+  Widget _buildItemOffer(int index) {
     return BaseItem(
       child: Row(
         children: [

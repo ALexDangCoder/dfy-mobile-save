@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -6,16 +5,14 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/hard_nft_screen.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/grid_view_auction.dart';
+import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
 import 'package:Dfy/presentation/market_place/ui/category.dart';
 import 'package:Dfy/presentation/market_place/ui/collection_item.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
 import 'package:Dfy/presentation/nft_on_pawn/ui/detail_nft_on_pawn/detail_nft_on_pawn.dart';
-import 'package:Dfy/presentation/nft_on_pawn/ui/nft_list_on_pawn/nft_list_on_pawn.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/on_sale_detail.dart';
-import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
@@ -99,7 +96,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.outstanding_collection,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20.sp,
+                                      20,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -162,7 +159,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.hot_auction,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20.sp,
+                                      20,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -171,8 +168,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const GridViewAuction(),
+                                          builder: (context) => const ListNft(
+                                            marketType: MarketType.AUCTION,
+                                          ),
                                         ),
                                       );
                                     },
@@ -201,8 +199,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                 height: 231.h,
                                 child: ListView.builder(
                                   shrinkWrap: true,
-                                  itemCount:
-                                      cubit.listFakeDataHotAuction.length,
+                                  itemCount: cubit.listFake.length,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
                                     return InkWell(
@@ -215,18 +212,15 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                           ),
                                         );
                                       },
-                                      child: NFTItemWidget(
-                                        name: cubit
-                                            .listFakeDataHotAuction[index].name,
-                                        price: cubit
-                                            .listFakeDataHotAuction[index]
-                                            .price,
-                                        propertiesNFT:
-                                            TypePropertiesNFT.AUCTION,
-                                        typeNFT: cubit
-                                            .listFakeDataHotAuction[index]
-                                            .typeNFT,
-                                        hotAuction: TypeHotAuction.YES,
+                                      child: Row(
+                                        children: [
+                                          NFTItemWidget(
+                                            nftMarket: cubit.listFake[index],
+                                          ),
+                                          SizedBox(
+                                            width: 12.w,
+                                          ),
+                                        ],
                                       ),
                                     );
                                   },
@@ -246,7 +240,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.NFTs_collateral,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20.sp,
+                                      20,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -255,8 +249,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const NftListOnPawn(),
+                                          builder: (context) => const ListNft(
+                                            marketType: MarketType.PAWN,
+                                          ),
                                         ),
                                       );
                                     },
@@ -285,8 +280,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                 height: 231.h,
                                 child: ListView.builder(
                                   shrinkWrap: true,
-                                  itemCount:
-                                      cubit.listFakeDataCollateral.length,
+                                  itemCount: cubit.listFake.length,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
@@ -299,13 +293,15 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                           ),
                                         );
                                       },
-                                      child: NFTItemWidget(
-                                        name: cubit
-                                            .listFakeDataCollateral[index].name,
-                                        price: cubit
-                                            .listFakeDataCollateral[index]
-                                            .price,
-                                        propertiesNFT: TypePropertiesNFT.PAWN,
+                                      child: Row(
+                                        children: [
+                                          NFTItemWidget(
+                                            nftMarket: cubit.listFake[index],
+                                          ),
+                                          SizedBox(
+                                            width: 12.w,
+                                          ),
+                                        ],
                                       ),
                                     );
                                   },
@@ -325,7 +321,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.sale_items,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20.sp,
+                                      20,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -334,8 +330,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const NFTListOnSale(),
+                                          builder: (context) => const ListNft(
+                                            marketType: MarketType.SALE,
+                                          ),
                                         ),
                                       );
                                     },
@@ -364,8 +361,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                 height: 231.h,
                                 child: ListView.builder(
                                   shrinkWrap: true,
-                                  itemCount:
-                                      cubit.listFakeDataCollateral.length,
+                                  itemCount: cubit.listFake.length,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
                                     return InkWell(
@@ -378,13 +374,15 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                           ),
                                         );
                                       },
-                                      child: NFTItemWidget(
-                                        name: cubit
-                                            .listFakeDataCollateral[index].name,
-                                        price: cubit
-                                            .listFakeDataCollateral[index]
-                                            .price,
-                                        propertiesNFT: TypePropertiesNFT.SALE,
+                                      child: Row(
+                                        children: [
+                                          NFTItemWidget(
+                                            nftMarket: cubit.listFake[index],
+                                          ),
+                                          SizedBox(
+                                            width: 12.w,
+                                          ),
+                                        ],
                                       ),
                                     );
                                   },
@@ -404,7 +402,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     S.current.hard_NFT,
                                     style: textNormalCustom(
                                       Colors.white,
-                                      20.sp,
+                                      20,
                                       FontWeight.w700,
                                     ),
                                   ),
@@ -435,7 +433,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                 height: 231.h,
                                 child: ListView.builder(
                                   shrinkWrap: true,
-                                  itemCount: cubit.listFakeDataHardNFT.length,
+                                  itemCount: cubit.listFake.length,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
                                     return InkWell(
@@ -452,18 +450,15 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                           },
                                         );
                                       },
-                                      child: NFTItemWidget(
-                                        name: cubit
-                                            .listFakeDataHardNFT[index].name,
-                                        price: cubit
-                                            .listFakeDataHardNFT[index].price,
-                                        propertiesNFT: cubit
-                                            .listFakeDataHardNFT[index]
-                                            .propertiesNFT,
-                                        typeNFT: TypeNFT.HARD_NFT,
-                                        hotAuction: cubit
-                                            .listFakeDataHardNFT[index]
-                                            .hotAuction,
+                                      child: Row(
+                                        children: [
+                                          NFTItemWidget(
+                                            nftMarket: cubit.listFake[index],
+                                          ),
+                                          SizedBox(
+                                            width: 12.w,
+                                          ),
+                                        ],
                                       ),
                                     );
                                   },
@@ -479,7 +474,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                 S.current.explore_categories,
                                 style: textNormalCustom(
                                   Colors.white,
-                                  20.sp,
+                                  20,
                                   FontWeight.w700,
                                 ),
                               ),
@@ -586,7 +581,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
               S.current.search,
               style: textNormal(
                 Colors.white54,
-                16.sp,
+                16,
               ),
             )
           ],

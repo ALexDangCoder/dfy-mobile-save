@@ -1,12 +1,10 @@
-import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 
 class NftItem {
   final String name;
   final String image;
   final double price;
-  final TypePropertiesNFT? propertiesNFT;
-  final TypeHotAuction? hotAuction;
+  final MarketType? marketType;
   final TypeNFT? typeNFT;
   final TypeImage? typeImage;
 
@@ -14,8 +12,7 @@ class NftItem {
     required this.name,
     required this.image,
     required this.price,
-    this.propertiesNFT,
-    this.hotAuction,
+    this.marketType,
     this.typeNFT,
     this.typeImage,
   });
