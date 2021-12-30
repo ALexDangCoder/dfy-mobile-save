@@ -61,7 +61,10 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                 ),
                 spaceH6,
                 Text(
-                  widget.bodyText+widget.bodyText+widget.bodyText+widget.bodyText,
+                  widget.bodyText +
+                      widget.bodyText +
+                      widget.bodyText +
+                      widget.bodyText,
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteWithOpacity(),
                     14.sp,
@@ -219,7 +222,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                           width: 13.15.w,
                         ),
                         Text(
-                          isShow ? S.current.view_less : S.current.view_more,
+                          isShow ? S.current.view_less : S.current.see_more,
                           style: textNormalCustom(
                             AppTheme.getInstance().fillColor(),
                             16.sp,

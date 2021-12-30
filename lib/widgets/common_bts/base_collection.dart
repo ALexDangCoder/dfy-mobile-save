@@ -20,37 +20,18 @@ class BaseCollection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 48.h,
-        ),
-        Container(
-          clipBehavior: Clip.hardEdge,
-          height: 764.h,
-          decoration: BoxDecoration(
-            color: AppTheme.getInstance().bgBtsColor(),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.r),
-              topRight: Radius.circular(30.r),
-            ),
+    return NestedScrollView(
+      physics: const ScrollPhysics(),
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return [
+          SliverToBoxAdapter(child: child),
+          SliverPersistentHeader(
+            delegate: BaseSliverHeader(tabBar),
+            // pinned: ,true
           ),
-          child: NestedScrollView(
-            physics: const ScrollPhysics(),
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return [
-                SliverToBoxAdapter(child: child),
-                SliverPersistentHeader(
-                  delegate: BaseSliverHeader(tabBar),
-                  pinned: true,
-                ),
-              ];
-            },
-            body: body,
-          ),
-        ),
-      ],
+        ];
+      },
+      body: body,
     );
   }
 }
@@ -76,7 +57,7 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
       children: [
         Container(
           color: AppTheme.getInstance().bgBtsColor(),
-          height: 59.h,
+          height: 58.h,
           child: Center(
             child: ConstrainedBox(
               constraints: BoxConstraints(

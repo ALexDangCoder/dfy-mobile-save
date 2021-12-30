@@ -25,6 +25,14 @@ extension FormatAddress on String {
   }
 }
 
+extension FormatAddressFire on String {
+  String formatAddressActivityFire() {
+    final String result = '${substring(0, 5)}...${substring(
+      length - 5, length,)}';
+    return result;
+  }
+}
+
 extension FormatAddressConfirm on String {
   String formatAddressWalletConfirm() {
     final String result = '${substring(0, 10)}...${substring(

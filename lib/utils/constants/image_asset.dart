@@ -13,7 +13,8 @@ class ImageAssets {
   static const String icTabPawnSelected = '$baseImg/ic_tab_pawn_selected.svg';
   static const String icTabPawnUnselected =
       '$baseImg/ic_tab_pawn_unselected.svg';
-  static const String icTabHomeUnselected = '$baseImg/ic_tab_home_unselected.svg';
+  static const String icTabHomeUnselected =
+      '$baseImg/ic_tab_home_unselected.svg';
   static const String icTabHomeSelected = '$baseImg/ic_tab_home_selected.svg';
 
   static const String icTabMarketPlaceSelected =
@@ -133,10 +134,32 @@ class ImageAssets {
   static const String image_avatar = '$baseImg/ava_0';
   static const String image_coming = '$baseImg/img_comming.png';
 
+  //img activity collection detail
+
+  static const String img_facebook = '$baseImg/facebook.png';
+  static const String img_telegram = '$baseImg/telegram.png';
+  static const String img_instagram = '$baseImg/instagram.png';
+  static const String img_twitter = '$baseImg/twitter.png';
+  static const String img_activity_bid = '$baseImg/activity_bid.png';
+  static const String img_activity_burn = '$baseImg/activity_burn.png';
+  static const String img_activity_buy = '$baseImg/activity_buy.png';
+  static const String img_activity_cancel = '$baseImg/activity_cancel.png';
+  static const String img_activity_like = '$baseImg/activity_like.png';
+  static const String img_activity_put_on_market =
+      '$baseImg/activity_put_on_market.png';
+  static const String img_activity_receive_offer =
+      '$baseImg/activity_receive_offer.png';
+  static const String img_activity_report = '$baseImg/activity_report.png';
+  static const String img_activity_sign_contract =
+      '$baseImg/activity_sign_contract.png';
+  static const String img_activity_transfer = '$baseImg/activity_transfer.png';
+  static const String ic_dfy = '$baseImg/ic_dfy.png';
+
   static const String img_back = '$baseImg/img_back.png';
-   static const String img_filter = '$baseImg/img_filter.png';
-   static const String ic_filter = '$baseImg/ic_filter.png';
+  static const String img_filter = '$baseImg/img_filter.png';
+  static const String ic_filter = '$baseImg/ic_filter.png';
   static const String imgRectangle = '$baseImg/rectangle.png';
+
   ///SvgImage
   static const String ic_btn_send_token_svg =
       '$baseImg/ic_btn_send_token_svg.svg';
@@ -162,7 +185,6 @@ class ImageAssets {
   static const String ic_xls_svg = '$baseImg/ic_xls_svg.svg';
   static const String ic_expand_svg = '$baseImg/ic_expand_svg.svg';
   static const String ic_collapse_svg = '$baseImg/ic_collapse_svg.svg';
-
 
   static SvgPicture svgAssets(
     String name, {

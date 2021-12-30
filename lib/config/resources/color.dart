@@ -15,7 +15,8 @@ const formColor = Color(0xff6F6FC5);
 const subTitleTxtColor = Color(0xff9097A3);
 const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
 const backgroundMarketColor = [Color(0xFF3C3B54), Color(0xFF24203A)];
-
+const dateColor = Color(0xffD4D5D7);
+const amountColor = Color(0xffDBA83D);
 const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
@@ -74,6 +75,10 @@ const bgTranSubmitColor = Color(0xff585782);
 abstract class AppColor {
   Color bgTranSubmit();
 
+  Color amountTextColor();
+
+  Color activityDateColor();
+
   Color backgroundBTSColor();
 
   Color redColor();
@@ -121,6 +126,8 @@ abstract class AppColor {
   Color whiteWithOpacity();
 
   Color whiteWithOpacityFireZero();
+
+  Color whiteWithOpacitySevenZero();
 
   Color textThemeColor();
 
@@ -393,6 +400,24 @@ class LightApp extends AppColor {
     // TODO: implement bgTranSubmit
     return bgTranSubmitColor;
   }
+
+  @override
+  Color activityDateColor() {
+    // TODO: implement activityDateColor
+    return dateColor;
+  }
+
+  @override
+  Color whiteWithOpacitySevenZero() {
+    // TODO: implement whiteWithOpacitySevenZero
+   return Colors.white.withOpacity(0.7);
+  }
+
+  @override
+  Color amountTextColor() {
+    // TODO: implement amountTextColor
+  return amountColor;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -650,6 +675,24 @@ class DarkApp extends AppColor {
   @override
   Color bgTranSubmit() {
     // TODO: implement bgTranSubmit
+    throw UnimplementedError();
+  }
+
+  @override
+  Color activityDateColor() {
+    // TODO: implement activityDateColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color whiteWithOpacitySevenZero() {
+    // TODO: implement whiteWithOpacitySevenZero
+    throw UnimplementedError();
+  }
+
+  @override
+  Color amountTextColor() {
+    // TODO: implement amountTextColor
     throw UnimplementedError();
   }
 }
