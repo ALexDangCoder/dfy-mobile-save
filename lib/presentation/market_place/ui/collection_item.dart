@@ -1,5 +1,6 @@
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -49,9 +50,10 @@ class CollectionItem extends StatelessWidget {
                       height: 77.h,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(
-                            urlBackGround,
-                          ),
+                          image: urlBackGround.isEmpty
+                              ? const AssetImage(ImageAssets.ic_search)
+                                  as ImageProvider
+                              : NetworkImage(urlBackGround),
                           fit: BoxFit.fill,
                         ),
                         borderRadius: BorderRadius.only(
@@ -94,9 +96,10 @@ class CollectionItem extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage(
-                            urlIcon,
-                          ),
+                          image: urlIcon.isEmpty
+                              ? const AssetImage(ImageAssets.ic_search)
+                                  as ImageProvider
+                              : NetworkImage(urlIcon),
                           fit: BoxFit.cover,
                         ),
                       ),
