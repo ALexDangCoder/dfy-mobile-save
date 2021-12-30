@@ -1,3 +1,4 @@
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -5,7 +6,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/hard_nft_screen.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/grid_view_auction.dart';
+import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
 import 'package:Dfy/presentation/market_place/ui/category.dart';
@@ -138,5 +139,5 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
       },
     );
   }
-  
+
 }
