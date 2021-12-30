@@ -315,7 +315,7 @@
   "send_nft": "Send NFT",
   "additional": "Additional Information",
   "nft_id": "NFT Id",
-  "collection_address": "Collection address"
+  "collection_address": "Collection address",
   "send_nft": "Send NFT",
   "all":"All"
 }

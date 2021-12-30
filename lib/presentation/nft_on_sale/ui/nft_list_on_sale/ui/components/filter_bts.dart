@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -172,7 +173,7 @@ class _FilterBtsState extends State<FilterBts> {
             width: 343.w,
             height: 46.h,
             decoration: BoxDecoration(
-              color: const Color(0xff4F4F65),
+              color: backSearch,
               borderRadius: BorderRadius.all(Radius.circular(12.r)),
             ),
             child: Row(
