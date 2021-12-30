@@ -10,7 +10,7 @@ class NftCollectionExploreModel {
   int? marketType;
   int? startTime;
   int? endTime;
-  dynamic reservePrice;
+  double? reservePrice;
   double? buyOutPrice;
   String? token;
   int? numberOfCopies;

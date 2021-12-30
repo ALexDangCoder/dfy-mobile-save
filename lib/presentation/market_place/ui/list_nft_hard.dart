@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
@@ -31,7 +32,9 @@ class ListNftHard extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  //todo chờ a hưng thiết kế phát
+                },
                 child: Padding(
                   padding: EdgeInsets.only(
                     right: 16.w,
@@ -58,7 +61,7 @@ class ListNftHard extends StatelessWidget {
             height: 231.h,
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: cubit.listFakeDataHardNFT.length,
+              itemCount: cubit.nftsHardNft.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return InkWell(
@@ -76,18 +79,8 @@ class ListNftHard extends StatelessWidget {
                     );
                   },
                   child: NFTItemWidget(
-                    name: cubit
-                        .listFakeDataHardNFT[index].name,
-                    price: cubit
-                        .listFakeDataHardNFT[index].price,
-                    propertiesNFT: cubit
-                        .listFakeDataHardNFT[index]
-                        .propertiesNFT,
-                    typeNFT: TypeNFT.HARD_NFT,
-                    hotAuction: cubit
-                        .listFakeDataHardNFT[index]
-                        .hotAuction,
-                  ),
+                    nftMarket: cubit.nftsHardNft[index],
+                  )
                 );
               },
             ),

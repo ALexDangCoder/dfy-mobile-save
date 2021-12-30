@@ -1,8 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
+import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/on_sale_detail.dart';
-import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +35,9 @@ class ListNftOnSale extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const NFTListOnSale(),
+                      builder: (context) => const ListNft(
+                        marketType: MarketType.SALE,
+                      ),
                     ),
                   );
                 },
@@ -65,7 +67,7 @@ class ListNftOnSale extends StatelessWidget {
             height: 231.h,
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: cubit.listFakeDataCollateral.length,
+              itemCount: cubit.nftsSale.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return InkWell(
@@ -78,9 +80,7 @@ class ListNftOnSale extends StatelessWidget {
                     );
                   },
                   child: NFTItemWidget(
-                    name: cubit.listFakeDataCollateral[index].name,
-                    price: cubit.listFakeDataCollateral[index].price,
-                    propertiesNFT: TypePropertiesNFT.SALE,
+                    nftMarket: cubit.nftsSale[index],
                   ),
                 );
               },

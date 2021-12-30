@@ -1,7 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/grid_view_auction.dart';
+import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -37,7 +37,7 @@ class ListNftHotAuction extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                      const GridViewAuction(),
+                      const ListNft(marketType: MarketType.AUCTION),
                     ),
                   );
                 },
@@ -68,7 +68,7 @@ class ListNftHotAuction extends StatelessWidget {
             child: ListView.builder(
               shrinkWrap: true,
               itemCount:
-              cubit.listFakeDataHotAuction.length,
+              cubit.nftsHotAution.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return InkWell(
@@ -81,19 +81,7 @@ class ListNftHotAuction extends StatelessWidget {
                       ),
                     );
                   },
-                  child: NFTItemWidget(
-                    name: cubit
-                        .listFakeDataHotAuction[index].name,
-                    price: cubit
-                        .listFakeDataHotAuction[index]
-                        .price,
-                    propertiesNFT:
-                    TypePropertiesNFT.AUCTION,
-                    typeNFT: cubit
-                        .listFakeDataHotAuction[index]
-                        .typeNFT,
-                    hotAuction: TypeHotAuction.YES,
-                  ),
+                  child: NFTItemWidget(nftMarket: cubit.nftsHotAution[index],),
                 );
               },
             ),

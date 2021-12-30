@@ -1,16 +1,6 @@
-
-import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/ui/hard_nft_screen.dart';
-import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
-import 'package:Dfy/presentation/market_place/ui/category.dart';
-import 'package:Dfy/presentation/market_place/ui/collection_item.dart';
 import 'package:Dfy/presentation/market_place/ui/header.dart';
 import 'package:Dfy/presentation/market_place/ui/list_explore_category.dart';
 import 'package:Dfy/presentation/market_place/ui/list_nft_hard.dart';
@@ -18,15 +8,6 @@ import 'package:Dfy/presentation/market_place/ui/list_nft_hot_auction.dart';
 import 'package:Dfy/presentation/market_place/ui/list_nft_on_pawn.dart';
 import 'package:Dfy/presentation/market_place/ui/list_nft_on_sale.dart';
 import 'package:Dfy/presentation/market_place/ui/list_outstanding_collection.dart';
-import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
-import 'package:Dfy/presentation/nft_on_pawn/ui/detail_nft_on_pawn/detail_nft_on_pawn.dart';
-import 'package:Dfy/presentation/nft_on_pawn/ui/nft_list_on_pawn/nft_list_on_pawn.dart';
-import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/on_sale_detail.dart';
-import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/skeleton/skeleton_collection.dart';
-import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -107,11 +88,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                             SizedBox(
                               height: 32.h,
                             ),
-                            ListNftOnPawn(cubit: cubit,),
+                            ListNftOnPawn(
+                              cubit: cubit,
+                            ),
                             SizedBox(
                               height: 32.h,
                             ),
-                           ListNftOnSale(cubit: cubit),
+                            ListNftOnSale(cubit: cubit),
                             SizedBox(
                               height: 32.h,
                             ),
@@ -119,7 +102,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                             SizedBox(
                               height: 32.h,
                             ),
-                            ListExploreCategory(cubit: cubit,),
+                            ListExploreCategory(
+                              cubit: cubit,
+                            ),
                             SizedBox(
                               height: 32.h,
                             ),
@@ -139,5 +124,4 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
       },
     );
   }
-
 }

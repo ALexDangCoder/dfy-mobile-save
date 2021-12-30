@@ -1,9 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
+import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
 import 'package:Dfy/presentation/nft_on_pawn/ui/detail_nft_on_pawn/detail_nft_on_pawn.dart';
-import 'package:Dfy/presentation/nft_on_pawn/ui/nft_list_on_pawn/nft_list_on_pawn.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,7 @@ class ListNftOnPawn extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                      const NftListOnPawn(),
+                      const ListNft(marketType: MarketType.PAWN)
                     ),
                   );
                 },
@@ -67,7 +67,7 @@ class ListNftOnPawn extends StatelessWidget {
             child: ListView.builder(
               shrinkWrap: true,
               itemCount:
-              cubit.listFakeDataCollateral.length,
+              cubit.nftsCollateral.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return GestureDetector(
@@ -80,13 +80,8 @@ class ListNftOnPawn extends StatelessWidget {
                       ),
                     );
                   },
-                  child: NFTItemWidget(
-                    name: cubit
-                        .listFakeDataCollateral[index].name,
-                    price: cubit
-                        .listFakeDataCollateral[index]
-                        .price,
-                    propertiesNFT: TypePropertiesNFT.PAWN,
+                  child: NFTItemWidget(nftMarket: cubit.nftsCollateral[index],
+                    
                   ),
                 );
               },
