@@ -7,9 +7,8 @@ import 'package:Dfy/presentation/market_place/nft_auction/bloc/nft_auction_bloc.
 import 'package:Dfy/presentation/market_place/nft_auction/ui/bid_tab.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/history_tab.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/owner_tab.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/place_bit_bts.dart';
+import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
@@ -18,7 +17,6 @@ import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 const String EXAMPLE_TITLE = 'Naruto kkcam allfp lflll alffwl c ';
 const String EXAMPLE_IMAGE_URL =
@@ -92,10 +90,12 @@ class _OnAuctionState extends State<OnAuction>
         divide,
         spaceH12,
         _description(
-            'Pharetra etiam libero erat in sit risus at vestibulum nulla. Cras enim nulla neque mauris. Mollis eu lorem '
-            'lectus egestas maecenas mattis id convallis imperdiet.`'),
+          'Pharetra etiam libero erat in sit risus at vestibulum nulla. Cras enim nulla neque mauris. Mollis eu lorem '
+          'lectus egestas maecenas mattis id convallis imperdiet.`',
+        ),
         spaceH20,
         StreamBuilder<bool>(
+          initialData: false,
           stream: _bloc.viewStream,
           builder: (context, snapshot) {
             return Visibility(
@@ -114,6 +114,7 @@ class _OnAuctionState extends State<OnAuction>
           },
         ),
         StreamBuilder<bool>(
+          initialData: true,
           stream: _bloc.viewStream,
           builder: (context, snapshot) {
             return Visibility(
@@ -288,10 +289,11 @@ class _OnAuctionState extends State<OnAuction>
   Widget _buildTable() => Column(
         children: [
           buildRow(
-              title: S.current.collection_address,
-              detail: '0xfd223fafw3839399202020d0w9dannac82nfajs2882fba',
-              type: TextType.RICH_BLUE,
-              isShowCopy: true),
+            title: S.current.collection_address,
+            detail: '0xfd223fafw3839399202020d0w9dannac82nfajs2882fba',
+            type: TextType.RICH_BLUE,
+            isShowCopy: true,
+          ),
           spaceH12,
           buildRow(
             title: S.current.nft_id,

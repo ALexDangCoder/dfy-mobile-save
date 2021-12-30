@@ -6,17 +6,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class CardNFT extends StatefulWidget {
   const CardNFT({
     Key? key,
     required this.objNFT,
     required this.walletAddress,
     required this.walletCubit,
+    required this.walletName,
   }) : super(key: key);
   final NftInfo objNFT;
   final String walletAddress;
   final WalletCubit walletCubit;
+  final String walletName;
 
   @override
   State<StatefulWidget> createState() => _CardNFTState();
@@ -105,7 +106,7 @@ class _CardNFTState extends State<CardNFT> {
           nftInfo: widget.objNFT,
           listHistory: cubit.listDetailTransaction,
           walletAddress: widget.walletAddress,
-          nameWallet: '',
+          nameWallet: widget.walletName,
           walletCubit: widget.walletCubit,
         ),
       ),

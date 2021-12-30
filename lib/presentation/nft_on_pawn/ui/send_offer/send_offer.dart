@@ -243,6 +243,7 @@ class _SendOfferState extends State<SendOffer> {
                     isEnable: true,
                   ),
                 ),
+                spaceH38,
               ],
             ),
           ),

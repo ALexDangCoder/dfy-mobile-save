@@ -302,6 +302,7 @@ class _WalletState extends State<WalletScreen>
                                         index: index,
                                         bloc: cubit,
                                         collectionShow: snapshot.data![index],
+                                        walletName: widget.wallet?.name ?? '',
                                       );
                                     },
                                   );
