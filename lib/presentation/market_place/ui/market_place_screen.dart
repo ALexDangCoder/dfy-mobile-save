@@ -18,6 +18,8 @@ import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/on_sale_detail.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/skeleton/skeleton_collection.dart';
+import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,6 +39,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
   void initState() {
     super.initState();
     cubit = MarketplaceCubit();
+    cubit.getListNftCollectionExplore();
   }
 
   @override

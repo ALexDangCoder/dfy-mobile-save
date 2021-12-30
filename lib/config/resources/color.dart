@@ -25,6 +25,9 @@ const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
 
+//skeleton
+const colorSkeletonLight = Color(0xFF605F83);
+const colorSkeleton = Color(0xFF585782);
 //bottom navigation color
 const bgBottomTab = Color(0xFF3A3956);
 const tabSelected = Color(0xff0ABAB5);
@@ -73,6 +76,10 @@ const bgTranSubmitColor = Color(0xff585782);
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color bgTranSubmit();
+
+  Color skeletonLight();
+
+  Color skeleton();
 
   Color backgroundBTSColor();
 
@@ -393,6 +400,18 @@ class LightApp extends AppColor {
     // TODO: implement bgTranSubmit
     return bgTranSubmitColor;
   }
+
+  @override
+  Color skeleton() {
+    // TODO: implement skeleton
+    return colorSkeleton;
+  }
+
+  @override
+  Color skeletonLight() {
+    // TODO: implement skeletonLight
+    return colorSkeletonLight;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -651,6 +670,16 @@ class DarkApp extends AppColor {
   Color bgTranSubmit() {
     // TODO: implement bgTranSubmit
     throw UnimplementedError();
+  }
+
+  @override
+  Color skeleton() {
+    return colorSkeleton;
+  }
+
+  @override
+  Color skeletonLight() {
+    return colorSkeletonLight;
   }
 }
 

@@ -72,6 +72,14 @@ class ImageAssets {
       '$baseImg/ic_tab_market_place_select.svg.svg';
   static const String icTabMarketUnselect =
       '$baseImg/ic_tab_market_place_unselect.svg';
+  static const String icAddMarketplace =
+      '$baseImg/add_market.png';
+  static const String icCancelMarket =
+      '$baseImg/btn_cancel.png';
+  static const String icCollectionMarket =
+      '$baseImg/btn_collection.png';
+  static const String icNftMarket =
+      '$baseImg/btn_nft.png';
   static const String icTabPawnS = '$baseImg/ic_tab_pawn_selected.svg';
   static const String icTabPawnU = '$baseImg/ic_tab_pawn_unselected.svg';
   static const String icTabStakingS = '$baseImg/ic_tab_stacking_selected.svg';

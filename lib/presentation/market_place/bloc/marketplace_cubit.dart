@@ -1,17 +1,41 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/collection.dart';
+import 'package:Dfy/domain/model/market_place/list_type_nft_collection_explore_model.dart';
 import 'package:Dfy/domain/model/nft_item.dart';
+import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 
 part 'marketplace_state.dart';
 
 class MarketplaceCubit extends BaseCubit<MarketplaceState> {
   MarketplaceCubit() : super(MarketplaceInitial());
+
+  MarketPlaceRepository get _marketPlaceRepo => Get.find();
+
+  Future<void> getListNftCollectionExplore() async {
+    final Result<List<ListTypeNftCollectionExploreModel>> result =
+        await _marketPlaceRepo.getListTypeNftCollectionExplore();
+    result.when(
+      success: (res) {
+        print(res);
+
+      },
+      error: (error) {
+        print(error);
+      },
+    );
+  }
+
+  void getNftCollectionExplore(Map) {
+
+  }
 
   List<String> categories = [
     S.current.collectibles,
@@ -162,5 +186,4 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
       typeImage: TypeImage.IMAGE,
     ),
   ];
-
 }

@@ -7,5 +7,8 @@ class ApiConstants {
   static const int TIME_OUT = 30;
   static const String GET_LIST_TOKEN = '/market/coin-list';
   static const String GET_PRICE_TOKEN_BY_SYMBOL = '/market/coin-price/';
-
+  static const String GET_LIST_NFT_COLLECTION_EXPLORE =
+      '/home';
+  static const String GET_LIST_NFT_COLLECTION_EXPLORE_SEARCH =
+      '/nft-market-svc/public-api/search';
 }
