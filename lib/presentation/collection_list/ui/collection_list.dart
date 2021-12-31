@@ -41,7 +41,6 @@ class _CollectionListState extends State<CollectionList> {
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-
             boxShadow: [
               BoxShadow(
                 color:AppTheme.getInstance().fillColor().withOpacity(0.3),

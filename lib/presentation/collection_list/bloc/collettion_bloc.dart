@@ -1,7 +1,4 @@
 import 'package:Dfy/data/response/collection/collection_response.dart';
-import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/domain/repository/collection_repository.dart';
-import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CollectionBloc {
@@ -22,6 +19,7 @@ class CollectionBloc {
   BehaviorSubject<bool> isOthersCategory = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCars = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSports = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isAll = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isMusic = BehaviorSubject.seeded(false);
 
   // CollectionRepository get _collectionRepository => Get.find();

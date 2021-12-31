@@ -39,6 +39,31 @@ class _DetailCollectionState extends State<DetailCollection>
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
+      floatingActionButton: false
+          ? GestureDetector(
+              onTap: () {
+                print('hello');
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color:
+                          AppTheme.getInstance().fillColor().withOpacity(0.3),
+                      spreadRadius: -5,
+                      blurRadius: 15,
+                      offset: const Offset(0, 10), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Image.asset(
+                  ImageAssets.img_float_btn,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            )
+          : SizedBox.shrink(),
       body: GestureDetector(
         onTap: () {
           final FocusScopeNode currentFocus = FocusScope.of(context);
@@ -101,6 +126,7 @@ class _DetailCollectionState extends State<DetailCollection>
                                 context: context,
                                 builder: (context) => FilterNFT(
                                   collectionBloc: detailCollectionBloc,
+                                  isOwner: true,
                                 ),
                               );
                             },
@@ -116,13 +142,14 @@ class _DetailCollectionState extends State<DetailCollection>
                     Expanded(
                       child: BaseCollection(
                         filterFunc: () {
-                          showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => FilterNFT(
-                              collectionBloc: detailCollectionBloc,
-                            ),
-                          );
+                          // showModalBottomSheet(
+                          //   backgroundColor: Colors.transparent,
+                          //   context: context,
+                          //   builder: (context) => FilterNFT(
+                          //     collectionBloc: detailCollectionBloc,
+                          //     isOwner: false,
+                          //   ),
+                          // );
                         },
                         tabBar: TabBar(
                           controller: _tabController,
@@ -190,7 +217,8 @@ class _DetailCollectionState extends State<DetailCollection>
                           category: 'adsfasf',
                           title: '0xFE5788e2ádfdsafdsfasdfsadsdfEB7144fd0',
                           nftStandard: '0xFE5788e2234523453425EB7144fd0',
-                          contract: '0xFE5788e22345235EB7234532vghvgvghvgvgvh144fd0',
+                          contract:
+                              '0xFE5788e22345235EB7234532vghvgvghvgvgvh144fd0',
                           owners: '234',
                           items: '12343',
                           volumeTraded: '123324',

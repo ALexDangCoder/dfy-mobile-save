@@ -313,8 +313,6 @@
   "collection_address": "Địa chỉ bộ sưu tập",
   "offer": "Đề nghị",
   "see_more": "Xem thêm",
-
-
   "activity_bid": "bid",
   "activity_bought": "bought",
   "activity_bought_out": "bought out",
@@ -338,5 +336,7 @@
   "activity_sale": "sale",
   "activity_auction": "auction",
   "activity_pawn": "pawn",
-  "activity_not_on_market": "not on market"
+  "activity_not_on_market": "not on market",
+  "filter": "Lọc"
+
 }

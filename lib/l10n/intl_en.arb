@@ -290,7 +290,7 @@
   "contract_address": "Contract address",
   "import_new_wallet_failed": "Import new wallet failed",
   "not_exist": "NFT address does not exist or you do not own",
-  "no_support_token" : "The token is not supported yet",
+  "no_support_token": "The token is not supported yet",
   "err_empty_nfts": "Empty list NFT",
   "err_invalid_wallet_add": "Invalid wallet address",
   "err_not_owner_nft": "You are not the owner of this collectible, so you can not add it",
@@ -307,7 +307,7 @@
   "import_duplicate": "The account you're are trying to import is a duplicate",
   "not_import": "Can not get wallet address",
   "feature_coming_soon": "FEATURE \nCOMING SOON!",
-  "back":"Back",
+  "back": "Back",
   "change_pw_fail": "Old password is incorrect",
   "change_pword_success": "Password changed",
   "undefine_err_nft": "Something went wrong",
@@ -317,10 +317,9 @@
   "additional": "Additional Information",
   "nft_id": "NFT Id",
   "collection_address": "Collection address",
-  "all":"All",
+  "all": "All",
   "offer": "Offer",
   "see_more": "See more",
-
   "activity_bid": "bid",
   "activity_bought": "bought",
   "activity_bought_out": "bought out",
@@ -344,5 +343,7 @@
   "activity_sale": "sale",
   "activity_auction": "auction",
   "activity_pawn": "pawn",
-  "activity_not_on_market": "not on market"
+  "activity_not_on_market": "not on market",
+  "filter": "Filter"
+
 }

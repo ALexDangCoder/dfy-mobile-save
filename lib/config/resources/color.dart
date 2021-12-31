@@ -85,6 +85,8 @@ abstract class AppColor {
 
   Color colorTextFieldZeroFire();
 
+  Color colorTextReset();
+
   Color borderItemColor();
 
   Color primaryColor();
@@ -426,6 +428,12 @@ class LightApp extends AppColor {
     // TODO: implement blueText
     return const Color(0xff46BCFF);
   }
+
+  @override
+  Color colorTextReset() {
+    // TODO: implement colorTextReset
+    return const Color(0xff585782);
+  }
 }
 
 class DarkApp extends AppColor {
@@ -707,6 +715,12 @@ class DarkApp extends AppColor {
   @override
   Color blueText() {
     // TODO: implement blueText
+    throw UnimplementedError();
+  }
+
+  @override
+  Color colorTextReset() {
+    // TODO: implement colorTextReset
     throw UnimplementedError();
   }
 }
