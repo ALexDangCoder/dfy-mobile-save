@@ -44,12 +44,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
           return SearchNFT(
             cubit: cubit,
           );
-        }
-        return GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: Scaffold(
+        } else if (state is LoadingDataLoading) {
+          return Scaffold(
             body: Container(
               width: double.infinity,
               height: double.infinity,
@@ -80,30 +76,46 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                             SizedBox(
                               height: 24.h,
                             ),
-                            ListOutstandingCollection(cubit: cubit),
+                            ListOutstandingCollection(
+                              cubit: cubit,
+                              isLoading: true,
+                              isLoadFail: false,
+                            ),
                             SizedBox(
                               height: 32.h,
                             ),
-                            ListNftHotAuction(cubit: cubit),
+                            ListNftHotAuction(
+                              cubit: cubit,
+                              isLoading: true,
+                              isLoadFail: false,
+                            ),
                             SizedBox(
                               height: 32.h,
                             ),
                             ListNftOnPawn(
                               cubit: cubit,
+                              isLoading: true, isLoadFail: false,
                             ),
                             SizedBox(
                               height: 32.h,
                             ),
-                            ListNftOnSale(cubit: cubit),
+                            ListNftOnSale(
+                              cubit: cubit,
+                              isLoading: true, isLoadFail: false,
+                            ),
                             SizedBox(
                               height: 32.h,
                             ),
-                            ListNftHard(cubit: cubit),
+                            ListNftHard(
+                              cubit: cubit,
+                              isLoading: true, isLoadFail: false,
+                            ),
                             SizedBox(
                               height: 32.h,
                             ),
                             ListExploreCategory(
                               cubit: cubit,
+                              isLoading: true, isLoadFail: false,
                             ),
                             SizedBox(
                               height: 32.h,
@@ -119,8 +131,189 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                 ],
               ),
             ),
-          ),
-        );
+          );
+        } else if (state is LoadingDataSuccess) {
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: Scaffold(
+              body: Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: AppTheme.getInstance().listBackgroundMarketColor(),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    HeaderMarketPlace(cubit: cubit),
+                    SizedBox(
+                      height: 14.h,
+                    ),
+                    Divider(
+                      color: AppTheme.getInstance().divideColor(),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 699.h,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 24.h,
+                              ),
+                              ListOutstandingCollection(
+                                cubit: cubit,
+                                isLoading: false,
+                                isLoadFail: false,
+                              ),
+                              SizedBox(
+                                height: 32.h,
+                              ),
+                              ListNftHotAuction(
+                                cubit: cubit,
+                                isLoading: false, isLoadFail: false,
+                              ),
+                              SizedBox(
+                                height: 32.h,
+                              ),
+                              ListNftOnPawn(
+                                cubit: cubit,
+                                isLoading: false, isLoadFail: false,
+                              ),
+                              SizedBox(
+                                height: 32.h,
+                              ),
+                              ListNftOnSale(
+                                cubit: cubit,
+                                isLoading: false, isLoadFail: false,
+                              ),
+                              SizedBox(
+                                height: 32.h,
+                              ),
+                              ListNftHard(
+                                cubit: cubit,
+                                isLoading: false, isLoadFail: false,
+                              ),
+                              SizedBox(
+                                height: 32.h,
+                              ),
+                              ListExploreCategory(
+                                cubit: cubit,
+                                isLoading: false, isLoadFail: false,
+                              ),
+                              SizedBox(
+                                height: 32.h,
+                              ),
+                              SizedBox(
+                                height: 164.h,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        } else {
+          //todo error
+          return Scaffold(
+            body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: AppTheme.getInstance().listBackgroundMarketColor(),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HeaderMarketPlace(cubit: cubit),
+                  SizedBox(
+                    height: 14.h,
+                  ),
+                  Divider(
+                    color: AppTheme.getInstance().divideColor(),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      height: 699.h,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 24.h,
+                            ),
+                            ListOutstandingCollection(
+                              cubit: cubit,
+                              isLoading: true,
+                              isLoadFail: true,
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            ListNftHotAuction(
+                              cubit: cubit,
+                              isLoading: true,
+                              isLoadFail: true,
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            ListNftOnPawn(
+                              cubit: cubit,
+                              isLoading: true, isLoadFail: true,
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            ListNftOnSale(
+                              cubit: cubit,
+                              isLoading: true, isLoadFail: true,
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            ListNftHard(
+                              cubit: cubit,
+                              isLoading: true, isLoadFail: true,
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            ListExploreCategory(
+                              cubit: cubit,
+                              isLoading: true, isLoadFail: true,
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            SizedBox(
+                              height: 164.h,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
       },
     );
   }

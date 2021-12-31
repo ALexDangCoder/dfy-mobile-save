@@ -6,11 +6,21 @@ import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_aucti
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
+import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class ListNftHotAuction extends StatelessWidget {
-  const ListNftHotAuction({Key? key, required this.cubit,}) : super(key: key);
+  const ListNftHotAuction({
+    Key? key,
+    required this.cubit,
+    required this.isLoading,
+    required this.isLoadFail,
+  }) : super(key: key);
   final MarketplaceCubit cubit;
+  final bool isLoading;
+  final bool isLoadFail;
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +30,7 @@ class ListNftHotAuction extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: Row(
-            mainAxisAlignment:
-            MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 S.current.hot_auction,
@@ -33,13 +42,15 @@ class ListNftHotAuction extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                      const ListNft(marketType: MarketType.AUCTION),
-                    ),
-                  );
+                  isLoading
+                      ? () {}
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const ListNft(marketType: MarketType.AUCTION),
+                          ),
+                        );
                 },
                 child: Padding(
                   padding: EdgeInsets.only(
@@ -65,26 +76,58 @@ class ListNftHotAuction extends StatelessWidget {
           padding: EdgeInsets.only(left: 16.w),
           child: SizedBox(
             height: 231.h,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount:
-              cubit.nftsHotAution.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                        const OnAuction(),
-                      ),
-                    );
-                  },
-                  child: NFTItemWidget(nftMarket: cubit.nftsHotAution[index],),
-                );
-              },
-            ),
+            child: isLoadFail
+                ? ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 6,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {},
+                        child: Row(
+                          children: [
+                            ErrorLoadNft(
+                              callback: () {
+                                cubit.getListNftCollectionExplore();
+                              },
+                            ),
+                            spaceW12,
+                          ],
+                        ),
+                      );
+                    },
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: isLoading ? 6 : cubit.nftsHotAution.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          isLoading
+                              ? () {}
+                              : Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const OnAuction(),
+                                  ),
+                                );
+                        },
+                        child: Row(
+                          children: [
+                            if (isLoading)
+                              const SkeletonNft()
+                            else
+                              NFTItemWidget(
+                                nftMarket: cubit.nftsHotAution[index],
+                              ),
+                            spaceW12,
+                          ],
+                        ),
+                      );
+                    },
+                  ),
           ),
         ),
       ],

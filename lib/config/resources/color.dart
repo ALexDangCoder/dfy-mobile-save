@@ -69,6 +69,7 @@ const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
 const unselectedTabLabel = Color(0xFF9997FF);
+const bgErrorLoadData = Color(0xFF474666);
 
 ///=========== Using to make change app theme ================================
 const bgTranSubmitColor = Color(0xff585782);
@@ -76,6 +77,8 @@ const bgTranSubmitColor = Color(0xff585782);
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color bgTranSubmit();
+
+  Color bgErrorLoad();
 
   Color skeletonLight();
 
@@ -412,6 +415,12 @@ class LightApp extends AppColor {
     // TODO: implement skeletonLight
     return colorSkeletonLight;
   }
+
+  @override
+  Color bgErrorLoad() {
+    // TODO: implement bgErrorLoad
+    return bgErrorLoadData;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -680,6 +689,11 @@ class DarkApp extends AppColor {
   @override
   Color skeletonLight() {
     return colorSkeletonLight;
+  }
+
+  @override
+  Color bgErrorLoad() {
+    return bgErrorLoadData;
   }
 }
 

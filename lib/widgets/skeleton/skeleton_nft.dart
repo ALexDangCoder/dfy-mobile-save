@@ -61,7 +61,7 @@ class SkeletonNft extends StatelessWidget {
               width: 16.w,
               height: 16.h,
               decoration: BoxDecoration(
-                  color: AppTheme.getInstance().skeletonLight(),
+                color: AppTheme.getInstance().skeletonLight(),
                 borderRadius: BorderRadius.circular(50.r),
                 // shape: BoxShape.circle
               ),
@@ -74,12 +74,11 @@ class SkeletonNft extends StatelessWidget {
               width: 116.w,
               height: 16.h,
               decoration: BoxDecoration(
-                  color: AppTheme.getInstance().skeletonLight(),
-                  borderRadius: BorderRadius.circular(8.r),
+                color: AppTheme.getInstance().skeletonLight(),
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
           ),
-
         ],
       ),
     );
