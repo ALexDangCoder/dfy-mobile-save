@@ -174,10 +174,9 @@ class _NFTDetailState extends State<NFTDetail> {
                                     ),
                                   ),
                                 ),
+                                //todo
                                 Text(
-                                  nft.standard == 'ERC-721'
-                                      ? '1 ${S.current.of_all} 1'
-                                      : '1 of 10',
+                                  '1 ${S.current.of_all} 1',
                                   style: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
                                     20,
@@ -204,9 +203,10 @@ class _NFTDetailState extends State<NFTDetail> {
                                   detail: nft.description?.parseHtml() ?? '',
                                   type: TextType.NORM,
                                 ),
+                                //todo
                                 _buildRow(
                                   title: S.current.nft_standard,
-                                  detail: nft.standard ?? '',
+                                  detail:  'ERC-721',
                                   type: TextType.NORM,
                                 ),
                                 _buildRow(
@@ -216,7 +216,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                 ),
                                 _buildRow(
                                   title: S.current.block_chain,
-                                  detail: nft.blockchain ?? '',
+                                  detail: 'Binance smart chain',
                                   type: TextType.NORM,
                                 ),
                                 SizedBox(
