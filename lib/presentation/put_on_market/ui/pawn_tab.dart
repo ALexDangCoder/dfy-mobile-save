@@ -93,6 +93,7 @@ class PawnTabState extends State<PawnTab> {
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,5}')),
                         ],
+                        maxSize: 100,
                         key: inputPriceKey,
                         keyboardType: TextInputType.number,
                         typeInput: typeInput(),
@@ -130,9 +131,9 @@ class PawnTabState extends State<PawnTab> {
                       height: 4,
                     ),
                     InputWithSelectType(
+                        maxSize: 4,
                         inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d{0,5}')),
+                          FilteringTextInputFormatter.digitsOnly
                         ],
                         key: inputDurationKey,
                         keyboardType: TextInputType.number,
@@ -162,7 +163,6 @@ class PawnTabState extends State<PawnTab> {
                                   16,
                                   FontWeight.w400,
                                 ).copyWith(decoration: TextDecoration.none),
-
                               ),
                             ),
                           )
@@ -197,6 +197,7 @@ class PawnTabState extends State<PawnTab> {
                       ),
                     ),
                     InputNumberOfQuantity(
+                      maxLength: 5,
                       canEdit: widget.canEdit,
                       quantity: widget.quantity,
                       onchangeText: (value) {

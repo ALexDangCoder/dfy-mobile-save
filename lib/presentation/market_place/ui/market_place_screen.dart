@@ -13,6 +13,7 @@ import 'package:Dfy/presentation/market_place/ui/collection_item.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
 import 'package:Dfy/presentation/nft_on_pawn/ui/detail_nft_on_pawn/detail_nft_on_pawn.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/on_sale_detail.dart';
+import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
@@ -532,6 +533,14 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PutOnMarket(),
+                  ),
+                );
+              },
               child: ImageIcon(
                 const AssetImage(ImageAssets.ic_profile),
                 size: 28.sp,

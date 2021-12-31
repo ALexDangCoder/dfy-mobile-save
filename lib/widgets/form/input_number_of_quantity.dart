@@ -7,9 +7,14 @@ class InputNumberOfQuantity extends StatefulWidget {
   final bool? canEdit;
   final int? quantity;
   final Function? onchangeText;
+  final int? maxLength;
 
   const InputNumberOfQuantity(
-      {Key? key, this.canEdit = false, this.quantity = 1, this.onchangeText})
+      {Key? key,
+      this.canEdit = false,
+      this.quantity = 1,
+      this.onchangeText,
+      this.maxLength = 25})
       : super(key: key);
 
   @override
@@ -52,7 +57,7 @@ class _InputNumberOfQuantityState extends State<InputNumberOfQuantity> {
       height: 64,
       child: Center(
         child: TextField(
-          enabled:  widget.canEdit ?? false,
+          enabled: widget.canEdit ?? false,
           focusNode: _focusNode,
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
@@ -76,7 +81,7 @@ class _InputNumberOfQuantityState extends State<InputNumberOfQuantity> {
             16,
             FontWeight.w400,
           ),
-          maxLength: 100,
+          maxLength: widget.maxLength ?? 25,
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 18),
             counterText: '',

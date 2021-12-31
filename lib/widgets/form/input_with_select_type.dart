@@ -18,6 +18,7 @@ class InputWithSelectType extends StatefulWidget {
   final String? hintText;
   final int? chooseIndex;
   final Function? onchangeText;
+  final int? maxSize;
   final List<TextInputFormatter>? inputFormatters;
 
   final Function? onChangeType;
@@ -32,7 +33,8 @@ class InputWithSelectType extends StatefulWidget {
       this.onchangeText,
       this.onChangeType,
       this.keyboardType,
-      this.inputFormatters})
+      this.inputFormatters,
+      this.maxSize})
       : super(key: key);
 
   @override
@@ -63,62 +65,45 @@ class InputWithSelectTypeState extends State<InputWithSelectType> {
     yPosition = offset.dy;
   }
 
-
-  OverlayEntry _customOverlayEntry(){
-    return OverlayEntry(
-        builder: (context) {
-          return Positioned(
-            right: 0,
-            top: yPosition + height,
-            child: Padding(
-              padding: EdgeInsets.only(right: 16.w),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  color: AppTheme.getInstance()
-                      .selectDialogColor(),
-                  constraints: BoxConstraints(
-                      maxHeight:
-                      (widget.heightOfWidget ?? 64) * 3),
-                  child: SingleChildScrollView(
-                    child: Column(
-                        children: widget.typeInput
-                            .indexedMap((e, index) =>
-                            GestureDetector(
+  OverlayEntry _customOverlayEntry() {
+    return OverlayEntry(builder: (context) {
+      return Positioned(
+        right: 0,
+        top: yPosition + height,
+        child: Padding(
+          padding: EdgeInsets.only(right: 16.w),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              color: AppTheme.getInstance().selectDialogColor(),
+              constraints:
+                  BoxConstraints(maxHeight: (widget.heightOfWidget ?? 64) * 3),
+              child: SingleChildScrollView(
+                child: Column(
+                    children: widget.typeInput
+                        .indexedMap((e, index) => GestureDetector(
                               onTap: () {
-                                if (widget.onChangeType !=
-                                    null) {
-                                  widget.onChangeType!(
-                                      index);
+                                if (widget.onChangeType != null) {
+                                  widget.onChangeType!(index);
                                 }
                                 setState(() {
                                   chooseIndex = index;
                                 });
-                                final FocusScopeNode
-                                currentFocus =
-                                FocusScope.of(
-                                    context);
-                                if (!currentFocus
-                                    .hasPrimaryFocus) {
+                                final FocusScopeNode currentFocus =
+                                    FocusScope.of(context);
+                                if (!currentFocus.hasPrimaryFocus) {
                                   currentFocus.unfocus();
                                 }
                                 closeDropDown();
                               },
                               child: Container(
-                                color: index ==
-                                    chooseIndex
-                                    ? Colors.white
-                                    .withOpacity(0.1)
-                                    : AppTheme
-                                    .getInstance()
-                                    .selectDialogColor(),
-                                height: widget
-                                    .heightOfWidget ??
-                                    64,
+                                color: index == chooseIndex
+                                    ? Colors.white.withOpacity(0.1)
+                                    : AppTheme.getInstance()
+                                        .selectDialogColor(),
+                                height: widget.heightOfWidget ?? 64,
                                 child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     const SizedBox(
                                       width: 10,
@@ -131,13 +116,13 @@ class InputWithSelectTypeState extends State<InputWithSelectType> {
                                 ),
                               ),
                             ))
-                            .toList()),
-                  ),
-                ),
+                        .toList()),
               ),
             ),
-          );
-        });
+          ),
+        ),
+      );
+    });
   }
 
   @override
@@ -175,7 +160,7 @@ class InputWithSelectTypeState extends State<InputWithSelectType> {
                     AppTheme.getInstance().whiteColor(),
                     16,
                   ),
-                  maxLength: 100,
+                  maxLength: widget.maxSize ?? 100,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 18),
                     counterText: '',
@@ -205,7 +190,7 @@ class InputWithSelectTypeState extends State<InputWithSelectType> {
                   } else {
                     findDropDownSize();
                     setState(() {
-                      floatingDropdown =  _customOverlayEntry();
+                      floatingDropdown = _customOverlayEntry();
                       Overlay.of(context)!.insert(floatingDropdown);
                     });
                   }
@@ -248,4 +233,3 @@ class InputWithSelectTypeState extends State<InputWithSelectType> {
     }
   }
 }
-

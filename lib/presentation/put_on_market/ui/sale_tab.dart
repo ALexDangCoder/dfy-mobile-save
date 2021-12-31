@@ -89,6 +89,7 @@ class SaleTabState extends State<SaleTab> {
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,5}')),
                         ],
+                        maxSize: 100,
                         key: inputPriceKey,
                         keyboardType: TextInputType.number,
                         typeInput: typeInput(),
@@ -122,6 +123,7 @@ class SaleTabState extends State<SaleTab> {
                       ),
                     ),
                     InputNumberOfQuantity(
+                      maxLength: 25,
                       canEdit: widget.canEdit,
                       quantity: widget.quantity,
                       onchangeText: (value){
