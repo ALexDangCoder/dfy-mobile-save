@@ -130,5 +130,4 @@ pubspec.lock
 /lib/models/signin/sign_in_request.g.dart
 /lib/models/signup/sign_up_request.g.dart
 /lib/models/user_info.g.dart
-.fvm/flutter_sdk
 /lib/env/product.json

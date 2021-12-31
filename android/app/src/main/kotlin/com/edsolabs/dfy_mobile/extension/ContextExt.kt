@@ -19,6 +19,9 @@ import wallet.core.jni.PrivateKey
 import wallet.core.jni.proto.Ethereum
 import java.math.BigInteger
 import java.security.InvalidParameterException
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 fun Context.chooseWallet(channel: MethodChannel?, walletAddress: String) {
     val appPreference = AppPreference(this)
@@ -318,7 +321,9 @@ fun Context.checkToken(channel: MethodChannel?, walletAddress: String, tokenAddr
     val appPreference = AppPreference(this)
     val hasMap = HashMap<String, Any>()
     hasMap["isExist"] = appPreference.getListTokens()
-        .firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress && it.isShow } != null
+        .firstOrNull {
+            it.walletAddress == walletAddress && it.tokenAddress.lowercase(Locale.getDefault()) == tokenAddress && it.isShow
+        } != null
     channel?.invokeMethod("checkTokenCallback", hasMap)
 }
 
@@ -337,7 +342,11 @@ fun Context.importToken(
     val hasMap = HashMap<String, Any>()
     val listTokens = ArrayList<TokenModel>()
     listTokens.addAll(appPreference.getListTokens())
-    if (listTokens.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress && it.isShow } == null) {
+    if (listTokens.firstOrNull {
+            it.walletAddress == walletAddress && it.tokenAddress.lowercase(
+                Locale.getDefault()
+            ) == tokenAddress
+        } == null) {
         listTokens.add(
             TokenModel(
                 walletAddress,
@@ -352,10 +361,15 @@ fun Context.importToken(
             )
         )
         appPreference.saveListTokens(listTokens)
-        hasMap["isSuccess"] = true
     } else {
-        hasMap["isSuccess"] = false
+        listTokens.firstOrNull {
+            it.walletAddress == walletAddress && it.tokenAddress.lowercase(
+                Locale.getDefault()
+            ) == tokenAddress
+        }?.isShow = true
     }
+    hasMap["isSuccess"] = true
+    appPreference.saveListTokens(listTokens)
     channel?.invokeMethod("importTokenCallback", hasMap)
 }
 
@@ -374,7 +388,7 @@ fun Context.importListToken(
     var index = 0
     while (index < listObjectTokens.length()) {
         val data = listObjectTokens.getJSONObject(index)
-        val tokenAddress = data.getString("tokenAddress")
+        val tokenAddress = data.getString("tokenAddress").lowercase(Locale.getDefault())
         val symbol = data.getString("nameShortToken")
         val isImport = data.getBoolean("isImport")
         val tokenModel = TokenModel(
@@ -385,19 +399,25 @@ fun Context.importListToken(
             symbol = symbol,
             decimal = data.getInt("decimal"),
             exchangeRate = data.getDouble("exchangeRate"),
-            isShow = tokenAddress == Constant.TOKEN_DFY_ADDRESS || tokenAddress == Constant.TOKEN_BNB_ADDRESS,
+            isShow = tokenAddress == Constant.TOKEN_DFY_ADDRESS.lowercase(Locale.getDefault()) || tokenAddress == Constant.TOKEN_BNB_ADDRESS.lowercase(
+                Locale.getDefault()
+            ),
             isImport = isImport
         )
         val tokenInCore =
-            listTokenAddress.firstOrNull { it.tokenAddress == tokenModel.tokenAddress }
+            listTokenAddress.firstOrNull {
+                it.tokenAddress.lowercase(Locale.getDefault()) == tokenModel.tokenAddress.lowercase(
+                    Locale.getDefault()
+                )
+            }
         if (tokenInCore != null) {
             tokenModel.isShow = tokenInCore.isShow
         }
         when (tokenAddress) {
-            Constant.TOKEN_DFY_ADDRESS -> {
+            Constant.TOKEN_DFY_ADDRESS.lowercase(Locale.getDefault()) -> {
                 listTokens.add(0, tokenModel)
             }
-            Constant.TOKEN_BNB_ADDRESS -> {
+            Constant.TOKEN_BNB_ADDRESS.lowercase(Locale.getDefault()) -> {
                 listTokens.add(1, tokenModel)
             }
             else -> {
@@ -408,7 +428,11 @@ fun Context.importListToken(
     }
     val hasMap = HashMap<String, Any>()
     listTokenAddress.forEachIndexed { _, tokenModel ->
-        val item = listTokens.firstOrNull { it.tokenAddress == tokenModel.tokenAddress }
+        val item = listTokens.firstOrNull {
+            it.tokenAddress.lowercase(Locale.getDefault()) == tokenModel.tokenAddress.lowercase(
+                Locale.getDefault()
+            )
+        }
         if (item == null) {
             listTokens.add(tokenModel)
         }
@@ -431,7 +455,7 @@ fun Context.getTokens(
             data["walletAddress"] = it.walletAddress
             data["tokenFullName"] = it.tokenFullName
             data["symbol"] = it.symbol
-            data["tokenAddress"] = it.tokenAddress
+            data["tokenAddress"] = it.tokenAddress.lowercase(Locale.getDefault())
             data["iconUrl"] = it.iconUrl
             data["isShow"] = it.isShow
             data["decimal"] = it.decimal
@@ -512,7 +536,6 @@ fun Context.getNFT(
 ) {
     val appPreference = AppPreference(this)
     val hasMap: ArrayList<HashMap<String, Any>> = ArrayList()
-//    Log.d("kiemtra5", appPreference.getListNft().toString())
     appPreference.getListNft().forEach {
         if (it.walletAddress == walletAddress) {
             val data = HashMap<String, Any>()
@@ -530,7 +553,6 @@ fun Context.getNFT(
             }
             data["listNft"] = hasMapListNft
             hasMap.add(data)
-//            Log.d("kiemtra6", data.toString())
         }
     }
     channel?.invokeMethod("getNFTCallback", hasMap)
@@ -545,17 +567,25 @@ fun Context.setShowedToken(
 ) {
     val appPreference = AppPreference(this)
     val hasMap = HashMap<String, Any>()
-    if (tokenAddress != Constant.TOKEN_DFY_ADDRESS || tokenAddress != Constant.TOKEN_BNB_ADDRESS) {
+    if (tokenAddress != Constant.TOKEN_DFY_ADDRESS.lowercase(Locale.getDefault()) || tokenAddress != Constant.TOKEN_BNB_ADDRESS.lowercase(
+            Locale.getDefault()
+        )
+    ) {
         val listToken = ArrayList<TokenModel>()
         if (isImport) {
             appPreference.getListTokens().forEach {
-                if (it.walletAddress != walletAddress || it.tokenAddress != tokenAddress) {
+                if (it.walletAddress != walletAddress || it.tokenAddress.lowercase(Locale.getDefault()) != tokenAddress
+                ) {
                     listToken.add(it)
                 }
             }
         } else {
             listToken.addAll(appPreference.getListTokens())
-            listToken.firstOrNull { it.walletAddress == walletAddress && it.tokenAddress == tokenAddress }?.isShow =
+            listToken.firstOrNull {
+                it.walletAddress == walletAddress && it.tokenAddress.lowercase(
+                    Locale.getDefault()
+                ) == tokenAddress
+            }?.isShow =
                 isShow
         }
         appPreference.saveListTokens(listToken)
