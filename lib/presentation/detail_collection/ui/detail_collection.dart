@@ -5,6 +5,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/tab_bar/nfts.dart';
 import 'package:Dfy/presentation/detail_collection/ui/tab_bar/trading_history.dart';
+import 'package:Dfy/presentation/detail_collection/ui/widget/filter_activity.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -121,23 +122,26 @@ class _DetailCollectionState extends State<DetailCollection>
                           right: 16.h,
                           child: InkWell(
                             onTap: () {
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                context: context,
-                                builder: (context) => FilterNFT(
-                                  collectionBloc: detailCollectionBloc,
-                                  isOwner: true,
-                                ),
-                              );
-                              // showModalBottomSheet(
-                              //   isScrollControlled: true,
-                              //   backgroundColor: Colors.transparent,
-                              //   context: context,
-                              //   builder: (context) => FilterActivity(
-                              //     collectionBloc: detailCollectionBloc,
-                              //   ),
-                              // );
+                              if (_tabController.index == 0) {
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) => FilterNFT(
+                                    collectionBloc: detailCollectionBloc,
+                                    isOwner: true,
+                                  ),
+                                );
+                              } else {
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) => FilterActivity(
+                                    collectionBloc: detailCollectionBloc,
+                                  ),
+                                );
+                              }
                             },
                             child: SizedBox(
                               height: 32.h,
