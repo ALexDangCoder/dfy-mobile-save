@@ -122,6 +122,7 @@ class _DetailCollectionState extends State<DetailCollection>
                           right: 16.h,
                           child: InkWell(
                             onTap: () {
+                              print(_tabController.index);
                               if (_tabController.index == 0) {
                                 showModalBottomSheet(
                                   isScrollControlled: true,
@@ -129,7 +130,7 @@ class _DetailCollectionState extends State<DetailCollection>
                                   context: context,
                                   builder: (context) => FilterNFT(
                                     collectionBloc: detailCollectionBloc,
-                                    isOwner: true,
+                                    isOwner: false,
                                   ),
                                 );
                               } else {
