@@ -63,9 +63,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 46.h,
-                ),
+                spaceH10,
                 Text(
                   widget.title,
                   style: textNormalCustom(

@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BaseAppBarCollection extends SliverAppBar {
@@ -81,12 +82,7 @@ class BaseSpace extends StatelessWidget {
             ),
             Opacity(
               opacity: opacity,
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  getImage(context, initHeight),
-                ],
-              ),
+              child: getImage(context, initHeight),
             ),
           ],
         );
@@ -99,13 +95,12 @@ class BaseSpace extends StatelessWidget {
       height: height,
       width: double.infinity,
       child: Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.bottomCenter,
+        alignment: Alignment.topCenter,
         children: [
           CachedNetworkImage(
             fit: BoxFit.fill,
             width: double.infinity,
-            height: height,
+            height: 145.h,
             errorWidget: (context, url, error) => const Icon(Icons.error),
             imageUrl: imageCover,
           ),
@@ -161,7 +156,7 @@ class BaseSpace extends StatelessWidget {
         text,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
-        style: textNormalCustom(null, 20, FontWeight.w600),
+        style: textNormalCustom(null, 20, FontWeight.bold),
       ),
     );
   }

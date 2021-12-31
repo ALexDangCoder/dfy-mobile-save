@@ -40,7 +40,7 @@ class _DetailCollectionState extends State<DetailCollection>
     final bool isOwner = false;
     return BaseCustomScrollViewDetail(
       isOwner: isOwner,
-      initHeight: 145.h,
+      initHeight: 190.h,
       title: EXAMPLE_TITLE,
       imageVerified: ImageAssets.ic_dfy,
       imageAvatar: EXAMPLE_IMAGE_URL,
