@@ -122,6 +122,7 @@ class _DetailCollectionState extends State<DetailCollection>
                           child: InkWell(
                             onTap: () {
                               showModalBottomSheet(
+                                isScrollControlled: true,
                                 backgroundColor: Colors.transparent,
                                 context: context,
                                 builder: (context) => FilterNFT(
@@ -129,6 +130,14 @@ class _DetailCollectionState extends State<DetailCollection>
                                   isOwner: true,
                                 ),
                               );
+                              // showModalBottomSheet(
+                              //   isScrollControlled: true,
+                              //   backgroundColor: Colors.transparent,
+                              //   context: context,
+                              //   builder: (context) => FilterActivity(
+                              //     collectionBloc: detailCollectionBloc,
+                              //   ),
+                              // );
                             },
                             child: SizedBox(
                               height: 32.h,

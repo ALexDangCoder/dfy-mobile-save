@@ -1,18 +1,18 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rxdart/rxdart.dart';
 
-class IsAllStatus extends StatelessWidget {
+class IsBaseCheckBox extends StatelessWidget {
   final String title;
-  final DetailCollectionBloc collectionBloc;
+  final BehaviorSubject<bool> stream;
 
-  const IsAllStatus({
+  const IsBaseCheckBox({
     Key? key,
     required this.title,
-    required this.collectionBloc,
+    required this.stream,
   }) : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class IsAllStatus extends StatelessWidget {
       children: [
         Expanded(
           child: StreamBuilder(
-            stream: collectionBloc.isAllStatus,
+            stream: stream,
             builder: (context, AsyncSnapshot<bool> snapshot) {
               return Transform.scale(
                 scale: 1.34.sp,
@@ -39,9 +39,9 @@ class IsAllStatus extends StatelessWidget {
                   ),
                   value: snapshot.data ?? false,
                   onChanged: (value) {
-                    collectionBloc.isAllStatus.sink.add(true);
+                    stream.sink.add(true);
                     if (snapshot.data ?? false) {
-                      collectionBloc.isAllStatus.sink.add(false);
+                      stream.sink.add(false);
                     }
                   },
                 ),
@@ -55,10 +55,10 @@ class IsAllStatus extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  if (collectionBloc.isAllStatus.value) {
-                    collectionBloc.isAllStatus.sink.add(false);
+                  if (stream.value) {
+                    stream.sink.add(false);
                   } else {
-                    collectionBloc.isAllStatus.sink.add(true);
+                    stream.sink.add(true);
                   }
                 },
                 child: Text(

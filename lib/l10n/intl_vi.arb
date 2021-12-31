@@ -337,6 +337,12 @@
   "activity_auction": "auction",
   "activity_pawn": "pawn",
   "activity_not_on_market": "not on market",
-  "filter": "Lọc"
-
+  "filter": "Lọc",
+  "transfer": "Transfer",
+  "bid_buy_out": "Bid/buy out",
+  "receive_offer": "Receive offer",
+  "burn": "Burn",
+  "sign_contract": "Sign contract",
+  "like": "Like",
+  "report": "Report"
 }

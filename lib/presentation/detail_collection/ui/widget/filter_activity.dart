@@ -11,21 +11,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FilterNFT extends StatefulWidget {
+class FilterActivity extends StatefulWidget {
   final DetailCollectionBloc collectionBloc;
-  final bool isOwner;
 
-  const FilterNFT({
+  const FilterActivity({
     Key? key,
     required this.collectionBloc,
-    required this.isOwner,
   }) : super(key: key);
 
   @override
-  _FilterNFTState createState() => _FilterNFTState();
+  _FilterActivityState createState() => _FilterActivityState();
 }
 
-class _FilterNFTState extends State<FilterNFT> {
+class _FilterActivityState extends State<FilterActivity> {
   @override
   void initState() {
     super.initState();
@@ -78,7 +76,7 @@ class _FilterNFTState extends State<FilterNFT> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      widget.collectionBloc.reset();
+                      widget.collectionBloc.resetFilterActivity();
                     },
                     child: Container(
                       height: 30.h,
@@ -117,64 +115,13 @@ class _FilterNFTState extends State<FilterNFT> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (widget.isOwner)
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.w),
-                      child: Text(
-                        S.current.nft_type,
-                        style: textNormalCustom(null, 16, FontWeight.w600),
-                      ),
-                    )
-                  else
-                    const SizedBox.shrink(),
-                  if (widget.isOwner)
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsBaseCheckBox(
-                            title: S.current.all,
-                            stream: collectionBloc.isAll,
-                          ),
-                        ),
-                        const Expanded(
-                          child: SizedBox.shrink(),
-                        ),
-                      ],
-                    )
-                  else
-                    const SizedBox.shrink(),
-                  if (widget.isOwner)
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsBaseCheckBox(
-                            title: S.current.hard_nft,
-                            stream: collectionBloc.isHardNft,
-                          ),
-                        ),
-                        Expanded(
-                          child: IsBaseCheckBox(
-                            title: S.current.soft_nft,
-                            stream: collectionBloc.isSoftNft,
-                          ),
-                        ),
-                      ],
-                    )
-                  else
-                    const SizedBox.shrink(),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.w),
-                    child: Text(
-                      S.current.status,
-                      style: textNormalCustom(null, 16, FontWeight.w600),
-                    ),
-                  ),
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
                         child: IsBaseCheckBox(
                           title: S.current.all,
-                          stream: collectionBloc.isAllStatus,
+                          stream: collectionBloc.isAllActivity,
                         ),
                       ),
                       const Expanded(
@@ -183,17 +130,18 @@ class _FilterNFTState extends State<FilterNFT> {
                     ],
                   ),
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
                         child: IsBaseCheckBox(
-                          title: S.current.on_sale,
-                          stream: collectionBloc.isOnSale,
+                          title: S.current.transfer,
+                          stream: collectionBloc.isTransfer,
                         ),
                       ),
                       Expanded(
                         child: IsBaseCheckBox(
-                          title: S.current.on_pawn,
-                          stream: collectionBloc.isOnPawn,
+                          title: S.current.put_on_market,
+                          stream: collectionBloc.isPutOnMarket,
                         ),
                       ),
                     ],
@@ -203,14 +151,65 @@ class _FilterNFTState extends State<FilterNFT> {
                     children: [
                       Expanded(
                         child: IsBaseCheckBox(
-                          title: S.current.on_auction,
-                          stream: collectionBloc.isOnAuction,
+                          title: S.current.cancel,
+                          stream: collectionBloc.isCancelMarket,
                         ),
                       ),
                       Expanded(
                         child: IsBaseCheckBox(
-                          title: S.current.not_on_market,
-                          stream: collectionBloc.isNotOnMarket,
+                          title: S.current.buy,
+                          stream: collectionBloc.isBuy,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: IsBaseCheckBox(
+                          title: S.current.bid_buy_out,
+                          stream: collectionBloc.isBid,
+                        ),
+                      ),
+                      Expanded(
+                        child: IsBaseCheckBox(
+                          title: S.current.receive_offer,
+                          stream: collectionBloc.isReceiveOffer,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: IsBaseCheckBox(
+                          title: S.current.sign_contract,
+                          stream: collectionBloc.isSignContract,
+                        ),
+                      ),
+                      Expanded(
+                        child: IsBaseCheckBox(
+                          title: S.current.burn,
+                          stream: collectionBloc.isBurn,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: IsBaseCheckBox(
+                          title: S.current.like,
+                          stream: collectionBloc.isLike,
+                        ),
+                      ),
+                      Expanded(
+                        child: IsBaseCheckBox(
+                          title: S.current.report,
+                          stream: collectionBloc.isReport,
                         ),
                       ),
                     ],
