@@ -132,6 +132,8 @@ class _FilterNFTState extends State<FilterNFT> {
                       children: [
                         Expanded(
                           child: IsBaseCheckBox(
+                            funCheckBox: collectionBloc.allTypeNft,
+                            funText: collectionBloc.allTypeNft,
                             title: S.current.all,
                             stream: collectionBloc.isAll,
                           ),
@@ -173,6 +175,8 @@ class _FilterNFTState extends State<FilterNFT> {
                     children: [
                       Expanded(
                         child: IsBaseCheckBox(
+                          funCheckBox: collectionBloc.allStatusNft,
+                          funText: collectionBloc.allStatusNft,
                           title: S.current.all,
                           stream: collectionBloc.isAllStatus,
                         ),
