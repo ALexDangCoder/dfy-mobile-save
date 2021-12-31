@@ -312,5 +312,10 @@
   "collection_address": "Địa chỉ bộ sưu tập",
   "offer": "Đề nghị",
   "offer_detail": "Chi tiết đề nghị",
-  "view_profile": "Xem hồ sơ"
+  "view_profile": "Xem hồ sơ",
+  "message": "Tin nhắn",
+  "repayment_token": "Token trả nợ",
+  "offer_create_by_day": "Để nghị tạo ngày",
+  "accept": "Chấp thuận",
+  "reject": "Từ chối"
 }

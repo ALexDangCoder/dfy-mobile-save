@@ -319,5 +319,11 @@
   "all":"All",
   "offer": "Offer",
   "offer_detail": "Offer detail",
-  "view_profile": "View profile"
+  "view_profile": "View profile",
+  "message": "Message",
+  "repayment_token": "Repayment token",
+  "offer_create_by_day": "Offer create by day",
+  "accept": "Accept",
+  "reject": "Reject"
+
 }

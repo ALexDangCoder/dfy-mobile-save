@@ -4,6 +4,8 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/button/button_gradient.dart';
+import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
@@ -16,6 +18,18 @@ class OfferDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseBottomSheet(
+      bottomBar: Container(
+        padding: EdgeInsets.only(bottom: 38.h, right: 16.w, left: 16.w),
+
+        color: AppTheme.getInstance().bgBtsColor(),
+        child: Row(
+          children: [
+            Expanded(child: _buildButtonReject(context)),
+            spaceW25,
+            Expanded(child: _buildButtonAccept(context)),
+          ],
+        ),
+      ),
       title: S.current.offer_detail,
       isImage: true,
       text: ImageAssets.ic_close,
@@ -45,48 +59,111 @@ class OfferDetailScreen extends StatelessWidget {
   }
 
   List<Widget> get _buildTable => [
-        buildRow(
-          title: S.current.status,
-          detail: 'Open',
-          type: TextType.NORMAL,
+        buildRowCustom(
+          title: '${S.current.status}:',
+          child: Text(
+            'Open',
+            style: textNormalCustom(
+              AppTheme.getInstance().blueColor(),
+              16,
+              FontWeight.w600,
+            ),
+          ),
         ),
         spaceH16,
-        buildRow(
-          title: S.current.status,
-          detail: 'Open',
-          type: TextType.NORMAL,
+        buildRowCustom(
+          title: '${S.current.message}:',
+          child: Text(
+            'Some thing went wrong',
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w400,
+            ),
+          ),
         ),
         spaceH16,
-        buildRow(
-          title: S.current.status,
-          detail: 'Open',
-          type: TextType.NORMAL,
+        buildRowCustom(
+          title: S.current.loan_amount,
+          child: Row(
+            children: [
+              Image.asset(ImageAssets.ic_tick_circle),
+              Text(
+                '1000 BNB',
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
         ),
         spaceH16,
-        buildRow(
-          title: S.current.status,
-          detail: 'Open',
-          type: TextType.NORMAL,
+        buildRowCustom(
+          title: S.current.interest_rate,
+          child: Text(
+            '45%',
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w400,
+            ),
+          ),
         ),
         spaceH16,
-        buildRow(
-          title: S.current.status,
-          detail: 'Open',
-          type: TextType.NORMAL,
+        buildRowCustom(
+          title: S.current.recurring_interest,
+          child: Text(
+            'monthly',
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w400,
+            ),
+          ),
         ),
         spaceH16,
-        buildRow(
-          title: S.current.status,
-          detail: 'Open',
-          type: TextType.NORMAL,
+        buildRowCustom(
+          title: '${S.current.repayment_token}:',
+          child: Row(
+            children: [
+              Image.asset(ImageAssets.ic_tick_circle),
+              Text(
+                'DFY',
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
         ),
         spaceH16,
-        buildRow(
-          title: S.current.status,
-          detail: 'Open',
-          type: TextType.NORMAL,
+        buildRowCustom(
+          title: S.current.duration,
+          child: Text(
+            '6 months',
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w400,
+            ),
+          ),
         ),
         spaceH16,
+        buildRowCustom(
+          title: '${S.current.offer_create_by_day}:',
+          child: Text(
+            '10/05/2021',
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w400,
+            ),
+          ),
+        ),
       ];
 
   Widget _rowStar(int mark) {
@@ -120,5 +197,38 @@ class OfferDetailScreen extends StatelessWidget {
             FontWeight.normal,
           ),
         ));
+  }
+
+  Widget _buildButtonReject(BuildContext context) {
+    return ButtonTransparent(
+      child: Text(
+        S.current.reject,
+        style: textNormalCustom(
+          AppTheme.getInstance().textThemeColor(),
+          16,
+          FontWeight.w700,
+        ),
+      ),
+      onPressed: () {},
+    );
+  }
+
+  Widget _buildButtonAccept(BuildContext context) {
+    return ButtonGradient(
+      onPressed: () {},
+      gradient: RadialGradient(
+        center: const Alignment(0.5, -0.5),
+        radius: 4,
+        colors: AppTheme.getInstance().gradientButtonColor(),
+      ),
+      child: Text(
+        S.current.accept,
+        style: textNormalCustom(
+          AppTheme.getInstance().textThemeColor(),
+          16,
+          FontWeight.w700,
+        ),
+      ),
+    );
   }
 }
