@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -16,6 +15,7 @@ import 'package:Dfy/presentation/nft_on_pawn/ui/detail_nft_on_pawn/detail_nft_on
 import 'package:Dfy/presentation/nft_on_pawn/ui/nft_list_on_pawn/nft_list_on_pawn.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/on_sale_detail.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/nft_list.dart';
+import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
@@ -537,12 +537,21 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
-              child: ImageIcon(
-                const AssetImage(ImageAssets.ic_profile),
-                size: 28.sp,
-                color: AppTheme.getInstance().whiteColor(),
-              ),
-            ),
+                child: ImageIcon(
+                  const AssetImage(ImageAssets.ic_profile),
+                  size: 28.sp,
+                  color: AppTheme.getInstance().whiteColor(),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const PutOnMarket();
+                      },
+                    ),
+                  );
+                }),
             searchBar(),
             GestureDetector(
               child: ImageIcon(

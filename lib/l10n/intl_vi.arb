@@ -7,6 +7,7 @@
   "error_network": "Vui lòng kiểm tra kết nối mạng!",
   "retry": "Thử lại",
   "unauthorized": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+  "set_the_fixed_price_and_sell_your_nft" : "Thiết lập giá và bán NFT của bạn",
   "search": "Tìm kiếm...",
   "seed_phrase": "Seed phrase",
   "private_key": "Private key",
@@ -138,6 +139,7 @@
   "confirm_new_password": "Xác nhận mật khẩu mới",
   "prv_key_ft_seed_phr": "Private key & seed phrase",
   "enter_password": "Nhập mật khẩu",
+  "enter_price": "nhập giá",
   "transaction_pending": "Đang xử lý",
   "no_transaction": "Không có giao dịch",
   "amount": "Số lượng",
@@ -268,6 +270,10 @@
   "bidding": "Đấu giá",
   "reserve_price": "Giá khởi điểm",
   "price_step": "Bước giá",
+  "price": "Giá",
+  "sale_quantity": "số lượng bán",
+  "set_a_sale_price_for_1_copy_of_nft": "Đặt giá cho 1 bản copy NFT",
+  "set_the_nft_quantity_you_want_to_sell": "Số lượng NFT muốn bán",
   "your_balance_bid": "Số dư của bạn",
   "nft_on_auction": "NFT trên phiên đấu giá",
   "current_bid": "Giá hiện tại",
@@ -304,5 +310,8 @@
   "on_auction": "Đang đấu giá",
   "collection_type": "Loại bộ sưu tập",
   "hard_nft_collection": "Hard NFT",
-  "soft_nft_collection": "Soft NFT"
+  "soft_nft_collection": "Soft NFT",
+  "week" : "Tuần",
+  "get_a_loan_by_nft_on_pawn_marketplace": "Nhận khoản vay cho NFT trên thị trường cầm đồ",
+  "set_the_loan_amount_you_expected_to_have_for_the_nft": "đặt khoản vay bạn mong muốn cho NFT của bạn"
 }

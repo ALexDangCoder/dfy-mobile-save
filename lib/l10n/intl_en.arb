@@ -137,6 +137,7 @@
   "confirm_new_password": "Confirm new password",
   "prv_key_ft_seed_phr": "Private key & seed phrase",
   "enter_password": "Enter password",
+  "enter_price": "Enter price",
   "warn_pw_8_15": "Password must be 8-15 character",
   "warn_pw_required": "Password is required",
   "warn_pw_validate": "Password must include at least a number, an upper case, a lower case and a special character",
@@ -181,7 +182,7 @@
   "hour": "Hours",
   "minute": "Minutes",
   "second": "Seconds",
-  "month": "month",
+  "month": "Month",
   "months": "months",
   "place_a_bid": "Place a bid",
   "buy_out": "Buy out",
@@ -233,6 +234,12 @@
   "painting": "Painting",
   "art_work": "Artwork",
   "sale": "Sale",
+  "set_the_fixed_price_and_sell_your_nft" : "Set the fixed price and sell your NFT",
+  "set_a_sale_price_for_1_copy_of_nft": "Set a sale price for 1 copy of NFT",
+  "get_a_loan_by_nft_on_pawn_marketplace": "Get a loan by NFT on Pawn marketplace",
+  "price": "Price",
+  "sale_quantity": "Sale quantity",
+  "set_the_nft_quantity_you_want_to_sell": "Set the NFT quantity you want to sell",
   "auction": "Auction",
   "reserve_price": "Reserve price",
   "price_step": "Price step",
@@ -312,5 +319,7 @@
   "undefine_err_nft": "Something went wrong",
   "duplicated_import_nft": "Your Account is duplicated",
   "send_token": "Send Token",
-  "send_nft": "Send NFT"
+  "send_nft": "Send NFT",
+  "week" : "Week",
+  "set_the_loan_amount_you_expected_to_have_for_the_nft": "Set the loan amount you expected to have for the NFT"
 }
