@@ -1,9 +1,12 @@
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/list_activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TradingHistoryCollection extends StatefulWidget {
-  const TradingHistoryCollection({Key? key}) : super(key: key);
+  const TradingHistoryCollection({Key? key, required this.detailCollectionBloc})
+      : super(key: key);
+  final DetailCollectionBloc detailCollectionBloc;
 
   @override
   _TradingHistoryCollectionState createState() =>
