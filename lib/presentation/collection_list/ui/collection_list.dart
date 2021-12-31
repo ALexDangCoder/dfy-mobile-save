@@ -43,7 +43,7 @@ class _CollectionListState extends State<CollectionList> {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color:AppTheme.getInstance().fillColor().withOpacity(0.3),
+                color: AppTheme.getInstance().fillColor().withOpacity(0.3),
                 spreadRadius: -5,
                 blurRadius: 15,
                 offset: const Offset(0, 10), // changes position of shadow
@@ -59,113 +59,115 @@ class _CollectionListState extends State<CollectionList> {
       backgroundColor: Colors.transparent,
       body: Align(
         alignment: Alignment.bottomCenter,
-        child: Container(
-          height: 764.h,
-          width: 375.w,
-          decoration: BoxDecoration(
-            color: AppTheme.getInstance().bgBtsColor(),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.h),
-              topRight: Radius.circular(30.h),
+        child: SafeArea(
+          child: Container(
+            // height: 764.h,
+            // width: 375.w,
+            decoration: BoxDecoration(
+              color: AppTheme.getInstance().bgBtsColor(),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.h),
+                topRight: Radius.circular(30.h),
+              ),
             ),
-          ),
-          child: Column(
-            children: [
-              spaceH16,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(left: 16.w),
-                      width: 28.w,
-                      height: 28.h,
-                      child: Image.asset(ImageAssets.ic_back),
+            child: Column(
+              children: [
+                spaceH16,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 16.w),
+                        width: 28.w,
+                        height: 28.h,
+                        child: Image.asset(ImageAssets.ic_back),
+                      ),
                     ),
-                  ),
-                  Text(
-                    S.current.collection_list,
-                    style: textNormalCustom(null, 20.sp, FontWeight.w700),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (context) => Filter(
-                          collectionBloc: collectionBloc,
+                    Text(
+                      S.current.collection_list,
+                      style: textNormalCustom(null, 20.sp, FontWeight.w700),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) => Filter(
+                            collectionBloc: collectionBloc,
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 16.w),
+                        width: 24.w,
+                        height: 24.h,
+                        child: Image.asset(ImageAssets.ic_filter),
+                      ),
+                    ),
+                  ],
+                ),
+                spaceH20,
+                line,
+                StreamBuilder(
+                  stream: collectionBloc.list,
+                  builder: (context,
+                      AsyncSnapshot<List<CollectionResponse>> snapshot) {
+                    if (snapshot.hasData) {
+                      return Expanded(
+                        child: StaggeredGridView.countBuilder(
+                          padding: EdgeInsets.only(
+                            left: 21.w,
+                            right: 21.w,
+                            top: 20.h,
+                            bottom: 20.h,
+                          ),
+                          mainAxisSpacing: 20.h,
+                          crossAxisSpacing: 26.w,
+                          itemCount: collectionBloc.list.value.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRouter.detailCollection,
+                                );
+                              },
+                              child: ItemCollection(
+                                items: '${snapshot.data?[index].item ?? 0}',
+                                text: snapshot.data?[index].textbody ?? '',
+                                urlIcon: snapshot.data?[index].avatarIcon ?? '',
+                                owners: '${snapshot.data?[index].owners ?? 0}',
+                                title: snapshot.data?[index].title ?? '',
+                                urlBackGround:
+                                    snapshot.data?[index].avatarBack ?? '',
+                              ),
+                            );
+                          },
+                          crossAxisCount: 2,
+                          staggeredTileBuilder: (int index) =>
+                              const StaggeredTile.fit(1),
                         ),
                       );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(right: 16.w),
-                      width: 28.w,
-                      height: 28.h,
-                      child: Image.asset(ImageAssets.ic_filter),
-                    ),
-                  ),
-                ],
-              ),
-              spaceH20,
-              line,
-              StreamBuilder(
-                stream: collectionBloc.list,
-                builder: (context,
-                    AsyncSnapshot<List<CollectionResponse>> snapshot) {
-                  if (snapshot.hasData) {
-                    return Expanded(
-                      child: StaggeredGridView.countBuilder(
-                        padding: EdgeInsets.only(
-                          left: 21.w,
-                          right: 21.w,
-                          top: 20.h,
-                          bottom: 20.h,
+                    } else {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 2 - 80,
+                          ),
+                          child: CircularProgressIndicator(
+                            color: AppTheme.getInstance().whiteColor(),
+                          ),
                         ),
-                        mainAxisSpacing: 20.h,
-                        crossAxisSpacing: 26.w,
-                        itemCount: collectionBloc.list.value.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                AppRouter.detailCollection,
-                              );
-                            },
-                            child: ItemCollection(
-                              items: '${snapshot.data?[index].item ?? 0}',
-                              text: snapshot.data?[index].textbody ?? '',
-                              urlIcon: snapshot.data?[index].avatarIcon ?? '',
-                              owners: '${snapshot.data?[index].owners ?? 0}',
-                              title: snapshot.data?[index].title ?? '',
-                              urlBackGround:
-                                  snapshot.data?[index].avatarBack ?? '',
-                            ),
-                          );
-                        },
-                        crossAxisCount: 2,
-                        staggeredTileBuilder: (int index) =>
-                            const StaggeredTile.fit(1),
-                      ),
-                    );
-                  } else {
-                    return Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 2 - 80,
-                        ),
-                        child: CircularProgressIndicator(
-                          color: AppTheme.getInstance().whiteColor(),
-                        ),
-                      ),
-                    );
-                  }
-                },
-              )
-            ],
+                      );
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
