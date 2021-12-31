@@ -317,6 +317,13 @@
   "detected_email2": " đã được đăng ký tài khoản trên DeFi For You. Vui lòng kiểm tra Email và xác nhận để liên kết tài khoản",
   "enter_email_to_link": "Nhập địa chỉ email bạn muốn liên kết với địa chỉ ví của mình",
   "already_associated": " đã được liên kết với ",
-  "login_with_this_email": "Bạn có muốn đăng nhập email này để sử dụng ngay bây giờ không?"
-
+  "login_with_this_email": "Bạn có muốn đăng nhập email này để sử dụng ngay bây giờ không?",
+  "all": "Tất cả",
+  "nft_type": "Loại NFT",
+  "additional": "Thông tin thêm",
+  "nft_id": "NFT Id",
+  "collection_address": "Địa chỉ bộ sưu tập",
+  "offer": "Đề nghị",
+  "login_now": "Bạn không có ví nào. Đăng nhập ngay",
+  "create_now": "Bạn không có ví nào. Hãy tạo ngay"
 }

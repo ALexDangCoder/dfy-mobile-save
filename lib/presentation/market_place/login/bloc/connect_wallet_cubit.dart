@@ -1,3 +1,4 @@
+import 'package:Dfy/generated/l10n.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
@@ -8,7 +9,8 @@ part 'connect_wallet_state.dart';
 
 class ConnectWalletCubit extends Cubit<ConnectWalletState> {
   ConnectWalletCubit() : super(ConnectWalletInitial());
-
+  String contentDialog = '';
+  String contentRightButton = '';
   Future<void> getListWallet() async {
     try {
       final data = {};
@@ -23,15 +25,17 @@ class ConnectWalletCubit extends Cubit<ConnectWalletState> {
     switch (methodCall.method) {
       case 'getListWalletsCallback':
         final List<dynamic> data = await methodCall.arguments;
-        // try {
-        //   if (isSuccess) {
-        //     emit(ChangePasswordSuccess());
-        //   } else {
-        //     emit(ChangePasswordFail());
-        //   }
-        // } catch (e) {
-        //   print(e);
-        // }
+        try {
+          if (data.isEmpty) {
+            emit(HasNoWallet());
+          } else if(data.isNotEmpty){
+            emit(NeedLoginToUse());
+          }else{
+            print('Làm gì có chuyện ấy');
+          }
+        } catch (e) {
+          print(e);
+        }
         break;
       default:
         break;

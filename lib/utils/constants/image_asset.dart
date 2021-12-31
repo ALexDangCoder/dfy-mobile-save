@@ -165,6 +165,7 @@ class ImageAssets {
   static const String img_login = '$baseImg/login_img.png';
   static const String ic_email = '$baseImg/sms.png';
   static const String ic_warning = '$baseImg/warning.png';
+  static const String ic_verify_svg = '$baseImg/ic_verify.svg';
 
   static SvgPicture svgAssets(
     String name, {

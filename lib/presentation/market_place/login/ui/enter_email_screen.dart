@@ -6,12 +6,13 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury_big_size.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class EnterEmail extends StatelessWidget {
-  const EnterEmail({Key? key}) : super(key: key);
-
+  EnterEmail({Key? key}) : super(key: key);
+  final TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,10 +66,12 @@ class EnterEmail extends StatelessWidget {
                 ),
                 child: TextFormField(
                   textAlignVertical: TextAlignVertical.center,
+                  keyboardType: TextInputType.emailAddress,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
                     16,
                   ),
+                  controller: textEditingController,
                   cursorColor: AppTheme.getInstance().textThemeColor(),
                   decoration: InputDecoration(
                     hintText: 'Email',

@@ -27,7 +27,7 @@ class TokenHasEmail extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const EnterEmail(),
+              builder: (context) => EnterEmail(),
             ),
           );
         },
