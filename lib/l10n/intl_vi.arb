@@ -310,5 +310,6 @@
   "additional": "Thông tin thêm",
   "nft_id": "NFT Id",
   "collection_address": "Địa chỉ bộ sưu tập",
-  "offer": "Đề nghị"
+  "offer": "Đề nghị",
+  "could_not_load_data" : "Không thể tải dữ liệu"
 }
