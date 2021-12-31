@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -6,6 +5,9 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/hard_nft_screen.dart';
+import 'package:Dfy/presentation/market_place/login/ui/confirm_email.dart';
+import 'package:Dfy/presentation/market_place/login/ui/connect_wallet.dart';
+import 'package:Dfy/presentation/market_place/login/ui/enter_email_screen.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/grid_view_auction.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
@@ -542,6 +544,14 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                 size: 28.sp,
                 color: AppTheme.getInstance().whiteColor(),
               ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ConnectWallet(),
+                  ),
+                );
+              },
             ),
             searchBar(),
             GestureDetector(

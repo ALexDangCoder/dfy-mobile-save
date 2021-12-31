@@ -162,7 +162,9 @@ class ImageAssets {
   static const String ic_xls_svg = '$baseImg/ic_xls_svg.svg';
   static const String ic_expand_svg = '$baseImg/ic_expand_svg.svg';
   static const String ic_collapse_svg = '$baseImg/ic_collapse_svg.svg';
-
+  static const String img_login = '$baseImg/login_img.png';
+  static const String ic_email = '$baseImg/sms.png';
+  static const String ic_warning = '$baseImg/warning.png';
 
   static SvgPicture svgAssets(
     String name, {

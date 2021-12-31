@@ -304,5 +304,19 @@
   "on_auction": "Đang đấu giá",
   "collection_type": "Loại bộ sưu tập",
   "hard_nft_collection": "Hard NFT",
-  "soft_nft_collection": "Soft NFT"
+  "soft_nft_collection": "Soft NFT",
+  "warning": "Cảnh báo",
+  "no_permission": "Địa chỉ ví hiện tại không có quyền thực hiện hành động này. Vui lòng kết nối địa chỉ ví: ",
+  "no_permission2": " để thưc hiện hành động này",
+  "confirm_account": "Xác nhận tài khoản",
+  "enter_email": "Nhập email",
+  "verify_account": "Chúng tôi vừa gửi thư xác nhận đến địa chỉ email bạn vừa đăng ký. Vui lòng kiểm tra email của bạn và xác nhận để kích hoạt tài khoản.",
+  "connect_wallet": "Kết nối ví",
+  "connect_to_continue": "Bạn cần kết nối ví để tiếp tục",
+  "detected_email": "Hệ thông phát hiện email ",
+  "detected_email2": " đã được đăng ký tài khoản trên DeFi For You. Vui lòng kiểm tra Email và xác nhận để liên kết tài khoản",
+  "enter_email_to_link": "Nhập địa chỉ email bạn muốn liên kết với địa chỉ ví của mình",
+  "already_associated": " đã được liên kết với ",
+  "login_with_this_email": "Bạn có muốn đăng nhập email này để sử dụng ngay bây giờ không?"
+
 }
