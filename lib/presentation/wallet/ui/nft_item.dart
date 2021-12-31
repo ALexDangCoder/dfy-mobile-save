@@ -17,11 +17,13 @@ class NFTItem extends StatefulWidget {
     required this.index,
     required this.walletAddress,
     required this.collectionShow,
+    required this.walletName,
   }) : super(key: key);
   final CollectionShow collectionShow;
   final WalletCubit bloc;
   final int index;
   final String walletAddress;
+  final String walletName;
 
   @override
   _NFTItemState createState() => _NFTItemState();
@@ -157,6 +159,7 @@ class _NFTItemState extends State<NFTItem> {
                           objNFT: widget.collectionShow.listNft![index],
                           walletAddress: widget.walletAddress,
                           walletCubit: widget.bloc,
+                          walletName: widget.walletName,
                         ),
                       ),
                     ),

@@ -68,7 +68,7 @@ class CollectionItem extends StatelessWidget {
                         title,
                         style: TextStyle(
                           color: AppTheme.getInstance().whiteColor(),
-                          fontSize: 16.sp,
+                          fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

@@ -313,5 +313,11 @@
   "soft_nft_collection": "Soft NFT",
   "week" : "Tuần",
   "get_a_loan_by_nft_on_pawn_marketplace": "Nhận khoản vay cho NFT trên thị trường cầm đồ",
-  "set_the_loan_amount_you_expected_to_have_for_the_nft": "đặt khoản vay bạn mong muốn cho NFT của bạn"
+  "set_the_loan_amount_you_expected_to_have_for_the_nft": "đặt khoản vay bạn mong muốn cho NFT của bạn",
+  "all": "Tất cả",
+  "nft_type": "Loại NFT",
+  "additional": "Thông tin thêm",
+  "nft_id": "NFT Id",
+  "collection_address": "Địa chỉ bộ sưu tập",
+  "offer": "Đề nghị"
 }

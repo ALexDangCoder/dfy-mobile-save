@@ -88,15 +88,15 @@ class ResultNFTSearch extends StatelessWidget {
               16.sp,
             ),
           ),
-          propertyNFT(nftItem.propertiesNFT),
+          propertyNFT(nftItem.marketType),
         ],
       ),
     );
   }
 
-  Widget propertyNFT(TypePropertiesNFT? type) {
+  Widget propertyNFT(MarketType? type) {
     switch (type) {
-      case TypePropertiesNFT.PAWN:
+      case MarketType.PAWN:
         return Text(
           'Pawn',
           style: textNormalCustom(
@@ -105,7 +105,7 @@ class ResultNFTSearch extends StatelessWidget {
             FontWeight.w600,
           ),
         );
-      case TypePropertiesNFT.AUCTION:
+      case MarketType.AUCTION:
         return Text(
           'Auction',
           style: textNormalCustom(
@@ -114,7 +114,7 @@ class ResultNFTSearch extends StatelessWidget {
             FontWeight.w600,
           ),
         );
-      case TypePropertiesNFT.SALE:
+      case MarketType.SALE:
         return Text(
           'Sale',
           style: textNormalCustom(

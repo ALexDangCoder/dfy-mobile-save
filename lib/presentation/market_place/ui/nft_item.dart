@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -11,20 +12,10 @@ import 'package:intl/intl.dart';
 
 class NFTItemWidget extends StatefulWidget {
   const NFTItemWidget({
-    Key? key,
-    required this.name,
-    required this.price,
-    this.propertiesNFT,
-    this.typeNFT,
-    this.hotAuction,
-    this.typeImage,
+    Key? key, required this.nftMarket,
   }) : super(key: key);
-  final String name;
-  final double price;
-  final TypePropertiesNFT? propertiesNFT;
-  final TypeNFT? typeNFT;
-  final TypeImage? typeImage;
-  final TypeHotAuction? hotAuction;
+
+  final NftMarket nftMarket;
 
   @override
   _NFTItemState createState() => _NFTItemState();
@@ -69,7 +60,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                               borderRadius: BorderRadius.circular(10.r),
                             ),
                           ),
-                          playVideo(widget.typeImage),
+                          playVideo(widget.nftMarket.typeImage),
                         ],
                       ),
                       SizedBox(
@@ -78,10 +69,10 @@ class _NFTItemState extends State<NFTItemWidget> {
                       SizedBox(
                         height: 16.h,
                         child: Text(
-                          widget.name,
+                          widget.nftMarket.name,
                           style: textNormalCustom(
                             null,
-                            13.sp,
+                            13,
                             FontWeight.w600,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -90,7 +81,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                       SizedBox(
                         height: 2.h,
                       ),
-                      propertyNFT(widget.propertiesNFT),
+                      propertyNFT(widget.nftMarket.marketType),
                       SizedBox(
                         height: 16.h,
                       ),
@@ -111,11 +102,11 @@ class _NFTItemState extends State<NFTItemWidget> {
                                     width: 4.18.h,
                                   ),
                                   Text(
-                                    formatValue.format(widget.price),
-                                    style: TextStyle(
-                                      color: Colors.yellow,
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w600,
+                                    formatValue.format(widget.nftMarket.price),
+                                    style: textNormalCustom(
+                                      Colors.yellow,
+                                      13,
+                                      FontWeight.w600,
                                     ),
                                   ),
                                 ],
@@ -123,10 +114,10 @@ class _NFTItemState extends State<NFTItemWidget> {
                             ),
                             Text(
                               '1 of 1',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w600,
+                              style: textNormalCustom(
+                                Colors.white,
+                                13,
+                                FontWeight.w600,
                               ),
                             ),
                           ],
@@ -136,12 +127,9 @@ class _NFTItemState extends State<NFTItemWidget> {
                   ),
                 ),
               ),
-              hardNft(widget.typeNFT),
-              timeCountdown(widget.hotAuction),
+              hardNft(widget.nftMarket.typeNFT),
+              timeCountdown(widget.nftMarket.marketType),
             ],
-          ),
-          SizedBox(
-            width: 12.w,
           ),
         ],
     );
@@ -160,8 +148,8 @@ class _NFTItemState extends State<NFTItemWidget> {
     }
   }
 
-  Widget timeCountdown(TypeHotAuction? type) {
-    if (type == TypeHotAuction.YES) {
+  Widget timeCountdown(MarketType? type) {
+    if (type == MarketType.AUCTION) {
       return Padding(
         padding: EdgeInsets.only(top: 119.h, left: 35.5.w),
         child: Container(
@@ -195,7 +183,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                 '15:02:02',
                 style: textNormalCustom(
                   AppTheme.getInstance().whiteColor(),
-                  13.sp,
+                  13,
                   FontWeight.w600,
                 ),
               ),
@@ -225,32 +213,32 @@ class _NFTItemState extends State<NFTItemWidget> {
     }
   }
 
-  Widget propertyNFT(TypePropertiesNFT? type) {
+  Widget propertyNFT(MarketType? type) {
     switch (type) {
-      case TypePropertiesNFT.PAWN:
+      case MarketType.PAWN:
         return Text(
           'Pawn',
           style: textNormalCustom(
             AppTheme.getInstance().blueColor(),
-            13.sp,
+            13,
             FontWeight.w600,
           ),
         );
-      case TypePropertiesNFT.AUCTION:
+      case MarketType.AUCTION:
         return Text(
           'Auction',
           style: textNormalCustom(
             AppTheme.getInstance().failTransactionColors(),
-            13.sp,
+            13,
             FontWeight.w600,
           ),
         );
-      case TypePropertiesNFT.SALE:
+      case MarketType.SALE:
         return Text(
           'Sale',
           style: textNormalCustom(
             AppTheme.getInstance().successTransactionColors(),
-            13.sp,
+            13,
             FontWeight.w600,
           ),
         );
