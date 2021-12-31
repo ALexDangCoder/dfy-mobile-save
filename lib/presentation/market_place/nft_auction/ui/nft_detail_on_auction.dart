@@ -9,6 +9,7 @@ import 'package:Dfy/presentation/market_place/nft_auction/ui/bid_tab.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/history_tab.dart';
 import 'package:Dfy/presentation/market_place/nft_auction/ui/owner_tab.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
+import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
@@ -288,7 +289,14 @@ class _OnAuctionState extends State<OnAuction>
           FontWeight.w700,
         ),
       ),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const OfferDetailScreen(),
+          ),
+        );
+      },
     );
   }
 

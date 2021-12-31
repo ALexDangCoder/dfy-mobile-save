@@ -118,3 +118,8 @@ Row buildRow({
           )
       ],
     );
+Row buildRowCustom(String title, Widget child){
+  return Row(
+
+  );
+}

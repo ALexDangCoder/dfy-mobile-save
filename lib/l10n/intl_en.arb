@@ -317,5 +317,7 @@
   "nft_id": "NFT Id",
   "collection_address": "Collection address",
   "all":"All",
-  "offer": "Offer"
+  "offer": "Offer",
+  "offer_detail": "Offer detail",
+  "view_profile": "View profile"
 }
