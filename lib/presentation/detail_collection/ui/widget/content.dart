@@ -231,7 +231,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                     ],
                   ),
                 ),
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     widget.detailCollectionBloc.isShowMoreStream.sink
                         .add(!isShow);
