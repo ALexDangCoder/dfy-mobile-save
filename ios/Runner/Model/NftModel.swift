@@ -42,7 +42,6 @@ class NftModel {
         self.nftName = param["nftName"] as! String
         self.symbol = param["symbol"] as! String
         self.item = listItemParam.map{ItemNftModel(param: $0)}
-        print("List nft count: \(self.item.count)")
     }
     
     func toDict() -> [String: Any] {
