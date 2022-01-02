@@ -1,6 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +18,7 @@ class BaseBottomSheet extends StatelessWidget {
   final bool isHaveLeftIcon;
   final bool? isLockTextInSetting;
   final Widget? widget;
+  final bool resizeBottomInset;
 
   const BaseBottomSheet({
     Key? key,
@@ -30,12 +30,13 @@ class BaseBottomSheet extends StatelessWidget {
     this.isHaveLeftIcon = true,
     this.isLockTextInSetting = false,
     this.widget,
+    this.resizeBottomInset = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: resizeBottomInset,
       backgroundColor: Colors.black,
       body: Align(
         alignment: Alignment.bottomCenter,

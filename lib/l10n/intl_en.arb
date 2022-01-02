@@ -312,5 +312,18 @@
   "undefine_err_nft": "Something went wrong",
   "duplicated_import_nft": "Your Account is duplicated",
   "send_token": "Send Token",
-  "send_nft": "Send NFT"
+  "send_nft": "Send NFT",
+  "create_collection" : "Create Collection",
+  "coming_soon" : "COMING SOON",
+  "upload_cover_photo" : "UPLOAD COVER PHOTO",
+  "upload_avatar" : "UPLOAD AVATAR",
+  "upload_featured_photo" : "UPLOAD FEATURE PHOTO",
+  "format_image" : "Format: JPG, PNG, GIFF",
+  "collection_name" : "Collection name",
+  "categories" : "Categories",
+  "royalties" : "Royalties",
+  "social_links" : "Social link",
+  "maximum_len" : "Maximum length allowed is 255 characters",
+  "only_digits" : "Only accept digits",
+  "max_royalty" : "Maximum royalty allowed is 50%"
 }

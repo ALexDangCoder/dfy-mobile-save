@@ -89,7 +89,7 @@ class DescriptionWidget extends StatelessWidget {
                       log('OnTap Address');
                     },
                     child: Text(
-                      value,
+                      value.formatAddress(),
                       style: tokenDetailAmount(
                         color: AppTheme.getInstance().blueColor(),
                         fontSize: 14,
@@ -123,7 +123,7 @@ class DescriptionWidget extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Text(
-                isAddress ? value : value,
+                isAddress ? value.formatAddress() : value,
                 style: tokenDetailAmount(
                   color: valueColor ?? AppTheme.getInstance().textThemeColor(),
                   fontSize: 14,

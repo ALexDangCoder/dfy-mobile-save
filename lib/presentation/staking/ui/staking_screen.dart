@@ -1,3 +1,5 @@
+import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
+import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
 import 'package:flutter/material.dart';
 
 class StakingScreen extends StatefulWidget {
@@ -21,7 +23,21 @@ class _StakingState extends State<StakingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CreateCollectionScreen(
+                  bloc: CreateCollectionBloc(),
+                ),
+              ),
+            );
+          },
+          child: const Text('CREATE COLLECTION'),
+        ),
+      ),
     );
   }
 }
