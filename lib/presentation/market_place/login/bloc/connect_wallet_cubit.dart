@@ -14,7 +14,7 @@ class ConnectWalletCubit extends Cubit<ConnectWalletState> {
   Future<void> getListWallet() async {
     try {
       final data = {};
-      await trustWalletChannel.invokeMethod('getListWallets',data);
+      await trustWalletChannel.invokeMethod('getConfig',data);
     } on PlatformException catch (e){
       //nothing
       throw e;
@@ -23,18 +23,16 @@ class ConnectWalletCubit extends Cubit<ConnectWalletState> {
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
-      case 'getListWalletsCallback':
-        final List<dynamic> data = await methodCall.arguments;
+      case 'getConfigCallback':
+        final bool data = await methodCall.arguments['isWalletExist'];
         try {
-          if (data.isEmpty) {
-            emit(HasNoWallet());
-          } else if(data.isNotEmpty){
+          if (data) {
             emit(NeedLoginToUse());
-          }else{
-            print('Làm gì có chuyện ấy');
+          } else {
+            emit(HasNoWallet());
           }
         } catch (e) {
-          print(e);
+          //
         }
         break;
       default:

@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/login/ui/dialog/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/ui/token_has_email.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury_big_size.dart';
@@ -17,18 +18,10 @@ class ConnectWallet extends StatelessWidget {
       floatingActionButton: ButtonLuxuryBigSize(
         title: S.current.connect_wallet,
         isEnable: true,
-        onTap: () {
-          //todo:
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const TokenHasEmail(
-                email: 'vund.0709@gmail.com',
-                token: '0x4d148e44...827162299',
-              ),
-            ),
-          );
-        },
+        onTap: () => showDialog(
+          context: context,
+          builder: (context) => const ConnectWalletDialog(),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: BaseBottomSheet(

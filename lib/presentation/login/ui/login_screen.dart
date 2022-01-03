@@ -8,6 +8,8 @@ import 'package:Dfy/presentation/alert_dialog/ui/alert_import_pop_up.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/market_place/login/ui/email_exsited.dart';
+import 'package:Dfy/presentation/market_place/login/ui/token_has_email.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -19,8 +21,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key, required this.walletCubit}) : super(key: key);
+  const LoginScreen({
+    Key? key,
+    required this.walletCubit,
+    this.isFromConnectDialog = false,
+  }) : super(key: key);
 
+  final bool isFromConnectDialog;
   final WalletCubit walletCubit;
 
   @override
@@ -200,6 +207,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
                     listener: (context, state) {
+                      //todo
+                      print(widget.walletCubit.addressWalletCore);
+                      if (state is LoginPasswordSuccess &&
+                          widget.isFromConnectDialog) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => TokenHasEmail(
+                              token: widget.walletCubit.addressWalletCore,
+                              email: 'vuhanam',
+                            ),
+                          ),
+                          (route) => route.isFirst,
+                        );
+                        return;
+                      }
                       if (state is LoginPasswordSuccess) {
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(

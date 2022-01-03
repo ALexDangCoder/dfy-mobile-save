@@ -139,6 +139,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                       MaterialPageRoute(
                                         builder: (context) => LoginScreen(
                                           walletCubit: WalletCubit(),
+                                          isFromConnectDialog: true,
                                         ),
                                       ),
                                     );
