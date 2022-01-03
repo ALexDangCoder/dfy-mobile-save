@@ -325,5 +325,6 @@
   "collection_address": "Địa chỉ bộ sưu tập",
   "offer": "Đề nghị",
   "login_now": "Bạn không có ví nào. Đăng nhập ngay",
-  "create_now": "Bạn không có ví nào. Hãy tạo ngay"
+  "create_now": "Bạn không có ví nào. Hãy tạo ngay",
+  "could_not_load_data" : "Không thể tải dữ liệu"
 }

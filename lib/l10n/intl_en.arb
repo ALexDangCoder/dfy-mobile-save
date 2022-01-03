@@ -332,5 +332,6 @@
   "all":"All",
   "offer": "Offer",
   "login_now": "You don’t have any wallet. Log in now",
-  "create_now": "You don’t have any wallet. Create now"
+  "create_now": "You don’t have any wallet. Create now",
+  "could_not_load_data" : "Couldn’t load the data"
 }
