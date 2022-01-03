@@ -311,5 +311,8 @@
   "nft_id": "NFT Id",
   "collection_address": "Địa chỉ bộ sưu tập",
   "offer": "Đề nghị",
-  "could_not_load_data" : "Không thể tải dữ liệu"
+  "could_not_load_data" : "Không thể tải dữ liệu",
+  "cancel_sale": "Hủy bán",
+  "cancel_sale_info": "Thông tin mặt hàng sẽ bị hủy",
+  "customer_cannot": "Khách hàng sẽ không thể mua NFT của bạn nữa"
 }

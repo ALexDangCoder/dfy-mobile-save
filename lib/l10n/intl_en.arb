@@ -318,6 +318,8 @@
   "collection_address": "Collection address",
   "all":"All",
   "offer": "Offer",
-  "could_not_load_data" : "Couldn’t load the data"
-
+  "could_not_load_data" : "Couldn’t load the data",
+  "cancel_sale": "Cancel sale",
+  "cancel_sale_info": "Sale information will be cancelled",
+  "customer_cannot": "Customer can not buy your NFT anymore"
 }

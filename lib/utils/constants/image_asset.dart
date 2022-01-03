@@ -178,7 +178,7 @@ class ImageAssets {
   static const String ic_expand_svg = '$baseImg/ic_expand_svg.svg';
   static const String ic_collapse_svg = '$baseImg/ic_collapse_svg.svg';
   static const String ic_verify_svg = '$baseImg/ic_verify.svg';
-
+  static const String ic_warning_canel = '$baseImg/warning_cancel.svg';
 
   static SvgPicture svgAssets(
     String name, {
