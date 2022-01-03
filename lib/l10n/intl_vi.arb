@@ -8,6 +8,7 @@
   "retry": "Thử lại",
   "unauthorized": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
   "search": "Tìm kiếm...",
+  "put_on_sale" : "Đưa ra bán",
   "seed_phrase": "Seed phrase",
   "private_key": "Private key",
   "wallet_secret": "Seed phrase",
