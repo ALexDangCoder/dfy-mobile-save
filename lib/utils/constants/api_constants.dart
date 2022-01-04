@@ -10,9 +10,6 @@ class ApiConstants {
   static const String GET_DETAIL_NFT_AUCTION =
       '/nft-market-svc/public-api/auction/detail/';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE = '/home';
-  static const String GET_DETAIL_NFT_AUCTION = '/nft-market-svc/public-api/auction/detail/';
-  static const String GET_LIST_NFT_COLLECTION_EXPLORE =
-      '/nft-market-svc/public-api/home';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE_SEARCH =
       '/nft-market-svc/public-api/search';
   static const String GET_LIST_CATEGORY =

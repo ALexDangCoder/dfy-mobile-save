@@ -59,7 +59,7 @@ class CategoryRow extends StatelessWidget {
                     ),
                     border: InputBorder.none,
                   ),
-                  dropdownColor: Colors.transparent,
+                  dropdownColor: AppTheme.getInstance().backgroundBTSColor(),
                   onChanged: (value) {
                     FocusScope.of(context).requestFocus(FocusNode());
                     bloc.setCategory(value ?? '');
