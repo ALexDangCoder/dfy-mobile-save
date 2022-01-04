@@ -32,6 +32,7 @@ const colorSkeleton = Color(0xFF585782);
 const bgBottomTab = Color(0xFF3A3956);
 const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
+const backSearch = Color(0xFF31334C);
 
 //custom color
 Color whiteOpacityZeroFire = Colors.white.withOpacity(0.5);

@@ -7,6 +7,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -54,12 +55,17 @@ class _NFTItemState extends State<NFTItemWidget> {
                         Container(
                           height: 129.h,
                           width: 140.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(widget.nftMarket.image),
-                              fit: BoxFit.fill,
-                            ),
+                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.r),
+                            child: CachedNetworkImage(
+                              placeholder: (context, url) => Center(
+                                child: CircularProgressIndicator(
+                                  color: AppTheme.getInstance().bgBtsColor(),
+                                ),
+                              ),
+                              imageUrl: widget.nftMarket.image,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         playVideo(widget.nftMarket.typeImage),
