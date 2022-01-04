@@ -319,7 +319,6 @@
   "all":"All",
   "could_not_load_data": "Couldn’t load the data",
   "offer": "Offer",
-  "could_not_load_data" : "Couldn’t load the data",
   "send_nft": "Send NFT",
   "create_collection" : "Create Collection",
   "coming_soon" : "COMING SOON",
@@ -333,7 +332,7 @@
   "social_links" : "Social link",
   "maximum_len" : "Maximum length allowed is 255 characters",
   "only_digits" : "Only accept digits",
-  "max_royalty" : "Maximum royalty allowed is 50%"
+  "max_royalty" : "Maximum royalty allowed is 50%",
   "see_more": "See more",
   "activity_bid": "bid",
   "activity_bought": "bought",

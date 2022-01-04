@@ -112,7 +112,8 @@ class _CollectionListState extends State<CollectionList> {
                       GestureDetector(
                         onTap: () {
                           bool isMyacc = true;
-                          if (!isMyacc) {
+                          if (!isMyacc)
+                          {
                             showModalBottomSheet(
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,

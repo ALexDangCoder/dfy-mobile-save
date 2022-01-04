@@ -1,6 +1,8 @@
-import 'package:Dfy/data/result/result.dart';;
+import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/market_place/category_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -13,6 +15,7 @@ import '../../../main.dart';
 class CollectionBloc {
   CollectionBloc() {
     getCollection();
+    getListCategory();
   }
 
   //getlistcollection
@@ -31,10 +34,6 @@ class CollectionBloc {
   BehaviorSubject<bool> isAll = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isAllCategory = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isAllCategoryMyAcc = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isCategoryType1 = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isCategoryType2 = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isCategoryType3 = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isCategoryType4 = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isChooseAcc = BehaviorSubject.seeded(false);
 
   BehaviorSubject<bool> isMusic = BehaviorSubject.seeded(false);
@@ -42,6 +41,10 @@ class CollectionBloc {
   BehaviorSubject<String> textAddressFilter =
       BehaviorSubject.seeded(S.current.all);
   BehaviorSubject<String> textSearchCategory = BehaviorSubject.seeded('');
+  BehaviorSubject<List<Category>> listCategoryStream =
+      BehaviorSubject.seeded([]);
+
+  List<bool> isListCategory = [false, false, false, false];
 
   MarketPlaceRepository get _marketPlaceRepository => Get.find();
   List<CollectionModel> arg = [];
@@ -50,12 +53,22 @@ class CollectionBloc {
     S.current.all,
   ];
 
-  List<String> listCategory = [
-    'ádfasdfsadfasdfsadfsadf',
-    '11111111111111111111111ádfasdfsadfasdfsadfsadf',
-    '2222222222222222ádfasdfsadfasdfsadfsadf',
-    '3333333333333333333ádfasdfsadfasdfsadfsadf'
-  ];
+  List<Category> listCategory = [];
+
+  CategoryRepository get _categoryRepository => Get.find();
+
+  /// get list category
+  Future<void> getListCategory() async {
+    final Result<List<Category>> result =
+        await _categoryRepository.getListCategory();
+    result.when(
+      success: (res) {
+        listCategory.addAll(res);
+        listCategoryStream.add(listCategory);
+      },
+      error: (error) {},
+    );
+  }
 
   void reset() {
     isAllCategory.sink.add(false);
@@ -98,10 +111,12 @@ class CollectionBloc {
   }
 
   void allCategoryMyAcc(bool value) {
-    isCategoryType1.sink.add(value);
-    isCategoryType2.sink.add(value);
-    isCategoryType3.sink.add(value);
-    isCategoryType4.sink.add(value);
+    isListCategory.addAll([
+      value,
+      value,
+      value,
+      value,
+    ]);
   }
 
   void funOnSearch(String value) {
@@ -115,11 +130,28 @@ class CollectionBloc {
 
   void funOnSearchCategory(String value) {
     textSearchCategory.sink.add(value);
+    final List<Category> search = [];
+    for (final element in listCategory) {
+      if (element.name!.toLowerCase().contains(value.toLowerCase())) {
+        search.add(element);
+      }
+    }
+    if (value.isEmpty) {
+      listCategoryStream.add(listCategory);
+      isListCategory.addAll([
+        false,
+        false,
+        false,
+        false,
+      ]);
+    } else {
+      listCategoryStream.add(search);
+    }
   }
 
   void funOnTapSearchCategory() {
     textSearchCategory.sink.add('');
-    // widget.bloc.search();
+    listCategoryStream.add(listCategory);
   }
 
   Future<void> getCollection() async {
@@ -148,7 +180,6 @@ class CollectionBloc {
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'getListWalletsCallback':
-        print('ádfasdf');
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           listWallet.add(Wallet.fromJson(element));
