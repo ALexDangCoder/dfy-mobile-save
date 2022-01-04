@@ -77,11 +77,6 @@ class _FilterBtsState extends State<FilterBts> {
               ),
             ),
             spaceH12,
-            CheckBoxFilter(
-              nameCkcFilter: S.current.all,
-              typeCkc: TYPE_CKC_FILTER.NON_IMG,
-            ),
-            spaceH20,
             Row(
               children: [
                 Expanded(
@@ -100,6 +95,49 @@ class _FilterBtsState extends State<FilterBts> {
             ),
             spaceH20,
             Text(
+              S.current.nft_type,
+              style: textNormalCustom(
+                Colors.white,
+                20,
+                FontWeight.w600,
+              ),
+            ),
+            spaceH12,
+            Row(
+              children: [
+                Expanded(
+                  child: CheckBoxFilter(
+                    nameCkcFilter: S.current.all,
+                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                  ),
+                ),
+                Expanded(
+                  child: CheckBoxFilter(
+                    nameCkcFilter: S.current.on_sale,
+                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                  ),
+                ),
+              ],
+            ),
+            spaceH12,
+            Row(
+              children: [
+                Expanded(
+                  child: CheckBoxFilter(
+                    nameCkcFilter: S.current.on_pawn,
+                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                  ),
+                ),
+                Expanded(
+                  child: CheckBoxFilter(
+                    nameCkcFilter: S.current.on_auction,
+                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                  ),
+                ),
+              ],
+            ),
+            spaceH20,
+            Text(
               S.current.collection,
               style: textNormalCustom(
                 Colors.white,
@@ -107,9 +145,9 @@ class _FilterBtsState extends State<FilterBts> {
                 FontWeight.w600,
               ),
             ),
-            spaceH20,
+            spaceH12,
             searchCollection(),
-            spaceH20,
+            spaceH16,
             StreamBuilder<bool>(
               stream: widget.listNftCubit.isVisibleAll,
               builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -124,7 +162,7 @@ class _FilterBtsState extends State<FilterBts> {
             ),
             spaceH20,
             SizedBox(
-              height: 200.h,
+              height: 190.h,
               width: double.infinity,
               child: StreamBuilder<List<CheckBoxFilter>>(
                 stream: widget.listNftCubit.listCheckBox,
@@ -153,7 +191,7 @@ class _FilterBtsState extends State<FilterBts> {
               ),
             ),
             SizedBox(
-              height: 60.h,
+              height: 34.h,
             ),
             const ButtonGold(
               title: 'Apply',

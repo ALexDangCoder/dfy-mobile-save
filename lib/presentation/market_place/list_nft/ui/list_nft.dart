@@ -9,6 +9,7 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -30,6 +31,8 @@ class _ListNftState extends State<ListNft> {
     super.initState();
     _cubit = ListNftCubit();
     title = _cubit.getTitle(widget.marketType);
+    _cubit.getCollectionFilter();
+    _cubit.getListNft(status: _cubit.status(widget.marketType));
   }
 
   @override
@@ -43,7 +46,7 @@ class _ListNftState extends State<ListNft> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusScope.of(context).unfocus();
         },
         child: Align(
@@ -55,7 +58,9 @@ class _ListNftState extends State<ListNft> {
                 isScrollControlled: true,
                 context: context,
                 builder: (_) {
-                  return FilterBts(listNftCubit: _cubit,);
+                  return FilterBts(
+                    listNftCubit: _cubit,
+                  );
                 },
               );
             },
@@ -74,26 +79,48 @@ class _ListNftState extends State<ListNft> {
                     ),
                     child: searchBar(),
                   ),
-                  Expanded(
-                    child: StaggeredGridView.countBuilder(
-                      shrinkWrap: true,
-                      mainAxisSpacing: 20.h,
-                      itemCount: _cubit.listData.length,
-                      crossAxisCount: 2,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(left: 16.w),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: NFTItemWidget(
-                              nftMarket: _cubit.listData[index],
+                  BlocBuilder<ListNftCubit, ListNftState>(
+                    bloc: _cubit,
+                    builder: (context, state) {
+                      if (state is ListNftSuccess) {
+                        return Expanded(
+                          child: StaggeredGridView.countBuilder(
+                            shrinkWrap: true,
+                            mainAxisSpacing: 20.h,
+                            itemCount: _cubit.listData.length,
+                            crossAxisCount: 2,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(left: 16.w),
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  child: NFTItemWidget(
+                                    nftMarket: _cubit.listData[index],
+                                  ),
+                                ),
+                              );
+                            },
+                            staggeredTileBuilder: (int index) =>
+                                const StaggeredTile.fit(1),
+                          ),
+                        );
+                      }
+                      else if(state is ListNftError){
+                        return Container();
+                      }
+                      else{
+                        return SizedBox(
+                          height: 100.h,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3.r,
+                              color:
+                              AppTheme.getInstance().whiteColor(),
                             ),
                           ),
                         );
-                      },
-                      staggeredTileBuilder: (int index) =>
-                      const StaggeredTile.fit(1),
-                    ),
+                      }
+                    },
                   ),
                 ],
               ),

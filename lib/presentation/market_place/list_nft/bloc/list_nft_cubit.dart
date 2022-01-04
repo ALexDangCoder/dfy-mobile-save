@@ -1,10 +1,15 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/collection_filter.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
+import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/components/ckc_filter.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -17,6 +22,63 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   final BehaviorSubject<bool> isVisibleAll = BehaviorSubject.seeded(true);
   final BehaviorSubject<List<CheckBoxFilter>> listCheckBox =
       BehaviorSubject<List<CheckBoxFilter>>();
+
+  CollectionFilterRepository get _collectionRepo => Get.find();
+
+  NftMarketRepository get _nftRepo => Get.find();
+
+  Future<void> getCollectionFilter() async {
+    final Result<List<CollectionFilter>> result =
+        await _collectionRepo.getListCollection();
+    result.when(
+      success: (res) {
+        addCollectionFilter(list: res);
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
+  }
+
+
+  String status(MarketType type) {
+    if(type == MarketType.AUCTION){
+      return '2';
+    }
+    else if(type == MarketType.PAWN){
+      return '3';
+    }
+    else {
+      return '1';
+    }
+  }
+   String typeNft(TypeNFT type) {
+    if(type == TypeNFT.HARD_NFT){
+      return '1';
+    }
+    else {
+      return '0';
+    }
+   }
+
+  Future<void> getListNft({
+    String? status,
+    String? nftType,
+    String? name,
+    String? collectionId,
+  }) async {
+    emit(ListNftLoading());
+    final Result<List<NftMarket>> result = await _nftRepo.getListNft();
+    result.when(
+      success: (res) {
+        listData = res;
+        emit(ListNftSuccess());
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
+  }
 
   void show() {
     isVisible.sink.add(true);
@@ -39,6 +101,20 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
+  void addCollectionFilter({required List<CollectionFilter> list}) {
+    for (final value in list) {
+      listCollectionCheck.add(
+        CheckBoxFilter(
+          nameCkcFilter: value.name ?? '',
+          typeCkc: TYPE_CKC_FILTER.HAVE_IMG,
+          urlCover: value.avatarCid,
+        ),
+      );
+    }
+  }
+
+  List<CheckBoxFilter> listCollectionCheck = [];
+
   void searchCollection(String nameCollection) {
     final List<CheckBoxFilter> search = [];
     for (final element in listCollectionCheck) {
@@ -56,122 +132,5 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-  void getListNFT(MarketType type) {}
-
-  List<CheckBoxFilter> listCollectionCheck = [
-    const CheckBoxFilter(
-      nameCkcFilter: 'Artwork',
-      typeCkc: TYPE_CKC_FILTER.HAVE_IMG,
-      urlCover: ImageAssets.img_art,
-    ),
-    const CheckBoxFilter(
-      nameCkcFilter: 'Animals',
-      typeCkc: TYPE_CKC_FILTER.HAVE_IMG,
-      urlCover: ImageAssets.img_art,
-    ),
-    const CheckBoxFilter(
-      nameCkcFilter: 'Painting',
-      typeCkc: TYPE_CKC_FILTER.HAVE_IMG,
-      urlCover: ImageAssets.img_art,
-    ),
-    const CheckBoxFilter(
-      nameCkcFilter: 'Artwork',
-      typeCkc: TYPE_CKC_FILTER.HAVE_IMG,
-      urlCover: ImageAssets.img_art,
-    ),
-  ];
-
-  List<NftMarket> listData = [
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      // backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.SALE,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      // backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.PAWN,
-      typeNFT: TypeNFT.SOFT_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      // backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.AUCTION,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.VIDEO,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      // backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.PAWN,
-      typeNFT: TypeNFT.SOFT_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      // backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.SALE,
-      typeNFT: TypeNFT.SOFT_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      // backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.AUCTION,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.VIDEO,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      // backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.PAWN,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-  ];
+  List<NftMarket> listData = [];
 }
