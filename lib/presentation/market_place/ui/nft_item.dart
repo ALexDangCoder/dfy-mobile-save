@@ -4,13 +4,13 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:video_player/video_player.dart';
 
 class NFTItemWidget extends StatefulWidget {
   const NFTItemWidget({
@@ -26,6 +26,21 @@ class NFTItemWidget extends StatefulWidget {
 
 class _NFTItemState extends State<NFTItemWidget> {
   final formatValue = NumberFormat('###,###,###.###', 'en_US');
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
+      _controller = VideoPlayerController.network(widget.nftMarket.image);
+      _controller.addListener(() {
+        setState(() {});
+      });
+      _controller.setLooping(true);
+      _controller.initialize().then((_) => setState(() {}));
+      _controller.play();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,15 +72,18 @@ class _NFTItemState extends State<NFTItemWidget> {
                           width: 140.w,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.r),
-                            child: CachedNetworkImage(
-                              placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(
-                                  color: AppTheme.getInstance().bgBtsColor(),
-                                ),
-                              ),
+                            child: (widget.nftMarket.typeImage !=
+                                TypeImage.VIDEO) ? CachedNetworkImage(
+                              placeholder: (context, url) =>
+                                  Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppTheme.getInstance()
+                                          .bgBtsColor(),
+                                    ),
+                                  ),
                               imageUrl: widget.nftMarket.image,
                               fit: BoxFit.cover,
-                            ),
+                            ):VideoPlayer(_controller),
                           ),
                         ),
                         playVideo(widget.nftMarket.typeImage),
@@ -120,7 +138,9 @@ class _NFTItemState extends State<NFTItemWidget> {
                             ),
                           ),
                           Text(
-                            '1 ${S.current.of_all} ${widget.nftMarket.totalCopies}',
+                            '${widget.nftMarket.numberOfCopies} '
+                                '${S.current.of_all} '
+                                '${widget.nftMarket.totalCopies}',
                             style: textNormalCustom(
                               Colors.white,
                               13,
@@ -210,8 +230,19 @@ class _NFTItemState extends State<NFTItemWidget> {
           padding: EdgeInsets.only(
             top: 49.h,
           ),
-          child: const Image(
-            image: AssetImage(ImageAssets.play_video),
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                _controller.value.isPlaying
+                    ? _controller.pause()
+                    : _controller.play();
+              });
+            },
+            child: Icon(
+              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+              size: 24.sp,
+              color: Colors.white,
+            ),
           ),
         ),
       );
