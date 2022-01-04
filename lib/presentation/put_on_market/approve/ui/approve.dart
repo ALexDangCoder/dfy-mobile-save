@@ -4,6 +4,7 @@ import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/wallet_view_approve/ui/wallet_view_approve.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -108,6 +109,7 @@ class _ApproveState extends State<Approve> {
                           color: AppTheme.getInstance().divideColor(),
                         ),
                         const SizedBox(height: 16),
+                        const WalletViewApprove()
                       ],
                     ),
                   ),
