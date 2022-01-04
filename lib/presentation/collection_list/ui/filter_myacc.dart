@@ -6,7 +6,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/form/from_search.dart';
 import 'package:flutter/cupertino.dart';
@@ -156,7 +155,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                                     ),
                                     height: 46.h,
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: 15.5.w),
+                                        horizontal: 15.5.w,),
                                     decoration: BoxDecoration(
                                       color: AppTheme.getInstance()
                                           .itemBtsColors(),
@@ -368,8 +367,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                         return InkWell(
                           onTap: () {
                             collectionBloc.textAddressFilter.sink.add(
-                              collectionBloc.listAcc[index]
-                                  .formatAddressWalletConfirm(),
+                              collectionBloc.listAcc[index],
                             );
                             collectionBloc.isChooseAcc.sink.add(false);
                           },
@@ -379,8 +377,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                               left: 24.w,
                             ),
                             child: Text(
-                              collectionBloc.listAcc[index]
-                                  .formatAddressWalletConfirm(),
+                              collectionBloc.listAcc[index],
                               style: textNormalCustom(null, 16, null),
                             ),
                           ),

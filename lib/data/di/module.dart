@@ -4,7 +4,6 @@ import 'package:Dfy/data/repository_impl/market_place/marketplace_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/nft_market_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/price_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/token_repository_impl.dart';
-import 'package:Dfy/data/response/collection/collection_response.dart';
 import 'package:Dfy/data/services/market_place/collection_filter_service.dart';
 import 'package:Dfy/data/services/market_place/marketplace_client.dart';
 import 'package:Dfy/data/services/market_place/nft_market_services.dart';

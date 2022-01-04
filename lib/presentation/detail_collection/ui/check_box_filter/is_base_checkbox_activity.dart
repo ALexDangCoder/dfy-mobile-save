@@ -11,7 +11,9 @@ class IsBaseCheckBox extends StatelessWidget {
   final Function? funCheckBox;
   final BehaviorSubject<bool> stream;
 
-  const IsBaseCheckBox({
+  const
+
+  IsBaseCheckBox({
     Key? key,
     required this.title,
     required this.stream,
@@ -21,7 +23,7 @@ class IsBaseCheckBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
+    return Row(
       children: [
         Expanded(
           child: StreamBuilder(
@@ -60,12 +62,12 @@ class IsBaseCheckBox extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  funText!(stream.value);
                   if (stream.value) {
                     stream.sink.add(false);
                   } else {
                     stream.sink.add(true);
                   }
+                  funText!(stream.value);
                 },
                 child: Text(
                   title,

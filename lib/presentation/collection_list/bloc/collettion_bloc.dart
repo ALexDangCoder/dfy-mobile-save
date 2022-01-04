@@ -1,8 +1,14 @@
-import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/result/result.dart';;
 import 'package:Dfy/domain/model/market_place/collection_model.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../../main.dart';
 
 class CollectionBloc {
   CollectionBloc() {
@@ -33,13 +39,18 @@ class CollectionBloc {
 
   BehaviorSubject<bool> isMusic = BehaviorSubject.seeded(false);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
-  BehaviorSubject<String> textAddressFilter = BehaviorSubject.seeded('');
+  BehaviorSubject<String> textAddressFilter =
+      BehaviorSubject.seeded(S.current.all);
   BehaviorSubject<String> textSearchCategory = BehaviorSubject.seeded('');
 
   MarketPlaceRepository get _marketPlaceRepository => Get.find();
   List<CollectionModel> arg = [];
 
   List<String> listAcc = [
+    S.current.all,
+  ];
+
+  List<String> listCategory = [
     'ádfasdfsadfasdfsadfsadf',
     '11111111111111111111111ádfasdfsadfasdfsadfsadf',
     '2222222222222222ádfasdfsadfasdfsadfsadf',
@@ -63,19 +74,19 @@ class CollectionBloc {
 
   void resetFilterMyAcc() {
     allCollection(false);
+    isAll.sink.add(false);
     allCategoryMyAcc(false);
     isAllCategoryMyAcc.sink.add(false);
     funOnTapSearchCategory();
+    textAddressFilter.add(S.current.all);
   }
 
   void allCollection(bool value) {
-    isAll.sink.add(value);
     isHardNft.sink.add(value);
     isSoftNft.sink.add(value);
   }
 
   void allCategory(bool value) {
-    isAllCategory.sink.add(value);
     isArt.sink.add(value);
     isGame.sink.add(value);
     isCollectibles.sink.add(value);
@@ -121,6 +132,34 @@ class CollectionBloc {
       },
       error: (error) {},
     );
+  }
+
+  Future<void> getListWallets() async {
+    try {
+      final data = {};
+      await trustWalletChannel.invokeMethod('getListWallets', data);
+    } on PlatformException {
+      //nothing
+    }
+  }
+
+  List<Wallet> listWallet = [];
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'getListWalletsCallback':
+        print('ádfasdf');
+        final List<dynamic> data = methodCall.arguments;
+        for (final element in data) {
+          listWallet.add(Wallet.fromJson(element));
+        }
+        for (final element in listWallet) {
+          listAcc.add(element.address?.formatAddressWalletConfirm() ?? '');
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   void dispone() {

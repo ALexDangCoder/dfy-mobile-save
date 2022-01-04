@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '../../../main.dart';
 import 'filter.dart';
 import 'filter_myacc.dart';
 
@@ -36,6 +37,8 @@ class _CollectionListState extends State<CollectionList> {
     super.initState();
     collectionBloc = CollectionBloc();
     searchCollection = TextEditingController();
+    trustWalletChannel.setMethodCallHandler(collectionBloc.nativeMethodCallBackTrustWallet);
+    collectionBloc.getListWallets();
   }
 
   @override
