@@ -112,6 +112,10 @@ dependencies:
   #web3
   web3dart: ^2.3.3
   http: ^0.13.4
+  keyboard_dismisser: ^2.0.0
+  dotted_border: ^2.0.0+1
+
+
   html: ^0.15.0
 dev_dependencies:
   flutter_test:

@@ -182,6 +182,8 @@ abstract class AppColor {
 
   Color titleTabColor();
 
+  Color disableRadioColor();
+
   List<Color> listBackgroundMarketColor();
 }
 
@@ -414,6 +416,12 @@ class LightApp extends AppColor {
   Color bgTranSubmit() {
     // TODO: implement bgTranSubmit
     return bgTranSubmitColor;
+  }
+
+  @override
+  Color disableRadioColor() {
+    // TODO: implement disableRadioColor
+    return const Color(0xFFE0E0E0);
   }
 
   @override
@@ -720,6 +728,12 @@ class DarkApp extends AppColor {
   @override
   Color bgTranSubmit() {
     // TODO: implement bgTranSubmit
+    throw UnimplementedError();
+  }
+
+  @override
+  Color disableRadioColor() {
+    // TODO: implement disableRadioColor
     throw UnimplementedError();
   }
 
