@@ -7,5 +7,12 @@ mixin MarketPlaceRepository {
       getListTypeNftCollectionExplore();
 
   Future<Result<List<CollectionModel>>>
-      getListCollection();
+      getListCollection(
+      {
+        String? address,
+        String? name,
+        // String? nftType,
+        // String? collectionId,
+      }
+      );
 }

@@ -4,7 +4,9 @@ import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/collection_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
+import 'package:Dfy/presentation/collection_list/ui/item_error.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -13,11 +15,13 @@ import 'package:Dfy/widgets/item/item_collection/item_colection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../../../main.dart';
 import 'filter.dart';
 import 'filter_myacc.dart';
+import 'item_collection_load.dart';
 
 class CollectionList extends StatefulWidget {
   const CollectionList({Key? key}) : super(key: key);
@@ -37,7 +41,8 @@ class _CollectionListState extends State<CollectionList> {
     super.initState();
     collectionBloc = CollectionBloc();
     searchCollection = TextEditingController();
-    trustWalletChannel.setMethodCallHandler(collectionBloc.nativeMethodCallBackTrustWallet);
+    trustWalletChannel
+        .setMethodCallHandler(collectionBloc.nativeMethodCallBackTrustWallet);
     collectionBloc.getListWallets();
   }
 
@@ -112,24 +117,25 @@ class _CollectionListState extends State<CollectionList> {
                       GestureDetector(
                         onTap: () {
                           bool isMyacc = true;
-                          if (!isMyacc)
-                          {
+                          if (!isMyacc) {
                             showModalBottomSheet(
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,
                               context: context,
-                              builder: (context) => Filter(
-                                collectionBloc: collectionBloc,
-                              ),
+                              builder: (context) =>
+                                  Filter(
+                                    collectionBloc: collectionBloc,
+                                  ),
                             );
                           } else {
                             showModalBottomSheet(
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,
                               context: context,
-                              builder: (context) => FilterMyAcc(
-                                collectionBloc: collectionBloc,
-                              ),
+                              builder: (context) =>
+                                  FilterMyAcc(
+                                    collectionBloc: collectionBloc,
+                                  ),
                             );
                           }
                         },
@@ -154,11 +160,10 @@ class _CollectionListState extends State<CollectionList> {
                     textSearch: searchCollection,
                   ),
                   spaceH10,
-                  StreamBuilder(
-                    stream: collectionBloc.list,
-                    builder: (context,
-                        AsyncSnapshot<List<CollectionModel>> snapshot) {
-                      if (snapshot.hasData) {
+                  BlocBuilder<CollectionBloc, CollectionState>(
+                    bloc: collectionBloc,
+                    builder: (context, state) {
+                      if (state == LoadingData()) {
                         return Expanded(
                           child: StaggeredGridView.countBuilder(
                             padding: EdgeInsets.only(
@@ -169,52 +174,90 @@ class _CollectionListState extends State<CollectionList> {
                             ),
                             mainAxisSpacing: 20.h,
                             crossAxisSpacing: 26.w,
-                            itemCount: collectionBloc.list.value.length,
+                            itemCount: 10,
                             itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRouter.detailCollection,
-                                  );
-                                },
-                                child: ItemCollection(
-                                  items:
-                                      '${snapshot.data?[index].totalNft ?? 0}',
-                                  text: snapshot.data?[index].description
-                                          ?.parseHtml() ??
-                                      '',
-                                  urlIcon: ApiConstants.URL_BASE +
-                                      (snapshot.data?[index].avatarCid ?? ''),
-                                  owners:
-                                      '${snapshot.data?[index].nftOwnerCount ?? 0}',
-                                  title:
-                                      snapshot.data?[index].name?.parseHtml() ??
-                                          '',
-                                  urlBackGround: ApiConstants.URL_BASE +
-                                      (snapshot.data?[index].coverCid ?? ''),
-                                ),
-                              );
+                              return const ItemCollectionLoad();
                             },
                             crossAxisCount: 2,
                             staggeredTileBuilder: (int index) =>
-                                const StaggeredTile.fit(1),
+                            const StaggeredTile.fit(1),
+                          ),
+                        );
+                      } else if (state == LoadingDataFail()) {
+                        return Expanded(
+                          child: StaggeredGridView.countBuilder(
+                            padding: EdgeInsets.only(
+                              left: 21.w,
+                              right: 21.w,
+                              top: 10.h,
+                              bottom: 20.h,
+                            ),
+                            mainAxisSpacing: 20.h,
+                            crossAxisSpacing: 26.w,
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              return ItemCollectionError(cubit: collectionBloc);
+                            },
+                            crossAxisCount: 2,
+                            staggeredTileBuilder: (int index) =>
+                            const StaggeredTile.fit(1),
                           ),
                         );
                       } else {
-                        return Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height / 2 - 80,
-                            ),
-                            child: CircularProgressIndicator(
-                              color: AppTheme.getInstance().whiteColor(),
-                            ),
-                          ),
+                        return StreamBuilder(
+                          stream: collectionBloc.list,
+                          builder: (context,
+                              AsyncSnapshot<List<CollectionModel>> snapshot) {
+                            return Expanded(
+                              child: StaggeredGridView.countBuilder(
+                                padding: EdgeInsets.only(
+                                  left: 21.w,
+                                  right: 21.w,
+                                  top: 10.h,
+                                  bottom: 20.h,
+                                ),
+                                mainAxisSpacing: 20.h,
+                                crossAxisSpacing: 26.w,
+                                itemCount: collectionBloc.list.value.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        AppRouter.detailCollection,
+                                      );
+                                    },
+                                    child: ItemCollection(
+                                      items:
+                                      '${snapshot.data?[index].totalNft ?? 0}',
+                                      text: snapshot.data?[index].description
+                                          ?.parseHtml() ??
+                                          '',
+                                      urlIcon: ApiConstants.URL_BASE +
+                                          (snapshot.data?[index].avatarCid ??
+                                              ''),
+                                      owners:
+                                      '${snapshot.data?[index].nftOwnerCount ??
+                                          0}',
+                                      title: snapshot.data?[index].name
+                                          ?.parseHtml() ??
+                                          '',
+                                      urlBackGround: ApiConstants.URL_BASE +
+                                          (snapshot.data?[index].coverCid ??
+                                              ''),
+                                    ),
+                                  );
+                                },
+                                crossAxisCount: 2,
+                                staggeredTileBuilder: (int index) =>
+                                const StaggeredTile.fit(1),
+                              ),
+                            );
+                          },
                         );
                       }
                     },
-                  )
+                  ),
                 ],
               ),
             ),

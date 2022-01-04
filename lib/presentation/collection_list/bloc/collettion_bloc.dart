@@ -1,3 +1,4 @@
+import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_model.dart';
@@ -5,6 +6,7 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -12,8 +14,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../main.dart';
 
-class CollectionBloc {
-  CollectionBloc() {
+class CollectionBloc extends BaseCubit<CollectionState> {
+  CollectionBloc() : super(CollectionState()) {
     getCollection();
     getListCategory();
   }
@@ -56,6 +58,22 @@ class CollectionBloc {
   List<Category> listCategory = [];
 
   CategoryRepository get _categoryRepository => Get.find();
+
+  void searchCollection() {
+    textSearch.stream
+        .debounceTime(
+      const Duration(
+        milliseconds: 500,
+      ),
+    )
+        .listen((event) {
+      if (event.isEmpty) {
+        getCollection(name: event);
+      } else {
+        getCollection(name: event);
+      }
+    });
+  }
 
   /// get list category
   Future<void> getListCategory() async {
@@ -121,11 +139,12 @@ class CollectionBloc {
 
   void funOnSearch(String value) {
     textSearch.sink.add(value);
+    searchCollection();
   }
 
   void funOnTapSearch() {
     textSearch.sink.add('');
-    // widget.bloc.search();
+    searchCollection();
   }
 
   void funOnSearchCategory(String value) {
@@ -154,15 +173,19 @@ class CollectionBloc {
     listCategoryStream.add(listCategory);
   }
 
-  Future<void> getCollection() async {
+  Future<void> getCollection({String? name = ''}) async {
+    emit(LoadingData());
     final Result<List<CollectionModel>> result =
-        await _marketPlaceRepository.getListCollection();
+        await _marketPlaceRepository.getListCollection(name: name);
     result.when(
       success: (res) {
+        emit(LoadingDataSuccess());
         arg = res.toList();
         list.sink.add(arg);
       },
-      error: (error) {},
+      error: (error) {
+        emit(LoadingDataFail());
+      },
     );
   }
 

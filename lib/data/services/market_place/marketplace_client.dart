@@ -17,5 +17,8 @@ abstract class MarketPlaceHomeClient {
   Future<MarketPlaceResponse> getListNftCollectionExplore();
 
   @GET(ApiConstants.GET_LIST_COLLECTION)
-  Future<ListCollectionResponse> getListCollection();
+  Future<ListCollectionResponse> getListCollection(
+      @Query('address') String? address,
+  @Query('name') String? name
+      );
 }
