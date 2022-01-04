@@ -92,6 +92,7 @@ class _ChooseTokenState extends State<ChooseToken> {
   }
 
   Widget showItemToken(String shortToken, int index) {
+    print (widget.bloc.getListTokenModel.value[index].iconToken);
     if (shortToken == 'BNB' || shortToken == 'DFY') {
       return ListTileSwitch(
         enabled: false,
