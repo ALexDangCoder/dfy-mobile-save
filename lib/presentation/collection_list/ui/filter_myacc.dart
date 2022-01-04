@@ -279,36 +279,38 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 210.h,
-                            width: double.infinity,
-                            child: StreamBuilder<List<Category>>(
-                              stream: widget.collectionBloc.listCategoryStream,
-                              builder: (context, snapshot) {
-                                return ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: (snapshot.data?.length ?? 0) > 4
-                                      ? 4
-                                      : snapshot.data?.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      child: ItemCategoryFilter(
-                                        title: snapshot.data?[index].name ?? '',
-                                        urlImage:
-                                            snapshot.data?[index].avatarCid ??
-                                                '',
-                                        collectionBloc: collectionBloc,
-                                        index: index,
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                          ),
+
                         ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 3.w,),
+                      height: 210.h,
+                      width: double.infinity,
+                      child: StreamBuilder<List<Category>>(
+                        stream: widget.collectionBloc.listCategoryStream,
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: (snapshot.data?.length ?? 0) > 4
+                                ? 4
+                                : snapshot.data?.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                child: ItemCategoryFilter(
+                                  title: snapshot.data?[index].name ?? '',
+                                  urlImage:
+                                  snapshot.data?[index].avatarCid ??
+                                      '',
+                                  collectionBloc: collectionBloc,
+                                  index: index,
+                                ),
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                     spaceH24,
