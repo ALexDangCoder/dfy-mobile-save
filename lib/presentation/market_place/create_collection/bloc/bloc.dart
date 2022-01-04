@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
 class CreateCollectionBloc {
@@ -156,7 +161,8 @@ class CreateCollectionBloc {
         hintText != 'Twitter' &&
         hintText != 'Instagram' &&
         hintText != 'Telegram' &&
-        hintText != S.current.royalties) {
+        hintText != S.current.royalties &&
+        hintText != 'app.defiforyou/uk/marketplace/....') {
       return '$hintText can not be empty';
     } else if (hintText == S.current.royalties) {
       if (value.isEmpty) {
@@ -264,6 +270,51 @@ class CreateCollectionBloc {
     categoryId = id;
   }
 
+  ///validate custom URL
+  Timer? debounceTime;
+  RegExp reg = RegExp(r'^[a-z0-9_]+$');
+
+  Future<void> validateCustomURL(String _customUrl) async {
+    if (debounceTime != null) {
+      if (debounceTime!.isActive) {
+        debounceTime!.cancel();
+      }
+    }
+    if (_customUrl.isNotEmpty) {
+      if (_customUrl.length > 255) {
+        customURLSubject.sink.add(S.current.maximum_len);
+      } else if (reg.hasMatch(_customUrl)) {
+        customURLSubject.sink.add('');
+        debounceTime = Timer(
+          const Duration(milliseconds: 500),
+              () async {
+            final appConstants = Get.find<AppConstants>();
+            final String uri = appConstants.baseUrl +
+                ApiConstants.GET_BOOL_CUSTOM_URL +
+                _customUrl;
+            final response = await http.get(
+              Uri.parse(uri),
+            );
+            if (response.statusCode == 200) {
+              if (response.body == 'true') {
+                mapCheck['custom_url'] = true;
+              } else {
+                mapCheck['custom_url'] = false;
+              }
+            } else {
+              throw Exception('Get response fail');
+            }
+          },
+        );
+      } else {
+        customURLSubject.sink.add('NOT TRUE');
+      }
+    } else {
+      mapCheck['custom_url'] = true;
+      customURLSubject.sink.add('');
+    }
+  }
+
   /// get list category
   Future<void> getListCategory() async {
     List<DropdownMenuItem<String>> menuItems = [];
@@ -284,6 +335,4 @@ class CreateCollectionBloc {
     );
     listCategorySubject.sink.add(menuItems);
   }
-
-
 }

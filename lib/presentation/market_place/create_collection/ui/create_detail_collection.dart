@@ -136,11 +136,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
         InputRow(
           textController: customURLController,
           onChange: (value) {
-            widget.bloc.validateCase(
-              inputCase: 'url',
-              hintText: 'app.defiforyou/uk/marketplace/....',
-              value: value,
-            );
+            widget.bloc.validateCustomURL(value);
           },
           leadImg: ImageAssets.ic_link_svg,
           hint: 'app.defiforyou/uk/marketplace/....',
