@@ -38,15 +38,13 @@ class InputWithSelectType extends StatefulWidget {
       : super(key: key);
 
   @override
-  InputWithSelectTypeState createState() => InputWithSelectTypeState();
+  _InputWithSelectTypeState createState() => _InputWithSelectTypeState();
 }
 
-class InputWithSelectTypeState extends State<InputWithSelectType> {
+class _InputWithSelectTypeState extends State<InputWithSelectType> {
   GlobalKey dropdownKey = GlobalKey();
   late double width, height, xPosition, yPosition;
-  late OverlayEntry floatingDropdown;
   int chooseIndex = 0;
-  bool isDropdownOpened = false;
 
   @override
   void initState() {
@@ -65,74 +63,15 @@ class InputWithSelectTypeState extends State<InputWithSelectType> {
     yPosition = offset.dy;
   }
 
-  OverlayEntry _customOverlayEntry() {
-    return OverlayEntry(builder: (context) {
-      return Positioned(
-        right: 0,
-        top: yPosition + height,
-        child: Padding(
-          padding: EdgeInsets.only(right: 16.w),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              color: AppTheme.getInstance().selectDialogColor(),
-              constraints:
-                  BoxConstraints(maxHeight: (widget.heightOfWidget ?? 64) * 3),
-              child: SingleChildScrollView(
-                child: Column(
-                    children: widget.typeInput
-                        .indexedMap((e, index) => GestureDetector(
-                              onTap: () {
-                                if (widget.onChangeType != null) {
-                                  widget.onChangeType!(index);
-                                }
-                                setState(() {
-                                  chooseIndex = index;
-                                });
-                                final FocusScopeNode currentFocus =
-                                    FocusScope.of(context);
-                                if (!currentFocus.hasPrimaryFocus) {
-                                  currentFocus.unfocus();
-                                }
-                                closeDropDown();
-                              },
-                              child: Container(
-                                color: index == chooseIndex
-                                    ? Colors.white.withOpacity(0.1)
-                                    : AppTheme.getInstance()
-                                        .selectDialogColor(),
-                                height: widget.heightOfWidget ?? 64,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    e,
-                                    const SizedBox(
-                                      width: 25,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ))
-                        .toList()),
-              ),
-            ),
-          ),
-        ),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
           decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              color: AppTheme.getInstance().backgroundBTSColor()),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            color: AppTheme.getInstance().backgroundBTSColor(),
+          ),
           height: widget.heightOfWidget ?? 64,
           child: Row(
             children: [
@@ -140,17 +79,7 @@ class InputWithSelectTypeState extends State<InputWithSelectType> {
                 child: TextField(
                   inputFormatters: widget.inputFormatters,
                   keyboardType: widget.keyboardType ?? TextInputType.text,
-                  onTap: () {
-                    if (isDropdownOpened) {
-                      floatingDropdown.remove();
-                      isDropdownOpened = false;
-                    }
-                  },
                   onChanged: (value) {
-                    if (isDropdownOpened) {
-                      floatingDropdown.remove();
-                      isDropdownOpened = false;
-                    }
                     if (widget.onchangeText != null) {
                       widget.onchangeText!(value);
                     }
@@ -180,22 +109,26 @@ class InputWithSelectTypeState extends State<InputWithSelectType> {
               ),
               GestureDetector(
                 key: dropdownKey,
-                onTap: () {
-                  final FocusScopeNode currentFocus = FocusScope.of(context);
-                  if (!currentFocus.hasPrimaryFocus) {
-                    currentFocus.unfocus();
-                  }
-                  if (isDropdownOpened) {
-                    floatingDropdown.remove();
-                  } else {
-                    findDropDownSize();
-                    setState(() {
-                      floatingDropdown = _customOverlayEntry();
-                      Overlay.of(context)!.insert(floatingDropdown);
-                    });
-                  }
-                  isDropdownOpened = !isDropdownOpened;
-                  setState(() {});
+                onTap: () async {
+                  findDropDownSize();
+                  final index = await Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: Duration.zero,
+                      opaque: false,
+                      pageBuilder: (_, __, ___) => DropDown(
+                        chooseIndex: chooseIndex,
+                        width: width,
+                        height: height,
+                        xPosition: xPosition,
+                        yPosition: yPosition,
+                        typeInput: widget.typeInput,
+                      ),
+                    ),
+                  );
+                  setState(() {
+                    chooseIndex = index;
+                  });
                 },
                 child: Row(
                   children: [
@@ -208,14 +141,15 @@ class InputWithSelectTypeState extends State<InputWithSelectType> {
                     else
                       Container(),
                     SizedBox(
-                      width: 25,
+                      width: 20,
                       height: widget.heightOfWidget ?? 64,
                       child: Image.asset(
                         ImageAssets.ic_line_down,
-                        width: 10,
-                        height: 10,
+                        width: 20,
+                        height: 20,
                       ),
                     ),
+                    const SizedBox(width: 15)
                   ],
                 ),
               ),
@@ -225,11 +159,119 @@ class InputWithSelectTypeState extends State<InputWithSelectType> {
       ],
     );
   }
+}
 
-  void closeDropDown() {
-    if (isDropdownOpened) {
-      floatingDropdown.remove();
-      isDropdownOpened = false;
-    }
+class DropDown extends StatelessWidget {
+  final double height;
+  final double yPosition;
+  final double width;
+  final double? heightOfWidget;
+  final int? chooseIndex;
+  final List<Widget> typeInput;
+
+  final double xPosition;
+
+  const DropDown(
+      {Key? key,
+      required this.height,
+      required this.yPosition,
+      required this.width,
+      required this.xPosition,
+      this.heightOfWidget,
+      required this.typeInput,
+      this.chooseIndex = 0})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isBelow =
+        (MediaQuery.of(context).size.height - (yPosition + height)) >
+            ((heightOfWidget ?? 64) * 3) + 10;
+    final _scrollController = ScrollController();
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.transparent,
+            ),
+          ),
+          Positioned(
+            right: 16.w,
+            top: isBelow
+                ? yPosition + height
+                : typeInput.length < 3
+                    ? yPosition -
+                        (((heightOfWidget ?? 64) * typeInput.length) + 10)
+                    : yPosition - (((heightOfWidget ?? 64) * 3) + 10),
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topRight: const Radius.circular(10),
+                bottomLeft: isBelow ? const Radius.circular(10) : Radius.zero,
+                bottomRight: const Radius.circular(10),
+                topLeft: isBelow ? Radius.zero : const Radius.circular(10),
+              ),
+              child: Container(
+                padding: EdgeInsets.only(
+                    top: isBelow ? 10 : 0, bottom: isBelow ? 0 : 10),
+                color: AppTheme.getInstance().selectDialogColor(),
+                constraints: BoxConstraints(
+                  maxHeight: ((heightOfWidget ?? 64) * 3) + 10,
+                ),
+                child: MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  child: Scrollbar(
+                    radius: const Radius.circular(10),
+                    controller: _scrollController,
+                    isAlwaysShown: true,
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      child: Column(
+                        children: typeInput
+                            .indexedMap(
+                              (e, index) => GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context, index);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.only(right: 15),
+                                  color: index == chooseIndex
+                                      ? Colors.white.withOpacity(0.1)
+                                      : AppTheme.getInstance()
+                                          .selectDialogColor(),
+                                  height: heightOfWidget ?? 64,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      e,
+                                      const SizedBox(
+                                        width: 20,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

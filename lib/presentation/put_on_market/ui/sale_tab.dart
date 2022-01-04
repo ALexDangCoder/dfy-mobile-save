@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -21,16 +23,14 @@ class SaleTab extends StatefulWidget {
       : super(key: key);
 
   @override
-  SaleTabState createState() => SaleTabState();
+  _SaleTabState createState() => _SaleTabState();
 }
 
-class SaleTabState extends State<SaleTab> {
+class _SaleTabState extends State<SaleTab>
+    with AutomaticKeepAliveClientMixin<SaleTab> {
   GlobalKey dropdownKey = GlobalKey();
-  GlobalKey<InputWithSelectTypeState> inputPriceKey = GlobalKey();
   late double width, height, xPosition, yPosition;
-  late OverlayEntry floatingDropdown;
   int chooseIndex = 0;
-  bool isDropdownOpened = false;
 
   @override
   Widget build(BuildContext context) {
@@ -87,19 +87,22 @@ class SaleTabState extends State<SaleTab> {
                       height: 4,
                     ),
                     InputWithSelectType(
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d{0,5}')),
-                        ],
-                        maxSize: 100,
-                        key: inputPriceKey,
-                        keyboardType: TextInputType.number,
-                        typeInput: typeInput(),
-                        hintText: S.current.enter_price,
-                        onChangeType: (index) {},
-                        onchangeText: (value) {
-                          print(value);
-                        }),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+\.?\d{0,5}'),
+                        ),
+                      ],
+                      maxSize: 100,
+                      keyboardType: TextInputType.number,
+                      typeInput: typeInput(),
+                      hintText: S.current.enter_price,
+                      onChangeType: (index) {},
+                      onchangeText: (value) {
+                        widget.cubit.changeTokenSale(
+                          value: value != '' ? double.parse(value) : null,
+                        );
+                      },
+                    ),
                     const SizedBox(
                       height: 16,
                     ),
@@ -126,10 +129,11 @@ class SaleTabState extends State<SaleTab> {
                     ),
                     InputNumberOfQuantity(
                       maxLength: 25,
-                      canEdit: widget.canEdit,
+                      canEdit: true,
                       quantity: widget.quantity,
                       onchangeText: (value) {
-                        print(value);
+                        widget.cubit.changeQuantitySale(
+                            value: value != '' ? int.parse(value) : 0);
                       },
                     )
                   ],
@@ -138,15 +142,16 @@ class SaleTabState extends State<SaleTab> {
             ),
           ),
           GestureDetector(
-            child: ButtonGold(
-              title: S.current.continue_s,
-              isEnable: true,
-            ),
+            child: StreamBuilder<bool>(
+                stream: widget.cubit.canContinueSaleStream,
+                builder: (context, snapshot) {
+                  final data = snapshot.data ?? false;
+                  return ButtonGold(
+                    title: S.current.continue_s,
+                    isEnable: data,
+                  );
+                }),
             onTap: () {
-              if (isDropdownOpened) {
-                floatingDropdown.remove();
-                isDropdownOpened = false;
-              }
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const PutOnSale()),
@@ -161,36 +166,100 @@ class SaleTabState extends State<SaleTab> {
     );
   }
 
-  void closeDropDown() {
-    inputPriceKey.currentState?.closeDropDown();
-  }
-
   List<Widget> typeInput() {
     return [
-      Row(
-        children: [
-          Flexible(child: ImageAssets.svgAssets(ImageAssets.icTokenDfy)),
-          Flexible(child: Text('DFY', style: textFieldNFT))
-        ],
+      SizedBox(
+        height: 64,
+        width: 70,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/DFY.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'DFY',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
       ),
-      Row(
-        children: [
-          Flexible(child: ImageAssets.svgAssets(ImageAssets.icTokenBtc)),
-          Flexible(child: Text('BTC', style: textFieldNFT))
-        ],
+      SizedBox(
+        height: 64,
+        width: 70,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/BTC.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'BTC',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
       ),
-      Row(
-        children: [
-          Flexible(child: ImageAssets.svgAssets(ImageAssets.icTokenBnb)),
-          Flexible(child: Text('BNB', style: textFieldNFT))
-        ],
+      SizedBox(
+        height: 64,
+        width: 70,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/BNB.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'BNB',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
       ),
-      Row(
-        children: [
-          Flexible(child: ImageAssets.svgAssets(ImageAssets.icTokenEth)),
-          Flexible(child: Text('ETH', style: textFieldNFT))
-        ],
+      SizedBox(
+        height: 64,
+        width: 70,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/ETH.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'ETH',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
       ),
     ];
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

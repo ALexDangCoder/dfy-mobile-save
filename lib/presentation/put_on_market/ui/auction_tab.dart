@@ -6,22 +6,22 @@ import 'package:Dfy/widgets/form/input_with_select_type.dart';
 import 'package:flutter/material.dart';
 
 class AuctionTab extends StatefulWidget {
-
   final PutOnMarketCubit cubit;
+
   const AuctionTab({Key? key, required this.cubit}) : super(key: key);
 
   @override
   _AuctionTabState createState() => _AuctionTabState();
 }
 
-class _AuctionTabState extends State<AuctionTab> {
+class _AuctionTabState extends State<AuctionTab>
+    with AutomaticKeepAliveClientMixin<AuctionTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor:  AppTheme.getInstance().bgBtsColor(),
+      backgroundColor: AppTheme.getInstance().bgBtsColor(),
       body: GestureDetector(
-
         onTap: () {
           final FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) {
@@ -59,4 +59,8 @@ class _AuctionTabState extends State<AuctionTab> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

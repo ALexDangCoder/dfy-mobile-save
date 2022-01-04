@@ -20,18 +20,14 @@ class PawnTab extends StatefulWidget {
       : super(key: key);
 
   @override
-  PawnTabState createState() => PawnTabState();
+  _PawnTabState createState() => _PawnTabState();
 }
 
-class PawnTabState extends State<PawnTab> {
-  @override
+class _PawnTabState extends State<PawnTab>
+    with AutomaticKeepAliveClientMixin<PawnTab> {
   GlobalKey dropdownKey = GlobalKey();
-  GlobalKey<InputWithSelectTypeState> inputPriceKey = GlobalKey();
-  GlobalKey<InputWithSelectTypeState> inputDurationKey = GlobalKey();
   late double width, height, xPosition, yPosition;
-  late OverlayEntry floatingDropdown;
   int chooseIndex = 0;
-  bool isDropdownOpened = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,99 +39,104 @@ class PawnTabState extends State<PawnTab> {
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    Center(
-                      child: Text(
-                        S.current.get_a_loan_by_nft_on_pawn_marketplace,
+              child: Scaffold(
+                resizeToAvoidBottomInset: true,
+                backgroundColor: Colors.transparent,
+                body: SingleChildScrollView(
+                  reverse: true,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Center(
+                        child: Text(
+                          S.current.get_a_loan_by_nft_on_pawn_marketplace,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().textThemeColor(),
+                            16,
+                            FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 23,
+                      ),
+                      Text(
+                        S.current.expected_loan,
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
                           FontWeight.w600,
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 23,
-                    ),
-                    Text(
-                      S.current.expected_loan,
-                      style: textNormalCustom(
-                        AppTheme.getInstance().textThemeColor(),
-                        16,
-                        FontWeight.w600,
+                      const SizedBox(
+                        height: 4,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      S.current
-                          .set_the_loan_amount_you_expected_to_have_for_the_nft,
-                      style: textNormalCustom(
-                        AppTheme.getInstance()
-                            .textThemeColor()
-                            .withOpacity(0.7),
-                        14,
-                        FontWeight.w400,
+                      Text(
+                        S.current
+                            .set_the_loan_amount_you_expected_to_have_for_the_nft,
+                        style: textNormalCustom(
+                          AppTheme.getInstance()
+                              .textThemeColor()
+                              .withOpacity(0.7),
+                          14,
+                          FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    InputWithSelectType(
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d{0,5}')),
-                        ],
-                        maxSize: 100,
-                        key: inputPriceKey,
-                        keyboardType: TextInputType.number,
-                        typeInput: typeInput(),
-                        hintText: S.current.enter_price,
-                        onChangeType: (index) {},
-                        onchangeText: (value) {
-                          print(value);
-                        }),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      S.current.expected_loan,
-                      style: textNormalCustom(
-                        AppTheme.getInstance().textThemeColor(),
-                        16,
-                        FontWeight.w600,
+                      const SizedBox(
+                        height: 4,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      S.current
-                          .set_the_loan_amount_you_expected_to_have_for_the_nft,
-                      style: textNormalCustom(
-                        AppTheme.getInstance()
-                            .textThemeColor()
-                            .withOpacity(0.7),
-                        14,
-                        FontWeight.w400,
+                      InputWithSelectType(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'^\d+\.?\d{0,5}'),
+                            ),
+                          ],
+                          maxSize: 100,
+                          keyboardType: TextInputType.number,
+                          typeInput: typeInput(),
+                          hintText: S.current.enter_price,
+                          onChangeType: (index) {},
+                          onchangeText: (value) {
+                            widget.cubit.changeTokenPawn(
+                              value: value != '' ? double.parse(value) : null,
+                            );
+                          }),
+                      const SizedBox(
+                        height: 16,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    InputWithSelectType(
+                      Text(
+                        S.current.expected_loan,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        S.current
+                            .set_the_loan_amount_you_expected_to_have_for_the_nft,
+                        style: textNormalCustom(
+                          AppTheme.getInstance()
+                              .textThemeColor()
+                              .withOpacity(0.7),
+                          14,
+                          FontWeight.w400,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      InputWithSelectType(
                         maxSize: 4,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
-                        key: inputDurationKey,
                         keyboardType: TextInputType.number,
                         typeInput: [
                           SizedBox(
@@ -170,55 +171,62 @@ class PawnTabState extends State<PawnTab> {
                         hintText: S.current.enter_price,
                         onChangeType: (index) {},
                         onchangeText: (value) {
-                          print(value);
-                        }),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      S.current.sale_quantity,
-                      style: textNormalCustom(
-                        AppTheme.getInstance().textThemeColor(),
-                        16,
-                        FontWeight.w600,
+                          widget.cubit.changeDurationPawn(
+                            value: value != '' ? int.parse(value) : null,
+                          );
+                        },
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      S.current.set_the_nft_quantity_you_want_to_sell,
-                      style: textNormalCustom(
-                        AppTheme.getInstance()
-                            .textThemeColor()
-                            .withOpacity(0.7),
-                        14,
-                        FontWeight.w400,
+                      const SizedBox(
+                        height: 16,
                       ),
-                    ),
-                    InputNumberOfQuantity(
-                      maxLength: 5,
-                      canEdit: widget.canEdit,
-                      quantity: widget.quantity,
-                      onchangeText: (value) {
-                        print(value);
-                      },
-                    )
-                  ],
+                      Text(
+                        S.current.sale_quantity,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        S.current.set_the_nft_quantity_you_want_to_sell,
+                        style: textNormalCustom(
+                          AppTheme.getInstance()
+                              .textThemeColor()
+                              .withOpacity(0.7),
+                          14,
+                          FontWeight.w400,
+                        ),
+                      ),
+                      InputNumberOfQuantity(
+                        maxLength: 5,
+                        canEdit: widget.canEdit,
+                        quantity: widget.quantity,
+                        onchangeText: (value) {
+                          widget.cubit.changeQuantityPawn(
+                            value: value != '' ? int.parse(value) : 0,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
           GestureDetector(
-            child: ButtonGold(
-              title: S.current.continue_s,
-              isEnable: true,
-            ),
+            child: StreamBuilder<bool>(
+                stream: widget.cubit.canContinuePawnStream,
+                builder: (context, snapshot) {
+                  final data = snapshot.data ?? false;
+                  return ButtonGold(
+                    title: S.current.continue_s,
+                    isEnable: data,
+                  );
+                }),
             onTap: () {
-              if (isDropdownOpened) {
-                floatingDropdown.remove();
-                isDropdownOpened = false;
-              }
               Navigator.pop(context);
             },
           ),
@@ -230,43 +238,100 @@ class PawnTabState extends State<PawnTab> {
     );
   }
 
-  void closeAllDropDown() {
-    inputPriceKey.currentState?.closeDropDown();
-    inputDurationKey.currentState?.closeDropDown();
-  }
-
   List<Widget> typeInput() {
     return [
-      Container(
-        height: 40,
+      SizedBox(
+        height: 64,
         width: 70,
-        color: Colors.red,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/DFY.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'DFY',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
       ),
-      Container(
-        height: 40,
+      SizedBox(
+        height: 64,
         width: 70,
-        color: Colors.blue,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/BTC.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'BTC',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
       ),
-      Container(
-        height: 40,
+      SizedBox(
+        height: 64,
         width: 70,
-        color: Colors.red,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/BNB.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'BNB',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
       ),
-      Container(
-        height: 40,
+      SizedBox(
+        height: 64,
         width: 70,
-        color: Colors.blue,
-      ),
-      Container(
-        height: 40,
-        width: 70,
-        color: Colors.red,
-      ),
-      Container(
-        height: 40,
-        width: 70,
-        color: Colors.blue,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/ETH.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'ETH',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
       ),
     ];
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

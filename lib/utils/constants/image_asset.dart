@@ -13,10 +13,10 @@ class ImageAssets {
   static const String icTabPawnSelected = '$baseImg/ic_tab_pawn_selected.svg';
   static const String icTabPawnUnselected =
       '$baseImg/ic_tab_pawn_unselected.svg';
-  static const String icTokenDfy = '$baseImg/ic_token_dfy.svg';
-  static const String icTokenEth = '$baseImg/ic_token_eth.svg';
-  static const String icTokenBtc = '$baseImg/ic_token_btc.svg';
-  static const String icTokenBnb = '$baseImg/ic_token_bnb.svg';
+  static const String icTokenDfy = '$baseImg/ic_token_dfy.png';
+  static const String icTokenEth = '$baseImg/ic_token_eth.png';
+  static const String icTokenBtc = '$baseImg/ic_token_btc.png';
+  static const String icTokenBnb = '$baseImg/ic_token_bnb.png';
   static const String icTabHomeUnselected =
       '$baseImg/ic_tab_home_unselected.svg';
   static const String icTabHomeSelected = '$baseImg/ic_tab_home_selected.svg';

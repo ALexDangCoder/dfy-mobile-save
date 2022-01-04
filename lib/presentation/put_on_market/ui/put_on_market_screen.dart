@@ -24,9 +24,6 @@ class _PutOnMarketState extends State<PutOnMarket>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
 
-  GlobalKey<SaleTabState> keySale = GlobalKey();
-  GlobalKey<PawnTabState> keyPawn = GlobalKey();
-
   final PutOnMarketCubit cubit = PutOnMarketCubit();
 
   final List<Tab> titTab = [
@@ -51,8 +48,6 @@ class _PutOnMarketState extends State<PutOnMarket>
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
-      keySale.currentState?.closeDropDown();
-      keyPawn.currentState?.closeAllDropDown();
     });
   }
 
@@ -67,8 +62,6 @@ class _PutOnMarketState extends State<PutOnMarket>
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
           }
-          keySale.currentState?.closeDropDown();
-          keyPawn.currentState?.closeAllDropDown();
         },
         child: Container(
           margin: const EdgeInsets.only(top: 48),
@@ -79,14 +72,15 @@ class _PutOnMarketState extends State<PutOnMarket>
               topRight: Radius.circular(30),
             ),
           ),
-          child: Column(children: [
-            header(),
-            Divider(
-              thickness: 1,
-              color: AppTheme.getInstance().divideColor(),
-            ),
-            Expanded(
-              child: DefaultTabController(
+          child: Column(
+            children: [
+              header(),
+              Divider(
+                thickness: 1,
+                color: AppTheme.getInstance().divideColor(),
+              ),
+              Expanded(
+                child: DefaultTabController(
                   length: 3,
                   child: Column(
                     children: [
@@ -110,19 +104,20 @@ class _PutOnMarketState extends State<PutOnMarket>
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            SaleTab(
+                            SaleTab(cubit: cubit),
+                            PawnTab(
                               cubit: cubit,
-                              key: keySale,
                             ),
-                            PawnTab(cubit: cubit, key: keyPawn,),
                             AuctionTab(cubit: cubit),
                           ],
                         ),
                       )
                     ],
-                  )),
-            ),
-          ]),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -146,8 +141,6 @@ class _PutOnMarketState extends State<PutOnMarket>
 
           IconButton(
             onPressed: () {
-              keySale.currentState?.closeDropDown();
-              keyPawn.currentState?.closeAllDropDown();
               Navigator.pop(context);
             },
             icon: Image.asset(ImageAssets.ic_back),
@@ -160,9 +153,6 @@ class _PutOnMarketState extends State<PutOnMarket>
           ),
           IconButton(
             onPressed: () {
-              keySale.currentState?.closeDropDown();
-
-              keyPawn.currentState?.closeAllDropDown();
               Navigator.pop(context);
             },
             icon: Image.asset(ImageAssets.ic_close),
@@ -171,4 +161,6 @@ class _PutOnMarketState extends State<PutOnMarket>
       ),
     );
   }
+
+
 }
