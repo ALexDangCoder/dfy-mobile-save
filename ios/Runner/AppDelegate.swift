@@ -11,8 +11,10 @@ import BigInt
     private let TYPE_WALLET_SEED_PHRASE = "PASS_PHRASE"
     private let TYPE_WALLET_PRIVATE_KEY = "PRIVATE_KEY"
     
-    private let TOKEN_DFY_ADDRESS = "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
     private let TOKEN_BNB_ADDRESS = "0x0000000000000000000000000000000000000000"
+    private let TOKEN_DFY_ADDRESS = "0xD98560689C6e748DC37bc410B4d3096B1aA3D8C2"
+//    private let TOKEN_DFY_ADDRESS = "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
+
     
     private let TYPE_EARSE_WALLET = "earse_wallet"
     
@@ -283,7 +285,7 @@ extension AppDelegate {
         params["isFaceID"] = SharedPreference.shared.faceId()
         params["isWalletExist"] = !SharedPreference.shared.getListWallet().isEmpty
         chatChanel?.invokeMethod("getConfigCallback", arguments: params)
-        return params 
+        return params
     }
     
     private func changePassWordWallet(oldPassword: String, newPassword: String) -> [String: Any] {
@@ -332,7 +334,7 @@ extension AppDelegate {
 //        params["type"] = type
 //        SharedPreference.shared.eraseWallet()
 //        chatChanel?.invokeMethod("earseAllWalletCallback", arguments: params)
-//        return params 
+//        return params
 //    }
     
     private func chooseWallet(walletAddress: String) -> [[String: Any]] {
@@ -368,7 +370,14 @@ extension AppDelegate {
         var param = [String: Any]()
         var listTokens = [TokenModel]()
         listTokens.append(contentsOf: SharedPreference.shared.getListTokens())
-        if listTokens.first(where: { $0.walletAddress == walletAddress && $0.tokenAddress == tokenAddress && $0.isShow }) == nil {
+        if let tokenInCore = listTokens.first(where: {$0.walletAddress == walletAddress && $0.tokenAddress.lowercased() == tokenAddress.lowercased() && !$0.isShow}) {
+            tokenInCore.isShow = true
+            SharedPreference.shared.saveListTokens(listTokens: listTokens)
+            param["isSuccess"] = true
+            chatChanel?.invokeMethod("importTokenCallback", arguments: param)
+            return param
+        }
+        if listTokens.first(where: { $0.walletAddress == walletAddress && $0.tokenAddress.lowercased() == tokenAddress.lowercased() && $0.isShow }) == nil {
             listTokens.append(TokenModel(walletAddress: walletAddress, tokenAddress: tokenAddress, tokenFullName: tokenFullName, iconUrl: iconToken, symbol: symbol, decimal: decimal, exchangeRate: exchangeRate, isShow: true, isImport: isImport))
             SharedPreference.shared.saveListTokens(listTokens: listTokens)
             param["isSuccess"] = true
@@ -381,7 +390,7 @@ extension AppDelegate {
     
     private func checkToken(walletAddress: String, tokenAddress: String) -> [String: Any] {
         var param = [String: Any]()
-        param["isExist"] = SharedPreference.shared.getListTokens().first(where: { $0.walletAddress == walletAddress && $0.tokenAddress == tokenAddress && $0.isShow }) != nil
+        param["isExist"] = SharedPreference.shared.getListTokens().first(where: { $0.walletAddress == walletAddress && $0.tokenAddress.lowercased() == tokenAddress.lowercased() && $0.isShow }) != nil
         chatChanel?.invokeMethod("checkTokenCallback", arguments: param)
         return param
     }
@@ -398,8 +407,8 @@ extension AppDelegate {
         while (index < listObjectTokens.count) {
             let data = listObjectTokens[index]
             let tokenAddress = data.tokenAddress ?? ""
-            let tokenModel = TokenModel(walletAddress: data.walletAddress ?? "", tokenAddress: data.tokenAddress ?? "", tokenFullName: data.nameToken ?? "", iconUrl: data.iconToken ?? "", symbol: data.nameShortToken ?? "", decimal: data.decimal ?? 0, exchangeRate: data.exchangeRate ?? 0.0, isShow: tokenAddress == TOKEN_BNB_ADDRESS || tokenAddress == TOKEN_DFY_ADDRESS, isImport: data.isImport ?? false)
-            let tokenInCore = listTokenAddress.first(where: {$0.tokenAddress == tokenModel.tokenAddress})
+            let tokenModel = TokenModel(walletAddress: data.walletAddress ?? "", tokenAddress: data.tokenAddress ?? "", tokenFullName: data.nameToken ?? "", iconUrl: data.iconToken ?? "", symbol: data.nameShortToken ?? "", decimal: data.decimal ?? 0, exchangeRate: data.exchangeRate ?? 0.0, isShow: tokenAddress.lowercased() == TOKEN_BNB_ADDRESS.lowercased() || tokenAddress.lowercased() == TOKEN_DFY_ADDRESS.lowercased(), isImport: data.isImport ?? false)
+            let tokenInCore = listTokenAddress.first(where: {$0.tokenAddress.lowercased() == tokenModel.tokenAddress.lowercased()})
             if let token = tokenInCore {
                 tokenModel.isShow = token.isShow
             }
@@ -415,7 +424,7 @@ extension AppDelegate {
         }
         var param = [String: Any]()
         listTokenAddress.forEach { (tokenModel) in
-            let item = listTokens.first(where: {$0.tokenAddress == tokenModel.tokenAddress})
+            let item = listTokens.first(where: {$0.tokenAddress.lowercased() == tokenModel.tokenAddress.lowercased()})
             if item == nil {
                 listTokens.append(tokenModel)
             }
@@ -429,17 +438,17 @@ extension AppDelegate {
     
     private func setShowedToken(walletAddress: String, tokenAddress: String, isShow: Bool, isImport: Bool) -> [String: Any] {
         var param = [String: Any]()
-        if (tokenAddress != TOKEN_DFY_ADDRESS || tokenAddress != TOKEN_BNB_ADDRESS) {
+        if (tokenAddress.lowercased() != TOKEN_DFY_ADDRESS.lowercased() || tokenAddress.lowercased() != TOKEN_BNB_ADDRESS.lowercased()) {
             var listToken = [TokenModel]()
             if isImport {
                 SharedPreference.shared.getListTokens().forEach { (tokenModel) in
-                    if tokenModel.walletAddress != walletAddress || tokenModel.tokenAddress != tokenAddress {
+                    if tokenModel.walletAddress != walletAddress || tokenModel.tokenAddress.lowercased() != tokenAddress.lowercased() {
                         listToken.append(tokenModel)
                     }
                 }
             } else {
                 listToken.append(contentsOf: SharedPreference.shared.getListTokens())
-                listToken.first(where: {$0.walletAddress == walletAddress && $0.tokenAddress == tokenAddress})?.isShow = isShow
+                listToken.first(where: {$0.walletAddress == walletAddress && $0.tokenAddress.lowercased() == tokenAddress.lowercased()})?.isShow = isShow
             }
             SharedPreference.shared.saveListTokens(listTokens: listToken)
             param["isSuccess"] = true
@@ -727,8 +736,8 @@ extension AppDelegate {
             let signerInput = EthereumSigningInput.with {
                 $0.nonce = BigInt(nonce)!.serialize()
                 $0.chainID = BigInt(chainId)!.serialize()
-                $0.gasPrice = BigInt(gasPrice)!.serialize()
-                $0.gasLimit = BigInt(gasLimit.handleAmount(decimal: 9))!.serialize()
+                $0.gasPrice = BigInt(gasPrice.handleAmount(decimal: 9))!.serialize()
+                $0.gasLimit = BigInt(gasLimit)!.serialize()
                 $0.toAddress = tokenAddress
                 $0.privateKey = privateKey.data
                 $0.transaction = EthereumTransaction.with {
