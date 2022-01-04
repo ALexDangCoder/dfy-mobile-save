@@ -59,7 +59,7 @@ class _ListNftState extends State<ListNft> {
           alignment: Alignment.bottomCenter,
           child: StreamBuilder<String>(
             stream: _cubit.title,
-            builder: (context, AsyncSnapshot<String> snapshot){
+            builder: (context, AsyncSnapshot<String> snapshot) {
               return BaseBottomSheet(
                 onRightClick: () {
                   _cubit.selectCollection.clear();
@@ -77,7 +77,7 @@ class _ListNftState extends State<ListNft> {
                   );
                 },
                 isImage: true,
-                title: _cubit.title.value,
+                title: snapshot.data ?? _cubit.getTitle(widget.marketType),
                 text: ImageAssets.ic_filter,
                 child: SizedBox(
                   child: Column(
@@ -114,7 +114,7 @@ class _ListNftState extends State<ListNft> {
                                     );
                                   },
                                   staggeredTileBuilder: (int index) =>
-                                  const StaggeredTile.fit(1),
+                                      const StaggeredTile.fit(1),
                                 ),
                               );
                             } else {
@@ -226,6 +226,10 @@ class _ListNftState extends State<ListNft> {
                             controller.text = '';
                             _cubit.hide();
                           });
+                          _cubit.getListNft(
+                            status: _cubit.status(widget.marketType),
+                          );
+                          FocusScope.of(context).unfocus();
                         },
                         child: Padding(
                           padding: EdgeInsets.only(

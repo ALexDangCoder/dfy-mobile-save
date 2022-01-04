@@ -44,19 +44,19 @@ class ListNftCubit extends BaseCubit<ListNftState> {
 
   void setTitle(){
     if(selectStatus.isEmpty || selectStatus.length >1){
-      title.add('List');
+      title.add('All NFT');
     }
     else{
-      title.add(getTitleStream('NFT ${selectStatus.first}'));
+      title.add(getTitleStream(selectStatus.first));
     }
   }
-  String getTitleStream(String num){
-    if (num  == '2') {
-      return S.current.on_auction;
-    } else if (num == '3') {
-      return S.current.on_pawn;
+  String getTitleStream(int num){
+    if (num  == 2) {
+      return S.current.nft_on_auction;
+    } else if (num == 3) {
+      return S.current.nft_on_pawn;
     } else {
-      return S.current.on_sale;
+      return S.current.nft_on_sale;
     }
   }
 
