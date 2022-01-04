@@ -317,6 +317,7 @@
   "additional": "Additional Information",
   "nft_id": "NFT Id",
   "collection_address": "Collection address",
+  "could_not_load_data": "Couldn’t load the data",
   "all": "All",
   "offer": "Offer",
   "see_more": "See more",

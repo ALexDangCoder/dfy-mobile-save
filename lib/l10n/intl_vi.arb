@@ -345,4 +345,6 @@
   "sign_contract": "Sign contract",
   "like": "Like",
   "report": "Report"
+  "offer": "Đề nghị",
+  "could_not_load_data" : "Không thể tải dữ liệu"
 }
