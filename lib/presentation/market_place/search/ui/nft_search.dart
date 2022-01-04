@@ -179,6 +179,7 @@ class _SearchNFTState extends State<SearchNFT> {
                       onChanged: (value) {
                         searchCubit.show();
                         if (_debounce.isActive) _debounce.cancel();
+                        searchCubit.clearCollectionsFtNftsAfterSearch();
                         _debounce =
                             Timer(const Duration(milliseconds: 500), () {
                           searchCubit.getCollectionFeatNftBySearch(
@@ -187,6 +188,7 @@ class _SearchNFTState extends State<SearchNFT> {
                         });
                       },
                       onFieldSubmitted: (value) {
+                        searchCubit.clearCollectionsFtNftsAfterSearch();
                         searchCubit.getCollectionFeatNftBySearch(query: value);
                       },
                       autofocus: true,
