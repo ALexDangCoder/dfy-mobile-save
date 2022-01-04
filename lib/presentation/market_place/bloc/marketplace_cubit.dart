@@ -3,10 +3,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/collection.dart';
 import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
 import 'package:Dfy/domain/model/market_place/list_type_nft_collection_explore_model.dart';
-import 'package:Dfy/domain/model/market_place/nft_collection_explore_model.dart';
-import 'package:Dfy/domain/model/market_place/nft_model_full.dart';
 import 'package:Dfy/domain/model/market_place/outstanding_collection_model.dart';
-import 'package:Dfy/domain/model/nft_item.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -133,21 +130,21 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
       } else if (e.name == 'NFTs collateral') {
         e.items?.forEach(
           (e) => nftsCollateral.add(
-              NftMarket(
-                nftId: e.nftId ?? '',
-                collectionId: e.id ?? '',
-                name: e.name ?? '',
-                image: e.fileCid ?? '',
-                price: e.price ?? 0,
-                tokenBuyOut: e.token ?? '',
-                reservePrice: e.reservePrice,
-                buyOutPrice: e.buyOutPrice,
-                numberOfCopies: e.numberOfCopies,
-                totalCopies: e.totalCopies,
-                marketType:  MarketType.PAWN,
-                typeImage: TypeImage.IMAGE,
-                typeNFT: e.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              ),
+            NftMarket(
+              nftId: e.nftId ?? '',
+              collectionId: e.id ?? '',
+              name: e.name ?? '',
+              image: e.fileCid ?? '',
+              price: e.price ?? 0,
+              tokenBuyOut: e.token ?? '',
+              reservePrice: e.reservePrice,
+              buyOutPrice: e.buyOutPrice,
+              numberOfCopies: e.numberOfCopies,
+              totalCopies: e.totalCopies,
+              marketType: MarketType.PAWN,
+              typeImage: TypeImage.IMAGE,
+              typeNFT: e.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+            ),
           ),
         );
       } //this else is explore categories

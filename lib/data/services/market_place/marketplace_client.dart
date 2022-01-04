@@ -1,4 +1,3 @@
-import 'package:Dfy/data/response/market_place/list_type_nft_collection_explore_res.dart';
 import 'package:Dfy/data/response/market_place/market_place_res.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:injectable/injectable.dart';

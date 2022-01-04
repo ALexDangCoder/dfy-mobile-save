@@ -31,15 +31,14 @@ class _SearchNFTState extends State<SearchNFT> {
   void initState() {
     super.initState();
     searchCubit = SearchCubit();
-    _debounce =
-        Timer(const Duration(milliseconds: 1000),(){});
+    _debounce = Timer(const Duration(milliseconds: 500), () {});
   }
 
   @override
   void dispose() {
-    controller.dispose();
-    _debounce.cancel();
-    super.dispose();
+    // controller.dispose();
+    // _debounce.cancel();
+    // super.dispose();
   }
 
   @override
@@ -81,28 +80,30 @@ class _SearchNFTState extends State<SearchNFT> {
                     if (state is SearchSuccess) {
                       return result();
                     } else if (state is SearchError) {
-                      return Padding(
-                        padding: EdgeInsets.only(top: 150.h),
-                        child: Column(
-                          children: [
-                            Image(
-                              image: const AssetImage(
-                                ImageAssets.img_search_empty,
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 150.h),
+                          child: Column(
+                            children: [
+                              Image(
+                                image: const AssetImage(
+                                  ImageAssets.img_search_empty,
+                                ),
+                                height: 120.h,
+                                width: 120.w,
                               ),
-                              height: 120.h,
-                              width: 120.w,
-                            ),
-                            SizedBox(
-                              height: 17.7.h,
-                            ),
-                            Text(
-                              S.current.no_result_found,
-                              style: textNormal(
-                                Colors.white54,
-                                20.sp,
+                              SizedBox(
+                                height: 17.7.h,
                               ),
-                            ),
-                          ],
+                              Text(
+                                S.current.no_result_found,
+                                style: textNormal(
+                                  Colors.white54,
+                                  20.sp,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     } else if (state is SearchLoading) {
@@ -179,12 +180,14 @@ class _SearchNFTState extends State<SearchNFT> {
                         searchCubit.show();
                         if (_debounce.isActive) _debounce.cancel();
                         _debounce =
-                            Timer(const Duration(milliseconds: 1500), () {
-                          searchCubit.search(value);
+                            Timer(const Duration(milliseconds: 500), () {
+                          searchCubit.getCollectionFeatNftBySearch(
+                            query: value,
+                          );
                         });
                       },
                       onFieldSubmitted: (value) {
-                        searchCubit.search(value);
+                        searchCubit.getCollectionFeatNftBySearch(query: value);
                       },
                       autofocus: true,
                       cursorColor: Colors.white,
