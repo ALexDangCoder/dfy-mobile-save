@@ -1,7 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/bloc/form_field_blockchain_cubit.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
+import 'package:Dfy/presentation/market_place/place_bid/bloc/place_bid_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -27,7 +29,10 @@ class _PlaceBidState extends State<PlaceBid> {
         Navigator.pop(context);
       },
       child: Container(
-        padding: EdgeInsets.only(left: 16.w, right: 16.w,),
+        padding: EdgeInsets.only(
+          left: 16.w,
+          right: 16.w,
+        ),
         child: Column(
           children: [
             spaceH56,
@@ -139,23 +144,25 @@ class _PlaceBidState extends State<PlaceBid> {
             colors: AppTheme.getInstance().gradientButtonColor(),
           ),
           onPressed: () {
-            // showModalBottomSheet(
-            //   backgroundColor: Colors.transparent,
-            //   isScrollControlled: true,
-            //   context: context,
-            //   builder: (context) {
-            //     return const ConfirmBlockchainCategory(
-            //       nameWallet: 'TestWallet',
-            //       nameTokenWallet: 'BNB',
-            //       balanceWallet: 0.64,
-            //       typeConfirm: TYPE_CONFIRM.PLACE_BID,
-            //       addressFrom: '0xfff',
-            //       addressTo: '0xfff',
-            //       imageWallet: ImageAssets.symbol,
-            //       amount: 50000,
-            //     );
-            //   },
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ConfirmBlockchainCategory(
+                  nameWallet: 'nameWalletllllllllllllàafwf',
+                  nameTokenWallet: 'BNB',
+                  balanceWallet: 0.5,
+                  typeConfirm: TYPE_CONFIRM.PLACE_BID,
+                  addressFrom: '0xaB05Ab79C0F440ad982B1405536aBc8094C80AfB',
+                  addressTo: '0xaB05Ab79C0F440ad982B1405536aBc8094C80AfB',
+                  imageWallet: ImageAssets.image_avatar,
+                  cubitCategory: PlaceBid(),
+                  gasPriceFirstFetch: 0.5 / 1000000000,
+                  gasFeeFirstFetch: 0.5 / 1000000000,
+                  gasLimitFirstFetch: 0.5 / 1000000000,
+                  amount: 0,
+                ),
+              ),
+            );
           },
           child: Text(
             S.current.place_a_bid,

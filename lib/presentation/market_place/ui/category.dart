@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Category extends StatelessWidget {
-  const Category({Key? key, required this.title}) : super(key: key);
+  const Category({
+    Key? key,
+    required this.title,
+    required this.url,
+  }) : super(key: key);
 
   final String title;
+  final String url;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +25,9 @@ class Category extends StatelessWidget {
               Container(
                 height: 130.h,
                 width: 146.w,
-                decoration:  BoxDecoration(
-                  image:  const DecorationImage(
-                    image: AssetImage(ImageAssets.img_categories),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(url),
                     fit: BoxFit.fill,
                   ),
                   borderRadius: BorderRadius.all(
@@ -39,7 +44,7 @@ class Category extends StatelessWidget {
                   title,
                   style: textNormalCustom(
                     Colors.white,
-                    16.sp,
+                    16,
                     FontWeight.w700,
                   ),
                 ),
@@ -47,7 +52,9 @@ class Category extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(width: 20.w,),
+        SizedBox(
+          width: 20.w,
+        ),
       ],
     );
   }

@@ -13,10 +13,11 @@ class CheckBoxFilter extends StatefulWidget {
   const CheckBoxFilter({
     Key? key,
     required this.nameCkcFilter,
-    required this.typeCkc,
+    required this.typeCkc, this.urlCover,
   }) : super(key: key);
   final String nameCkcFilter;
   final TYPE_CKC_FILTER typeCkc;
+  final String? urlCover;
 
   @override
   _CheckBoxFilterState createState() => _CheckBoxFilterState();
@@ -80,7 +81,7 @@ class _CheckBoxFilterState extends State<CheckBoxFilter> {
             width: 4.w,
           ),
           circularImage(
-            ImageAssets.symbol,
+            widget.urlCover?? '',
             height: 28,
             width: 28,
           ),
