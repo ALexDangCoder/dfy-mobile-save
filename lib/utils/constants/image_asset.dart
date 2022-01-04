@@ -13,7 +13,12 @@ class ImageAssets {
   static const String icTabPawnSelected = '$baseImg/ic_tab_pawn_selected.svg';
   static const String icTabPawnUnselected =
       '$baseImg/ic_tab_pawn_unselected.svg';
-  static const String icTabHomeUnselected = '$baseImg/ic_tab_home_unselected.svg';
+  static const String icTokenDfy = '$baseImg/ic_token_dfy.png';
+  static const String icTokenEth = '$baseImg/ic_token_eth.png';
+  static const String icTokenBtc = '$baseImg/ic_token_btc.png';
+  static const String icTokenBnb = '$baseImg/ic_token_bnb.png';
+  static const String icTabHomeUnselected =
+      '$baseImg/ic_tab_home_unselected.svg';
   static const String icTabHomeSelected = '$baseImg/ic_tab_home_selected.svg';
 
   static const String icTabMarketPlaceSelected =
@@ -72,14 +77,10 @@ class ImageAssets {
       '$baseImg/ic_tab_market_place_select.svg.svg';
   static const String icTabMarketUnselect =
       '$baseImg/ic_tab_market_place_unselect.svg';
-  static const String icAddMarketplace =
-      '$baseImg/add_market.png';
-  static const String icCancelMarket =
-      '$baseImg/btn_cancel.png';
-  static const String icCollectionMarket =
-      '$baseImg/btn_collection.png';
-  static const String icNftMarket =
-      '$baseImg/btn_nft.png';
+  static const String icAddMarketplace = '$baseImg/add_market.png';
+  static const String icCancelMarket = '$baseImg/btn_cancel.png';
+  static const String icCollectionMarket = '$baseImg/btn_collection.png';
+  static const String icNftMarket = '$baseImg/btn_nft.png';
   static const String icTabPawnS = '$baseImg/ic_tab_pawn_selected.svg';
   static const String icTabPawnU = '$baseImg/ic_tab_pawn_unselected.svg';
   static const String icTabStakingS = '$baseImg/ic_tab_stacking_selected.svg';
@@ -114,6 +115,7 @@ class ImageAssets {
   static const String import = '$baseImg/Import.png';
   static const String face_id = '$baseImg/face_id.png';
   static const String img_cash = '$baseImg/cash.png';
+
   ///error feat load nft, collection, category
   static const String err_load_nft = '$baseImg/error_nft.png';
   static const String err_load_collection = '$baseImg/error_collection.png';
@@ -149,9 +151,10 @@ class ImageAssets {
   static const String image_coming = '$baseImg/img_comming.png';
 
   static const String img_back = '$baseImg/img_back.png';
-   static const String img_filter = '$baseImg/img_filter.png';
-   static const String ic_filter = '$baseImg/ic_filter.png';
+  static const String img_filter = '$baseImg/img_filter.png';
+  static const String ic_filter = '$baseImg/ic_filter.png';
   static const String imgRectangle = '$baseImg/rectangle.png';
+
   ///SvgImage
   static const String ic_btn_send_token_svg =
       '$baseImg/ic_btn_send_token_svg.svg';
@@ -198,7 +201,6 @@ class ImageAssets {
 
 
   static const String ic_verify_svg = '$baseImg/ic_verify.svg';
-
 
   static SvgPicture svgAssets(
     String name, {
