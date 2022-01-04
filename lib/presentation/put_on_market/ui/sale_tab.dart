@@ -132,7 +132,7 @@ class _SaleTabState extends State<SaleTab>
                     ),
                     InputNumberOfQuantity(
                       maxLength: 25,
-                      canEdit: true,
+                      canEdit: widget.canEdit,
                       quantity: widget.quantity,
                       onchangeText: (value) {
                         widget.cubit.changeQuantitySale(
