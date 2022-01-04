@@ -318,5 +318,7 @@
   "collection_address": "Collection address",
   "send_nft": "Send NFT",
   "all":"All",
-  "offer": "Offer"
+  "offer": "Offer",
+  "could_not_load_data" : "Couldn’t load the data"
+
 }

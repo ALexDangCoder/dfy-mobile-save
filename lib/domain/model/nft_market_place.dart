@@ -5,7 +5,7 @@ class NftMarket {
   final String collectionId;
   final String name;
   final String image;
-  final String backGround;
+  // final String backGround;
   final double price;
   final String tokenBuyOut;
   final double? reservePrice;
@@ -13,15 +13,15 @@ class NftMarket {
   final MarketType marketType;
   final TypeNFT typeNFT;
   final TypeImage typeImage;
-  final int? startTime = 0;
-  final int? endTime = 0;
+  final int? startTime;
+  final int? endTime;
   final int? numberOfCopies;
   final int? totalCopies;
 
   NftMarket({
     required this.nftId,
     required this.collectionId,
-    required this.backGround,
+    // required this.backGround,
     required this.tokenBuyOut,
     required this.name,
     required this.image,
@@ -33,5 +33,7 @@ class NftMarket {
     this.buyOutPrice,
     this.numberOfCopies,
     this.totalCopies,
+    this.endTime = 0,
+    this.startTime = 0,
   });
 }
