@@ -216,18 +216,19 @@ class _PawnTabState extends State<PawnTab>
               ),
             ),
           ),
-          GestureDetector(
-            child: StreamBuilder<bool>(
-                stream: widget.cubit.canContinuePawnStream,
-                builder: (context, snapshot) {
-                  final data = snapshot.data ?? false;
-                  return ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: data,
-                  );
-                }),
-            onTap: () {
-              Navigator.pop(context);
+          StreamBuilder<bool>(
+            stream: widget.cubit.canContinuePawnStream,
+            builder: (context, snapshot) {
+              final data = snapshot.data ?? false;
+              return GestureDetector(
+                onTap: () {
+                  if (data) Navigator.pop(context);
+                },
+                child: ButtonGold(
+                  title: S.current.continue_s,
+                  isEnable: data,
+                ),
+              );
             },
           ),
           const SizedBox(

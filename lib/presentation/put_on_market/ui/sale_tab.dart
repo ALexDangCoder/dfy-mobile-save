@@ -141,23 +141,27 @@ class _SaleTabState extends State<SaleTab>
               ),
             ),
           ),
-          GestureDetector(
-            child: StreamBuilder<bool>(
-                stream: widget.cubit.canContinueSaleStream,
-                builder: (context, snapshot) {
-                  final data = snapshot.data ?? false;
-                  return ButtonGold(
+          StreamBuilder<bool>(
+              stream: widget.cubit.canContinueSaleStream,
+              builder: (context, snapshot) {
+                final data = snapshot.data ?? false;
+                return GestureDetector(
+                  onTap: () {
+                    if (data) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PutOnSale(),
+                        ),
+                      );
+                    }
+                  },
+                  child: ButtonGold(
                     title: S.current.continue_s,
                     isEnable: data,
-                  );
-                }),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const PutOnSale()),
-              );
-            },
-          ),
+                  ),
+                );
+              }),
           const SizedBox(
             height: 38,
           )
