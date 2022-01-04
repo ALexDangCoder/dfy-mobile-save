@@ -312,6 +312,8 @@
   "buy_nft": "Mua NFT",
   "nft_on_pawn": "NFT cầm đồ",
   "on_auction": "Đang đấu giá",
+  "on_sale": "Giảm giá",
+  "on_pawn": "Thế chấp",
   "collection_type": "Loại bộ sưu tập",
   "hard_nft_collection": "Hard NFT",
   "soft_nft_collection": "Soft NFT",
