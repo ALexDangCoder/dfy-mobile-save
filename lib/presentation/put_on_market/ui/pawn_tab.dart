@@ -108,7 +108,7 @@ class _PawnTabState extends State<PawnTab>
                         height: 16,
                       ),
                       Text(
-                        S.current.expected_loan,
+                        S.current.duration,
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
@@ -120,7 +120,7 @@ class _PawnTabState extends State<PawnTab>
                       ),
                       Text(
                         S.current
-                            .set_the_loan_amount_you_expected_to_have_for_the_nft,
+                            .Set_a_duration_for_the_desired_loan_term,
                         style: textNormalCustom(
                           AppTheme.getInstance()
                               .textThemeColor()
@@ -168,7 +168,7 @@ class _PawnTabState extends State<PawnTab>
                             ),
                           )
                         ],
-                        hintText: S.current.enter_price,
+                        hintText: S.current.enter_duration,
                         onChangeType: (index) {},
                         onchangeText: (value) {
                           widget.cubit.changeDurationPawn(
@@ -180,7 +180,7 @@ class _PawnTabState extends State<PawnTab>
                         height: 16,
                       ),
                       Text(
-                        S.current.sale_quantity,
+                        S.current.quantity_of_collateral,
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
@@ -191,7 +191,7 @@ class _PawnTabState extends State<PawnTab>
                         height: 4,
                       ),
                       Text(
-                        S.current.set_the_nft_quantity_you_want_to_sell,
+                        S.current.set_the_nft_quantity_as_collateral,
                         style: textNormalCustom(
                           AppTheme.getInstance()
                               .textThemeColor()
@@ -199,6 +199,9 @@ class _PawnTabState extends State<PawnTab>
                           14,
                           FontWeight.w400,
                         ),
+                      ),
+                      const SizedBox(
+                        height: 4,
                       ),
                       InputNumberOfQuantity(
                         maxLength: 5,

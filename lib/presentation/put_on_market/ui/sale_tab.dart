@@ -127,6 +127,9 @@ class _SaleTabState extends State<SaleTab>
                         FontWeight.w400,
                       ),
                     ),
+                    const SizedBox(
+                      height: 4,
+                    ),
                     InputNumberOfQuantity(
                       maxLength: 25,
                       canEdit: true,

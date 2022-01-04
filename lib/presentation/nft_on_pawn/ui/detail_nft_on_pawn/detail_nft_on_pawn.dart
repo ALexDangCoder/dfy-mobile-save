@@ -425,7 +425,7 @@ class _OnPawnState extends State<OnPawn> with SingleTickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            S.current.duration,
+            '${S.current.duration}:',
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor().withOpacity(0.7),
               14,
