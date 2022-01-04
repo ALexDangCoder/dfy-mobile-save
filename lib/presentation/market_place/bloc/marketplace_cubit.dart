@@ -59,7 +59,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           (e) => nftsHardNft.add(
             NftMarket(
               nftId: e.nftId ?? '',
-              collectionId: e.id ?? '',
+              marketId: e.id ?? '',
               name: e.name ?? '',
               image: e.fileCid ?? '',
               price: e.price ?? 0,
@@ -81,7 +81,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           (e) => nftsHotAution.add(
             NftMarket(
               nftId: e.nftId ?? '',
-              collectionId: e.id ?? '',
+              marketId: e.id ?? '',
               name: e.name ?? '',
               image: e.fileCid ?? '',
               price: e.price ?? 0,
@@ -115,7 +115,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           (e) => nftsSale.add(
             NftMarket(
               nftId: e.nftId ?? '',
-              collectionId: e.id ?? '',
+              marketId: e.id ?? '',
               name: e.name ?? '',
               image: e.fileCid ?? '',
               price: e.price ?? 0,
@@ -135,7 +135,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           (e) => nftsCollateral.add(
               NftMarket(
                 nftId: e.nftId ?? '',
-                collectionId: e.id ?? '',
+                marketId: e.id ?? '',
                 name: e.name ?? '',
                 image: e.fileCid ?? '',
                 price: e.price ?? 0,
@@ -203,100 +203,6 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
       avatar: ImageAssets.img_collection,
       title: 'Technology collection',
       items: 100,
-    ),
-  ];
-
-  List<NftMarket> listFake = [
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.SALE,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.PAWN,
-      typeNFT: TypeNFT.SOFT_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.AUCTION,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.VIDEO,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.PAWN,
-      typeNFT: TypeNFT.SOFT_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.SALE,
-      typeNFT: TypeNFT.SOFT_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.AUCTION,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.VIDEO,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.PAWN,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.IMAGE,
     ),
   ];
 }
