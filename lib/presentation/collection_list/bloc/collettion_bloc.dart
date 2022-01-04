@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
@@ -59,18 +61,20 @@ class CollectionBloc extends BaseCubit<CollectionState> {
 
   CategoryRepository get _categoryRepository => Get.find();
 
-  void searchCollection() {
-    textSearch.stream
-        .debounceTime(
-      const Duration(
-        milliseconds: 500,
-      ),
-    )
-        .listen((event) {
-      if (event.isEmpty) {
-        getCollection(name: event);
-      } else {
-        getCollection(name: event);
+  Timer? debounceTime;
+
+  void searchCollection(String value) {
+    if (debounceTime != null) {
+      if (debounceTime!.isActive) {
+        debounceTime!.cancel();
+      }
+    }
+    debounceTime = Timer(const Duration(milliseconds: 800), () {
+      if (textSearch.value.isEmpty) {
+        getCollection();
+       }
+      else {
+        getCollection(name: textSearch.value);
       }
     });
   }
@@ -139,12 +143,12 @@ class CollectionBloc extends BaseCubit<CollectionState> {
 
   void funOnSearch(String value) {
     textSearch.sink.add(value);
-    searchCollection();
+    searchCollection(value);
   }
 
   void funOnTapSearch() {
     textSearch.sink.add('');
-    searchCollection();
+    searchCollection('');
   }
 
   void funOnSearchCategory(String value) {

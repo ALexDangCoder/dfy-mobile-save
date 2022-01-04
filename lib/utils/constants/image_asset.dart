@@ -19,8 +19,6 @@ class ImageAssets {
   static const String icTokenEth = '$baseImg/ic_token_eth.png';
   static const String icTokenBtc = '$baseImg/ic_token_btc.png';
   static const String icTokenBnb = '$baseImg/ic_token_bnb.png';
-  static const String icTabHomeUnselected =
-      '$baseImg/ic_tab_home_unselected.svg';
   static const String icTabHomeSelected = '$baseImg/ic_tab_home_selected.svg';
 
   static const String icTabMarketPlaceSelected =
