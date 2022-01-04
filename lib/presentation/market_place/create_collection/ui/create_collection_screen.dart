@@ -10,7 +10,6 @@ import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 class CreateCollectionScreen extends StatelessWidget {
   final CreateCollectionBloc bloc;
@@ -134,8 +133,10 @@ class CreateCollectionScreen extends StatelessWidget {
                 height: 132.h,
                 child: Stack(
                   children: [
-                    SvgPicture.asset(
-                      isActive
+                    sizedSvgImage(
+                      w: 118,
+                      h: 132,
+                      image: isActive
                           ? ImageAssets.create_collection_svg
                           : ImageAssets.create_collection_1155,
                     ),
