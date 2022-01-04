@@ -16,7 +16,7 @@ class ButtonLuxury extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 26.w, left: 26.w, bottom: 38.h),
+      margin: EdgeInsets.only(right: 16.w, left: 16.w, bottom: 38.h),
       decoration: BoxDecoration(
         gradient: RadialGradient(
           radius: 4,

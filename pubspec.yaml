@@ -112,7 +112,7 @@ dependencies:
   #web3
   web3dart: ^2.3.3
   http: ^0.13.4
-
+  html: ^0.15.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
