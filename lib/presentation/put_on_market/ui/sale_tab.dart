@@ -1,11 +1,9 @@
-import 'dart:ffi';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/put_on_market/approve/ui/approve.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
-import 'package:Dfy/presentation/put_on_market/put_on_sale/ui/put_on_sale.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_number_of_quantity.dart';
 import 'package:Dfy/widgets/form/input_with_select_type.dart';
@@ -154,7 +152,51 @@ class _SaleTabState extends State<SaleTab>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const PutOnSale(),
+                          builder: (context) => Approve(
+                            warning: RichText(
+                              text: TextSpan(
+                                  text:
+                                  'Listing is free. The the time of the sale, ',
+                                  style: textNormal(
+                                    AppTheme.getInstance()
+                                        .whiteColor()
+                                        .withOpacity(0.7),
+                                    14.sp,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: '2.5%',
+                                      style: textNormal(
+                                        AppTheme.getInstance()
+                                            .failTransactionColors()
+                                            .withOpacity(0.7),
+                                        14.sp,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: ' value of each copy will be deducted',
+                                      style: textNormal(
+                                        AppTheme.getInstance()
+                                            .whiteColor()
+                                            .withOpacity(0.7),
+                                        14.sp,
+                                      ),
+                                    ),
+                                  ]),
+                            ),
+                            title: S.current.put_on_sale,
+                            listDetail: [
+                              DetailItemApproveModel(
+                                title: '${S.current.sale_items} :',
+                                value: '1 of 5',
+                              ),
+                              DetailItemApproveModel(
+                                title: '${S.current.price_per_1} :',
+                                value: '150,000 DFY',
+                                isToken: true
+                              )
+                            ],
+                          ),
                         ),
                       );
                     }
