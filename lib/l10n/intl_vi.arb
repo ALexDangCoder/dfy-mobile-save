@@ -9,6 +9,7 @@
   "unauthorized": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
   "set_the_fixed_price_and_sell_your_nft" : "Thiết lập giá và bán NFT của bạn",
   "search": "Tìm kiếm...",
+  "put_on_sale" : "Đưa ra bán",
   "seed_phrase": "Seed phrase",
   "private_key": "Private key",
   "wallet_secret": "Seed phrase",
@@ -319,5 +320,6 @@
   "additional": "Thông tin thêm",
   "nft_id": "NFT Id",
   "collection_address": "Địa chỉ bộ sưu tập",
-  "offer": "Đề nghị"
+  "offer": "Đề nghị",
+  "could_not_load_data" : "Không thể tải dữ liệu"
 }

@@ -126,7 +126,6 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     if (gasFee < balance) {
       //nếu phí giao dịch bé hơn số dư thì không báo đỏ
       isSufficientGasFeeSink.add(true);
-
       isEnableBtnSink.add(true);
     } else {
       //ngược lại

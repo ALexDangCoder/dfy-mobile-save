@@ -84,7 +84,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     NftMarket(
       nftId: '',
       collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      backGround: '',
+      // backGround: '',
       tokenBuyOut: '',
       name: 'Tôi cầm IP 13++++',
       image:
@@ -97,7 +97,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     NftMarket(
       nftId: '',
       collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      backGround: '',
+      // backGround: '',
       tokenBuyOut: '',
       name: 'Tôi cầm IP 13++++',
       image:
@@ -110,7 +110,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     NftMarket(
       nftId: '',
       collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      backGround: '',
+      // backGround: '',
       tokenBuyOut: '',
       name: 'Tôi cầm IP 13++++',
       image:
@@ -123,7 +123,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     NftMarket(
       nftId: '',
       collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      backGround: '',
+      // backGround: '',
       tokenBuyOut: '',
       name: 'Tôi cầm IP 13++++',
       image:
@@ -136,7 +136,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     NftMarket(
       nftId: '',
       collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      backGround: '',
+      // backGround: '',
       tokenBuyOut: '',
       name: 'Tôi cầm IP 13++++',
       image:
@@ -149,7 +149,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     NftMarket(
       nftId: '',
       collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      backGround: '',
+      // backGround: '',
       tokenBuyOut: '',
       name: 'Tôi cầm IP 13++++',
       image:
@@ -162,7 +162,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     NftMarket(
       nftId: '',
       collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      backGround: '',
+      // backGround: '',
       tokenBuyOut: '',
       name: 'Tôi cầm IP 13++++',
       image:

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -12,7 +13,8 @@ import 'package:intl/intl.dart';
 
 class NFTItemWidget extends StatefulWidget {
   const NFTItemWidget({
-    Key? key, required this.nftMarket,
+    Key? key,
+    required this.nftMarket,
   }) : super(key: key);
 
   final NftMarket nftMarket;
@@ -27,111 +29,110 @@ class _NFTItemState extends State<NFTItemWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 231.h,
-                width: 156.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  color: AppTheme.getInstance().selectDialogColor(),
+      children: [
+        Stack(
+          children: [
+            Container(
+              height: 231.h,
+              width: 156.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.r),
+                color: AppTheme.getInstance().selectDialogColor(),
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 8.w,
+                  top: 8.h,
+                  right: 8.w,
+                  bottom: 8.h,
                 ),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 8.w,
-                    top: 8.h,
-                    right: 8.w,
-                    bottom: 8.h,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Stack(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          height: 129.h,
+                          width: 140.w,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(widget.nftMarket.image),
+                              fit: BoxFit.fill,
+                            ),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        playVideo(widget.nftMarket.typeImage),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    SizedBox(
+                      height: 16.h,
+                      child: Text(
+                        widget.nftMarket.name,
+                        style: textNormalCustom(
+                          null,
+                          13,
+                          FontWeight.w600,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    propertyNFT(widget.nftMarket.marketType),
+                    SizedBox(
+                      height: 16.h,
+                    ),
+                    SizedBox(
+                      height: 16.h,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            height: 129.h,
-                            width: 140.w,
-                            decoration: BoxDecoration(
-                              image: const DecorationImage(
-                                image: AssetImage('assets/images/lambo.png'),
-                                fit: BoxFit.fill,
-                              ),
-                              borderRadius: BorderRadius.circular(10.r),
+                          SizedBox(
+                            height: 16.h,
+                            child: Row(
+                              children: [
+                                const Image(
+                                  image: AssetImage('assets/images/symbol.png'),
+                                ),
+                                SizedBox(
+                                  width: 4.18.h,
+                                ),
+                                Text(
+                                  formatValue.format(widget.nftMarket.price),
+                                  style: textNormalCustom(
+                                    Colors.yellow,
+                                    13,
+                                    FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          playVideo(widget.nftMarket.typeImage),
+                          Text(
+                            '1 ${S.current.of_all} ${widget.nftMarket.totalCopies}',
+                            style: textNormalCustom(
+                              Colors.white,
+                              13,
+                              FontWeight.w600,
+                            ),
+                          ),
                         ],
                       ),
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      SizedBox(
-                        height: 16.h,
-                        child: Text(
-                          widget.nftMarket.name,
-                          style: textNormalCustom(
-                            null,
-                            13,
-                            FontWeight.w600,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      propertyNFT(widget.nftMarket.marketType),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      SizedBox(
-                        height: 16.h,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: 16.h,
-                              child: Row(
-                                children: [
-                                  const Image(
-                                    image:
-                                        AssetImage('assets/images/symbol.png'),
-                                  ),
-                                  SizedBox(
-                                    width: 4.18.h,
-                                  ),
-                                  Text(
-                                    formatValue.format(widget.nftMarket.price),
-                                    style: textNormalCustom(
-                                      Colors.yellow,
-                                      13,
-                                      FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Text(
-                              '1 of 1',
-                              style: textNormalCustom(
-                                Colors.white,
-                                13,
-                                FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              hardNft(widget.nftMarket.typeNFT),
-              timeCountdown(widget.nftMarket.marketType),
-            ],
-          ),
-        ],
+            ),
+            hardNft(widget.nftMarket.typeNFT),
+            timeCountdown(widget.nftMarket.marketType),
+          ],
+        ),
+      ],
     );
   }
 

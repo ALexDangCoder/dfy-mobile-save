@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
+import 'package:Dfy/presentation/put_on_market/put_on_sale/ui/put_on_sale.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_number_of_quantity.dart';
 import 'package:Dfy/widgets/form/input_with_select_type.dart';
@@ -126,8 +127,8 @@ class SaleTabState extends State<SaleTab> {
                       maxLength: 25,
                       canEdit: widget.canEdit,
                       quantity: widget.quantity,
-                      onchangeText: (value){
-                        print (value);
+                      onchangeText: (value) {
+                        print(value);
                       },
                     )
                   ],
@@ -145,7 +146,10 @@ class SaleTabState extends State<SaleTab> {
                 floatingDropdown.remove();
                 isDropdownOpened = false;
               }
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PutOnSale()),
+              );
             },
           ),
           const SizedBox(
@@ -159,7 +163,6 @@ class SaleTabState extends State<SaleTab> {
   void closeDropDown() {
     inputPriceKey.currentState?.closeDropDown();
   }
-
 
   List<Widget> typeInput() {
     return [
