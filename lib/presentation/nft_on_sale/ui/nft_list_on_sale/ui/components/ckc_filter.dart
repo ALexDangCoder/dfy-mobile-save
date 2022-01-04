@@ -82,8 +82,8 @@ class _CheckBoxFilterState extends State<CheckBoxFilter> {
           ),
           circularImage(
             widget.urlCover?? '',
-            height: 28,
-            width: 28,
+            height: 28.h,
+            width: 28.w,
           ),
           SizedBox(
             width: 8.w,

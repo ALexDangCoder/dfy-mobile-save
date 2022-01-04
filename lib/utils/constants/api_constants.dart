@@ -10,10 +10,16 @@ class ApiConstants {
   static const String GET_DETAIL_NFT_AUCTION =
       '/nft-market-svc/public-api/auction/detail/';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE = '/home';
+  static const String GET_DETAIL_NFT_AUCTION = '/nft-market-svc/public-api/auction/detail/';
+  static const String GET_LIST_NFT_COLLECTION_EXPLORE =
+      '/nft-market-svc/public-api/home';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE_SEARCH =
       '/nft-market-svc/public-api/search';
   static const String GET_LIST_CATEGORY =
       '/nft-market-svc/public-api/category';
   static const String GET_BOOL_CUSTOM_URL =
       'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=https://beta-marketplace.defiforyou.uk/';
+  static const String GET_LIST_COLLECTION_FILTER = '/nft-market-svc/public-api/collection';
+  static const String GET_LIST_NFT = '/nft-market-svc/public-api/search/nft';
+  static const String BASE_URL_IMAGE = 'https://defiforyou.mypinata.cloud/ipfs/';
 }
