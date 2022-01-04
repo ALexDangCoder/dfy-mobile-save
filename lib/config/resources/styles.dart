@@ -23,6 +23,7 @@ final spaceH14 = SizedBox(height: 14.h);
 final spaceH16 = SizedBox(height: 16.h);
 final spaceH18 = SizedBox(height: 18.h);
 final spaceH20 = SizedBox(height: 20.h);
+final spaceH22 = SizedBox(height: 22.h);
 final spaceH24 = SizedBox(height: 24.h);
 final spaceH25 = SizedBox(height: 25.h);
 final spaceH30 = SizedBox(height: 30.h);
@@ -86,6 +87,22 @@ TextStyle tokenDetailAmount({
   );
 }
 
+TextStyle textCustom({
+  Color color = Colors.white,
+  double fontSize = 16,
+  FontWeight weight = FontWeight.w400,
+  FontStyle fontStyle = FontStyle.normal,
+  TextDecoration decoration = TextDecoration.none,
+}) {
+  return GoogleFonts.sourceSansPro(
+    color: color,
+    fontWeight: weight,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize.sp,
+    decoration: decoration,
+  );
+}
+
 TextStyle titleText({Color color = Colors.white, double fontSize = 20}) {
   return GoogleFonts.sourceSansPro(
     color: color,
@@ -132,6 +149,11 @@ TextStyle textValueNFT = GoogleFonts.sourceSansPro(
   fontWeight: FontWeight.w400,
   fontSize: 16.sp,
 );
+TextStyle textLabelNFT = GoogleFonts.sourceSansPro(
+  color: AppTheme.getInstance().textThemeColor(),
+  fontWeight: FontWeight.w600,
+  fontSize: 16.sp,
+);
 TextStyle richTextBlue = GoogleFonts.sourceSansPro(
   color: const Color(0xff46BCFF),
   fontWeight: FontWeight.w400,
@@ -154,4 +176,16 @@ TextStyle unselectLabel = GoogleFonts.sen(
   color: AppTheme.getInstance().whiteColor(),
   fontWeight: FontWeight.w600,
   fontSize: 14,
+);
+TextStyle uploadText = GoogleFonts.sen(
+  color: AppTheme.getInstance().titleTabColor(),
+  fontWeight: FontWeight.w400,
+  fontSize: 14,
+);
+
+TextStyle normalText = GoogleFonts.sourceSansPro(
+  color: Colors.white,
+  fontWeight: FontWeight.w400,
+  fontStyle: FontStyle.normal,
+  fontSize: 14.sp,
 );

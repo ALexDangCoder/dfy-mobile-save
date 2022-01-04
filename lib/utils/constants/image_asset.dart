@@ -180,6 +180,26 @@ class ImageAssets {
   static const String ic_xls_svg = '$baseImg/ic_xls_svg.svg';
   static const String ic_expand_svg = '$baseImg/ic_expand_svg.svg';
   static const String ic_collapse_svg = '$baseImg/ic_collapse_svg.svg';
+  static const String create_collection_svg = '$baseImg/create_collection.svg';
+  static const String create_collection_1155 = '$baseImg/create_collection_1155.svg';
+  static const String hard_nft_note_svg = '$baseImg/hard_nft_note_svg.svg';
+  static const String icon_add_image_svg = '$baseImg/icon_add_image_svg.svg';
+  static const String ic_folder_svg = '$baseImg/ic_folder_svg.svg';
+  static const String ic_link_svg = '$baseImg/ic_link_svg.svg';
+  static const String ic_edit_square_svg = '$baseImg/ic_edit_square_svg.svg';
+  static const String ic_bookmark_svg = '$baseImg/ic_bookmark_svg.svg';
+  static const String ic_round_percent_svg = '$baseImg/ic_round_percent_svg.svg';
+  static const String ic_facebook_svg = '$baseImg/ic_facebook_svg.svg';
+  static const String ic_twitter_svg = '$baseImg/ic_twitter_svg.svg';
+  static const String ic_instagram_svg = '$baseImg/ic_instagram_svg.svg';
+  static const String ic_telegram_svg = '$baseImg/ic_telegram_svg.svg';
+  static const String ic_round_i = '$baseImg/ic_round_i.svg';
+  static const String ic_expand_white_svg = '$baseImg/ic_expand_white_svg.svg';
+
+
+
+
+
   static const String ic_verify_svg = '$baseImg/ic_verify.svg';
 
   static SvgPicture svgAssets(
