@@ -26,19 +26,32 @@ class DetailCollectionBloc {
   BehaviorSubject<bool> isSignContract = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isAllActivity = BehaviorSubject.seeded(false);
 
-  void resetFilterActivity() {
-    isTransfer.sink.add(false);
-    isPutOnMarket.sink.add(false);
-    isCancelMarket.sink.add(false);
-    isBurn.sink.add(false);
-    isLike.sink.add(false);
-    isReport.sink.add(false);
-    isBuy.sink.add(false);
-    isBid.sink.add(false);
-    isReceiveOffer.sink.add(false);
-    isSignContract.sink.add(false);
-    isAllActivity.sink.add(false);
+  void resetFilterActivity(bool value) {
+    isTransfer.sink.add(value);
+    isPutOnMarket.sink.add(value);
+    isCancelMarket.sink.add(value);
+    isBurn.sink.add(value);
+    isLike.sink.add(value);
+    isReport.sink.add(value);
+    isBuy.sink.add(value);
+    isBid.sink.add(value);
+    isReceiveOffer.sink.add(value);
+    isSignContract.sink.add(value);
+    isAllActivity.sink.add(value);
   }
+
+  void allTypeNft(bool value) {
+    isHardNft.sink.add(value);
+    isSoftNft.sink.add(value);
+  }
+
+  void allStatusNft(bool value) {
+    isNotOnMarket.sink.add(value);
+    isOnAuction.sink.add(value);
+    isOnSale.sink.add(value);
+    isOnPawn.sink.add(value);
+  }
+
 //Transfer
 // Put on market
 // Cancel market
@@ -59,7 +72,6 @@ class DetailCollectionBloc {
     isNotOnMarket.sink.add(false);
     isAllStatus.sink.add(false);
   }
-
 
   void search() {
     textSearch.stream

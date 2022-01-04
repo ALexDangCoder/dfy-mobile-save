@@ -37,7 +37,7 @@ class _DetailCollectionState extends State<DetailCollection>
 
   @override
   Widget build(BuildContext context) {
-    final bool isOwner = false;
+    final bool isOwner = true;
     return GestureDetector(
       onTap: () {
         final FocusScopeNode currentFocus = FocusScope.of(context);

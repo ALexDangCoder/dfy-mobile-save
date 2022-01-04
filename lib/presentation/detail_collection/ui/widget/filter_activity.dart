@@ -76,7 +76,7 @@ class _FilterActivityState extends State<FilterActivity> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      widget.collectionBloc.resetFilterActivity();
+                      widget.collectionBloc.resetFilterActivity(false);
                     },
                     child: Container(
                       height: 30.h,
@@ -120,6 +120,9 @@ class _FilterActivityState extends State<FilterActivity> {
                     children: [
                       Expanded(
                         child: IsBaseCheckBox(
+                          funText: widget.collectionBloc.resetFilterActivity,
+                          funCheckBox:
+                              widget.collectionBloc.resetFilterActivity,
                           title: S.current.all,
                           stream: collectionBloc.isAllActivity,
                         ),
