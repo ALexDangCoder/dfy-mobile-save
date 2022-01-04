@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/put_on_sale/ui/put_on_sale.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_number_of_quantity.dart';
 import 'package:Dfy/widgets/form/input_with_select_type.dart';
@@ -166,35 +167,29 @@ class SaleTabState extends State<SaleTab> {
 
   List<Widget> typeInput() {
     return [
-      Container(
-        height: 40,
-        width: 70,
-        color: Colors.red,
+      Row(
+        children: [
+          Flexible(child: ImageAssets.svgAssets(ImageAssets.icTokenDfy)),
+          Flexible(child: Text('DFY', style: textFieldNFT))
+        ],
       ),
-      Container(
-        height: 40,
-        width: 70,
-        color: Colors.blue,
+      Row(
+        children: [
+          Flexible(child: ImageAssets.svgAssets(ImageAssets.icTokenBtc)),
+          Flexible(child: Text('BTC', style: textFieldNFT))
+        ],
       ),
-      Container(
-        height: 40,
-        width: 70,
-        color: Colors.red,
+      Row(
+        children: [
+          Flexible(child: ImageAssets.svgAssets(ImageAssets.icTokenBnb)),
+          Flexible(child: Text('BNB', style: textFieldNFT))
+        ],
       ),
-      Container(
-        height: 40,
-        width: 70,
-        color: Colors.blue,
-      ),
-      Container(
-        height: 40,
-        width: 70,
-        color: Colors.red,
-      ),
-      Container(
-        height: 40,
-        width: 70,
-        color: Colors.blue,
+      Row(
+        children: [
+          Flexible(child: ImageAssets.svgAssets(ImageAssets.icTokenEth)),
+          Flexible(child: Text('ETH', style: textFieldNFT))
+        ],
       ),
     ];
   }
