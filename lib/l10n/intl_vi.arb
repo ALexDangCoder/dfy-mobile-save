@@ -304,7 +304,6 @@
   "on_auction": "Đang đấu giá",
   "collection_type": "Loại bộ sưu tập",
   "hard_nft_collection": "Hard NFT",
-  "soft_nft_collection": "Soft NFT",
   "all": "Tất cả",
   "nft_type": "Loại NFT",
   "soft_nft_collection": "Soft NFT",
@@ -312,5 +311,19 @@
   "nft_id": "NFT Id",
   "collection_address": "Địa chỉ bộ sưu tập",
   "offer": "Đề nghị",
-  "could_not_load_data" : "Không thể tải dữ liệu"
+  "could_not_load_data" : "Không thể tải dữ liệu",
+  "soft_nft_collection": "Soft NFT",
+  "create_collection" : "Tạo bộ sưu tập",
+  "coming_soon" : "COMING SOON",
+  "upload_cover_photo" : "TẢI LÊN ẢNH BÌA",
+  "upload_avatar" : "TẢI LÊN ẢNH ĐẠI DIỆN",
+  "upload_featured_photo" : "TẢI LÊN ẢNH NỔI BẬT",
+  "format_image" : "Định dạng: JPG, PNG, GIFF",
+  "collection_name" : "Tên bộ sưu tập",
+  "categories" : "Phân loại",
+  "royalties" : "Tiền bản quyền",
+  "social_links" : "Liên kết mạng xã hội",
+  "maximum_len" : "Số kí tự tối đa là 255",
+  "only_digits" : "Chỉ được phép nhập số",
+  "max_royalty" : "Tiền bản quyền tối đa là 50%"
 }
