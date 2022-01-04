@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FormCheckTextBox extends StatelessWidget {
+class InputRow extends StatelessWidget {
   final String hint;
   final String leadImg;
   final String img2;
@@ -17,7 +17,7 @@ class FormCheckTextBox extends StatelessWidget {
   final TextEditingController textController;
   final String suffixes;
 
-  const FormCheckTextBox({
+  const InputRow({
     Key? key,
     this.hint = '',
     required this.leadImg,
@@ -98,4 +98,25 @@ class FormCheckTextBox extends StatelessWidget {
       ],
     );
   }
+}
+
+Widget errorMessage(String _mess) {
+  return Row(
+    children: [
+      if (_mess.isEmpty)
+        const SizedBox.shrink()
+      else
+        Container(
+          margin: EdgeInsets.only(top: 4.h),
+          child: Text(
+            _mess,
+            style: textNormal(
+              Colors.red,
+              14,
+            ),
+            textAlign: TextAlign.start,
+          ),
+        )
+    ],
+  );
 }

@@ -7,9 +7,13 @@ class ApiConstants {
   static const int TIME_OUT = 30;
   static const String GET_LIST_TOKEN = '/market/coin-list';
   static const String GET_PRICE_TOKEN_BY_SYMBOL = '/market/coin-price/';
-  static const String GET_DETAIL_NFT_AUCTION = '/nft-market-svc/public-api/auction/detail/';
-  static const String GET_LIST_NFT_COLLECTION_EXPLORE =
-      '/home';
+  static const String GET_DETAIL_NFT_AUCTION =
+      '/nft-market-svc/public-api/auction/detail/';
+  static const String GET_LIST_NFT_COLLECTION_EXPLORE = '/home';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE_SEARCH =
       '/nft-market-svc/public-api/search';
+  static const String GET_LIST_CATEGORY =
+      '/nft-market-svc/public-api/category';
+  static const String GET_BOOL_CUSTOM_URL =
+      'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=https://beta-marketplace.defiforyou.uk/';
 }

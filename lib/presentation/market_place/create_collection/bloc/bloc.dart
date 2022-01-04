@@ -1,5 +1,10 @@
+import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/market_place/category_model.dart';
+import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CreateCollectionBloc {
@@ -15,6 +20,9 @@ class CreateCollectionBloc {
   String telegram = '';
   int royalties = 0;
 
+  String categoryName = '';
+  String categoryId = '';
+
   Map<String, bool> mapCheck = {
     'cover_photo': true,
     'avatar_photo': true,
@@ -22,23 +30,28 @@ class CreateCollectionBloc {
     'collection_name': false,
     'custom_url': true,
     'description': false,
-    'categories': true,
-    'royalties': false,
+    'categories': false,
+    'royalties': true,
     'facebook': true,
     'twitter': true,
     'instagram': true,
     'telegram': true,
   };
 
+  CategoryRepository get _categoryRepository => Get.find();
+
   //Stream
+  ///Type NFT
   final BehaviorSubject<TypeNFT> _typeNFTSubject = BehaviorSubject();
 
   Stream<TypeNFT> get typeNFTStream => _typeNFTSubject.stream;
 
+  ///CreateButton
   final BehaviorSubject<bool> _enableCreateSubject = BehaviorSubject();
 
   Stream<bool> get enableCreateStream => _enableCreateSubject.stream;
 
+  ///Validate TextField
   BehaviorSubject<String> nameCollectionSubject = BehaviorSubject();
   BehaviorSubject<String> customURLSubject = BehaviorSubject();
   BehaviorSubject<String> descriptionSubject = BehaviorSubject();
@@ -48,6 +61,10 @@ class CreateCollectionBloc {
   BehaviorSubject<String> twitterSubject = BehaviorSubject();
   BehaviorSubject<String> instagramSubject = BehaviorSubject();
   BehaviorSubject<String> telegramSubject = BehaviorSubject();
+
+  ///Send Category
+  BehaviorSubject<List<DropdownMenuItem<String>>> listCategorySubject =
+      BehaviorSubject();
 
   //func
   void changeSelectedItem(TypeNFT type) {
@@ -97,6 +114,7 @@ class CreateCollectionBloc {
         }
       case 'category':
         {
+          validateCategory(mess);
           break;
         }
       case 'royalty':
@@ -232,4 +250,40 @@ class CreateCollectionBloc {
       mapCheck['telegram'] = false;
     }
   }
+
+  void validateCategory(String mess) {
+    categoriesSubject.sink.add(mess);
+    if (mess.isEmpty) {
+      mapCheck['categories'] = true;
+    } else {
+      mapCheck['categories'] = false;
+    }
+  }
+
+  Future<void> setCategory(String id) async {
+    categoryId = id;
+  }
+
+  /// get list category
+  Future<void> getListCategory() async {
+    List<DropdownMenuItem<String>> menuItems = [];
+    final Result<List<Category>> result =
+        await _categoryRepository.getListCategory();
+    result.when(
+      success: (res) {
+        menuItems = res
+            .map(
+              (e) => DropdownMenuItem(
+                value: e.id ?? '',
+                child: Text(e.name ?? ''),
+              ),
+            )
+            .toList();
+      },
+      error: (error) {},
+    );
+    listCategorySubject.sink.add(menuItems);
+  }
+
+
 }

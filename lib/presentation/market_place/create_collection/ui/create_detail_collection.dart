@@ -3,7 +3,8 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/form_check_textbox.dart';
+import 'package:Dfy/presentation/market_place/create_collection/ui/widget/categories_row_widget.dart';
+import 'package:Dfy/presentation/market_place/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
@@ -36,6 +37,13 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
   final TextEditingController twitterController = TextEditingController();
   final TextEditingController instagramController = TextEditingController();
   final TextEditingController telegramController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.bloc.getListCategory();
+  }
 
   @override
   void dispose() {
@@ -82,7 +90,8 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                       buttonHeight: 64,
                       fontSize: 20,
                       onTap: () {
-                        if (statusButton) {}
+                        if (statusButton) {
+                        } else {}
                       },
                     );
                   },
@@ -104,7 +113,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
           S.current.information.toUpperCase(),
           style: uploadText,
         ),
-        FormCheckTextBox(
+        InputRow(
           textController: nameController,
           onChange: (value) {
             widget.bloc.validateCase(
@@ -124,7 +133,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
             return errorMessage(mess);
           },
         ),
-        FormCheckTextBox(
+        InputRow(
           textController: customURLController,
           onChange: (value) {
             widget.bloc.validateCase(
@@ -146,7 +155,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
             return errorMessage(mess);
           },
         ),
-        FormCheckTextBox(
+        InputRow(
           textController: descriptionController,
           onChange: (value) {
             widget.bloc.validateCase(
@@ -166,13 +175,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
             return errorMessage(mess);
           },
         ),
-        FormCheckTextBox(
-          textController: nameController,
-          onChange: (value) {},
-          leadImg: ImageAssets.ic_folder_svg,
-          hint: S.current.categories,
-          img2: ImageAssets.ic_expand_white_svg,
-        ),
+        CategoryRow(bloc: widget.bloc,),
         StreamBuilder<String>(
           stream: widget.bloc.categoriesSubject,
           initialData: '',
@@ -181,7 +184,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
             return errorMessage(mess);
           },
         ),
-        FormCheckTextBox(
+        InputRow(
           textController: royaltyController,
           suffixes: '%',
           onChange: (value) {
@@ -218,7 +221,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
           S.current.social_links.toUpperCase(),
           style: uploadText,
         ),
-        FormCheckTextBox(
+        InputRow(
           textController: facebookController,
           onChange: (value) {
             widget.bloc.validateCase(
@@ -238,7 +241,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
             return errorMessage(mess);
           },
         ),
-        FormCheckTextBox(
+        InputRow(
           textController: twitterController,
           onChange: (value) {
             widget.bloc.validateCase(
@@ -258,7 +261,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
             return errorMessage(mess);
           },
         ),
-        FormCheckTextBox(
+        InputRow(
           textController: instagramController,
           onChange: (value) {
             widget.bloc.validateCase(
@@ -278,7 +281,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
             return errorMessage(mess);
           },
         ),
-        FormCheckTextBox(
+        InputRow(
           textController: telegramController,
           onChange: (value) {
             widget.bloc.validateCase(
@@ -408,92 +411,6 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
             ),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget inputRow({
-    String hint = '',
-    required String leadImg,
-    String img2 = '',
-    required Function(String) onChange,
-    Function()? onImageTap,
-    TextInputType inputType = TextInputType.text,
-  }) {
-    return Container(
-      width: 343.w,
-      height: 64.h,
-      margin: EdgeInsets.only(top: 16.h),
-      padding: EdgeInsets.only(right: 15.w, left: 15.w),
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().backgroundBTSColor(),
-        borderRadius: BorderRadius.all(
-          Radius.circular(20.r),
-        ),
-      ),
-      child: Row(
-        children: [
-          sizedSvgImage(
-            w: 20,
-            h: 20,
-            image: leadImg,
-          ),
-          Expanded(
-            child: TextFormField(
-              keyboardType: inputType,
-              maxLength: 100,
-              cursorColor: AppTheme.getInstance().whiteColor(),
-              style: textNormal(
-                AppTheme.getInstance().whiteColor(),
-                16,
-              ),
-              onChanged: (value) {
-                onChange(value);
-              },
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
-                counterText: '',
-                hintText: hint,
-                hintStyle: textNormal(
-                  Colors.white.withOpacity(0.5),
-                  16,
-                ),
-                border: InputBorder.none,
-              ),
-              // onFieldSubmitted: ,
-            ),
-          ),
-          if (img2.isNotEmpty)
-            GestureDetector(
-              onTap: onImageTap,
-              child: sizedSvgImage(
-                w: (img2 == ImageAssets.ic_expand_white_svg) ? 10 : 20,
-                h: (img2 == ImageAssets.ic_expand_white_svg) ? 10 : 20,
-                image: img2,
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget errorMessage(String _mess) {
-    return Row(
-      children: [
-        if (_mess.isEmpty)
-          const SizedBox.shrink()
-        else
-          Container(
-            margin: EdgeInsets.only(top: 4.h),
-            child: Text(
-              _mess,
-              style: textNormal(
-                Colors.red,
-                14,
-              ),
-              textAlign: TextAlign.start,
-            ),
-          )
       ],
     );
   }
