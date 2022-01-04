@@ -1,3 +1,5 @@
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,13 +11,16 @@ Container circularImage(
   return Container(
     width: width.w,
     height: height.w,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      // border: Border.all(
-      //     color: Colors.teal, width: 10.0, style: BorderStyle.solid),
-      image: DecorationImage(
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(width.w.r),
+      child: CachedNetworkImage(
+        placeholder: (context, url) => Center(
+          child: CircularProgressIndicator(
+            color: AppTheme.getInstance().bgBtsColor(),
+          ),
+        ),
+        imageUrl: img,
         fit: BoxFit.cover,
-        image: AssetImage(img),
       ),
     ),
   );
