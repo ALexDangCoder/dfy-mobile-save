@@ -1,5 +1,3 @@
-
-
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -7,45 +5,40 @@ part 'collection_response.g.dart';
 
 @JsonSerializable()
 class CollectionResponse extends Equatable {
-  @JsonKey(name: 'avatarBack')
-  String avatarBack;
-  @JsonKey(name: 'avatarIcon')
-  String avatarIcon;
-  @JsonKey(name: 'item')
-  int item;
-  @JsonKey(name: 'owners')
-  int owners;
-  @JsonKey(name: 'title')
-  String title;
-  @JsonKey(name: 'textbody')
-  String textbody;
-  @JsonKey(name: 'volume')
-  int volume;
-  @JsonKey(name: 'owner')
-  String owner;
-  @JsonKey(name: 'contract')
-  String contract;
-  @JsonKey(name: 'nftstandard')
-  String nftstandard;
-  @JsonKey(name: 'category')
-  String category;
+
   @JsonKey(name: 'id')
   String id;
+  @JsonKey(name: 'name')
+  String name;
+  @JsonKey(name: 'description')
+  String description;
+  @JsonKey(name: 'type')
+  int type;
+  @JsonKey(name: 'avatar_cid')
+  String avatarCid;
+  @JsonKey(name: 'cover_cid')
+  String coverCid;
+  @JsonKey(name: 'total_nft')
+  int totalNft;
+  @JsonKey(name: 'nft_owner_count')
+  int nftOwnerCount;
+  @JsonKey(name: 'total_volume_traded')
+  int totalVolumeTraded;
+  @JsonKey(name: 'is_feature')
+  bool isFeature;
+
 
   CollectionResponse(
-    this.avatarBack,
-    this.avatarIcon,
-    this.item,
-    this.owners,
-    this.title,
-    this.textbody,
-    this.volume,
-    this.owner,
-    this.contract,
-    this.nftstandard,
-    this.category,
-    this.id,
-  );
+      this.id,
+      this.name,
+      this.description,
+      this.type,
+      this.avatarCid,
+      this.coverCid,
+      this.totalNft,
+      this.nftOwnerCount,
+      this.totalVolumeTraded,
+      this.isFeature);
 
   factory CollectionResponse.fromJson(Map<String, dynamic> json) =>
       _$CollectionResponseFromJson(json);
