@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -68,10 +69,10 @@ class CollectionItem extends StatelessWidget {
                       ),
                       child: Text(
                         title,
-                        style: TextStyle(
-                          color: AppTheme.getInstance().whiteColor(),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                        style: textNormalCustom(
+                          null,
+                          16.sp,
+                          FontWeight.w600,
                         ),
                       ),
                     ),

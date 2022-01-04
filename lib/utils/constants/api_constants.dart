@@ -7,9 +7,11 @@ class ApiConstants {
   static const int TIME_OUT = 30;
   static const String GET_LIST_TOKEN = '/market/coin-list';
   static const String GET_PRICE_TOKEN_BY_SYMBOL = '/market/coin-price/';
-  static const String GET_DETAIL_NFT_AUCTION =
-      '/nft-market-svc/public-api/auction/detail/';
-  static const String GET_LIST_NFT_COLLECTION_EXPLORE = '/nft-market-svc/public-api/home';
+  static const String GET_DETAIL_NFT_AUCTION = '/nft-market-svc/public-api/auction/detail/';
+  static const String GET_LIST_NFT_COLLECTION_EXPLORE =
+      '/nft-market-svc/public-api/home';
+  static const String URL_BASE = 'https://defiforyou.mypinata.cloud/ipfs/';
+  static const String GET_LIST_COLLECTION = '/nft-market-svc/public-api/search/collection';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE_SEARCH =
       '/nft-market-svc/public-api/search';
   static const String GET_LIST_CATEGORY =
