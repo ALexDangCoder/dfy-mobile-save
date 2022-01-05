@@ -267,6 +267,7 @@ class ImageAssets {
   static const String ic_expand_white_svg = '$baseImg/ic_expand_white_svg.svg';
 
   static const String ic_verify_svg = '$baseImg/ic_verify.svg';
+  static const String ic_star = '$baseImg/ic_star.png';
 
   static SvgPicture svgAssets(
     String name, {

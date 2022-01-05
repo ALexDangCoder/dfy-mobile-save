@@ -30,7 +30,12 @@ class CheckBoxFilter extends StatefulWidget {
 }
 
 class _CheckBoxFilterState extends State<CheckBoxFilter> {
-  bool _isSelected = false;
+  late bool _isSelected;
+  @override
+  void initState() {
+    super.initState();
+    _isSelected = widget.cubit?.checkFilter(widget.nameCkcFilter) ?? false ;
+  }
 
   @override
   Widget build(BuildContext context) {

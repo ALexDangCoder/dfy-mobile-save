@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,10 @@ class OwnerTab extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: 30,
       itemBuilder: (context, index) {
-        return _buildItemOwner(index);
+        return GestureDetector(
+          onTap: () {},
+          child: _buildItemOwner(index),
+        );
       },
     );
   }

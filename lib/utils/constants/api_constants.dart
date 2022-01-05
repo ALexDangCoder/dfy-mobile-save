@@ -26,4 +26,8 @@ class ApiConstants {
       '/inventory-svc/public-api/v1.0.0/collections/activities';
 
   static const String BASE_URL_IMAGE = 'https://defiforyou.mypinata.cloud/ipfs/';
+
+
+  ///NFT
+  static const String GET_DETAIL_NFT_ON_SALE = '/nft-market-svc/public-api/market/detail/';
 }

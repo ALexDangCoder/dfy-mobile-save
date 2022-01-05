@@ -18,6 +18,7 @@ class BaseBottomSheet extends StatelessWidget {
   final bool isHaveLeftIcon;
   final bool? isLockTextInSetting;
   final Widget? widget;
+  final Widget? bottomBar;
   final bool resizeBottomInset;
 
   const BaseBottomSheet({
@@ -31,17 +32,19 @@ class BaseBottomSheet extends StatelessWidget {
     this.isLockTextInSetting = false,
     this.widget,
     this.resizeBottomInset = false,
+    this.bottomBar,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: bottomBar,
       resizeToAvoidBottomInset: resizeBottomInset,
       backgroundColor: Colors.black,
       body: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          height: 764.h,
+          height: bottomBar != null ? 682.h : 764.h,
           width: 375.w,
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
