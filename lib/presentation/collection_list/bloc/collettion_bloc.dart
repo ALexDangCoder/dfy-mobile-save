@@ -72,8 +72,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     debounceTime = Timer(const Duration(milliseconds: 800), () {
       if (textSearch.value.isEmpty) {
         getCollection();
-       }
-      else {
+      } else {
         getCollection(name: textSearch.value);
       }
     });
@@ -183,9 +182,13 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         await _marketPlaceRepository.getListCollection(name: name);
     result.when(
       success: (res) {
-        emit(LoadingDataSuccess());
-        arg = res.toList();
-        list.sink.add(arg);
+        if (res.isEmpty) {
+          emit(LoadingDataErorr());
+        } else {
+          emit(LoadingDataSuccess());
+          arg = res.toList();
+          list.sink.add(arg);
+        }
       },
       error: (error) {
         emit(LoadingDataFail());

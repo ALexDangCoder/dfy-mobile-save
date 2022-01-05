@@ -23,3 +23,9 @@ class LoadingDataFail extends CollectionState {
   // TODO: implement props
   List<Object?> get props => [];
 }
+
+class LoadingDataErorr extends CollectionState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
