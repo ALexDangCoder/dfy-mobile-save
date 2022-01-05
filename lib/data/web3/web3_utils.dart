@@ -481,4 +481,67 @@ class Web3Utils {
   }) async {
     return NftInfo();
   }
+
+  //Market place
+  Future<String> getSignData({
+    required int tokenId,
+    required int numberOfCopies,
+    required double price,
+    required String currency,
+    required String collectionAddress,
+    required BuildContext context,
+  }) async {
+    final abiCode = await DefaultAssetBundle.of(context)
+        .loadString('assets/abi/SellNFT_ABI.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'Default NFT'),
+      EthereumAddress.fromHex('0x988b342d1223e01b0d6Ba4F496FD42d47969656b'),
+    );
+    final putOnSalesFunction = deployContract.function('putOnSales');
+    final putOnSale = Transaction.callContract(
+      contract: deployContract,
+      function: putOnSalesFunction,
+      parameters: [
+        BigInt.from(tokenId),
+        BigInt.from(numberOfCopies),
+        BigInt.from(num.parse('190000000000000000000000')),
+        EthereumAddress.fromHex(currency),
+        EthereumAddress.fromHex(collectionAddress),
+      ],
+    );
+    return hex.encode(putOnSale.data ?? []);
+  }
+
+  Future<String> getPutOnSaleGasLimit({
+    required String from,
+    required String to,
+    required String contract,
+    required String symbol,
+    required int id,
+    required BuildContext context,
+  }) async {
+    final abiCode = await DefaultAssetBundle.of(context)
+        .loadString('assets/abi/erc721_abi.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, symbol),
+      EthereumAddress.fromHex(contract),
+    );
+    final transferFunction = deployContract.function('transferFrom');
+    final transferTransaction = Transaction.callContract(
+      contract: deployContract,
+      function: transferFunction,
+      parameters: [
+        EthereumAddress.fromHex(from),
+        EthereumAddress.fromHex(to),
+        BigInt.from(id),
+      ],
+    );
+    final gasLimit = await client.estimateGas(
+      sender: EthereumAddress.fromHex(from),
+      to: EthereumAddress.fromHex(contract),
+      data: transferTransaction.data,
+    );
+    final valueHundredMore = BigInt.from(100) + gasLimit;
+    return '$valueHundredMore';
+  }
 }
