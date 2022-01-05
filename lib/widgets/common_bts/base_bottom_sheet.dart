@@ -39,7 +39,6 @@ class BaseBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: bottomBar,
-      resizeToAvoidBottomInset: false,
       resizeToAvoidBottomInset: resizeBottomInset,
       backgroundColor: Colors.black,
       body: Align(

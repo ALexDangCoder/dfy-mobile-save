@@ -1,6 +1,5 @@
 import 'package:Dfy/config/base/base_app_bar.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/widgets/common_bts/base_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -106,5 +105,47 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
         ),
       ),
     );
+  }
+}
+
+class BaseSliverHeader extends SliverPersistentHeaderDelegate {
+  final Widget _tabBar;
+
+  BaseSliverHeader(this._tabBar);
+
+  @override
+  double get minExtent => 60.h;
+
+  @override
+  double get maxExtent => 60.h;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Column(
+      children: [
+        Container(
+          color: AppTheme.getInstance().bgBtsColor(),
+          height: 58.h,
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 305.w,
+                minWidth: 253.w,
+              ),
+              child: _tabBar,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  bool shouldRebuild(BaseSliverHeader oldDelegate) {
+    return false;
   }
 }

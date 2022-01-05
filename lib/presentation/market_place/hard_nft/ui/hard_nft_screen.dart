@@ -8,7 +8,7 @@ import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/history_tab.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/owners_tab.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/widget/description_widget.dart';
-import 'package:Dfy/presentation/nft_on_pawn/ui/send_offer/send_offer.dart';
+import 'package:Dfy/presentation/market_place/send_offer/send_offer.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';

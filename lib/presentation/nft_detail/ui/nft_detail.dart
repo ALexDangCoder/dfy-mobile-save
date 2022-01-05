@@ -1,15 +1,20 @@
+
 import 'package:Dfy/config/base/base_custom_scroll_view.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/bloc/nft_auction_bloc.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/bid_tab.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/history_tab.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/owner_tab.dart';
+import 'package:Dfy/presentation/main_screen/buy_nft/ui/buy_nft.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
+import 'package:Dfy/presentation/market_place/send_offer/send_offer.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
+import 'package:Dfy/presentation/nft_detail/ui/tab_page/bid_tab.dart';
+import 'package:Dfy/presentation/nft_detail/ui/tab_page/history_tab.dart';
+import 'package:Dfy/presentation/nft_detail/ui/tab_page/offer_tab.dart';
+import 'package:Dfy/presentation/nft_detail/ui/tab_page/owner_tab.dart';
 import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
@@ -37,79 +42,157 @@ final auctionObj = NFTOnAuction(
   1,
   300000,
   true,
-  [Properties('tag', 'Heaven'),Properties('Nam', 'Nguyen Thanh Nam'),Properties('face', 'No 1 vietnam')],
+  [
+    Properties('tag', 'Heaven'),
+    Properties('Nam', 'Nguyen Thanh Nam'),
+    Properties('face', 'No 1 vietnam')
+  ],
   'Pharetra etiam libero erat in sit risus at vestibulum nulla. Cras enim nulla neque mauris. Mollis eu lorem '
       'lectus egestas maecenas mattis id convallis imperdiet.`',
 );
 
-class OnAuction extends StatefulWidget {
-  const OnAuction({Key? key}) : super(key: key);
+class NFTDetailScreen extends StatefulWidget {
+  const NFTDetailScreen({Key? key, required this.type}) : super(key: key);
+  final MarketType type;
 
   @override
-  _OnAuctionState createState() => _OnAuctionState();
+  _NFTDetailScreenState createState() => _NFTDetailScreenState();
 }
 
-class _OnAuctionState extends State<OnAuction>
+class _NFTDetailScreenState extends State<NFTDetailScreen>
     with SingleTickerProviderStateMixin {
+  late final Widget _price;
+  late final Widget _duration;
+  late final Widget _bottomBar;
+  late final List<Widget> _tabPage;
+  late final List<Widget> _tabTit;
   late final TabController _tabController;
-  final List<Widget> tabPage = const [
-    HistoryTab(
-      listHistory: [],
-    ),
-    OwnerTab(),
-    BidTab(),
-  ];
-  final List<Tab> titTab = [
-    Tab(
-      text: S.current.history,
-    ),
-    Tab(
-      text: S.current.owner,
-    ),
-    Tab(
-      text: S.current.bidding,
-    ),
-  ];
-  late final AuctionBloc _bloc;
+  late final NFTDetailBloc _bloc;
+
+  void caseWidget() {
+    switch (widget.type) {
+      case MarketType.AUCTION:
+        _price = _priceContainerOnAuction(30000);
+        _duration = _timeContainer(30000);
+        _tabPage = const [
+          HistoryTab(
+            listHistory: [],
+          ),
+          OwnerTab(),
+          BidTab(),
+        ];
+        _tabTit = [
+          Tab(
+            text: S.current.history,
+          ),
+          Tab(
+            text: S.current.owner,
+          ),
+          Tab(
+            text: S.current.bidding,
+          ),
+        ];
+        _bottomBar = Row(
+          children: [
+            Expanded(child: _buildButtonBuyOut(context)),
+            spaceW25,
+            Expanded(child: _buildButtonPlaceBid(context)),
+          ],
+        );
+        break;
+      case MarketType.SALE:
+        _price = _priceContainerOnSale();
+        _duration = Container();
+        _tabPage = const [
+          HistoryTab(
+            listHistory: [],
+          ),
+          OwnerTab(),
+        ];
+        _tabTit = [
+          Tab(
+            text: S.current.history,
+          ),
+          Tab(
+            text: S.current.owner,
+          ),
+        ];
+        _bottomBar = _buildButtonBuyOutOnSale(context);
+        break;
+      case MarketType.PAWN:
+        _price = _priceContainerOnPawn();
+        _duration = _durationRowOnPawn();
+        _tabPage = const [
+          HistoryTab(
+            listHistory: [],
+          ),
+          OwnerTab(),
+          OfferTab(),
+        ];
+        _tabTit = [
+          Tab(
+            text: S.current.history,
+          ),
+          Tab(
+            text: S.current.owner,
+          ),
+          Tab(
+            text: S.current.offer,
+          ),
+        ];
+        _bottomBar = _buildButtonSendOffer(context);
+        break;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-    _bloc = AuctionBloc();
+    caseWidget();
+    _tabController = TabController(length: _tabPage.length, vsync: this);
+    _bloc = NFTDetailBloc();
+  }
+
+  @override
+  void dispose() {
+    _bloc.close();
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseCustomScrollView(
-      bottomBar: Row(
-        children: [
-          Expanded(child: _buildButtonBuyOut(context)),
-          spaceW25,
-          Expanded(child: _buildButtonPlaceBid(context)),
-        ],
-      ),
-      title: EXAMPLE_TITLE,
       image: EXAMPLE_IMAGE_URL,
-      leading: InkWell(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-          child: roundButton(image: ImageAssets.ic_btn_back_svg),
-        ),
-      ),
       initHeight: 360.h,
+      leading: _leading(),
+      title: EXAMPLE_TITLE,
+      tabBarView: TabBarView(
+        controller: _tabController,
+        children: _tabPage,
+      ),
+      tabBar: TabBar(
+        controller: _tabController,
+        labelColor: Colors.white,
+        unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+        indicatorColor: AppTheme.getInstance().titleTabColor(),
+        labelStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+        tabs: _tabTit,
+      ),
+      bottomBar: _bottomBar,
       content: [
         _cardTitle(title: EXAMPLE_TITLE),
-        _priceContainer(auctionObj.reservePrice ?? 0),
-        _timeContainer(auctionObj.endTime ?? 0),
-        spaceH18,
+        _price,
+        _duration,
         divide,
         spaceH12,
         _description(
-          auctionObj.description ?? '',
+          'Pharetra etiam libero erat in sit risus at vestibulum '
+          'nulla. Cras enim nulla neque mauris. Mollis eu lorem lectus egestas '
+          'maecenas mattis id convallis imperdiet.',
         ),
         spaceH20,
         StreamBuilder<bool>(
@@ -165,7 +248,7 @@ class _OnAuctionState extends State<OnAuction>
                             : S.current.view_more,
                         style: textNormalCustom(
                           AppTheme.getInstance().fillColor(),
-                          16.sp,
+                          16,
                           FontWeight.w400,
                         ),
                       ),
@@ -178,23 +261,18 @@ class _OnAuctionState extends State<OnAuction>
         ),
         divide,
       ],
-      tabBar: TabBar(
-        controller: _tabController,
-        labelColor: Colors.white,
-        unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
-        indicatorColor: AppTheme.getInstance().titleTabColor(),
-        labelStyle: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-        ),
-        tabs: titTab,
-      ),
-      tabBarView: TabBarView(
-        controller: _tabController,
-        children: tabPage,
-      ),
     );
   }
+
+  Widget _leading() => InkWell(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+          child: roundButton(image: ImageAssets.ic_btn_back_svg),
+        ),
+      );
 
   Widget _cardTitle({required String title}) {
     return Container(
@@ -210,7 +288,7 @@ class _OnAuctionState extends State<OnAuction>
             children: [
               Expanded(
                 child: Text(
-                  EXAMPLE_TITLE,
+                  title,
                   style: textNormalCustom(null, 24, FontWeight.w600),
                 ),
               ),
@@ -238,7 +316,7 @@ class _OnAuctionState extends State<OnAuction>
             ],
           ),
           Text(
-            '1 of ${auctionObj.totalCopies ?? ''} available',
+            '1 of 1 available',
             textAlign: TextAlign.left,
             style: tokenDetailAmount(
               fontSize: 16,
@@ -315,26 +393,26 @@ class _OnAuctionState extends State<OnAuction>
         children: [
           buildRow(
             title: S.current.collection_address,
-            detail: auctionObj.collectionAddress ?? '',
+            detail: 'auctionObj.collectionAddress',
             type: TextType.RICH_BLUE,
             isShowCopy: true,
           ),
           spaceH12,
           buildRow(
             title: S.current.nft_id,
-            detail: auctionObj.nftId ?? '',
+            detail: 'auctionObj.nftId',
             type: TextType.NORMAL,
           ),
           spaceH12,
           buildRow(
             title: S.current.nft_standard,
-            detail: auctionObj.nftStandard ?? '',
+            detail: 'auctionObj.nftStandard',
             type: TextType.NORMAL,
           ),
           spaceH12,
           buildRow(
             title: S.current.block_chain,
-            detail: auctionObj.blockChain ?? '',
+            detail: 'auctionObj.blockChain',
             type: TextType.NORMAL,
           ),
         ],
@@ -450,7 +528,7 @@ class _OnAuctionState extends State<OnAuction>
     );
   }
 
-  Container _priceContainer(double price) => Container(
+  Container _priceContainerOnAuction(double price) => Container(
         width: 343.w,
         height: 64.h,
         padding: EdgeInsets.only(top: 12.h),
@@ -502,9 +580,141 @@ class _OnAuctionState extends State<OnAuction>
         ),
       );
 
+  Container _priceContainerOnSale() => Container(
+        width: 343.w,
+        height: 64.h,
+        margin: EdgeInsets.only(top: 12.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              S.current.expected_loan,
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                14,
+                FontWeight.normal,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Row(
+                  children: [
+                    sizedSvgImage(
+                      w: 20,
+                      h: 20,
+                      image: ImageAssets.ic_token_dfy_svg,
+                    ),
+                    spaceW4,
+                    Text(
+                      '30,000 DFY',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().textThemeColor(),
+                        20,
+                        FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Text(
+                    '~100,000,000',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                      14,
+                      FontWeight.normal,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      );
+
+  Container _priceContainerOnPawn() => Container(
+        width: 343.w,
+        height: 50.h,
+        margin: EdgeInsets.only(top: 12.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              S.current.expected_loan,
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                14,
+                FontWeight.normal,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Row(
+                  children: [
+                    sizedSvgImage(
+                      w: 20,
+                      h: 20,
+                      image: ImageAssets.ic_token_dfy_svg,
+                    ),
+                    spaceW4,
+                    Text(
+                      '30,000 DFY',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().textThemeColor(),
+                        20,
+                        FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Text(
+                    '~100,000,000',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                      14,
+                      FontWeight.normal,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      );
+
+  Widget _durationRowOnPawn() => Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${S.current.duration}:',
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                  14,
+                  FontWeight.normal,
+                ),
+              ),
+              Text(
+                '12 ${S.current.month}',
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  16,
+                  FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          spaceH12,
+        ],
+      );
+
   SizedBox _timeContainer(int milliSecond) => SizedBox(
         width: 343.w,
-        height: 116.h,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -517,8 +727,66 @@ class _OnAuctionState extends State<OnAuction>
                 FontWeight.normal,
               ),
             ),
+            spaceH16,
             CountDownView(timeInMilliSecond: milliSecond),
+            spaceH24,
           ],
         ),
       );
+
+  Widget _buildButtonSendOffer(BuildContext context) {
+    return ButtonGradient(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) {
+              return const SendOffer();
+            },
+          ),
+        );
+      },
+      gradient: RadialGradient(
+        center: const Alignment(0.5, -0.5),
+        radius: 4,
+        colors: AppTheme.getInstance().gradientButtonColor(),
+      ),
+      child: Text(
+        S.current.send_offer,
+        style: textNormalCustom(
+          AppTheme.getInstance().textThemeColor(),
+          16,
+          FontWeight.w700,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButtonBuyOutOnSale(BuildContext context) {
+    return ButtonGradient(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) {
+              return const BuyNFT();
+            },
+          ),
+        );
+      },
+      gradient: RadialGradient(
+        center: const Alignment(0.5, -0.5),
+        radius: 4,
+        colors: AppTheme.getInstance().gradientButtonColor(),
+      ),
+      child: Text(
+        S.current.buy_nft,
+        style: textNormalCustom(
+          AppTheme.getInstance().textThemeColor(),
+          16,
+          FontWeight.w700,
+        ),
+      ),
+    );
+  }
 }

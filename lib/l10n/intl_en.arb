@@ -331,7 +331,6 @@
   "collection_address": "Collection address",
   "all":"All",
   "could_not_load_data": "Couldn’t load the data",
-  "offer": "Offer",
   "send_nft": "Send NFT",
   "create_collection" : "Create Collection",
   "coming_soon" : "COMING SOON",
@@ -380,7 +379,7 @@
   "like": "Like",
   "report": "Report",
   "name_of_collection" : "Name of collection",
-  "all_category": "All category"
+  "all_category": "All category",
   "offer": "Offer",
   "offer_detail": "Offer detail",
   "view_profile": "View profile",

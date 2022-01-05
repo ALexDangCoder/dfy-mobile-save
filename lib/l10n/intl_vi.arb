@@ -374,11 +374,8 @@
   "sign_contract": "Sign contract",
   "like": "Like",
   "report": "Report",
-  "could_not_load_data" : "Không thể tải dữ liệu",
   "name_of_collection" : "Tên của bộ sưu tập",
-  "all_category": "Tất cả loại"
-
-  "offer": "Đề nghị",
+  "all_category": "Tất cả loại",
   "offer_detail": "Chi tiết đề nghị",
   "view_profile": "Xem hồ sơ",
   "message": "Tin nhắn",
