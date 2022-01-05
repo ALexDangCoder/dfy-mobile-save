@@ -6,11 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ButtonGold extends StatelessWidget {
   final String title;
   final bool isEnable;
+  final bool? fixSize;
 
   const ButtonGold({
     Key? key,
     required this.title,
-    required this.isEnable,
+    required this.isEnable, this.fixSize = true,
   }) : super(key: key);
 
   @override
@@ -36,7 +37,7 @@ class ButtonGold extends StatelessWidget {
         ),
       ),
       height: 64.h,
-      width: 343.w,
+      width: fixSize == true  ? 343.w : null ,
       child: Center(
         child: Text(
           title,

@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
-import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
@@ -10,6 +9,7 @@ import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/ui/card_nft.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/text_helper.dart';
@@ -17,11 +17,11 @@ import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/column_button/buil_column.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/coming_soon.dart';
+import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NFTDetail extends StatefulWidget {
@@ -47,7 +47,6 @@ class _NFTDetailState extends State<NFTDetail> {
   late final NFTBloc bloc;
   late int initLen;
   late bool initShow;
-  final appConstants = Get.find<AppConstants>();
 
   @override
   void initState() {
@@ -174,9 +173,10 @@ class _NFTDetailState extends State<NFTDetail> {
                                     ),
                                   ),
                                 ),
-                                //todo
                                 Text(
-                                  '1 ${S.current.of_all} 1',
+                                  nft.standard == 'ERC-721'
+                                      ? '1 ${S.current.of_all} 1'
+                                      : '1 of 10',
                                   style: textNormal(
                                     AppTheme.getInstance().textThemeColor(),
                                     20,
@@ -201,23 +201,22 @@ class _NFTDetailState extends State<NFTDetail> {
                                 _buildRow(
                                   title: S.current.description,
                                   detail: nft.description?.parseHtml() ?? '',
-                                  type: TextType.NORM,
+                                  type: TextType.NORMAL,
                                 ),
-                                //todo
                                 _buildRow(
                                   title: S.current.nft_standard,
-                                  detail:  'ERC-721',
-                                  type: TextType.NORM,
+                                  detail: nft.standard ?? '',
+                                  type: TextType.NORMAL,
                                 ),
                                 _buildRow(
                                   title: S.current.contract,
                                   detail: nft.contract ?? '',
-                                  type: TextType.RICH,
+                                  type: TextType.RICH_BLUE,
                                 ),
                                 _buildRow(
                                   title: S.current.block_chain,
-                                  detail: 'Binance smart chain',
-                                  type: TextType.NORM,
+                                  detail: nft.blockchain ?? '',
+                                  type: TextType.NORMAL,
                                 ),
                                 SizedBox(
                                   height: 24.h,
@@ -500,7 +499,7 @@ class _NFTDetailState extends State<NFTDetail> {
               ),
             ),
           ),
-          if (type == TextType.NORM)
+          if (type == TextType.NORMAL)
             SizedBox(
               width: 225.w,
               child: Align(
@@ -523,10 +522,10 @@ class _NFTDetailState extends State<NFTDetail> {
                       TextSpan(
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            launch(appConstants.bscScan + detail);
+                            launch('$BSC_SCAN$detail');
                           },
                         text: detail.handleString(),
-                        style: richTextValueNFT,
+                        style: richTextBlue,
                       ),
                     ],
                   ),

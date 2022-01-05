@@ -20,9 +20,11 @@ Container buttonForm({
     child: Row(
       children: [
         IconButton(onPressed: () {}, icon: Image.asset(prefixIcon)),
-        Text(
-          hintText,
-          style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+        Expanded(
+          child: Text(
+            hintText,
+            style: textNormalCustom(Colors.white, 16, FontWeight.w400),
+          ),
         )
       ],
     ),

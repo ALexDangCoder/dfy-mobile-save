@@ -15,7 +15,6 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_sale_ft_pawn.dart';
-import 'package:Dfy/widgets/confirm_blockchain/components/information_wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -83,7 +82,6 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
   late TextEditingController _txtGasLimit;
   late TextEditingController _txtGasPrice;
   late String titleBts;
-  late InformationWallet _informationWallet;
   final FormFieldBlockchainCubit cubitFormCustomizeGasFee =
       FormFieldBlockchainCubit();
   late int nonce;
@@ -103,14 +101,6 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
     } else {
       balanceWallet = widget.balanceWallet - widget.amount!.toDouble();
     }
-    _informationWallet = InformationWallet(
-      cubit: cubitFormCustomizeGasFee,
-      nameWallet: widget.nameWallet,
-      fromAddress: widget.addressFrom.formatAddressWallet(),
-      amount: balanceWallet,
-      nameToken: widget.nameTokenWallet,
-      // imgWallet: widget.imageWallet,
-    );
     trustWalletChannel.setMethodCallHandler(
         cubitFormCustomizeGasFee.nativeMethodCallBackTrustWallet);
 
@@ -327,7 +317,6 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                 ),
                               ] else
                                 ...[],
-                              _informationWallet, //will not appear
                               spaceH16,
                               FormShowFtHideCfBlockchain(
                                 nameToken: widget.nameTokenWallet,

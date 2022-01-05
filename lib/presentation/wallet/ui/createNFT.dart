@@ -42,7 +42,7 @@ class CreateNFT extends StatelessWidget {
                   ImageIcon(
                     AssetImage(icon),
                     color: const Color(0xFFE4AC1A),
-                    size: 24,
+                    size: 20.sp,
                   ),
                   SizedBox(
                     width: 8.w,
@@ -51,7 +51,7 @@ class CreateNFT extends StatelessWidget {
                     title,
                     style: textNormalCustom(
                       const Color(0xFFE4AC1A),
-                      16,
+                      16.sp,
                       FontWeight.w400,
                     ),
                   ),

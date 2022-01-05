@@ -29,7 +29,7 @@ class FormInput extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 16.w),
       padding: EdgeInsets.only(right: 15.w, left: 15.w),
       decoration: BoxDecoration(
-        color: const Color(0xff32324c),
+        color: AppTheme.getInstance().backgroundBTSColor(),
         borderRadius: BorderRadius.all(
           Radius.circular(20.r),
         ),

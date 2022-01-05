@@ -26,9 +26,9 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
     return Container(
       decoration: BoxDecoration(
         color: bgBottomTab,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
+        borderRadius:  BorderRadius.only(
+          topLeft: Radius.circular(20.0.r),
+          topRight: Radius.circular(20.0.r),
         ),
         border: Border.all(
           width: 1.3.w,
@@ -139,7 +139,7 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
           value,
           style: textNormalCustom(
             isSelect == true ? Colors.white : Colors.white.withOpacity(0.3),
-            12,
+            12.sp,
             isSelect == true ? FontWeight.w600 : FontWeight.w400,
           ),
         )

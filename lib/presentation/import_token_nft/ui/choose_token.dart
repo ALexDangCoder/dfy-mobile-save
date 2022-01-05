@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -22,7 +23,7 @@ class _ChooseTokenState extends State<ChooseToken> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xff3e3d5c),
+      color: AppTheme.getInstance().bgBtsColor(),
       child: Column(
         children: [
           spaceH12,
@@ -91,6 +92,7 @@ class _ChooseTokenState extends State<ChooseToken> {
   }
 
   Widget showItemToken(String shortToken, int index) {
+    print (widget.bloc.getListTokenModel.value[index].iconToken);
     if (shortToken == 'BNB' || shortToken == 'DFY') {
       return ListTileSwitch(
         enabled: false,

@@ -13,7 +13,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:web3dart/crypto.dart';
 
 MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
 
@@ -54,6 +53,8 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: Strings.app_name,
         theme: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           primaryColor: AppTheme.getInstance().primaryColor(),
           cardColor: Colors.white,
           textTheme: GoogleFonts.latoTextTheme(
@@ -64,7 +65,7 @@ class _MyAppState extends State<MyApp> {
             systemOverlayStyle: SystemUiOverlayStyle.dark,
           ),
           dividerColor: dividerColor,
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: AppTheme.getInstance().whiteColor(),
           textSelectionTheme: TextSelectionThemeData(
             cursorColor: AppTheme.getInstance().primaryColor(),
             selectionColor: AppTheme.getInstance().primaryColor(),

@@ -28,7 +28,7 @@ class ItemSeedPhrase extends StatelessWidget {
           title,
           style: textNormal(
             AppTheme.getInstance().textThemeColor(),
-            16,
+            16.sp,
           ),
         ),
       ),
