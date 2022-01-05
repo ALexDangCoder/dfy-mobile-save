@@ -63,10 +63,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           emit(LoadingDataSuccess());
           arg = res;
           collectionDetailModel.sink.add(arg);
-          // getListActivityCollection(
-          //     collectionAddress: arg.collectionAddress ?? '');
           getListActivityCollection(
-              collectionAddress: '0x045709660ab325b35cf1baf1981cf357f98b4235');
+              collectionAddress: arg.collectionAddress ?? '');
         }
       },
       error: (error) {
