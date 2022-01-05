@@ -34,8 +34,7 @@ class _NFTItemState extends State<NFTItem> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-      padding: EdgeInsets.zero,
+    return GestureDetector(
       onLongPress: () {
         Navigator.of(context).push(
           HeroDialogRoute(
@@ -51,7 +50,6 @@ class _NFTItemState extends State<NFTItem> {
           ),
         );
       },
-      onPressed: null,
       child: Column(
         children: [
           Visibility(

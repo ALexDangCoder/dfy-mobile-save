@@ -6,12 +6,14 @@ import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/data/web3/model/transaction.dart';
 import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -43,7 +45,7 @@ class Web3Utils {
   factory Web3Utils() => _shared;
 
   //client
-  final client = Web3Client(rpcURL, Client());
+  final client = Web3Client(Get.find<AppConstants>().rpcUrl, Client());
 
   Future<ImportNftResponse> importNFT({
     required String contract,
@@ -324,39 +326,6 @@ class Web3Utils {
     return TransactionHistoryDetail.init();
   }
 
-  //NFT History
-  Future<List<HistoryNFT>> getNFTHistory() async {
-    return [
-      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
-      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'success', '7'),
-      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '5'),
-      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'success', '1'),
-      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
-      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
-      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
-      HistoryNFT('Contract interaction', '2021-12-03 14:30', 'pending', '1'),
-    ];
-  }
-
-  //NFT History detail
-  // Future<DetailHistoryNFT> getNFTHistoryDetail() async {
-  //   return DetailHistoryNFT(
-  //     2,
-  //     'success',
-  //     10.0,
-  //     '2021-12-03 14:30',
-  //     '0xc945bb101ac51f0bbb77c294fe21280e9de55c82da3160ad665548ef8662f35a',
-  //     '0x588B1b7C48517D1C8E1e083d4c05389D2E1A5e37',
-  //     '0xf14aEdedE46Bf6763EbB5aA5C882364d29B167dD',
-  //     2409,
-  //   );
-  // }
-
-  //get balance of an address
-  int getTokenBalance(String contractAddress) {
-    return 0;
-  }
-
   //get gas price
   Future<String> getGasPrice() async {
     final amount = await client.getGasPrice();
@@ -511,5 +480,68 @@ class Web3Utils {
     String? password,
   }) async {
     return NftInfo();
+  }
+
+  //Market place
+  Future<String> getSignData({
+    required int tokenId,
+    required int numberOfCopies,
+    required double price,
+    required String currency,
+    required String collectionAddress,
+    required BuildContext context,
+  }) async {
+    final abiCode = await DefaultAssetBundle.of(context)
+        .loadString('assets/abi/SellNFT_ABI.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'Default NFT'),
+      EthereumAddress.fromHex('0x988b342d1223e01b0d6Ba4F496FD42d47969656b'),
+    );
+    final putOnSalesFunction = deployContract.function('putOnSales');
+    final putOnSale = Transaction.callContract(
+      contract: deployContract,
+      function: putOnSalesFunction,
+      parameters: [
+        BigInt.from(tokenId),
+        BigInt.from(numberOfCopies),
+        BigInt.from(num.parse('190000000000000000000000')),
+        EthereumAddress.fromHex(currency),
+        EthereumAddress.fromHex(collectionAddress),
+      ],
+    );
+    return hex.encode(putOnSale.data ?? []);
+  }
+
+  Future<String> getPutOnSaleGasLimit({
+    required String from,
+    required String to,
+    required String contract,
+    required String symbol,
+    required int id,
+    required BuildContext context,
+  }) async {
+    final abiCode = await DefaultAssetBundle.of(context)
+        .loadString('assets/abi/erc721_abi.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, symbol),
+      EthereumAddress.fromHex(contract),
+    );
+    final transferFunction = deployContract.function('transferFrom');
+    final transferTransaction = Transaction.callContract(
+      contract: deployContract,
+      function: transferFunction,
+      parameters: [
+        EthereumAddress.fromHex(from),
+        EthereumAddress.fromHex(to),
+        BigInt.from(id),
+      ],
+    );
+    final gasLimit = await client.estimateGas(
+      sender: EthereumAddress.fromHex(from),
+      to: EthereumAddress.fromHex(contract),
+      data: transferTransaction.data,
+    );
+    final valueHundredMore = BigInt.from(100) + gasLimit;
+    return '$valueHundredMore';
   }
 }

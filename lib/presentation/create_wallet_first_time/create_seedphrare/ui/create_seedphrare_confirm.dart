@@ -81,7 +81,7 @@ class _BodyState extends State<_Body> {
                 MaterialPageRoute(
                   builder: (context) {
                     return CreateSuccessfullyHaveWallet(
-                      type: KeyType.CREATE_HAVE_WALLET,
+                      type: KeyType.CREATE,
                       wallet: Wallet(
                         name: bLocCreateSeedPhrase.nameWallet.value,
                         address: bLocCreateSeedPhrase.walletAddress,
