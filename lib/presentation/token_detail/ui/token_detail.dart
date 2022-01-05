@@ -92,7 +92,21 @@ class TokenDetail extends StatelessWidget {
                             top: 24.h,
                             bottom: 8.h,
                           ),
-                          child: SizedBox(
+                          child: modelToken.iconToken.isEmpty
+                              ? CircleAvatar(
+                            backgroundColor: Colors.yellow,
+                            radius: 27.r,
+                            child: Center(
+                              child: Text(
+                                modelToken.nameShortToken.substring(0, 1),
+                                style: textNormalCustom(
+                                  Colors.black,
+                                  40,
+                                  FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ) : SizedBox(
                             height: 54.h,
                             width: 54.h,
                             child: Image.network(modelToken.iconToken),
