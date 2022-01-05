@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ReceiveOffer extends StatelessWidget {
   final String urlAvatar;
+  final String urlSymbol;
   final String title;
   final String date;
   final String content;
@@ -22,6 +23,7 @@ class ReceiveOffer extends StatelessWidget {
     required this.content,
     required this.value,
     required this.valueSymbol,
+    required this.urlSymbol,
   }) : super(key: key);
 
   @override
@@ -111,9 +113,33 @@ class ReceiveOffer extends StatelessWidget {
                     14,
                     FontWeight.w400,
                   ),
-                  children: <TextSpan>[
+                  children: [
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: urlSymbol.isNotEmpty
+                          ? Image.asset(
+                              urlSymbol,
+                              width: 14.w,
+                              height: 14.w,
+                            )
+                          : Container(
+                        decoration: BoxDecoration(
+                          color: Colors.yellow,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(45.r),
+                          ),
+                        ),
+                        width: 14.w,
+                        height: 14.w,
+                              child: FittedBox(
+                                child: Text(
+                                  valueSymbol.substring(0, 1),
+                                ),
+                              ),
+                            ),
+                    ),
                     TextSpan(
-                      text: '$value $valueSymbol',
+                      text: ' $value $valueSymbol',
                       style: textNormalCustom(
                         AppTheme.getInstance().amountTextColor(),
                         14,
