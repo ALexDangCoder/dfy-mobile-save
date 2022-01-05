@@ -7,7 +7,7 @@ import 'package:Dfy/presentation/detail_collection/ui/tab_bar/nfts.dart';
 import 'package:Dfy/presentation/detail_collection/ui/tab_bar/trading_history.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/base_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/filter_activity.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

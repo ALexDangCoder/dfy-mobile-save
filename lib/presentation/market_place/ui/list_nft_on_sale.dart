@@ -2,7 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
-import 'package:Dfy/presentation/nft_on_sale/ui/detail_nft/on_sale_detail.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
@@ -44,13 +44,14 @@ class ListNftOnSale extends StatelessWidget {
                   isLoading
                       ? () {}
                       : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ListNft(
-                              marketType: MarketType.SALE,
-                            ),
-                          ),
-                        );
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                      const ListNft(
+                        marketType: MarketType.SALE,
+                      ),
+                    ),
+                  );
                 },
                 child: Padding(
                   padding: EdgeInsets.only(
@@ -78,56 +79,59 @@ class ListNftOnSale extends StatelessWidget {
             height: 231.h,
             child: isLoadFail
                 ? ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 6,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            ErrorLoadNft(
-                              callback: () {
-                                cubit.getListNftCollectionExplore();
-                              },
-                            ),
-                            spaceW12,
-                          ],
-                        ),
-                      );
-                    },
-                  )
-                : ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: isLoading ? 6 : cubit.nftsSale.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          isLoading
-                              ? () {}
-                              : Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const OnSale(),
-                                  ),
-                                );
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: 6,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {},
+                  child: Row(
+                    children: [
+                      ErrorLoadNft(
+                        callback: () {
+                          cubit.getListNftCollectionExplore();
                         },
-                        child: Row(
-                          children: [
-                            if (isLoading)
-                              const SkeletonNft()
-                            else
-                              NFTItemWidget(
-                                nftMarket: cubit.nftsSale[index],
-                              ),
-                            spaceW12,
-                          ],
-                        ),
-                      );
-                    },
+                      ),
+                      spaceW12,
+                    ],
                   ),
+                );
+              },
+            )
+                : ListView.builder(
+              shrinkWrap: true,
+              itemCount: isLoading ? 6 : cubit.nftsSale.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    isLoading
+                        ? () {}
+                        : Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                          const NFTDetailScreen(
+                            type: MarketType.SALE,
+                          ),
+                      ),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      if (isLoading)
+                        const SkeletonNft()
+                      else
+                        NFTItemWidget(
+                          nftMarket: cubit.nftsSale[index],
+                        ),
+                      spaceW12,
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ],

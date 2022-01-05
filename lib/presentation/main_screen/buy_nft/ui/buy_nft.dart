@@ -1,8 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
-import 'package:Dfy/presentation/nft_on_sale/ui/buy_nft/bloc/buy_nft_cubit.dart';
+import 'package:Dfy/presentation/main_screen/buy_nft/bloc/buy_nft_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
