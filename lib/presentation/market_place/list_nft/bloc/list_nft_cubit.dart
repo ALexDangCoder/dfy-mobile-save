@@ -125,18 +125,22 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   void selectParamTypeNft(String type) {
     if (type == S.current.hard_NFT) {
       selectTypeNft.add(1);
+      checkFilterArr.add(type);
     }
     if (type == S.current.soft_nft) {
       selectTypeNft.add(0);
+      checkFilterArr.add(type);
     }
   }
 
   void moveParamTypeNft(String type) {
     if (type == S.current.hard_NFT) {
       selectTypeNft.remove(1);
+      checkFilterArr.remove(type);
     }
     if (type == S.current.soft_nft) {
       selectTypeNft.remove(0);
+      checkFilterArr.remove(type);
     }
   }
 
@@ -145,24 +149,30 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   void selectParamStatus(String type) {
     if (type == S.current.on_sale) {
       selectStatus.add(1);
+      checkFilterArr.add(type);
     }
     if (type == S.current.on_pawn) {
       selectStatus.add(3);
+      checkFilterArr.add(type);
     }
     if (type == S.current.on_auction) {
       selectStatus.add(2);
+      checkFilterArr.add(type);
     }
   }
 
   void moveParamStatus(String type) {
     if (type == S.current.on_sale) {
       selectStatus.remove(1);
+      checkFilterArr.remove(type);
     }
     if (type == S.current.on_pawn) {
       selectStatus.remove(3);
+      checkFilterArr.remove(type);
     }
     if (type == S.current.on_auction) {
       selectStatus.remove(2);
+      checkFilterArr.remove(type);
     }
   }
 
@@ -172,6 +182,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     for(final value in listCollectionCheck) {
       if(type == value.nameCkcFilter){
         selectCollection.add(value.collectionId);
+        checkFilterArr.add(type);
       }
     }
   }
@@ -180,11 +191,26 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     for(final value in listCollectionCheck) {
       if(type == value.nameCkcFilter){
         selectCollection.remove(value.collectionId);
+        checkFilterArr.remove(type);
       }
     }
   }
 
+  List<String> checkFilterArr = [];
 
+
+  bool checkFilter(String key) {
+    if(checkFilterArr.isNotEmpty){
+      if(checkFilterArr.contains(key)){
+        return true;
+      } else {
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
+  }
 
   ///
 

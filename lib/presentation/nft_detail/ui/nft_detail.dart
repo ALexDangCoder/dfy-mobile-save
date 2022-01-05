@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/base/base_custom_scroll_view.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
@@ -52,8 +51,10 @@ final auctionObj = NFTOnAuction(
 );
 
 class NFTDetailScreen extends StatefulWidget {
-  const NFTDetailScreen({Key? key, required this.type}) : super(key: key);
+  const NFTDetailScreen({Key? key, required this.type,  this.marketId})
+      : super(key: key);
   final MarketType type;
+  final String? marketId;
 
   @override
   _NFTDetailScreenState createState() => _NFTDetailScreenState();
@@ -151,6 +152,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
     caseWidget();
     _tabController = TabController(length: _tabPage.length, vsync: this);
     _bloc = NFTDetailBloc();
+    _bloc.getInForNFT(widget.marketId ?? '', widget.type);
   }
 
   @override

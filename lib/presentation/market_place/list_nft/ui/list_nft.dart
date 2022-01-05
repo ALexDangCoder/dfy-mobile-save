@@ -62,9 +62,6 @@ class _ListNftState extends State<ListNft> {
             builder: (context, AsyncSnapshot<String> snapshot) {
               return BaseBottomSheet(
                 onRightClick: () {
-                  _cubit.selectCollection.clear();
-                  _cubit.selectTypeNft.clear();
-                  _cubit.selectStatus.clear();
                   showModalBottomSheet(
                     backgroundColor: Colors.black,
                     isScrollControlled: true,

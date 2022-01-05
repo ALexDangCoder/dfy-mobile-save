@@ -385,6 +385,9 @@
   "copied_address": "Sao chép địa chỉ!",
   "copied_private_key": "Sao chép private key!",
   "copied_seed_phrase": "Sao chép seed phrase!",
-  "all_category": "Tất cả loại"
+  "all_category": "Tất cả loại",
+   "copied_address": "Sao chép địa chỉ!",
+    "copied_private_key": "Sao chép private key!",
+    "copied_seed_phrase": "Sao chép seed phrase!"
 
 }
