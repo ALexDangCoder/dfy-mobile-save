@@ -3,11 +3,13 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/approve/bloc/approve_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EstimateGasFee extends StatefulWidget {
-  const EstimateGasFee({Key? key, required this.cubit, required this.gasLimit})
+  const EstimateGasFee(
+      {Key? key, required this.cubit, required this.gasLimitStart})
       : super(key: key);
-  final double gasLimit;
+  final double gasLimitStart;
   final ApproveCubit cubit;
 
   @override
@@ -16,12 +18,30 @@ class EstimateGasFee extends StatefulWidget {
 
 class _EstimateGasFeeState extends State<EstimateGasFee> {
   bool isCustomFee = false;
+  double? gasPrice;
+
+  double? gasLimit;
+  double? gasPriceStart;
+  final TextEditingController _editGasPriceController = TextEditingController();
+  final TextEditingController _editGasLimitController = TextEditingController();
 
   @override
   void initState() {
-    widget.cubit.getGasPrice();
+    _editGasLimitController.text = widget.gasLimitStart.toString();
+    initData();
     // TODO: implement initState
     super.initState();
+  }
+
+  Future<void> initData() async {
+    await widget.cubit.getGasPrice();
+    _editGasPriceController.text =
+        (widget.cubit.gasPriceSubject.valueOrNull ?? 0).toString();
+  }
+
+  void resetEditGasFee() {
+    _editGasLimitController.text = widget.gasLimitStart.toString();
+    _editGasLimitController.text = gasPriceStart.toString();
   }
 
   @override
@@ -58,15 +78,31 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  Text(
-                    '${((widget.cubit.gasPrice ?? 10) * widget.gasLimit) / 1000000000} BNB',
-                    style: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                    ).copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  StreamBuilder<double>(
+                      stream: widget.cubit.gasPriceStream,
+                      builder: (context, snapshot) {
+                        gasPriceStart = snapshot.data;
+                        final gasFee = ((gasPrice ?? (gasPriceStart ?? 0)) *
+                                (gasLimit ?? widget.gasLimitStart)) /
+                            1000000000;
+                        return Column(
+                          children: [
+                            Text(
+                              '$gasFee BNB',
+                              style: textNormal(
+                                AppTheme.getInstance().whiteColor(),
+                                16,
+                              ).copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            if (gasFee > (widget.cubit.balanceWallet ?? 0))
+                              Text("a")
+                            else
+                              const SizedBox(height: 0),
+                          ],
+                        );
+                      }),
                 ],
               ),
             ),
@@ -93,14 +129,14 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox (height : 16),
+                  const SizedBox(height: 16),
                   Divider(
                     height: 1,
                     color: AppTheme.getInstance().whiteBackgroundButtonColor(),
                   ),
-                  const SizedBox (height : 16),
+                  const SizedBox(height: 16),
                   Padding(
-                    padding:const  EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -125,17 +161,15 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                             ),
                             child: Center(
                               child: TextField(
-                                // textAlignVertical: TextAlignVertical.center,
+                                controller: _editGasLimitController,
                                 textAlign: TextAlign.right,
-                                keyboardType: const TextInputType.numberWithOptions(
-                                  decimal: true,
-                                ),
-                                //controller: txtController,
+                                keyboardType: TextInputType.number,
                                 style: textNormal(
                                   AppTheme.getInstance().whiteColor(),
                                   16,
                                 ),
-                                cursorColor: AppTheme.getInstance().textThemeColor(),
+                                cursorColor:
+                                    AppTheme.getInstance().textThemeColor(),
                                 decoration: InputDecoration(
                                   hintStyle: textNormal(
                                     AppTheme.getInstance().disableColor(),
@@ -143,7 +177,15 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                   ),
                                   border: InputBorder.none,
                                 ),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(r'^\d*\.?\d*'),
+                                  ),
+                                ],
                                 onChanged: (value) {
+                                  setState(() {
+                                    gasLimit = double.parse(value);
+                                  });
                                 },
                               ),
                             ),
@@ -152,9 +194,9 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                       ],
                     ),
                   ),
-                  const SizedBox (height : 16),
+                  const SizedBox(height: 16),
                   Padding(
-                    padding:const  EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -170,7 +212,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                         Expanded(
                           child: Container(
                             height: 64,
-                            padding:const EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 20,
                               right: 20,
                             ),
@@ -182,17 +224,20 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                             ),
                             child: Center(
                               child: TextFormField(
-                                // textAlignVertical: TextAlignVertical.center,
+                                controller: _editGasPriceController,
                                 textAlign: TextAlign.right,
-                                keyboardType: const TextInputType.numberWithOptions(
-                                  decimal: true,
-                                ),
-                                //controller: txtController,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(r'^\d*\.?\d*'),
+                                  ),
+                                ],
+                                keyboardType: TextInputType.number,
                                 style: textNormal(
                                   AppTheme.getInstance().whiteColor(),
                                   16,
                                 ),
-                                cursorColor: AppTheme.getInstance().textThemeColor(),
+                                cursorColor:
+                                    AppTheme.getInstance().textThemeColor(),
                                 decoration: InputDecoration(
                                   hintStyle: textNormal(
                                     AppTheme.getInstance().disableColor(),
@@ -201,6 +246,10 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                   border: InputBorder.none,
                                 ),
                                 onChanged: (value) {
+                                  print(value);
+                                  setState(() {
+                                    gasPrice = double.parse(value);
+                                  });
                                 },
                               ),
                             ),

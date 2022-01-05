@@ -13,13 +13,14 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   ApproveCubit() : super(ApproveInitState());
 
   List<Wallet> listWallet = [];
-  double? gasPrice;
+  double? balanceWallet;
 
   final BehaviorSubject<String> _addressWalletCoreSubject =
       BehaviorSubject<String>();
   final BehaviorSubject<String> _nameWalletSubject = BehaviorSubject<String>();
   final BehaviorSubject<double> _balanceWalletSubject =
       BehaviorSubject<double>();
+  final BehaviorSubject<double> gasPriceSubject = BehaviorSubject<double>();
 
   Stream<String> get addressWalletCoreStream =>
       _addressWalletCoreSubject.stream;
@@ -27,6 +28,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   Stream<String> get nameWalletStream => _nameWalletSubject.stream;
 
   Stream<double> get balanceWalletStream => _balanceWalletSubject.stream;
+
+  Stream<double> get gasPriceStream => gasPriceSubject.stream;
+
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
@@ -41,9 +45,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           }
           _addressWalletCoreSubject.sink.add(listWallet.first.address!);
           _nameWalletSubject.sink.add(listWallet.first.name!);
-          final double balanceWallet = await Web3Utils().getBalanceOfBnb(
+          balanceWallet = await Web3Utils().getBalanceOfBnb(
               ofAddress: _addressWalletCoreSubject.valueOrNull ?? '');
-          _balanceWalletSubject.sink.add(balanceWallet);
+          _balanceWalletSubject.sink.add(balanceWallet?? 0);
         }
         break;
     }
@@ -65,9 +69,15 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   Future<void> getGasPrice() async {
     final result = await Web3Utils().getGasPrice();
-    gasPrice = double.parse(result);
+    gasPriceSubject.sink.add(double.parse(result));
   }
 
 
-  void dispose() {}
+  void dispose() {
+    gasPriceSubject.close();
+    _addressWalletCoreSubject.close();
+    _balanceWalletSubject.close();
+    _nameWalletSubject.close();
+
+  }
 }

@@ -33,7 +33,7 @@ class _ApproveState extends State<Approve> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding?.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       heightScaffold = scaffoldKey.currentContext?.size?.height;
     });
     trustWalletChannel
@@ -136,7 +136,7 @@ class _ApproveState extends State<Approve> {
                         const SizedBox(height: 16),
                         EstimateGasFee(
                           cubit: cubit,
-                          gasLimit: 10,
+                          gasLimitStart: 10,
                         ),
                       ],
                     ),
