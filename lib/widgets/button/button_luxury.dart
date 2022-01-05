@@ -15,7 +15,7 @@ class ButtonLuxury extends StatelessWidget {
     Key? key,
     required this.title,
     required this.isEnable,
-    this.marginHorizontal = 26,
+    this.marginHorizontal = 16,
     this.buttonHeight = 48,
     this.fontSize = 16,
     this.onTap,

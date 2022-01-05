@@ -380,5 +380,8 @@
   "like": "Like",
   "report": "Report",
   "name_of_collection" : "Name of collection",
-  "all_category": "All category"
+  "all_category": "All category",
+  "copied_address": "Copied address!",
+  "copied_private_key": "Copied private key!",
+  "copied_seed_phrase": "Copied seed phrase!"
 }
