@@ -175,7 +175,7 @@ class _HardNFTScreenState extends State<HardNFTScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        S.current.duration,
+                        '${S.current.duration}:',
                         style: whiteTextWithOpacity,
                       ),
                       Text(

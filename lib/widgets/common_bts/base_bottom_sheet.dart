@@ -19,6 +19,7 @@ class BaseBottomSheet extends StatelessWidget {
   final bool? isLockTextInSetting;
   final Widget? widget;
   final Widget? bottomBar;
+  final bool resizeBottomInset;
 
   const BaseBottomSheet({
     Key? key,
@@ -30,6 +31,7 @@ class BaseBottomSheet extends StatelessWidget {
     this.isHaveLeftIcon = true,
     this.isLockTextInSetting = false,
     this.widget,
+    this.resizeBottomInset = false,
     this.bottomBar,
   }) : super(key: key);
 
@@ -38,6 +40,7 @@ class BaseBottomSheet extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: bottomBar,
       resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: resizeBottomInset,
       backgroundColor: Colors.black,
       body: Align(
         alignment: Alignment.bottomCenter,

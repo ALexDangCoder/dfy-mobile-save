@@ -1,4 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/list_nft/bloc/list_nft_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/image/circular_image.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +15,15 @@ class CheckBoxFilter extends StatefulWidget {
   const CheckBoxFilter({
     Key? key,
     required this.nameCkcFilter,
-    required this.typeCkc, this.urlCover,
+    required this.typeCkc, this.urlCover, required this.filterType, this.cubit,
+    this.collectionId,
   }) : super(key: key);
   final String nameCkcFilter;
   final TYPE_CKC_FILTER typeCkc;
   final String? urlCover;
+  final String? collectionId;
+  final String filterType;
+  final ListNftCubit? cubit;
 
   @override
   _CheckBoxFilterState createState() => _CheckBoxFilterState();
@@ -32,6 +38,7 @@ class _CheckBoxFilterState extends State<CheckBoxFilter> {
       onTap: () {
         setState(() {
           _isSelected = !_isSelected;
+          checkKey(widget.filterType, _isSelected);
         });
       },
       child: Row(
@@ -82,8 +89,8 @@ class _CheckBoxFilterState extends State<CheckBoxFilter> {
           ),
           circularImage(
             widget.urlCover?? '',
-            height: 28,
-            width: 28,
+            height: 28.h,
+            width: 28.w,
           ),
           SizedBox(
             width: 8.w,
@@ -92,6 +99,32 @@ class _CheckBoxFilterState extends State<CheckBoxFilter> {
       );
     } else {
       return Container();
+    }
+  }
+  void checkKey(String type,bool isSellect){
+    if(type == S.current.collection){
+      if(isSellect){
+        widget.cubit!.selectParamCollection(widget.nameCkcFilter);
+      }
+      else {
+        widget.cubit!.moveParamCollection(widget.nameCkcFilter);
+      }
+    }
+    else if(type == S.current.status) {
+      if(isSellect){
+        widget.cubit!.selectParamStatus(widget.nameCkcFilter);
+      }
+      else {
+        widget.cubit!.moveParamStatus(widget.nameCkcFilter);
+      }
+    }
+    else {
+      if(isSellect){
+        widget.cubit!.selectParamTypeNft(widget.nameCkcFilter);
+      }
+      else {
+        widget.cubit!.moveParamTypeNft(widget.nameCkcFilter);
+      }
     }
   }
 }

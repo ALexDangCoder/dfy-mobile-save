@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -5,6 +6,7 @@ import 'package:Dfy/presentation/market_place/list_nft/bloc/list_nft_cubit.dart'
 import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/components/ckc_filter.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -76,23 +78,59 @@ class _FilterBtsState extends State<FilterBts> {
               ),
             ),
             spaceH12,
-            CheckBoxFilter(
-              nameCkcFilter: S.current.all,
-              typeCkc: TYPE_CKC_FILTER.NON_IMG,
-            ),
-            spaceH20,
             Row(
               children: [
                 Expanded(
                   child: CheckBoxFilter(
+                    cubit: widget.listNftCubit,
                     nameCkcFilter: S.current.hard_NFT,
                     typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                    filterType: S.current.nft_type,
                   ),
                 ),
                 Expanded(
                   child: CheckBoxFilter(
+                    cubit: widget.listNftCubit,
                     nameCkcFilter: S.current.soft_nft,
                     typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                    filterType: S.current.nft_type,
+                  ),
+                ),
+              ],
+            ),
+            spaceH20,
+            Text(
+              S.current.status,
+              style: textNormalCustom(
+                Colors.white,
+                20,
+                FontWeight.w600,
+              ),
+            ),
+            spaceH12,
+            CheckBoxFilter(
+              cubit: widget.listNftCubit,
+              nameCkcFilter: S.current.on_sale,
+              typeCkc: TYPE_CKC_FILTER.NON_IMG,
+              filterType: S.current.status,
+            ),
+            spaceH12,
+            Row(
+              children: [
+                Expanded(
+                  child: CheckBoxFilter(
+                    cubit: widget.listNftCubit,
+                    nameCkcFilter: S.current.on_pawn,
+                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                    filterType: S.current.status,
+                  ),
+                ),
+                Expanded(
+                  child: CheckBoxFilter(
+                    cubit: widget.listNftCubit,
+                    nameCkcFilter: S.current.on_auction,
+                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                    filterType: S.current.status,
                   ),
                 ),
               ],
@@ -106,24 +144,11 @@ class _FilterBtsState extends State<FilterBts> {
                 FontWeight.w600,
               ),
             ),
-            spaceH20,
+            spaceH12,
             searchCollection(),
             spaceH20,
-            StreamBuilder<bool>(
-              stream: widget.listNftCubit.isVisibleAll,
-              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                return Visibility(
-                  visible: snapshot.data ?? true,
-                  child: CheckBoxFilter(
-                    nameCkcFilter: S.current.all,
-                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                  ),
-                );
-              },
-            ),
-            spaceH20,
             SizedBox(
-              height: 200.h,
+              height: 210.h,
               width: double.infinity,
               child: StreamBuilder<List<CheckBoxFilter>>(
                 stream: widget.listNftCubit.listCheckBox,
@@ -137,13 +162,17 @@ class _FilterBtsState extends State<FilterBts> {
                       return Column(
                         children: [
                           CheckBoxFilter(
+                            cubit: widget.listNftCubit,
                             nameCkcFilter:
-                            snapshot.data?[index].nameCkcFilter ?? '',
+                                snapshot.data?[index].nameCkcFilter ?? '',
                             typeCkc: snapshot.data?[index].typeCkc ??
                                 TYPE_CKC_FILTER.NON_IMG,
                             urlCover: snapshot.data![index].urlCover,
+                            filterType: S.current.collection,
+                            collectionId:
+                                snapshot.data?[index].collectionId ?? '',
                           ),
-                          spaceH20,
+                          spaceH12,
                         ],
                       );
                     },
@@ -152,12 +181,26 @@ class _FilterBtsState extends State<FilterBts> {
               ),
             ),
             SizedBox(
-              height: 60.h,
+              height: 34.h,
             ),
-            const ButtonGold(
-              title: 'Apply',
-              isEnable: true,
-            )
+            GestureDetector(
+              onTap: () {
+                widget.listNftCubit.getListNft(
+                  status: widget.listNftCubit
+                      .getParam(widget.listNftCubit.selectStatus),
+                  nftType: widget.listNftCubit
+                      .getParam(widget.listNftCubit.selectTypeNft),
+                  collectionId: widget.listNftCubit
+                      .getParam(widget.listNftCubit.selectCollection),
+                );
+                widget.listNftCubit.setTitle();
+                Navigator.pop(context);
+              },
+              child: ButtonGold(
+                isEnable: true,
+                title: S.current.apply,
+              ),
+            ),
           ],
         ),
       ),
@@ -172,7 +215,7 @@ class _FilterBtsState extends State<FilterBts> {
             width: 343.w,
             height: 46.h,
             decoration: BoxDecoration(
-              color: const Color(0xff4F4F65),
+              color: backSearch,
               borderRadius: BorderRadius.all(Radius.circular(12.r)),
             ),
             child: Row(
