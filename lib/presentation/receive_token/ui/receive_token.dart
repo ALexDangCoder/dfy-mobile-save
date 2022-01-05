@@ -154,69 +154,66 @@ class _ReceiveState extends State<Receive> {
                             ),
                           ),
                         ),
+                        StreamBuilder<String>(
+                          stream: receiveCubit.amountStream,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              amount = snapshot.data;
+                              if (snapshot.data!.isNotEmpty) {
+                                quantity = double.parse(snapshot.data!);
+                              }
+                            } else {
+                              amount = '';
+                            }
+                            return Visibility(
+                              visible: amount!.isNotEmpty,
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  top: 12.h,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      '${formatCoin.format(quantity)}'
+                                      ' ${widget.symbol}',
+                                      style: textNormal(
+                                        AppTheme.getInstance().fillColor(),
+                                        24,
+                                      ).copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    StreamBuilder<double>(
+                                      stream: receiveCubit.priceStream,
+                                      initialData: widget.price,
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          price = snapshot.data!;
+                                        } else {
+                                          price = widget.price ?? 0.0;
+                                        }
+                                        return Text(
+                                          formatUSD.format(
+                                            price * quantity,
+                                          ),
+                                          style: textNormal(
+                                            Colors.grey.withOpacity(0.5),
+                                            16,
+                                          ).copyWith(
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                StreamBuilder<String>(
-                  stream: receiveCubit.amountStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      amount = snapshot.data;
-                      if (snapshot.data!.isNotEmpty) {
-                        quantity = double.parse(snapshot.data!);
-                      }
-                    } else {
-                      amount = '';
-                    }
-                    return Visibility(
-                      visible: amount!.isNotEmpty,
-                      child: Container(
-                        margin: EdgeInsets.only(
-                          top: 12.h,
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              '${formatCoin.format(quantity)}'
-                              ' ${widget.symbol}',
-                              style: textNormal(
-                                AppTheme.getInstance().fillColor(),
-                                24,
-                              ).copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            StreamBuilder<double>(
-                              stream: receiveCubit.priceStream,
-                              initialData: widget.price,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  price = snapshot.data!;
-                                } else {
-                                  price = widget.price ?? 0.0;
-                                }
-                                return Text(
-                                  formatUSD.format(
-                                    price * quantity,
-                                  ),
-                                  style: textNormal(
-                                    Colors.grey.withOpacity(0.5),
-                                    16,
-                                  ).copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
                 ),
                 SizedBox(
                   height: 24.h,

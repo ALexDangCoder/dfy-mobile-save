@@ -1,5 +1,4 @@
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/main.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -71,10 +70,8 @@ class LoginCubit extends BaseCubit<LoginState> {
 
   Future<void> checkBiometrics() async {
     final bool canCheckBiometrics = await auth.canCheckBiometrics;
-    //print(canCheckBiometrics);
     final List<BiometricType> availableBiometrics =
         await auth.getAvailableBiometrics();
-    //print(availableBiometrics);
     if (canCheckBiometrics && isFaceIDStream.value) {
       await authenticate();
     }

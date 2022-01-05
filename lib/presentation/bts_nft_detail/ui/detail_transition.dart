@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TransactionDetail extends StatelessWidget {
@@ -24,6 +26,7 @@ class TransactionDetail extends StatelessWidget {
     final String? txhID = obj.txhID;
     final String? nonce = obj.nonce;
     final String? isSuccess = obj.status;
+    final appConstants = Get.find<AppConstants>();
     return BaseBottomSheet(
       title: S.current.detail_transaction,
       child: Padding(
@@ -106,7 +109,7 @@ class TransactionDetail extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                launch('$BSC_SCAN$txhID');
+                launch(appConstants.bscScan + (txhID ?? ''));
               },
               child: Text(
                 S.current.view_on_bscscan,

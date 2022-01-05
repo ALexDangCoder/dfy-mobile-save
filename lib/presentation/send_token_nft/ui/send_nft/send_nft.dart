@@ -119,6 +119,10 @@ class _SendNftState extends State<SendNft> {
                                       value: txtToAddressNft.text,
                                     ),
                                   ),
+                                  sendNftCubit.checkValidateQuantity(
+                                    value: txtQuantity.text,
+                                    quantityCopy: '1',
+                                  ),
                                 },
                               );
                             },

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -24,26 +26,28 @@ class ConfirmPWShowPRVSeedPhr extends StatefulWidget {
 
 class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
   late TextEditingController txtController;
+  bool isFaceIdWalletCore = false;
 
   @override
   void initState() {
     widget.cubit.getListWallets();
     txtController = TextEditingController();
     widget.cubit.getConfig();
+    trustWalletChannel.setMethodCallHandler(
+      widget.cubit.nativeMethodCallBackTrustWallet,
+    );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    trustWalletChannel.setMethodCallHandler(
-      widget.cubit.nativeMethodCallBackTrustWallet,
-    );
     return BlocConsumer<ConfirmPwPrvKeySeedpharseCubit,
         ConfirmPwPrvKeySeedpharseState>(
       listener: (context, state) {
-        if (state is ConfirmPWToShowSuccess) {
+          if (state is ConfirmPWToShowSuccess) {
           widget.cubit.getListPrivateKeyAndSeedPhrase(
-            password: txtController.text,
+            password: isFaceIdWalletCore ? '' : txtController.text,
+            isFaceId: isFaceIdWalletCore,
           );
           widget.cubit.listPrivateKey.sink.add(widget.cubit.listWallet);
           Navigator.push(
@@ -94,6 +98,35 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
                     child: ButtonGold(
                       title: S.current.continue_s,
                       isEnable: snapshot.data ?? false,
+                    ),
+                  );
+                },
+              ),
+              //todo handel scan finger or faceID, done
+              spaceH40,
+              StreamBuilder<bool>(
+                stream: widget.cubit.isSuccessWhenScanStream,
+                builder: (context, snapshot) {
+                  return Visibility(
+                    child: GestureDetector(
+                      onTap: () async {
+                        await widget.cubit
+                            .authenticate(); //todo change stream not bloc
+                        if (snapshot.data == true) {
+                          isFaceIdWalletCore = true;
+                          widget.cubit
+                              .scanFaceIdFinger(value: isFaceIdWalletCore);
+                        } else {
+                          //nothing
+                        }
+                      },
+                      child: Platform.isIOS
+                          ? const Image(
+                              image: AssetImage(ImageAssets.ic_face_id),
+                            )
+                          : const Image(
+                              image: AssetImage(ImageAssets.ic_finger),
+                            ),
                     ),
                   );
                 },

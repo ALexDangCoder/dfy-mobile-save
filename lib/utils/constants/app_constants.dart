@@ -25,7 +25,6 @@ enum PageTransitionType {
 const String CALENDAR_TYPE_DAY = 'Day';
 const String CALENDAR_TYPE_MONTH = 'Month';
 const String CALENDAR_TYPE_YEAR = 'Year';
-const String BSC_SCAN = 'https://bscscan.com/address/';
 const String ERASE_WALLET = 'earse_wallet';
 const String SUCCESS = 'success';
 const String FAIL = 'fail';
@@ -50,9 +49,6 @@ const _dtFormat2 = 'hh:mm a';
 const _dtFormat3 = 'dd/MM hh:mm a';
 const _dtFormat4 = 'yyyy-MM-dd';
 const _dtFormat5 = 'MMM dd, yyyy';
-
-//web3
-const rpcURL = 'https://data-seed-prebsc-1-s1.binance.org:8545';
 
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;

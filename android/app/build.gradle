@@ -95,16 +95,16 @@ android {
         staging {
             dimension "default"
             applicationIdSuffix ".staging"
-            resValue "string", "app_name", "[STG]Dfy"
+            resValue "string", "app_name", "[STG]Defi For You"
         }
         develop {
             dimension "default"
             applicationIdSuffix ".develop"
-            resValue "string", "app_name", "[Dev]Dfy"
+            resValue "string", "app_name", "[Dev]Defi For You"
         }
         product {
             dimension "default"
-            resValue "string", "app_name", "Dfy"
+            resValue "string", "app_name", "Defi For You"
         }
     }
 
