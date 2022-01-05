@@ -36,9 +36,9 @@ class _SearchNFTState extends State<SearchNFT> {
 
   @override
   void dispose() {
-    // controller.dispose();
-    // _debounce.cancel();
-    // super.dispose();
+    controller.dispose();
+    _debounce.cancel();
+    super.dispose();
   }
 
   @override
@@ -140,6 +140,7 @@ class _SearchNFTState extends State<SearchNFT> {
           GestureDetector(
             onTap: () {
               widget.cubit.emit(OffSearch());
+              widget.cubit.getListNftCollectionExplore();
             },
             child: ImageIcon(
               const AssetImage(
@@ -188,8 +189,8 @@ class _SearchNFTState extends State<SearchNFT> {
                         });
                       },
                       onFieldSubmitted: (value) {
-                        searchCubit.clearCollectionsFtNftsAfterSearch();
-                        searchCubit.getCollectionFeatNftBySearch(query: value);
+                        // searchCubit.clearCollectionsFtNftsAfterSearch();
+                        // searchCubit.getCollectionFeatNftBySearch(query: value);
                       },
                       autofocus: true,
                       cursorColor: Colors.white,
@@ -269,32 +270,29 @@ class _SearchNFTState extends State<SearchNFT> {
             SizedBox(
               height: 12.h,
             ),
-            StreamBuilder<int>(
-              stream: searchCubit.lengthStream,
-              builder: (context, snapshot) {
-                final int item = snapshot.data ?? 3;
-                return ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: item,
-                  itemBuilder: (context, index) {
-                    return ResultCollectionSearch(
-                      collection: searchCubit.collections[index],
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                      child: Divider(
-                        color: AppTheme.getInstance().divideColor(),
-                      ),
-                    );
-                  },
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: (searchCubit.collections.length > 3)
+                  ? 3
+                  : searchCubit.collections.length,
+              itemBuilder: (context, index) {
+                return searchCubit.collections.isNotEmpty
+                    ? ResultCollectionSearch(
+                        collection: searchCubit.collections[index],
+                      )
+                    : Container();
+              },
+              separatorBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                  child: Divider(
+                    color: AppTheme.getInstance().divideColor(),
+                  ),
                 );
               },
             ),
             Visibility(
-              visible: !showAllResult,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: 60.h,
@@ -306,11 +304,11 @@ class _SearchNFTState extends State<SearchNFT> {
                     ),
                     TextButton(
                       onPressed: () {
-                        setState(() {
-                          showAllResult = !showAllResult;
-                          searchCubit
-                              .showAllResult(searchCubit.collections.length);
-                        });
+                        // setState(() {
+                        //   showAllResult = !showAllResult;
+                        //   searchCubit
+                        //       .showAllResult(searchCubit.collections.length);
+                        // });
                       },
                       child: Text(
                         S.current.view_all_result,
@@ -346,13 +344,18 @@ class _SearchNFTState extends State<SearchNFT> {
               child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: 2,
+                itemCount: (searchCubit.listNFT.length > 3)
+                    ? 3
+                    : searchCubit.listNFT.length,
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
-                      ResultNFTSearch(
-                        nftItem: searchCubit.listNFT[index],
-                      ),
+                      if (searchCubit.listNFT.isEmpty)
+                        Container()
+                      else
+                        ResultNFTSearch(
+                          nftItem: searchCubit.listNFT[index],
+                        ),
                       Padding(
                         padding: EdgeInsets.only(left: 16.w, right: 16.w),
                         child: Divider(
@@ -362,6 +365,39 @@ class _SearchNFTState extends State<SearchNFT> {
                     ],
                   );
                 },
+              ),
+            ),
+            Visibility(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: 60.h,
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      // Divider(
+                      //   color: AppTheme.getInstance().divideColor(),
+                      // ),
+                      TextButton(
+                        onPressed: () {
+                          // setState(() {
+                          //   showAllResult = !showAllResult;
+                          //   searchCubit
+                          //       .showAllResult(searchCubit.collections.length);
+                          // });
+                        },
+                        child: Text(
+                          S.current.view_all_result,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().fillColor(),
+                            16.sp,
+                            FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             SizedBox(

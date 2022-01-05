@@ -38,7 +38,7 @@ class SearchCubit extends BaseCubit<SearchState> {
   Future<void> getCollectionFeatNftBySearch({required String query}) async {
     emit(SearchLoading());
     final Result<List<ListSearchCollectionFtNftModel>> result =
-        await _searchMarketRepo.getCollectionFeatNftSearch(name: query);
+        await _searchMarketRepo.getCollectionFeatNftSearch(name: query.trim());
     result.when(
       success: (res) {
         responseToCollectionFtNftModel(res);

@@ -1,10 +1,11 @@
 import 'package:Dfy/domain/model/market_place/nft_collection_explore_model.dart';
 
 class ListTypeNftCollectionExploreModel {
+
   String? id;
   String? name;
   int? type;
-  int? address;
+  int? position;
   String? url;
   List<NftCollectionExploreModel>? items;
 
@@ -12,7 +13,7 @@ class ListTypeNftCollectionExploreModel {
     this.id,
     this.name,
     this.type,
-    this.address,
+    this.position,
     this.url,
     this.items,
   });

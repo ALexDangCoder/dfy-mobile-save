@@ -28,6 +28,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
     super.initState();
     cubit = MarketplaceCubit();
     cubit.getListNftCollectionExplore();
+    print('fucccccccccc');
   }
 
   @override
@@ -94,28 +95,32 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                             ),
                             ListNftOnPawn(
                               cubit: cubit,
-                              isLoading: true, isLoadFail: false,
+                              isLoading: true,
+                              isLoadFail: false,
                             ),
                             SizedBox(
                               height: 32.h,
                             ),
                             ListNftOnSale(
                               cubit: cubit,
-                              isLoading: true, isLoadFail: false,
+                              isLoading: true,
+                              isLoadFail: false,
                             ),
                             SizedBox(
                               height: 32.h,
                             ),
                             ListNftHard(
                               cubit: cubit,
-                              isLoading: true, isLoadFail: false,
+                              isLoading: true,
+                              isLoadFail: false,
                             ),
                             SizedBox(
                               height: 32.h,
                             ),
                             ListExploreCategory(
                               cubit: cubit,
-                              isLoading: true, isLoadFail: false,
+                              isLoading: true,
+                              isLoadFail: false,
                             ),
                             SizedBox(
                               height: 32.h,
@@ -168,46 +173,32 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                               SizedBox(
                                 height: 24.h,
                               ),
-                              ListOutstandingCollection(
-                                cubit: cubit,
-                                isLoading: false,
-                                isLoadFail: false,
-                              ),
-                              SizedBox(
-                                height: 32.h,
-                              ),
-                              ListNftHotAuction(
-                                cubit: cubit,
-                                isLoading: false, isLoadFail: false,
-                              ),
-                              SizedBox(
-                                height: 32.h,
-                              ),
-                              ListNftOnPawn(
-                                cubit: cubit,
-                                isLoading: false, isLoadFail: false,
-                              ),
-                              SizedBox(
-                                height: 32.h,
-                              ),
-                              ListNftOnSale(
-                                cubit: cubit,
-                                isLoading: false, isLoadFail: false,
-                              ),
-                              SizedBox(
-                                height: 32.h,
-                              ),
-                              ListNftHard(
-                                cubit: cubit,
-                                isLoading: false, isLoadFail: false,
-                              ),
-                              SizedBox(
-                                height: 32.h,
-                              ),
-                              ListExploreCategory(
-                                cubit: cubit,
-                                isLoading: false, isLoadFail: false,
-                              ),
+                              //this code will display list collection, nfts,
+                              // explore category
+                              //priority by position in
+                              // listCollectionFtExploreFtNft
+                              for (Map<String, dynamic> e
+                                  in cubit.listCollectionFtExploreFtNft)
+                                if (e['name'] ==
+                                    'Buy, sell, and create collectible NFTs')
+                                  Text('Buy, sell, and create collectible NFTs')
+                                else if (e['name'] == 'Featured Soft NFTs')
+                                  Text('Featured Soft NFTs')
+                                else if (e['name'] == 'Hot auction')
+                                  ListNftHotAuction(
+                                    cubit: cubit,
+                                    isLoading: false,
+                                    isLoadFail: false,
+                                  )
+                                else if (e['name'] == 'Outstanding collection')
+                                  Text('Outstanding collection')
+                                else if (e['name'] == 'Sale items')
+                                  Text('Sale items')
+                                else if (e['name'] == 'NFTs collateral')
+                                  Text('NFTs collateral')
+                                //this else handle explore categories
+                                else
+                                  Text('explore categories'),
                               SizedBox(
                                 height: 32.h,
                               ),
@@ -275,28 +266,32 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                             ),
                             ListNftOnPawn(
                               cubit: cubit,
-                              isLoading: true, isLoadFail: true,
+                              isLoading: true,
+                              isLoadFail: true,
                             ),
                             SizedBox(
                               height: 32.h,
                             ),
                             ListNftOnSale(
                               cubit: cubit,
-                              isLoading: true, isLoadFail: true,
+                              isLoading: true,
+                              isLoadFail: true,
                             ),
                             SizedBox(
                               height: 32.h,
                             ),
                             ListNftHard(
                               cubit: cubit,
-                              isLoading: true, isLoadFail: true,
+                              isLoading: true,
+                              isLoadFail: true,
                             ),
                             SizedBox(
                               height: 32.h,
                             ),
                             ListExploreCategory(
                               cubit: cubit,
-                              isLoading: true, isLoadFail: true,
+                              isLoading: true,
+                              isLoadFail: true,
                             ),
                             SizedBox(
                               height: 32.h,

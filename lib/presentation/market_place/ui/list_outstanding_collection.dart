@@ -92,8 +92,11 @@ class ListOutstandingCollection extends StatelessWidget {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount:
-                        isLoading ? 6 : cubit.outstandingCollection.length,
+                    itemCount: isLoading
+                        ? 6
+                        : (cubit.outstandingCollection.length > 6)
+                            ? 6
+                            : cubit.outstandingCollection.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return isLoading

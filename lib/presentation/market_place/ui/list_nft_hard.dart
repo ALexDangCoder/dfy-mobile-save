@@ -91,7 +91,11 @@ class ListNftHard extends StatelessWidget {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount: isLoading ? 6 : cubit.nftsHardNft.length,
+                    itemCount: isLoading
+                        ? 6
+                        : (cubit.nftsHardNft.length > 6)
+                            ? 6
+                            : cubit.nftsCollateral.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(

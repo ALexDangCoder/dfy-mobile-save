@@ -100,7 +100,11 @@ class ListNftOnSale extends StatelessWidget {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount: isLoading ? 6 : cubit.nftsSale.length,
+                    itemCount: isLoading
+                        ? 6
+                        : (cubit.nftsSale.length > 6)
+                            ? 6
+                            : cubit.nftsSale.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(

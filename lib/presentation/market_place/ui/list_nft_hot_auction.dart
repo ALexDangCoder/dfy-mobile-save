@@ -100,7 +100,11 @@ class ListNftHotAuction extends StatelessWidget {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount: isLoading ? 6 : cubit.nftsHotAution.length,
+                    itemCount: isLoading
+                        ? 6
+                        : (cubit.nftsHotAution.length > 6)
+                            ? 6
+                            : cubit.nftsHotAution.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(
