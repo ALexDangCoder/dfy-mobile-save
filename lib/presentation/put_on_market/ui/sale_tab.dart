@@ -156,7 +156,7 @@ class _SaleTabState extends State<SaleTab>
                             warning: RichText(
                               text: TextSpan(
                                   text:
-                                  'Listing is free. The the time of the sale, ',
+                                      'Listing is free. The the time of the sale, ',
                                   style: textNormal(
                                     AppTheme.getInstance()
                                         .whiteColor()
@@ -174,7 +174,8 @@ class _SaleTabState extends State<SaleTab>
                                       ),
                                     ),
                                     TextSpan(
-                                      text: ' value of each copy will be deducted',
+                                      text:
+                                          ' value of each copy will be deducted',
                                       style: textNormal(
                                         AppTheme.getInstance()
                                             .whiteColor()
@@ -188,13 +189,13 @@ class _SaleTabState extends State<SaleTab>
                             listDetail: [
                               DetailItemApproveModel(
                                 title: '${S.current.sale_items} :',
-                                value: '1 of 5',
+                                value:
+                                    '${widget.cubit.quantitySale} of ${widget.quantity ?? 1}',
                               ),
                               DetailItemApproveModel(
-                                title: '${S.current.price_per_1} :',
-                                value: '150,000 DFY',
-                                isToken: true
-                              )
+                                  title: '${S.current.price_per_1} :',
+                                  value: '${widget.cubit.valueTokenInputSale ?? 0} DFY',
+                                  isToken: true)
                             ],
                           ),
                         ),

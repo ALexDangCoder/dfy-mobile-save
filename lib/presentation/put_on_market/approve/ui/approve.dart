@@ -3,7 +3,9 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/presentation/put_on_market/approve/ui/component/estimate_gas_fee.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,12 +26,16 @@ class Approve extends StatefulWidget {
 
 class _ApproveState extends State<Approve> {
   ApproveCubit cubit = ApproveCubit();
+  GlobalKey scaffoldKey = GlobalKey();
+  double? heightScaffold;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    WidgetsBinding?.instance?.addPostFrameCallback((timeStamp) {
+      heightScaffold = scaffoldKey.currentContext?.size?.height;
+    });
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     cubit.getListWallets();
@@ -39,7 +45,7 @@ class _ApproveState extends State<Approve> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: GestureDetector(
         onTap: () {
           final FocusScopeNode currentFocus = FocusScope.of(context);
@@ -64,7 +70,8 @@ class _ApproveState extends State<Approve> {
                 color: AppTheme.getInstance().divideColor(),
               ),
               Expanded(
-                child: Padding(
+                child: Container(
+                  height: heightScaffold,
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: SingleChildScrollView(
                     child: Column(
@@ -125,90 +132,152 @@ class _ApproveState extends State<Approve> {
                           color: AppTheme.getInstance().divideColor(),
                         ),
                         const SizedBox(height: 16),
-                        walletViewApprove(),
+                        walletView(),
+                        const SizedBox(height: 16),
+                        EstimateGasFee(
+                          cubit: cubit,
+                          gasLimit: 10,
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      child: ButtonGold(
-                        title: S.current.continue_s,
-                        isEnable: false,
-                        fixSize: false,
-                      ),
-                      onTap: () {},
-                    ),
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      child: ButtonGold(
-                        fixSize: false,
-                        title: S.current.continue_s,
-                        isEnable: true,
-                      ),
-                      onTap: () {},
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 38)
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: AppTheme.getInstance().bgBtsColor(),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    child: ButtonGold(
+                      title: S.current.continue_s,
+                      isEnable: false,
+                      fixSize: false,
+                    ),
+                    onTap: () {},
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    child: ButtonGold(
+                      fixSize: false,
+                      title: S.current.continue_s,
+                      isEnable: true,
+                    ),
+                    onTap: () {},
+                  ),
+                )
+              ],
+            ),
+            const SizedBox (height : 38)
+          ],
         ),
       ),
     );
   }
 
-  Widget walletViewApprove() {
+  Container containerWithBorder({required Widget child}) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: AppTheme.getInstance().bgBtsColor(),
-        boxShadow: [
-          BoxShadow(
-              color: AppTheme.getInstance().divideColor(), spreadRadius: 1),
-        ],
+        border: Border.all(
+          color: AppTheme.getInstance().whiteBackgroundButtonColor(),
+          width: 1,
+        ),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(16),
+        ),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              // border: Border.all(
-              //     color: Colors.teal, width: 10.0, style: BorderStyle.solid),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(
-                    '${ImageAssets.image_avatar}${cubit.randomAvatar()}'
-                    '.png'),
+      child: child,
+    );
+  }
+
+  Widget walletView() {
+    return containerWithBorder(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                // border: Border.all(
+                //     color: Colors.teal, width: 10.0, style: BorderStyle.solid),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                      '${ImageAssets.image_avatar}${cubit.randomAvatar()}'
+                      '.png'),
+                ),
               ),
-              color: Colors.red,
+              height: 40,
+              width: 40,
             ),
-            margin: const EdgeInsets.only(right: 8, top: 2, bottom: 2),
-            height: 40,
-            width: 40,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: const [
-                  Text('Test wallet'),
-                  Text(
-                    '09090..89080',
-                    overflow: TextOverflow.ellipsis,
-                  )
-                ],
-              ),
-              const Text('Balance : 08880u bnb')
-            ],
-          )
-        ],
+            SizedBox(
+              width: 8.w,
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    StreamBuilder<String>(
+                        stream: cubit.nameWalletStream,
+                        builder: (context, snapshot) {
+                          String data = snapshot.data ?? 'Account';
+                          return Text(
+                            data,
+                            style: textNormal(
+                              AppTheme.getInstance().whiteColor(),
+                              16.sp,
+                            ).copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          );
+                        }),
+                    SizedBox(
+                      width: 8.w,
+                    ),
+                    StreamBuilder<String>(
+                        stream: cubit.addressWalletCoreStream,
+                        builder: (context, snapshot) {
+                          return Text(
+                            snapshot.data == null
+                                ? ''
+                                : snapshot.data!.formatAddressWallet(),
+                            style: textNormal(
+                              AppTheme.getInstance().currencyDetailTokenColor(),
+                              14.sp,
+                            ),
+                          );
+                        }),
+                  ],
+                ),
+                StreamBuilder<double>(
+                    stream: cubit.balanceWalletStream,
+                    builder: (context, snapshot) {
+                      final double data = snapshot.data ?? 0;
+                      return Text(
+                        '${S.current.balance}: $data',
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16.sp,
+                        ),
+                      );
+                    })
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
