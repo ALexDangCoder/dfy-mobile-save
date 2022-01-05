@@ -1,22 +1,46 @@
 class ActivityCollectionModel {
-  bool? processing;
   double? price;
-  int? quantity;
-  String? token;
-  int? nft_standard;
-  int? history_type;
-  String? collection_address;
-  String? wallet_address;
-  String? from_address;
-  String? to_address;
-  int? event_date_time;
-  double? excepted_loan;
-  String? txn_hash;
-  String? price_symbol;
-  int? nft_token_id;
-  String? market_id;
-  String? event_name;
-  int? event_type;
-  int? id_ref;
-  bool? is_you;
+  int? status;
+  String? avatarCid;
+  String? nftName;
+  String? nftOwner;
+  int? eventDateTime;
+  String? fromAddress;
+  String? toAddress;
+  String? priceSymbol;
+  int? numberOfCopies;
+  int? activityType;
+  String? txnHash;
+  int? nftStandard;
+  int? marketStatus;
+  String? collectionAddress;
+  String? nftId;
+  String? marketId;
+  int? nftType;
+  String? coverCid;
+  String? fileType;
+  int? auctionType;
+
+  ActivityCollectionModel(
+      this.price,
+      this.status,
+      this.avatarCid,
+      this.nftName,
+      this.nftOwner,
+      this.eventDateTime,
+      this.fromAddress,
+      this.toAddress,
+      this.priceSymbol,
+      this.numberOfCopies,
+      this.activityType,
+      this.txnHash,
+      this.nftStandard,
+      this.marketStatus,
+      this.collectionAddress,
+      this.nftId,
+      this.marketId,
+      this.nftType,
+      this.coverCid,
+      this.fileType,
+      this.auctionType);
 }

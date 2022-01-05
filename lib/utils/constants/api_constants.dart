@@ -21,6 +21,9 @@ class ApiConstants {
   static const String GET_LIST_COLLECTION_FILTER = '/nft-market-svc/public-api/collection';
   static const String GET_LIST_NFT = '/nft-market-svc/public-api/search/nft';
   static const String COLLECTION_DETAIL =
-      '/nft-market-svc/public-api/collection';
+      '/nft-market-svc/public-api/collection/';
+  static const String COLLECTION_ACTIVITY_LIST =
+      '/inventory-svc/public-api/v1.0.0/collections/activities';
+
   static const String BASE_URL_IMAGE = 'https://defiforyou.mypinata.cloud/ipfs/';
 }

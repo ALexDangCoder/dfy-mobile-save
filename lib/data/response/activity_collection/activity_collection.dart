@@ -1,78 +1,140 @@
+import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'activity_collection.g.dart';
 
 @JsonSerializable()
-class ActivityCollection extends Equatable {
-  @JsonKey(name: 'processing')
-  bool processing;
-  @JsonKey(name: 'price')
-  double price;
-  @JsonKey(name: 'quantity')
-  int quantity;
-  @JsonKey(name: 'token')
-  String token;
-  @JsonKey(name: 'nft_standard')
-  int nftStandard;
-  @JsonKey(name: 'history_type')
-  int historyType;
-  @JsonKey(name: 'collection_address')
-  String collectionAddress;
-  @JsonKey(name: 'wallet_address')
-  String walletAddress;
-  @JsonKey(name: 'from_address')
-  String fromAddress;
-  @JsonKey(name: 'to_address')
-  String toAddress;
-  @JsonKey(name: 'event_date_time')
-  int eventDateTime;
-  @JsonKey(name: 'excepted_loan')
-  double exceptedLoan;
-  @JsonKey(name: 'txn_hash')
-  String txnHash;
-  @JsonKey(name: 'price_symbol')
-  String priceSymbol;
-  @JsonKey(name: 'nft_token_id')
-  int nftTokenId;
-  @JsonKey(name: 'market_id')
-  String marketId;
-  @JsonKey(name: 'event_name')
-  String eventName;
-  @JsonKey(name: 'event_type')
-  int eventType;
-  @JsonKey(name: 'id_ref')
-  int idRef;
-  @JsonKey(name: 'is_you')
-  bool isYou;
+class ActivityCollectionResponse extends Equatable {
+  @JsonKey(name: 'rd')
+  String? rd;
 
+  @JsonKey(name: 'trace-id')
+  String? traceId;
+
+  @JsonKey(name: 'rc')
+  int? rc;
+
+  @JsonKey(name: 'total')
+  int? total;
+
+  @JsonKey(name: 'rows')
+  List<ActivityCollection>? rows;
+
+  ActivityCollectionResponse(
+    this.rd,
+    this.rc,
+    this.total,
+    this.rows,
+    this.traceId,
+  );
+
+  factory ActivityCollectionResponse.fromJson(Map<String, dynamic> json) =>
+      _$ActivityCollectionResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ActivityCollectionResponseToJson(this);
+
+  @override
+  List<Object?> get props => [];
+}
+
+@JsonSerializable()
+class ActivityCollection {
+  @JsonKey(name: 'price')
+  double? price;
+  @JsonKey(name: 'status')
+  int? status;
+  @JsonKey(name: 'avatar_cid')
+  String? avatarCid;
+  @JsonKey(name: 'nft_name')
+  String? nftName;
+  @JsonKey(name: 'nft_owner')
+  String? nftOwner;
+  @JsonKey(name: 'event_date_time')
+  int? eventDateTime;
+  @JsonKey(name: 'from_address')
+  String? fromAddress;
+  @JsonKey(name: 'to_address')
+  String? toAddress;
+  @JsonKey(name: 'price_symbol')
+  String? priceSymbol;
+  @JsonKey(name: 'number_of_copies')
+  int? numberOfCopies;
+  @JsonKey(name: 'activity_type')
+  int? activityType;
+  @JsonKey(name: 'txn_hash')
+  String? txnHash;
+  @JsonKey(name: 'nft_standard')
+  int? nftStandard;
+  @JsonKey(name: 'market_status')
+  int? marketStatus;
+  @JsonKey(name: 'collection_address')
+  String? collectionAddress;
+  @JsonKey(name: 'nft_id')
+  String? nftId;
+  @JsonKey(name: 'market_id')
+  String? marketId;
+  @JsonKey(name: 'nft_type')
+  int? nftType;
+  @JsonKey(name: 'cover_cid')
+  String? coverCid;
+  @JsonKey(name: 'file_type')
+  String? fileType;
+  @JsonKey(name: 'auction_type')
+  int? auctionType;
 
   ActivityCollection(
-      this.processing,
-      this.price,
-      this.quantity,
-      this.token,
-      this.nftStandard,
-      this.historyType,
-      this.collectionAddress,
-      this.walletAddress,
-      this.fromAddress,
-      this.toAddress,
-      this.eventDateTime,
-      this.exceptedLoan,
-      this.txnHash,
-      this.priceSymbol,
-      this.nftTokenId,
-      this.marketId,
-      this.eventName,
-      this.eventType,
-      this.idRef,
-      this.isYou);
+    this.price,
+    this.status,
+    this.avatarCid,
+    this.nftName,
+    this.nftOwner,
+    this.eventDateTime,
+    this.fromAddress,
+    this.toAddress,
+    this.priceSymbol,
+    this.numberOfCopies,
+    this.activityType,
+    this.txnHash,
+    this.nftStandard,
+    this.marketStatus,
+    this.collectionAddress,
+    this.nftId,
+    this.marketId,
+    this.nftType,
+    this.coverCid,
+    this.fileType,
+    this.auctionType,
+  );
 
   factory ActivityCollection.fromJson(Map<String, dynamic> json) =>
       _$ActivityCollectionFromJson(json);
 
   Map<String, dynamic> toJson() => _$ActivityCollectionToJson(this);
+
+  ActivityCollectionModel toDomain() => ActivityCollectionModel(
+        price,
+        status,
+        avatarCid,
+        nftName,
+        nftOwner,
+        eventDateTime,
+        fromAddress,
+        toAddress,
+        priceSymbol,
+        numberOfCopies,
+        activityType,
+        txnHash,
+        nftStandard,
+        marketStatus,
+        collectionAddress,
+        nftId,
+        marketId,
+        nftType,
+        coverCid,
+        fileType,
+        auctionType,
+      );
 
   @override
   // TODO: implement props
