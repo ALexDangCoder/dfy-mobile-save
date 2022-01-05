@@ -11,7 +11,7 @@ abstract class CollectionDetailService {
   @factoryMethod
   factory CollectionDetailService(Dio dio, {String baseUrl}) = _CollectionDetailService;
 
-  @GET(ApiConstants.COLLECTION_DETAIL)
+  @GET('${ApiConstants.COLLECTION_DETAIL}{id}')
   Future<CollectionDetailRes> getCollection(
       @Path('id') String idCollection,
       );
