@@ -64,33 +64,33 @@ class NftMarketResponse extends Equatable {
   }
 
   TypeImage getTypeImage(String type) {
-    if(type.toLowerCase().contains('image')){
+    if (type.toLowerCase().contains('image')) {
       return TypeImage.IMAGE;
-    }
-    else {
+    } else {
       return TypeImage.VIDEO;
     }
   }
+
   TypeNFT getTypeNft(int type) {
-    if(type == 0) {
+    if (type == 0) {
       return TypeNFT.SOFT_NFT;
-    }
-    else {
+    } else {
       return TypeNFT.HARD_NFT;
     }
   }
+
   MarketType getTypeMarket(int type) {
-    if(type == 2) {
+    if (type == 2) {
       return MarketType.AUCTION;
-    }
-    else if(type == 3){
+    } else if (type == 3) {
       return MarketType.PAWN;
-    }
-    else {
+    } else {
       return MarketType.SALE;
     }
   }
+
   NftMarket toDomain() => NftMarket(
+        marketId: id,
         marketType: getTypeMarket(type),
         typeImage: getTypeImage(fileType ?? ''),
         price: price,
