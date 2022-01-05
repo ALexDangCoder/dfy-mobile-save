@@ -9,6 +9,8 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../main.dart';
+
 class PutOnMarket extends StatefulWidget {
   final bool? canSetQuantity;
   final int? quantity;
@@ -42,6 +44,8 @@ class _PutOnMarketState extends State<PutOnMarket>
   void initState() {
     // TODO: implement initState
     super.initState();
+    trustWalletChannel
+        .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       final FocusScopeNode currentFocus = FocusScope.of(context);

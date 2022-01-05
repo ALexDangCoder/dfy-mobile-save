@@ -141,6 +141,20 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
 
   @override
   Widget build(BuildContext context) {
+    // print (widget.nameToken);
+    // print (widget.addressFrom);
+    // print (widget.addressTo);
+    // print (widget.amount);
+    // print (widget.nameWallet);
+    // print (widget.quantity);
+    // print (widget.nameTokenWallet);
+    // print (widget.balanceWallet);
+    // print (widget.gasPriceFirstFetch);
+    // print (widget.gasFeeFirstFetch);
+    // print (widget.gasLimitFirstFetch);
+    // print (widget.imageWallet);
+    // print (widget.modelToken);
+    // print (widget.nftInfo);
     return GestureDetector(
       onTap: () {
         final FocusScopeNode currentFocus = FocusScope.of(context);
