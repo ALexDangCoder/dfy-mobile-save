@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/cancel_sale/ui/wallet_info_with_gas_fee.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -19,229 +20,133 @@ class CancelSale extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: BaseBottomSheet(
         title: S.current.cancel_sale,
-        child: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 16.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      S.current.cancel_sale_info,
-                      style: textNormal(
-                        AppTheme.getInstance().whiteColor(),
-                        16.sp,
-                      ).copyWith(
-                        fontWeight: FontWeight.w600,
+        child: SingleChildScrollView(
+          child: SizedBox( 
+            height: MediaQuery.of(context).size.height*0.85,
+            child: Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 16.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        S.current.cancel_sale_info,
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16.sp,
+                        ).copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: Text(
-                            'NFT:',
-                            style: textNormal(
-                              AppTheme.getInstance().currencyDetailTokenColor(),
-                              16.sp,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 6,
-                          child: Text(
-                            ntfName,
-                            style: textNormal(
-                              AppTheme.getInstance().whiteColor(),
-                              16.sp,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: Text(
-                            S.current.quantity,
-                            style: textNormal(
-                              AppTheme.getInstance().currencyDetailTokenColor(),
-                              16.sp,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 6,
-                          child: Text(
-                            '$quantity',
-                            style: textNormal(
-                              AppTheme.getInstance().whiteColor(),
-                              16.sp,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Row(
-                      children: [
-                        sizedSvgImage(
-                            w: 16.67.w,
-                            h: 16.67.h,
-                            image: ImageAssets.ic_warning_canel),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        Expanded(
-                          child: Text(
-                            S.current.customer_cannot,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: textNormal(
-                              AppTheme.getInstance().currencyDetailTokenColor(),
-                              14.sp,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 22.h,
-                    ),
-                    Divider(
-                      height: 1.h,
-                      color: AppTheme.getInstance().whiteBackgroundButtonColor(),
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    containerWithBorder(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              child: Image.asset(
-                                ImageAssets.ic_face_id,
-                                height: 40.h,
-                                width: 40.w,
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: Text(
+                              'NFT:',
+                              style: textNormal(
+                                AppTheme.getInstance().currencyDetailTokenColor(),
+                                16.sp,
                               ),
                             ),
-                            SizedBox(
-                              width: 8.w,
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Vuhanam',
-                                      style: textNormal(
-                                        AppTheme.getInstance().whiteColor(),
-                                        16.sp,
-                                      ).copyWith(
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 8.w,
-                                    ),
-                                    Text(
-                                      '0xFFs...dfd',
-                                      style: textNormal(
-                                        AppTheme.getInstance()
-                                            .currencyDetailTokenColor(),
-                                        14.sp,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  '${S.current.balance}: 3232',
-                                  style: textNormal(
-                                    AppTheme.getInstance().whiteColor(),
-                                    16.sp,
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    containerWithBorder(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: 8.0.h,
-                          left: 16.w,
-                          right: 16.w,
-                          bottom: 12.h,
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '${S.current.estimate_gas_fee}:',
-                                  style: textNormal(
-                                    AppTheme.getInstance().whiteColor(),
-                                    16.sp,
-                                  ).copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                Text(
-                                  '555 BNB',
-                                  style: textNormal(
-                                    AppTheme.getInstance().whiteColor(),
-                                    16.sp,
-                                  ).copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Text(
-                              S.current.customize_fee,
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: Text(
+                              ntfName,
                               style: textNormal(
-                                AppTheme.getInstance().blueColor(),
+                                AppTheme.getInstance().whiteColor(),
+                                16.sp,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: Text(
+                              S.current.quantity,
+                              style: textNormal(
+                                AppTheme.getInstance().currencyDetailTokenColor(),
+                                16.sp,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: Text(
+                              '$quantity',
+                              style: textNormal(
+                                AppTheme.getInstance().whiteColor(),
+                                16.sp,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Row(
+                        children: [
+                          sizedSvgImage(
+                              w: 16.67.w,
+                              h: 16.67.h,
+                              image: ImageAssets.ic_warning_canel),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Expanded(
+                            child: Text(
+                              S.current.customer_cannot,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: textNormal(
+                                AppTheme.getInstance().currencyDetailTokenColor(),
                                 14.sp,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 22.h,
+                      ),
+                      Divider(
+                        height: 1.h,
+                        color: AppTheme.getInstance().whiteBackgroundButtonColor(),
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      const WalletInfoWithGasFee(),
+                    ],
+                  ),
                 ),
-              ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: ButtonLuxury(
+                    title: S.current.cancel_sale,
+                    isEnable: true,
+                  ),
+                ),
+              ],
             ),
-            ButtonLuxury(
-              title: S.current.cancel_sale,
-              isEnable: true,
-            ),
-          ],
+          ),
         ),
       ),
     );

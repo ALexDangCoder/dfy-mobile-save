@@ -70,6 +70,7 @@ const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
 const unselectedTabLabel = Color(0xFF9997FF);
 const bgErrorLoadData = Color(0xFF474666);
+const bgTextField = Color(0x80A7A7A7);
 
 ///=========== Using to make change app theme ================================
 const bgTranSubmitColor = Color(0xff585782);
@@ -171,6 +172,8 @@ abstract class AppColor {
   Color titleTabColor();
 
   List<Color> listBackgroundMarketColor();
+
+  Color bgTextFormField();
 }
 
 class LightApp extends AppColor {
@@ -420,6 +423,11 @@ class LightApp extends AppColor {
   Color bgErrorLoad() {
     // TODO: implement bgErrorLoad
     return bgErrorLoadData;
+  }
+
+  @override
+  Color bgTextFormField() {
+    return bgTextField;
   }
 }
 
@@ -694,6 +702,11 @@ class DarkApp extends AppColor {
   @override
   Color bgErrorLoad() {
     return bgErrorLoadData;
+  }
+
+  @override
+  Color bgTextFormField() {
+    return bgTextField;
   }
 }
 
