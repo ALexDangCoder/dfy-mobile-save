@@ -215,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           MaterialPageRoute(
                             builder: (context) => TokenHasEmail(
                               token: widget.walletCubit.addressWalletCore,
-                              email: 'vuhanam',
+                              email: 'vuhanam@gmail.com',
                             ),
                           ),
                           (route) => route.isFirst,

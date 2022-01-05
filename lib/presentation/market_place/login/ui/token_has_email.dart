@@ -1,7 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/login/ui/enter_email_screen.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury_big_size.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -27,7 +28,7 @@ class TokenHasEmail extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => EnterEmail(),
+              builder: (context) => EnterEmail(cubit: LoginWithEmailCubit(),),
             ),
           );
         },

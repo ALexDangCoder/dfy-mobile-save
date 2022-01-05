@@ -4,7 +4,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
-import 'package:Dfy/presentation/market_place/login/bloc/connect_wallet_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

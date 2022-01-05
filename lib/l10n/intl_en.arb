@@ -333,5 +333,7 @@
   "offer": "Offer",
   "login_now": "You don’t have any wallet. Log in now",
   "create_now": "You don’t have any wallet. Create now",
-  "could_not_load_data" : "Couldn’t load the data"
+  "could_not_load_data" : "Couldn’t load the data",
+  "email_too_long": "Email with maximum 50 characters",
+  "email_invalid": "Invaid email"
 }

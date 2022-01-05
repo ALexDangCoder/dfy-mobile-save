@@ -2,9 +2,13 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
+import 'package:Dfy/presentation/market_place/login/ui/connect_wallet.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class HeaderMarketPlace extends StatelessWidget {
   const HeaderMarketPlace({Key? key, required this.cubit}) : super(key: key);
   final MarketplaceCubit cubit;
@@ -28,6 +32,12 @@ class HeaderMarketPlace extends StatelessWidget {
                 const AssetImage(ImageAssets.ic_profile),
                 size: 28.sp,
                 color: AppTheme.getInstance().whiteColor(),
+              ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EnterEmail(cubit: LoginWithEmailCubit(),),
+                ),
               ),
             ),
             searchBar(),

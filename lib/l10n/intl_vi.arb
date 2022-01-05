@@ -326,5 +326,7 @@
   "offer": "Đề nghị",
   "login_now": "Bạn không có ví nào. Đăng nhập ngay",
   "create_now": "Bạn không có ví nào. Hãy tạo ngay",
-  "could_not_load_data" : "Không thể tải dữ liệu"
+  "could_not_load_data" : "Không thể tải dữ liệu",
+  "email_too_long": "Email có tối đa 50 ký tự",
+  "email_invalid": "Email không hợp lệ"
 }
