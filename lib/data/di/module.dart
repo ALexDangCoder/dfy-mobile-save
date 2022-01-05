@@ -1,4 +1,5 @@
 import 'package:Dfy/data/di/flutter_transformer.dart';
+import 'package:Dfy/data/repository_impl/market_place/collection_detail_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/collection_filter_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/category_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/marketplace_impl.dart';

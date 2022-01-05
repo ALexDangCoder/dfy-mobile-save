@@ -41,14 +41,16 @@ class _ActivityCollectionState extends State<ActivityCollection> {
                       '${ApiConstants.BASE_URL_IMAGE}${snapshot.data?[index].avatarCid ?? ''}',
                   copy: '${snapshot.data?[index].numberOfCopies ?? 0}',
                   auctionType: snapshot.data?[index].activityType ?? 99,
-                  addressWalletSend: snapshot.data?[index].fromAddress ?? '',
+                  addressWalletSend: snapshot.data?[index].fromAddress ??
+                      'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
                   marketStatus: snapshot.data?[index].marketStatus ?? 99,
                   price: '${snapshot.data?[index].price ?? 0}',
                   priceSymbol: snapshot.data?[index].priceSymbol ?? '',
-                  addressMyWallet:widget.addressWallet,
+                  addressMyWallet: widget.addressWallet,
                   title: snapshot.data?[index].nftName ?? '',
                   date: '${snapshot.data?[index].eventDateTime ?? 0}',
-                  addressWallet: snapshot.data?[index].nftOwner ?? '',
+                  addressWallet: snapshot.data?[index].toAddress ??
+                      'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
                   urlSymbol: widget.detailCollectionBloc
                       .funGetSymbolUrl(snapshot.data?[index].priceSymbol ?? ''),
                   nft_type: snapshot.data?[index].nftType ?? 99,
