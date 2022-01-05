@@ -44,8 +44,6 @@ class _PutOnMarketState extends State<PutOnMarket>
   void initState() {
     // TODO: implement initState
     super.initState();
-    trustWalletChannel
-        .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       final FocusScopeNode currentFocus = FocusScope.of(context);

@@ -2,11 +2,13 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/put_on_market/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/wallet_view_approve/ui/wallet_view_approve.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../main.dart';
 
 class Approve extends StatefulWidget {
   final String title;
@@ -21,6 +23,18 @@ class Approve extends StatefulWidget {
 }
 
 class _ApproveState extends State<Approve> {
+  ApproveCubit cubit = ApproveCubit();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    trustWalletChannel
+        .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
+    cubit.getListWallets();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,60 +70,62 @@ class _ApproveState extends State<Approve> {
                     child: Column(
                       children: [
                         ...(widget.listDetail ?? []).map(
-                              (item) =>
-                              Column(
+                          (item) => Column(
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          item.title,
-                                          style: textNormal(
-                                            AppTheme.getInstance()
-                                                .whiteColor()
-                                                .withOpacity(0.7),
-                                            14.sp,
-                                          ),
-                                        ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Text(
+                                      item.title,
+                                      style: textNormal(
+                                        AppTheme.getInstance()
+                                            .whiteColor()
+                                            .withOpacity(0.7),
+                                        14.sp,
                                       ),
-                                      Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          item.value,
-                                          style: item.isToken ?? false
-                                              ? textNormalCustom(
-                                            AppTheme.getInstance()
-                                                .fillColor(),
-                                            20.sp,
-                                            FontWeight.w600,
-                                          )
-                                              : textNormal(
-                                            AppTheme.getInstance()
-                                                .whiteColor(),
-                                            16.sp,
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                    ),
                                   ),
-                                  const SizedBox(height: 16)
+                                  Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      item.value,
+                                      style: item.isToken ?? false
+                                          ? textNormalCustom(
+                                              AppTheme.getInstance()
+                                                  .fillColor(),
+                                              20.sp,
+                                              FontWeight.w600,
+                                            )
+                                          : textNormal(
+                                              AppTheme.getInstance()
+                                                  .whiteColor(),
+                                              16.sp,
+                                            ),
+                                    ),
+                                  )
                                 ],
                               ),
+                              const SizedBox(height: 16)
+                            ],
+                          ),
                         ),
-                        if (widget.warning != null) Column(
-                          children: [
-                            const SizedBox (height: 4),
-                            widget.warning ??  const SizedBox (height : 0),
-                            const SizedBox(height: 20),
-                          ],
-                        ) else const SizedBox (height :4),
+                        if (widget.warning != null)
+                          Column(
+                            children: [
+                              const SizedBox(height: 4),
+                              widget.warning ?? const SizedBox(height: 0),
+                              const SizedBox(height: 20),
+                            ],
+                          )
+                        else
+                          const SizedBox(height: 4),
                         Divider(
                           thickness: 1,
                           color: AppTheme.getInstance().divideColor(),
                         ),
                         const SizedBox(height: 16),
-                        const WalletViewApprove(),
+                        walletViewApprove(),
                       ],
                     ),
                   ),
@@ -147,6 +163,56 @@ class _ApproveState extends State<Approve> {
     );
   }
 
+  Widget walletViewApprove() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.getInstance().bgBtsColor(),
+        boxShadow: [
+          BoxShadow(
+              color: AppTheme.getInstance().divideColor(), spreadRadius: 1),
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+      child: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              // border: Border.all(
+              //     color: Colors.teal, width: 10.0, style: BorderStyle.solid),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(
+                    '${ImageAssets.image_avatar}${cubit.randomAvatar()}'
+                    '.png'),
+              ),
+              color: Colors.red,
+            ),
+            margin: const EdgeInsets.only(right: 8, top: 2, bottom: 2),
+            height: 40,
+            width: 40,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: const [
+                  Text('Test wallet'),
+                  Text(
+                    '09090..89080',
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
+              ),
+              const Text('Balance : 08880u bnb')
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   Widget header() {
     return Container(
       height: 40,
@@ -178,5 +244,3 @@ class _ApproveState extends State<Approve> {
     );
   }
 }
-
-

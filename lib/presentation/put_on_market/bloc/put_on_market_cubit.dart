@@ -7,44 +7,14 @@ import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_state.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../main.dart';
+
 enum DurationType { MONTH, WEEK }
 
 class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   PutOnMarketCubit() : super(PutOnMarketInitState());
 
-  List<Wallet> listWallet = [];
-  String? addressWalletCore;
-  String? gnameWallet;
-  double? balanceWallet;
 
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    print ("alo");
-    switch (methodCall.method) {
-      case 'getListWalletsCallback':
-        final List<dynamic> data = methodCall.arguments;
-        if (data.isEmpty) {
-          // emit(NavigatorFirst());
-          // await PrefsService.saveFirstAppConfig('true');
-        } else {
-          for (final element in data) {
-            listWallet.add(Wallet.fromJson(element));
-          }
-          addressWalletCore = listWallet.first.address!;
-          gnameWallet = listWallet.first.name!;
-          balanceWallet = await Web3Utils()
-              .getBalanceOfBnb(ofAddress: addressWalletCore ?? '');
-
-          // addressWallet.add(addressWalletCore);
-          // walletName.add(nameWallet);
-          // getNFT(addressWalletCore);
-          // await getListCategory();
-        }
-        print(addressWalletCore);
-        print(gnameWallet);
-        print(balanceWallet);
-        break;
-    }
-  }
 
   // tab sale
 
