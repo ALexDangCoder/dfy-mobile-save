@@ -122,20 +122,18 @@ class _CollectionListState extends State<CollectionList> {
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,
                               context: context,
-                              builder: (context) =>
-                                  Filter(
-                                    collectionBloc: collectionBloc,
-                                  ),
+                              builder: (context) => Filter(
+                                collectionBloc: collectionBloc,
+                              ),
                             );
                           } else {
                             showModalBottomSheet(
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,
                               context: context,
-                              builder: (context) =>
-                                  FilterMyAcc(
-                                    collectionBloc: collectionBloc,
-                                  ),
+                              builder: (context) => FilterMyAcc(
+                                collectionBloc: collectionBloc,
+                              ),
                             );
                           }
                         },
@@ -180,7 +178,7 @@ class _CollectionListState extends State<CollectionList> {
                             },
                             crossAxisCount: 2,
                             staggeredTileBuilder: (int index) =>
-                            const StaggeredTile.fit(1),
+                                const StaggeredTile.fit(1),
                           ),
                         );
                       } else if (state == LoadingDataFail()) {
@@ -200,10 +198,10 @@ class _CollectionListState extends State<CollectionList> {
                             },
                             crossAxisCount: 2,
                             staggeredTileBuilder: (int index) =>
-                            const StaggeredTile.fit(1),
+                                const StaggeredTile.fit(1),
                           ),
                         );
-                      } else {
+                      } else if (state == LoadingDataSuccess()) {
                         return StreamBuilder(
                           stream: collectionBloc.list,
                           builder: (context,
@@ -229,18 +227,17 @@ class _CollectionListState extends State<CollectionList> {
                                     },
                                     child: ItemCollection(
                                       items:
-                                      '${snapshot.data?[index].totalNft ?? 0}',
+                                          '${snapshot.data?[index].totalNft ?? 0}',
                                       text: snapshot.data?[index].description
-                                          ?.parseHtml() ??
+                                              ?.parseHtml() ??
                                           '',
                                       urlIcon: ApiConstants.URL_BASE +
                                           (snapshot.data?[index].avatarCid ??
                                               ''),
                                       owners:
-                                      '${snapshot.data?[index].nftOwnerCount ??
-                                          0}',
+                                          '${snapshot.data?[index].nftOwnerCount ?? 0}',
                                       title: snapshot.data?[index].name
-                                          ?.parseHtml() ??
+                                              ?.parseHtml() ??
                                           '',
                                       urlBackGround: ApiConstants.URL_BASE +
                                           (snapshot.data?[index].coverCid ??
@@ -250,10 +247,37 @@ class _CollectionListState extends State<CollectionList> {
                                 },
                                 crossAxisCount: 2,
                                 staggeredTileBuilder: (int index) =>
-                                const StaggeredTile.fit(1),
+                                    const StaggeredTile.fit(1),
                               ),
                             );
                           },
+                        );
+                      }else{
+                        return Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 150.h),
+                            child: Column(
+                              children: [
+                                Image(
+                                  image: const AssetImage(
+                                    ImageAssets.img_search_empty,
+                                  ),
+                                  height: 120.h,
+                                  width: 120.w,
+                                ),
+                                SizedBox(
+                                  height: 17.7.h,
+                                ),
+                                Text(
+                                  S.current.no_result_found,
+                                  style: textNormal(
+                                    Colors.white54,
+                                    20.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         );
                       }
                     },

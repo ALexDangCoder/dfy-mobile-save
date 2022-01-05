@@ -375,12 +375,15 @@
   "like": "Like",
   "report": "Report",
   "name_of_collection" : "Tên của bộ sưu tập",
-  "all_category": "Tất cả loại",
   "offer_detail": "Chi tiết đề nghị",
   "view_profile": "Xem hồ sơ",
   "message": "Tin nhắn",
   "repayment_token": "Token trả nợ",
   "offer_create_by_day": "Để nghị tạo ngày",
   "accept": "Chấp thuận",
-  "reject": "Từ chối"
+  "reject": "Từ chối",
+  "all_category": "Tất cả loại",
+  "copied_address": "Sao chép địa chỉ!",
+  "copied_private_key": "Sao chép private key!",
+  "copied_seed_phrase": "Sao chép seed phrase!"
 }
