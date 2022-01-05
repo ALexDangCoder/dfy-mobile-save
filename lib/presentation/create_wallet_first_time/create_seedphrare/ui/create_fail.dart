@@ -77,15 +77,20 @@ class CreateFail extends StatelessWidget {
                           child: Image.asset(ImageAssets.img_fail),
                         ),
                         spaceH20,
-                        Center(
-                          child: Text(
-                            message ?? '',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              32,
-                              FontWeight.w700,
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                          ),
+                          child: Center(
+                            child: Text(
+                              message ?? '',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().whiteColor(),
+                                32,
+                                FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
                           ),
                         ),
                         SizedBox(

@@ -98,9 +98,25 @@ class _ChooseTokenState extends State<ChooseToken> {
         enabled: false,
         switchScale: 1,
         value: widget.bloc.getListTokenModel.value[index].isShow,
-        leading: Image.network(
-          widget.bloc.getListTokenModel.value[index].iconToken,
-        ),
+        leading: widget.bloc.getListTokenModel.value[index].iconToken.isEmpty
+            ? CircleAvatar(
+                backgroundColor: Colors.yellow,
+                radius: 14.r,
+                child: Center(
+                  child: Text(
+                    widget.bloc.getListTokenModel.value[index].nameShortToken
+                        .substring(0, 1),
+                    style: textNormalCustom(
+                      Colors.black,
+                      20,
+                      FontWeight.w600,
+                    ),
+                  ),
+                ),
+              )
+            : Image.network(
+                widget.bloc.getListTokenModel.value[index].iconToken,
+              ),
         onChanged: (value) {},
         switchActiveColor: Colors.grey,
         switchType: SwitchType.cupertino,
@@ -132,9 +148,25 @@ class _ChooseTokenState extends State<ChooseToken> {
         enabled: false,
         switchScale: 1,
         value: widget.bloc.getListTokenModel.value[index].isShow,
-        leading: Image.network(
-          widget.bloc.getListTokenModel.value[index].iconToken,
-        ),
+        leading: widget.bloc.getListTokenModel.value[index].iconToken.isEmpty
+            ? CircleAvatar(
+                backgroundColor: Colors.yellow,
+                radius: 14.r,
+                child: Center(
+                  child: Text(
+                    widget.bloc.getListTokenModel.value[index].nameShortToken
+                        .substring(0, 1),
+                    style: textNormalCustom(
+                      Colors.black,
+                      20,
+                      FontWeight.w600,
+                    ),
+                  ),
+                ),
+              )
+            : Image.network(
+                widget.bloc.getListTokenModel.value[index].iconToken,
+              ),
         onChanged: (value) {
           widget.bloc.getListTokenModel.value[index].isShow = value;
           widget.bloc.setShowedToken(

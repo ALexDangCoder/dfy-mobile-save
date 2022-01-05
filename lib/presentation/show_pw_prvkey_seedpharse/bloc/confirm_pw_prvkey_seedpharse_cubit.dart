@@ -8,7 +8,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
@@ -69,11 +68,13 @@ class ConfirmPwPrvKeySeedpharseCubit
 
   void getListPrivateKeyAndSeedPhrase({
     required String password,
+    required bool isFaceId,
   }) {
     for (final value in listWalletCore) {
       exportWallet(
         walletAddress: value.address ?? '',
         password: password,
+        isFaceId: isFaceId,
       );
     }
   }
@@ -91,12 +92,6 @@ class ConfirmPwPrvKeySeedpharseCubit
   List<String> stringToList(String seedPhrase) {
     final List<String> list = seedPhrase.split(' ');
     return list;
-  }
-
-  String formatText(String text) {
-    final String value = '${text.substring(0, 10)}'
-        '...${text.substring(text.length - 10, text.length)}';
-    return value;
   }
 
   void isEnableButton({required String value, String? passwordConfirm}) {
@@ -142,6 +137,12 @@ class ConfirmPwPrvKeySeedpharseCubit
     }
   }
 
+  void scanFaceIdFinger({required bool value}) {
+    if (value) {
+      emit(ConfirmPWToShowSuccess());
+    } else {}
+  }
+
   Future<void> getListWallets() async {
     try {
       final data = {};
@@ -155,11 +156,13 @@ class ConfirmPwPrvKeySeedpharseCubit
   Future<void> exportWallet({
     required String walletAddress,
     required String password,
+    required bool isFaceId,
   }) async {
     try {
       final data = {
         'password': password,
         'walletAddress': walletAddress,
+        'isFaceId': isFaceId,
       };
       await trustWalletChannel.invokeMethod('exportWallet', data);
     } on PlatformException {
