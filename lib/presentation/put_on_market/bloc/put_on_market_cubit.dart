@@ -89,4 +89,9 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
       _canContinuePawn.sink.add(false);
     }
   }
+
+  void dispose(){
+    _canContinuePawn.close();
+    _canContinueSale.close();
+  }
 }

@@ -109,7 +109,7 @@ class _ApproveState extends State<Approve> {
                           color: AppTheme.getInstance().divideColor(),
                         ),
                         const SizedBox(height: 16),
-                        const WalletViewApprove()
+                        const WalletViewApprove(),
                       ],
                     ),
                   ),
@@ -178,3 +178,5 @@ class _ApproveState extends State<Approve> {
     );
   }
 }
+
+

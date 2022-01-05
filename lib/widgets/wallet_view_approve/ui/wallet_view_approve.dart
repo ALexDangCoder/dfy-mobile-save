@@ -36,7 +36,7 @@ class _WalletViewApproveState extends State<WalletViewApprove> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                children: const [Text('Test wallet'), Text('09090..89080')],
+                children: const [Text('Test wallet'), Text('09090..89080', overflow: TextOverflow.ellipsis,)],
               ),
               const Text('Balance : 08880u bnb')
             ],

@@ -51,6 +51,15 @@ class _PutOnMarketState extends State<PutOnMarket>
     });
   }
 
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    cubit.dispose();
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
