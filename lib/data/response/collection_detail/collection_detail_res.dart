@@ -1,3 +1,4 @@
+import 'package:Dfy/domain/model/market_place/collection_detail.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
