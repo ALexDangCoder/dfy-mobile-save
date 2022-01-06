@@ -32,7 +32,9 @@ class ListNftHard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                S.current.hard_NFT,
+                isLoading
+                    ? S.current.loading_text
+                    : (isLoadFail ? S.current.error_text : S.current.hard_NFT),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,

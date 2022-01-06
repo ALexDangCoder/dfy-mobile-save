@@ -65,14 +65,18 @@ class CollectionItem extends StatelessWidget {
                     Flexible(
                       child: Container(
                         padding: EdgeInsets.only(
-                          top: 34.h,
+                          top: 30.h,
+                          left: 10.w,
+                          right: 10.w,
                         ),
-                        child: Text(
-                          title,
-                          style: TextStyle(
-                            color: AppTheme.getInstance().whiteColor(),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                        child: Center(
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              color: AppTheme.getInstance().whiteColor(),
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),

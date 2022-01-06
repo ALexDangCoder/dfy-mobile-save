@@ -320,6 +320,8 @@
   "offer": "Offer",
   "could_not_load_data" : "Couldn’t load the data",
   "feature_soft_nfts" : "Featured Soft NFTs",
-  "buy_sell_create_collectible_nfts": "Buy, sell, and create collectible NFTs"
+  "buy_sell_create_collectible_nfts": "Buy, sell, and create collectible NFTs",
+  "loading_text": "Loading...",
+  "error_text": "Error..."
 
 }

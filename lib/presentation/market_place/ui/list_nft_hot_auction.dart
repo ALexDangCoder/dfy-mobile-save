@@ -33,7 +33,11 @@ class ListNftHotAuction extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                S.current.hot_auction,
+                isLoading
+                    ? S.current.loading_text
+                    : (isLoadFail
+                    ? S.current.error_text
+                    : S.current.hot_auction),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,

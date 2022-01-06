@@ -313,5 +313,7 @@
   "offer": "Đề nghị",
   "could_not_load_data" : "Không thể tải dữ liệu",
   "feature_soft_nfts" : "Featured Soft NFTs",
-  "buy_sell_create_collectible_nfts": "Mua, bán và tạo cácNFT sưu tập"
+  "buy_sell_create_collectible_nfts": "Mua, bán và tạo cácNFT sưu tập",
+  "loading_text": "Đang tải...",
+  "error_text": "Lỗi tải..."
 }

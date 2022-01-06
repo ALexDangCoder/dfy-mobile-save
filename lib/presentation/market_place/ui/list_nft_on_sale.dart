@@ -32,7 +32,11 @@ class ListNftOnSale extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                S.current.sale_items,
+                isLoading
+                    ? S.current.loading_text
+                    : (isLoadFail
+                        ? S.current.error_text
+                        : S.current.sale_items),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,

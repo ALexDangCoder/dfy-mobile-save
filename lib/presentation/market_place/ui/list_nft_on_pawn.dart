@@ -33,7 +33,11 @@ class ListNftOnPawn extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                S.current.NFTs_collateral,
+                isLoading
+                    ? S.current.loading_text
+                    : (isLoadFail
+                        ? S.current.error_text
+                        : S.current.nft_on_pawn),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
