@@ -116,6 +116,8 @@ dependencies:
   keyboard_dismisser: ^2.0.0
   dotted_border: ^2.0.0+1
 
+  #OTP input
+  pin_code_fields: ^7.3.0
 
   html: ^0.15.0
 dev_dependencies:
