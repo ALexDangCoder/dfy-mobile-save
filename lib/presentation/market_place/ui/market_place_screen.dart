@@ -12,7 +12,6 @@ import 'package:Dfy/presentation/market_place/ui/list_nft_on_pawn.dart';
 import 'package:Dfy/presentation/market_place/ui/list_nft_on_sale.dart';
 import 'package:Dfy/presentation/market_place/ui/list_outstanding_collection.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +31,6 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
     super.initState();
     cubit = MarketplaceCubit();
     cubit.getListNftCollectionExplore();
-    print('fucccccccccc');
   }
 
   @override

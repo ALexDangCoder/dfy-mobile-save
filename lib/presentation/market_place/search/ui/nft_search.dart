@@ -31,7 +31,7 @@ class _SearchNFTState extends State<SearchNFT> {
   void initState() {
     super.initState();
     searchCubit = SearchCubit();
-    _debounce = Timer(const Duration(milliseconds: 500), () {});
+    _debounce = Timer(const Duration(milliseconds: 1000), () {});
   }
 
   @override
@@ -139,8 +139,8 @@ class _SearchNFTState extends State<SearchNFT> {
           ),
           GestureDetector(
             onTap: () {
-              widget.cubit.emit(OffSearch());
-              widget.cubit.getListNftCollectionExplore();
+              Navigator.pop(context);
+              // widget.cubit.getListNftCollectionExplore();
             },
             child: ImageIcon(
               const AssetImage(
@@ -182,15 +182,15 @@ class _SearchNFTState extends State<SearchNFT> {
                         if (_debounce.isActive) _debounce.cancel();
                         searchCubit.clearCollectionsFtNftsAfterSearch();
                         _debounce =
-                            Timer(const Duration(milliseconds: 500), () {
+                            Timer(const Duration(milliseconds: 1000), () {
                           searchCubit.getCollectionFeatNftBySearch(
                             query: value,
                           );
                         });
                       },
                       onFieldSubmitted: (value) {
-                        // searchCubit.clearCollectionsFtNftsAfterSearch();
-                        // searchCubit.getCollectionFeatNftBySearch(query: value);
+                        searchCubit.clearCollectionsFtNftsAfterSearch();
+                        searchCubit.getCollectionFeatNftBySearch(query: value);
                       },
                       autofocus: true,
                       cursorColor: Colors.white,
@@ -380,11 +380,6 @@ class _SearchNFTState extends State<SearchNFT> {
                       // ),
                       TextButton(
                         onPressed: () {
-                          // setState(() {
-                          //   showAllResult = !showAllResult;
-                          //   searchCubit
-                          //       .showAllResult(searchCubit.collections.length);
-                          // });
                         },
                         child: Text(
                           S.current.view_all_result,
