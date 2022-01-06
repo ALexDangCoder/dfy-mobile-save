@@ -31,7 +31,11 @@ class ListOutstandingCollection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                S.current.outstanding_collection,
+                isLoading
+                    ? S.current.loading_text
+                    : (isLoadFail
+                        ? S.current.error_text
+                        : S.current.outstanding_collection),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
@@ -92,8 +96,11 @@ class ListOutstandingCollection extends StatelessWidget {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount:
-                        isLoading ? 6 : cubit.outstandingCollection.length,
+                    itemCount: isLoading
+                        ? 6
+                        : (cubit.outstandingCollection.length > 6)
+                            ? 6
+                            : cubit.outstandingCollection.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return isLoading

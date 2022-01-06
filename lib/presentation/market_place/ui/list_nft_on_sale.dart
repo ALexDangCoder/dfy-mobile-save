@@ -32,7 +32,11 @@ class ListNftOnSale extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                S.current.sale_items,
+                isLoading
+                    ? S.current.loading_text
+                    : (isLoadFail
+                        ? S.current.error_text
+                        : S.current.sale_items),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
@@ -100,7 +104,11 @@ class ListNftOnSale extends StatelessWidget {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount: isLoading ? 6 : cubit.nftsSale.length,
+                    itemCount: isLoading
+                        ? 6
+                        : (cubit.nftsSale.length > 6)
+                            ? 6
+                            : cubit.nftsSale.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(
