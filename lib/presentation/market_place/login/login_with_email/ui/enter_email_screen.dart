@@ -30,7 +30,7 @@ class EnterEmail extends StatelessWidget {
           //todo:
           cubit.checkValidate(emailEditingController.value.text);
           if (cubit.state is ValidateSuccess) {
-            cubit.getNonce(walletAddress: 'walletAddress');
+            cubit.getNonce(walletAddress: '0xf5e281A56650bb992ebaB15B41583303fE9804e7');
             Navigator.push(
               context,
               MaterialPageRoute(

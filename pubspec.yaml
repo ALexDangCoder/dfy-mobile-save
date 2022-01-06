@@ -113,7 +113,11 @@ dependencies:
   #web3
   web3dart: ^2.3.3
   http: ^0.13.4
+
+  #ẩn keyboard
   keyboard_dismisser: ^2.0.0
+  #OTP input
+  pin_code_fields: ^7.3.0
 
 dev_dependencies:
   flutter_test:

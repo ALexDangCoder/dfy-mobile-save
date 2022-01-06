@@ -14,7 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //chứa có wallet sẽ chuyển qua tạo wallet. Có rồi sẽ chuyển qua login
 class ConnectWalletDialog extends StatefulWidget {
-  const ConnectWalletDialog({Key? key}) : super(key: key);
+  final Widget currentScreen;
+  const ConnectWalletDialog({Key? key, required this.currentScreen}) : super(key: key);
 
   @override
   State<ConnectWalletDialog> createState() => _ConnectWalletDialogState();
@@ -140,6 +141,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                         builder: (context) => LoginScreen(
                                           walletCubit: WalletCubit(),
                                           isFromConnectDialog: true,
+                                          navigationToScreen: widget.currentScreen,
                                         ),
                                       ),
                                     );

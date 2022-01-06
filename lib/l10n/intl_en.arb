@@ -318,7 +318,7 @@
   "no_permission2": " to perform this action",
   "confirm_account": "Confirm your account",
   "enter_email": "Enter email",
-  "verify_account": "We have just sent a confirmation letter to the email address you just registered. Please check your email and confirm to active your account.",
+  "verify_account": "We have just sent a confirmation letter to the email address you just registered. Please check your email and enter Code to active your account.",
   "connect_wallet": "Connect Wallet",
   "connect_to_continue": "You need to connect wallet to continue",
   "detected_email": "The system detected email ",

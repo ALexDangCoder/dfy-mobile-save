@@ -25,10 +25,12 @@ class LoginScreen extends StatefulWidget {
     Key? key,
     required this.walletCubit,
     this.isFromConnectDialog = false,
+    this.navigationToScreen,
   }) : super(key: key);
 
   final bool isFromConnectDialog;
   final WalletCubit walletCubit;
+  final Widget? navigationToScreen;
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -208,15 +210,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     bloc: _cubit,
                     listener: (context, state) {
                       //todo
-                      print(widget.walletCubit.addressWalletCore);
                       if (state is LoginPasswordSuccess &&
                           widget.isFromConnectDialog) {
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: (context) => TokenHasEmail(
-                              token: widget.walletCubit.addressWalletCore,
-                              email: 'vuhanam@gmail.com',
-                            ),
+                            builder: (context) =>
+                                widget.navigationToScreen ?? const MainScreen(
+                                  index: 1,
+                                ),
                           ),
                           (route) => route.isFirst,
                         );

@@ -14,4 +14,6 @@ class ApiConstants {
       '/nft-market-svc/public-api/search';
   static const String GET_NONCE =
       '/defi-user-service/public-api/v1.0.0/users/nonce?';
+  static const String LOGIN_EMAIL =
+      '/defi-user-service/public-api/v1.0.0/users/nonce?';
 }
