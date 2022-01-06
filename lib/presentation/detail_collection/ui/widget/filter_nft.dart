@@ -64,9 +64,19 @@ class _FilterNFTState extends State<FilterNFT> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    height: 30.h,
-                    width: 65.w,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 6.h,
+                    ),
+                    child: Text(
+                      S.current.reset,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().bgBtsColor(),
+                        14,
+                        null,
+                      ),
+                    ),
                   ),
                   Text(
                     S.current.filter,
@@ -82,7 +92,6 @@ class _FilterNFTState extends State<FilterNFT> {
                     },
                     child: Container(
                       height: 30.h,
-                      width: 65.w,
                       padding: EdgeInsets.symmetric(
                         horizontal: 16.w,
                         vertical: 6.h,
@@ -93,14 +102,12 @@ class _FilterNFTState extends State<FilterNFT> {
                           Radius.circular(6.r),
                         ),
                       ),
-                      child: FittedBox(
-                        child: Text(
-                          S.current.reset,
-                          style: textNormalCustom(
-                            null,
-                            14,
-                            null,
-                          ),
+                      child: Text(
+                        S.current.reset,
+                        style: textNormalCustom(
+                          null,
+                          14,
+                          null,
                         ),
                       ),
                     ),

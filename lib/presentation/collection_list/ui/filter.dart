@@ -65,7 +65,6 @@ class _FilterState extends State<Filter> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    height: 30.h,
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,
                       vertical: 6.h,
@@ -92,7 +91,6 @@ class _FilterState extends State<Filter> {
                       widget.collectionBloc.reset();
                     },
                     child: Container(
-                      height: 30.h,
                       padding: EdgeInsets.symmetric(
                         horizontal: 16.w,
                         vertical: 6.h,

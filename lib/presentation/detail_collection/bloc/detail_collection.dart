@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/response/collection_detail/collection_detail_res.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
+import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -35,6 +39,9 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   BehaviorSubject<bool> isReceiveOffer = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSignContract = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isAllActivity = BehaviorSubject.seeded(false);
+  BehaviorSubject<List<NftMarket>> listNft = BehaviorSubject.seeded([]);
+  BehaviorSubject<int> statusNft = BehaviorSubject.seeded(0);
+
   BehaviorSubject<List<ActivityCollectionModel>> listActivity =
       BehaviorSubject.seeded([]);
   BehaviorSubject<CollectionDetailModel> collectionDetailModel =
@@ -50,6 +57,9 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String linkUrlTwitter = '';
   String linkUrlTelegram = '';
   String linkUrlInstagram = '';
+  String collectionId = '';
+
+  NftMarketRepository get _nftRepo => Get.find();
 
   Future<void> getCollection({String? id = ''}) async {
     emit(LoadingData());
@@ -63,8 +73,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           emit(LoadingDataSuccess());
           arg = res;
           collectionDetailModel.sink.add(arg);
+          collectionId = arg.id ?? '';
+          getListNft(
+            collectionId: arg.id,
+          );
           getListActivityCollection(
-              collectionAddress: arg.collectionAddress ?? '');
+            collectionAddress: arg.collectionAddress ?? '',
+          );
         }
       },
       error: (error) {
@@ -73,26 +88,49 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     );
   }
 
+  Future<void> getListNft({
+    String? status,
+    String? nftType,
+    String? name,
+    String? collectionId,
+  }) async {
+    statusNft.add(0);
+    final Result<List<NftMarket>> result = await _nftRepo.getListNft(
+      status: status,
+      name: name,
+      nftType: nftType,
+      collectionId: collectionId,
+    );
+    result.when(
+      success: (res) {
+        if (res.isBlank ?? false) {
+          statusNft.add(2); //erorr
+        } else {
+          listNft.add(res);
+          statusNft.add(1); //success
+        }
+      },
+      error: (error) {
+        statusNft.add(3); //fail
+      },
+    );
+  }
+
   Future<void> getListActivityCollection(
       {String? collectionAddress = '', String? status = ''}) async {
-    // emit(LoadingData());
     final Result<List<ActivityCollectionModel>> result =
         await _collectionDetailRepository.getCollectionListActivity(
             collectionAddress ?? '', status ?? '');
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
-          //emit(LoadingDataErorr());
           listActivity.add([]);
         } else {
-          //emit(LoadingDataSuccess());
           argActivity.addAll(res);
           listActivity.add(argActivity);
         }
       },
-      error: (error) {
-        // emit(LoadingDataFail());
-      },
+      error: (error) {},
     );
   }
 
@@ -255,16 +293,29 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     isAllStatus.sink.add(false);
   }
 
-  void search() {
-    textSearch.stream
-        .debounceTime(
-      const Duration(
-        seconds: 1,
-      ),
-    )
-        .listen((event) {
-      if (event.length == '') {}
-    });
+  Timer? debounceTime;
+
+  void search(String value) {
+    if (debounceTime != null) {
+      if (debounceTime!.isActive) {
+        debounceTime!.cancel();
+      }
+    }
+    debounceTime = Timer(
+      const Duration(milliseconds: 800),
+      () {
+        if (textSearch.value.isEmpty) {
+          getListNft(
+            collectionId: collectionId,
+          );
+        } else {
+          getListNft(
+            name: textSearch.value,
+            collectionId: collectionId,
+          );
+        }
+      },
+    );
   }
 
   void dispone() {
