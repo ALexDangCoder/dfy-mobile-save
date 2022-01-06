@@ -6,6 +6,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
 import 'package:Dfy/presentation/market_place/send_offer/send_offer.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
@@ -141,8 +142,13 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
   @override
   void initState() {
     super.initState();
+
     _bloc = NFTDetailBloc();
-    _bloc.getInForNFT(widget.marketId ?? '', widget.type);
+    trustWalletChannel
+        .setMethodCallHandler(_bloc.nativeMethodCallBackTrustWallet);
+
+    onRefresh();
+
     caseTabBar(widget.type);
     _tabController = TabController(length: _tabPage.length, vsync: this);
   }
@@ -154,17 +160,14 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
     super.dispose();
   }
 
+  Future<void> onRefresh() async {
+    await _bloc.getInForNFT(widget.marketId ?? '', widget.type);
+    await _bloc.getListWallets();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<NFTDetailBloc, NFTDetailState>(
-      listenWhen: (prev, state) => state == prev,
-      listener: (context, state) {
-        if (state is HaveWallet) {
-          Fluttertoast.showToast(msg: 'have wallet');
-        } else if (state is NoWallet) {
-          Fluttertoast.showToast(msg: 'have wallet');
-        }
-      },
+    return BlocBuilder<NFTDetailBloc, NFTDetailState>(
       bloc: _bloc,
       builder: (context, state) {
         return _content(widget.type, state);
@@ -205,7 +208,17 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                 ),
                 tabs: _tabTit,
               ),
-              bottomBar: _buildButtonBuyOutOnSale(context),
+              bottomBar: StreamBuilder<bool>(
+                stream: _bloc.pairStream,
+                initialData: false,
+                builder: (context, snapshot) {
+                  if (snapshot.data!) {
+                    return _buildButtonBuyOutOnSale(context);
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              ),
               content: [
                 _nameNFT(
                   title: objSale.name,
@@ -578,7 +591,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
             ],
           ),
           Text(
-            '1 of $quantity available',
+            '1 ${S.current.of_all} $quantity ${S.current.available}',
             textAlign: TextAlign.left,
             style: tokenDetailAmount(
               fontSize: 16,
@@ -1041,9 +1054,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
 
   Widget _buildButtonBuyOutOnSale(BuildContext context) {
     return ButtonGradient(
-      onPressed: () {
-        _bloc.getListWallets();
-      },
+      onPressed: () {},
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
         radius: 4,

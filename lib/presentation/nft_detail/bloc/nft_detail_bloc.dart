@@ -2,6 +2,7 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
@@ -17,14 +18,21 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }
 
   final _viewSubject = BehaviorSubject.seeded(true);
+  final _pairSubject = BehaviorSubject<bool>();
 
   Stream<bool> get viewStream => _viewSubject.stream;
 
   Sink<bool> get viewSink => _viewSubject.sink;
 
+  Stream<bool> get pairStream => _pairSubject.stream;
+
+  Sink<bool> get pairSink => _pairSubject.sink;
+
   NFTRepository get _nftRepo => Get.find();
   late final NftMarket nftMarket;
-
+  late final String walletAddress;
+  late final String owner;
+  List<Wallet> wallets = [];
   Future<void> getInForNFT(String marketId, MarketType type) async {
     if (type == MarketType.SALE) {
       showLoading();
@@ -34,6 +42,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         success: (res) {
           showContent();
           nftMarket = res;
+          owner = res.owner ?? '';
           emit(NftOnSaleSuccess(res));
         },
         error: (error) {
@@ -56,6 +65,15 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         if (data.isEmpty) {
           emit(NoWallet(nftMarket));
         } else {
+          for (final element in data) {
+            wallets.add(Wallet.fromJson(element));
+          }
+          if(wallets.first.address == owner){
+            pairSink.add(false);
+          }
+          else {
+            pairSink.add(true);
+          }
           emit(HaveWallet(nftMarket));
         }
         break;

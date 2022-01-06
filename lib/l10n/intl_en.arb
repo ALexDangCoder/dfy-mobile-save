@@ -409,5 +409,6 @@
   "name_of_collection" : "Name of collection",
   "all_category": "All category",
   "no_more_info": "No more information",
-  "no_des": "No description available"
+  "no_des": "No description available",
+  "available": "Available"
 }

@@ -15,6 +15,7 @@ class BaseCustomScrollView extends StatefulWidget {
     this.tabBar,
     this.tabBarView,
     this.bottomBar,
+    this.haveBottomBar = true,
   }) : super(key: key);
   final List<Widget> content;
   final String image;
@@ -25,6 +26,7 @@ class BaseCustomScrollView extends StatefulWidget {
   final Widget? tabBar;
   final Widget? tabBarView;
   final Widget? bottomBar;
+  final bool haveBottomBar;
 
   @override
   _BaseCustomScrollViewState createState() => _BaseCustomScrollViewState();
@@ -44,22 +46,23 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
         child: Scaffold(
           backgroundColor: Colors.black,
           bottomNavigationBar: Container(
-            color: AppTheme.getInstance().bgBtsColor(),
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppTheme.getInstance().bgBtsColor(),
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(15.r),
-                  topLeft: Radius.circular(15.r),
+                  color: AppTheme.getInstance().bgBtsColor(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppTheme.getInstance().bgBtsColor(),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(15.r),
+                        topLeft: Radius.circular(15.r),
+                      ),
+                      border: Border.all(
+                        color: AppTheme.getInstance().divideColor(),
+                      ),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 16.w, vertical: 16.h),
+                    child: widget.bottomBar,
+                  ),
                 ),
-                border: Border.all(
-                  color: AppTheme.getInstance().divideColor(),
-                ),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              child: widget.bottomBar,
-            ),
-          ),
           body: Align(
             alignment: Alignment.bottomCenter,
             child: Container(
