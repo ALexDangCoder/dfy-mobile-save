@@ -115,25 +115,27 @@ class Bid extends StatelessWidget {
                   children: [
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
-                      child: CachedNetworkImage(
-                        width: 14.w,
-                        height: 14.w,
-                        errorWidget: (context, url, error) => CircleAvatar(
-                          backgroundColor: Colors.yellow,
-                          radius: 14.r,
-                          child: Center(
-                            child: Text(
-                              amountSymbol.substring(0, 1),
-                              style: textNormalCustom(
-                                Colors.black,
-                                8,
-                                FontWeight.w600,
-                              ),
-                            ),
+                      child: urlSymbol.isNotEmpty
+                          ? Image.asset(
+                              urlSymbol,
+                              width: 14.w,
+                              height: 14.w,
+                            )
+                          : Container(
+                        decoration: BoxDecoration(
+                          color: Colors.yellow,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(45.r),
                           ),
                         ),
-                        imageUrl: urlSymbol,
-                      ),
+                        width: 14.w,
+                        height: 14.w,
+                              child: FittedBox(
+                                child: Text(
+                                  amountSymbol.substring(0, 1),
+                                ),
+                              ),
+                            ),
                     ),
                     TextSpan(
                       text: ' $amount $amountSymbol',
