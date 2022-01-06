@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../main.dart';
+import 'component/pop_up_approve.dart';
 
 class Approve extends StatefulWidget {
   final String title;
@@ -37,11 +38,14 @@ class _ApproveState extends State<Approve> {
   GlobalKey scaffoldKey = GlobalKey();
   double? heightScaffold;
   bool? enableButtonAction;
+  bool isCanAction = false;
+  late int accountImage;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    accountImage = cubit.randomAvatar();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       heightScaffold = scaffoldKey.currentContext?.size?.height;
     });
@@ -144,6 +148,14 @@ class _ApproveState extends State<Approve> {
                         walletView(),
                         const SizedBox(height: 16),
                         EstimateGasFee(
+                          stateChange: (value) {
+                            WidgetsBinding.instance
+                                ?.addPostFrameCallback((timeStamp) {
+                              setState(() {
+                                isCanAction = value;
+                              });
+                            });
+                          },
                           cubit: cubit,
                           gasLimitStart: 10,
                         ),
@@ -165,25 +177,42 @@ class _ApproveState extends State<Approve> {
           children: [
             Row(
               children: [
-                SizedBox (width : 16.w),
-                if (widget.isShowTwoButton ?? false) Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          child: ButtonGold(
-                            title: S.current.approve,
-                            isEnable: true,
-                            fixSize: false,
-                            haveMargin: false,
+                SizedBox(width: 16.w),
+                if (widget.isShowTwoButton ?? false)
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            child: ButtonGold(
+                              title: S.current.approve,
+                              isEnable: isCanAction,
+                              fixSize: false,
+                              haveMargin: false,
+                            ),
+                            onTap: () {
+                              showModalBottomSheet(
+                                backgroundColor: Colors.black,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(30),
+                                  )
+                                ),
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (_) {
+                                  return const PopUpApprove();
+                                },
+                              );
+                            },
                           ),
-                          onTap: () {},
                         ),
-                      ),
-                      const SizedBox (width : 25),
-                    ],
-                  ),
-                ) else const SizedBox (height : 0),
+                        const SizedBox(width: 25),
+                      ],
+                    ),
+                  )
+                else
+                  const SizedBox(height: 0),
                 Expanded(
                   child: GestureDetector(
                     child: ButtonGold(
@@ -195,7 +224,7 @@ class _ApproveState extends State<Approve> {
                     onTap: () {},
                   ),
                 ),
-                SizedBox (width : 16.w),
+                SizedBox(width: 16.w),
               ],
             ),
             const SizedBox(height: 38)
@@ -231,7 +260,7 @@ class _ApproveState extends State<Approve> {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: AssetImage(
-                    '${ImageAssets.image_avatar}${cubit.randomAvatar()}'
+                    '${ImageAssets.image_avatar}$accountImage'
                     '.png',
                   ),
                 ),
