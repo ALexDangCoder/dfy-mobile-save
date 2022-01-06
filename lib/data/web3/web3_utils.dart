@@ -4,13 +4,8 @@ import 'package:Dfy/data/web3/abi/nft.g.dart';
 import 'package:Dfy/data/web3/abi/token.g.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
-import 'package:Dfy/data/web3/model/transaction.dart';
-import 'package:Dfy/data/web3/model/transaction_history_detail.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
-import 'package:Dfy/domain/model/detail_history_nft.dart';
-import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -280,72 +275,10 @@ class Web3Utils {
     }
   }
 
-  //Transaction History of a token
-  Future<List<TransactionHistory>> getTransactionHistory({
-    required String ofAddress,
-    required String tokenAddress,
-  }) async {
-    return [
-      TransactionHistory(
-        'Contract interaction',
-        'success',
-        '2021-12-03 14:30',
-        100.0,
-      ),
-      TransactionHistory(
-        'Contract interaction',
-        'success',
-        '2021-12-03 14:30',
-        100.0,
-      ),
-      TransactionHistory(
-        'Contract interaction',
-        'pending',
-        '2021-12-03 14:30',
-        100.0,
-      ),
-      TransactionHistory(
-        'Contract interaction',
-        'success',
-        '2021-12-03 14:30',
-        100.0,
-      ),
-      TransactionHistory(
-        'Contract interaction',
-        'fail',
-        '2021-12-03 14:30',
-        100.0,
-      ),
-    ];
-  }
-
-  //Transaction History Detail
-  Future<TransactionHistoryDetail> getHistoryDetail({
-    required String txhId,
-  }) async {
-    return TransactionHistoryDetail.init();
-  }
-
   //get gas price
   Future<String> getGasPrice() async {
     final amount = await client.getGasPrice();
     return '${amount.getInWei}';
-  }
-
-  Future<String> getEstimateGasPrice({
-    required String from,
-    required String to,
-    required double value,
-  }) async {
-    final amount = await client.estimateGas(
-      sender: EthereumAddress.fromHex(from),
-      to: EthereumAddress.fromHex(to),
-      value: EtherAmount.fromUnitAndValue(
-        EtherUnit.gwei,
-        (value * 1000000000).toInt(),
-      ),
-    );
-    return '$amount';
   }
 
   Future<bool> checkValidAddress(String address) async {
@@ -435,17 +368,6 @@ class Web3Utils {
     return '$valueHundredMore';
   }
 
-  // Future<double> getTokenEstimateGas({
-  //   required String contract,
-  //   required String from,
-  //   required String to,
-  //   required double value,
-  // }) async {
-  //   final token =
-  //       Token(address: EthereumAddress.fromHex(contract), client: client);
-  //       final amount = await token
-  // }
-
   Future<Map<String, dynamic>> sendRawTransaction(
       {required String transaction}) async {
     final List<int> listInt = hex.decode(transaction);
@@ -464,15 +386,6 @@ class Web3Utils {
     }
   }
 
-  //Token detail
-  // Future<TokenInfoModel> getTokenDetail({
-  //   required String contractAddress,
-  //   required String walletAddress,
-  //   String? password,
-  // }) async {
-  //   return TokenInfoModel('', 0, '', '');
-  // }
-
   //NFT detail
   Future<NftInfo> getNftDetail({
     required String contractAddress,
@@ -483,19 +396,17 @@ class Web3Utils {
   }
 
   //Market place
-  Future<String> getSignData({
+  Future<Uint8List?> _getPutOnSalesSignData({
     required int tokenId,
     required int numberOfCopies,
-    required double price,
+    required String price,
     required String currency,
     required String collectionAddress,
     required BuildContext context,
   }) async {
-    final abiCode = await DefaultAssetBundle.of(context)
-        .loadString('assets/abi/SellNFT_ABI.json');
-    final deployContract = DeployedContract(
-      ContractAbi.fromJson(abiCode, 'Default NFT'),
-      EthereumAddress.fromHex('0x988b342d1223e01b0d6Ba4F496FD42d47969656b'),
+    final deployContract = await deployedContractAddress(
+      '0x988b342d1223e01b0d6Ba4F496FD42d47969656b',
+      context,
     );
     final putOnSalesFunction = deployContract.function('putOnSales');
     final putOnSale = Transaction.callContract(
@@ -504,44 +415,283 @@ class Web3Utils {
       parameters: [
         BigInt.from(tokenId),
         BigInt.from(numberOfCopies),
-        BigInt.from(num.parse('190000000000000000000000')),
+        BigInt.from(num.parse(_handleAmount(18, price))),
         EthereumAddress.fromHex(currency),
         EthereumAddress.fromHex(collectionAddress),
       ],
     );
-    return hex.encode(putOnSale.data ?? []);
+    return putOnSale.data;
+  }
+
+  Future<String> getPutOnSalesSignData({
+    required int tokenId,
+    required int numberOfCopies,
+    required String price,
+    required String currency,
+    required String collectionAddress,
+    required BuildContext context,
+  }) async {
+    final data = await _getPutOnSalesSignData(
+      tokenId: tokenId,
+      numberOfCopies: numberOfCopies,
+      price: price,
+      currency: currency,
+      collectionAddress: collectionAddress,
+      context: context,
+    );
+    return hex.encode(data ?? []);
   }
 
   Future<String> getPutOnSaleGasLimit({
     required String from,
-    required String to,
-    required String contract,
-    required String symbol,
-    required int id,
+    required String toContractAddress,
+    required int tokenId,
+    required int numberOfCopies,
+    required String price,
+    required String currency,
+    required String collectionAddress,
     required BuildContext context,
   }) async {
-    final abiCode = await DefaultAssetBundle.of(context)
-        .loadString('assets/abi/erc721_abi.json');
-    final deployContract = DeployedContract(
-      ContractAbi.fromJson(abiCode, symbol),
-      EthereumAddress.fromHex(contract),
-    );
-    final transferFunction = deployContract.function('transferFrom');
-    final transferTransaction = Transaction.callContract(
-      contract: deployContract,
-      function: transferFunction,
-      parameters: [
-        EthereumAddress.fromHex(from),
-        EthereumAddress.fromHex(to),
-        BigInt.from(id),
-      ],
+    final data = await _getPutOnSalesSignData(
+      tokenId: tokenId,
+      numberOfCopies: numberOfCopies,
+      price: price,
+      currency: currency,
+      collectionAddress: collectionAddress,
+      context: context,
     );
     final gasLimit = await client.estimateGas(
       sender: EthereumAddress.fromHex(from),
-      to: EthereumAddress.fromHex(contract),
-      data: transferTransaction.data,
+      to: EthereumAddress.fromHex(toContractAddress),
+      data: data,
     );
     final valueHundredMore = BigInt.from(100) + gasLimit;
     return '$valueHundredMore';
+  }
+
+  Future<bool> isApproved({
+    required String payValue,
+    required String walletAddres,
+    required String tokenAddress,
+    required String spenderAddress,
+  }) async {
+    final token =
+        Token(address: EthereumAddress.fromHex(tokenAddress), client: client);
+    try {
+      final allowance = await token.allowance(
+        EthereumAddress.fromHex(walletAddres),
+        EthereumAddress.fromHex(spenderAddress),
+      );
+      if (BigInt.from(num.parse(_handleAmount(18, payValue))) < allowance) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  }
+
+  Future<String> getGasLimitByData({
+    required String from,
+    required String toContractAddress,
+    required String dataString,
+  }) async {
+    final data = Uint8List.fromList(hex.decode(dataString));
+    final gasLimit = await client.estimateGas(
+      sender: EthereumAddress.fromHex(from),
+      to: EthereumAddress.fromHex(toContractAddress),
+      data: data,
+    );
+    final valueHundredMore = BigInt.from(100) + gasLimit;
+    return '$valueHundredMore';
+  }
+
+  Future<String> getBuyNftData({
+    required String contractAddress,
+    required String orderId,
+    required String numberOfCopies,
+    required BuildContext context,
+  }) async {
+    final deployedContract =
+        await deployedContractAddress(contractAddress, context);
+    final buyFunction = deployedContract.function('buyNFT');
+    final buyNFT = Transaction.callContract(
+      contract: deployedContract,
+      function: buyFunction,
+      parameters: [
+        BigInt.from(num.parse(orderId)),
+        BigInt.from(num.parse(numberOfCopies)),
+      ],
+    );
+    return hex.encode(buyNFT.data ?? []);
+  }
+
+  Future<String> getBuyOutData({
+    required String contractAddress,
+    required String auctionId,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await auctionDeployedContract(contractAddress, context);
+    final function = deployContract.function('buyOut');
+    final buyOut = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(auctionId)),
+      ],
+    );
+    return hex.encode(buyOut.data ?? []);
+  }
+
+  Future<String> getBidData({
+    required String contractAddress,
+    required String auctionId,
+    required String bidValue,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await auctionDeployedContract(contractAddress, context);
+    final function = deployContract.function('bid');
+    final bid = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(auctionId)),
+        BigInt.from(num.parse(bidValue)),
+      ],
+    );
+    return hex.encode(bid.data ?? []);
+  }
+
+  Future<String> getCancelAuctionData({
+    required String contractAddress,
+    required String auctionId,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await auctionDeployedContract(contractAddress, context);
+    final function = deployContract.function('cancelAuction');
+    final cancelAuction = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(auctionId)),
+      ],
+    );
+    return hex.encode(cancelAuction.data ?? []);
+  }
+
+  Future<String> getFinishAuctionData({
+    required String contractAddress,
+    required String auctionId,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await auctionDeployedContract(contractAddress, context);
+    final function = deployContract.function('finishAuction');
+    final cancelAuction = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(auctionId)),
+      ],
+    );
+    return hex.encode(cancelAuction.data ?? []);
+  }
+
+  Future<String> getPutOnAuctionData({
+    required String contractAddress,
+    required String tokenId,
+    required String collectionAddress,
+    required String startingPrice,
+    required String buyOutPrice,
+    required String priceStep,
+    required String currencyAddress,
+    required String startTime,
+    required String endTime,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await auctionDeployedContract(contractAddress, context);
+    final function = deployContract.function('putOnAuction');
+    final putOnAuction = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(tokenId)),
+        EthereumAddress.fromHex(collectionAddress),
+        BigInt.from(num.parse(startingPrice)),
+        BigInt.from(num.parse(buyOutPrice)),
+        BigInt.from(num.parse(priceStep)),
+        EthereumAddress.fromHex(currencyAddress),
+        BigInt.from(num.parse(startTime)),
+        BigInt.from(num.parse(endTime)),
+      ],
+    );
+    return hex.encode(putOnAuction.data ?? []);
+  }
+
+  Future<DeployedContract> deployedContractAddress(
+    String contract,
+    BuildContext context,
+  ) async {
+    final abiCode = await DefaultAssetBundle.of(context)
+        .loadString('assets/abi/SellNFT_ABI.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'Sell NFT'),
+      EthereumAddress.fromHex(contract),
+      // EthereumAddress.fromHex('0x988b342d1223e01b0d6Ba4F496FD42d47969656b'),
+    );
+    return deployContract;
+  }
+
+  Future<DeployedContract> auctionDeployedContract(
+    String contract,
+    BuildContext context,
+  ) async {
+    final abiCode = await DefaultAssetBundle.of(context)
+        .loadString('assets/abi/AuctionNFT_ABI.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'Aunction NFT'),
+      EthereumAddress.fromHex(contract),
+      // EthereumAddress.fromHex('0x988b342d1223e01b0d6Ba4F496FD42d47969656b'),
+    );
+    return deployContract;
+  }
+
+  String _handleAmount(int decimal, String value) {
+    final parts = value.split('.');
+    if (value.isEmpty) {
+      return '0';
+    } else {
+      if (parts.length == 1) {
+        var buffer = '';
+        var size = 0;
+        while (size < decimal) {
+          buffer = buffer + '0';
+          size++;
+        }
+        return '$value$buffer';
+      } else if (parts.length > 1) {
+        if (parts[1].length >= decimal) {
+          final part = parts[1];
+          return parts[0] + part.substring(0, decimal - 1);
+        } else {
+          final valueAmount = parts[0];
+          final valueDecimal = parts[1];
+          var buffer = '';
+          var size = valueDecimal.length;
+          while (size < decimal) {
+            buffer = buffer + '0';
+            size++;
+          }
+          return valueAmount + valueDecimal + buffer;
+        }
+      } else {
+        return '0';
+      }
+    }
   }
 }
