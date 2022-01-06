@@ -11,7 +11,7 @@ enum MenuType { FEED, NOTIFICATIONS, POLICY, LOGOUT }
 enum AuthMode { LOGIN, REGISTER }
 
 enum AuthType { ACCOUNT, PHONE }
-enum MarketType {SALE, AUCTION,PAWN}
+enum MarketType { SALE, AUCTION, PAWN }
 enum TypeNFT { HARD_NFT, SOFT_NFT }
 enum TypeImage { IMAGE, VIDEO }
 
@@ -49,6 +49,9 @@ const _dtFormat2 = 'hh:mm a';
 const _dtFormat3 = 'dd/MM hh:mm a';
 const _dtFormat4 = 'yyyy-MM-dd';
 const _dtFormat5 = 'MMM dd, yyyy';
+
+const NFT_SALES_ADDRESS = '0x988b342d1223e01b0d6Ba4F496FD42d47969656b';
+const NFT_AUCTION_ADDRESS = '0xFC89E7ADee767Ff50fEFf86775Db7fEb6C943e6D';
 
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
