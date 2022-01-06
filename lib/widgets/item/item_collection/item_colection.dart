@@ -32,23 +32,34 @@ class ItemCollection extends StatelessWidget {
           width: 164.w,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-            border: Border.all(
-              color: AppTheme.getInstance().selectDialogColor(),
-              width: 1.w,
-            ),
             color: AppTheme.getInstance().borderItemColor(),
             borderRadius: BorderRadius.all(
               Radius.circular(20.r),
             ),
+            border: Border.all(
+              color: AppTheme.getInstance().selectDialogColor(),
+              width: 1.w,
+            ),
           ),
           child: Column(
             children: [
-              CachedNetworkImage(
-                imageUrl: urlBackGround,
+              Container(
+                clipBehavior: Clip.hardEdge,
                 width: 164.w,
                 height: 58.h,
-                fit: BoxFit.cover,
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().selectDialogColor(),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20.r),
+                  ),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      urlBackGround,
+                    ),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                // child: ,
               ),
               Container(
                 padding: EdgeInsets.only(
@@ -126,11 +137,11 @@ class ItemCollection extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlIcon,
                 fit: BoxFit.cover,
-                // placeholder: (context, url) => Center(
-                //   child: CircularProgressIndicator(
-                //     color: AppTheme.getInstance().whiteColor(),
-                //   ),
-                // ),
+                placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.getInstance().borderItemColor(),
+                  ),
+                ),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),

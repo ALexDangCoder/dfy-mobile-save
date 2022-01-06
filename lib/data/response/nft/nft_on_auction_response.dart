@@ -161,7 +161,7 @@ class DetailAuctionResponse {
 
   List<Object?> get props => [];
 
-  NFTOnAuction toDomain() => NFTOnAuction(
+  NFTOnAuction toAuction() => NFTOnAuction(
         fileCid,
         name,
         reservePrice,

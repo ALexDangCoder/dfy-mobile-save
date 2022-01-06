@@ -182,7 +182,7 @@ class FormSaleFtPawn extends StatelessWidget {
               ),
               spaceH16,
               bothTxtFormAddFtAmount(
-                txtLeft: S.current.duration,
+                txtLeft: '${S.current.duration}:',
                 txtRight: '${formatValue.format(duration)} months',
                 styleLeft: textNormalCustom(
                   AppTheme.getInstance().currencyDetailTokenColor(),
