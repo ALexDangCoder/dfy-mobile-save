@@ -248,6 +248,10 @@ class ImageAssets {
   static const String ic_xls_svg = '$baseImg/ic_xls_svg.svg';
   static const String ic_expand_svg = '$baseImg/ic_expand_svg.svg';
   static const String ic_collapse_svg = '$baseImg/ic_collapse_svg.svg';
+  static const String img_login = '$baseImg/login_img.png';
+  static const String ic_email = '$baseImg/sms.png';
+  static const String ic_warning = '$baseImg/warning.png';
+  static const String ic_verify_svg = '$baseImg/ic_verify.svg';
   static const String create_collection_svg = '$baseImg/create_collection.svg';
   static const String create_collection_1155 =
       '$baseImg/create_collection_1155.svg';
@@ -266,7 +270,6 @@ class ImageAssets {
   static const String ic_round_i = '$baseImg/ic_round_i.svg';
   static const String ic_expand_white_svg = '$baseImg/ic_expand_white_svg.svg';
 
-  static const String ic_verify_svg = '$baseImg/ic_verify.svg';
   static const String ic_star = '$baseImg/ic_star.png';
 
   static SvgPicture svgAssets(
