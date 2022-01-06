@@ -73,7 +73,10 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   Timer? debounceTime;
 
   void funFilter({int index = 0}) {
-    getCollection(sortFilter: index);
+    getCollection(
+      sortFilter: sortFilter,
+      name: textSearch.value,
+    );
   }
 
   int sortFilter = -1;
@@ -98,9 +101,9 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     }
     debounceTime = Timer(const Duration(milliseconds: 800), () {
       if (textSearch.value.isEmpty) {
-        getCollection();
+        getCollection(sortFilter: sortFilter);
       } else {
-        getCollection(name: textSearch.value);
+        getCollection(name: textSearch.value,sortFilter:sortFilter );
       }
     });
   }

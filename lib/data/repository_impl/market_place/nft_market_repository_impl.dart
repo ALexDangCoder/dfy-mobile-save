@@ -6,10 +6,10 @@ import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 
 class NftMarketRepositoryImpl implements NftMarketRepository {
-
   final NftMarketClient _client;
 
   NftMarketRepositoryImpl(this._client);
+
   @override
   Future<Result<List<NftMarket>>> getListNft({
     String? name,
@@ -18,21 +18,21 @@ class NftMarketRepositoryImpl implements NftMarketRepository {
     String? collectionId,
   }) {
     return runCatchingAsync<ListNftResponseFromApi, List<NftMarket>>(
-          () => _client.getListNft(status,nftType,name,collectionId),
-          (response) => response.toDomain() ?? [],
+      () => _client.getListNft(status, nftType, name, collectionId),
+      (response) => response.toDomain() ?? [],
     );
   }
 
-
-
   @override
-  Future<Result<List<NftMarket>>> getListNftCollection({String? collection_id,
-     int? page,
-    int? size,}) {
-      return runCatchingAsync<ListNftCollectionResponse, List<NftMarket>>(
-            () => _client.getListNftCollection(collection_id,page,size),
-            (response) => response.toDomain() ?? [],);
+  Future<Result<List<NftMarket>>> getListNftCollection(
+      {String? collectionId,
+      int? page,
+      int? size,
+      String? nameNft,
+      List<int>? listMarketType}) {
+    return runCatchingAsync<ListNftCollectionResponse, List<NftMarket>>(
+          () => _client.getListNftCollection(
+              collectionId, page, size, nameNft, listMarketType),
+          (response) => response.toDomain() ?? [],);
   }
-
-
 }

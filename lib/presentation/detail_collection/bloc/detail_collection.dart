@@ -18,10 +18,34 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
 // fillter nft
   BehaviorSubject<bool> isHardNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSoftNft = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOnSale = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOnPawn = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOnAuction = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isNotOnMarket = BehaviorSubject.seeded(false);
+
+  BehaviorSubject<bool> isOnSale = BehaviorSubject.seeded(false); //1
+  BehaviorSubject<bool> isOnPawn = BehaviorSubject.seeded(false); //3
+  BehaviorSubject<bool> isOnAuction = BehaviorSubject.seeded(false); //2
+  BehaviorSubject<bool> isNotOnMarket = BehaviorSubject.seeded(false); //0
+
+  List<int> listFilter = [];
+
+  void funFilterNft() {
+    if (isOnSale.value) {
+      listFilter.add(1);
+    }
+    if (isOnPawn.value) {
+      listFilter.add(3);
+    }
+    if (isOnAuction.value) {
+      listFilter.add(2);
+    }
+    if (isNotOnMarket.value) {
+      listFilter.add(0);
+    }
+    getListNft(
+      collectionId: collectionId,
+      listMarketType: listFilter,
+      name: textSearch.value,
+    );
+  }
+
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isShowMoreStream = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isAll = BehaviorSubject.seeded(false);
@@ -75,7 +99,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           collectionDetailModel.sink.add(arg);
           collectionId = arg.id ?? '';
           getListNft(
-            collectionId: arg.id,
+            collectionId: arg.id ?? '',
           );
           getListActivityCollection(
             collectionAddress: arg.collectionAddress ?? '',
@@ -88,31 +112,27 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     );
   }
 
-  Map<String, dynamic> request = {
-    "collection_id": "43aecb3f-b2b7-400f-b6d0-b50a83ee608f",
-    "page": 1,
-    "size": 10
-  };
-
   Future<void> getListNft({
-    String? status,
-    String? nftType,
+    List<int>? listMarketType,
     String? name,
-    String? collectionId,
+    required String collectionId,
   }) async {
     statusNft.add(0);
     final Result<List<NftMarket>> result = await _nftRepo.getListNftCollection(
-      collection_id: "43aecb3f-b2b7-400f-b6d0-b50a83ee608f",
-      page: 1,
-      size: 10,
+      collectionId: collectionId,
+      nameNft: name,
+      listMarketType: listMarketType,
     );
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
-          statusNft.add(2); //erorr
+          statusNft.add(2);
+          listFilter.clear();//erorr
         } else {
           listNft.add(res);
-          statusNft.add(1); //success
+          statusNft.add(1);
+          listFilter.clear();
+          //success
         }
       },
       error: (error) {
@@ -312,11 +332,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         if (textSearch.value.isEmpty) {
           getListNft(
             collectionId: collectionId,
+            listMarketType: [0],
           );
         } else {
           getListNft(
             name: textSearch.value,
             collectionId: collectionId,
+            listMarketType: [0],
           );
         }
       },

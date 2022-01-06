@@ -199,7 +199,13 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                   itemBuilder: (context, index) {
                     return ErrorLoadNft(
                       callback: () {
-                        widget.detailCollectionBloc.getListNft();
+                        widget.detailCollectionBloc.getListNft(
+                          collectionId:
+                              widget.detailCollectionBloc.collectionId,
+                          name: widget.detailCollectionBloc.textSearch.value,
+                          listMarketType:
+                              widget.detailCollectionBloc.listFilter,
+                        );
                       },
                     );
                   },

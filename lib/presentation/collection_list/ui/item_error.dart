@@ -46,7 +46,10 @@ class ItemCollectionError extends StatelessWidget {
             spaceH24,
             InkWell(
               onTap: () {
-                cubit.getCollection();
+                cubit.getCollection(
+                  sortFilter: cubit.sortFilter,
+                  name: cubit.textSearch.value,
+                );
               },
               child: SizedBox(
                 height: 36.h,
