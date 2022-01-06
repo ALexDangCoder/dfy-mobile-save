@@ -16,9 +16,12 @@ class SaleTab extends StatefulWidget {
   final bool? canEdit;
   final int? quantity;
 
-  const SaleTab(
-      {Key? key, required this.cubit, this.canEdit = false, this.quantity = 1})
-      : super(key: key);
+  const SaleTab({
+    Key? key,
+    required this.cubit,
+    this.canEdit = false,
+    this.quantity = 1,
+  }) : super(key: key);
 
   @override
   _SaleTabState createState() => _SaleTabState();
@@ -134,7 +137,8 @@ class _SaleTabState extends State<SaleTab>
                       quantity: widget.quantity,
                       onchangeText: (value) {
                         widget.cubit.changeQuantitySale(
-                            value: value != '' ? int.parse(value) : 0);
+                          value: value != '' ? int.parse(value) : 0,
+                        );
                       },
                     )
                   ],
@@ -143,71 +147,76 @@ class _SaleTabState extends State<SaleTab>
             ),
           ),
           StreamBuilder<bool>(
-              stream: widget.cubit.canContinueSaleStream,
-              builder: (context, snapshot) {
-                final data = snapshot.data ?? false;
-                return GestureDetector(
-                  onTap: () {
-                    if (data) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Approve(
-                            warning: RichText(
-                              text: TextSpan(
-                                  text:
-                                      'Listing is free. The the time of the sale, ',
-                                  style: textNormal(
-                                    AppTheme.getInstance()
-                                        .whiteColor()
-                                        .withOpacity(0.7),
-                                    14.sp,
+            stream: widget.cubit.canContinueSaleStream,
+            builder: (context, snapshot) {
+              final data = snapshot.data ?? false;
+              return GestureDetector(
+                onTap: () {
+                  if (data) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Approve(
+                          isShowTwoButton: true,
+                          warning: RichText(
+                            text: TextSpan(
+                                text:
+                                    'Listing is free. The the time of the sale, ',
+                                style: textNormal(
+                                  AppTheme.getInstance()
+                                      .whiteColor()
+                                      .withOpacity(0.7),
+                                  14.sp,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: '2.5%',
+                                    style: textNormal(
+                                      AppTheme.getInstance()
+                                          .failTransactionColors()
+                                          .withOpacity(0.7),
+                                      14.sp,
+                                    ),
                                   ),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: '2.5%',
-                                      style: textNormal(
-                                        AppTheme.getInstance()
-                                            .failTransactionColors()
-                                            .withOpacity(0.7),
-                                        14.sp,
-                                      ),
+                                  TextSpan(
+                                    text:
+                                        ' value of each copy will be deducted',
+                                    style: textNormal(
+                                      AppTheme.getInstance()
+                                          .whiteColor()
+                                          .withOpacity(0.7),
+                                      14.sp,
                                     ),
-                                    TextSpan(
-                                      text:
-                                          ' value of each copy will be deducted',
-                                      style: textNormal(
-                                        AppTheme.getInstance()
-                                            .whiteColor()
-                                            .withOpacity(0.7),
-                                        14.sp,
-                                      ),
-                                    ),
-                                  ]),
-                            ),
-                            title: S.current.put_on_sale,
-                            listDetail: [
-                              DetailItemApproveModel(
-                                title: '${S.current.sale_items} :',
-                                value:
-                                    '${widget.cubit.quantitySale} of ${widget.quantity ?? 1}',
-                              ),
-                              DetailItemApproveModel(
-                                  title: '${S.current.price_per_1} :',
-                                  value: '${widget.cubit.valueTokenInputSale ?? 0} DFY',
-                                  isToken: true)
-                            ],
+                                  ),
+                                ]),
                           ),
+                          title: S.current.put_on_sale,
+                          listDetail: [
+                            DetailItemApproveModel(
+                              title: '${S.current.sale_items} :',
+                              value:
+                                  '${widget.cubit.quantitySale} of ${widget.quantity ?? 1}',
+                            ),
+                            DetailItemApproveModel(
+                              title: '${S.current.price_per_1} :',
+                              value:
+                                  '${widget.cubit.valueTokenInputSale ?? 0} DFY',
+                              isToken: true,
+                            )
+                          ],
+                          textActiveButton: S.current.put_on_sale,
                         ),
-                      );
-                    }
-                  },
-                  child: ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: data,
-                  ),
-                );
-              }),
+                      ),
+                    );
+                  }
+                },
+                child: ButtonGold(
+                  title: S.current.continue_s,
+                  isEnable: data,
+                ),
+              );
+            },
+          ),
           const SizedBox(
             height: 38,
           )

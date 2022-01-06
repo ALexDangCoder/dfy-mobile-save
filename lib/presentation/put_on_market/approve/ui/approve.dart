@@ -16,9 +16,17 @@ class Approve extends StatefulWidget {
   final String title;
   final List<DetailItemApproveModel>? listDetail;
   final Widget? warning;
+  final bool? isShowTwoButton;
+  final String textActiveButton;
 
-  const Approve({Key? key, required this.title, this.listDetail, this.warning})
-      : super(key: key);
+  const Approve({
+    Key? key,
+    required this.title,
+    this.listDetail,
+    this.warning,
+    this.isShowTwoButton = false,
+    required this.textActiveButton,
+  }) : super(key: key);
 
   @override
   _ApproveState createState() => _ApproveState();
@@ -28,6 +36,7 @@ class _ApproveState extends State<Approve> {
   ApproveCubit cubit = ApproveCubit();
   GlobalKey scaffoldKey = GlobalKey();
   double? heightScaffold;
+  bool? enableButtonAction;
 
   @override
   void initState() {
@@ -156,29 +165,40 @@ class _ApproveState extends State<Approve> {
           children: [
             Row(
               children: [
+                SizedBox (width : 16.w),
+                if (widget.isShowTwoButton ?? false) Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          child: ButtonGold(
+                            title: S.current.approve,
+                            isEnable: true,
+                            fixSize: false,
+                            haveMargin: false,
+                          ),
+                          onTap: () {},
+                        ),
+                      ),
+                      const SizedBox (width : 25),
+                    ],
+                  ),
+                ) else const SizedBox (height : 0),
                 Expanded(
                   child: GestureDetector(
                     child: ButtonGold(
-                      title: S.current.continue_s,
-                      isEnable: false,
                       fixSize: false,
+                      haveMargin: false,
+                      title: widget.textActiveButton,
+                      isEnable: !(widget.isShowTwoButton ?? false),
                     ),
                     onTap: () {},
                   ),
                 ),
-                Expanded(
-                  child: GestureDetector(
-                    child: ButtonGold(
-                      fixSize: false,
-                      title: S.current.continue_s,
-                      isEnable: true,
-                    ),
-                    onTap: () {},
-                  ),
-                )
+                SizedBox (width : 16.w),
               ],
             ),
-            const SizedBox (height : 38)
+            const SizedBox(height: 38)
           ],
         ),
       ),
@@ -190,7 +210,6 @@ class _ApproveState extends State<Approve> {
       decoration: BoxDecoration(
         border: Border.all(
           color: AppTheme.getInstance().whiteBackgroundButtonColor(),
-          width: 1,
         ),
         borderRadius: const BorderRadius.all(
           Radius.circular(16),
@@ -209,13 +228,12 @@ class _ApproveState extends State<Approve> {
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                // border: Border.all(
-                //     color: Colors.teal, width: 10.0, style: BorderStyle.solid),
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: AssetImage(
-                      '${ImageAssets.image_avatar}${cubit.randomAvatar()}'
-                      '.png'),
+                    '${ImageAssets.image_avatar}${cubit.randomAvatar()}'
+                    '.png',
+                  ),
                 ),
               ),
               height: 40,
@@ -231,49 +249,52 @@ class _ApproveState extends State<Approve> {
                 Row(
                   children: [
                     StreamBuilder<String>(
-                        stream: cubit.nameWalletStream,
-                        builder: (context, snapshot) {
-                          String data = snapshot.data ?? 'Account';
-                          return Text(
-                            data,
-                            style: textNormal(
-                              AppTheme.getInstance().whiteColor(),
-                              16.sp,
-                            ).copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          );
-                        }),
+                      stream: cubit.nameWalletStream,
+                      builder: (context, snapshot) {
+                        final data = snapshot.data ?? 'Account';
+                        return Text(
+                          data,
+                          style: textNormal(
+                            AppTheme.getInstance().whiteColor(),
+                            16.sp,
+                          ).copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        );
+                      },
+                    ),
                     SizedBox(
                       width: 8.w,
                     ),
                     StreamBuilder<String>(
-                        stream: cubit.addressWalletCoreStream,
-                        builder: (context, snapshot) {
-                          return Text(
-                            snapshot.data == null
-                                ? ''
-                                : snapshot.data!.formatAddressWallet(),
-                            style: textNormal(
-                              AppTheme.getInstance().currencyDetailTokenColor(),
-                              14.sp,
-                            ),
-                          );
-                        }),
+                      stream: cubit.addressWalletCoreStream,
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.data == null
+                              ? ''
+                              : snapshot.data!.formatAddressWallet(),
+                          style: textNormal(
+                            AppTheme.getInstance().currencyDetailTokenColor(),
+                            14.sp,
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
                 StreamBuilder<double>(
-                    stream: cubit.balanceWalletStream,
-                    builder: (context, snapshot) {
-                      final double data = snapshot.data ?? 0;
-                      return Text(
-                        '${S.current.balance}: $data',
-                        style: textNormal(
-                          AppTheme.getInstance().whiteColor(),
-                          16.sp,
-                        ),
-                      );
-                    })
+                  stream: cubit.balanceWalletStream,
+                  builder: (context, snapshot) {
+                    final double data = snapshot.data ?? 0;
+                    return Text(
+                      '${S.current.balance}: $data',
+                      style: textNormal(
+                        AppTheme.getInstance().whiteColor(),
+                        16.sp,
+                      ),
+                    );
+                  },
+                )
               ],
             )
           ],

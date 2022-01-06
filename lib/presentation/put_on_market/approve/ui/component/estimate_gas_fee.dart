@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class EstimateGasFee extends StatefulWidget {
-  const EstimateGasFee(
-      {Key? key, required this.cubit, required this.gasLimitStart})
-      : super(key: key);
+  const EstimateGasFee({
+    Key? key,
+    required this.cubit,
+    required this.gasLimitStart,
+  }) : super(key: key);
   final double gasLimitStart;
   final ApproveCubit cubit;
 
@@ -36,7 +38,8 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
   Future<void> initData() async {
     await widget.cubit.getGasPrice();
     _editGasPriceController.text =
-        (widget.cubit.gasPriceSubject.valueOrNull ?? 0).toString();
+        ((widget.cubit.gasPriceSubject.valueOrNull ?? 0) / 1000000000)
+            .toString();
   }
 
   void resetEditGasFee() {
@@ -47,6 +50,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         border: Border.all(
           color: AppTheme.getInstance().whiteBackgroundButtonColor(),
@@ -79,30 +83,39 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                     ),
                   ),
                   StreamBuilder<double>(
-                      stream: widget.cubit.gasPriceStream,
-                      builder: (context, snapshot) {
-                        gasPriceStart = snapshot.data;
-                        final gasFee = ((gasPrice ?? (gasPriceStart ?? 0)) *
-                                (gasLimit ?? widget.gasLimitStart)) /
-                            1000000000;
-                        return Column(
-                          children: [
-                            Text(
-                              '$gasFee BNB',
-                              style: textNormal(
-                                AppTheme.getInstance().whiteColor(),
-                                16,
-                              ).copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
+                    stream: widget.cubit.gasPriceStream,
+                    builder: (context, snapshot) {
+                      gasPriceStart = (snapshot.data ?? 0)/1000000000;
+                      final gasFee = (gasPrice ?? gasPriceStart ?? 0) *
+                          (gasLimit ?? widget.gasLimitStart);
+                      return Column(
+                        children: [
+                          Text(
+                            '$gasFee BNB',
+                            style: textNormal(
+                              gasFee <= (widget.cubit.balanceWallet ?? 0)
+                                  ? AppTheme.getInstance().whiteColor()
+                                  : AppTheme.getInstance().redColor(),
+                              16,
+                            ).copyWith(
+                              fontWeight: FontWeight.w600,
                             ),
-                            if (gasFee > (widget.cubit.balanceWallet ?? 0))
-                              Text("a")
-                            else
-                              const SizedBox(height: 0),
-                          ],
-                        );
-                      }),
+                          ),
+                          if (gasFee > (widget.cubit.balanceWallet ?? 0))
+                            Text(
+                              S.current.insufficient_balance,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().redColor(),
+                                12,
+                                FontWeight.w400,
+                              ),
+                            )
+                          else
+                            const SizedBox(height: 0),
+                        ],
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -179,7 +192,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                 ),
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
-                                    RegExp(r'^\d*\.?\d*'),
+                                    RegExp(r'^\d*\.?\d{0,5}'),
                                   ),
                                 ],
                                 onChanged: (value) {
@@ -228,7 +241,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                 textAlign: TextAlign.right,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
-                                    RegExp(r'^\d*\.?\d*'),
+                                    RegExp(r'^\d*\.?\d{0,5}'),
                                   ),
                                 ],
                                 keyboardType: TextInputType.number,
@@ -246,7 +259,6 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                   border: InputBorder.none,
                                 ),
                                 onChanged: (value) {
-                                  print(value);
                                   setState(() {
                                     gasPrice = double.parse(value);
                                   });
@@ -257,7 +269,35 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                         ),
                       ],
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 24),
+                  GestureDetector(
+                    onTap:(){
+                      setState(() {
+                        gasPrice = gasPriceStart;
+                        gasLimit = widget.gasLimitStart;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 6,
+                        horizontal: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppTheme.getInstance().selectDialogColor(),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        S.current.reset,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          14,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                 ],
               ),
           ],

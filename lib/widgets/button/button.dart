@@ -7,20 +7,25 @@ class ButtonGold extends StatelessWidget {
   final String title;
   final bool isEnable;
   final bool? fixSize;
+  final bool? haveMargin;
 
   const ButtonGold({
     Key? key,
     required this.title,
-    required this.isEnable, this.fixSize = true,
+    required this.isEnable,
+    this.fixSize = true,
+    this.haveMargin = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-        right: 16.w,
-        left: 16.w,
-      ),
+      margin: haveMargin ?? true
+          ? EdgeInsets.only(
+              right: 16.w,
+              left: 16.w,
+            )
+          : null,
       decoration: BoxDecoration(
         gradient: RadialGradient(
           radius: 4.r,
@@ -37,7 +42,7 @@ class ButtonGold extends StatelessWidget {
         ),
       ),
       height: 64.h,
-      width: fixSize == true  ? 343.w : null ,
+      width: fixSize == true ? 343.w : null,
       child: Center(
         child: Text(
           title,
