@@ -157,13 +157,13 @@ TextStyle textLabelNFT = GoogleFonts.sourceSansPro(
 TextStyle richTextBlue = GoogleFonts.sourceSansPro(
   color: const Color(0xff46BCFF),
   fontWeight: FontWeight.w400,
-  fontSize: 16.sp,
+  fontSize: 14.sp,
   decoration: TextDecoration.underline,
 );
 TextStyle richTextWhite = GoogleFonts.sen(
   color: AppTheme.getInstance().textThemeColor(),
   fontWeight: FontWeight.w400,
-  fontSize: 16,
+  fontSize: 16.sp,
   decoration: TextDecoration.underline,
 );
 

@@ -5,7 +5,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/main_screen/buy_nft/ui/buy_nft.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
 import 'package:Dfy/presentation/market_place/send_offer/send_offer.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
@@ -30,6 +30,7 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 const String EXAMPLE_TITLE = 'Naruto kkcam allfp lflll alffwl c ';
 const String EXAMPLE_IMAGE_URL =
@@ -97,6 +98,8 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         ];
         break;
       case MarketType.SALE:
+        trustWalletChannel
+            .setMethodCallHandler(_bloc.nativeMethodCallBackTrustWallet);
         _tabPage = const [
           HistoryTab(
             listHistory: [],
@@ -153,12 +156,374 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NFTDetailBloc, NFTDetailState>(
+    return BlocConsumer<NFTDetailBloc, NFTDetailState>(
+      listenWhen: (prev, state) => state == prev,
+      listener: (context, state) {
+        if (state is HaveWallet) {
+          Fluttertoast.showToast(msg: 'have wallet');
+        } else if (state is NoWallet) {
+          Fluttertoast.showToast(msg: 'have wallet');
+        }
+      },
       bloc: _bloc,
       builder: (context, state) {
         return _content(widget.type, state);
       },
     );
+  }
+
+  Widget _content(MarketType type, NFTDetailState state) {
+    switch (type) {
+      case MarketType.SALE:
+        if (state is NftOnSaleSuccess) {
+          final objSale = state.nftMarket;
+          return StateStreamLayout(
+            stream: _bloc.stateStream,
+            error:
+                AppException(S.current.error, S.current.something_went_wrong),
+            retry: () async {
+              await _bloc.getInForNFT(widget.marketId ?? '', widget.type);
+            },
+            textEmpty: '',
+            child: BaseCustomScrollView(
+              image: objSale.image,
+              initHeight: 360.h,
+              leading: _leading(),
+              title: objSale.name,
+              tabBarView: TabBarView(
+                controller: _tabController,
+                children: _tabPage,
+              ),
+              tabBar: TabBar(
+                controller: _tabController,
+                labelColor: Colors.white,
+                unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+                indicatorColor: AppTheme.getInstance().titleTabColor(),
+                labelStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                tabs: _tabTit,
+              ),
+              bottomBar: _buildButtonBuyOutOnSale(context),
+              content: [
+                _nameNFT(
+                  title: objSale.name,
+                  quantity: objSale.totalCopies ?? 1,
+                ),
+                _priceContainerOnSale(price: objSale.price),
+                divide,
+                spaceH12,
+                _description(
+                  objSale.description?.isEmpty ?? true
+                      ? S.current.no_des
+                      : objSale.description ?? S.current.no_des,
+                ),
+                spaceH20,
+                StreamBuilder<bool>(
+                  initialData: false,
+                  stream: _bloc.viewStream,
+                  builder: (context, snapshot) {
+                    return Visibility(
+                      visible: !snapshot.data!,
+                      child: Column(
+                        children: [
+                          if (objSale.collectionName?.isEmpty ?? true)
+                            const SizedBox()
+                          else
+                            _rowCollection(
+                              'DFY',
+                              objSale.collectionName ?? '',
+                              objSale.ticked == 1,
+                            ),
+                          spaceH20,
+                          additionalColumn(objSale.properties ?? []),
+                          spaceH20,
+                          ...[
+                            buildRow(
+                              title: S.current.collection_address,
+                              detail: objSale.collectionAddress ?? '',
+                              type: TextType.RICH_BLUE,
+                              isShowCopy: true,
+                            ),
+                            spaceH12,
+                            buildRow(
+                              title: S.current.nft_token_id,
+                              detail: objSale.nftTokenId ?? '',
+                              type: TextType.NORMAL,
+                            ),
+                            spaceH12,
+                            buildRow(
+                              title: S.current.nft_standard,
+                              detail: objSale.nftStandard ?? '',
+                              type: TextType.NORMAL,
+                            ),
+                            spaceH12,
+                            buildRow(
+                              title: S.current.block_chain,
+                              detail: 'Binance smart chain',
+                              type: TextType.NORMAL,
+                            ),
+                          ],
+                          spaceH12,
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                StreamBuilder<bool>(
+                  initialData: true,
+                  stream: _bloc.viewStream,
+                  builder: (context, snapshot) {
+                    return Visibility(
+                      child: InkWell(
+                        onTap: () {
+                          _bloc.viewSink.add(!snapshot.data!);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(
+                            right: 16.w,
+                            left: 16.w,
+                          ),
+                          height: 40.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              sizedSvgImage(
+                                w: 14,
+                                h: 14,
+                                image: !snapshot.data!
+                                    ? ImageAssets.ic_collapse_svg
+                                    : ImageAssets.ic_expand_svg,
+                              ),
+                              SizedBox(
+                                width: 13.15.w,
+                              ),
+                              Text(
+                                !snapshot.data!
+                                    ? S.current.view_less
+                                    : S.current.view_more,
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().fillColor(),
+                                  16,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                divide,
+              ],
+            ),
+          );
+        } else {
+          return const ModalProgressHUD(
+            inAsyncCall: true,
+            progressIndicator: CupertinoLoading(),
+            child: SizedBox(),
+          );
+        }
+      case MarketType.PAWN:
+        return BaseCustomScrollView(
+          image: EXAMPLE_IMAGE_URL,
+          initHeight: 360.h,
+          leading: _leading(),
+          title: EXAMPLE_TITLE,
+          tabBarView: TabBarView(
+            controller: _tabController,
+            children: _tabPage,
+          ),
+          tabBar: TabBar(
+            controller: _tabController,
+            labelColor: Colors.white,
+            unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+            indicatorColor: AppTheme.getInstance().titleTabColor(),
+            labelStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+            tabs: _tabTit,
+          ),
+          bottomBar: Container(),
+          content: [
+            _nameNFT(title: EXAMPLE_TITLE),
+            Container(),
+            Container(),
+            divide,
+            spaceH12,
+            Container(),
+            spaceH20,
+            StreamBuilder<bool>(
+              initialData: false,
+              stream: _bloc.viewStream,
+              builder: (context, snapshot) {
+                return Visibility(
+                  visible: !snapshot.data!,
+                  child: Column(
+                    children: [
+                      _rowCollection(
+                          'DFY', auctionObj.collectionName ?? '', true),
+                      spaceH20,
+                      additionalColumn(auctionObj.properties ?? []),
+                      spaceH20,
+                      _buildTable(),
+                      spaceH12,
+                    ],
+                  ),
+                );
+              },
+            ),
+            StreamBuilder<bool>(
+              initialData: true,
+              stream: _bloc.viewStream,
+              builder: (context, snapshot) {
+                return Visibility(
+                  child: InkWell(
+                    onTap: () {
+                      _bloc.viewSink.add(!snapshot.data!);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        right: 16.w,
+                        left: 16.w,
+                      ),
+                      height: 40.h,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          sizedSvgImage(
+                            w: 14,
+                            h: 14,
+                            image: !snapshot.data!
+                                ? ImageAssets.ic_collapse_svg
+                                : ImageAssets.ic_expand_svg,
+                          ),
+                          SizedBox(
+                            width: 13.15.w,
+                          ),
+                          Text(
+                            !snapshot.data!
+                                ? S.current.view_less
+                                : S.current.view_more,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().fillColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            divide,
+          ],
+        );
+      case MarketType.AUCTION:
+        return BaseCustomScrollView(
+          image: EXAMPLE_IMAGE_URL,
+          initHeight: 360.h,
+          leading: _leading(),
+          title: EXAMPLE_TITLE,
+          tabBarView: TabBarView(
+            controller: _tabController,
+            children: _tabPage,
+          ),
+          tabBar: TabBar(
+            controller: _tabController,
+            labelColor: Colors.white,
+            unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+            indicatorColor: AppTheme.getInstance().titleTabColor(),
+            labelStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+            tabs: _tabTit,
+          ),
+          bottomBar: Container(),
+          content: [
+            _nameNFT(title: EXAMPLE_TITLE),
+            Container(),
+            Container(),
+            divide,
+            spaceH12,
+            Container(),
+            spaceH20,
+            StreamBuilder<bool>(
+              initialData: false,
+              stream: _bloc.viewStream,
+              builder: (context, snapshot) {
+                return Visibility(
+                  visible: !snapshot.data!,
+                  child: Column(
+                    children: [
+                      _rowCollection(
+                          'DFY', auctionObj.collectionName ?? '', true),
+                      spaceH20,
+                      additionalColumn(auctionObj.properties ?? []),
+                      spaceH20,
+                      _buildTable(),
+                      spaceH12,
+                    ],
+                  ),
+                );
+              },
+            ),
+            StreamBuilder<bool>(
+              initialData: true,
+              stream: _bloc.viewStream,
+              builder: (context, snapshot) {
+                return Visibility(
+                  child: InkWell(
+                    onTap: () {
+                      _bloc.viewSink.add(!snapshot.data!);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        right: 16.w,
+                        left: 16.w,
+                      ),
+                      height: 40.h,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          sizedSvgImage(
+                            w: 14,
+                            h: 14,
+                            image: !snapshot.data!
+                                ? ImageAssets.ic_collapse_svg
+                                : ImageAssets.ic_expand_svg,
+                          ),
+                          SizedBox(
+                            width: 13.15.w,
+                          ),
+                          Text(
+                            !snapshot.data!
+                                ? S.current.view_less
+                                : S.current.view_more,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().fillColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            divide,
+          ],
+        );
+    }
   }
 
   Widget _leading() => InkWell(
@@ -677,14 +1042,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
   Widget _buildButtonBuyOutOnSale(BuildContext context) {
     return ButtonGradient(
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) {
-              return const BuyNFT();
-            },
-          ),
-        );
+        _bloc.getListWallets();
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
@@ -700,359 +1058,5 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         ),
       ),
     );
-  }
-
-  Widget _content(MarketType type, NFTDetailState state) {
-    switch (type) {
-      case MarketType.SALE:
-        if (state is NftOnSaleSuccess) {
-          final objSale = state.nftMarket;
-          return StateStreamLayout(
-            stream: _bloc.stateStream,
-            error:
-                AppException(S.current.error, S.current.something_went_wrong),
-            retry: () async {
-              await _bloc.getInForNFT(widget.marketId ?? '', widget.type);
-            },
-            textEmpty: '',
-            child: BaseCustomScrollView(
-              image: objSale.image,
-              initHeight: 360.h,
-              leading: _leading(),
-              title: objSale.name,
-              tabBarView: TabBarView(
-                controller: _tabController,
-                children: _tabPage,
-              ),
-              tabBar: TabBar(
-                controller: _tabController,
-                labelColor: Colors.white,
-                unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
-                indicatorColor: AppTheme.getInstance().titleTabColor(),
-                labelStyle: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-                tabs: _tabTit,
-              ),
-              bottomBar: _buildButtonBuyOutOnSale(context),
-              content: [
-                _nameNFT(
-                  title: objSale.name,
-                  quantity: objSale.totalCopies ?? 1,
-                ),
-                _priceContainerOnSale(price: objSale.price),
-                divide,
-                spaceH12,
-                _description(
-                  objSale.description?.isEmpty ?? true
-                      ? S.current.no_des
-                      : objSale.description ?? S.current.no_des,
-                ),
-                spaceH20,
-                StreamBuilder<bool>(
-                  initialData: false,
-                  stream: _bloc.viewStream,
-                  builder: (context, snapshot) {
-                    return Visibility(
-                      visible: !snapshot.data!,
-                      child: Column(
-                        children: [
-                          if (objSale.collectionName?.isEmpty ?? true)
-                            const SizedBox()
-                          else
-                            _rowCollection(
-                              'DFY',
-                              objSale.collectionName ?? '',
-                              objSale.ticked == 1,
-                            ),
-                          spaceH20,
-                          additionalColumn(objSale.properties ?? []),
-                          spaceH20,
-                          ...[
-                            buildRow(
-                              title: S.current.collection_address,
-                              detail: objSale.collectionAddress ?? '',
-                              type: TextType.RICH_BLUE,
-                              isShowCopy: true,
-                            ),
-                            spaceH12,
-                            buildRow(
-                              title: S.current.nft_token_id,
-                              detail: objSale.nftTokenId ?? '',
-                              type: TextType.NORMAL,
-                            ),
-                            spaceH12,
-                            buildRow(
-                              title: S.current.nft_standard,
-                              detail: objSale.nftStandard ?? '',
-                              type: TextType.NORMAL,
-                            ),
-                            spaceH12,
-                            buildRow(
-                              title: S.current.block_chain,
-                              detail: 'Binance smart chain',
-                              type: TextType.NORMAL,
-                            ),
-                          ],
-                          spaceH12,
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                StreamBuilder<bool>(
-                  initialData: true,
-                  stream: _bloc.viewStream,
-                  builder: (context, snapshot) {
-                    return Visibility(
-                      child: InkWell(
-                        onTap: () {
-                          _bloc.viewSink.add(!snapshot.data!);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            right: 16.w,
-                            left: 16.w,
-                          ),
-                          height: 40.h,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              sizedSvgImage(
-                                w: 14,
-                                h: 14,
-                                image: !snapshot.data!
-                                    ? ImageAssets.ic_collapse_svg
-                                    : ImageAssets.ic_expand_svg,
-                              ),
-                              SizedBox(
-                                width: 13.15.w,
-                              ),
-                              Text(
-                                !snapshot.data!
-                                    ? S.current.view_less
-                                    : S.current.view_more,
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().fillColor(),
-                                  16,
-                                  FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                divide,
-              ],
-            ),
-          );
-        } else {
-          return const ModalProgressHUD(
-            inAsyncCall: true,
-            progressIndicator: CupertinoLoading(),
-            child: SizedBox(),
-          );
-        }
-      case MarketType.PAWN:
-        return BaseCustomScrollView(
-          image: EXAMPLE_IMAGE_URL,
-          initHeight: 360.h,
-          leading: _leading(),
-          title: EXAMPLE_TITLE,
-          tabBarView: TabBarView(
-            controller: _tabController,
-            children: _tabPage,
-          ),
-          tabBar: TabBar(
-            controller: _tabController,
-            labelColor: Colors.white,
-            unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
-            indicatorColor: AppTheme.getInstance().titleTabColor(),
-            labelStyle: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-            tabs: _tabTit,
-          ),
-          bottomBar: Container(),
-          content: [
-            _nameNFT(title: EXAMPLE_TITLE),
-            Container(),
-            Container(),
-            divide,
-            spaceH12,
-            Container(),
-            spaceH20,
-            StreamBuilder<bool>(
-              initialData: false,
-              stream: _bloc.viewStream,
-              builder: (context, snapshot) {
-                return Visibility(
-                  visible: !snapshot.data!,
-                  child: Column(
-                    children: [
-                      _rowCollection(
-                          'DFY', auctionObj.collectionName ?? '', true),
-                      spaceH20,
-                      additionalColumn(auctionObj.properties ?? []),
-                      spaceH20,
-                      _buildTable(),
-                      spaceH12,
-                    ],
-                  ),
-                );
-              },
-            ),
-            StreamBuilder<bool>(
-              initialData: true,
-              stream: _bloc.viewStream,
-              builder: (context, snapshot) {
-                return Visibility(
-                  child: InkWell(
-                    onTap: () {
-                      _bloc.viewSink.add(!snapshot.data!);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        right: 16.w,
-                        left: 16.w,
-                      ),
-                      height: 40.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          sizedSvgImage(
-                            w: 14,
-                            h: 14,
-                            image: !snapshot.data!
-                                ? ImageAssets.ic_collapse_svg
-                                : ImageAssets.ic_expand_svg,
-                          ),
-                          SizedBox(
-                            width: 13.15.w,
-                          ),
-                          Text(
-                            !snapshot.data!
-                                ? S.current.view_less
-                                : S.current.view_more,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().fillColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            divide,
-          ],
-        );
-      case MarketType.AUCTION:
-        return BaseCustomScrollView(
-          image: EXAMPLE_IMAGE_URL,
-          initHeight: 360.h,
-          leading: _leading(),
-          title: EXAMPLE_TITLE,
-          tabBarView: TabBarView(
-            controller: _tabController,
-            children: _tabPage,
-          ),
-          tabBar: TabBar(
-            controller: _tabController,
-            labelColor: Colors.white,
-            unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
-            indicatorColor: AppTheme.getInstance().titleTabColor(),
-            labelStyle: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-            tabs: _tabTit,
-          ),
-          bottomBar: Container(),
-          content: [
-            _nameNFT(title: EXAMPLE_TITLE),
-            Container(),
-            Container(),
-            divide,
-            spaceH12,
-            Container(),
-            spaceH20,
-            StreamBuilder<bool>(
-              initialData: false,
-              stream: _bloc.viewStream,
-              builder: (context, snapshot) {
-                return Visibility(
-                  visible: !snapshot.data!,
-                  child: Column(
-                    children: [
-                      _rowCollection(
-                          'DFY', auctionObj.collectionName ?? '', true),
-                      spaceH20,
-                      additionalColumn(auctionObj.properties ?? []),
-                      spaceH20,
-                      _buildTable(),
-                      spaceH12,
-                    ],
-                  ),
-                );
-              },
-            ),
-            StreamBuilder<bool>(
-              initialData: true,
-              stream: _bloc.viewStream,
-              builder: (context, snapshot) {
-                return Visibility(
-                  child: InkWell(
-                    onTap: () {
-                      _bloc.viewSink.add(!snapshot.data!);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        right: 16.w,
-                        left: 16.w,
-                      ),
-                      height: 40.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          sizedSvgImage(
-                            w: 14,
-                            h: 14,
-                            image: !snapshot.data!
-                                ? ImageAssets.ic_collapse_svg
-                                : ImageAssets.ic_expand_svg,
-                          ),
-                          SizedBox(
-                            width: 13.15.w,
-                          ),
-                          Text(
-                            !snapshot.data!
-                                ? S.current.view_less
-                                : S.current.view_more,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().fillColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            divide,
-          ],
-        );
-    }
   }
 }

@@ -3,16 +3,19 @@ import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NFTDetailBloc extends BaseCubit<NFTDetailState> {
-  NFTDetailBloc() : super(NFTDetailInitial()){
+  NFTDetailBloc() : super(NFTDetailInitial()) {
     showLoading();
   }
+
   final _viewSubject = BehaviorSubject.seeded(true);
 
   Stream<bool> get viewStream => _viewSubject.stream;
@@ -30,6 +33,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       result.when(
         success: (res) {
           showContent();
+          nftMarket = res;
           emit(NftOnSaleSuccess(res));
         },
         error: (error) {
@@ -43,5 +47,26 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     if (type == MarketType.PAWN) {
       ///call api detail onPawn
     }
+  }
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'getListWalletsCallback':
+        final List<dynamic> data = methodCall.arguments;
+        if (data.isEmpty) {
+          emit(NoWallet(nftMarket));
+        } else {
+          emit(HaveWallet(nftMarket));
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  Future<void> getListWallets() async {
+    try {
+      await trustWalletChannel.invokeMethod('getListWallets', {});
+    } on PlatformException {}
   }
 }
