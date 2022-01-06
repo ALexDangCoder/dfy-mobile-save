@@ -20,6 +20,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   Sink<bool> get viewSink => _viewSubject.sink;
 
+  List<HistoryNFT> listHistory= [];
+
   NFTRepository get _nftRepo => Get.find();
   late final NftMarket nftMarket;
   Future<void> getHistory(String collectionAddress, String nftTokenId) async{
@@ -27,7 +29,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     await _nftRepo.getHistory(collectionAddress,nftTokenId);
     result.when(
       success: (res) {
-      print(res);
+        listHistory = res;
       },
       error: (error) {
         updateStateError();

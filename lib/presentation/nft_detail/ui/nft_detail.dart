@@ -97,9 +97,9 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         ];
         break;
       case MarketType.SALE:
-        _tabPage = const [
+        _tabPage = [
           HistoryTab(
-            listHistory: [],
+            listHistory: _bloc.listHistory,
           ),
           OwnerTab(),
         ];
@@ -113,9 +113,9 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         ];
         break;
       case MarketType.PAWN:
-        _tabPage = const [
+        _tabPage =  [
           HistoryTab(
-            listHistory: [],
+            listHistory: _bloc.listHistory,
           ),
           OwnerTab(),
           OfferTab(),
