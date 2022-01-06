@@ -11,22 +11,24 @@ import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ListNftHotAuction extends StatelessWidget {
-  const ListNftHotAuction({
+class ListNftOnPawn extends StatelessWidget {
+  const ListNftOnPawn({
     Key? key,
     required this.cubit,
     required this.isLoading,
     required this.isLoadFail,
+    required this.marketType,
   }) : super(key: key);
   final MarketplaceCubit cubit;
   final bool isLoading;
   final bool isLoadFail;
+  final String marketType;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        //text  hot aution and btn arrow
+        //text nfts collateral and btn arrow
         Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: Row(
@@ -36,15 +38,15 @@ class ListNftHotAuction extends StatelessWidget {
                 isLoading
                     ? S.current.loading_text
                     : (isLoadFail
-                    ? S.current.error_text
-                    : S.current.hot_auction),
+                        ? S.current.error_text
+                        : S.current.nft_on_pawn),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
                   FontWeight.w700,
                 ),
               ),
-              GestureDetector(
+              InkWell(
                 onTap: () {
                   isLoading
                       ? () {}
@@ -52,7 +54,7 @@ class ListNftHotAuction extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                const ListNft(marketType: MarketType.AUCTION),
+                                const ListNft(marketType: MarketType.PAWN),
                           ),
                         );
                 },
@@ -75,19 +77,19 @@ class ListNftHotAuction extends StatelessWidget {
         SizedBox(
           height: 20.h,
         ),
-        //list nft aution
+        //list nft on pawn
         Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: SizedBox(
             height: 231.h,
             child: isLoadFail
                 ? ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: 6,
+                    physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return InkWell(
+                      return GestureDetector(
                         onTap: () {},
                         child: Row(
                           children: [
@@ -106,12 +108,12 @@ class ListNftHotAuction extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: isLoading
                         ? 6
-                        : (cubit.nftsHotAution.length > 6)
+                        : (cubit.nftsCollateral.length > 6)
                             ? 6
-                            : cubit.nftsHotAution.length,
+                            : cubit.nftsCollateral.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return InkWell(
+                      return GestureDetector(
                         onTap: () {
                           isLoading
                               ? () {}
@@ -119,7 +121,7 @@ class ListNftHotAuction extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => const NFTDetailScreen(
-                                      type: MarketType.AUCTION,
+                                      type: MarketType.PAWN,
                                     ),
                                   ),
                                 );
@@ -130,7 +132,7 @@ class ListNftHotAuction extends StatelessWidget {
                               const SkeletonNft()
                             else
                               NFTItemWidget(
-                                nftMarket: cubit.nftsHotAution[index],
+                                nftMarket: cubit.nftsCollateral[index],
                               ),
                             spaceW12,
                           ],

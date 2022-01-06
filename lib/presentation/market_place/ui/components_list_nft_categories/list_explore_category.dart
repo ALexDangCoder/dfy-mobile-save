@@ -1,3 +1,4 @@
+import 'package:Dfy/presentation/categories_detail/ui/categories_detail.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/category.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_explore.dart';
@@ -73,11 +74,22 @@ class ListExploreCategory extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return isLoading
                           ? const SkeletonCategory()
-                          : Category(
-                              title:
-                                  cubit.exploreCategories[index].name ?? 'name',
-                              url: cubit.exploreCategories[index].avatarCid ??
-                                  '',
+                          : GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CategoriesDetail(title: 'Music',),
+                                  ),
+                                );
+                              },
+                              child: Category(
+                                title: cubit.exploreCategories[index].name ??
+                                    'name',
+                                url: cubit.exploreCategories[index].avatarCid ??
+                                    '',
+                              ),
                             );
                     },
                   ),
