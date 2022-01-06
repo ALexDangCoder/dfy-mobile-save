@@ -1,13 +1,17 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
 import 'package:Dfy/presentation/market_place/ui/header.dart';
 import 'package:Dfy/presentation/market_place/ui/list_explore_category.dart';
+import 'package:Dfy/presentation/market_place/ui/list_nft_buy_sell_collectible.dart';
+import 'package:Dfy/presentation/market_place/ui/list_nft_featured_soft.dart';
 import 'package:Dfy/presentation/market_place/ui/list_nft_hard.dart';
 import 'package:Dfy/presentation/market_place/ui/list_nft_hot_auction.dart';
 import 'package:Dfy/presentation/market_place/ui/list_nft_on_pawn.dart';
 import 'package:Dfy/presentation/market_place/ui/list_nft_on_sale.dart';
 import 'package:Dfy/presentation/market_place/ui/list_outstanding_collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -180,28 +184,62 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                               for (Map<String, dynamic> e
                                   in cubit.listCollectionFtExploreFtNft)
                                 if (e['name'] ==
-                                    'Buy, sell, and create collectible NFTs')
-                                  Text('Buy, sell, and create collectible NFTs')
-                                else if (e['name'] == 'Featured Soft NFTs')
-                                  Text('Featured Soft NFTs')
-                                else if (e['name'] == 'Hot auction')
+                                    'Buy, sell, and create collectible NFTs') ...[
+                                  ListNftBuySellCollectible(
+                                    cubit: cubit,
+                                    isLoading: false,
+                                    isLoadFail: false,
+                                  ),
+                                  spaceH32,
+                                ] else if (e['name'] ==
+                                    'Featured Soft NFTs') ...[
+                                  ListFeaturedSoftNft(
+                                    cubit: cubit,
+                                    isLoading: false,
+                                    isLoadFail: false,
+                                  ),
+                                  spaceH32,
+                                ] else if (e['name'] == 'Hot auction') ...[
                                   ListNftHotAuction(
                                     cubit: cubit,
                                     isLoading: false,
                                     isLoadFail: false,
-                                  )
-                                else if (e['name'] == 'Outstanding collection')
-                                  Text('Outstanding collection')
-                                else if (e['name'] == 'Sale items')
-                                  Text('Sale items')
-                                else if (e['name'] == 'NFTs collateral')
-                                  Text('NFTs collateral')
+                                  ),
+                                  spaceH32,
+                                ] else if (e['name'] ==
+                                    'Outstanding collection') ...[
+                                  ListOutstandingCollection(
+                                    cubit: cubit,
+                                    isLoading: false,
+                                    isLoadFail: false,
+                                  ),
+                                  spaceH32,
+                                ] else if (e['name'] == 'Sale items') ...[
+                                  ListNftOnSale(
+                                    cubit: cubit,
+                                    isLoading: false,
+                                    isLoadFail: false,
+                                  ),
+                                  spaceH32,
+                                ] else if (e['name'] == 'NFTs collateral') ...[
+                                  ListNftOnPawn(
+                                    cubit: cubit,
+                                    isLoading: false,
+                                    isLoadFail: false,
+                                  ),
+                                  spaceH32,
+                                ]
                                 //this else handle explore categories
-                                else
-                                  Text('explore categories'),
-                              SizedBox(
-                                height: 32.h,
-                              ),
+                                else ...[
+                                  ListExploreCategory(
+                                    cubit: cubit,
+                                    isLoading: false,
+                                    isLoadFail: false,
+                                  ),
+                                  SizedBox(
+                                    height: 32.h,
+                                  ),
+                                ],
                               SizedBox(
                                 height: 164.h,
                               ),
