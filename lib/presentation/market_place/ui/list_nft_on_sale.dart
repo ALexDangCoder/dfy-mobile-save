@@ -44,14 +44,13 @@ class ListNftOnSale extends StatelessWidget {
                   isLoading
                       ? () {}
                       : Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                      const ListNft(
-                        marketType: MarketType.SALE,
-                      ),
-                    ),
-                  );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ListNft(
+                              marketType: MarketType.SALE,
+                            ),
+                          ),
+                        );
                 },
                 child: Padding(
                   padding: EdgeInsets.only(
@@ -79,59 +78,58 @@ class ListNftOnSale extends StatelessWidget {
             height: 231.h,
             child: isLoadFail
                 ? ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 6,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {},
-                  child: Row(
-                    children: [
-                      ErrorLoadNft(
-                        callback: () {
-                          cubit.getListNftCollectionExplore();
-                        },
-                      ),
-                      spaceW12,
-                    ],
-                  ),
-                );
-              },
-            )
-                : ListView.builder(
-              shrinkWrap: true,
-              itemCount: isLoading ? 6 : cubit.nftsSale.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    isLoading
-                        ? () {}
-                        : Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                          const NFTDetailScreen(
-                            type: MarketType.SALE,
-                          ),
-                      ),
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      if (isLoading)
-                        const SkeletonNft()
-                      else
-                        NFTItemWidget(
-                          nftMarket: cubit.nftsSale[index],
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 6,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {},
+                        child: Row(
+                          children: [
+                            ErrorLoadNft(
+                              callback: () {
+                                cubit.getListNftCollectionExplore();
+                              },
+                            ),
+                            spaceW12,
+                          ],
                         ),
-                      spaceW12,
-                    ],
+                      );
+                    },
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: isLoading ? 6 : cubit.nftsSale.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          isLoading
+                              ? () {}
+                              : Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const NFTDetailScreen(
+                                      type: MarketType.SALE,
+                                    ),
+                                  ),
+                                );
+                        },
+                        child: Row(
+                          children: [
+                            if (isLoading)
+                              const SkeletonNft()
+                            else
+                              NFTItemWidget(
+                                nftMarket: cubit.nftsSale[index],
+                              ),
+                            spaceW12,
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ),
       ],

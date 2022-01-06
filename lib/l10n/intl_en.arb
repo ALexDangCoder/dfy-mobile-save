@@ -378,11 +378,9 @@
   "sign_contract": "Sign contract",
   "like": "Like",
   "report": "Report",
-  "name_of_collection": "Name of collection",
   "copied_address": "Copied address!",
   "copied_private_key": "Copied private key!",
   "copied_seed_phrase": "Copied seed phrase!",
-  "all_category": "All category",
   "offer": "Offer",
   "offer_detail": "Offer detail",
   "view_profile": "View profile",
@@ -392,5 +390,7 @@
   "accept": "Accept",
   "reject": "Reject",
   "name_of_collection" : "Name of collection",
-  "all_category": "All category"
+  "all_category": "All category",
+  "no_more_info": "No more information",
+  "no_des": "No description available"
 }

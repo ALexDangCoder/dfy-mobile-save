@@ -386,8 +386,7 @@
   "copied_private_key": "Sao chép private key!",
   "copied_seed_phrase": "Sao chép seed phrase!",
   "all_category": "Tất cả loại",
-   "copied_address": "Sao chép địa chỉ!",
-    "copied_private_key": "Sao chép private key!",
-    "copied_seed_phrase": "Sao chép seed phrase!"
+  "no_more_info": "Không có thông tin thêm",
+  "no_des": "Không có mô tả"
 
 }

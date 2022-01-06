@@ -86,8 +86,11 @@ class BaseSpace extends StatelessWidget {
     return SizedBox(
       height: height,
       width: double.infinity,
-      child: Image(
-        image: CachedNetworkImageProvider(image),
+      child: CachedNetworkImage(
+        placeholder: (context, url) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        imageUrl: image,
         fit: BoxFit.cover,
       ),
     );
