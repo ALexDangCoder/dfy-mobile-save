@@ -1,5 +1,6 @@
 import 'package:Dfy/config/base/base_app_bar.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,7 +16,7 @@ class BaseCustomScrollView extends StatefulWidget {
     this.tabBar,
     this.tabBarView,
     this.bottomBar,
-    this.haveBottomBar = true,
+    this.typeImage,
   }) : super(key: key);
   final List<Widget> content;
   final String image;
@@ -26,7 +27,7 @@ class BaseCustomScrollView extends StatefulWidget {
   final Widget? tabBar;
   final Widget? tabBarView;
   final Widget? bottomBar;
-  final bool haveBottomBar;
+  final TypeImage? typeImage;
 
   @override
   _BaseCustomScrollViewState createState() => _BaseCustomScrollViewState();
@@ -46,23 +47,22 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
         child: Scaffold(
           backgroundColor: Colors.black,
           bottomNavigationBar: Container(
-                  color: AppTheme.getInstance().bgBtsColor(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppTheme.getInstance().bgBtsColor(),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(15.r),
-                        topLeft: Radius.circular(15.r),
-                      ),
-                      border: Border.all(
-                        color: AppTheme.getInstance().divideColor(),
-                      ),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16.w, vertical: 16.h),
-                    child: widget.bottomBar,
-                  ),
+            color: AppTheme.getInstance().bgBtsColor(),
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().bgBtsColor(),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(15.r),
+                  topLeft: Radius.circular(15.r),
                 ),
+                border: Border.all(
+                  color: AppTheme.getInstance().divideColor(),
+                ),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              child: widget.bottomBar,
+            ),
+          ),
           body: Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -83,6 +83,7 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
                     initHeight: widget.initHeight,
                     leading: widget.leading,
                     actions: widget.actions,
+                    typeImage: widget.typeImage,
                   ),
                   SliverList(
                     delegate: SliverChildListDelegate(

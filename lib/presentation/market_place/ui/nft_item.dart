@@ -27,7 +27,7 @@ class NFTItemWidget extends StatefulWidget {
 
 class _NFTItemState extends State<NFTItemWidget> {
   final formatValue = NumberFormat('###,###,###.###', 'en_US');
-  VideoPlayerController? _controller;
+  late VideoPlayerController? _controller;
 
   @override
   void initState() {
@@ -54,6 +54,9 @@ class _NFTItemState extends State<NFTItemWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
+        if(widget.nftMarket.typeImage == TypeImage.VIDEO){
+          _controller! .pause();
+        }
         Navigator.push(
           context,
           MaterialPageRoute(

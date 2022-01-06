@@ -879,7 +879,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              S.current.expected_loan,
+              S.current.price,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                 14,

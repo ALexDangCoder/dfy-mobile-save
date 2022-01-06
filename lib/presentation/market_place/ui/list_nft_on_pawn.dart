@@ -33,7 +33,11 @@ class ListNftOnPawn extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                S.current.NFTs_collateral,
+                isLoading
+                    ? S.current.loading_text
+                    : (isLoadFail
+                        ? S.current.error_text
+                        : S.current.nft_on_pawn),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
@@ -100,7 +104,11 @@ class ListNftOnPawn extends StatelessWidget {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount: isLoading ? 6 : cubit.nftsCollateral.length,
+                    itemCount: isLoading
+                        ? 6
+                        : (cubit.nftsCollateral.length > 6)
+                            ? 6
+                            : cubit.nftsCollateral.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return GestureDetector(
