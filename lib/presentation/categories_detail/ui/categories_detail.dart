@@ -22,114 +22,116 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
-        body: SafeArea(
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(30),
-              topLeft: Radius.circular(30),
-            ),
-            child: NestedScrollView(
-              physics: const ScrollPhysics(),
-              headerSliverBuilder: (context, innerScroll) => [
-                BaseAppBar(
-                  image:
-                      'https://www.dungplus.com/wp-content/uploads/2019/12/girl-xinh-1-480x600.jpg',
-                  title: '${widget.title} ${S.current.categories}',
-                  initHeight: 145,
-                  leading: SizedBox(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(30),
+            topLeft: Radius.circular(30),
+          ),
+          child: NestedScrollView(
+            physics: const ScrollPhysics(),
+            headerSliverBuilder: (context, innerScroll) => [
+              BaseAppBar(
+                image:
+                    'https://www.dungplus.com/wp-content/uploads/2019/12/girl-xinh-1-480x600.jpg',
+                title: '${widget.title} ${S.current.categories}',
+                initHeight: 145,
+                leading: SizedBox(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: SizedBox(
+                      height: 32,
+                      width: 32,
+                      child: Image.asset(ImageAssets.img_back),
+                    ),
+                  ),
+                ),
+                actions: [
+                  Container(
+                    margin: const EdgeInsets.only(
+                      right: 16,
+                    ),
                     child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
+                      onTap: () {},
                       child: SizedBox(
                         height: 32,
                         width: 32,
-                        child: Image.asset(ImageAssets.img_back),
+                        child: Image.asset(ImageAssets.img_filter),
                       ),
                     ),
-                  ),
-                  actions: [
+                  )
+                ],
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
                     Container(
-                      margin: const EdgeInsets.only(
-                        right: 16,
-                      ),
-                      child: InkWell(
-                        onTap: () {},
-                        child: SizedBox(
-                          height: 32,
-                          width: 32,
-                          child: Image.asset(ImageAssets.img_filter),
-                        ),
+                      color: backgroundBottomSheetColor,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 12),
+                          Text(
+                            '${S.current.explore} ${widget.title} ${S.current.categories}',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
+                              FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Text(
+                            'Euismod amet, sed pulvinar mattis venenatis tristique pulvinar aliquam sit. Non orci quis eget cras erat elit ornare. Sit pharetra, arcu, sit quis quam vulputate. Ornare',
+                            style: textNormalCustom(
+                              AppTheme.getInstance()
+                                  .textThemeColor()
+                                  .withOpacity(0.7),
+                              14,
+                              FontWeight.w400,
+                            ),
+                          )
+                        ],
                       ),
                     )
                   ],
                 ),
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      Container(
-                        color: backgroundBottomSheetColor,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox (height: 12),
-                            Text(
-                              '${S.current.explore} ${widget.title} ${S.current.categories}',
-                              style: textNormalCustom(
-                                AppTheme.getInstance().textThemeColor(),
-                                20,
-                                FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox (height: 6,),
-                            Text(
-                              'Euismod amet, sed pulvinar mattis venenatis tristique pulvinar aliquam sit. Non orci quis eget cras erat elit ornare. Sit pharetra, arcu, sit quis quam vulputate. Ornare',
-                              style: textNormalCustom(
-                                AppTheme.getInstance()
-                                    .textThemeColor()
-                                    .withOpacity(0.7),
-                                14,
-                                FontWeight.w400,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+              ),
+            ],
+            body: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+              color: backgroundBottomSheetColor,
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 20,
                 ),
-              ],
-              body: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-                color: backgroundBottomSheetColor,
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 20,
-                  ),
-                  itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) {
-                    return const ItemCollection(
-                      fixWidth: false,
-                      urlBackGround:
-                          'https://toigingiuvedep.vn/wp-content/uploads/2021/01/hinh-anh-girl-xinh-toc-ngan-de-thuong.jpg',
-                      backgroundFit: BoxFit.cover,
-                      urlIcon:
-                          'https://www.dungplus.com/wp-content/uploads/2019/12/girl-xinh-1-480x600.jpg',
-                      title: 'alo',
-                      items: '1025',
-                      owners: '365',
-                      text: 'text text text text',
-                    );
-                  },
-                ),
+                itemCount: 10,
+                itemBuilder: (BuildContext context, int index) {
+                  return const ItemCollection(
+                    fixWidth: false,
+                    urlBackGround:
+                        'https://toigingiuvedep.vn/wp-content/uploads/2021/01/hinh-anh-girl-xinh-toc-ngan-de-thuong.jpg',
+                    backgroundFit: BoxFit.cover,
+                    urlIcon:
+                        'https://www.dungplus.com/wp-content/uploads/2019/12/girl-xinh-1-480x600.jpg',
+                    title: 'alo',
+                    items: '1025',
+                    owners: '365',
+                    text: 'text text text text',
+                  );
+                },
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
