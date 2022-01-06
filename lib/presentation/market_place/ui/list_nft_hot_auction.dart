@@ -2,8 +2,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
-import 'package:Dfy/presentation/market_place/nft_auction/ui/nft_detail_on_auction.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
@@ -118,7 +118,9 @@ class ListNftHotAuction extends StatelessWidget {
                               : Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const OnAuction(),
+                                    builder: (context) => const NFTDetailScreen(
+                                      type: MarketType.AUCTION,
+                                    ),
                                   ),
                                 );
                         },

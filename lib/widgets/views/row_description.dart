@@ -73,7 +73,7 @@ Row buildRow({
                 ),
                 spaceW4,
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     FlutterClipboard.copy(detail);
                     Fluttertoast.showToast(
                       msg: S.current.copy,
@@ -118,3 +118,29 @@ Row buildRow({
           )
       ],
     );
+
+Widget buildRowCustom({required String title, required Widget child}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 16.w),
+    child: Row(
+      children: [
+        Expanded(
+          child: SizedBox(
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                title,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(child: child)
+      ],
+    ),
+  );
+}

@@ -2,9 +2,11 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
+import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class HeaderMarketPlace extends StatelessWidget {
   const HeaderMarketPlace({Key? key, required this.cubit}) : super(key: key);
   final MarketplaceCubit cubit;
@@ -29,6 +31,14 @@ class HeaderMarketPlace extends StatelessWidget {
                 size: 28.sp,
                 color: AppTheme.getInstance().whiteColor(),
               ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PutOnMarket(),
+                  ),
+                );
+              },
             ),
             searchBar(),
             GestureDetector(
@@ -37,6 +47,8 @@ class HeaderMarketPlace extends StatelessWidget {
                 size: 28.sp,
                 color: AppTheme.getInstance().whiteColor(),
               ),
+              onTap: () {
+              },
             ),
           ],
         ),

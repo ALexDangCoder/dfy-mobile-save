@@ -2,14 +2,15 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/widget/Copied.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
-import 'package:Dfy/widgets/toast/toast_copy.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class BoxListPassWordPhraseShow extends StatelessWidget {
+class BoxListPassWordPhraseShow extends StatefulWidget {
   final List<String> listTitle;
   final String text;
 
@@ -18,6 +19,21 @@ class BoxListPassWordPhraseShow extends StatelessWidget {
     required this.listTitle,
     required this.text,
   }) : super(key: key);
+
+  @override
+  State<BoxListPassWordPhraseShow> createState() =>
+      _BoxListPassWordPhraseShowState();
+}
+
+class _BoxListPassWordPhraseShowState extends State<BoxListPassWordPhraseShow> {
+  late FToast fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +74,16 @@ class BoxListPassWordPhraseShow extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    FlutterClipboard.copy(text);
-                    toast_copy();
+                    FlutterClipboard.copy(widget.text);
+                    fToast.showToast(
+                      child: Copied(
+                        title: S.current.copied_seed_phrase,
+                      ),
+                      gravity: ToastGravity.CENTER,
+                      toastDuration: const Duration(
+                        seconds: 2,
+                      ),
+                    );
                   },
                   child: Image.asset(
                     ImageAssets.ic_copy,
@@ -77,10 +101,10 @@ class BoxListPassWordPhraseShow extends StatelessWidget {
               spacing: 5.w,
               runSpacing: 12.h,
               children: List<Widget>.generate(
-                listTitle.length,
+                widget.listTitle.length,
                 (int index) {
                   return ItemSeedPhrase(
-                    title: '${index + 1}. ${listTitle[index]}',
+                    title: '${index + 1}. ${widget.listTitle[index]}',
                   );
                 },
               ),

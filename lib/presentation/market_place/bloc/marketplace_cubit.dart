@@ -234,4 +234,5 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
     listCollectionFtExploreFtNft
         .sort((a, b) => a["position"].compareTo(b["position"]));
   }
+
 }
