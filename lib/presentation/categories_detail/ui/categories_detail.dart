@@ -35,7 +35,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
             headerSliverBuilder: (context, innerScroll) => [
               BaseAppBar(
                 image:
-                    'https://www.dungplus.com/wp-content/uploads/2019/12/girl-xinh-1-480x600.jpg',
+                    'https://taimienphi.vn/tmp/cf/aut/anh-gai-xinh-1.jpg',
                 title: '${widget.title} ${S.current.categories}',
                 initHeight: 145,
                 leading: SizedBox(
@@ -135,7 +135,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                           'https://toigingiuvedep.vn/wp-content/uploads/2021/01/hinh-anh-girl-xinh-toc-ngan-de-thuong.jpg',
                       backgroundFit: BoxFit.cover,
                       urlIcon:
-                          'https://www.dungplus.com/wp-content/uploads/2019/12/girl-xinh-1-480x600.jpg',
+                          'https://taimienphi.vn/tmp/cf/aut/anh-gai-xinh-1.jpg',
                       title: 'alo',
                       items: '1025',
                       owners: '365',

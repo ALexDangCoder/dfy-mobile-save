@@ -13,10 +13,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../main.dart';
 import 'component/pop_up_approve.dart';
 
+///  Appbar                                   :                  title
+///  Body                                     :                  header
+///  render list key value from
+///  List<DetailItemApproveModel>? listDetail :
+///                                                         key  ---    value
+///                                                           key -----    value
+///                                                           key ----     value
+///                                                             .... continue
+///    Widget? warning;                       :                 warning
+///                                                            Widget account
+///                                                      Widget estimate gas fee
+///
 class Approve extends StatefulWidget {
   final String title;
   final List<DetailItemApproveModel>? listDetail;
   final Widget? warning;
+  final Widget? header;
   final bool? isShowTwoButton;
   final String textActiveButton;
 
@@ -27,6 +40,7 @@ class Approve extends StatefulWidget {
     this.warning,
     this.isShowTwoButton = false,
     required this.textActiveButton,
+    this.header,
   }) : super(key: key);
 
   @override
@@ -40,6 +54,7 @@ class _ApproveState extends State<Approve> {
   bool? enableButtonAction;
   bool isCanAction = false;
   late int accountImage;
+  double gasFee = 0;
 
   @override
   void initState() {
@@ -89,6 +104,7 @@ class _ApproveState extends State<Approve> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        widget.header ?? const SizedBox(height: 0),
                         ...(widget.listDetail ?? []).map(
                           (item) => Column(
                             children: [
@@ -148,12 +164,14 @@ class _ApproveState extends State<Approve> {
                         walletView(),
                         const SizedBox(height: 16),
                         EstimateGasFee(
-                          stateChange: (value) {
+                          stateChange: ( gasFee) {
                             WidgetsBinding.instance
                                 ?.addPostFrameCallback((timeStamp) {
                               setState(() {
-                                isCanAction = value;
+                                isCanAction =
+                                    gasFee <= (cubit.balanceWallet ?? 0);
                               });
+                              this.gasFee = gasFee;
                             });
                           },
                           cubit: cubit,
@@ -191,19 +209,29 @@ class _ApproveState extends State<Approve> {
                               haveMargin: false,
                             ),
                             onTap: () {
-                              showModalBottomSheet(
+                              if (isCanAction) {
+                                showModalBottomSheet(
                                 backgroundColor: Colors.black,
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.vertical(
                                     top: Radius.circular(30),
-                                  )
+                                  ),
                                 ),
                                 isScrollControlled: true,
                                 context: context,
                                 builder: (_) {
-                                  return const PopUpApprove();
+                                  return PopUpApprove(
+                                    addressWallet: cubit.addressWallet ?? '',
+                                    accountName: cubit.nameWallet ?? 'Account',
+                                    imageAccount: accountImage,
+                                    balanceWallet: cubit.balanceWallet ?? 0,
+                                    gasFee: gasFee,
+                                    purposeText:
+                                        'Give this site permission to access your NFTs',
+                                  );
                                 },
                               );
+                              }
                             },
                           ),
                         ),
@@ -268,8 +296,8 @@ class _ApproveState extends State<Approve> {
               height: 40,
               width: 40,
             ),
-            SizedBox(
-              width: 8.w,
+            const SizedBox(
+              width: 8,
             ),
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -292,8 +320,8 @@ class _ApproveState extends State<Approve> {
                         );
                       },
                     ),
-                    SizedBox(
-                      width: 8.w,
+                    const SizedBox(
+                      width: 8,
                     ),
                     StreamBuilder<String>(
                       stream: cubit.addressWalletCoreStream,
@@ -304,7 +332,7 @@ class _ApproveState extends State<Approve> {
                               : snapshot.data!.formatAddressWallet(),
                           style: textNormal(
                             AppTheme.getInstance().currencyDetailTokenColor(),
-                            14.sp,
+                            14,
                           ),
                         );
                       },
@@ -319,7 +347,7 @@ class _ApproveState extends State<Approve> {
                       '${S.current.balance}: $data',
                       style: textNormal(
                         AppTheme.getInstance().whiteColor(),
-                        16.sp,
+                        16,
                       ),
                     );
                   },

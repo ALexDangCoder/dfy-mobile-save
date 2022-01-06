@@ -90,9 +90,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                       final gasFee = (gasPrice ?? gasPriceStart ?? 0) *
                           (gasLimit ?? widget.gasLimitStart) /
                           1000000000;
-                      widget.stateChange(
-                        gasFee <= (widget.cubit.balanceWallet ?? 0),
-                      );
+                      widget.stateChange(gasFee);
                       return Column(
                         children: [
                           Text(
@@ -205,9 +203,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                       (gasPrice ?? gasPriceStart ?? 0) *
                                           (gasLimit ?? widget.gasLimitStart) /
                                           1000000000;
-                                  widget.stateChange(
-                                    gasFee <= (widget.cubit.balanceWallet ?? 0),
-                                  );
+                                  widget.stateChange(gasFee);
                                   setState(() {
                                     gasLimit = double.parse(value);
                                   });
@@ -275,9 +271,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                       (gasPrice ?? gasPriceStart ?? 0) *
                                           (gasLimit ?? widget.gasLimitStart) /
                                           1000000000;
-                                  widget.stateChange(
-                                    gasFee <= (widget.cubit.balanceWallet ?? 0),
-                                  );
+                                  widget.stateChange(gasFee);
                                   setState(() {
                                     gasPrice = double.parse(value);
                                   });

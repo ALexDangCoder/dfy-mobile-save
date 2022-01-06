@@ -7,6 +7,8 @@ class ButtonGold extends StatelessWidget {
   final String title;
   final bool isEnable;
   final bool? fixSize;
+  final double? height;
+  final double? radiusButton;
   final bool? haveMargin;
 
   const ButtonGold({
@@ -15,6 +17,8 @@ class ButtonGold extends StatelessWidget {
     required this.isEnable,
     this.fixSize = true,
     this.haveMargin = true,
+    this.height,
+    this.radiusButton,
   }) : super(key: key);
 
   @override
@@ -38,10 +42,10 @@ class ButtonGold extends StatelessWidget {
                 ],
         ),
         borderRadius: BorderRadius.all(
-          Radius.circular(22.r),
+          Radius.circular(radiusButton ?? 22.r),
         ),
       ),
-      height: 64.h,
+      height: height ?? 64.h,
       width: fixSize == true ? 343.w : null,
       child: Center(
         child: Text(
