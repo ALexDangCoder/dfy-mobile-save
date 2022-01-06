@@ -4,12 +4,13 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
-import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'is_checkbox.dart';
 
 class Filter extends StatefulWidget {
   final CollectionBloc collectionBloc;
@@ -77,6 +78,7 @@ class _FilterState extends State<Filter> {
                   ),
                   GestureDetector(
                     onTap: () {
+
                       widget.collectionBloc.reset();
                     },
                     child: Container(
@@ -110,142 +112,73 @@ class _FilterState extends State<Filter> {
             spaceH24,
             Container(
               padding: EdgeInsets.only(
-                left: 6.w,
+                left: 16.w,
                 right: 16.w,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.w),
-                    child: Text(
-                      S.current.collection_type,
-                      style: textNormalCustom(null, 16, FontWeight.w600),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          funCheckBox: collectionBloc.allCollection,
-                          funText: collectionBloc.allCollection,
-                          title: S.current.all,
-                          stream: collectionBloc.isAll,
+              child: StreamBuilder<List<bool>>(
+                  stream: collectionBloc.listCheckBoxFilterStream,
+                  builder: (context, snapshot) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 6.w),
+                          child: Text(
+                            S.current.sort_by,
+                            style: textNormalCustom(null, 16, FontWeight.w600),
+                          ),
                         ),
-                      ),
-                      const Expanded(
-                        child: SizedBox.shrink(),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.soft_nft,
-                          stream: collectionBloc.isSoftNft,
+                        spaceH4,
+                        IsBaseCheckBox(
+                          index: 0,
+                          title: S.current.highest_trading_volume,
+                          bloc: collectionBloc,
                         ),
-                      ),
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.hard_nft,
-                          stream: collectionBloc.isHardNft,
+                        IsBaseCheckBox(
+                          index: 1,
+                          title: S.current.lowest_trading_volume,
+                          bloc: collectionBloc,
                         ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.w),
-                    child: Text(
-                      S.current.category,
-                      style: textNormalCustom(null, 16, FontWeight.w600),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          funCheckBox: collectionBloc.allCategory,
-                          funText: collectionBloc.allCategory,
-                          title: S.current.all,
-                          stream: collectionBloc.isAllCategory,
+                        IsBaseCheckBox(
+                          index: 2,
+                          title: S.current.newest,
+                          bloc: collectionBloc,
                         ),
-                      ),
-                      const Expanded(
-                        child: SizedBox.shrink(),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.art,
-                          stream: collectionBloc.isArt,
+                        IsBaseCheckBox(
+                          index: 3,
+                          title: S.current.oldest,
+                          bloc: collectionBloc,
                         ),
-                      ),
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.game,
-                          stream: collectionBloc.isGame,
+                        IsBaseCheckBox(
+                          index: 4,
+                          title: S.current.owner_from_high_to_low,
+                          bloc: collectionBloc,
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.music,
-                          stream: collectionBloc.isMusic,
+                        IsBaseCheckBox(
+                          index: 5,
+                          title: S.current.owner_from_low_to_high,
+                          bloc: collectionBloc,
                         ),
-                      ),
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.collectibles,
-                          stream: collectionBloc.isCollectibles,
+                        IsBaseCheckBox(
+                          index: 6,
+                          title: S.current.item_from_high_to_low,
+                          bloc: collectionBloc,
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.sports,
-                          stream: collectionBloc.isSports,
+                        IsBaseCheckBox(
+                          index: 7,
+                          title: S.current.item_from_low_to_high,
+                          bloc: collectionBloc,
                         ),
-                      ),
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.ultilities,
-                          stream: collectionBloc.isUltilities,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.cars,
-                          stream: collectionBloc.isCars,
-                        ),
-                      ),
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.others,
-                          stream: collectionBloc.isOthersCategory,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                      ],
+                    );
+                  }),
             ),
             spaceH24,
             GestureDetector(
               onTap: () {
+                collectionBloc.funFilter(
+                  index: collectionBloc.sortFilter + 1,
+                );
                 Navigator.pop(context);
               },
               child: ButtonLuxury(
