@@ -33,7 +33,11 @@ class ListNftHotAuction extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                S.current.hot_auction,
+                isLoading
+                    ? S.current.loading_text
+                    : (isLoadFail
+                    ? S.current.error_text
+                    : S.current.hot_auction),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
@@ -100,7 +104,11 @@ class ListNftHotAuction extends StatelessWidget {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount: isLoading ? 6 : cubit.nftsHotAution.length,
+                    itemCount: isLoading
+                        ? 6
+                        : (cubit.nftsHotAution.length > 6)
+                            ? 6
+                            : cubit.nftsHotAution.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(

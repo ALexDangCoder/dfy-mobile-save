@@ -404,6 +404,9 @@
   "copied_seed_phrase": "Sao chép seed phrase!",
   "all_category": "Tất cả loại",
   "no_more_info": "Không có thông tin thêm",
-  "no_des": "Không có mô tả"
-
+  "no_des": "Không có mô tả",
+  "feature_soft_nfts" : "Featured Soft NFTs",
+  "buy_sell_create_collectible_nfts": "Mua, bán và tạo cácNFT sưu tập",
+  "loading_text": "Đang tải...",
+  "error_text": "Lỗi tải..."
 }
