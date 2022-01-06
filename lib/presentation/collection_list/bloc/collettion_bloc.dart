@@ -18,7 +18,6 @@ import '../../../main.dart';
 
 class CollectionBloc extends BaseCubit<CollectionState> {
   CollectionBloc() : super(CollectionState()) {
-    getCollection();
     getListCategory();
   }
 

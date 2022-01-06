@@ -28,12 +28,14 @@ class ListNftBuySellCollectible extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                S.current.buy_sell_create_collectible_nfts,
-                style: textNormalCustom(
-                  Colors.white,
-                  20.sp,
-                  FontWeight.w700,
+              Flexible(
+                child: Text(
+                  S.current.buy_sell_create_collectible_nfts,
+                  style: textNormalCustom(
+                    Colors.white,
+                    20.sp,
+                    FontWeight.w700,
+                  ),
                 ),
               ),
               GestureDetector(
