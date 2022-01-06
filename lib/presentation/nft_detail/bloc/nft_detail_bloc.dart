@@ -1,6 +1,7 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
@@ -21,6 +22,18 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   NFTRepository get _nftRepo => Get.find();
   late final NftMarket nftMarket;
+  Future<void> getHistory(String collectionAddress, String nftTokenId) async{
+    final Result<List<HistoryNFT>> result =
+    await _nftRepo.getHistory(collectionAddress,nftTokenId);
+    result.when(
+      success: (res) {
+      print(res);
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
+  }
 
   Future<void> getInForNFT(String marketId, MarketType type) async {
     if (type == MarketType.SALE) {
@@ -31,6 +44,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         success: (res) {
           showContent();
           emit(NftOnSaleSuccess(res));
+          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
         },
         error: (error) {
           updateStateError();
@@ -44,4 +58,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       ///call api detail onPawn
     }
   }
+  ///GetOwner
+
+
 }

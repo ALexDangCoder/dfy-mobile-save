@@ -1,5 +1,6 @@
 import 'package:Dfy/config/base/base_app_bar.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,6 +16,7 @@ class BaseCustomScrollView extends StatefulWidget {
     this.tabBar,
     this.tabBarView,
     this.bottomBar,
+    this.typeImage,
   }) : super(key: key);
   final List<Widget> content;
   final String image;
@@ -25,6 +27,7 @@ class BaseCustomScrollView extends StatefulWidget {
   final Widget? tabBar;
   final Widget? tabBarView;
   final Widget? bottomBar;
+  final TypeImage? typeImage;
 
   @override
   _BaseCustomScrollViewState createState() => _BaseCustomScrollViewState();
@@ -80,6 +83,7 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
                     initHeight: widget.initHeight,
                     leading: widget.leading,
                     actions: widget.actions,
+                    typeImage: widget.typeImage,
                   ),
                   SliverList(
                     delegate: SliverChildListDelegate(

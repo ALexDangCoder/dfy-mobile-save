@@ -501,7 +501,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              S.current.expected_loan,
+              S.current.price,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                 14,
@@ -716,6 +716,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
             },
             textEmpty: '',
             child: BaseCustomScrollView(
+              typeImage: objSale.typeImage,
               image: objSale.image,
               initHeight: 360.h,
               leading: _leading(),

@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/nft/history_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_auction_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_sale_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -21,5 +22,9 @@ abstract class NFTClient {
   Future<OnSaleResponse> getDetailNftOnSale(
       @Path('marketId') String marketID,
       );
-
+  @GET(ApiConstants.GET_HISTORY)
+  Future<HistoryResponse> getHistory(
+      @Query('collection_address') String collectionAddress,
+      @Query('nft_token_id') String nftTokenId,
+      );
 }
