@@ -24,7 +24,9 @@ import 'filter_myacc.dart';
 import 'item_collection_load.dart';
 
 class CollectionList extends StatefulWidget {
-  const CollectionList({Key? key}) : super(key: key);
+  final String query;
+
+  const CollectionList({Key? key, required this.query}) : super(key: key);
 
   @override
   _CollectionListState createState() => _CollectionListState();
@@ -40,7 +42,11 @@ class _CollectionListState extends State<CollectionList> {
     // TODO: implement initState
     super.initState();
     collectionBloc = CollectionBloc();
+    collectionBloc.getCollection(
+      name: widget.query,
+    );
     searchCollection = TextEditingController();
+    searchCollection.text = widget.query;
     trustWalletChannel
         .setMethodCallHandler(collectionBloc.nativeMethodCallBackTrustWallet);
     collectionBloc.getListWallets();
@@ -160,7 +166,7 @@ class _CollectionListState extends State<CollectionList> {
                   BlocBuilder<CollectionBloc, CollectionState>(
                     bloc: collectionBloc,
                     builder: (context, state) {
-                      if (state is  LoadingData) {
+                      if (state is LoadingData) {
                         return Expanded(
                           child: StaggeredGridView.countBuilder(
                             padding: EdgeInsets.only(
