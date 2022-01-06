@@ -88,6 +88,12 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     );
   }
 
+  Map<String, dynamic> request = {
+    "collection_id": "43aecb3f-b2b7-400f-b6d0-b50a83ee608f",
+    "page": 1,
+    "size": 10
+  };
+
   Future<void> getListNft({
     String? status,
     String? nftType,
@@ -95,11 +101,10 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     String? collectionId,
   }) async {
     statusNft.add(0);
-    final Result<List<NftMarket>> result = await _nftRepo.getListNft(
-      status: status,
-      name: name,
-      nftType: nftType,
-      collectionId: collectionId,
+    final Result<List<NftMarket>> result = await _nftRepo.getListNftCollection(
+      collection_id: "43aecb3f-b2b7-400f-b6d0-b50a83ee608f",
+      page: 1,
+      size: 10,
     );
     result.when(
       success: (res) {

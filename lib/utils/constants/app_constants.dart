@@ -11,7 +11,7 @@ enum MenuType { FEED, NOTIFICATIONS, POLICY, LOGOUT }
 enum AuthMode { LOGIN, REGISTER }
 
 enum AuthType { ACCOUNT, PHONE }
-enum MarketType {SALE, AUCTION,PAWN}
+enum MarketType {SALE, AUCTION,PAWN,NOT_ON_MARKET}
 enum TypeNFT { HARD_NFT, SOFT_NFT }
 enum TypeImage { IMAGE, VIDEO }
 

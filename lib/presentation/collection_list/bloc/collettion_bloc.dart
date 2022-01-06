@@ -211,7 +211,10 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     listCategoryStream.add(listCategory);
   }
 
-  Future<void> getCollection({String? name = '', int? sortFilter = 0}) async {
+  Future<void> getCollection({
+    String? name = '',
+    int? sortFilter = 0,
+  }) async {
     emit(LoadingData());
     final Result<List<CollectionModel>> result = await _marketPlaceRepository
         .getListCollection(name: name, sort: sortFilter);

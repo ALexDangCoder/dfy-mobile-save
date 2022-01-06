@@ -8,4 +8,10 @@ mixin NftMarketRepository {
     String? nftType,
     String? collectionId,
   });
+
+  Future<Result<List<NftMarket>>> getListNftCollection({
+    String? collection_id,
+    int? page,
+    int? size,
+  });
 }
