@@ -101,7 +101,9 @@ class BaseSpace extends StatelessWidget {
             fit: BoxFit.fill,
             width: double.infinity,
             height: 145.h,
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+            errorWidget: (context, url, error) =>Container(
+              color:AppTheme.getInstance().selectDialogColor(),
+            ),
             imageUrl: imageCover,
           ),
           Positioned(

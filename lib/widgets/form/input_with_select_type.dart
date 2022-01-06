@@ -1,16 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/list_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-extension IndexedIterable<E> on List<E> {
-  Iterable<T> indexedMap<T>(T Function(E element, int index) f) {
-    var index = 0;
-    return map((e) => f(e, index++));
-  }
-}
 
 class InputWithSelectType extends StatefulWidget {
   final List<Widget> typeInput;

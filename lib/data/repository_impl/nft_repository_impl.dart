@@ -1,7 +1,6 @@
 import 'package:Dfy/data/response/nft/nft_on_auction_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_sale_response.dart';
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/data/services/account_service.dart';
 import 'package:Dfy/data/services/nft_service.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';

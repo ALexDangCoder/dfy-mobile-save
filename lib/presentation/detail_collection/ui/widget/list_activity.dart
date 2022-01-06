@@ -17,7 +17,6 @@ class ListActivity extends StatelessWidget {
   final String urlAvatar;
   final String title;
   final String date;
-  final String content;
   final String copy;
   final int marketStatus;
   final String addressWalletSend;
@@ -35,7 +34,6 @@ class ListActivity extends StatelessWidget {
     required this.urlAvatar,
     required this.title,
     required this.date,
-    required this.content,
     required this.copy,
     required this.marketStatus,
     required this.addressWalletSend,
@@ -127,6 +125,7 @@ class ListActivity extends StatelessWidget {
           each: each ?? '',
           market: market ?? '',
           moneySymbol: priceSymbol ?? '',
+          urlSymbol: urlSymbol ?? '',
         );
       case 1:
         return TransferActivity(
@@ -209,6 +208,7 @@ class ListActivity extends StatelessWidget {
           content: addressWallet ?? '',
           value: price ?? '',
           valueSymbol: priceSymbol ?? '',
+          urlSymbol: urlSymbol ?? '',
         );
       case 9:
         return SignContract(

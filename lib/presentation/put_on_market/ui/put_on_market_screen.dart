@@ -9,6 +9,8 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../main.dart';
+
 class PutOnMarket extends StatefulWidget {
   final bool? canSetQuantity;
   final int? quantity;
@@ -49,6 +51,15 @@ class _PutOnMarketState extends State<PutOnMarket>
         currentFocus.unfocus();
       }
     });
+  }
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    cubit.dispose();
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override

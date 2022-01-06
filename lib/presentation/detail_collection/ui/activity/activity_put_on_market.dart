@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PutOnMarket extends StatelessWidget {
   final String urlAvatar;
+  final String urlSymbol;
   final String title;
   final String date;
   final String content;
@@ -28,6 +29,7 @@ class PutOnMarket extends StatelessWidget {
     required this.each,
     required this.market,
     required this.moneySymbol,
+    required this.urlSymbol,
   }) : super(key: key);
 
   @override
@@ -120,7 +122,7 @@ class PutOnMarket extends StatelessWidget {
                     14,
                     FontWeight.w400,
                   ),
-                  children: <TextSpan>[
+                  children: [
                     TextSpan(
                       text: copy.isEmpty
                           ? ''
@@ -150,8 +152,32 @@ class PutOnMarket extends StatelessWidget {
                     TextSpan(
                       text: ' ${S.current.activity_for} ',
                     ),
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: urlSymbol.isNotEmpty
+                          ? Image.asset(
+                              urlSymbol,
+                              width: 14.w,
+                              height: 14.w,
+                            )
+                          : Container(
+                        decoration: BoxDecoration(
+                          color: Colors.yellow,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(45.r),
+                          ),
+                        ),
+                        width: 14.w,
+                        height: 14.w,
+                              child: FittedBox(
+                                child: Text(
+                                  moneySymbol.substring(0, 1),
+                                ),
+                              ),
+                            ),
+                    ),
                     TextSpan(
-                      text: '$money $moneySymbol',
+                      text: ' $money $moneySymbol',
                       style: textNormalCustom(
                         AppTheme.getInstance().amountTextColor(),
                         14,

@@ -1,12 +1,12 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/collection_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/presentation/collection_list/ui/item_error.dart';
+import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -85,7 +85,6 @@ class _CollectionListState extends State<CollectionList> {
             },
             child: Container(
               height: 764.h,
-              // width: 375.w,
               decoration: BoxDecoration(
                 color: AppTheme.getInstance().bgBtsColor(),
                 borderRadius: BorderRadius.only(
@@ -161,7 +160,7 @@ class _CollectionListState extends State<CollectionList> {
                   BlocBuilder<CollectionBloc, CollectionState>(
                     bloc: collectionBloc,
                     builder: (context, state) {
-                      if (state == LoadingData()) {
+                      if (state is  LoadingData) {
                         return Expanded(
                           child: StaggeredGridView.countBuilder(
                             padding: EdgeInsets.only(
@@ -181,7 +180,7 @@ class _CollectionListState extends State<CollectionList> {
                                 const StaggeredTile.fit(1),
                           ),
                         );
-                      } else if (state == LoadingDataFail()) {
+                      } else if (state is LoadingDataFail) {
                         return Expanded(
                           child: StaggeredGridView.countBuilder(
                             padding: EdgeInsets.only(
@@ -201,7 +200,7 @@ class _CollectionListState extends State<CollectionList> {
                                 const StaggeredTile.fit(1),
                           ),
                         );
-                      } else if (state == LoadingDataSuccess()) {
+                      } else if (state is LoadingDataSuccess) {
                         return StreamBuilder(
                           stream: collectionBloc.list,
                           builder: (context,
@@ -220,9 +219,19 @@ class _CollectionListState extends State<CollectionList> {
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                     onTap: () {
-                                      Navigator.pushNamed(
+                                      Navigator.push(
                                         context,
-                                        AppRouter.detailCollection,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return DetailCollection(
+                                              walletAddress:
+                                                  'a6b1b1a6-6cbe-4375-a981-0e727b8120c4',
+                                              id: collectionBloc
+                                                      .list.value[index].id ??
+                                                  '',
+                                            );
+                                          },
+                                        ),
                                       );
                                     },
                                     child: ItemCollection(
@@ -252,7 +261,7 @@ class _CollectionListState extends State<CollectionList> {
                             );
                           },
                         );
-                      }else{
+                      } else {
                         return Expanded(
                           child: Padding(
                             padding: EdgeInsets.only(top: 150.h),
