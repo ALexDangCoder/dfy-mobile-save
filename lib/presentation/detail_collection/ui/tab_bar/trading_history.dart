@@ -2,6 +2,7 @@ import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/list_activity.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -48,7 +49,8 @@ class _ActivityCollectionState extends State<ActivityCollection> {
                   priceSymbol: snapshot.data?[index].priceSymbol ?? '',
                   addressMyWallet: widget.addressWallet,
                   title: snapshot.data?[index].nftName ?? '',
-                  date: '${snapshot.data?[index].eventDateTime ?? 0}',
+                  date: 0.formatDateTimeMy(
+                      snapshot.data?[index].eventDateTime ?? 0,),
                   addressWallet: snapshot.data?[index].toAddress ??
                       'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
                   urlSymbol: widget.detailCollectionBloc

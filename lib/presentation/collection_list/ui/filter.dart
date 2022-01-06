@@ -64,9 +64,20 @@ class _FilterState extends State<Filter> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
+                  Container(
                     height: 30.h,
-                    width: 65.w,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 6.h,
+                    ),
+                    child: Text(
+                      S.current.reset,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().bgBtsColor(),
+                        14,
+                        null,
+                      ),
+                    ),
                   ),
                   Text(
                     S.current.filter,
@@ -78,12 +89,10 @@ class _FilterState extends State<Filter> {
                   ),
                   GestureDetector(
                     onTap: () {
-
                       widget.collectionBloc.reset();
                     },
                     child: Container(
                       height: 30.h,
-                      width: 65.w,
                       padding: EdgeInsets.symmetric(
                         horizontal: 16.w,
                         vertical: 6.h,
@@ -94,14 +103,12 @@ class _FilterState extends State<Filter> {
                           Radius.circular(6.r),
                         ),
                       ),
-                      child: FittedBox(
-                        child: Text(
-                          S.current.reset,
-                          style: textNormalCustom(
-                            null,
-                            14,
-                            null,
-                          ),
+                      child: Text(
+                        S.current.reset,
+                        style: textNormalCustom(
+                          null,
+                          14,
+                          null,
                         ),
                       ),
                     ),
