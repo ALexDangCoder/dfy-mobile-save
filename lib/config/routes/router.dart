@@ -24,8 +24,6 @@ class AppRouter {
     // final args = settings.arguments;
 
     switch (settings.name) {
-      case collectionList:
-        return MaterialPageRoute(builder: (ctx) => const CollectionList());
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
       case main:
