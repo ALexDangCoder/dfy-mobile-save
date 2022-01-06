@@ -18,8 +18,7 @@ class NFTDetailBloc extends BaseCubit<BaseState> {
 
   NFTRepository get _nftRepo => Get.find();
 
-
-  late NftMarket nftOnSale;
+  /// GetDetail
 
   Future<void> getInForNFT(String marketId, MarketType type) async{
     if(type == MarketType.SALE){
@@ -27,7 +26,7 @@ class NFTDetailBloc extends BaseCubit<BaseState> {
           await _nftRepo.getDetailNftOnSale(marketId);
       result.when(
         success: (res) {
-         /// nftOnSale = res;
+
         },
         error: (error) {
           updateStateError();
@@ -41,5 +40,7 @@ class NFTDetailBloc extends BaseCubit<BaseState> {
       ///call api detail onPawn
     }
   }
+  ///GetOwner
+
 
 }
