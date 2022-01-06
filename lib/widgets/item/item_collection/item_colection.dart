@@ -10,8 +10,12 @@ class ItemCollection extends StatelessWidget {
   final String urlIcon;
   final String title;
   final String items;
+  final String? itemsKey;
   final String owners;
+  final String? ownersKey;
   final String text;
+  final bool? fixWidth;
+  final BoxFit? backgroundFit;
 
   const ItemCollection({
     Key? key,
@@ -21,6 +25,10 @@ class ItemCollection extends StatelessWidget {
     required this.items,
     required this.owners,
     required this.text,
+    this.backgroundFit = BoxFit.fill,
+    this.fixWidth = true,
+    this.itemsKey,
+    this.ownersKey,
   }) : super(key: key);
 
   @override
@@ -29,8 +37,7 @@ class ItemCollection extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Container(
-          width: 164.w,
-          clipBehavior: Clip.hardEdge,
+          width: fixWidth ?? true ? 164.w : double.infinity,
           decoration: BoxDecoration(
             color: AppTheme.getInstance().borderItemColor(),
             borderRadius: BorderRadius.all(
@@ -45,7 +52,7 @@ class ItemCollection extends StatelessWidget {
             children: [
               Container(
                 clipBehavior: Clip.hardEdge,
-                width: 164.w,
+                width: fixWidth ?? true ? 164.w : double.infinity,
                 height: 58.h,
                 decoration: BoxDecoration(
                   color: AppTheme.getInstance().selectDialogColor(),
@@ -56,7 +63,7 @@ class ItemCollection extends StatelessWidget {
                     image: NetworkImage(
                       urlBackGround,
                     ),
-                    fit: BoxFit.fill,
+                    fit: backgroundFit ?? BoxFit.fill,
                   ),
                 ),
                 // child: ,
@@ -82,7 +89,7 @@ class ItemCollection extends StatelessWidget {
                   top: 4.h,
                 ),
                 child: Text(
-                  '$items ${S.current.items} • $owners ${S.current.owner}',
+                  '$items ${itemsKey ?? S.current.items} • $owners ${ownersKey ?? S.current.owner}',
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteWithOpacity(),
                     12.sp,
