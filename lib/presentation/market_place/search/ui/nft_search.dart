@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/search/bloc/search_cubit.dart';
 import 'package:Dfy/presentation/market_place/search/ui/results_search.dart';
@@ -36,9 +37,9 @@ class _SearchNFTState extends State<SearchNFT> {
 
   @override
   void dispose() {
-    controller.dispose();
-    _debounce.cancel();
-    super.dispose();
+    // controller.dispose();
+    // _debounce.cancel();
+    // super.dispose();
   }
 
   @override
@@ -293,6 +294,7 @@ class _SearchNFTState extends State<SearchNFT> {
               },
             ),
             Visibility(
+              visible: searchCubit.collections.isEmpty ? false : true,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: 60.h,
@@ -304,11 +306,14 @@ class _SearchNFTState extends State<SearchNFT> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // setState(() {
-                        //   showAllResult = !showAllResult;
-                        //   searchCubit
-                        //       .showAllResult(searchCubit.collections.length);
-                        // });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) => CollectionList(
+                              query: controller.text,
+                            ),
+                          ),
+                        );
                       },
                       child: Text(
                         S.current.view_all_result,
@@ -368,6 +373,7 @@ class _SearchNFTState extends State<SearchNFT> {
               ),
             ),
             Visibility(
+              visible: searchCubit.listNFT.isEmpty ? false : true,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: 60.h,
@@ -379,8 +385,7 @@ class _SearchNFTState extends State<SearchNFT> {
                       //   color: AppTheme.getInstance().divideColor(),
                       // ),
                       TextButton(
-                        onPressed: () {
-                        },
+                        onPressed: () {},
                         child: Text(
                           S.current.view_all_result,
                           style: textNormalCustom(
