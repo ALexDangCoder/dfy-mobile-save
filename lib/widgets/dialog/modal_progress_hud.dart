@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/color.dart';
 import 'package:flutter/material.dart';
 
 class ModalProgressHUD extends StatelessWidget {
@@ -13,7 +14,7 @@ class ModalProgressHUD extends StatelessWidget {
     Key? key,
     required this.inAsyncCall,
     this.opacity = 0.3,
-    this.color = Colors.grey,
+    this.color = backgroundBottomSheet,
     this.progressIndicator = const CircularProgressIndicator.adaptive(),
     this.offset,
     this.dismissible = false,

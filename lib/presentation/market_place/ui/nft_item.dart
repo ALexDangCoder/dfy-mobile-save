@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -26,7 +27,7 @@ class NFTItemWidget extends StatefulWidget {
 
 class _NFTItemState extends State<NFTItemWidget> {
   final formatValue = NumberFormat('###,###,###.###', 'en_US');
-  VideoPlayerController? _controller;
+  late VideoPlayerController? _controller;
 
   @override
   void initState() {
@@ -51,131 +52,155 @@ class _NFTItemState extends State<NFTItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Stack(
-          children: [
-            Container(
-              height: 231.h,
-              width: 156.w,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.r),
-                color: AppTheme.getInstance().selectDialogColor(),
+    return GestureDetector(
+      onTap: (){
+        if(widget.nftMarket.typeImage == TypeImage.VIDEO){
+          _controller! .pause();
+        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NFTDetailScreen(
+              type: widget.nftMarket.marketType,
+              marketId: widget.nftMarket.marketId,
+            ),
+          ),
+        );
+      },
+      child: Stack(
+        children: [
+          Container(
+            height: 231.h,
+            width: 156.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.r),
+              color: AppTheme.getInstance().selectDialogColor(),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: 8.w,
+                top: 8.h,
+                right: 8.w,
+                bottom: 8.h,
               ),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: 8.w,
-                  top: 8.h,
-                  right: 8.w,
-                  bottom: 8.h,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
+                        _controller!.value.isPlaying
+                            ? _controller!.pause()
+                            : _controller!.play();
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                NFTDetailScreen(
+                                  type: widget.nftMarket.marketType,
+                                  marketId: widget.nftMarket.marketId,
+                                ),
+                          ),
+                        );
+                      }
+                    },
+                    child: Stack(
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
-                              _controller!.value.isPlaying
-                                  ? _controller!.pause()
-                                  : _controller!.play();
-                            }
-                          },
-                          child: SizedBox(
-                            height: 129.h,
-                            width: 140.w,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.r),
-                              child: (widget.nftMarket.typeImage !=
-                                      TypeImage.VIDEO)
-                                  ? CachedNetworkImage(
-                                      placeholder: (context, url) => Center(
-                                        child: CircularProgressIndicator(
-                                          color: AppTheme.getInstance()
-                                              .bgBtsColor(),
-                                        ),
-                                      ),
-                                      imageUrl: widget.nftMarket.image,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : VideoPlayer(_controller!),
-                            ),
+                        SizedBox(
+                          height: 129.h,
+                          width: 140.w,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.r),
+                            child: (widget.nftMarket.typeImage !=
+                                TypeImage.VIDEO)
+                                ? CachedNetworkImage(
+                              placeholder: (context, url) =>
+                                  Center(
+                                    child: CircularProgressIndicator(
+                                      color:
+                                      AppTheme.getInstance().bgBtsColor(),
+                                    ),
+                                  ),
+                              imageUrl: widget.nftMarket.image,
+                              fit: BoxFit.cover,
+                            )
+                                : VideoPlayer(_controller!),
                           ),
                         ),
                         playVideo(widget.nftMarket.typeImage),
                       ],
                     ),
-                    SizedBox(
-                      height: 12.h,
+                  ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                    child: Text(
+                      widget.nftMarket.name,
+                      style: textNormalCustom(
+                        null,
+                        13,
+                        FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(
-                      height: 16.h,
-                      child: Text(
-                        widget.nftMarket.name,
-                        style: textNormalCustom(
-                          null,
-                          13,
-                          FontWeight.w600,
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  propertyNFT(widget.nftMarket.marketType),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          height: 16.h,
+                          child: Row(
+                            children: [
+                              const Image(
+                                image: AssetImage('assets/images/symbol.png'),
+                              ),
+                              SizedBox(
+                                width: 4.18.h,
+                              ),
+                              Text(
+                                formatValue.format(widget.nftMarket.price),
+                                style: textNormalCustom(
+                                  Colors.yellow,
+                                  13,
+                                  FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    propertyNFT(widget.nftMarket.marketType),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            height: 16.h,
-                            child: Row(
-                              children: [
-                                const Image(
-                                  image: AssetImage('assets/images/symbol.png'),
-                                ),
-                                SizedBox(
-                                  width: 4.18.h,
-                                ),
-                                Text(
-                                  formatValue.format(widget.nftMarket.price),
-                                  style: textNormalCustom(
-                                    Colors.yellow,
-                                    13,
-                                    FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
+                        Text(
+                          '${widget.nftMarket.numberOfCopies} '
+                              '${S.current.of_all} '
+                              '${widget.nftMarket.totalCopies}',
+                          style: textNormalCustom(
+                            Colors.white,
+                            13,
+                            FontWeight.w600,
                           ),
-                          Text(
-                            '${widget.nftMarket.numberOfCopies} '
-                            '${S.current.of_all} '
-                            '${widget.nftMarket.totalCopies}',
-                            style: textNormalCustom(
-                              Colors.white,
-                              13,
-                              FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            hardNft(widget.nftMarket.typeNFT),
-            timeCountdown(widget.nftMarket.marketType),
-          ],
-        ),
-      ],
+          ),
+          hardNft(widget.nftMarket.typeNFT),
+          timeCountdown(widget.nftMarket.marketType),
+        ],
+      ),
     );
   }
 

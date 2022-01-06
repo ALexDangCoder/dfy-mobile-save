@@ -1,6 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,9 +21,15 @@ class CollectionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(
+        Navigator.push(
           context,
-          AppRouter.detailCollection,
+          MaterialPageRoute(
+            builder: (context) {
+              return const DetailCollection(
+                  walletAddress: 'a6b1b1a6-6cbe-4375-a981-0e727b8120c4',
+                  id: 'a6b1b1a6-6cbe-4375-a981-0e727b8120c4');
+            },
+          ),
         );
       },
       child: Row(
@@ -55,7 +61,7 @@ class CollectionItem extends StatelessWidget {
                               ? const AssetImage(ImageAssets.ic_search)
                                   as ImageProvider
                               : NetworkImage(urlBackGround),
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.r),
@@ -63,16 +69,22 @@ class CollectionItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.only(
-                        top: 34.h,
-                      ),
-                      child: Text(
-                        title,
-                        style: textNormalCustom(
-                          null,
-                          16.sp,
-                          FontWeight.w600,
+                    Flexible(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          top: 30.h,
+                          left: 10.w,
+                          right: 10.w,
+                        ),
+                        child: Center(
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              color: AppTheme.getInstance().whiteColor(),
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
                     ),
