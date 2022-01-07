@@ -1,10 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/di/module.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/bloc/buy_nft_cubit.dart';
-import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -28,8 +27,8 @@ class BuyNFT extends StatefulWidget {
 class _BuyNFTState extends State<BuyNFT> {
   late BuyNftCubit cubit;
   late TextEditingController txtQuantity;
-  late double balanceDFYFetch;
   final NftMarket nftMarket = nftKey.currentState!.bloc.nftMarket;
+  final _nftBloc = nftKey.currentState!.bloc;
 
   @override
   void initState() {
@@ -116,22 +115,6 @@ class _BuyNFTState extends State<BuyNFT> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // showModalBottomSheet(
-                    //   isScrollControlled: true,
-                    //   backgroundColor: Colors.transparent,
-                    //   builder: (BuildContext context) {
-                    //     return const ConfirmBlockchainCategory(
-                    //       nameWallet: 'Test wallet',
-                    //       nameTokenWallet: 'BNB',
-                    //       balanceWallet: 0.551,
-                    //       typeConfirm: TYPE_CONFIRM.BUY_NFT,
-                    //       addressFrom: '0xFE5788e2...EB7144fd0',
-                    //       addressTo: '0xf94138c9...43FE932eA',
-                    //       imageWallet: ImageAssets.symbol,
-                    //     );
-                    //   },
-                    //   context: context,
-                    // );
                   },
                   child: ButtonGold(
                     title: '${S.current.buy} NFT',

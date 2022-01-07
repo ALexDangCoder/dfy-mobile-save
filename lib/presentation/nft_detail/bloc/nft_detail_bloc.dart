@@ -30,10 +30,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   Sink<bool> get viewSink => _viewSubject.sink;
 
   final BehaviorSubject<List<HistoryNFT>> listHistoryStream =
-      BehaviorSubject.seeded([]);
+  BehaviorSubject.seeded([]);
   final BehaviorSubject<List<OwnerNft>> listOwnerStream =
   BehaviorSubject.seeded([]);
-
 
   ///GetHistory
   Stream<bool> get pairStream => _pairSubject.stream;
@@ -50,17 +49,15 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }
 
   NFTRepository get _nftRepo => Get.find();
-
-
-  Future<void> getHistory(String collectionAddress, String nftTokenId) async {
   late final NftMarket nftMarket;
   late final String walletAddress;
   late final String owner;
   List<Wallet> wallets = [];
 
+
   Future<void> getHistory(String collectionAddress, String nftTokenId) async {
     final Result<List<HistoryNFT>> result =
-        await _nftRepo.getHistory(collectionAddress, nftTokenId);
+    await _nftRepo.getHistory(collectionAddress, nftTokenId);
     result.when(
       success: (res) {
         listHistoryStream.add(res);
@@ -79,7 +76,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       success: (res) {
         listOwnerStream.add(res);
       },
-      success: (res) {},
       error: (error) {
         updateStateError();
       },
@@ -93,13 +89,13 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       showLoading();
       getTokenInf();
       final Result<NftMarket> result =
-          await _nftRepo.getDetailNftOnSale(marketId);
+      await _nftRepo.getDetailNftOnSale(marketId);
       result.when(
         success: (res) {
-          for(final value in listTokenSupport) {
+          for (final value in listTokenSupport) {
             final tokenBuyOut = res.tokenBuyOut ?? '';
             final address = value.address ?? '';
-            if(tokenBuyOut.toLowerCase() == address.toLowerCase()){
+            if (tokenBuyOut.toLowerCase() == address.toLowerCase()) {
               res.urlToken = value.iconUrl;
               res.symbolToken = value.symbol;
               res.usdExchange = value.usdExchange;
@@ -160,9 +156,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   ///getListTokenSupport
 
   List<TokenInf> listTokenSupport = [];
+
   void getTokenInf() {
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
   }
-
 }
