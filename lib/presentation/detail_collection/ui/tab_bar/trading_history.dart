@@ -40,21 +40,24 @@ class _ActivityCollectionState extends State<ActivityCollection> {
             ),
             itemBuilder: (context, index) => GestureDetector(
               onTap: () {
-                if (list[index].status == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return NFTDetailScreen(
-                          type: MarketType.SALE,
-                          marketId: list[index].marketId ?? '',
-                        );
-                      },
-                    ),
-                  );
-                } else if (list[index].status == 2) {
-                } else if (list[index].status == 3) {
-                } else {}
+                if ((list[index].activityType ?? 0) ==
+                    DetailCollectionBloc.PUT_ON_MARKET) {
+                  if (list[index].status == 1) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return NFTDetailScreen(
+                            type: MarketType.SALE,
+                            marketId: list[index].marketId ?? '',
+                          );
+                        },
+                      ),
+                    );
+                  } else if (list[index].status == 2) {
+                  } else if (list[index].status == 3) {
+                  } else {}
+                }
               },
               child: Container(
                 color: Colors.transparent,
@@ -108,7 +111,7 @@ class _ActivityCollectionState extends State<ActivityCollection> {
             ],
           );
         } else if (statusActivity == 0) {
-          return  Column(
+          return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
