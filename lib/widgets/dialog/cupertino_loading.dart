@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/widgets/dialog/decorate_app.dart';
 import 'package:Dfy/widgets/dialog/line_spin_fade_loader.dart';
 import 'package:flutter/material.dart';
@@ -49,9 +50,10 @@ class CupertinoLoading extends StatelessWidget {
       height: 80,
       child: DecorateContext(
         decorateData: DecorateData(
-            indicator: Indicator.lineSpinFadeLoader,
-            colors: getListColor(),
-            strokeWidth: 4,),
+          indicator: Indicator.lineSpinFadeLoader,
+          colors: getListColor(),
+          strokeWidth: 4,
+        ),
         child: const AspectRatio(
           aspectRatio: 1,
           child: LineSpinFadeLoader(),
@@ -73,8 +75,8 @@ List<Color> getListColor() {
     const Color(0xffBBFFF2),
     const Color(0xffE1FFF9),
     const Color(0xffF3FFFD),
-    const Color(0xff11AEBA),
-    const Color(0xff0FB8BC),
+    backSearch,
+    bgBottomTab,
   ];
   return colors;
 }

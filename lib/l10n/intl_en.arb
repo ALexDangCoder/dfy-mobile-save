@@ -424,5 +424,6 @@
   "item_from_high_to_low": "Item from high to low",
   "item_from_low_to_high": "Item from low to high",
   "no_des": "No description available",
-  "available": "Available"
+  "available": "Available",
+  "empty_data": "Empty data"
 }

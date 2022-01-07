@@ -4,6 +4,7 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 class NftMarket {
   final String? nftId;
   final String? marketId;
+  final String? token;
   final String name;
   final String image;
   final double price;
@@ -35,6 +36,7 @@ class NftMarket {
   final List<Properties>? properties;
 
   NftMarket({
+    this.token,
     this.nftId,
     this.tokenBuyOut,
     required this.name,
@@ -67,5 +69,4 @@ class NftMarket {
     this.description,
     this.properties,
   });
-
 }

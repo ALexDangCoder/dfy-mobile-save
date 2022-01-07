@@ -168,6 +168,7 @@ class DetailOnSaleResponse {
         typeNFT: getTypeNft(nftType),
         name: name,
         price: price,
+        token: token,
         tokenBuyOut: token,
         ticked: getBool(ticked),
         owner: owner,

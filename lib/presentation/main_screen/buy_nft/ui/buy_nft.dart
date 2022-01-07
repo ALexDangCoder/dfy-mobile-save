@@ -1,7 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/di/module.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/bloc/buy_nft_cubit.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -11,7 +15,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BuyNFT extends StatefulWidget {
-  const BuyNFT({Key? key}) : super(key: key);
+  const BuyNFT({
+    Key? key,
+    required this.balance,
+  }) : super(key: key);
+  final double balance;
 
   @override
   _BuyNFTState createState() => _BuyNFTState();
@@ -20,17 +28,14 @@ class BuyNFT extends StatefulWidget {
 class _BuyNFTState extends State<BuyNFT> {
   late BuyNftCubit cubit;
   late TextEditingController txtQuantity;
-  int fakeQuantityFetch = 10;
   late double balanceDFYFetch;
-  late double pricePer1Fetch;
+  final NftMarket nftMarket = nftKey.currentState!.bloc.nftMarket;
 
   @override
   void initState() {
     super.initState();
     cubit = BuyNftCubit();
     txtQuantity = TextEditingController();
-    balanceDFYFetch = 125214.36;
-    pricePer1Fetch = 10000.25;
   }
 
   @override
@@ -44,6 +49,7 @@ class _BuyNFTState extends State<BuyNFT> {
       },
       child: Scaffold(
         backgroundColor: Colors.black,
+        resizeToAvoidBottomInset: false,
         body: Align(
           alignment: Alignment.bottomCenter,
           child: BaseBottomSheet(
@@ -79,7 +85,7 @@ class _BuyNFTState extends State<BuyNFT> {
                                 typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
                                 cubit: BuyNftCubit,
                                 txtController: txtQuantity,
-                                quantityOfAll: fakeQuantityFetch,
+                                quantityOfAll: nftMarket.totalCopies,
                                 imageAsset: ImageAssets.ic_symbol,
                                 isTokenOrQuantity: false,
                               ),
@@ -91,7 +97,7 @@ class _BuyNFTState extends State<BuyNFT> {
                               showTotalPayment(),
                               spaceH4,
                               Text(
-                                '${S.current.your_balance} $balanceDFYFetch DFY',
+                                '${S.current.your_balance} ${widget.balance} DFY',
                                 style: textNormalCustom(
                                   Colors.white.withOpacity(0.7),
                                   14,
@@ -164,7 +170,7 @@ class _BuyNFTState extends State<BuyNFT> {
                 ),
                 spaceW4,
                 Text(
-                  '$pricePer1Fetch DFY',
+                  '${nftMarket.price}DFY',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),
                     20.sp,
@@ -208,7 +214,7 @@ class _BuyNFTState extends State<BuyNFT> {
                   ),
                   spaceW4,
                   Text(
-                    '$pricePer1Fetch DFY',
+                    '${nftMarket.price} DFY',
                     style: textNormalCustom(
                       AppTheme.getInstance().textThemeColor(),
                       16.sp,

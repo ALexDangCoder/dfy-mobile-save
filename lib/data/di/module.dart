@@ -35,10 +35,14 @@ import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
+GetIt getIt = GetIt.instance;
 
 void configureDependencies() {
   Get.put(TokenClient(provideDio()));
@@ -69,7 +73,6 @@ void configureDependencies() {
   Get.put<CollectionFilterRepository>(CollectionFilterImpl(Get.find()));
   Get.put(NftMarketClient(provideDio()));
   Get.put<NftMarketRepository>(NftMarketRepositoryImpl(Get.find()));
-
 
   Get.put(NFTClient(provideDio()));
   Get.put<NFTRepository>(NFTRepositoryImpl(Get.find()));

@@ -3,6 +3,7 @@
   "ok": "Đồng ý",
   "cancel": "Huỷ",
   "something_went_wrong": "Có lỗi xảy ra. Bạn vui lòng thử lại sau",
+  "empty_data": "Dữ liệu rỗng",
   "error": "Lỗi",
   "error_network": "Vui lòng kiểm tra kết nối mạng!",
   "retry": "Thử lại",

@@ -16,6 +16,11 @@ class NftOnSaleSuccess extends NFTDetailState {
   @override
   List<Object?> get props => [nftMarket];
 }
+class NftOnSaleFail extends NFTDetailState {
+  @override
+  List<Object?> get props => [];
+
+}
 
 class HaveWallet extends NftOnSaleSuccess {
   HaveWallet(NftMarket nftMarket) : super(nftMarket);
