@@ -1,18 +1,17 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
-import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/hard_nft_screen.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
-import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
 import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ListNftOnPawn extends StatelessWidget {
-  const ListNftOnPawn({
+class ListNftHard extends StatelessWidget {
+  const ListNftHard({
     Key? key,
     required this.cubit,
     required this.isLoading,
@@ -26,14 +25,16 @@ class ListNftOnPawn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        //text nfts collateral and btn arrow
+        //txt hard nft and btn arrow
         Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                S.current.NFTs_collateral,
+                isLoading
+                    ? S.current.loading_text
+                    : (isLoadFail ? S.current.error_text : S.current.hard_NFT),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
@@ -42,15 +43,7 @@ class ListNftOnPawn extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  isLoading
-                      ? () {}
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const ListNft(marketType: MarketType.PAWN),
-                          ),
-                        );
+                  //todo chờ a hưng thiết kế phát
                 },
                 child: Padding(
                   padding: EdgeInsets.only(
@@ -71,7 +64,7 @@ class ListNftOnPawn extends StatelessWidget {
         SizedBox(
           height: 20.h,
         ),
-        //list nft on pawn
+        //list hard nft
         Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: SizedBox(
@@ -83,7 +76,7 @@ class ListNftOnPawn extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return GestureDetector(
+                      return InkWell(
                         onTap: () {},
                         child: Row(
                           children: [
@@ -100,34 +93,38 @@ class ListNftOnPawn extends StatelessWidget {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount: isLoading ? 6 : cubit.nftsCollateral.length,
+                    itemCount: isLoading
+                        ? 6
+                        : (cubit.nftsHardNft.length > 6)
+                            ? 6
+                            : cubit.nftsCollateral.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          isLoading
-                              ? () {}
-                              : Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const NFTDetailScreen(
-                                      type: MarketType.PAWN,
-                                    ),
-                                  ),
+                      return InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) {
+                                return HardNFTScreen(
+                                  bloc: HardNFTBloc(),
+                                  isAuction: true,
                                 );
-                        },
-                        child: Row(
-                          children: [
-                            if (isLoading)
-                              const SkeletonNft()
-                            else
-                              NFTItemWidget(
-                                nftMarket: cubit.nftsCollateral[index],
-                              ),
-                            spaceW12,
-                          ],
-                        ),
-                      );
+                              },
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              if (isLoading)
+                                const SkeletonNft()
+                              else
+                                NFTItemWidget(
+                                  nftMarket: cubit.nftsHardNft[index],
+                                ),
+                              spaceW12,
+                            ],
+                          ));
                     },
                   ),
           ),

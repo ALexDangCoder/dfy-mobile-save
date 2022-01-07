@@ -1,11 +1,9 @@
-import 'dart:ffi';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/put_on_market/approve/ui/approve.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
-import 'package:Dfy/presentation/put_on_market/put_on_sale/ui/put_on_sale.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_number_of_quantity.dart';
 import 'package:Dfy/widgets/form/input_with_select_type.dart';
@@ -18,9 +16,12 @@ class SaleTab extends StatefulWidget {
   final bool? canEdit;
   final int? quantity;
 
-  const SaleTab(
-      {Key? key, required this.cubit, this.canEdit = false, this.quantity = 1})
-      : super(key: key);
+  const SaleTab({
+    Key? key,
+    required this.cubit,
+    this.canEdit = false,
+    this.quantity = 1,
+  }) : super(key: key);
 
   @override
   _SaleTabState createState() => _SaleTabState();
@@ -136,7 +137,8 @@ class _SaleTabState extends State<SaleTab>
                       quantity: widget.quantity,
                       onchangeText: (value) {
                         widget.cubit.changeQuantitySale(
-                            value: value != '' ? int.parse(value) : 0);
+                          value: value != '' ? int.parse(value) : 0,
+                        );
                       },
                     )
                   ],
@@ -145,26 +147,76 @@ class _SaleTabState extends State<SaleTab>
             ),
           ),
           StreamBuilder<bool>(
-              stream: widget.cubit.canContinueSaleStream,
-              builder: (context, snapshot) {
-                final data = snapshot.data ?? false;
-                return GestureDetector(
-                  onTap: () {
-                    if (data) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PutOnSale(),
+            stream: widget.cubit.canContinueSaleStream,
+            builder: (context, snapshot) {
+              final data = snapshot.data ?? false;
+              return GestureDetector(
+                onTap: () {
+                  if (data) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Approve(
+                          isShowTwoButton: true,
+                          warning: RichText(
+                            text: TextSpan(
+                                text:
+                                    'Listing is free. The the time of the sale, ',
+                                style: textNormal(
+                                  AppTheme.getInstance()
+                                      .whiteColor()
+                                      .withOpacity(0.7),
+                                  14.sp,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: '2.5%',
+                                    style: textNormal(
+                                      AppTheme.getInstance()
+                                          .failTransactionColors()
+                                          .withOpacity(0.7),
+                                      14.sp,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        ' value of each copy will be deducted',
+                                    style: textNormal(
+                                      AppTheme.getInstance()
+                                          .whiteColor()
+                                          .withOpacity(0.7),
+                                      14.sp,
+                                    ),
+                                  ),
+                                ]),
+                          ),
+                          title: S.current.put_on_sale,
+                          listDetail: [
+                            DetailItemApproveModel(
+                              title: '${S.current.sale_items} :',
+                              value:
+                                  '${widget.cubit.quantitySale} of ${widget.quantity ?? 1}',
+                            ),
+                            DetailItemApproveModel(
+                              title: '${S.current.price_per_1} :',
+                              value:
+                                  '${widget.cubit.valueTokenInputSale ?? 0} DFY',
+                              isToken: true,
+                            )
+                          ],
+                          textActiveButton: S.current.put_on_sale,
                         ),
-                      );
-                    }
-                  },
-                  child: ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: data,
-                  ),
-                );
-              }),
+                      ),
+                    );
+                  }
+                },
+                child: ButtonGold(
+                  title: S.current.continue_s,
+                  isEnable: data,
+                ),
+              );
+            },
+          ),
           const SizedBox(
             height: 38,
           )

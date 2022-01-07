@@ -15,6 +15,7 @@ import 'package:rxdart/rxdart.dart';
 import 'detail_collection_state.dart';
 
 class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
+
 // fillter nft
   static const int PUT_ON_MARKET = 0;
   static const int TRANSFER_ACTIVITY = 1;

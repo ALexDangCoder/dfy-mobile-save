@@ -1,47 +1,73 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/ui/hard_nft_screen.dart';
+import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
+import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
 import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ListNftHard extends StatelessWidget {
-  const ListNftHard({
+class ListFeaturedSoftNft extends StatelessWidget {
+  const ListFeaturedSoftNft({
     Key? key,
     required this.cubit,
     required this.isLoading,
     required this.isLoadFail,
+    required this.marketType,
   }) : super(key: key);
   final MarketplaceCubit cubit;
   final bool isLoading;
   final bool isLoadFail;
+  final String marketType;
 
   @override
   Widget build(BuildContext context) {
+    final MarketType marketTypeEnum;
+    switch (marketType) {
+      case 'sale':
+        marketTypeEnum = MarketType.SALE;
+        break;
+      case 'auction':
+        marketTypeEnum = MarketType.AUCTION;
+        break;
+      case 'pawn':
+        marketTypeEnum = MarketType.PAWN;
+        break;
+      default:
+        //todo đang hard code chưa có case all nên fix cứng type sale
+        marketTypeEnum = MarketType.SALE;
+        break;
+    }
     return Column(
       children: [
-        //txt hard nft and btn arrow
         Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                S.current.hard_NFT,
+                S.current.feature_soft_nfts,
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
                   FontWeight.w700,
                 ),
               ),
-              InkWell(
+              GestureDetector(
                 onTap: () {
-                  //todo chờ a hưng thiết kế phát
+                  isLoading
+                      ? () {}
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ListNft(marketType: marketTypeEnum),
+                          ),
+                        );
                 },
                 child: Padding(
                   padding: EdgeInsets.only(
@@ -62,16 +88,16 @@ class ListNftHard extends StatelessWidget {
         SizedBox(
           height: 20.h,
         ),
-        //list hard nft
+        //list nft aution
         Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: SizedBox(
             height: 231.h,
             child: isLoadFail
                 ? ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: 6,
-                    physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(
@@ -91,34 +117,37 @@ class ListNftHard extends StatelessWidget {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount: isLoading ? 6 : cubit.nftsHardNft.length,
+                    itemCount: isLoading
+                        ? 6
+                        : (cubit.nftsFeaturedSoft.length > 6)
+                            ? 6
+                            : cubit.nftsFeaturedSoft.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) {
-                                return HardNFTScreen(
-                                  bloc: HardNFTBloc(),
-                                  isAuction: true,
-                                );
-                              },
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              if (isLoading)
-                                const SkeletonNft()
-                              else
-                                NFTItemWidget(
-                                  nftMarket: cubit.nftsHardNft[index],
-                                ),
-                              spaceW12,
-                            ],
-                          ));
+                        onTap: () {
+                          // isLoading
+                          //     ? () {}
+                          //     : () {//todo}
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const OnAuction(),
+                          //   ),
+                          // );
+                        },
+                        child: Row(
+                          children: [
+                            if (isLoading)
+                              const SkeletonNft()
+                            else
+                              NFTItemWidget(
+                                nftMarket: cubit.nftsFeaturedSoft[index],
+                              ),
+                            spaceW12,
+                          ],
+                        ),
+                      );
                     },
                   ),
           ),

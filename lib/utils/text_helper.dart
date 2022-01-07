@@ -69,7 +69,18 @@ extension FomatNumber on int {
   String get stringIntFormat {
     String result = '';
     try {
-      result = NumberFormat('#,###').format(this);
+      result = NumberFormat('###,###,###').format(this);
+    } catch (e) {
+      result = toString();
+    }
+    return result;
+  }
+}
+extension FomatPrice on num {
+  String get stringNumFormat {
+    String result = '';
+    try {
+      result = NumberFormat('###,###,###.###').format(this);
     } catch (e) {
       result = toString();
     }

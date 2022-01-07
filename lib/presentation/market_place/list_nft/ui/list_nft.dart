@@ -16,8 +16,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ListNft extends StatefulWidget {
-  const ListNft({Key? key, required this.marketType}) : super(key: key);
-  final MarketType marketType;
+  ListNft({
+    Key? key,
+    this.marketType,
+    this.queryAllResult,
+  }) : super(key: key);
+  MarketType? marketType;
+  String? queryAllResult;
 
   @override
   _ListNftState createState() => _ListNftState();
@@ -36,7 +41,11 @@ class _ListNftState extends State<ListNft> {
     _cubit = ListNftCubit();
     _cubit.title.add(_cubit.getTitle(widget.marketType));
     _cubit.getCollectionFilter();
-    _cubit.getListNft(status: _cubit.status(widget.marketType));
+    if (widget.marketType != null) {
+      _cubit.getListNft(status: _cubit.status(widget.marketType!));
+    } else {
+      _cubit.getListNft(name: widget.queryAllResult);
+    }
   }
 
   @override
@@ -224,7 +233,7 @@ class _ListNftState extends State<ListNft> {
                             _cubit.hide();
                           });
                           _cubit.getListNft(
-                            status: _cubit.status(widget.marketType),
+                            status: _cubit.status(widget.marketType!),
                           );
                           FocusScope.of(context).unfocus();
                         },

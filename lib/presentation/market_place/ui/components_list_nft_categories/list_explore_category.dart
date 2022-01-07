@@ -1,3 +1,4 @@
+import 'package:Dfy/presentation/categories_detail/ui/categories_detail.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/category.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_explore.dart';
@@ -29,7 +30,11 @@ class ListExploreCategory extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(left: 16.w),
             child: Text(
-              S.current.explore_categories,
+              isLoading
+                  ? S.current.loading_text
+                  : (isLoadFail
+                      ? S.current.error_text
+                      : S.current.explore_categories),
               style: textNormalCustom(
                 Colors.white,
                 20.sp,
@@ -60,16 +65,31 @@ class ListExploreCategory extends StatelessWidget {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount: isLoading ? 6 : cubit.exploreCategories.length,
+                    itemCount: isLoading
+                        ? 7
+                        : (cubit.exploreCategories.length > 7)
+                            ? 7
+                            : cubit.exploreCategories.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return isLoading
                           ? const SkeletonCategory()
-                          : Category(
-                              title:
-                                  cubit.exploreCategories[index].name ?? 'name',
-                              url: cubit.exploreCategories[index].avatarCid ??
-                                  '',
+                          : GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CategoriesDetail(title: 'Music',),
+                                  ),
+                                );
+                              },
+                              child: Category(
+                                title: cubit.exploreCategories[index].name ??
+                                    'name',
+                                url: cubit.exploreCategories[index].avatarCid ??
+                                    '',
+                              ),
                             );
                     },
                   ),

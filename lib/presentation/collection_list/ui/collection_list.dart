@@ -26,7 +26,14 @@ import 'filter_myacc.dart';
 import 'item_collection_load.dart';
 
 class CollectionList extends StatefulWidget {
-  const CollectionList({Key? key}) : super(key: key);
+  final String query;
+  String? title;
+
+  CollectionList({
+    Key? key,
+    required this.query,
+    this.title,
+  }) : super(key: key);
 
   @override
   _CollectionListState createState() => _CollectionListState();
@@ -41,8 +48,17 @@ class _CollectionListState extends State<CollectionList> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(widget.title!.isNotEmpty) {
+      widget.title = S.current.collection_search_result;
+    } else {
+      widget.title = S.current.collection_list;
+    }
     collectionBloc = CollectionBloc();
+    collectionBloc.getCollection(
+      name: widget.query,
+    );
     searchCollection = TextEditingController();
+    searchCollection.text = widget.query;
     trustWalletChannel
         .setMethodCallHandler(collectionBloc.nativeMethodCallBackTrustWallet);
     collectionBloc.getListWallets();
@@ -121,7 +137,7 @@ class _CollectionListState extends State<CollectionList> {
                         ),
                       ),
                       Text(
-                        S.current.collection_list,
+                        widget.title ?? S.current.collection_list,
                         style: textNormalCustom(null, 20.sp, FontWeight.w700),
                       ),
                       GestureDetector(

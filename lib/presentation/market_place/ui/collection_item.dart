@@ -9,12 +9,16 @@ class CollectionItem extends StatelessWidget {
   final String urlBackGround;
   final String urlIcon;
   final String title;
+  final String idCollection;
+  final int? typeCollection;
 
   const CollectionItem({
     Key? key,
     required this.urlBackGround,
     required this.urlIcon,
     required this.title,
+    required this.idCollection,
+    this.typeCollection,
   }) : super(key: key);
 
   @override
@@ -25,9 +29,10 @@ class CollectionItem extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return const DetailCollection(
-                  walletAddress: 'a6b1b1a6-6cbe-4375-a981-0e727b8120c4',
-                  id: 'a6b1b1a6-6cbe-4375-a981-0e727b8120c4');
+              return DetailCollection(
+                id: idCollection,
+                typeCollection: typeCollection,
+              );
             },
           ),
         );
@@ -61,7 +66,7 @@ class CollectionItem extends StatelessWidget {
                               ? const AssetImage(ImageAssets.ic_search)
                                   as ImageProvider
                               : NetworkImage(urlBackGround),
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.r),
@@ -69,16 +74,22 @@ class CollectionItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.only(
-                        top: 34.h,
-                      ),
-                      child: Text(
-                        title,
-                        style: textNormalCustom(
-                          null,
-                          16.sp,
-                          FontWeight.w600,
+                    Flexible(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          top: 30.h,
+                          left: 10.w,
+                          right: 10.w,
+                        ),
+                        child: Center(
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              color: AppTheme.getInstance().whiteColor(),
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
                     ),
