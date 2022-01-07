@@ -90,7 +90,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                             ListNftHotAuction(
                               cubit: cubit,
                               isLoading: true,
-                              isLoadFail: false,
+                              isLoadFail: false, marketType: '',
                             ),
                             SizedBox(
                               height: 32.h,
@@ -98,7 +98,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                             ListNftOnPawn(
                               cubit: cubit,
                               isLoading: true,
-                              isLoadFail: false,
+                              isLoadFail: false, marketType: '',
                             ),
                             SizedBox(
                               height: 32.h,
@@ -106,7 +106,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                             ListNftOnSale(
                               cubit: cubit,
                               isLoading: true,
-                              isLoadFail: false,
+                              isLoadFail: false, marketType: '',
                             ),
                             SizedBox(
                               height: 32.h,
@@ -175,6 +175,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                               SizedBox(
                                 height: 24.h,
                               ),
+
+                              ///note
                               //this code will display list collection, nfts,
                               // explore category
                               //priority by position in
@@ -187,6 +189,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     cubit: cubit,
                                     isLoading: false,
                                     isLoadFail: false,
+                                    marketType: e['market_type'],
                                   ),
                                   spaceH32,
                                 ] else if (e['name'] ==
@@ -195,6 +198,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     cubit: cubit,
                                     isLoading: false,
                                     isLoadFail: false,
+                                    marketType: e['market_type'],
                                   ),
                                   spaceH32,
                                 ] else if (e['name'] == 'Hot auction') ...[
@@ -202,6 +206,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     cubit: cubit,
                                     isLoading: false,
                                     isLoadFail: false,
+                                    marketType: e['market_type'],
                                   ),
                                   spaceH32,
                                 ] else if (e['name'] ==
@@ -217,6 +222,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     cubit: cubit,
                                     isLoading: false,
                                     isLoadFail: false,
+                                    marketType: e['market_type'],
                                   ),
                                   spaceH32,
                                 ] else if (e['name'] == 'NFTs collateral') ...[
@@ -224,6 +230,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                     cubit: cubit,
                                     isLoading: false,
                                     isLoadFail: false,
+                                    marketType: e['market_type'],
                                   ),
                                   spaceH32,
                                 ]
@@ -294,7 +301,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                             ListNftHotAuction(
                               cubit: cubit,
                               isLoading: true,
-                              isLoadFail: true,
+                              isLoadFail: true, marketType: '',
                             ),
                             SizedBox(
                               height: 32.h,
@@ -302,7 +309,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                             ListNftOnPawn(
                               cubit: cubit,
                               isLoading: true,
-                              isLoadFail: true,
+                              isLoadFail: true, marketType: '',
                             ),
                             SizedBox(
                               height: 32.h,
@@ -310,7 +317,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                             ListNftOnSale(
                               cubit: cubit,
                               isLoading: true,
-                              isLoadFail: true,
+                              isLoadFail: true, marketType: '',
                             ),
                             SizedBox(
                               height: 32.h,
