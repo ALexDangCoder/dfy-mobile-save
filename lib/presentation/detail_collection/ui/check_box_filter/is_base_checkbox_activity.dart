@@ -49,7 +49,7 @@ class IsBaseCheckBox extends StatelessWidget {
                     if (snapshot.data ?? false) {
                       stream.sink.add(false);
                     }
-                    funCheckBox!(value);
+                    funCheckBox!();
                   },
                 ),
               );
@@ -67,7 +67,7 @@ class IsBaseCheckBox extends StatelessWidget {
                   } else {
                     stream.sink.add(true);
                   }
-                  funText!(stream.value);
+                  funText!();
                 },
                 child: Text(
                   title,

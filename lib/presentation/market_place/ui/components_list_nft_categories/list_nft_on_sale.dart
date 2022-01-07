@@ -52,7 +52,7 @@ class ListNftOnSale extends StatelessWidget {
                       : Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ListNft(
+                            builder: (context) => ListNft(
                               marketType: MarketType.SALE,
                             ),
                           ),

@@ -187,6 +187,7 @@ class DetailOnSaleResponse {
         royalties: royalties,
         typeImage: getTypeImage(fileType),
         txnHash: txnHash,
+        orderId: orderId,
         ownerAccount: ownerAccount,
         blockchainNetwork: blockChainNetwork,
         nftTokenId: nftTokenId,

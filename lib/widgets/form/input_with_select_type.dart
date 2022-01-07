@@ -122,7 +122,7 @@ class _InputWithSelectTypeState extends State<InputWithSelectType> {
                     ),
                   );
                   setState(() {
-                    chooseIndex = index;
+                    chooseIndex = index ?? chooseIndex;
                   });
                 },
                 child: Row(

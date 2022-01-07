@@ -103,12 +103,9 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollViewDetail> {
                   SliverList(
                     delegate: SliverChildListDelegate(
                       [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          child: Column(
-                            children: widget.content,
-                          ),
-                        )
+                        Column(
+                          children: widget.content,
+                        ),
                       ],
                     ),
                   ),

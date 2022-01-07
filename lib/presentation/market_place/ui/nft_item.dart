@@ -53,20 +53,24 @@ class _NFTItemState extends State<NFTItemWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        if(widget.nftMarket.typeImage == TypeImage.VIDEO){
-          _controller! .pause();
+      onTap: () {
+        if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
+          _controller!.pause();
         }
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NFTDetailScreen(
-              key: nftKey,
-              type: widget.nftMarket.marketType,
-              marketId: widget.nftMarket.marketId,
+        if (widget.nftMarket.typeNFT == TypeNFT.SOFT_NFT) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NFTDetailScreen(
+                key: nftKey,
+                type: widget.nftMarket.marketType,
+                marketId: widget.nftMarket.marketId,
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          ///push HardNft
+        }
       },
       child: Stack(
         children: [
@@ -94,17 +98,20 @@ class _NFTItemState extends State<NFTItemWidget> {
                             ? _controller!.pause()
                             : _controller!.play();
                       } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                NFTDetailScreen(
-                                  key: nftKey,
-                                  type: widget.nftMarket.marketType,
-                                  marketId: widget.nftMarket.marketId,
-                                ),
-                          ),
-                        );
+                        if (widget.nftMarket.typeNFT == TypeNFT.SOFT_NFT) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NFTDetailScreen(
+                                key: nftKey,
+                                type: widget.nftMarket.marketType,
+                                marketId: widget.nftMarket.marketId,
+                              ),
+                            ),
+                          );
+                        } else {
+                          ///push Hard nft
+                        }
                       }
                     },
                     child: Stack(
@@ -115,18 +122,17 @@ class _NFTItemState extends State<NFTItemWidget> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.r),
                             child: (widget.nftMarket.typeImage !=
-                                TypeImage.VIDEO)
+                                    TypeImage.VIDEO)
                                 ? CachedNetworkImage(
-                              placeholder: (context, url) =>
-                                  Center(
-                                    child: CircularProgressIndicator(
-                                      color:
-                                      AppTheme.getInstance().bgBtsColor(),
+                                    placeholder: (context, url) => Center(
+                                      child: CircularProgressIndicator(
+                                        color:
+                                            AppTheme.getInstance().bgBtsColor(),
+                                      ),
                                     ),
-                                  ),
-                              imageUrl: widget.nftMarket.image,
-                              fit: BoxFit.cover,
-                            )
+                                    imageUrl: widget.nftMarket.image,
+                                    fit: BoxFit.cover,
+                                  )
                                 : VideoPlayer(_controller!),
                           ),
                         ),
@@ -165,9 +171,17 @@ class _NFTItemState extends State<NFTItemWidget> {
                           height: 16.h,
                           child: Row(
                             children: [
-                              const Image(
-                                image: AssetImage('assets/images/symbol.png'),
-                              ),
+                              if (widget.nftMarket.urlToken?.isNotEmpty ??
+                                  false)
+                                Image(
+                                  image: NetworkImage(
+                                    widget.nftMarket.urlToken ?? '',
+                                  ),
+                                )
+                              else
+                                const Image(
+                                  image: AssetImage(ImageAssets.symbol),
+                                ),
                               SizedBox(
                                 width: 4.18.h,
                               ),
@@ -184,8 +198,8 @@ class _NFTItemState extends State<NFTItemWidget> {
                         ),
                         Text(
                           '${widget.nftMarket.numberOfCopies} '
-                              '${S.current.of_all} '
-                              '${widget.nftMarket.totalCopies}',
+                          '${S.current.of_all} '
+                          '${widget.nftMarket.totalCopies}',
                           style: textNormalCustom(
                             Colors.white,
                             13,

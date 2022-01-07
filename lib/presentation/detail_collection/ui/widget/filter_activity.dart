@@ -62,9 +62,20 @@ class _FilterActivityState extends State<FilterActivity> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
+                  Container(
                     height: 30.h,
-                    width: 65.w,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 6.h,
+                    ),
+                    child: Text(
+                      S.current.reset,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().bgBtsColor(),
+                        14,
+                        null,
+                      ),
+                    ),
                   ),
                   Text(
                     S.current.filter,
@@ -79,8 +90,6 @@ class _FilterActivityState extends State<FilterActivity> {
                       widget.collectionBloc.resetFilterActivity(false);
                     },
                     child: Container(
-                      height: 30.h,
-                      width: 65.w,
                       padding: EdgeInsets.symmetric(
                         horizontal: 16.w,
                         vertical: 6.h,
@@ -91,18 +100,16 @@ class _FilterActivityState extends State<FilterActivity> {
                           Radius.circular(6.r),
                         ),
                       ),
-                      child: FittedBox(
-                        child: Text(
-                          S.current.reset,
-                          style: textNormalCustom(
-                            null,
-                            14,
-                            null,
-                          ),
+                      child: Text(
+                        S.current.reset,
+                        style: textNormalCustom(
+                          null,
+                          14,
+                          null,
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -115,23 +122,6 @@ class _FilterActivityState extends State<FilterActivity> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          funText: widget.collectionBloc.resetFilterActivity,
-                          funCheckBox:
-                              widget.collectionBloc.resetFilterActivity,
-                          title: S.current.all,
-                          stream: collectionBloc.isAllActivity,
-                        ),
-                      ),
-                      const Expanded(
-                        child: SizedBox.shrink(),
-                      ),
-                    ],
-                  ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -223,6 +213,7 @@ class _FilterActivityState extends State<FilterActivity> {
             spaceH24,
             GestureDetector(
               onTap: () {
+                collectionBloc.funFilterActivity();
                 Navigator.pop(context);
               },
               child: ButtonLuxury(

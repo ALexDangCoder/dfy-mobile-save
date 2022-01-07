@@ -24,6 +24,15 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   //getlistcollection
   BehaviorSubject<List<CollectionModel>> list = BehaviorSubject();
 
+  BehaviorSubject<bool> isHighestTradingVolume = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isLowestTradingVolume = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isNewest = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isOldest = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isOwnerFromHighToLow = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isOwnerFromLowToHigh = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isItemFromHighToLow = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isItemFromLowToHigh = BehaviorSubject.seeded(false);
+
   //filter collection
   BehaviorSubject<bool> isHardNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSoftNft = BehaviorSubject.seeded(false);
@@ -62,6 +71,27 @@ class CollectionBloc extends BaseCubit<CollectionState> {
 
   Timer? debounceTime;
 
+  void funFilter({int index = 0}) {
+    getCollection(
+      sortFilter: sortFilter,
+      name: textSearch.value,
+    );
+  }
+
+  int sortFilter = -1;
+
+  void funChooseFilter(int index) {
+    for (int i = 0; i < 8; i++) {
+      if (index == i) {
+      } else {
+        listCheckBoxFilter[i] = false;
+      }
+    }
+    listCheckBoxFilter[index] = true;
+    listCheckBoxFilterStream.add(listCheckBoxFilter);
+    sortFilter = index;
+  }
+
   void searchCollection(String value) {
     if (debounceTime != null) {
       if (debounceTime!.isActive) {
@@ -70,9 +100,9 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     }
     debounceTime = Timer(const Duration(milliseconds: 800), () {
       if (textSearch.value.isEmpty) {
-        getCollection();
+        getCollection(sortFilter: sortFilter);
       } else {
-        getCollection(name: textSearch.value);
+        getCollection(name: textSearch.value, sortFilter: sortFilter);
       }
     });
   }
@@ -90,19 +120,44 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     );
   }
 
+  BehaviorSubject<List<bool>> listCheckBoxFilterStream =
+      BehaviorSubject.seeded([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
+  List<bool> listCheckBoxFilter = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
+
   void reset() {
-    isAllCategory.sink.add(false);
-    isAll.sink.add(false);
-    isHardNft.sink.add(false);
-    isSoftNft.sink.add(false);
-    isArt.sink.add(false);
-    isGame.sink.add(false);
-    isCollectibles.sink.add(false);
-    isUltilities.sink.add(false);
-    isOthersCategory.sink.add(false);
-    isCars.sink.add(false);
-    isSports.sink.add(false);
-    isMusic.sink.add(false);
+    sortFilter = -1;
+    listCheckBoxFilterStream.add([
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ]);
+    for (int i = 0; i < 8; i++) {
+      listCheckBoxFilter[i] = false;
+    }
   }
 
   void resetFilterMyAcc() {
@@ -175,10 +230,13 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     listCategoryStream.add(listCategory);
   }
 
-  Future<void> getCollection({String? name = ''}) async {
+  Future<void> getCollection({
+    String? name = '',
+    int? sortFilter = 0,
+  }) async {
     emit(LoadingData());
-    final Result<List<CollectionModel>> result =
-        await _marketPlaceRepository.getListCollection(name: name);
+    final Result<List<CollectionModel>> result = await _marketPlaceRepository
+        .getListCollection(name: name, sort: sortFilter);
     result.when(
       success: (res) {
         if (res.isEmpty) {

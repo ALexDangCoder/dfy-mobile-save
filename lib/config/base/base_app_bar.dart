@@ -24,7 +24,7 @@ class BaseAppBar extends SliverAppBar {
             title: title,
             image: image,
             initHeight: initHeight,
-            typeImage: typeImage,
+            typeImage: typeImage ?? TypeImage.IMAGE,
           ),
           expandedHeight: initHeight,
           pinned: true,
@@ -39,12 +39,12 @@ class BaseSpace extends StatefulWidget {
     required this.title,
     required this.image,
     required this.initHeight,
-    this.typeImage,
+    required this.typeImage,
   }) : super(key: key);
   final String title;
   final String image;
   final double initHeight;
-  final TypeImage? typeImage;
+  final TypeImage typeImage;
 
   @override
   _BaseSpaceState createState() => _BaseSpaceState();

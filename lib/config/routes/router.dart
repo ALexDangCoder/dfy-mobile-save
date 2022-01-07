@@ -1,3 +1,4 @@
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/splash/splash_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -18,11 +19,16 @@ class AppRouter {
   static const scanQR = '/scanQR';
   static const collectionList = '/collection_list';
 
-
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
 
     switch (settings.name) {
+      case collectionList:
+        return MaterialPageRoute(
+          builder: (ctx) => CollectionList(
+            query: '',
+          ),
+        );
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
       case main:

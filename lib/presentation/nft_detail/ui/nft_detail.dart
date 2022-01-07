@@ -3,6 +3,8 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -31,6 +33,7 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 final nftKey = GlobalKey<NFTDetailScreenState>();
 const String EXAMPLE_TITLE = 'Naruto kkcam allfp lflll alffwl c ';
@@ -83,7 +86,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           HistoryTab(
             listHistory: [],
           ),
-          OwnerTab(),
+          OwnerTab(
+            listOwner: [],
+          ),
           BidTab(),
         ];
         _tabTit = [
@@ -101,11 +106,29 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       case MarketType.SALE:
         trustWalletChannel
             .setMethodCallHandler(bloc.nativeMethodCallBackTrustWallet);
-        _tabPage = const [
-          HistoryTab(
-            listHistory: [],
+        _tabPage = [
+          StreamBuilder<List<HistoryNFT>>(
+            stream: _bloc.listHistoryStream,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<HistoryNFT>> snapshot,
+            ) {
+              return HistoryTab(
+                listHistory: snapshot.data ?? [],
+              );
+            },
           ),
-          OwnerTab(),
+          StreamBuilder<List<OwnerNft>>(
+            stream: _bloc.listOwnerStream,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<OwnerNft>> snapshot,
+            ) {
+              return OwnerTab(
+                listOwner: snapshot.data ?? [],
+              );
+            },
+          ),
         ];
         _tabTit = [
           Tab(
@@ -117,11 +140,13 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
         ];
         break;
       case MarketType.PAWN:
-        _tabPage = const [
+        _tabPage = [
           HistoryTab(
             listHistory: [],
           ),
-          OwnerTab(),
+          OwnerTab(
+            listOwner: [],
+          ),
           OfferTab(),
         ];
         _tabTit = [
@@ -136,8 +161,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           ),
         ];
         break;
+      default:
+        break;
     }
   }
+
+  final formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
 
   @override
   void initState() {
@@ -872,8 +901,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
         ),
       );
 
-  Container _priceContainerOnSale(
-          {required double price, String shortName = 'DFY'}) =>
+  Container _priceContainerOnSale({
+    required double price,
+    String shortName = 'DFY',
+    String urlToken = '',
+    double usdExchange = 0,
+  }) =>
       Container(
         width: 343.w,
         height: 64.h,
@@ -895,11 +928,20 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               children: [
                 Row(
                   children: [
-                    sizedSvgImage(
-                      w: 20,
-                      h: 20,
-                      image: ImageAssets.ic_token_dfy_svg,
-                    ),
+                    if (urlToken.isNotEmpty)
+                      Image(
+                        image: NetworkImage(
+                          urlToken,
+                        ),
+                        width: 20.w,
+                        height: 20.h,
+                      )
+                    else
+                       Image(
+                        image: const AssetImage(ImageAssets.symbol),
+                        width: 20.w,
+                        height: 20.h,
+                      ),
                     spaceW4,
                     Text(
                       '$price $shortName',
@@ -913,7 +955,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 ),
                 Expanded(
                   child: Text(
-                    '~100,000,000',
+                    formatUSD.format(price * usdExchange),
                     style: textNormalCustom(
                       AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                       14,
@@ -1086,5 +1128,369 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
         ),
       ),
     );
+  }
+
+  Widget _content(MarketType type, NFTDetailState state) {
+    switch (type) {
+      case MarketType.SALE:
+        if (state is NftOnSaleSuccess) {
+          final objSale = state.nftMarket;
+          return StateStreamLayout(
+            stream: _bloc.stateStream,
+            error:
+                AppException(S.current.error, S.current.something_went_wrong),
+            retry: () async {
+              await _bloc.getInForNFT(widget.marketId ?? '', widget.type);
+            },
+            textEmpty: '',
+            child: BaseCustomScrollView(
+              typeImage: objSale.typeImage,
+              image: objSale.image,
+              initHeight: 360.h,
+              leading: _leading(),
+              title: objSale.name,
+              tabBarView: TabBarView(
+                controller: _tabController,
+                children: _tabPage,
+              ),
+              tabBar: TabBar(
+                controller: _tabController,
+                labelColor: Colors.white,
+                unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+                indicatorColor: AppTheme.getInstance().titleTabColor(),
+                labelStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                tabs: _tabTit,
+              ),
+              bottomBar: _buildButtonBuyOutOnSale(context),
+              content: [
+                _nameNFT(
+                  title: objSale.name,
+                  quantity: objSale.totalCopies ?? 1,
+                ),
+                _priceContainerOnSale(
+                  price: objSale.price,
+                  usdExchange: objSale.usdExchange ?? 0,
+                  urlToken: objSale.urlToken ?? '',
+                  shortName: objSale.symbolToken ?? '',
+                ),
+                divide,
+                spaceH12,
+                _description(
+                  objSale.description?.isEmpty ?? true
+                      ? S.current.no_des
+                      : objSale.description ?? S.current.no_des,
+                ),
+                spaceH20,
+                StreamBuilder<bool>(
+                  initialData: false,
+                  stream: _bloc.viewStream,
+                  builder: (context, snapshot) {
+                    return Visibility(
+                      visible: !snapshot.data!,
+                      child: Column(
+                        children: [
+                          if (objSale.collectionName?.isEmpty ?? true)
+                            const SizedBox()
+                          else
+                            _rowCollection(
+                              'DFY',
+                              objSale.collectionName ?? '',
+                              objSale.ticked == 1,
+                            ),
+                          spaceH20,
+                          additionalColumn(objSale.properties ?? []),
+                          spaceH20,
+                          ...[
+                            buildRow(
+                              title: S.current.collection_address,
+                              detail: objSale.collectionAddress ?? '',
+                              type: TextType.RICH_BLUE,
+                              isShowCopy: true,
+                            ),
+                            spaceH12,
+                            buildRow(
+                              title: S.current.nft_token_id,
+                              detail: objSale.nftTokenId ?? '',
+                              type: TextType.NORMAL,
+                            ),
+                            spaceH12,
+                            buildRow(
+                              title: S.current.nft_standard,
+                              detail: objSale.nftStandard == '0'
+                                  ? 'ERC - 721'
+                                  : 'ERC - 1155',
+                              type: TextType.NORMAL,
+                            ),
+                            spaceH12,
+                            buildRow(
+                              title: S.current.block_chain,
+                              detail: 'Binance smart chain',
+                              type: TextType.NORMAL,
+                            ),
+                          ],
+                          spaceH12,
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                StreamBuilder<bool>(
+                  initialData: true,
+                  stream: _bloc.viewStream,
+                  builder: (context, snapshot) {
+                    return Visibility(
+                      child: InkWell(
+                        onTap: () {
+                          _bloc.viewSink.add(!snapshot.data!);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(
+                            right: 16.w,
+                            left: 16.w,
+                          ),
+                          height: 40.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              sizedSvgImage(
+                                w: 14,
+                                h: 14,
+                                image: !snapshot.data!
+                                    ? ImageAssets.ic_collapse_svg
+                                    : ImageAssets.ic_expand_svg,
+                              ),
+                              SizedBox(
+                                width: 13.15.w,
+                              ),
+                              Text(
+                                !snapshot.data!
+                                    ? S.current.view_less
+                                    : S.current.view_more,
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().fillColor(),
+                                  16,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                divide,
+              ],
+            ),
+          );
+        } else {
+          return const ModalProgressHUD(
+            inAsyncCall: true,
+            progressIndicator: CupertinoLoading(),
+            child: SizedBox(),
+          );
+        }
+      case MarketType.PAWN:
+        return BaseCustomScrollView(
+          image: EXAMPLE_IMAGE_URL,
+          initHeight: 360.h,
+          leading: _leading(),
+          title: EXAMPLE_TITLE,
+          tabBarView: TabBarView(
+            controller: _tabController,
+            children: _tabPage,
+          ),
+          tabBar: TabBar(
+            controller: _tabController,
+            labelColor: Colors.white,
+            unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+            indicatorColor: AppTheme.getInstance().titleTabColor(),
+            labelStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+            tabs: _tabTit,
+          ),
+          bottomBar: Container(),
+          content: [
+            _nameNFT(title: EXAMPLE_TITLE),
+            Container(),
+            Container(),
+            divide,
+            spaceH12,
+            Container(),
+            spaceH20,
+            StreamBuilder<bool>(
+              initialData: false,
+              stream: _bloc.viewStream,
+              builder: (context, snapshot) {
+                return Visibility(
+                  visible: !snapshot.data!,
+                  child: Column(
+                    children: [
+                      _rowCollection(
+                          'DFY', auctionObj.collectionName ?? '', true),
+                      spaceH20,
+                      additionalColumn(auctionObj.properties ?? []),
+                      spaceH20,
+                      _buildTable(),
+                      spaceH12,
+                    ],
+                  ),
+                );
+              },
+            ),
+            StreamBuilder<bool>(
+              initialData: true,
+              stream: _bloc.viewStream,
+              builder: (context, snapshot) {
+                return Visibility(
+                  child: InkWell(
+                    onTap: () {
+                      _bloc.viewSink.add(!snapshot.data!);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        right: 16.w,
+                        left: 16.w,
+                      ),
+                      height: 40.h,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          sizedSvgImage(
+                            w: 14,
+                            h: 14,
+                            image: !snapshot.data!
+                                ? ImageAssets.ic_collapse_svg
+                                : ImageAssets.ic_expand_svg,
+                          ),
+                          SizedBox(
+                            width: 13.15.w,
+                          ),
+                          Text(
+                            !snapshot.data!
+                                ? S.current.view_less
+                                : S.current.view_more,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().fillColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            divide,
+          ],
+        );
+      case MarketType.AUCTION:
+        return BaseCustomScrollView(
+          image: EXAMPLE_IMAGE_URL,
+          initHeight: 360.h,
+          leading: _leading(),
+          title: EXAMPLE_TITLE,
+          tabBarView: TabBarView(
+            controller: _tabController,
+            children: _tabPage,
+          ),
+          tabBar: TabBar(
+            controller: _tabController,
+            labelColor: Colors.white,
+            unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+            indicatorColor: AppTheme.getInstance().titleTabColor(),
+            labelStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+            tabs: _tabTit,
+          ),
+          bottomBar: Container(),
+          content: [
+            _nameNFT(title: EXAMPLE_TITLE),
+            Container(),
+            Container(),
+            divide,
+            spaceH12,
+            Container(),
+            spaceH20,
+            StreamBuilder<bool>(
+              initialData: false,
+              stream: _bloc.viewStream,
+              builder: (context, snapshot) {
+                return Visibility(
+                  visible: !snapshot.data!,
+                  child: Column(
+                    children: [
+                      _rowCollection(
+                          'DFY', auctionObj.collectionName ?? '', true),
+                      spaceH20,
+                      additionalColumn(auctionObj.properties ?? []),
+                      spaceH20,
+                      _buildTable(),
+                      spaceH12,
+                    ],
+                  ),
+                );
+              },
+            ),
+            StreamBuilder<bool>(
+              initialData: true,
+              stream: _bloc.viewStream,
+              builder: (context, snapshot) {
+                return Visibility(
+                  child: InkWell(
+                    onTap: () {
+                      _bloc.viewSink.add(!snapshot.data!);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        right: 16.w,
+                        left: 16.w,
+                      ),
+                      height: 40.h,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          sizedSvgImage(
+                            w: 14,
+                            h: 14,
+                            image: !snapshot.data!
+                                ? ImageAssets.ic_collapse_svg
+                                : ImageAssets.ic_expand_svg,
+                          ),
+                          SizedBox(
+                            width: 13.15.w,
+                          ),
+                          Text(
+                            !snapshot.data!
+                                ? S.current.view_less
+                                : S.current.view_more,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().fillColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            divide,
+          ],
+        );
+      default:
+        return Container();
+    }
   }
 }

@@ -54,7 +54,7 @@ class ListNftOnPawn extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                const ListNft(marketType: MarketType.PAWN),
+                                ListNft(marketType: MarketType.PAWN),
                           ),
                         );
                 },
