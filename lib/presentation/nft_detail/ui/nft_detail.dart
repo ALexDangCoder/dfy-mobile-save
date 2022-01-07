@@ -3,6 +3,8 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/ui/buy_nft.dart';
@@ -81,7 +83,9 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
           HistoryTab(
             listHistory: [],
           ),
-          OwnerTab(),
+          OwnerTab(
+            listOwner: [],
+          ),
           BidTab(),
         ];
         _tabTit = [
@@ -98,10 +102,28 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         break;
       case MarketType.SALE:
         _tabPage = [
-          HistoryTab(
-            listHistory: _bloc.listHistory,
+          StreamBuilder<List<HistoryNFT>>(
+            stream: _bloc.listHistoryStream,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<HistoryNFT>> snapshot,
+            ) {
+              return HistoryTab(
+                listHistory: snapshot.data ?? [],
+              );
+            },
           ),
-          OwnerTab(),
+          StreamBuilder<List<OwnerNft>>(
+            stream: _bloc.listOwnerStream,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<OwnerNft>> snapshot,
+            ) {
+              return OwnerTab(
+                listOwner: snapshot.data ?? [],
+              );
+            },
+          ),
         ];
         _tabTit = [
           Tab(
@@ -113,11 +135,13 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         ];
         break;
       case MarketType.PAWN:
-        _tabPage =  [
+        _tabPage = [
           HistoryTab(
-            listHistory: _bloc.listHistory,
+            listHistory: [],
           ),
-          OwnerTab(),
+          OwnerTab(
+            listOwner: [],
+          ),
           OfferTab(),
         ];
         _tabTit = [
@@ -786,7 +810,9 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                             spaceH12,
                             buildRow(
                               title: S.current.nft_standard,
-                              detail: objSale.nftStandard ?? '',
+                              detail: objSale.nftStandard == '0'
+                                  ? 'ERC - 721'
+                                  : 'ERC - 1155',
                               type: TextType.NORMAL,
                             ),
                             spaceH12,

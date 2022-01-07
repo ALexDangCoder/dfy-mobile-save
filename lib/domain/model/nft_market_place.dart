@@ -30,6 +30,7 @@ class NftMarket {
   final String? collectionAddress;
   final String? description;
   final String? txnHash;
+  final int? orderId;
   final String? ownerAccount;
   final String? blockchainNetwork;
   final List<Properties>? properties;
@@ -53,6 +54,7 @@ class NftMarket {
     this.startTime = 0,
     this.estimatePrice,
     this.owner,
+    this.orderId,
     this.blockchainNetwork,
     this.ownerAccount,
     this.collectionID,

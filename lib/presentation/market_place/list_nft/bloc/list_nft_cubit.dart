@@ -223,7 +223,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     listCheckBox.add(listCollectionCheck);
   }
 
-  String getTitle(MarketType type) {
+  String getTitle(MarketType? type) {
     if (type == MarketType.SALE) {
       return S.current.nft_on_sale;
     } else if (type == MarketType.AUCTION) {
