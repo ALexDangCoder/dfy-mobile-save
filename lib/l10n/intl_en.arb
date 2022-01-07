@@ -319,7 +319,6 @@
   "all":"All",
   "offer": "Offer",
   "could_not_load_data" : "Couldn’t load the data",
-  "send_nft": "Send NFT",
   "create_collection" : "Create Collection",
   "coming_soon" : "COMING SOON",
   "upload_cover_photo" : "UPLOAD COVER PHOTO",
@@ -332,5 +331,9 @@
   "social_links" : "Social link",
   "maximum_len" : "Maximum length allowed is 255 characters",
   "only_digits" : "Only accept digits",
-  "max_royalty" : "Maximum royalty allowed is 50%"
+  "max_royalty" : "Maximum royalty allowed is 50%",
+  "maximum_size" : "The maximum size is 15MB",
+  "avatar_required" : "Avatar is required",
+  "cover_photo_required" : "Cover photo is required",
+  "feature_photo_required" : "Feature photo is required"
 }

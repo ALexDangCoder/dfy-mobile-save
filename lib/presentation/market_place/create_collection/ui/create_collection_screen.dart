@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/create_detail_collection.dart';
@@ -7,7 +8,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,6 +19,7 @@ class CreateCollectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bloc.getListTypeNFT();
     return BaseBottomSheet(
       title: S.current.create_collection,
       child: Scaffold(
@@ -29,6 +30,7 @@ class CreateCollectionScreen extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 margin: EdgeInsets.only(
@@ -39,10 +41,31 @@ class CreateCollectionScreen extends StatelessWidget {
                   style: textLabelNFT,
                 ),
               ),
-              selectItem(
-                item1: nftItem(type: TypeNFT.SOFT_NFT_ERC721, context: context),
-                item2:
-                    nftItem(type: TypeNFT.SOFT_NFT_ERC1155, context: context),
+              StreamBuilder<List<TypeNFTModel>>(
+                stream: bloc.listSoftNFTSubject,
+                builder: (context, snapshot) {
+                  final list = snapshot.data ?? [];
+                  if (list.isNotEmpty) {
+                    return GridView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: list.length,
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      itemBuilder: (context, index) {
+                        return nftItem(
+                          context: context,
+                          typeNFTModel: list[index],
+                        );
+                      },
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
               ),
               spaceH24,
               Container(
@@ -54,39 +77,61 @@ class CreateCollectionScreen extends StatelessWidget {
                   style: textLabelNFT,
                 ),
               ),
-              selectItem(
-                item1: nftItem(type: TypeNFT.HARD_NFT_ERC721, context: context),
-                item2:
-                    nftItem(type: TypeNFT.HARD_NFT_ERC1155, context: context),
+              StreamBuilder<List<TypeNFTModel>>(
+                stream: bloc.listHardNFTSubject,
+                builder: (context, snapshot) {
+                  final list = snapshot.data ?? [];
+                  if (list.isNotEmpty) {
+                    return GridView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: list.length,
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      itemBuilder: (context, index) {
+                        return nftItem(
+                          context: context,
+                          typeNFTModel: list[index],
+                        );
+                      },
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
               ),
             ],
           ),
         ),
-        floatingActionButton: StreamBuilder<TypeNFT>(
-            stream: bloc.typeNFTStream,
-            initialData: TypeNFT.NONE,
-            builder: (context, snapshot) {
-              return ButtonLuxury(
-                marginHorizontal: 16,
-                title: S.current.continue_s,
-                isEnable: snapshot.data != TypeNFT.NONE,
-                buttonHeight: 64,
-                fontSize: 20,
-                onTap: () {
-                  if (snapshot.data != TypeNFT.NONE) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreateDetailCollection(
-                          bloc: bloc,
-                          typeNFT: snapshot.data ?? TypeNFT.SOFT_NFT_ERC721,
-                        ),
+        floatingActionButton: StreamBuilder<String>(
+          stream: bloc.typeNFTStream,
+          initialData: '',
+          builder: (context, snapshot) {
+            final enable = snapshot.data?.isNotEmpty ?? false;
+            return ButtonLuxury(
+              marginHorizontal: 16,
+              title: S.current.continue_s,
+              isEnable: enable,
+              buttonHeight: 64,
+              fontSize: 20,
+              onTap: () {
+                if (enable) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateDetailCollection(
+                        bloc: bloc,
+                        typeNFT: bloc.getStandardFromID(snapshot.data ?? ''),
                       ),
-                    );
-                  }
-                },
-              );
-            }),
+                    ),
+                  );
+                }
+              },
+            );
+          },
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
@@ -111,122 +156,101 @@ class CreateCollectionScreen extends StatelessWidget {
   }
 
   Widget nftItem({
-    required TypeNFT type,
     required BuildContext context,
+    required TypeNFTModel typeNFTModel,
   }) {
-    final bool isActive =
-        type == TypeNFT.SOFT_NFT_ERC721 || type == TypeNFT.HARD_NFT_ERC721;
-    final bool isHardNFT =
-        type == TypeNFT.HARD_NFT_ERC721 || type == TypeNFT.HARD_NFT_ERC1155;
-    return Stack(
+    final bool isActive = typeNFTModel.standard == 0;
+    return Column(
       children: [
-        Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                if (isActive) {
-                  bloc.changeSelectedItem(type);
-                }
-              },
-              child: SizedBox(
-                width: 118.w,
-                height: 132.h,
-                child: Stack(
-                  children: [
-                    sizedSvgImage(
-                      w: 118,
-                      h: 132,
-                      image: isActive
-                          ? ImageAssets.create_collection_svg
-                          : ImageAssets.create_collection_1155,
-                    ),
-                    if (!isActive)
-                      Center(
-                        child: Text(
-                          S.current.coming_soon,
-                          style: titleText(),
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    if (isHardNFT)
-                      Positioned(
-                        top: 0,
-                        right: 10,
-                        child: sizedSvgImage(
-                          w: 21,
-                          h: 28,
-                          image: ImageAssets.hard_nft_note_svg,
-                        ),
-                      ),
-                  ],
+        GestureDetector(
+          onTap: () {
+            if (isActive) {
+              bloc.changeSelectedItem(typeNFTModel.id ?? '');
+            }
+          },
+          child: SizedBox(
+            width: 118.w,
+            height: 132.h,
+            child: Stack(
+              children: [
+                sizedSvgImage(
+                  w: 118,
+                  h: 132,
+                  image: isActive
+                      ? ImageAssets.create_collection_svg
+                      : ImageAssets.create_collection_1155,
                 ),
-              ),
+                if (!isActive)
+                  Center(
+                    child: Text(
+                      S.current.coming_soon,
+                      style: titleText(),
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                if (typeNFTModel.type == 1)
+                  Positioned(
+                    top: 0,
+                    right: 10,
+                    child: sizedSvgImage(
+                      w: 21,
+                      h: 28,
+                      image: ImageAssets.hard_nft_note_svg,
+                    ),
+                  ),
+              ],
             ),
-            Theme(
-              data: Theme.of(context).copyWith(
-                unselectedWidgetColor: isActive
-                    ? AppTheme.getInstance().whiteColor()
-                    : AppTheme.getInstance()
-                        .disableRadioColor()
-                        .withOpacity(0.5),
-              ),
-              child: StreamBuilder<TypeNFT>(
-                stream: bloc.typeNFTStream,
-                initialData: TypeNFT.SOFT_NFT_ERC721,
-                builder: (context, snapshot) {
-                  return Radio<TypeNFT>(
-                    splashRadius: isActive ? null : 0,
-                    activeColor: AppTheme.getInstance().fillColor(),
-                    value: type,
-                    groupValue: bloc.createType,
-                    onChanged: (value) {
-                      if (isActive) {
-                        bloc.changeSelectedItem(
-                          value ?? TypeNFT.SOFT_NFT_ERC721,
-                        );
-                      }
-                    },
-                  );
-                },
-              ),
-            ),
-            Text(
-              type.nftName,
-              style: textCustom(
-                color: isActive
-                    ? AppTheme.getInstance().whiteColor()
-                    : AppTheme.getInstance().whiteColor().withOpacity(0.5),
-              ),
-            )
-          ],
+          ),
         ),
+        Flexible(
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              unselectedWidgetColor: isActive
+                  ? AppTheme.getInstance().whiteColor()
+                  : AppTheme.getInstance().disableRadioColor().withOpacity(0.5),
+            ),
+            child: StreamBuilder<String>(
+              stream: bloc.typeNFTStream,
+              initialData: '',
+              builder: (context, snapshot) {
+                return Radio<String>(
+                  splashRadius: isActive ? null : 0,
+                  activeColor: AppTheme.getInstance().fillColor(),
+                  value: typeNFTModel.id ?? '',
+                  groupValue: bloc.createType,
+                  onChanged: (value) {
+                    if (isActive) {
+                      bloc.changeSelectedItem(
+                        value ?? '',
+                      );
+                    }
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+        Text(
+          getName(typeNFTModel.name ?? ''),
+          style: textCustom(
+            color: isActive
+                ? AppTheme.getInstance().whiteColor()
+                : AppTheme.getInstance().whiteColor().withOpacity(0.5),
+          ),
+        )
       ],
     );
   }
 }
 
-enum TypeNFT {
-  SOFT_NFT_ERC721,
-  SOFT_NFT_ERC1155,
-  HARD_NFT_ERC721,
-  HARD_NFT_ERC1155,
-  NONE,
-}
-
-extension TypeNFTExtension on TypeNFT {
-  String get nftName {
-    switch (this) {
-      case TypeNFT.SOFT_NFT_ERC721:
-        return 'NFT ERC 721';
-      case TypeNFT.SOFT_NFT_ERC1155:
-        return 'NFT ERC 1155';
-      case TypeNFT.HARD_NFT_ERC721:
-        return 'NFT ERC 721';
-      case TypeNFT.HARD_NFT_ERC1155:
-        return 'NFT ERC 1155';
-      default:
-        return '';
-    }
+String getName(String name) {
+  switch (name) {
+    case 'collection 721':
+      return 'NFT ERC 721';
+    case 'collection 1155':
+      return 'NFT ERC 1155';
+    default:
+      return '';
   }
 }

@@ -312,7 +312,6 @@
   "collection_address": "Địa chỉ bộ sưu tập",
   "offer": "Đề nghị",
   "could_not_load_data" : "Không thể tải dữ liệu",
-  "soft_nft_collection": "Soft NFT",
   "create_collection" : "Tạo bộ sưu tập",
   "coming_soon" : "COMING SOON",
   "upload_cover_photo" : "TẢI LÊN ẢNH BÌA",
@@ -325,5 +324,9 @@
   "social_links" : "Liên kết mạng xã hội",
   "maximum_len" : "Số kí tự tối đa là 255",
   "only_digits" : "Chỉ được phép nhập số",
-  "max_royalty" : "Tiền bản quyền tối đa là 50%"
+  "max_royalty" : "Tiền bản quyền tối đa là 50%",
+  "maximum_size" : "Kích cỡ tối đa của ảnh là 15MB",
+  "avatar_required" : "Ảnh đại diện là bắt buộc",
+  "cover_photo_required" : "Ảnh bìa là bắt buộc",
+  "feature_photo_required" : "Ảnh nổi bật là bắt buộc"
 }

@@ -192,6 +192,8 @@ class ImageAssets {
   static const String ic_telegram_svg = '$baseImg/ic_telegram_svg.svg';
   static const String ic_round_i = '$baseImg/ic_round_i.svg';
   static const String ic_expand_white_svg = '$baseImg/ic_expand_white_svg.svg';
+  static const String ic_camera_svg = '$baseImg/ic_camera_svg.svg';
+
 
 
 

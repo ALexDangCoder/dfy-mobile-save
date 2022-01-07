@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
+import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
+import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,25 +17,37 @@ import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
 class CreateCollectionBloc {
-  TypeNFT createType = TypeNFT.NONE;
+  String createType = '';
 
   String collectionName = '';
   String customUrl = '';
   String description = '';
-  String featureCid = '';
   String faceBook = '';
   String twitter = '';
   String instagram = '';
   String telegram = '';
   int royalties = 0;
 
+  List<Category> listCategory = [];
+
+  List<TypeNFTModel> listNFT = [];
+  List<TypeNFTModel> listHardNFT = [];
+  List<TypeNFTModel> listSoftNFT = [];
+
   String categoryName = '';
   String categoryId = '';
+  String avatarPath = '';
+  String coverPhotoPath = '';
+  String featurePhotoPath = '';
+
+  File? avatar;
+  File? coverPhoto;
+  File? featurePhoto;
 
   Map<String, bool> mapCheck = {
-    'cover_photo': true,
-    'avatar_photo': true,
-    'feature_photo': true,
+    'cover_photo': false,
+    'avatar': false,
+    'feature_photo': false,
     'collection_name': false,
     'custom_url': true,
     'description': false,
@@ -43,13 +59,15 @@ class CreateCollectionBloc {
     'telegram': true,
   };
 
+  NFTRepository get _nftRepo => Get.find();
+
   CategoryRepository get _categoryRepository => Get.find();
 
   //Stream
   ///Type NFT
-  final BehaviorSubject<TypeNFT> _typeNFTSubject = BehaviorSubject();
+  final BehaviorSubject<String> _typeNFTSubject = BehaviorSubject();
 
-  Stream<TypeNFT> get typeNFTStream => _typeNFTSubject.stream;
+  Stream<String> get typeNFTStream => _typeNFTSubject.stream;
 
   ///CreateButton
   final BehaviorSubject<bool> _enableCreateSubject = BehaviorSubject();
@@ -67,19 +85,34 @@ class CreateCollectionBloc {
   BehaviorSubject<String> instagramSubject = BehaviorSubject();
   BehaviorSubject<String> telegramSubject = BehaviorSubject();
 
+  ///Validate Image
+  BehaviorSubject<String> avatarMessSubject = BehaviorSubject();
+  BehaviorSubject<String> coverPhotoMessSubject = BehaviorSubject();
+  BehaviorSubject<String> featurePhotoMessSubject = BehaviorSubject();
+
+  ///SendImage
+  BehaviorSubject<File> avatarSubject = BehaviorSubject();
+  BehaviorSubject<File> coverPhotoSubject = BehaviorSubject();
+  BehaviorSubject<File> featurePhotoSubject = BehaviorSubject();
+
   ///Send Category
-  BehaviorSubject<List<DropdownMenuItem<String>>> listCategorySubject =
+  BehaviorSubject<List<Category>> listCategorySubject =
       BehaviorSubject();
 
+  ///Send TypeNFT
+  BehaviorSubject<List<TypeNFTModel>> listHardNFTSubject = BehaviorSubject();
+  BehaviorSubject<List<TypeNFTModel>> listSoftNFTSubject = BehaviorSubject();
+
   //func
-  void changeSelectedItem(TypeNFT type) {
+  void changeSelectedItem(String type) {
     createType = type;
     _typeNFTSubject.sink.add(createType);
   }
 
   void validateCreate() {
     if (mapCheck['cover_photo'] == false ||
-        mapCheck['avatar_photo'] == false ||
+        mapCheck['avatar'] == false ||
+        mapCheck['feature_photo'] == false ||
         mapCheck['collection_name'] == false ||
         mapCheck['custom_url'] == false ||
         mapCheck['description'] == false ||
@@ -104,17 +137,17 @@ class CreateCollectionBloc {
     switch (inputCase) {
       case 'name':
         {
-          validateName(mess);
+          validateName(mess, value);
           break;
         }
       case 'url':
         {
-          validateURL(mess);
+          validateURL(mess, value);
           break;
         }
       case 'des':
         {
-          validateDes(mess);
+          validateDes(mess, value);
           break;
         }
       case 'category':
@@ -129,22 +162,22 @@ class CreateCollectionBloc {
         }
       case 'facebook':
         {
-          validateFacebook(mess);
+          validateFacebook(mess, value);
           break;
         }
       case 'twitter':
         {
-          validateTwitter(mess);
+          validateTwitter(mess, value);
           break;
         }
       case 'instagram':
         {
-          validateInstagram(mess);
+          validateInstagram(mess, value);
           break;
         }
       case 'telegram':
         {
-          validateTelegram(mess);
+          validateTelegram(mess, value);
           break;
         }
       default:
@@ -166,12 +199,15 @@ class CreateCollectionBloc {
       return '$hintText can not be empty';
     } else if (hintText == S.current.royalties) {
       if (value.isEmpty) {
+        royalties = 0;
         return '';
       } else {
         try {
-          if (int.parse(value) > 50) {
+          final int tempInt = int.parse(value);
+          if (tempInt > 50) {
             return S.current.max_royalty;
           } else {
+            royalties = tempInt;
             return '';
           }
         } catch (e) {
@@ -185,27 +221,30 @@ class CreateCollectionBloc {
     }
   }
 
-  void validateName(String mess) {
+  void validateName(String mess, String value) {
     nameCollectionSubject.sink.add(mess);
     if (mess.isEmpty) {
+      collectionName = value;
       mapCheck['collection_name'] = true;
     } else {
       mapCheck['collection_name'] = false;
     }
   }
 
-  void validateURL(String mess) {
+  void validateURL(String mess, String value) {
     customURLSubject.sink.add(mess);
     if (mess.isEmpty) {
+      customUrl = value;
       mapCheck['custom_url'] = true;
     } else {
       mapCheck['custom_url'] = false;
     }
   }
 
-  void validateDes(String mess) {
+  void validateDes(String mess, String value) {
     descriptionSubject.sink.add(mess);
     if (mess.isEmpty) {
+      description = value;
       mapCheck['description'] = true;
     } else {
       mapCheck['description'] = false;
@@ -221,36 +260,40 @@ class CreateCollectionBloc {
     }
   }
 
-  void validateFacebook(String mess) {
+  void validateFacebook(String mess, String value) {
     facebookSubject.sink.add(mess);
     if (mess.isEmpty) {
+      faceBook = value;
       mapCheck['facebook'] = true;
     } else {
       mapCheck['facebook'] = false;
     }
   }
 
-  void validateTwitter(String mess) {
+  void validateTwitter(String mess, String value) {
     twitterSubject.sink.add(mess);
     if (mess.isEmpty) {
+      twitter = value;
       mapCheck['twitter'] = true;
     } else {
       mapCheck['twitter'] = false;
     }
   }
 
-  void validateInstagram(String mess) {
+  void validateInstagram(String mess, String value) {
     instagramSubject.sink.add(mess);
     if (mess.isEmpty) {
+      instagram = value;
       mapCheck['instagram'] = true;
     } else {
       mapCheck['instagram'] = false;
     }
   }
 
-  void validateTelegram(String mess) {
+  void validateTelegram(String mess, String value) {
     telegramSubject.sink.add(mess);
     if (mess.isEmpty) {
+      telegram = value;
       mapCheck['telegram'] = true;
     } else {
       mapCheck['telegram'] = false;
@@ -268,6 +311,7 @@ class CreateCollectionBloc {
 
   Future<void> setCategory(String id) async {
     categoryId = id;
+    categoryName = id;
   }
 
   ///validate custom URL
@@ -287,7 +331,7 @@ class CreateCollectionBloc {
         customURLSubject.sink.add('');
         debounceTime = Timer(
           const Duration(milliseconds: 500),
-              () async {
+          () async {
             final appConstants = Get.find<AppConstants>();
             final String uri = appConstants.baseUrl +
                 ApiConstants.GET_BOOL_CUSTOM_URL +
@@ -299,6 +343,7 @@ class CreateCollectionBloc {
               if (response.body == 'true') {
                 mapCheck['custom_url'] = true;
               } else {
+                customURLSubject.sink.add('LOI ME MAY ROI');
                 mapCheck['custom_url'] = false;
               }
             } else {
@@ -315,6 +360,85 @@ class CreateCollectionBloc {
     }
   }
 
+  void loadImage({
+    required String type,
+    required double imageSizeInMB,
+    required String imagePath,
+    required File image,
+  }) {
+    switch (type) {
+      case 'avatar':
+        {
+          if (imageSizeInMB > 15) {
+            mapCheck['avatar'] = false;
+            avatarMessSubject.sink.add(S.current.maximum_size);
+            break;
+          } else {
+            mapCheck['avatar'] = true;
+            avatarMessSubject.sink.add('');
+            avatarSubject.sink.add(image);
+            avatarPath = imagePath;
+            avatar = image;
+            break;
+          }
+        }
+      case 'cover_photo':
+        {
+          if (imageSizeInMB > 15) {
+            mapCheck['cover_photo'] = false;
+            coverPhotoMessSubject.sink.add(S.current.maximum_size);
+            break;
+          } else {
+            mapCheck['cover_photo'] = true;
+            coverPhotoMessSubject.sink.add('');
+            coverPhotoSubject.sink.add(image);
+            coverPhotoPath = imagePath;
+            coverPhoto = image;
+            break;
+          }
+        }
+      case 'feature_photo':
+        {
+          if (imageSizeInMB > 15) {
+            mapCheck['feature_photo'] = false;
+            featurePhotoMessSubject.sink.add(S.current.maximum_size);
+            break;
+          } else {
+            mapCheck['feature_photo'] = true;
+            featurePhotoMessSubject.sink.add('');
+            featurePhotoSubject.sink.add(image);
+            featurePhotoPath = imagePath;
+            featurePhoto = image;
+            break;
+          }
+        }
+      default:
+        break;
+    }
+    validateCreate();
+  }
+
+  ///get List TypeNFT
+  Future<void> getListTypeNFT() async {
+    final Result<List<TypeNFTModel>> result = await _nftRepo.getListTypeNFT();
+    result.when(
+      success: (res) {
+        listNFT = res;
+        res.sort((a, b) => (a.standard ?? 0).compareTo(b.standard ?? 0));
+        listSoftNFT = res.where((element) => element.type == 0).toList();
+        listSoftNFTSubject.sink.add(listSoftNFT);
+        listHardNFT = res.where((element) => element.type == 1).toList();
+        listHardNFTSubject.sink.add(listHardNFT);
+      },
+      error: (error) {},
+    );
+  }
+
+  int getStandardFromID(String id) {
+    final st = listNFT.where((element) => element.id == id).first;
+    return st.standard ?? 0;
+  }
+
   /// get list category
   Future<void> getListCategory() async {
     List<DropdownMenuItem<String>> menuItems = [];
@@ -322,6 +446,7 @@ class CreateCollectionBloc {
         await _categoryRepository.getListCategory();
     result.when(
       success: (res) {
+        listCategory = res;
         menuItems = res
             .map(
               (e) => DropdownMenuItem(
@@ -333,6 +458,88 @@ class CreateCollectionBloc {
       },
       error: (error) {},
     );
-    listCategorySubject.sink.add(menuItems);
+    listCategorySubject.sink.add(listCategory);
+  }
+
+  ///Upload image IPFS
+  Future<void> uploadImageToIPFS({
+    required String hint,
+    required String bin,
+  }) async {
+    log('START UPLOAD IMAGE');
+    final headers = {
+      'pinata_api_key': 'ac8828bff3bcd1c1b828',
+      'pinata_secret_api_key':
+          'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
+    };
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('https://api.pinata.cloud/pinning/pinFileToIPFS?file'),
+    );
+    request.files.add(await http.MultipartFile.fromPath('file', bin));
+    request.headers.addAll(headers);
+    try {
+      final http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> map =
+            jsonDecode(await response.stream.bytesToString());
+        log(map['IpfsHash']);
+      } else {
+        log(response.reasonPhrase.toString());
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    log('END UPLOAD IMAGE');
+  }
+
+  ///Create Collection
+  Future<void> createCollection({required int collectionType}) async {
+    final List<Map<String, String>> socialLink = createSocialMap();
+    final String standard = collectionType == 0 ? 'ERC-721' : 'ERC-1155';
+    final Map<String, dynamic> sortParam = {
+      'avatar_cid': '???',
+      'category_id': categoryId,
+      'collection_standard': standard,
+      'cover_cid': '???',
+      'custom_url': customUrl,
+      'description': description,
+      'feature_cid': '???',
+      'name': collectionName,
+      'royalty': royalties,
+      'social_links': socialLink,
+      'txn_hash': 'txnHash',
+    };
+    log(sortParam.toString());
+  }
+
+  ///Create list Social link from data
+  List<Map<String, String>> createSocialMap() {
+    final List<Map<String, String>> list = [];
+    if (faceBook.isNotEmpty) {
+      list.add({
+        'type': 'facebook',
+        'url': faceBook,
+      });
+    }
+    if (instagram.isNotEmpty) {
+      list.add({
+        'type': 'instagram',
+        'url': instagram,
+      });
+    }
+    if (twitter.isNotEmpty) {
+      list.add({
+        'type': 'twitter',
+        'url': twitter,
+      });
+    }
+    if (telegram.isNotEmpty) {
+      list.add({
+        'type': 'telegram',
+        'url': telegram,
+      });
+    }
+    return list;
   }
 }

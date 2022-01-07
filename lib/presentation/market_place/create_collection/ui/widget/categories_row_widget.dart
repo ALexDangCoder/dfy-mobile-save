@@ -34,7 +34,8 @@ class CategoryRow extends StatelessWidget {
           ),
           Expanded(
             child: StreamBuilder<List<DropdownMenuItem<String>>>(
-              stream: bloc.listCategorySubject,
+              // stream: bloc.listCategorySubject,
+              stream: null,
               builder: (context, snapshot) {
                 final List<DropdownMenuItem<String>> menuItems =
                     snapshot.data ?? [];
@@ -59,7 +60,7 @@ class CategoryRow extends StatelessWidget {
                     ),
                     border: InputBorder.none,
                   ),
-                  dropdownColor: AppTheme.getInstance().backgroundBTSColor(),
+                  dropdownColor: AppTheme.getInstance().selectDialogColor(),
                   onChanged: (value) {
                     FocusScope.of(context).requestFocus(FocusNode());
                     bloc.setCategory(value ?? '');

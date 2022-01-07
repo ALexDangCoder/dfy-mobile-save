@@ -30,12 +30,13 @@ class _StakingState extends State<StakingScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                // builder: (context) => CreateCollectionScreen(
+                builder: (context) => CreateCollectionScreen(
+                  bloc: CreateCollectionBloc(),
+                ),
+                // builder: (context) => CreateDetailCollection(
                 //   bloc: CreateCollectionBloc(),
+                //   typeNFT: TypeNFT.SOFT_NFT_ERC721,
                 // ),
-                builder: (context) => CreateDetailCollection(
-                    bloc: CreateCollectionBloc(),
-                    typeNFT: TypeNFT.SOFT_NFT_ERC721),
               ),
             );
           },

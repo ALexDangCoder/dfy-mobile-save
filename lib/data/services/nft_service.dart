@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
 import 'package:Dfy/data/response/nft/nft_on_auction_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:dio/dio.dart';
@@ -15,4 +16,6 @@ abstract class NFTClient {
   Future<AuctionResponse> getDetailNFTAuction(
     @Path('marketId') String marketID,
   );
+  @GET(ApiConstants.GET_LIST_TYPE_NFT)
+  Future<ListTypeNFTResponse> getListTypeNFT();
 }
