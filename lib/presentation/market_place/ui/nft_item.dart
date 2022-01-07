@@ -9,6 +9,7 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_countdown_timer/countdown_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
@@ -28,6 +29,7 @@ class NFTItemWidget extends StatefulWidget {
 class _NFTItemState extends State<NFTItemWidget> {
   final formatValue = NumberFormat('###,###,###.###', 'en_US');
   late VideoPlayerController? _controller;
+  CountdownController countdownController = CountdownController(duration: Duration());
 
   @override
   void initState() {
