@@ -4,12 +4,14 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/ui/nft_item/bloc/nft_item_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_controller.dart';
+import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
@@ -29,7 +31,10 @@ class NFTItemWidget extends StatefulWidget {
 class _NFTItemState extends State<NFTItemWidget> {
   final formatValue = NumberFormat('###,###,###.###', 'en_US');
   late VideoPlayerController? _controller;
-  CountdownController countdownController = CountdownController(duration: Duration());
+  late CountdownTimerController countdownController;
+  DateTime? startTimeAuction;
+  DateTime? endTimeAuction;
+  late NftItemCubit cubitNft;
 
   @override
   void initState() {
@@ -41,6 +46,19 @@ class _NFTItemState extends State<NFTItemWidget> {
       });
       _controller!.setLooping(true);
       _controller!.initialize().then((_) => setState(() {}));
+    }
+    cubitNft = NftItemCubit();
+    if (widget.nftMarket.marketType == MarketType.AUCTION) {
+      countdownController = CountdownTimerController(
+        endTime: DateTime.now().millisecondsSinceEpoch +
+            Duration(seconds: 5).inMilliseconds,
+      );
+      startTimeAuction = cubitNft.parseTimeServerToDateTime(
+          value: widget.nftMarket.startTime ?? 0);
+      endTimeAuction = cubitNft.parseTimeServerToDateTime(
+          value: (widget.nftMarket.endTime == 0) ? 1641727464 : 0);
+    } else {
+
     }
   }
 
@@ -264,14 +282,25 @@ class _NFTItemState extends State<NFTItemWidget> {
               SizedBox(
                 width: 7.w,
               ),
-              Text(
-                '15:02:02',
-                style: textNormalCustom(
-                  AppTheme.getInstance().whiteColor(),
-                  13,
-                  FontWeight.w600,
-                ),
-              ),
+              if (cubitNft.isOutOfTimeAuction(
+                  endTime: endTimeAuction ?? DateTime.now()))
+                Text(
+                  '15:02:02',
+                  style: textNormalCustom(
+                    AppTheme.getInstance().whiteColor(),
+                    13,
+                    FontWeight.w600,
+                  ),
+                )
+              else
+                Text(
+                  '00:00:00',
+                  style: textNormalCustom(
+                    AppTheme.getInstance().whiteColor(),
+                    13,
+                    FontWeight.w600,
+                  ),
+                )
             ],
           ),
         ),
