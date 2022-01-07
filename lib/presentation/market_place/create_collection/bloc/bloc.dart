@@ -11,7 +11,6 @@ import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
@@ -34,7 +33,6 @@ class CreateCollectionBloc {
   List<TypeNFTModel> listHardNFT = [];
   List<TypeNFTModel> listSoftNFT = [];
 
-  String categoryName = '';
   String categoryId = '';
   String avatarPath = '';
   String coverPhotoPath = '';
@@ -44,13 +42,14 @@ class CreateCollectionBloc {
   File? coverPhoto;
   File? featurePhoto;
 
+  ///Default value of validate field
   Map<String, bool> mapCheck = {
     'cover_photo': false,
     'avatar': false,
     'feature_photo': false,
     'collection_name': false,
     'custom_url': true,
-    'description': false,
+    'description': true,
     'categories': false,
     'royalties': true,
     'facebook': true,
@@ -96,7 +95,7 @@ class CreateCollectionBloc {
   BehaviorSubject<File> featurePhotoSubject = BehaviorSubject();
 
   ///Send Category
-  BehaviorSubject<List<Category>> listCategorySubject =
+  BehaviorSubject<List<Map<String,String>>> listCategorySubject =
       BehaviorSubject();
 
   ///Send TypeNFT
@@ -195,8 +194,9 @@ class CreateCollectionBloc {
         hintText != 'Instagram' &&
         hintText != 'Telegram' &&
         hintText != S.current.royalties &&
-        hintText != 'app.defiforyou/uk/marketplace/....') {
-      return '$hintText can not be empty';
+        hintText != 'app.defiforyou/uk/marketplace/....'&&
+        hintText != S.current.description) {
+      return S.current.collection_name_require;
     } else if (hintText == S.current.royalties) {
       if (value.isEmpty) {
         royalties = 0;
@@ -300,19 +300,16 @@ class CreateCollectionBloc {
     }
   }
 
-  void validateCategory(String mess) {
-    categoriesSubject.sink.add(mess);
-    if (mess.isEmpty) {
+  void validateCategory(String value) {
+    if (value.isNotEmpty) {
+      categoryId = value;
       mapCheck['categories'] = true;
     } else {
+      categoriesSubject.sink.add(S.current.category_require);
       mapCheck['categories'] = false;
     }
   }
 
-  Future<void> setCategory(String id) async {
-    categoryId = id;
-    categoryName = id;
-  }
 
   ///validate custom URL
   Timer? debounceTime;
@@ -441,7 +438,7 @@ class CreateCollectionBloc {
 
   /// get list category
   Future<void> getListCategory() async {
-    List<DropdownMenuItem<String>> menuItems = [];
+    List<Map<String,String>> menuItems = [];
     final Result<List<Category>> result =
         await _categoryRepository.getListCategory();
     result.when(
@@ -449,16 +446,13 @@ class CreateCollectionBloc {
         listCategory = res;
         menuItems = res
             .map(
-              (e) => DropdownMenuItem(
-                value: e.id ?? '',
-                child: Text(e.name ?? ''),
-              ),
+              (e) => {'label': e.name ?? '', 'value': e.id ?? ''},
             )
             .toList();
       },
       error: (error) {},
     );
-    listCategorySubject.sink.add(listCategory);
+    listCategorySubject.sink.add(menuItems);
   }
 
   ///Upload image IPFS

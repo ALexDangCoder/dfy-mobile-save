@@ -122,6 +122,7 @@ dependencies:
   pin_code_fields: ^7.3.0
 
   html: ^0.15.0
+  cool_dropdown: ^1.4.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

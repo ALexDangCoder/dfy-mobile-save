@@ -1,13 +1,10 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/widget/categories_row_widget.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/widget/catogy_select_widget.dart';
+import 'package:Dfy/presentation/market_place/create_collection/ui/widget/categories_cool.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
@@ -75,36 +72,48 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
         child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
               children: [
-                uploadWidget(),
-                SizedBox(height: 32.h),
-                informationWidget(),
-                SizedBox(height: 32.h),
-                socialLinkWidget(),
-                SizedBox(height: 32.h),
-                StreamBuilder<bool>(
-                  stream: widget.bloc.enableCreateStream,
-                  initialData: false,
-                  builder: (context, snapshot) {
-                    final statusButton = snapshot.data ?? false;
-                    return ButtonLuxury(
-                      marginHorizontal: 16,
-                      title: S.current.create,
-                      isEnable: statusButton,
-                      buttonHeight: 64,
-                      fontSize: 20,
-                      onTap: () {
-                        if (statusButton) {
-                          widget.bloc.createCollection(
-                            collectionType: widget.typeNFT,
-                          );
-                        } else {}
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    uploadWidget(),
+                    SizedBox(height: 32.h),
+                    informationWidget(),
+                    SizedBox(height: 32.h),
+                    socialLinkWidget(),
+                    SizedBox(height: 32.h),
+                    StreamBuilder<bool>(
+                      stream: widget.bloc.enableCreateStream,
+                      initialData: false,
+                      builder: (context, snapshot) {
+                        final statusButton = snapshot.data ?? false;
+                        return ButtonLuxury(
+                          marginHorizontal: 16.w,
+                          title: S.current.create,
+                          isEnable: statusButton,
+                          buttonHeight: 64,
+                          fontSize: 20,
+                          onTap: () {
+                            if (statusButton) {
+                              widget.bloc.createCollection(
+                                collectionType: widget.typeNFT,
+                              );
+                            } else {}
+                          },
+                        );
                       },
-                    );
-                  },
+                    ),
+                  ],
                 ),
+                // Positioned(
+                //   top: 1032.h,
+                //   left: 0,
+                //   right: 0,
+                //   child: SelectCategory(
+                //     bloc: widget.bloc,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -441,10 +450,8 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
             return errorMessage(mess);
           },
         ),
-        CategoryRow(
-          bloc: widget.bloc,
-        ),
-        SelectCategory(
+        spaceH16,
+        CategoriesCool(
           bloc: widget.bloc,
         ),
         StreamBuilder<String>(

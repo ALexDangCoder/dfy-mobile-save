@@ -51,7 +51,7 @@ class _InputWithSelectTypeState extends State<InputWithSelectType> {
   void findDropDownSize() {
     height = dropdownKey.currentContext?.size?.height ?? 0;
     width = dropdownKey.currentContext?.size?.width ?? 0;
-    Offset offset =
+    final Offset offset =
         (dropdownKey.currentContext?.findRenderObject() as RenderBox)
             .localToGlobal(Offset.zero);
     xPosition = offset.dx;
@@ -174,7 +174,7 @@ class DropDown extends StatelessWidget {
       required this.xPosition,
       this.heightOfWidget,
       required this.typeInput,
-      this.chooseIndex = 0})
+      this.chooseIndex = 0,})
       : super(key: key);
 
   @override

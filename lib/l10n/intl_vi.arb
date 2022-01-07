@@ -345,20 +345,6 @@
   "create_now": "Bạn không có ví nào. Hãy tạo ngay",
   "email_too_long": "Email có tối đa 50 ký tự",
   "email_invalid": "Email không hợp lệ",
-  "could_not_load_data": "Không thể tải dữ liệu",
-  "create_collection": "Tạo bộ sưu tập",
-  "coming_soon": "COMING SOON",
-  "upload_cover_photo": "TẢI LÊN ẢNH BÌA",
-  "upload_avatar": "TẢI LÊN ẢNH ĐẠI DIỆN",
-  "upload_featured_photo": "TẢI LÊN ẢNH NỔI BẬT",
-  "format_image": "Định dạng: JPG, PNG, GIFF",
-  "collection_name": "Tên bộ sưu tập",
-  "categories": "Phân loại",
-  "royalties": "Tiền bản quyền",
-  "social_links": "Liên kết mạng xã hội",
-  "maximum_len": "Số kí tự tối đa là 255",
-  "only_digits": "Chỉ được phép nhập số",
-  "max_royalty": "Tiền bản quyền tối đa là 50%",
   "see_more": "Xem thêm",
   "activity_bid": "bid",
   "activity_bought": "bought",
@@ -409,7 +395,7 @@
   "feature_soft_nfts" : "Featured Soft NFTs",
   "buy_sell_create_collectible_nfts": "Mua, bán và tạo cácNFT sưu tập",
   "loading_text": "Đang tải...",
-  "error_text": "Lỗi tải..."
+  "error_text": "Lỗi tải...",
   "could_not_load_data" : "Không thể tải dữ liệu",
   "create_collection" : "Tạo bộ sưu tập",
   "coming_soon" : "COMING SOON",
@@ -427,5 +413,7 @@
   "maximum_size" : "Kích cỡ tối đa của ảnh là 15MB",
   "avatar_required" : "Ảnh đại diện là bắt buộc",
   "cover_photo_required" : "Ảnh bìa là bắt buộc",
-  "feature_photo_required" : "Ảnh nổi bật là bắt buộc"
+  "feature_photo_required" : "Ảnh nổi bật là bắt buộc",
+  "category_require" : "Danh mục là bắt buộc",
+  "collection_name_require" : "Tên của bộ sưu tập là bắt buộc"
 }

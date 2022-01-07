@@ -185,6 +185,8 @@ abstract class AppColor {
   Color disableRadioColor();
 
   List<Color> listBackgroundMarketColor();
+
+  Color bgProgressingColors();
 }
 
 class LightApp extends AppColor {
@@ -470,6 +472,12 @@ class LightApp extends AppColor {
   Color colorTextReset() {
     // TODO: implement colorTextReset
     return const Color(0xff585782);
+  }
+
+  @override
+  Color bgProgressingColors() {
+    // TODO: implement bgProgressingColors
+    return const Color(0xFF3E3D5C);
   }
 }
 
@@ -779,6 +787,12 @@ class DarkApp extends AppColor {
   @override
   Color colorTextReset() {
     // TODO: implement colorTextReset
+    throw UnimplementedError();
+  }
+
+  @override
+  Color bgProgressingColors() {
+    // TODO: implement bgProgressingColors
     throw UnimplementedError();
   }
 }
