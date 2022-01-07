@@ -14,7 +14,7 @@ abstract class NFTClient {
   @factoryMethod
   factory NFTClient(Dio dio, {String baseUrl}) = _NFTClient;
 
-  @GET(ApiConstants.GET_DETAIL_NFT_AUCTION)
+  @GET('${ApiConstants.GET_DETAIL_NFT_AUCTION}{marketId}')
   Future<AuctionResponse> getDetailNFTAuction(
     @Path('marketId') String marketID,
   );

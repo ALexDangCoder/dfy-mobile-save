@@ -21,7 +21,7 @@ class NFTRepositoryImpl implements NFTRepository {
   Future<Result<NFTOnAuction>> getDetailNFTAuction(String marketId) {
     return runCatchingAsync<AuctionResponse, NFTOnAuction>(
       () => _nftClient.getDetailNFTAuction(marketId),
-      (response) => response.item?.toAuction() ?? NFTOnAuction.init(),
+      (response) => response.item!.toAuction(),
     );
   }
 
