@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/main.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class LoginCubit extends BaseCubit<LoginState> {
         loginSuccess = await methodCall.arguments['isCorrect'];
         if (loginSuccess == true) {
           emit(LoginPasswordSuccess());
+          await PrefsService.saveLoginStatus(true);
         } else {
           emit(LoginPasswordError());
         }

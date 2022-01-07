@@ -1,4 +1,5 @@
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_bid.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_burn.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_buy.dart';
@@ -74,12 +75,21 @@ class ListActivity extends StatelessWidget {
     if (addressMyWallet == addressWallet) {
       myAddress = S.current.activity_you;
     } else {
-      myAddress = addressWallet.formatAddressActivityFire();
+      if (addressWallet.length < 12) {
+        myAddress = addressWallet;
+      } else {
+        myAddress = addressWallet.formatAddressActivityFire();
+      }
     }
     if (addressMyWallet == addressWalletSend) {
       myAddressTo = S.current.activity_you;
     } else {
-      myAddressTo = addressWalletSend.formatAddressActivityFire();
+      if (addressWallet.length < 12) {
+        myAddress = addressWalletSend;
+      } else {
+        myAddressTo = addressWalletSend.formatAddressActivityFire();
+
+      }
     }
     return itemActivity(
       price: price,
@@ -114,7 +124,7 @@ class ListActivity extends StatelessWidget {
     String? urlSymbol,
   }) {
     switch (typeActivity) {
-      case 0:
+      case DetailCollectionBloc.PUT_ON_MARKET:
         return PutOnMarket(
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
@@ -127,7 +137,7 @@ class ListActivity extends StatelessWidget {
           moneySymbol: priceSymbol ?? '',
           urlSymbol: urlSymbol ?? '',
         );
-      case 1:
+      case DetailCollectionBloc.TRANSFER_ACTIVITY:
         return TransferActivity(
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
@@ -136,7 +146,7 @@ class ListActivity extends StatelessWidget {
           addressSend: addressWalletSend ?? '',
           address: addressWallet ?? '',
         );
-      case 2:
+      case DetailCollectionBloc.BURN:
         return Burn(
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
@@ -144,7 +154,7 @@ class ListActivity extends StatelessWidget {
           content: addressWallet ?? '',
           copy: copy ?? '',
         );
-      case 3:
+      case DetailCollectionBloc.CANCEL:
         return Cancel(
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
@@ -153,21 +163,21 @@ class ListActivity extends StatelessWidget {
           market: market ?? '',
           copy: copy ?? '',
         );
-      case 4:
+      case DetailCollectionBloc.LIKE:
         return Like(
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
           content: addressWallet ?? '',
         );
-      case 5:
+      case DetailCollectionBloc.REPORT:
         return Report(
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
           content: addressWallet ?? '',
         );
-      case 6:
+      case DetailCollectionBloc.BUY:
         return Buy(
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
@@ -178,7 +188,7 @@ class ListActivity extends StatelessWidget {
           amountSymbol: priceSymbol ?? '',
           urlSymbol: urlSymbol ?? '',
         );
-      case 7:
+      case DetailCollectionBloc.BID_BUY_OUT:
         if (auctionType == 0) {
           return Bid(
             urlAvatar: urlAvatar ?? '',
@@ -200,7 +210,7 @@ class ListActivity extends StatelessWidget {
             amountSymbol: priceSymbol ?? '',
           );
         }
-      case 8:
+      case DetailCollectionBloc.RECEIVE_OFFER:
         return ReceiveOffer(
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
@@ -210,7 +220,7 @@ class ListActivity extends StatelessWidget {
           valueSymbol: priceSymbol ?? '',
           urlSymbol: urlSymbol ?? '',
         );
-      case 9:
+      case DetailCollectionBloc.SIGN_CONTRACT:
         return SignContract(
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',

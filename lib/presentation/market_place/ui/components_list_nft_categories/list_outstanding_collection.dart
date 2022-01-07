@@ -1,18 +1,17 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
-import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
-import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/presentation/market_place/ui/collection_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
-import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
+import 'package:Dfy/widgets/error_nft_collection_explore/error_load_collection.dart';
+import 'package:Dfy/widgets/skeleton/skeleton_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'nft_item.dart';
 
-class ListNftOnSale extends StatelessWidget {
-  const ListNftOnSale({
+class ListOutstandingCollection extends StatelessWidget {
+  const ListOutstandingCollection({
     Key? key,
     required this.cubit,
     required this.isLoading,
@@ -26,6 +25,7 @@ class ListNftOnSale extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        //text outstanding feat button arrow
         Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: Row(
@@ -36,22 +36,23 @@ class ListNftOnSale extends StatelessWidget {
                     ? S.current.loading_text
                     : (isLoadFail
                         ? S.current.error_text
-                        : S.current.sale_items),
+                        : S.current.outstanding_collection),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
                   FontWeight.w700,
                 ),
               ),
-              InkWell(
+              GestureDetector(
                 onTap: () {
                   isLoading
                       ? () {}
                       : Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ListNft(
-                              marketType: MarketType.SALE,
+                            builder: (ctx) => CollectionList(
+                              query: '',
+                              title: '',
                             ),
                           ),
                         );
@@ -75,11 +76,11 @@ class ListNftOnSale extends StatelessWidget {
         SizedBox(
           height: 20.h,
         ),
-        //list nft on sale
+        //list outstanding collection
         Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: SizedBox(
-            height: 231.h,
+            height: 147.h,
             child: isLoadFail
                 ? ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
@@ -87,18 +88,15 @@ class ListNftOnSale extends StatelessWidget {
                     itemCount: 6,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            ErrorLoadNft(
-                              callback: () {
-                                cubit.getListNftCollectionExplore();
-                              },
-                            ),
-                            spaceW12,
-                          ],
-                        ),
+                      return Row(
+                        children: [
+                          ErrorLoadCollection(
+                            callback: () {
+                              cubit.getListNftCollectionExplore();
+                            },
+                          ),
+                          spaceW20,
+                        ],
                       );
                     },
                   )
@@ -106,36 +104,32 @@ class ListNftOnSale extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: isLoading
                         ? 6
-                        : (cubit.nftsSale.length > 6)
+                        : (cubit.outstandingCollection.length > 6)
                             ? 6
-                            : cubit.nftsSale.length,
+                            : cubit.outstandingCollection.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          isLoading
-                              ? () {}
-                              : Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const NFTDetailScreen(
-                                      type: MarketType.SALE,
-                                    ),
-                                  ),
-                                );
-                        },
-                        child: Row(
-                          children: [
-                            if (isLoading)
-                              const SkeletonNft()
-                            else
-                              NFTItemWidget(
-                                nftMarket: cubit.nftsSale[index],
-                              ),
-                            spaceW12,
-                          ],
-                        ),
-                      );
+                      return isLoading
+                          ? Row(
+                              children: [
+                                const SkeletonCollection(),
+                                spaceW20,
+                              ],
+                            )
+                          : CollectionItem(
+                              typeCollection: cubit
+                                  .outstandingCollection[index].collectionType,
+                              urlIcon: cubit
+                                      .outstandingCollection[index].avatarCid ??
+                                  '',
+                              title: cubit.outstandingCollection[index].name ??
+                                  'error',
+                              urlBackGround:
+                                  cubit.outstandingCollection[index].coverCid ??
+                                      '',
+                              idCollection:
+                                  cubit.outstandingCollection[index].id ?? '',
+                            );
                     },
                   ),
           ),

@@ -171,6 +171,12 @@ extension AppDelegate {
             }
         }
         
+        if call.method == "signTransactionWithData" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let contractAddress = arguments["contractAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let withData = arguments["withData"] as? String {
+                signTransactionWithData(walletAddress: walletAddress, contractAddress: contractAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, withData: withData)
+            }
+        }
+        
         result(FlutterMethodNotImplemented)
     }
 }
@@ -774,6 +780,43 @@ extension AppDelegate {
         param["symbol"] = symbol
         param["nftId"] = tokenId
         chatChanel?.invokeMethod("signTransactionNftCallback", arguments: param)
+        return param
+    }
+    
+    private func signTransactionWithData(walletAddress: String,
+                                         contractAddress: String,
+                                         nonce: String,
+                                         chainId: String,
+                                         gasPrice: String,
+                                         gasLimit: String,
+                                         withData: String) -> [String: Any] {
+        var param = [String: Any]()
+        let walletModel = SharedPreference.shared.getListWallet().first(where: {$0.walletAddress == walletAddress})
+        if let walletModel = walletModel, !walletModel.privateKey.isEmpty {
+            let privateKey = PrivateKey(data: walletModel.privateKey.hexadecimal!)!
+            let signerInput = EthereumSigningInput.with {
+                $0.nonce = BigInt(nonce)!.serialize()
+                $0.chainID = BigInt(chainId)!.serialize()
+                $0.gasPrice = BigInt(gasPrice.handleAmount(decimal: 9))!.serialize()
+                $0.gasLimit = BigInt(gasLimit)!.serialize()
+                $0.toAddress = contractAddress
+                $0.privateKey = privateKey.data
+                $0.transaction = EthereumTransaction.with {
+                    $0.transfer = EthereumTransaction.Transfer.with {
+                        $0.amount = BigInt("0").serialize()
+                        $0.data = Data(hexString: "0x\(withData)")!
+                    }
+                }
+            }
+            let outputBnb: EthereumSigningOutput = AnySigner.sign(input: signerInput, coin: .smartChain)
+            let value = outputBnb.encoded.hexString
+            param["isSuccess"] = true
+            param["signedTransaction"] = value
+        } else {
+            param["isSuccess"] = false
+            param["signedTransaction"] = ""
+        }
+        chatChanel?.invokeMethod("signTransactionWithDataCallback", arguments: param)
         return param
     }
 }

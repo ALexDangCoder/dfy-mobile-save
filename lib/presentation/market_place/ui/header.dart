@@ -1,8 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/home/ui/home_screen.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/confirm_email.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
@@ -45,14 +47,7 @@ class HeaderMarketPlace extends StatelessWidget {
                   ),
                 );
               },
-              onDoubleTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ConnectWallet(),
-                  ),
-                );
-              },
+              onDoubleTap: () => showDialog(context: context, builder: (context) => ConnectWalletDialog(navigationTo: HomeScreen(),) ),
               onLongPress: () {
                 Navigator.push(
                   context,

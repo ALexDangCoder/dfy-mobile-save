@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/nonce_model.dart';
 import 'package:Dfy/domain/repository/market_place/nonce_repository.dart';
@@ -41,7 +42,7 @@ class LoginWithEmailCubit extends Cubit<LoginWithEmailState> {
   }
 
   void startTimer({int timeStart = 60}) {
-    const oneSec = Duration(milliseconds: 50);
+    const oneSec = Duration(milliseconds: 1000);
     emit(TimerCountDown(timeStart));
 
     Timer.periodic(

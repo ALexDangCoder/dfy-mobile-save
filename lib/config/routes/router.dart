@@ -19,13 +19,16 @@ class AppRouter {
   static const scanQR = '/scanQR';
   static const collectionList = '/collection_list';
 
-
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
 
     switch (settings.name) {
       case collectionList:
-        return MaterialPageRoute(builder: (ctx) => const CollectionList());
+        return MaterialPageRoute(
+          builder: (ctx) => CollectionList(
+            query: '',
+          ),
+        );
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
       case main:

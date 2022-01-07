@@ -38,8 +38,7 @@ class _EmailExistedState extends State<EmailExisted> {
             showDialog(
               context: context,
               builder: (context) => const ConnectWalletDialog(
-                currentScreen: MarketPlaceScreen(),
-                isHaveAccount: true,
+                navigationTo: MarketPlaceScreen(),
               ),
             );
           }),

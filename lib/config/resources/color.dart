@@ -25,6 +25,7 @@ const purple = Color(0xff9997FF);
 const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
+const textHistory = Color(0xFFE4E4E4);
 
 //skeleton
 const colorSkeletonLight = Color(0xFF605F83);
@@ -40,6 +41,9 @@ Color whiteOpacityZeroFire = Colors.white.withOpacity(0.5);
 const borderItemColors = Color(0xff474666);
 const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
+const borderApprovedButton  = Color(0xff39984E);
+const disableText = Color(0xff979797);
+const fillApprovedButton = Color(0xffD4ECD9);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
 const errorColor = Color(0xFFCDCDCD);
 const dialogColor = Color(0xff585782);

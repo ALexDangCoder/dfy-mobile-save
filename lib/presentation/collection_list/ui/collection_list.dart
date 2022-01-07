@@ -7,6 +7,8 @@ import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/presentation/collection_list/ui/item_error.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
+import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -24,7 +26,14 @@ import 'filter_myacc.dart';
 import 'item_collection_load.dart';
 
 class CollectionList extends StatefulWidget {
-  const CollectionList({Key? key}) : super(key: key);
+  final String query;
+  String? title;
+
+  CollectionList({
+    Key? key,
+    required this.query,
+    this.title,
+  }) : super(key: key);
 
   @override
   _CollectionListState createState() => _CollectionListState();
@@ -32,15 +41,23 @@ class CollectionList extends StatefulWidget {
 
 class _CollectionListState extends State<CollectionList> {
   late final CollectionBloc collectionBloc;
-
   late final TextEditingController searchCollection;
+  bool isMyacc = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    if (widget.title!.isNotEmpty) {
+      widget.title = S.current.collection_search_result;
+    } else {
+      widget.title = S.current.collection_list;
+    }
     collectionBloc = CollectionBloc();
+    collectionBloc.getCollection(
+      name: widget.query,
+    );
     searchCollection = TextEditingController();
+    searchCollection.text = widget.query;
     trustWalletChannel
         .setMethodCallHandler(collectionBloc.nativeMethodCallBackTrustWallet);
     collectionBloc.getListWallets();
@@ -52,7 +69,16 @@ class _CollectionListState extends State<CollectionList> {
       resizeToAvoidBottomInset: false,
       floatingActionButton: GestureDetector(
         onTap: () {
-          print('hello');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return CreateCollectionScreen(
+                  bloc: CreateCollectionBloc(),
+                );
+              },
+            ),
+          );
         },
         child: Container(
           decoration: BoxDecoration(
@@ -103,19 +129,29 @@ class _CollectionListState extends State<CollectionList> {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          margin: EdgeInsets.only(left: 16.w),
+                          margin: EdgeInsets.only(
+                            left: 16.w,
+                          ),
                           width: 28.w,
                           height: 28.h,
-                          child: Image.asset(ImageAssets.ic_back),
+                          child: Image.asset(
+                            ImageAssets.ic_back,
+                          ),
                         ),
                       ),
                       Text(
-                        S.current.collection_list,
-                        style: textNormalCustom(null, 20.sp, FontWeight.w700),
+                        widget.title ?? S.current.collection_list,
+                        style: textNormalCustom(
+                          null,
+                          20.sp,
+                          FontWeight.w700,
+                        ).copyWith(
+                          overflow: TextOverflow.ellipsis
+                        ),
+                        maxLines: 1,
                       ),
                       GestureDetector(
                         onTap: () {
-                          bool isMyacc = true;
                           if (!isMyacc) {
                             showModalBottomSheet(
                               isScrollControlled: true,
@@ -160,7 +196,7 @@ class _CollectionListState extends State<CollectionList> {
                   BlocBuilder<CollectionBloc, CollectionState>(
                     bloc: collectionBloc,
                     builder: (context, state) {
-                      if (state is  LoadingData) {
+                      if (state is LoadingData) {
                         return Expanded(
                           child: StaggeredGridView.countBuilder(
                             padding: EdgeInsets.only(
@@ -203,8 +239,10 @@ class _CollectionListState extends State<CollectionList> {
                       } else if (state is LoadingDataSuccess) {
                         return StreamBuilder(
                           stream: collectionBloc.list,
-                          builder: (context,
-                              AsyncSnapshot<List<CollectionModel>> snapshot) {
+                          builder: (
+                            context,
+                            AsyncSnapshot<List<CollectionModel>> snapshot,
+                          ) {
                             return Expanded(
                               child: StaggeredGridView.countBuilder(
                                 padding: EdgeInsets.only(
@@ -224,11 +262,11 @@ class _CollectionListState extends State<CollectionList> {
                                         MaterialPageRoute(
                                           builder: (context) {
                                             return DetailCollection(
-                                              walletAddress:
-                                                  'a6b1b1a6-6cbe-4375-a981-0e727b8120c4',
+                                              //typeCollection: , // todo type collection
                                               id: collectionBloc
                                                       .list.value[index].id ??
                                                   '',
+                                              walletAddress: 'alo alo alo',
                                             );
                                           },
                                         ),
@@ -236,7 +274,8 @@ class _CollectionListState extends State<CollectionList> {
                                     },
                                     child: ItemCollection(
                                       items:
-                                          '${snapshot.data?[index].totalNft ?? 0}',
+                                          '${snapshot.data?[index].totalNft ??
+                                              0}',
                                       text: snapshot.data?[index].description
                                               ?.parseHtml() ??
                                           '',

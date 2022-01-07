@@ -3,8 +3,12 @@ import 'dart:async';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/response/collection_detail/collection_detail_res.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
+import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
+import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/presentation/market_place/search/bloc/search_cubit.dart';
 import 'package:Dfy/presentation/market_place/search/ui/results_search.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -36,9 +40,9 @@ class _SearchNFTState extends State<SearchNFT> {
 
   @override
   void dispose() {
-    controller.dispose();
-    _debounce.cancel();
-    super.dispose();
+    // controller.dispose();
+    // _debounce.cancel();
+    // super.dispose();
   }
 
   @override
@@ -188,10 +192,6 @@ class _SearchNFTState extends State<SearchNFT> {
                           );
                         });
                       },
-                      onFieldSubmitted: (value) {
-                        searchCubit.clearCollectionsFtNftsAfterSearch();
-                        searchCubit.getCollectionFeatNftBySearch(query: value);
-                      },
                       autofocus: true,
                       cursorColor: Colors.white,
                       style: textNormal(
@@ -278,8 +278,20 @@ class _SearchNFTState extends State<SearchNFT> {
                   : searchCubit.collections.length,
               itemBuilder: (context, index) {
                 return searchCubit.collections.isNotEmpty
-                    ? ResultCollectionSearch(
-                        collection: searchCubit.collections[index],
+                    ? InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => DetailCollection(
+                                id: searchCubit.collections[index].id,
+                              ),
+                            ),
+                          );
+                        },
+                        child: ResultCollectionSearch(
+                          collection: searchCubit.collections[index],
+                        ),
                       )
                     : Container();
               },
@@ -293,6 +305,7 @@ class _SearchNFTState extends State<SearchNFT> {
               },
             ),
             Visibility(
+              visible: searchCubit.collections.isEmpty ? false : true,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: 60.h,
@@ -304,11 +317,15 @@ class _SearchNFTState extends State<SearchNFT> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // setState(() {
-                        //   showAllResult = !showAllResult;
-                        //   searchCubit
-                        //       .showAllResult(searchCubit.collections.length);
-                        // });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) => CollectionList(
+                              query: controller.text,
+                              title: S.current.collection_search_result,
+                            ),
+                          ),
+                        );
                       },
                       child: Text(
                         S.current.view_all_result,
@@ -353,8 +370,11 @@ class _SearchNFTState extends State<SearchNFT> {
                       if (searchCubit.listNFT.isEmpty)
                         Container()
                       else
-                        ResultNFTSearch(
-                          nftItem: searchCubit.listNFT[index],
+                        InkWell(
+                          onTap: () {},
+                          child: ResultNFTSearch(
+                            nftItem: searchCubit.listNFT[index],
+                          ),
                         ),
                       Padding(
                         padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -368,6 +388,7 @@ class _SearchNFTState extends State<SearchNFT> {
               ),
             ),
             Visibility(
+              visible: searchCubit.listNFT.isEmpty ? false : true,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: 60.h,
@@ -380,6 +401,14 @@ class _SearchNFTState extends State<SearchNFT> {
                       // ),
                       TextButton(
                         onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => ListNft(
+                                queryAllResult: controller.text,
+                              ),
+                            ),
+                          );
                         },
                         child: Text(
                           S.current.view_all_result,

@@ -5,6 +5,7 @@ import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OtpTextField extends StatefulWidget {
@@ -32,7 +33,7 @@ class _OtpTextFieldState extends State<OtpTextField> {
   @override
   Widget build(BuildContext context) {
     bool isEnableResend = false;
-    int startTime = widget.countDown;
+    final int startTime = widget.countDown;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
