@@ -9,12 +9,16 @@ class CollectionItem extends StatelessWidget {
   final String urlBackGround;
   final String urlIcon;
   final String title;
+  final String idCollection;
+  final int? typeCollection;
 
   const CollectionItem({
     Key? key,
     required this.urlBackGround,
     required this.urlIcon,
     required this.title,
+    required this.idCollection,
+    this.typeCollection,
   }) : super(key: key);
 
   @override
@@ -25,9 +29,10 @@ class CollectionItem extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return const DetailCollection(
-                  walletAddress: 'a6b1b1a6-6cbe-4375-a981-0e727b8120c4',
-                  id: 'a6b1b1a6-6cbe-4375-a981-0e727b8120c4');
+              return DetailCollection(
+                id: idCollection,
+                typeCollection: typeCollection,
+              );
             },
           ),
         );

@@ -25,8 +25,13 @@ import 'item_collection_load.dart';
 
 class CollectionList extends StatefulWidget {
   final String query;
+  String? title;
 
-  const CollectionList({Key? key, required this.query}) : super(key: key);
+  CollectionList({
+    Key? key,
+    required this.query,
+    this.title,
+  }) : super(key: key);
 
   @override
   _CollectionListState createState() => _CollectionListState();
@@ -41,6 +46,11 @@ class _CollectionListState extends State<CollectionList> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(widget.title!.isNotEmpty) {
+      widget.title = S.current.collection_search_result;
+    } else {
+      widget.title = S.current.collection_list;
+    }
     collectionBloc = CollectionBloc();
     collectionBloc.getCollection(
       name: widget.query,
@@ -116,7 +126,7 @@ class _CollectionListState extends State<CollectionList> {
                         ),
                       ),
                       Text(
-                        S.current.collection_list,
+                        widget.title ?? S.current.collection_list,
                         style: textNormalCustom(null, 20.sp, FontWeight.w700),
                       ),
                       GestureDetector(

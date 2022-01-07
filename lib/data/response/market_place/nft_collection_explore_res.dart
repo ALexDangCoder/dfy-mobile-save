@@ -1,6 +1,4 @@
-import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
 import 'package:Dfy/domain/model/market_place/nft_collection_explore_model.dart';
-import 'package:Dfy/domain/model/market_place/nft_model_full.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -65,6 +63,9 @@ class NftCollectionExploreResponse extends Equatable {
   @JsonKey(name: 'nft_owner_count')
   int? nftOwnerCount;
 
+  @JsonKey(name: 'collection_type')
+  int? collectionType;
+
   NftCollectionExploreResponse(
     this.id,
     this.position,
@@ -92,6 +93,7 @@ class NftCollectionExploreResponse extends Equatable {
     this.featureCid,
     this.totalNft,
     this.nftOwnerCount,
+    this.collectionType,
   );
 
   factory NftCollectionExploreResponse.fromJson(Map<String, dynamic> json) =>
@@ -130,6 +132,7 @@ class NftCollectionExploreResponse extends Equatable {
         itemId: itemId,
         nftId: nftId,
         nftOwnerCount: nftOwnerCount,
+        collectionType: collectionType
       );
 
 }
