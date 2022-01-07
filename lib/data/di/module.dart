@@ -1,9 +1,11 @@
 import 'package:Dfy/data/di/flutter_transformer.dart';
+import 'package:Dfy/data/repository_impl/market_place/detail_category_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/login_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/marketplace_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/nonce_impl.dart';
 import 'package:Dfy/data/repository_impl/price_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/token_repository_impl.dart';
+import 'package:Dfy/data/services/market_place/detail_category_service.dart';
 import 'package:Dfy/data/services/market_place/login_service.dart';
 import 'package:Dfy/data/services/market_place/marketplace_client.dart';
 import 'package:Dfy/data/services/market_place/nonce_service.dart';
@@ -27,6 +29,7 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
+import 'package:Dfy/domain/repository/market_place/detail_category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/domain/repository/market_place/nonce_repository.dart';
@@ -78,6 +81,11 @@ void configureDependencies() {
   Get.put<NFTRepository>(NFTRepositoryImpl(Get.find()));
   Get.put(CollectionDetailService(provideDio()));
   Get.put<CollectionDetailRepository>(CollectionDetailImpl(Get.find()));
+
+  // get detail category
+
+  Get.put(DetailCategoryClient(provideDio()));
+  Get.put<DetailCategoryRepository>(DetailCategoryRepositoryImpl(Get.find()));
 }
 
 int _connectTimeOut = 60000;
