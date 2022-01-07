@@ -48,8 +48,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
 
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isShowMoreStream = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isAll = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isAllStatus = BehaviorSubject.seeded(false);
 
   //filter activity
   BehaviorSubject<bool> isTransfer = BehaviorSubject.seeded(false);
@@ -127,7 +125,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       success: (res) {
         if (res.isBlank ?? false) {
           statusNft.add(2);
-          listFilter.clear();//erorr
+          listFilter.clear(); //erorr
         } else {
           listNft.add(res);
           statusNft.add(1);
@@ -282,40 +280,17 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     isBid.sink.add(value);
     isReceiveOffer.sink.add(value);
     isSignContract.sink.add(value);
-    isAllActivity.sink.add(value);
   }
 
-  void allTypeNft(bool value) {
-    isHardNft.sink.add(value);
-    isSoftNft.sink.add(value);
-  }
 
-  void allStatusNft(bool value) {
-    isNotOnMarket.sink.add(value);
-    isOnAuction.sink.add(value);
-    isOnSale.sink.add(value);
-    isOnPawn.sink.add(value);
-  }
 
-//Transfer
-// Put on market
-// Cancel market
-// Burn
-// Like
-// Report
-// Buy
-// Bid
-// Receive offer
-// Sign contract
   void reset() {
-    isAll.sink.add(false);
     isHardNft.sink.add(false);
     isOnSale.sink.add(false);
     isSoftNft.sink.add(false);
     isOnPawn.sink.add(false);
     isOnAuction.sink.add(false);
     isNotOnMarket.sink.add(false);
-    isAllStatus.sink.add(false);
   }
 
   Timer? debounceTime;
@@ -329,14 +304,14 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     debounceTime = Timer(
       const Duration(milliseconds: 800),
       () {
-        if (textSearch.value.isEmpty) {
+        if (value.isEmpty) {
           getListNft(
             collectionId: collectionId,
             listMarketType: [0],
           );
         } else {
           getListNft(
-            name: textSearch.value,
+            name: value,
             collectionId: collectionId,
             listMarketType: [0],
           );

@@ -127,23 +127,6 @@ class _FilterActivityState extends State<FilterActivity> {
                     children: [
                       Expanded(
                         child: IsBaseCheckBox(
-                          funText: widget.collectionBloc.resetFilterActivity,
-                          funCheckBox:
-                              widget.collectionBloc.resetFilterActivity,
-                          title: S.current.all,
-                          stream: collectionBloc.isAllActivity,
-                        ),
-                      ),
-                      const Expanded(
-                        child: SizedBox.shrink(),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        child: IsBaseCheckBox(
                           title: S.current.transfer,
                           stream: collectionBloc.isTransfer,
                         ),

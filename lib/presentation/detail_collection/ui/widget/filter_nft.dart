@@ -139,24 +139,6 @@ class _FilterNFTState extends State<FilterNFT> {
                       children: [
                         Expanded(
                           child: IsBaseCheckBox(
-                            funCheckBox: collectionBloc.allTypeNft,
-                            funText: collectionBloc.allTypeNft,
-                            title: S.current.all,
-                            stream: collectionBloc.isAll,
-                          ),
-                        ),
-                        const Expanded(
-                          child: SizedBox.shrink(),
-                        ),
-                      ],
-                    )
-                  else
-                    const SizedBox.shrink(),
-                  if (widget.isOwner)
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsBaseCheckBox(
                             title: S.current.hard_nft,
                             stream: collectionBloc.isHardNft,
                           ),
@@ -217,6 +199,7 @@ class _FilterNFTState extends State<FilterNFT> {
             spaceH24,
             GestureDetector(
               onTap: () {
+
                 collectionBloc.funFilterNft();
                 Navigator.pop(context);
               },
