@@ -28,6 +28,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const int SIGN_CONTRACT = 9;
 
 //
+
   BehaviorSubject<bool> isHardNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSoftNft = BehaviorSubject.seeded(false);
 
@@ -36,7 +37,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   BehaviorSubject<bool> isOnAuction = BehaviorSubject.seeded(false); //2
   BehaviorSubject<bool> isNotOnMarket = BehaviorSubject.seeded(false); //0
 
-  List<int> listFilter = [];
+  List<int> listFilter = [0,1,2,3];
 
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isShowMoreStream = BehaviorSubject.seeded(false);
@@ -90,11 +91,31 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     if (isNotOnMarket.value) {
       listFilter.add(0);
     }
-    getListNft(
-      collectionId: collectionId,
-      listMarketType: listFilter,
-      name: textSearch.value,
-    );
+    if (listFilter.isNotEmpty) {
+      listFilter.clear();
+      if (isOnSale.value) {
+        listFilter.add(1);
+      }
+      if (isOnPawn.value) {
+        listFilter.add(3);
+      }
+      if (isOnAuction.value) {
+        listFilter.add(2);
+      }
+      if (isNotOnMarket.value) {
+        listFilter.add(0);
+      }
+      getListNft(
+        collectionId: collectionId,
+        listMarketType: listFilter,
+        name: textSearch.value,
+      );
+    } else {
+      getListNft(
+        collectionId: collectionId,
+        name: textSearch.value,
+      );
+    }
   }
 
   void funFilterActivity() {
@@ -148,6 +169,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   Timer? debounceTime;
 
   void search(String value) {
+
     if (debounceTime != null) {
       if (debounceTime!.isActive) {
         debounceTime!.cancel();
@@ -156,18 +178,22 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     debounceTime = Timer(
       const Duration(milliseconds: 800),
       () {
-        if (value.isEmpty) {
-          getListNft(
-            collectionId: collectionId,
-            listMarketType: [0],
-          );
-        } else {
+        print('----------------------------------------$listFilter');
+        print('-------------------------------------------------$value');
+        if(listFilter.isNotEmpty){
           getListNft(
             name: value,
             collectionId: collectionId,
-            listMarketType: [0],
+            listMarketType: listFilter,
+          );
+        }else{
+          getListNft(
+            name: value,
+            collectionId: collectionId,
+            listMarketType: [0,1,2,3],
           );
         }
+
       },
     );
   }
@@ -192,6 +218,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     isOnPawn.sink.add(false);
     isOnAuction.sink.add(false);
     isNotOnMarket.sink.add(false);
+    listFilter.clear();
   }
 
   Future<void> getCollection({String? id = ''}) async {
@@ -237,11 +264,11 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       success: (res) {
         if (res.isBlank ?? false) {
           statusNft.add(2);
-          listFilter.clear(); //erorr
+          //erorr
         } else {
           listNft.add(res);
           statusNft.add(1);
-          listFilter.clear();
+
           //success
         }
       },

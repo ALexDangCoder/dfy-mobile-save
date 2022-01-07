@@ -164,12 +164,16 @@ class _FilterNFTState extends State<FilterNFT> {
                     children: [
                       Expanded(
                         child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
                           title: S.current.on_sale,
                           stream: collectionBloc.isOnSale,
                         ),
                       ),
                       Expanded(
                         child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
                           title: S.current.on_pawn,
                           stream: collectionBloc.isOnPawn,
                         ),
@@ -181,12 +185,16 @@ class _FilterNFTState extends State<FilterNFT> {
                     children: [
                       Expanded(
                         child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
                           title: S.current.on_auction,
                           stream: collectionBloc.isOnAuction,
                         ),
                       ),
                       Expanded(
                         child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
                           title: S.current.not_on_market,
                           stream: collectionBloc.isNotOnMarket,
                         ),
