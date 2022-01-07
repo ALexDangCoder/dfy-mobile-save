@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/wallet.dart';
-import 'package:Dfy/presentation/put_on_market/approve/bloc/approve_state.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../main.dart';
+import 'approve_state.dart';
 
 class ApproveCubit extends BaseCubit<ApproveState> {
   ApproveCubit() : super(ApproveInitState());

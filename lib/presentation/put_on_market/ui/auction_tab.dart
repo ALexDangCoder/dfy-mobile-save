@@ -1,9 +1,16 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_with_select_type.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:list_tile_switch/list_tile_switch.dart';
 
 class AuctionTab extends StatefulWidget {
   final PutOnMarketCubit cubit;
@@ -16,39 +23,240 @@ class AuctionTab extends StatefulWidget {
 
 class _AuctionTabState extends State<AuctionTab>
     with AutomaticKeepAliveClientMixin<AuctionTab> {
+  late double width, height, xPosition, yPosition;
+  int chooseIndex = 0;
+  bool outPrice = false;
+  bool priceStep = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: AppTheme.getInstance().bgBtsColor(),
-      body: GestureDetector(
-        onTap: () {
-          final FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: const [
-                    SizedBox(
-                      height: 50,
-                    ),
-                    //InputWithSelectType(typeInput: [],)
-                  ],
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 24,
+              ),
+              Center(
+                child: Text(
+                  S.current.get_a_loan_by_nft_on_pawn_marketplace,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().textThemeColor(),
+                    16,
+                    FontWeight.w600,
+                  ),
                 ),
               ),
-            ),
-            GestureDetector(
-              child: ButtonGold(
-                title: S.current.continue_s,
-                isEnable: true,
+              const SizedBox(
+                height: 23,
               ),
-              onTap: () {
-                Navigator.pop(context);
+              Text(
+                S.current.expected_loan,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  16,
+                  FontWeight.w600,
+                ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                S.current.set_the_loan_amount_you_expected_to_have_for_the_nft,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                  14,
+                  FontWeight.w400,
+                ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              InputWithSelectType(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^\d+\.?\d{0,5}'),
+                    ),
+                  ],
+                  maxSize: 100,
+                  keyboardType: TextInputType.number,
+                  typeInput: typeInput(),
+                  hintText: S.current.enter_price,
+                  onChangeType: (index) {},
+                  onchangeText: (value) {
+                    widget.cubit.changeTokenPawn(
+                      value: value != '' ? double.parse(value) : null,
+                    );
+                  }),
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                S.current.duration,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  16,
+                  FontWeight.w600,
+                ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                S.current.Set_a_duration_for_the_desired_loan_term,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                  14,
+                  FontWeight.w400,
+                ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              datetimePickerCustom(),
+              const SizedBox(
+                height: 16,
+              ),
+              datetimePickerCustom(),
+              const SizedBox(
+                height: 22,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      S.current.quantity_of_collateral,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().textThemeColor(),
+                        16,
+                        FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  CupertinoSwitch(
+                    onChanged: (value) {
+                      setState(() {
+                        outPrice = value;
+                      });
+                    },
+                    activeColor: AppTheme.getInstance().fillColor(),
+                    value: outPrice,
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                S.current.set_the_nft_quantity_as_collateral,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                  14,
+                  FontWeight.w400,
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      S.current.quantity_of_collateral,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().textThemeColor(),
+                        16,
+                        FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  CupertinoSwitch(
+                    onChanged: (value) {
+                      setState(() {
+                        priceStep = value;
+                      });
+                    },
+                    activeColor: AppTheme.getInstance().fillColor(),
+                    value: priceStep,
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                S.current.set_the_nft_quantity_as_collateral,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                  14,
+                  FontWeight.w400,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: AppTheme.getInstance().bgBtsColor(),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            StreamBuilder<bool>(
+              stream: widget.cubit.canContinuePawnStream,
+              builder: (context, snapshot) {
+                final data = snapshot.data ?? false;
+                return GestureDetector(
+                  onTap: () {
+                    if (data) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Approve(
+                            isShowTwoButton: true,
+                            title: S.current.put_on_sale,
+                            listDetail: [
+                              DetailItemApproveModel(
+                                title: '${S.current.expected_loan} :',
+                                value:
+                                    '${widget.cubit.valueTokenInputPawn ?? 0} DFY',
+                                isToken: true,
+                              ),
+                              DetailItemApproveModel(
+                                title: '${S.current.duration} :',
+                                value:
+                                    '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == DurationType.WEEK ? S.current.week : S.current.month}',
+                              ),
+                            ],
+                            textActiveButton: S.current.put_on_sale,
+                            action: () async {
+                              await Future.delayed(Duration(seconds: 3));
+                              print(' call action in hear ');
+                            },
+                            approve: () async {
+                              await Future.delayed(Duration(seconds: 3));
+                              print(' call approve  in hear ');
+                              return true;
+                            },
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  child: ButtonGold(
+                    title: S.current.continue_s,
+                    isEnable: data,
+                  ),
+                );
               },
             ),
             const SizedBox(
@@ -58,6 +266,106 @@ class _AuctionTabState extends State<AuctionTab>
         ),
       ),
     );
+  }
+
+  Widget datetimePickerCustom() {
+    return Container(
+      height: 200,
+      color: Colors.red,
+    );
+  }
+
+  List<Widget> typeInput() {
+    return [
+      SizedBox(
+        height: 64,
+        width: 70,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/DFY.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'DFY',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
+      ),
+      SizedBox(
+        height: 64,
+        width: 70,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/BTC.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'BTC',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
+      ),
+      SizedBox(
+        height: 64,
+        width: 70,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/BNB.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'BNB',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
+      ),
+      SizedBox(
+        height: 64,
+        width: 70,
+        child: Row(
+          children: [
+            Flexible(
+              child: Image.network(
+                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/ETH.png',
+                height: 20,
+                width: 20,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                'ETH',
+                style: textValueNFT.copyWith(decoration: TextDecoration.none),
+              ),
+            )
+          ],
+        ),
+      ),
+    ];
   }
 
   @override

@@ -79,8 +79,14 @@ class ListExploreCategory extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const CategoriesDetail(title: 'Music',),
+                                    builder: (context) => CategoriesDetail(
+                                      title:
+                                          cubit.exploreCategories[index].name ??
+                                              'name',
+                                      id: cubit.exploreCategories[index]
+                                              .itemId ??
+                                          '',
+                                    ),
                                   ),
                                 );
                               },
