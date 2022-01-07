@@ -9,6 +9,6 @@ mixin CollectionDetailRepository {
 
   Future<Result< List<ActivityCollectionModel>>> getCollectionListActivity(
     String collectionAddress,
-    String status,
+    String type,
   );
 }

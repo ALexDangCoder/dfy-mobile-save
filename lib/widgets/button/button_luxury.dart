@@ -47,7 +47,7 @@ class ButtonLuxury extends StatelessWidget {
           ),
         ),
         height: buttonHeight.h,
-        width: 298.w,
+        width: 343.w,
         child: Center(
           child: Text(
             title,

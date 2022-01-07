@@ -15,6 +15,7 @@ class ItemCollectionLoad extends StatelessWidget {
       children: [
         Container(
           width: 164.w,
+          height: 181.h,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             color: AppTheme.getInstance().borderItemColor(),
@@ -55,58 +56,11 @@ class ItemCollectionLoad extends StatelessWidget {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 12.h,
-                    ),
-                    width: 60.w,
-                    height: 12.h,
-                    decoration: BoxDecoration(
-                      color: AppTheme.getInstance().selectDialogColor(),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20.r),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      left: 2.w,
-                      right: 2.w,
-                      top: 12.h,
-                    ),
-                    width: 6.w,
-                    height: 6.h,
-                    decoration: BoxDecoration(
-                      color: AppTheme.getInstance().selectDialogColor(),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20.r),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 12.h,
-                    ),
-                    width: 60.w,
-                    height: 12.h,
-                    decoration: BoxDecoration(
-                      color: AppTheme.getInstance().selectDialogColor(),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20.r),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               Container(
                 margin: EdgeInsets.only(
-                  top: 12.h,
+                  top: 6.h,
                 ),
-                width: 130.w,
+                width: 74.w,
                 height: 12.h,
                 decoration: BoxDecoration(
                   color: AppTheme.getInstance().selectDialogColor(),
@@ -117,9 +71,9 @@ class ItemCollectionLoad extends StatelessWidget {
               ),
               Container(
                 margin: EdgeInsets.only(
-                  top: 6.h,
+                  top: 27.h,
                 ),
-                width: 130.w,
+                width: 138.w,
                 height: 12.h,
                 decoration: BoxDecoration(
                   color: AppTheme.getInstance().selectDialogColor(),

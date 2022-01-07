@@ -251,7 +251,7 @@
   "trading_history": "Lịch sử giao dịch",
   "activity": "Hoạt động",
   "items": "mặt hàng",
-  "owners": "những chủ sở hữu",
+  "owners": "số chủ sở hữu",
   "volume_traded": "khối lượng giao dịch",
   "search.": "Tìm kiếm",
   "category": "Loại",
@@ -411,5 +411,14 @@
   "loading_text": "Đang tải...",
   "error_text": "Lỗi tải...",
   "nfts_search_result": "NFT kết quả tìm kiếm",
-  "collection_search_result": "Collection kết quả tìm kiếm"
+  "collection_search_result": "Collection kết quả tìm kiếm",
+  "sort_by": "Sắp xếp theo",
+  "highest_trading_volume": "Khối lượng giao dịch cao nhất",
+  "lowest_trading_volume": "Khối lượng giao dịch thấp nhất",
+  "newest": "Mới nhất",
+  "oldest": "Cũ nhất",
+  "owner_from_high_to_low": "Chủ từ cao đến thấp",
+  "owner_from_low_to_high": "Chủ từ thấp đến cao",
+  "item_from_high_to_low": "Mục từ cao đến thấp",
+  "item_from_low_to_high": "Mục từ thấp đến cao"
 }

@@ -7,6 +7,8 @@ import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/presentation/collection_list/ui/item_error.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
+import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -68,7 +70,16 @@ class _CollectionListState extends State<CollectionList> {
       resizeToAvoidBottomInset: false,
       floatingActionButton: GestureDetector(
         onTap: () {
-          print('hello');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return CreateCollectionScreen(
+                  bloc: CreateCollectionBloc(),
+                );
+              },
+            ),
+          );
         },
         child: Container(
           decoration: BoxDecoration(
@@ -131,7 +142,7 @@ class _CollectionListState extends State<CollectionList> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          bool isMyacc = true;
+                          bool isMyacc = false;
                           if (!isMyacc) {
                             showModalBottomSheet(
                               isScrollControlled: true,
