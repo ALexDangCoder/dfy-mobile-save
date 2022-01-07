@@ -33,6 +33,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:share/share.dart';
 
 const String EXAMPLE_TITLE = 'Naruto kkcam allfp lflll alffwl c ';
 const String EXAMPLE_IMAGE_URL =
@@ -203,7 +204,12 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         ),
       );
 
-  Widget _nameNFT({required String title, int quantity = 1}) {
+  Widget _nameNFT({
+    required String title,
+    int quantity = 1,
+    String url = '',
+    double? price,
+  }) {
     return Container(
       margin: EdgeInsets.only(
         top: 8.h,
@@ -221,27 +227,28 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                   style: textNormalCustom(null, 24, FontWeight.w600),
                 ),
               ),
-              //todo when has feature backend
-              // SizedBox(
-              //   width: 25.h,
-              // ),
-              // InkWell(
-              //   onTap: () {},
-              //   child: roundButton(
-              //     image: ImageAssets.ic_flag_svg,
-              //     whiteBackground: true,
-              //   ),
-              // ),
-              // SizedBox(
-              //   width: 20.h,
-              // ),
-              // InkWell(
-              //   onTap: () {},
-              //   child: roundButton(
-              //     image: ImageAssets.ic_share_svg,
-              //     whiteBackground: true,
-              //   ),
-              // ),
+              SizedBox(
+                width: 25.h,
+              ),
+              InkWell(
+                onTap: () {},
+                child: roundButton(
+                  image: ImageAssets.ic_flag_svg,
+                  whiteBackground: true,
+                ),
+              ),
+              SizedBox(
+                width: 20.h,
+              ),
+              InkWell(
+                onTap: () {
+                  Share.share(url,subject: 'Buy NFT with $price USD');
+                },
+                child: roundButton(
+                  image: ImageAssets.ic_share_svg,
+                  whiteBackground: true,
+                ),
+              ),
             ],
           ),
           Text(
@@ -558,7 +565,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                         height: 20.h,
                       )
                     else
-                       Image(
+                      Image(
                         image: const AssetImage(ImageAssets.symbol),
                         width: 20.w,
                         height: 20.h,
@@ -786,6 +793,8 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                 _nameNFT(
                   title: objSale.name,
                   quantity: objSale.totalCopies ?? 1,
+                  url: objSale.image,
+                  price: objSale.price * (objSale.usdExchange ?? 1),
                 ),
                 _priceContainerOnSale(
                   price: objSale.price,
