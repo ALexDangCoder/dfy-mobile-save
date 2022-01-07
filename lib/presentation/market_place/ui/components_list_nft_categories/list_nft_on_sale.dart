@@ -120,8 +120,9 @@ class ListNftOnSale extends StatelessWidget {
                               : Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const NFTDetailScreen(
+                                    builder: (context) =>  NFTDetailScreen(
                                       type: MarketType.SALE,
+                                      marketId: cubit.nftsSale[index].marketId,
                                     ),
                                   ),
                                 );

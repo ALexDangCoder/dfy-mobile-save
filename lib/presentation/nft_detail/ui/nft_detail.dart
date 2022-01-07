@@ -60,10 +60,12 @@ final auctionObj = NFTOnAuction(
 );
 
 class NFTDetailScreen extends StatefulWidget {
-  const NFTDetailScreen({Key? key, required this.type, this.marketId})
+  NFTDetailScreen(
+      {Key? key, this.typeNFT, required this.type, this.marketId})
       : super(key: key);
   final MarketType type;
   final String? marketId;
+  final TypeNFT? typeNFT;
 
   @override
   _NFTDetailScreenState createState() => _NFTDetailScreenState();
