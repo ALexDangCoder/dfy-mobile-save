@@ -160,35 +160,35 @@ class _SaleTabState extends State<SaleTab>
                           isShowTwoButton: true,
                           warning: RichText(
                             text: TextSpan(
-                                text:
-                                    'Listing is free. The the time of the sale, ',
-                                style: textNormal(
-                                  AppTheme.getInstance()
-                                      .whiteColor()
-                                      .withOpacity(0.7),
-                                  14.sp,
+                              text:
+                                  'Listing is free. The the time of the sale, ',
+                              style: textNormal(
+                                AppTheme.getInstance()
+                                    .whiteColor()
+                                    .withOpacity(0.7),
+                                14,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: '2.5%',
+                                  style: textNormal(
+                                    AppTheme.getInstance()
+                                        .failTransactionColors()
+                                        .withOpacity(0.7),
+                                    14.sp,
+                                  ),
                                 ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: '2.5%',
-                                    style: textNormal(
-                                      AppTheme.getInstance()
-                                          .failTransactionColors()
-                                          .withOpacity(0.7),
-                                      14.sp,
-                                    ),
+                                TextSpan(
+                                  text: ' value of each copy will be deducted',
+                                  style: textNormal(
+                                    AppTheme.getInstance()
+                                        .whiteColor()
+                                        .withOpacity(0.7),
+                                    14.sp,
                                   ),
-                                  TextSpan(
-                                    text:
-                                        ' value of each copy will be deducted',
-                                    style: textNormal(
-                                      AppTheme.getInstance()
-                                          .whiteColor()
-                                          .withOpacity(0.7),
-                                      14.sp,
-                                    ),
-                                  ),
-                                ]),
+                                ),
+                              ],
+                            ),
                           ),
                           title: S.current.put_on_sale,
                           listDetail: [
@@ -205,6 +205,15 @@ class _SaleTabState extends State<SaleTab>
                             )
                           ],
                           textActiveButton: S.current.put_on_sale,
+                          action: () async {
+                            await Future.delayed(Duration(seconds: 3));
+                            print(' call action in hear ');
+                          },
+                          approve: () async {
+                            await Future.delayed(Duration(seconds: 3));
+                            print(' call approve  in hear ');
+                            return true;
+                          },
                         ),
                       ),
                     );

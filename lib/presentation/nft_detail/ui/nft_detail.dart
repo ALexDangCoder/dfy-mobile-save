@@ -32,6 +32,7 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 const String EXAMPLE_TITLE = 'Naruto kkcam allfp lflll alffwl c ';
 const String EXAMPLE_IMAGE_URL =
@@ -60,12 +61,13 @@ final auctionObj = NFTOnAuction(
 );
 
 class NFTDetailScreen extends StatefulWidget {
-  NFTDetailScreen(
-      {Key? key, this.typeNFT, required this.type, this.marketId})
-      : super(key: key);
+  const NFTDetailScreen({
+    Key? key,
+    required this.type,
+    this.marketId,
+  }) : super(key: key);
   final MarketType type;
   final String? marketId;
-  final TypeNFT? typeNFT;
 
   @override
   _NFTDetailScreenState createState() => _NFTDetailScreenState();
@@ -162,6 +164,8 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         break;
     }
   }
+
+  final formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
 
   @override
   void initState() {
@@ -518,8 +522,12 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         ),
       );
 
-  Container _priceContainerOnSale(
-          {required double price, String shortName = 'DFY'}) =>
+  Container _priceContainerOnSale({
+    required double price,
+    String shortName = 'DFY',
+    String urlToken = '',
+    double usdExchange = 0,
+  }) =>
       Container(
         width: 343.w,
         height: 64.h,
@@ -541,11 +549,20 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
               children: [
                 Row(
                   children: [
-                    sizedSvgImage(
-                      w: 20,
-                      h: 20,
-                      image: ImageAssets.ic_token_dfy_svg,
-                    ),
+                    if (urlToken.isNotEmpty)
+                      Image(
+                        image: NetworkImage(
+                          urlToken,
+                        ),
+                        width: 20.w,
+                        height: 20.h,
+                      )
+                    else
+                       Image(
+                        image: const AssetImage(ImageAssets.symbol),
+                        width: 20.w,
+                        height: 20.h,
+                      ),
                     spaceW4,
                     Text(
                       '$price $shortName',
@@ -559,7 +576,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                 ),
                 Expanded(
                   child: Text(
-                    '~100,000,000',
+                    formatUSD.format(price * usdExchange),
                     style: textNormalCustom(
                       AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                       14,
@@ -770,7 +787,12 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                   title: objSale.name,
                   quantity: objSale.totalCopies ?? 1,
                 ),
-                _priceContainerOnSale(price: objSale.price),
+                _priceContainerOnSale(
+                  price: objSale.price,
+                  usdExchange: objSale.usdExchange ?? 0,
+                  urlToken: objSale.urlToken ?? '',
+                  shortName: objSale.symbolToken ?? '',
+                ),
                 divide,
                 spaceH12,
                 _description(
