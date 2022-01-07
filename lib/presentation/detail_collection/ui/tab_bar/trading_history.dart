@@ -40,7 +40,19 @@ class _ActivityCollectionState extends State<ActivityCollection> {
             ),
             itemBuilder: (context, index) => GestureDetector(
               onTap: () {
-                if (list[index].status == 1) {
+                if (list[index].marketStatus == 0) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return NFTDetailScreen(
+                          type: MarketType.NOT_ON_MARKET,
+                          marketId: list[index].marketId ?? '',
+                        );
+                      },
+                    ),
+                  );
+                } else if (list[index].marketStatus == 1) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -52,9 +64,31 @@ class _ActivityCollectionState extends State<ActivityCollection> {
                       },
                     ),
                   );
-                } else if (list[index].status == 2) {
-                } else if (list[index].status == 3) {
-                } else {}
+                } else if (list[index].marketStatus == 2) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return NFTDetailScreen(
+                          type: MarketType.AUCTION,
+                          marketId: list[index].marketId ?? '',
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return NFTDetailScreen(
+                          type: MarketType.PAWN,
+                          marketId: list[index].marketId ?? '',
+                        );
+                      },
+                    ),
+                  );
+                }
               },
               child: Container(
                 color: Colors.transparent,
@@ -108,7 +142,7 @@ class _ActivityCollectionState extends State<ActivityCollection> {
             ],
           );
         } else if (statusActivity == 0) {
-          return  Column(
+          return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
