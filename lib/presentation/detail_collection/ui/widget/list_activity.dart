@@ -75,12 +75,21 @@ class ListActivity extends StatelessWidget {
     if (addressMyWallet == addressWallet) {
       myAddress = S.current.activity_you;
     } else {
-      myAddress = addressWallet.formatAddressActivityFire();
+      if (addressWallet.length < 12) {
+        myAddress = addressWallet;
+      } else {
+        myAddress = addressWallet.formatAddressActivityFire();
+      }
     }
     if (addressMyWallet == addressWalletSend) {
       myAddressTo = S.current.activity_you;
     } else {
-      myAddressTo = addressWalletSend.formatAddressActivityFire();
+      if (addressWallet.length < 12) {
+        myAddress = addressWalletSend;
+      } else {
+        myAddressTo = addressWalletSend.formatAddressActivityFire();
+
+      }
     }
     return itemActivity(
       price: price,
