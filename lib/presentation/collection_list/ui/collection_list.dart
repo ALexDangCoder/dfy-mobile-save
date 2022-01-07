@@ -41,14 +41,13 @@ class CollectionList extends StatefulWidget {
 
 class _CollectionListState extends State<CollectionList> {
   late final CollectionBloc collectionBloc;
-
   late final TextEditingController searchCollection;
+  bool isMyacc = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    if(widget.title!.isNotEmpty) {
+    if (widget.title!.isNotEmpty) {
       widget.title = S.current.collection_search_result;
     } else {
       widget.title = S.current.collection_list;
@@ -130,19 +129,29 @@ class _CollectionListState extends State<CollectionList> {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          margin: EdgeInsets.only(left: 16.w),
+                          margin: EdgeInsets.only(
+                            left: 16.w,
+                          ),
                           width: 28.w,
                           height: 28.h,
-                          child: Image.asset(ImageAssets.ic_back),
+                          child: Image.asset(
+                            ImageAssets.ic_back,
+                          ),
                         ),
                       ),
                       Text(
                         widget.title ?? S.current.collection_list,
-                        style: textNormalCustom(null, 20.sp, FontWeight.w700),
+                        style: textNormalCustom(
+                          null,
+                          20.sp,
+                          FontWeight.w700,
+                        ).copyWith(
+                          overflow: TextOverflow.ellipsis
+                        ),
+                        maxLines: 1,
                       ),
                       GestureDetector(
                         onTap: () {
-                          bool isMyacc = false;
                           if (!isMyacc) {
                             showModalBottomSheet(
                               isScrollControlled: true,
@@ -230,8 +239,10 @@ class _CollectionListState extends State<CollectionList> {
                       } else if (state is LoadingDataSuccess) {
                         return StreamBuilder(
                           stream: collectionBloc.list,
-                          builder: (context,
-                              AsyncSnapshot<List<CollectionModel>> snapshot) {
+                          builder: (
+                            context,
+                            AsyncSnapshot<List<CollectionModel>> snapshot,
+                          ) {
                             return Expanded(
                               child: StaggeredGridView.countBuilder(
                                 padding: EdgeInsets.only(
@@ -251,11 +262,11 @@ class _CollectionListState extends State<CollectionList> {
                                         MaterialPageRoute(
                                           builder: (context) {
                                             return DetailCollection(
-                                              walletAddress:
-                                                  'a6b1b1a6-6cbe-4375-a981-0e727b8120c4',
+                                              //typeCollection: , // todo type collection
                                               id: collectionBloc
                                                       .list.value[index].id ??
                                                   '',
+                                              walletAddress: 'alo alo alo',
                                             );
                                           },
                                         ),
@@ -263,7 +274,8 @@ class _CollectionListState extends State<CollectionList> {
                                     },
                                     child: ItemCollection(
                                       items:
-                                          '${snapshot.data?[index].totalNft ?? 0}',
+                                          '${snapshot.data?[index].totalNft ??
+                                              0}',
                                       text: snapshot.data?[index].description
                                               ?.parseHtml() ??
                                           '',
