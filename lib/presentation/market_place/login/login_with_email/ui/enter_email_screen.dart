@@ -21,6 +21,7 @@ class EnterEmail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String errText = '';
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: ButtonLuxuryBigSize(
@@ -30,7 +31,8 @@ class EnterEmail extends StatelessWidget {
           //todo:
           cubit.checkValidate(emailEditingController.value.text);
           if (cubit.state is ValidateSuccess) {
-            cubit.getNonce(walletAddress: '0xf5e281A56650bb992ebaB15B41583303fE9804e7');
+            cubit.getNonce(
+                walletAddress: '0xf5e281A56650bb992ebaB15B41583303fE9804e7');
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -102,24 +104,33 @@ class EnterEmail extends StatelessWidget {
                       ),
                     ),
                   ),
-                  BlocConsumer<LoginWithEmailCubit, LoginWithEmailState>(
-                    bloc: cubit,
-                    listener: (context, state) {
-                      // TODO: implement listener
-                      log(state.runtimeType.toString());
-                    },
-                    builder: (context, state) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 4),
-                        child: Text(
-                          state.errText,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 4,
+                    ),
+                    child:
+                        BlocConsumer<LoginWithEmailCubit, LoginWithEmailState>(
+                      bloc: cubit,
+                      listener: (context, state) {
+                        if (state is EmailInvalid) {
+                          errText = state.errText;
+                        } else if (state is EmailTooLong) {
+                          errText = state.errText;
+                        } else if (state is ValidateSuccess) {
+                          errText = '';
+                        }
+                      },
+                      builder: (context, state) {
+                        return Text(
+                          errText,
                           style: textNormal(
-                                  AppTheme.getInstance().wrongColor(), 12.sp)
-                              .copyWith(fontWeight: FontWeight.w400),
-                        ),
-                      );
-                    },
+                            AppTheme.getInstance().wrongColor(),
+                            12.sp,
+                          ).copyWith(fontWeight: FontWeight.w400),
+                        );
+                      },
+                    ),
                   ),
                 ],
               )

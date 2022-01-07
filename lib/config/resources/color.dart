@@ -72,6 +72,9 @@ const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
 const unselectedTabLabel = Color(0xFF9997FF);
 const bgErrorLoadData = Color(0xFF474666);
+const yellowOpacity = Color(0x1AE4AC1A);
+const darkColor = Color(0xFF33324C);
+const grayBarColor = Color(0xFF828282);
 
 ///=========== Using to make change app theme ================================
 const bgTranSubmitColor = Color(0xff585782);
@@ -185,6 +188,12 @@ abstract class AppColor {
   Color disableRadioColor();
 
   List<Color> listBackgroundMarketColor();
+
+  Color yellowOpacity10();
+
+  Color darkBgColor();
+
+  Color gray3Color();
 }
 
 class LightApp extends AppColor {
@@ -470,6 +479,21 @@ class LightApp extends AppColor {
   Color colorTextReset() {
     // TODO: implement colorTextReset
     return const Color(0xff585782);
+  }
+
+  @override
+  Color yellowOpacity10() {
+    return yellowOpacity;
+  }
+
+  @override
+  Color darkBgColor() {
+    return darkColor;
+  }
+
+  @override
+  Color gray3Color() {
+    return grayBarColor;
   }
 }
 
@@ -780,6 +804,21 @@ class DarkApp extends AppColor {
   Color colorTextReset() {
     // TODO: implement colorTextReset
     throw UnimplementedError();
+  }
+
+  @override
+  Color yellowOpacity10() {
+    return yellowOpacity;
+  }
+
+  @override
+  Color darkBgColor() {
+    return darkColor;
+  }
+
+  @override
+  Color gray3Color() {
+    return grayBarColor;
   }
 }
 

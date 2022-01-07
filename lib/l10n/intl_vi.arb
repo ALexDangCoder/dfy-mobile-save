@@ -340,7 +340,7 @@
   "nft_id": "NFT Id",
   "collection_address": "Địa chỉ bộ sưu tập",
   "offer": "Đề nghị",
-  "login_now": "Bạn không có ví nào. Đăng nhập ngay",
+  "login_now": "Bạn chưa đăng nhập. Đăng nhập ngay",
   "create_now": "Bạn không có ví nào. Hãy tạo ngay",
   "email_too_long": "Email có tối đa 50 ký tự",
   "email_invalid": "Email không hợp lệ",
@@ -408,5 +408,7 @@
   "feature_soft_nfts" : "Featured Soft NFTs",
   "buy_sell_create_collectible_nfts": "Mua, bán và tạo cácNFT sưu tập",
   "loading_text": "Đang tải...",
-  "error_text": "Lỗi tải..."
+  "error_text": "Lỗi tải...",
+  "resend_code": "Gửi lại mã"
+
 }
