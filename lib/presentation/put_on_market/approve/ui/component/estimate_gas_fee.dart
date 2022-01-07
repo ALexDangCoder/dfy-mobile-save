@@ -10,9 +10,11 @@ class EstimateGasFee extends StatefulWidget {
     Key? key,
     required this.cubit,
     required this.gasLimitStart,
+    required this.stateChange,
   }) : super(key: key);
   final double gasLimitStart;
   final ApproveCubit cubit;
+  final Function stateChange;
 
   @override
   _EstimateGasFeeState createState() => _EstimateGasFeeState();
@@ -50,11 +52,10 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         border: Border.all(
           color: AppTheme.getInstance().whiteBackgroundButtonColor(),
-          width: 1,
         ),
         borderRadius: const BorderRadius.all(
           Radius.circular(16),
@@ -85,9 +86,11 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                   StreamBuilder<double>(
                     stream: widget.cubit.gasPriceStream,
                     builder: (context, snapshot) {
-                      gasPriceStart = (snapshot.data ?? 0)/1000000000;
+                      gasPriceStart = (snapshot.data ?? 0) / 1000000000;
                       final gasFee = (gasPrice ?? gasPriceStart ?? 0) *
-                          (gasLimit ?? widget.gasLimitStart);
+                          (gasLimit ?? widget.gasLimitStart) /
+                          1000000000;
+                      widget.stateChange(gasFee);
                       return Column(
                         children: [
                           Text(
@@ -196,6 +199,11 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                   ),
                                 ],
                                 onChanged: (value) {
+                                  final gasFee =
+                                      (gasPrice ?? gasPriceStart ?? 0) *
+                                          (gasLimit ?? widget.gasLimitStart) /
+                                          1000000000;
+                                  widget.stateChange(gasFee);
                                   setState(() {
                                     gasLimit = double.parse(value);
                                   });
@@ -259,6 +267,11 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                   border: InputBorder.none,
                                 ),
                                 onChanged: (value) {
+                                  final gasFee =
+                                      (gasPrice ?? gasPriceStart ?? 0) *
+                                          (gasLimit ?? widget.gasLimitStart) /
+                                          1000000000;
+                                  widget.stateChange(gasFee);
                                   setState(() {
                                     gasPrice = double.parse(value);
                                   });
@@ -272,10 +285,12 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                   ),
                   const SizedBox(height: 24),
                   GestureDetector(
-                    onTap:(){
+                    onTap: () {
                       setState(() {
                         gasPrice = gasPriceStart;
+                        _editGasPriceController.text = gasPriceStart.toString();
                         gasLimit = widget.gasLimitStart;
+                        _editGasLimitController.text = widget.gasLimitStart.toString();
                       });
                     },
                     child: Container(

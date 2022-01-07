@@ -160,6 +160,8 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
           ),
         ];
         break;
+      default:
+        break;
     }
   }
 
@@ -1104,6 +1106,8 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
             divide,
           ],
         );
+      default:
+        return Container();
     }
   }
 }

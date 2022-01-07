@@ -27,6 +27,7 @@ class NftCollectionExploreModel {
   String? featureCid;
   int? totalNft;
   int? nftOwnerCount;
+  int? collectionType;
 
   NftCollectionExploreModel({
     this.id,
@@ -55,5 +56,6 @@ class NftCollectionExploreModel {
     this.featureCid,
     this.totalNft,
     this.nftOwnerCount,
+    this.collectionType,
   });
 }

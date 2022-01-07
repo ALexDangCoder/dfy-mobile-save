@@ -21,6 +21,6 @@ abstract class CollectionDetailService {
   @GET(ApiConstants.COLLECTION_ACTIVITY_LIST)
   Future<ActivityCollectionResponse> getListActivityCollection(
     @Query('address') String collectionAddress,
-    @Query('status') String status,
+    @Query('type') String type,
   );
 }

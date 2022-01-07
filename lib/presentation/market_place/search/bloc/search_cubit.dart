@@ -65,6 +65,7 @@ class SearchCubit extends BaseCubit<SearchState> {
         for (final element in collectionsSearch) {
           collections.add(
             Collection(
+              id: element.id ?? '',
               items: int.parse(element.info ?? '0'),
               title: element.name ?? 'name',
               background:

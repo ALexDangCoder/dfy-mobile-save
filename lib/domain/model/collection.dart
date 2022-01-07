@@ -3,11 +3,13 @@ class Collection {
   final String avatar;
   final String title;
   final int items;
+  final String id;
 
-  Collection( {
+  Collection({
     required this.background,
     required this.avatar,
     required this.title,
     required this.items,
+    required this.id,
   });
 }
