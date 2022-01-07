@@ -78,21 +78,22 @@ class _AuctionTabState extends State<AuctionTab>
                 height: 4,
               ),
               InputWithSelectType(
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                      RegExp(r'^\d+\.?\d{0,5}'),
-                    ),
-                  ],
-                  maxSize: 100,
-                  keyboardType: TextInputType.number,
-                  typeInput: typeInput(),
-                  hintText: S.current.enter_price,
-                  onChangeType: (index) {},
-                  onchangeText: (value) {
-                    widget.cubit.changeTokenPawn(
-                      value: value != '' ? double.parse(value) : null,
-                    );
-                  }),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^\d+\.?\d{0,5}'),
+                  ),
+                ],
+                maxSize: 100,
+                keyboardType: TextInputType.number,
+                typeInput: typeInput(),
+                hintText: S.current.enter_price,
+                onChangeType: (index) {},
+                onchangeText: (value) {
+                  widget.cubit.changeTokenPawn(
+                    value: value != '' ? double.parse(value) : null,
+                  );
+                },
+              ),
               const SizedBox(
                 height: 16,
               ),
@@ -118,11 +119,17 @@ class _AuctionTabState extends State<AuctionTab>
               const SizedBox(
                 height: 4,
               ),
-              datetimePickerCustom(),
+              datetimePickerCustom(
+                date: S.current.start_date,
+                time: S.current.start_time,
+              ),
               const SizedBox(
                 height: 16,
               ),
-              datetimePickerCustom(),
+              datetimePickerCustom(
+                date: S.current.end_date,
+                time: S.current.end_time,
+              ),
               const SizedBox(
                 height: 22,
               ),
@@ -268,10 +275,77 @@ class _AuctionTabState extends State<AuctionTab>
     );
   }
 
-  Widget datetimePickerCustom() {
+  Widget datetimePickerCustom({required String date, required String time}) {
     return Container(
-      height: 200,
-      color: Colors.red,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        color: AppTheme.getInstance().backgroundBTSColor(),
+      ),
+      height: 116,
+      child: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: [
+                  Container(
+                    height: 25,
+                    width: 25,
+                    color: Colors.red,
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: Colors.blue,
+                      child: TextField(
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          hintText: date,
+                          hintStyle: textNormal(
+                            Colors.white.withOpacity(0.5),
+                            16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Container(
+              height: 1,
+              color: AppTheme.getInstance().divideColor(),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: [
+                  Container(
+                    height: 25,
+                    width: 25,
+                    color: Colors.red,
+                  ),
+                  Expanded(
+                      child:
+                          Container(color: Colors.yellow, child: TextField()))
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

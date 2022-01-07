@@ -3,7 +3,9 @@ import 'package:Dfy/config/base/base_custom_scroll_view.dart';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/categories_detail/bloc/category_detail_cubit.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/base_collection.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -12,19 +14,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class CategoriesDetail extends StatefulWidget {
-  const CategoriesDetail({Key? key, required this.title, required this.id})
+  const CategoriesDetail({Key? key, required this.exploreCategory})
       : super(key: key);
-  final String title;
-  final String id;
+  final ExploreCategory exploreCategory;
 
   @override
   _CategoriesDetailState createState() => _CategoriesDetailState();
 }
 
 class _CategoriesDetailState extends State<CategoriesDetail> {
+  CategoryDetailCubit cubit = CategoryDetailCubit();
 
   @override
   void initState() {
+    cubit.getListCollection(widget.exploreCategory.id ?? '');
     // TODO: implement initState
     super.initState();
   }
@@ -43,8 +46,8 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
             physics: const ScrollPhysics(),
             headerSliverBuilder: (context, innerScroll) => [
               BaseAppBar(
-                image: 'https://taimienphi.vn/tmp/cf/aut/anh-gai-xinh-1.jpg',
-                title: '${widget.title} ${S.current.categories}',
+                image:widget.exploreCategory.avatarCid ?? '',
+                title: '${widget.exploreCategory.name} ${S.current.categories}',
                 initHeight: 145,
                 leading: SizedBox(
                   child: InkWell(
@@ -85,7 +88,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                         children: [
                           const SizedBox(height: 12),
                           Text(
-                            '${S.current.explore} ${widget.title} ${S.current.categories}',
+                            '${S.current.explore} ${widget.exploreCategory.name} ${S.current.categories}',
                             style: textNormalCustom(
                               AppTheme.getInstance().textThemeColor(),
                               20,
@@ -96,7 +99,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                             height: 6,
                           ),
                           Text(
-                            'Euismod amet, sed pulvinar mattis venenatis tristique pulvinar aliquam sit. Non orci quis eget cras erat elit ornare. Sit pharetra, arcu, sit quis quam vulputate. Ornare',
+                            '',
                             style: textNormalCustom(
                               AppTheme.getInstance()
                                   .textThemeColor()
