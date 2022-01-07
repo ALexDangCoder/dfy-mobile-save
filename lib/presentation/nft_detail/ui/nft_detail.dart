@@ -189,6 +189,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
             },
             textEmpty: '',
             child: BaseCustomScrollView(
+              typeImage: objSale.typeImage,
               image: objSale.image,
               initHeight: 360.h,
               leading: _leading(),
@@ -342,6 +343,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         }
       case MarketType.PAWN:
         return BaseCustomScrollView(
+          typeImage: TypeImage.IMAGE,
           image: EXAMPLE_IMAGE_URL,
           initHeight: 360.h,
           leading: _leading(),
@@ -440,6 +442,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         );
       case MarketType.AUCTION:
         return BaseCustomScrollView(
+          typeImage: TypeImage.IMAGE,
           image: EXAMPLE_IMAGE_URL,
           initHeight: 360.h,
           leading: _leading(),

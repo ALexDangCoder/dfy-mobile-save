@@ -132,9 +132,6 @@ class _BaseSpaceState extends State<BaseSpace> {
             width: double.infinity,
             child: (widget.typeImage == TypeImage.IMAGE)
                 ? CachedNetworkImage(
-                    placeholder: (context, url) => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
                     imageUrl: widget.image,
                     fit: BoxFit.cover,
                   )

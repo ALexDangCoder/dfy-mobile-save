@@ -16,7 +16,7 @@ class BaseCustomScrollView extends StatefulWidget {
     this.tabBar,
     this.tabBarView,
     this.bottomBar,
-    this.typeImage,
+    required this.typeImage,
   }) : super(key: key);
   final List<Widget> content;
   final String image;
@@ -27,7 +27,7 @@ class BaseCustomScrollView extends StatefulWidget {
   final Widget? tabBar;
   final Widget? tabBarView;
   final Widget? bottomBar;
-  final TypeImage? typeImage;
+  final TypeImage typeImage;
 
   @override
   _BaseCustomScrollViewState createState() => _BaseCustomScrollViewState();
