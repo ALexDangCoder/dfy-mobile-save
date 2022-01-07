@@ -199,7 +199,6 @@ class _FilterNFTState extends State<FilterNFT> {
             spaceH24,
             GestureDetector(
               onTap: () {
-
                 collectionBloc.funFilterNft();
                 Navigator.pop(context);
               },

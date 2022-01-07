@@ -88,7 +88,7 @@ class _FilterActivityState extends State<FilterActivity> {
                   GestureDetector(
                     onTap: () {
                       widget.collectionBloc.resetFilterActivity(false);
-                      },
+                    },
                     child: Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: 16.w,
@@ -213,6 +213,7 @@ class _FilterActivityState extends State<FilterActivity> {
             spaceH24,
             GestureDetector(
               onTap: () {
+                collectionBloc.funFilterActivity();
                 Navigator.pop(context);
               },
               child: ButtonLuxury(

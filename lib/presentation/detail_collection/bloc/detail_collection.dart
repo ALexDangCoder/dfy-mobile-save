@@ -16,6 +16,18 @@ import 'detail_collection_state.dart';
 
 class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
 // fillter nft
+  static const int PUT_ON_MARKET = 0;
+  static const int TRANSFER_ACTIVITY = 1;
+  static const int BURN = 2;
+  static const int CANCEL = 3;
+  static const int LIKE = 4;
+  static const int REPORT = 5;
+  static const int BUY = 6;
+  static const int BID_BUY_OUT = 7;
+  static const int RECEIVE_OFFER = 8;
+  static const int SIGN_CONTRACT = 9;
+
+//
   BehaviorSubject<bool> isHardNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSoftNft = BehaviorSubject.seeded(false);
 
@@ -60,7 +72,55 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   BehaviorSubject<bool> isBid = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isReceiveOffer = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSignContract = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isAllActivity = BehaviorSubject.seeded(false);
+
+  void funFilterActivity() {
+    if (isTransfer.value) {
+      typeActivity = '$typeActivity,$TRANSFER_ACTIVITY';
+    }
+    if (isPutOnMarket.value) {
+      typeActivity = '$typeActivity,$PUT_ON_MARKET';
+    }
+    if (isCancelMarket.value) {
+      typeActivity = '$typeActivity,$CANCEL';
+    }
+    if (isBurn.value) {
+      typeActivity = '$typeActivity,$BURN';
+    }
+    if (isLike.value) {
+      typeActivity = '$typeActivity,$LIKE';
+    }
+    if (isReport.value) {
+      typeActivity = '$typeActivity,$REPORT';
+    }
+    if (isBuy.value) {
+      typeActivity = '$typeActivity,$BUY';
+    }
+    if (isBid.value) {
+      typeActivity = '$typeActivity,$BID_BUY_OUT';
+    }
+    if (isReceiveOffer.value) {
+      typeActivity = '$typeActivity,$RECEIVE_OFFER';
+    }
+    if (isSignContract.value) {
+      typeActivity = '$typeActivity,$SIGN_CONTRACT';
+    }
+
+    if (typeActivity.isNotEmpty) {
+      getListActivityCollection(
+        collectionAddress: collectionAddress,
+        type: typeActivity.substring(
+          1,
+          typeActivity.length,
+        ),
+      );
+    } else {
+      getListActivityCollection(
+        collectionAddress: collectionAddress,
+      );
+    }
+    typeActivity = '';
+  }
+
   BehaviorSubject<List<NftMarket>> listNft = BehaviorSubject.seeded([]);
   BehaviorSubject<int> statusNft = BehaviorSubject.seeded(0);
 
@@ -80,6 +140,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String linkUrlTelegram = '';
   String linkUrlInstagram = '';
   String collectionId = '';
+  String collectionAddress = '';
+  String typeActivity = '';
 
   NftMarketRepository get _nftRepo => Get.find();
 
@@ -96,6 +158,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           arg = res;
           collectionDetailModel.sink.add(arg);
           collectionId = arg.id ?? '';
+          collectionAddress = arg.collectionAddress ?? '';
           getListNft(
             collectionId: arg.id ?? '',
           );
@@ -139,18 +202,22 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     );
   }
 
-  Future<void> getListActivityCollection(
-      {String? collectionAddress = '', String? status = ''}) async {
+  Future<void> getListActivityCollection({
+    String? collectionAddress = '',
+    String? type = '',
+  }) async {
     final Result<List<ActivityCollectionModel>> result =
         await _collectionDetailRepository.getCollectionListActivity(
-            collectionAddress ?? '', status ?? '');
+      collectionAddress ?? '',
+      type ?? '',
+    );
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
           listActivity.add([]);
         } else {
           argActivity.addAll(res);
-          listActivity.add(argActivity);
+          listActivity.add(res);
         }
       },
       error: (error) {},
@@ -281,8 +348,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     isReceiveOffer.sink.add(value);
     isSignContract.sink.add(value);
   }
-
-
 
   void reset() {
     isHardNft.sink.add(false);
