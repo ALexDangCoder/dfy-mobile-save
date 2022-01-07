@@ -409,5 +409,7 @@
   "feature_soft_nfts" : "Featured Soft NFTs",
   "buy_sell_create_collectible_nfts": "Mua, bán và tạo cácNFT sưu tập",
   "loading_text": "Đang tải...",
-  "error_text": "Lỗi tải..."
+  "error_text": "Lỗi tải...",
+  "nfts_search_result": "NFT kết quả tìm kiếm",
+  "collection_search_result": "Collection kết quả tìm kiếm"
 }

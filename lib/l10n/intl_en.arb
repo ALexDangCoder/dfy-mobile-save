@@ -423,5 +423,7 @@
   "owner_from_high_to_low": "Owner from high to low",
   "owner_from_low_to_high": "Owner from low to high",
   "item_from_high_to_low": "Item from high to low",
-  "item_from_low_to_high": "Item from low to high"
+  "item_from_low_to_high": "Item from low to high",
+  "nfts_search_result": "NFT search result",
+  "collection_search_result": "Collection search result"
 }

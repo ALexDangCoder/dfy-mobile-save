@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/collection_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -46,9 +47,14 @@ class ListOutstandingCollection extends StatelessWidget {
                 onTap: () {
                   isLoading
                       ? () {}
-                      : Navigator.pushNamed(
+                      : Navigator.push(
                           context,
-                          AppRouter.collectionList,
+                          MaterialPageRoute(
+                            builder: (ctx) => CollectionList(
+                              query: '',
+                              title: '',
+                            ),
+                          ),
                         );
                 },
                 child: Padding(
@@ -111,6 +117,8 @@ class ListOutstandingCollection extends StatelessWidget {
                               ],
                             )
                           : CollectionItem(
+                              typeCollection: cubit
+                                  .outstandingCollection[index].collectionType,
                               urlIcon: cubit
                                       .outstandingCollection[index].avatarCid ??
                                   '',
@@ -119,6 +127,8 @@ class ListOutstandingCollection extends StatelessWidget {
                               urlBackGround:
                                   cubit.outstandingCollection[index].coverCid ??
                                       '',
+                              idCollection:
+                                  cubit.outstandingCollection[index].id ?? '',
                             );
                     },
                   ),

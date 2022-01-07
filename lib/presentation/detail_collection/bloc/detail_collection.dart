@@ -11,6 +11,7 @@ import 'package:rxdart/rxdart.dart';
 import 'detail_collection_state.dart';
 
 class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
+
 // fillter nft
   BehaviorSubject<bool> isHardNft = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSoftNft = BehaviorSubject.seeded(false);

@@ -60,13 +60,15 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-  String status(MarketType type) {
+  String status(MarketType? type) {
     if (type == MarketType.AUCTION) {
       return '2';
     } else if (type == MarketType.PAWN) {
       return '3';
-    } else {
+    } else if (type == MarketType.SALE) {
       return '1';
+    } else {
+      return '';
     }
   }
 
@@ -79,7 +81,10 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   }
 
   void searchNft(String? name, String? status) {
-    if (name?.isNotEmpty ?? true) {
+    if(status!.isEmpty) {
+      getListNft(name: name);
+    }
+    else if (name?.isNotEmpty ?? true && status.isNotEmpty) {
       getListNft(name: name, status: status);
     } else {
       getListNft(status: status);
@@ -223,8 +228,11 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     listCheckBox.add(listCollectionCheck);
   }
 
-  String getTitle(MarketType type) {
-    if (type == MarketType.SALE) {
+  String getTitle(MarketType? type) {
+    if(type == null) {
+      return S.current.nfts_search_result;
+    }
+    else if (type == MarketType.SALE) {
       return S.current.nft_on_sale;
     } else if (type == MarketType.AUCTION) {
       return S.current.on_auction;
