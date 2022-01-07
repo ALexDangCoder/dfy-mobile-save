@@ -16,6 +16,9 @@ class NftMarket {
   final TypeImage typeImage;
   final int? startTime;
   final int? endTime;
+  String? urlToken;
+  String? symbolToken;
+  double? usdExchange;
   final int? numberOfCopies;
   final int? totalCopies;
   final int? ticked;
@@ -47,6 +50,9 @@ class NftMarket {
     this.ticked,
     this.marketId,
     this.reservePrice,
+    this.urlToken,
+    this.symbolToken,
+    this.usdExchange,
     this.buyOutPrice,
     this.numberOfCopies,
     this.totalCopies,

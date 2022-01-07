@@ -27,7 +27,6 @@ class Filter extends StatefulWidget {
 class _FilterState extends State<Filter> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

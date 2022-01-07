@@ -37,7 +37,9 @@ class OwnerTab extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: walletAddress.handleString(),
+                  text: walletAddress.formatAddress(
+                    index: walletAddress.isNotEmpty ? 10 : 0,
+                  ),
                   style: richTextWhite.copyWith(
                     decoration: TextDecoration.underline,
                     fontWeight: FontWeight.bold,
@@ -59,7 +61,7 @@ class OwnerTab extends StatelessWidget {
         '${ownerNft.priceSymbol ?? ''}';
     final String time = ownerNft.timeDuration?.toString() ?? '0';
     final int timeType = ownerNft.timeDurationType ?? 0;
-    final String timeDurationType = (timeType==0) ? 'weeks' : 'month';
+    final String timeDurationType = (timeType == 0) ? 'weeks' : 'month';
     switch (marketStatus) {
       case 0:
         return RichText(
@@ -123,34 +125,34 @@ class OwnerTab extends StatelessWidget {
           ),
         );
       case 3:
-      return RichText(
-        text: TextSpan(
-          text: '1 of 1 on pawn for',
-          style: textNormalCustom(
-            AppTheme.getInstance().textThemeColor(),
-            14,
-            FontWeight.w400,
+        return RichText(
+          text: TextSpan(
+            text: '1 of 1 on pawn for',
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              14,
+              FontWeight.w400,
+            ),
+            children: [
+              TextSpan(
+                text: price,
+                style: textNormalCustom(
+                  AppTheme.getInstance().fillColor(),
+                  14,
+                  FontWeight.w400,
+                ),
+              ),
+              TextSpan(
+                text: 'each in $time $timeDurationType',
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  14,
+                  FontWeight.w400,
+                ),
+              ),
+            ],
           ),
-          children: [
-            TextSpan(
-              text: price,
-              style: textNormalCustom(
-                AppTheme.getInstance().fillColor(),
-                14,
-                FontWeight.w400,
-              ),
-            ),
-            TextSpan(
-              text: 'each in $time $timeDurationType' ,
-              style: textNormalCustom(
-                AppTheme.getInstance().textThemeColor(),
-                14,
-                FontWeight.w400,
-              ),
-            ),
-          ],
-        ),
-      );
+        );
       default:
         return const SizedBox();
     }

@@ -102,7 +102,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       if (textSearch.value.isEmpty) {
         getCollection(sortFilter: sortFilter);
       } else {
-        getCollection(name: textSearch.value,sortFilter:sortFilter );
+        getCollection(name: textSearch.value, sortFilter: sortFilter);
       }
     });
   }
@@ -120,8 +120,17 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     );
   }
 
-  BehaviorSubject<List<bool>> listCheckBoxFilterStream = BehaviorSubject.seeded(
-      [false, false, false, false, false, false, false, false]);
+  BehaviorSubject<List<bool>> listCheckBoxFilterStream =
+      BehaviorSubject.seeded([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   List<bool> listCheckBoxFilter = [
     false,
@@ -136,8 +145,16 @@ class CollectionBloc extends BaseCubit<CollectionState> {
 
   void reset() {
     sortFilter = -1;
-    listCheckBoxFilterStream
-        .add([false, false, false, false, false, false, false, false]);
+    listCheckBoxFilterStream.add([
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ]);
     for (int i = 0; i < 8; i++) {
       listCheckBoxFilter[i] = false;
     }
