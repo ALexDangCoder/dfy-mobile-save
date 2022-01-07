@@ -12,14 +12,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class CategoriesDetail extends StatefulWidget {
-  const CategoriesDetail({Key? key, required this.title}) : super(key: key);
+  const CategoriesDetail({Key? key, required this.title, required this.id})
+      : super(key: key);
   final String title;
+  final String id;
 
   @override
   _CategoriesDetailState createState() => _CategoriesDetailState();
 }
 
 class _CategoriesDetailState extends State<CategoriesDetail> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,8 +43,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
             physics: const ScrollPhysics(),
             headerSliverBuilder: (context, innerScroll) => [
               BaseAppBar(
-                image:
-                    'https://taimienphi.vn/tmp/cf/aut/anh-gai-xinh-1.jpg',
+                image: 'https://taimienphi.vn/tmp/cf/aut/anh-gai-xinh-1.jpg',
                 title: '${widget.title} ${S.current.categories}',
                 initHeight: 145,
                 leading: SizedBox(
