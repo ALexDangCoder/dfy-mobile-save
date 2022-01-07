@@ -23,11 +23,16 @@ import 'widget/filter_nft.dart';
 class DetailCollection extends StatefulWidget {
   const DetailCollection({
     Key? key,
-    required this.walletAddress,
+    this.walletAddress,
+    this.typeCollection,
     required this.id,
   }) : super(key: key);
-  final String walletAddress;
+  final String? walletAddress;
   final String id;
+  final int? typeCollection;
+
+  //todo doanh
+  //call api detail dua theo type collection soft 0 hard 1
 
   @override
   _DetailCollectionState createState() => _DetailCollectionState();
@@ -330,7 +335,7 @@ class _DetailCollectionState extends State<DetailCollection>
                   ),
                   ActivityCollection(
                     detailCollectionBloc: detailCollectionBloc,
-                    addressWallet: widget.walletAddress,
+                    addressWallet: widget.walletAddress ?? '',
                   ),
                 ],
               ),

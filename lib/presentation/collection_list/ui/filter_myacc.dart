@@ -81,9 +81,19 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
-                            height: 30.h,
-                            width: 65.w,
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                              vertical: 6.h,
+                            ),
+                            child: Text(
+                              S.current.reset,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().bgBtsColor(),
+                                14,
+                                null,
+                              ),
+                            ),
                           ),
                           Text(
                             S.current.filter,
@@ -99,8 +109,6 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                               searchFilter.text = '';
                             },
                             child: Container(
-                              height: 30.h,
-                              width: 65.w,
                               padding: EdgeInsets.symmetric(
                                 horizontal: 16.w,
                                 vertical: 6.h,
@@ -111,18 +119,16 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                                   Radius.circular(6.r),
                                 ),
                               ),
-                              child: FittedBox(
-                                child: Text(
-                                  S.current.reset,
-                                  style: textNormalCustom(
-                                    null,
-                                    14,
-                                    null,
-                                  ),
+                              child: Text(
+                                S.current.reset,
+                                style: textNormalCustom(
+                                  null,
+                                  14,
+                                  null,
                                 ),
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -279,12 +285,13 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                               ),
                             ],
                           ),
-
                         ],
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 3.w,),
+                      margin: EdgeInsets.only(
+                        left: 3.w,
+                      ),
                       height: 210.h,
                       width: double.infinity,
                       child: StreamBuilder<List<Category>>(
@@ -302,8 +309,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                                 child: ItemCategoryFilter(
                                   title: snapshot.data?[index].name ?? '',
                                   urlImage:
-                                  snapshot.data?[index].avatarCid ??
-                                      '',
+                                      snapshot.data?[index].avatarCid ?? '',
                                   collectionBloc: collectionBloc,
                                   index: index,
                                 ),

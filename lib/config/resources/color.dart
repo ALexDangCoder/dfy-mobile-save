@@ -25,6 +25,7 @@ const purple = Color(0xff9997FF);
 const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
+const textHistory = Color(0xFFE4E4E4);
 
 //skeleton
 const colorSkeletonLight = Color(0xFF605F83);

@@ -16,6 +16,13 @@ extension StringMoneyFormat on String {
     final String result = formatValue.format(money);
     return result;
   }
+
+  String formatDateTimeMy(int date) {
+    var millis = date;
+    var dt = DateTime.fromMillisecondsSinceEpoch(millis);
+    String d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
+    return d24;
+  }
 }
 
 extension FormatAddress on String {

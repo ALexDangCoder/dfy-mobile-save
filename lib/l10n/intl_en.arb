@@ -415,6 +415,8 @@
   "Set_a_duration_for_the_desired_loan_term": "Set a duration for the desired loan term",
   "quantity_of_collateral": " Quantity of collateral",
   "set_the_nft_quantity_as_collateral": "Set the NFT quantity as collateral",
+  "nfts_search_result": "NFT search result",
+  "collection_search_result": "Collection search result",
   "sort_by": "Sort by",
   "highest_trading_volume": "Highest trading volume",
   "lowest_trading_volume": "Lowest trading volume",
