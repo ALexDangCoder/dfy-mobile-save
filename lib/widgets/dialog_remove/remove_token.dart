@@ -163,7 +163,8 @@ class RemoveToken extends StatelessWidget {
                                             cubit.addressWalletCore,
                                           );
                                         },
-                                        child: SizedBox(
+                                        child: Container(
+                                          color: Colors.transparent,
                                           height: 64.h,
                                           child: Center(
                                             child: Text(

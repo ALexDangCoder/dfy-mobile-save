@@ -10,8 +10,12 @@ class ItemCollection extends StatelessWidget {
   final String urlIcon;
   final String title;
   final String items;
+  final String? itemsKey;
   final String owners;
+  final String? ownersKey;
   final String text;
+  final bool? fixWidth;
+  final BoxFit? backgroundFit;
 
   const ItemCollection({
     Key? key,
@@ -21,6 +25,10 @@ class ItemCollection extends StatelessWidget {
     required this.items,
     required this.owners,
     required this.text,
+    this.backgroundFit = BoxFit.fill,
+    this.fixWidth = true,
+    this.itemsKey,
+    this.ownersKey,
   }) : super(key: key);
 
   @override
@@ -29,26 +37,36 @@ class ItemCollection extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Container(
-          width: 164.w,
-          clipBehavior: Clip.hardEdge,
+          width: fixWidth ?? true ? 164.w : double.infinity,
           decoration: BoxDecoration(
-            border: Border.all(
-              color: AppTheme.getInstance().selectDialogColor(),
-              width: 1.w,
-            ),
             color: AppTheme.getInstance().borderItemColor(),
             borderRadius: BorderRadius.all(
               Radius.circular(20.r),
             ),
+            border: Border.all(
+              color: AppTheme.getInstance().selectDialogColor(),
+              width: 1.w,
+            ),
           ),
           child: Column(
             children: [
-              CachedNetworkImage(
-                imageUrl: urlBackGround,
-                width: 164.w,
+              Container(
+                clipBehavior: Clip.hardEdge,
+                width: fixWidth ?? true ? 164.w : double.infinity,
                 height: 58.h,
-                fit: BoxFit.cover,
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().selectDialogColor(),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20.r),
+                  ),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      urlBackGround,
+                    ),
+                    fit: backgroundFit ?? BoxFit.fill,
+                  ),
+                ),
+                // child: ,
               ),
               Container(
                 padding: EdgeInsets.only(
@@ -71,7 +89,7 @@ class ItemCollection extends StatelessWidget {
                   top: 4.h,
                 ),
                 child: Text(
-                  '$items ${S.current.items} • $owners ${S.current.owner}',
+                  '$items ${itemsKey ?? S.current.items} • $owners ${ownersKey ?? S.current.owner}',
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteWithOpacity(),
                     12.sp,
@@ -126,11 +144,11 @@ class ItemCollection extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlIcon,
                 fit: BoxFit.cover,
-                // placeholder: (context, url) => Center(
-                //   child: CircularProgressIndicator(
-                //     color: AppTheme.getInstance().whiteColor(),
-                //   ),
-                // ),
+                placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.getInstance().borderItemColor(),
+                  ),
+                ),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),

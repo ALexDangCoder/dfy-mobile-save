@@ -153,6 +153,7 @@ class TransactionList extends StatelessWidget {
               builder: (BuildContext context) {
                 return TransactionHistoryDetailScreen(
                   transaction: transaction,
+                  shortName: shortName,
                 );
               },
             ),

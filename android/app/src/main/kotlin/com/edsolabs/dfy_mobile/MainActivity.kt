@@ -5,6 +5,7 @@ import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
+import java.util.*
 
 class MainActivity : FlutterFragmentActivity() {
     init {
@@ -121,7 +122,8 @@ class MainActivity : FlutterFragmentActivity() {
                     val walletAddress =
                         call.argument<String>("walletAddress") ?: return@setMethodCallHandler
                     val tokenAddress =
-                        call.argument<String>("tokenAddress") ?: return@setMethodCallHandler
+                        call.argument<String>("tokenAddress")?.lowercase(Locale.getDefault())
+                            ?: return@setMethodCallHandler
                     this.checkToken(
                         channel = channel,
                         walletAddress = walletAddress,
@@ -132,7 +134,8 @@ class MainActivity : FlutterFragmentActivity() {
                     val walletAddress =
                         call.argument<String>("walletAddress") ?: return@setMethodCallHandler
                     val tokenAddress =
-                        call.argument<String>("tokenAddress") ?: return@setMethodCallHandler
+                        call.argument<String>("tokenAddress")?.lowercase(Locale.getDefault())
+                            ?: return@setMethodCallHandler
                     val tokenFullName =
                         call.argument<String>("tokenFullName") ?: return@setMethodCallHandler
                     val iconToken =
@@ -175,7 +178,7 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("walletAddress")
                             ?: return@setMethodCallHandler
                     val tokenAddress =
-                        call.argument<String>("tokenAddress")
+                        call.argument<String>("tokenAddress")?.lowercase(Locale.getDefault())
                             ?: return@setMethodCallHandler
                     val isShow =
                         call.argument<Boolean>("isShow")
@@ -254,7 +257,7 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("toAddress")
                             ?: return@setMethodCallHandler
                     val tokenAddress =
-                        call.argument<String>("tokenAddress")
+                        call.argument<String>("tokenAddress")?.lowercase(Locale.getDefault())
                             ?: return@setMethodCallHandler
                     val nonce =
                         call.argument<String>("nonce")
@@ -299,7 +302,7 @@ class MainActivity : FlutterFragmentActivity() {
                         call.argument<String>("toAddress")
                             ?: return@setMethodCallHandler
                     val tokenAddress =
-                        call.argument<String>("tokenAddress")
+                        call.argument<String>("tokenAddress")?.lowercase(Locale.getDefault())
                             ?: return@setMethodCallHandler
                     val nonce =
                         call.argument<String>("nonce")
@@ -341,15 +344,19 @@ class MainActivity : FlutterFragmentActivity() {
                     )
                 }
                 "exportWallet" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
                     val password =
                         call.argument<String>("password")
                             ?: return@setMethodCallHandler
-                    val walletAddress =
-                        call.argument<String>("walletAddress")
+                    val isFaceId =
+                        call.argument<Boolean>("isFaceId")
                             ?: return@setMethodCallHandler
                     this.exportWallet(
                         channel = channel,
                         password = password,
+                        isFaceId = isFaceId,
                         walletAddress = walletAddress
                     )
                 }

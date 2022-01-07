@@ -3,14 +3,15 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/widget/Copied.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/item_seedphrase/item_seedphrase.dart';
-import 'package:Dfy/widgets/toast/toast_copy.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class BoxListPassWordPhraseCopy extends StatelessWidget {
+class BoxListPassWordPhraseCopy extends StatefulWidget {
   final List<String> listTitle;
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
@@ -19,6 +20,22 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
     required this.listTitle,
     required this.bLocCreateSeedPhrase,
   }) : super(key: key);
+
+  @override
+  State<BoxListPassWordPhraseCopy> createState() =>
+      _BoxListPassWordPhraseCopyState();
+}
+
+class _BoxListPassWordPhraseCopyState extends State<BoxListPassWordPhraseCopy> {
+  late FToast fToast;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +80,17 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    FlutterClipboard.copy(bLocCreateSeedPhrase.passPhrase);
-                    toast_copy();
+                    FlutterClipboard.copy(
+                        widget.bLocCreateSeedPhrase.passPhrase);
+                    fToast.showToast(
+                      child: Copied(
+                        title: S.current.copied_seed_phrase,
+                      ),
+                      gravity: ToastGravity.CENTER,
+                      toastDuration: const Duration(
+                        seconds: 2,
+                      ),
+                    );
                   },
                   child: Image.asset(
                     ImageAssets.ic_copy,
@@ -82,10 +108,10 @@ class BoxListPassWordPhraseCopy extends StatelessWidget {
               spacing: 5.w,
               runSpacing: 12.h,
               children: List<Widget>.generate(
-                listTitle.length,
+                widget.listTitle.length,
                 (int index) {
                   return ItemSeedPhrase(
-                    title: ' ${listTitle[index]}',
+                    title: ' ${widget.listTitle[index]}',
                   );
                 },
               ),

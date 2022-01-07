@@ -18,6 +18,7 @@ final spaceH8 = SizedBox(height: 8.h);
 final spaceH10 = SizedBox(height: 10.h);
 final spaceH12 = SizedBox(height: 12.h);
 final spaceH15 = SizedBox(height: 15.h);
+final spaceH32 = SizedBox(height: 32.h,);
 
 final spaceH14 = SizedBox(height: 14.h);
 final spaceH16 = SizedBox(height: 16.h);
@@ -51,10 +52,10 @@ final spaceW16 = SizedBox(width: 16.w);
 final spaceW18 = SizedBox(width: 18.w);
 final spaceW20 = SizedBox(width: 20.w);
 final spaceW25 = SizedBox(width: 25.w);
+final spaceW28 = SizedBox(width: 28.w);
 final spaceW30 = SizedBox(width: 30.w);
 final spaceW60 = SizedBox(width: 60.w);
 final spaceW100 = SizedBox(width: 100.w);
-
 final divide = Divider(
   color: AppTheme.getInstance().divideColor(),
   thickness: 1,
@@ -134,7 +135,7 @@ TextStyle textNormalCustomUnderline(
     color: color ?? Colors.white,
     fontWeight: fontWeight ?? FontWeight.w500,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize ?? 14,
+    fontSize: fontSize?.sp ?? 14.sp,
     decoration: TextDecoration.underline,
   );
 }

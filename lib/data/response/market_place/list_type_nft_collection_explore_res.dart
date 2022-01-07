@@ -14,7 +14,7 @@ class ListTypeNftCollectionExploreResponse extends Equatable {
   @JsonKey(name: 'type')
   int? type;
   @JsonKey(name: 'position')
-  int? address;
+  int? position;
   @JsonKey(name: 'url')
   String? url;
   @JsonKey(name: 'items')
@@ -24,7 +24,7 @@ class ListTypeNftCollectionExploreResponse extends Equatable {
     this.id,
     this.name,
     this.type,
-    this.address,
+    this.position,
     this.url,
     this.items,
   );
@@ -41,7 +41,7 @@ class ListTypeNftCollectionExploreResponse extends Equatable {
         id: id,
         name: name,
         type: type,
-        address: address,
+        position: position,
         url: url,
         items: items?.map((e) => e.toDomain()).toList(),
       );

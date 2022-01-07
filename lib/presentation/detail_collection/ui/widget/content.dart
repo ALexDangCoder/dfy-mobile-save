@@ -3,10 +3,15 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'copy.dart';
 
 class ContentDetailCollection extends StatefulWidget {
   const ContentDetailCollection({
@@ -14,7 +19,7 @@ class ContentDetailCollection extends StatefulWidget {
     required this.owner,
     required this.contract,
     required this.nftStandard,
-    required this.category,
+    this.category,
     required this.title,
     required this.bodyText,
     required this.detailCollectionBloc,
@@ -23,7 +28,7 @@ class ContentDetailCollection extends StatefulWidget {
   final String owner;
   final String contract;
   final String nftStandard;
-  final String category;
+  final String? category;
   final String title;
   final String bodyText;
 
@@ -33,6 +38,16 @@ class ContentDetailCollection extends StatefulWidget {
 }
 
 class _ContentDetailCollectionState extends State<ContentDetailCollection> {
+  late final FToast fToast;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,23 +63,21 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 46.h,
-                ),
+                spaceH10,
                 Text(
                   widget.title,
                   style: textNormalCustom(
                     null,
-                    20.sp,
+                    20,
                     FontWeight.w600,
                   ),
                 ),
                 spaceH6,
                 Text(
-                  widget.bodyText+widget.bodyText+widget.bodyText+widget.bodyText,
+                  widget.bodyText,
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteWithOpacity(),
-                    14.sp,
+                    14,
                     null,
                   ),
                   maxLines: isShow ? null : 2,
@@ -86,7 +99,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                                   S.current.owner,
                                   style: textNormalCustom(
                                     AppTheme.getInstance().whiteWithOpacity(),
-                                    14.sp,
+                                    14,
                                     FontWeight.w400,
                                   ),
                                 ),
@@ -94,11 +107,13 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                               Expanded(
                                 flex: 7,
                                 child: Text(
-                                  widget.owner,
-                                  style: textNormalCustomUnderline(
+                                  widget.owner.formatAddressWalletConfirm(),
+                                  style: textNormalCustom(
                                     null,
-                                    14.sp,
+                                    14,
                                     null,
+                                  ).copyWith(
+                                    decoration: TextDecoration.underline,
                                   ),
                                 ),
                               ),
@@ -114,19 +129,36 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                                   S.current.contract,
                                   style: textNormalCustom(
                                     AppTheme.getInstance().whiteWithOpacity(),
-                                    14.sp,
+                                    14,
                                     FontWeight.w400,
                                   ),
                                 ),
                               ),
                               Expanded(
                                 flex: 7,
-                                child: Text(
-                                  widget.contract,
-                                  style: textNormalCustomUnderline(
-                                    const Color(0xff46BCFF),
-                                    14.sp,
-                                    null,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    FlutterClipboard.copy(widget.contract);
+                                    fToast.showToast(
+                                      child: Copied(
+                                        title: S.current.copy,
+                                      ),
+                                      gravity: ToastGravity.CENTER,
+                                      toastDuration: const Duration(
+                                        seconds: 2,
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    widget.contract
+                                        .formatAddressWalletConfirm(),
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().blueText(),
+                                      14,
+                                      null,
+                                    ).copyWith(
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -142,7 +174,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                                   S.current.nft_standard,
                                   style: textNormalCustom(
                                     AppTheme.getInstance().whiteWithOpacity(),
-                                    14.sp,
+                                    14,
                                     FontWeight.w400,
                                   ),
                                 ),
@@ -153,7 +185,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                                   widget.nftStandard,
                                   style: textNormalCustom(
                                     null,
-                                    14.sp,
+                                    14,
                                     null,
                                   ),
                                 ),
@@ -166,25 +198,30 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                             children: [
                               Expanded(
                                 flex: 3,
-                                child: Text(
-                                  S.current.category,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().whiteWithOpacity(),
-                                    14.sp,
-                                    FontWeight.w400,
-                                  ),
-                                ),
+                                child: widget.category?.isEmpty ?? true
+                                    ? const SizedBox.shrink()
+                                    : Text(
+                                        S.current.category,
+                                        style: textNormalCustom(
+                                          AppTheme.getInstance()
+                                              .whiteWithOpacity(),
+                                          14,
+                                          FontWeight.w400,
+                                        ),
+                                      ),
                               ),
                               Expanded(
                                 flex: 7,
-                                child: Text(
-                                  widget.category,
-                                  style: textNormalCustom(
-                                    null,
-                                    14.sp,
-                                    null,
-                                  ),
-                                ),
+                                child: widget.category?.isEmpty ?? true
+                                    ? const SizedBox.shrink()
+                                    : Text(
+                                        widget.category ?? '',
+                                        style: textNormalCustom(
+                                          null,
+                                          14,
+                                          null,
+                                        ),
+                                      ),
                               ),
                             ],
                           ),
@@ -194,7 +231,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                     ],
                   ),
                 ),
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     widget.detailCollectionBloc.isShowMoreStream.sink
                         .add(!isShow);
@@ -219,10 +256,10 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                           width: 13.15.w,
                         ),
                         Text(
-                          isShow ? S.current.view_less : S.current.view_more,
+                          isShow ? S.current.view_less : S.current.see_more,
                           style: textNormalCustom(
                             AppTheme.getInstance().fillColor(),
-                            16.sp,
+                            16,
                             FontWeight.w400,
                           ),
                         ),

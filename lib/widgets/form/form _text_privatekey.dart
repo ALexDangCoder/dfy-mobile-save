@@ -1,9 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/widgets/toast/toast_copy.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/widget/Copied.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FromTextPrivateKey extends StatelessWidget {
   final String urlPrefixIcon;
@@ -11,7 +13,9 @@ class FromTextPrivateKey extends StatelessWidget {
   final String urlSuffixIcon;
   final String titleCopy;
 
-  const FromTextPrivateKey({
+  FToast fToast = FToast();
+
+  FromTextPrivateKey({
     Key? key,
     required this.urlPrefixIcon,
     required this.title,
@@ -21,6 +25,7 @@ class FromTextPrivateKey extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    fToast.init(context);
     return Container(
       width: 343.w,
       height: 64.h,
@@ -59,16 +64,24 @@ class FromTextPrivateKey extends StatelessWidget {
           InkWell(
             onTap: () {
               FlutterClipboard.copy(titleCopy);
-              toast_copy();
+              fToast.showToast(
+                child: Copied(
+                  title: S.current.copied_private_key,
+                ),
+                gravity: ToastGravity.CENTER,
+                toastDuration: const Duration(
+                  seconds: 2,
+                ),
+              );
             },
             child: Container(
               child: urlSuffixIcon.isNotEmpty
                   ? Image.asset(
-                urlSuffixIcon,
-                height: 20.67.h,
-                width: 20.14.w,
-              )
-                  : null,
+                      urlSuffixIcon,
+                      height: 20.67.h,
+                      width: 20.14.w,
+                    )
+                  : const SizedBox.shrink(),
             ),
           ),
         ],
