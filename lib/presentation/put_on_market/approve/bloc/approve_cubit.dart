@@ -52,6 +52,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           balanceWallet = await Web3Utils().getBalanceOfBnb(
               ofAddress: _addressWalletCoreSubject.valueOrNull ?? '');
           _balanceWalletSubject.sink.add(balanceWallet?? 0);
+          showContent();
         }
         break;
     }
@@ -60,6 +61,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   Future<void> getListWallets() async {
     try {
       final data = {};
+      showLoading();
       await trustWalletChannel.invokeMethod('getListWallets', data);
     } on PlatformException {
       //nothing
@@ -69,6 +71,14 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   int randomAvatar() {
     final Random rd = Random();
     return rd.nextInt(10);
+  }
+  void changeLoadingState ({required bool isShow}){
+    if (isShow) {
+      showLoading();
+    } else {
+      showContent();
+    }
+
   }
 
   Future<void> getGasPrice() async {

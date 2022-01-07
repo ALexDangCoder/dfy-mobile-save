@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:ui';
 
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -17,21 +20,25 @@ class PopUpApprove extends StatelessWidget {
     required this.balanceWallet,
     required this.gasFee,
     required this.purposeText,
+    required this.approve,
+    required this.approveSuccess,
   }) : super(key: key);
 
   final int imageAccount;
+  final Function approveSuccess;
   final String accountName;
   final String purposeText;
   final String addressWallet;
   final double balanceWallet;
   final double gasFee;
+  final Function approve;
 
   @override
   Widget build(BuildContext context) {
     return BackdropFilter(
       filter: ImageFilter.blur(
-        sigmaX: 4,
-        sigmaY: 4,
+        sigmaX: 2,
+        sigmaY: 2,
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -53,7 +60,7 @@ class PopUpApprove extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'testnet',
+              '• testnet',
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
                 14,
@@ -179,24 +186,54 @@ class PopUpApprove extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: ButtonGold(
-                    radiusButton: 15,
-                    title: S.current.approve,
-                    isEnable: true,
-                    fixSize: false,
-                    height: 48,
-                    haveMargin: false,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: ButtonGold(
+                      haveGradient: false,
+                      textColor: fillYellowColor,
+                      border: Border.all(
+                        color: fillYellowColor,
+                      ),
+                      radiusButton: 15,
+                      textSize: 16,
+                      title: S.current.reject,
+                      isEnable: true,
+                      fixSize: false,
+                      height: 48,
+                      haveMargin: false,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 23),
                 Expanded(
-                  child: ButtonGold(
-                    radiusButton: 15,
-                    title: S.current.approve,
-                    isEnable: true,
-                    height: 48,
-                    fixSize: false,
-                    haveMargin: false,
+                  child: GestureDetector(
+                    onTap: () async {
+                      final navigator = Navigator.of(context);
+                      unawaited(
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (_) => const AlertDialog(
+                            backgroundColor: Colors.transparent,
+                            content: TransactionSubmit(),
+                          ),
+                        ),
+                      );
+                      final result = await approve();
+                      navigator.pop();
+                      navigator.pop(result);
+                    },
+                    child: ButtonGold(
+                      radiusButton: 15,
+                      textSize: 16,
+                      title: S.current.approve,
+                      isEnable: true,
+                      height: 48,
+                      fixSize: false,
+                      haveMargin: false,
+                    ),
                   ),
                 )
               ],
