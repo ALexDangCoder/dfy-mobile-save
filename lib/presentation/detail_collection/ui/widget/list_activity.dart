@@ -1,4 +1,3 @@
-
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_bid.dart';
@@ -116,7 +115,7 @@ class ListActivity extends StatelessWidget {
     String? urlSymbol,
   }) {
     switch (typeActivity) {
-      case  DetailCollectionBloc.PUT_ON_MARKET:
+      case DetailCollectionBloc.PUT_ON_MARKET:
         return PutOnMarket(
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',

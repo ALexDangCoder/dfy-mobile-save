@@ -38,6 +38,45 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
 
   List<int> listFilter = [];
 
+  BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
+  BehaviorSubject<bool> isShowMoreStream = BehaviorSubject.seeded(false);
+
+  //filter activity
+  BehaviorSubject<bool> isTransfer = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isPutOnMarket = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCancelMarket = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isBurn = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isLike = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isReport = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isBuy = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isBid = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isReceiveOffer = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isSignContract = BehaviorSubject.seeded(false);
+
+  BehaviorSubject<List<NftMarket>> listNft = BehaviorSubject.seeded([]);
+  BehaviorSubject<int> statusNft = BehaviorSubject.seeded(0);
+  BehaviorSubject<List<ActivityCollectionModel>> listActivity =
+      BehaviorSubject.seeded([]);
+  BehaviorSubject<CollectionDetailModel> collectionDetailModel =
+      BehaviorSubject.seeded(CollectionDetailModel());
+
+  DetailCollectionBloc() : super(CollectionDetailState());
+
+  NftMarketRepository get _nftRepo => Get.find();
+
+  CollectionDetailRepository get _collectionDetailRepository => Get.find();
+
+  CollectionDetailModel arg = CollectionDetailModel();
+  List<ActivityCollectionModel> argActivity = [];
+
+  String linkUrlFacebook = '';
+  String linkUrlTwitter = '';
+  String linkUrlTelegram = '';
+  String linkUrlInstagram = '';
+  String collectionId = '';
+  String collectionAddress = '';
+  String typeActivity = '';
+
   void funFilterNft() {
     if (isOnSale.value) {
       listFilter.add(1);
@@ -57,21 +96,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       name: textSearch.value,
     );
   }
-
-  BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
-  BehaviorSubject<bool> isShowMoreStream = BehaviorSubject.seeded(false);
-
-  //filter activity
-  BehaviorSubject<bool> isTransfer = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isPutOnMarket = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isCancelMarket = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isBurn = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isLike = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isReport = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isBuy = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isBid = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isReceiveOffer = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isSignContract = BehaviorSubject.seeded(false);
 
   void funFilterActivity() {
     if (isTransfer.value) {
@@ -121,29 +145,54 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     typeActivity = '';
   }
 
-  BehaviorSubject<List<NftMarket>> listNft = BehaviorSubject.seeded([]);
-  BehaviorSubject<int> statusNft = BehaviorSubject.seeded(0);
+  Timer? debounceTime;
 
-  BehaviorSubject<List<ActivityCollectionModel>> listActivity =
-      BehaviorSubject.seeded([]);
-  BehaviorSubject<CollectionDetailModel> collectionDetailModel =
-      BehaviorSubject.seeded(CollectionDetailModel());
+  void search(String value) {
+    if (debounceTime != null) {
+      if (debounceTime!.isActive) {
+        debounceTime!.cancel();
+      }
+    }
+    debounceTime = Timer(
+      const Duration(milliseconds: 800),
+      () {
+        if (value.isEmpty) {
+          getListNft(
+            collectionId: collectionId,
+            listMarketType: [0],
+          );
+        } else {
+          getListNft(
+            name: value,
+            collectionId: collectionId,
+            listMarketType: [0],
+          );
+        }
+      },
+    );
+  }
 
-  DetailCollectionBloc() : super(CollectionDetailState());
+  void resetFilterActivity(bool value) {
+    isTransfer.sink.add(value);
+    isPutOnMarket.sink.add(value);
+    isCancelMarket.sink.add(value);
+    isBurn.sink.add(value);
+    isLike.sink.add(value);
+    isReport.sink.add(value);
+    isBuy.sink.add(value);
+    isBid.sink.add(value);
+    isReceiveOffer.sink.add(value);
+    isSignContract.sink.add(value);
+  }
 
-  CollectionDetailRepository get _collectionDetailRepository => Get.find();
-  CollectionDetailModel arg = CollectionDetailModel();
-  List<ActivityCollectionModel> argActivity = [];
-
-  String linkUrlFacebook = '';
-  String linkUrlTwitter = '';
-  String linkUrlTelegram = '';
-  String linkUrlInstagram = '';
-  String collectionId = '';
-  String collectionAddress = '';
-  String typeActivity = '';
-
-  NftMarketRepository get _nftRepo => Get.find();
+  void reset() {
+    isHardNft.sink.add(false);
+    isOnSale.sink.add(false);
+    isSoftNft.sink.add(false);
+    isOnPawn.sink.add(false);
+    isOnAuction.sink.add(false);
+    isNotOnMarket.sink.add(false);
+  }
 
   Future<void> getCollection({String? id = ''}) async {
     emit(LoadingData());
@@ -334,55 +383,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       default:
         return '';
     }
-  }
-
-  void resetFilterActivity(bool value) {
-    isTransfer.sink.add(value);
-    isPutOnMarket.sink.add(value);
-    isCancelMarket.sink.add(value);
-    isBurn.sink.add(value);
-    isLike.sink.add(value);
-    isReport.sink.add(value);
-    isBuy.sink.add(value);
-    isBid.sink.add(value);
-    isReceiveOffer.sink.add(value);
-    isSignContract.sink.add(value);
-  }
-
-  void reset() {
-    isHardNft.sink.add(false);
-    isOnSale.sink.add(false);
-    isSoftNft.sink.add(false);
-    isOnPawn.sink.add(false);
-    isOnAuction.sink.add(false);
-    isNotOnMarket.sink.add(false);
-  }
-
-  Timer? debounceTime;
-
-  void search(String value) {
-    if (debounceTime != null) {
-      if (debounceTime!.isActive) {
-        debounceTime!.cancel();
-      }
-    }
-    debounceTime = Timer(
-      const Duration(milliseconds: 800),
-      () {
-        if (value.isEmpty) {
-          getListNft(
-            collectionId: collectionId,
-            listMarketType: [0],
-          );
-        } else {
-          getListNft(
-            name: value,
-            collectionId: collectionId,
-            listMarketType: [0],
-          );
-        }
-      },
-    );
   }
 
   void dispone() {
