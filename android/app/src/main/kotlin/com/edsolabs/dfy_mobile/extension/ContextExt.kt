@@ -1,7 +1,9 @@
 package com.edsolabs.dfy_mobile.extension
 
 import android.content.Context
+import android.util.Log
 import com.edsolabs.dfy_mobile.Constant
+import com.edsolabs.dfy_mobile.SignUtil
 import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
 import com.edsolabs.dfy_mobile.data.model.ItemNftModel
 import com.edsolabs.dfy_mobile.data.model.NftModel
@@ -12,16 +14,15 @@ import io.flutter.plugin.common.MethodChannel
 import org.json.JSONArray
 import org.json.JSONObject
 import wallet.core.java.AnySigner
-import wallet.core.jni.AnyAddress
-import wallet.core.jni.CoinType
-import wallet.core.jni.HDWallet
-import wallet.core.jni.PrivateKey
+import wallet.core.jni.*
 import wallet.core.jni.proto.Ethereum
 import java.math.BigInteger
 import java.security.InvalidParameterException
+import java.security.SignatureException
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+
 
 fun Context.chooseWallet(channel: MethodChannel?, walletAddress: String) {
     val appPreference = AppPreference(this)
@@ -847,4 +848,36 @@ fun Context.signTransactionNft(
     hasMap["symbol"] = symbol
     hasMap["nftId"] = tokenId
     channel?.invokeMethod("signTransactionNftCallback", hasMap)
+}
+
+//fun Context.testSign() {
+//    val privateKeyData =
+//        "c6183448b911c04db9dc0863018fca4e8fe19bbb7469342eb34b31c76232dee0".toHexBytes()
+//    val data = Hash.keccak256("I am signing my one-time nonce: 928205184147324928".toByteArray())
+//    val privateKey = PrivateKey(privateKeyData)
+//    val sign = privateKey.sign(data, Curve.SECP256K1)
+//    Log.d("kiemtra", sign.toHexString(true))
+//}
+
+fun Context.testSign() {
+    val nonce = "I am signing my one-time nonce:" + "\n" + "928545457142431744"
+
+    val pvk = "c6183448b911c04db9dc0863018fca4e8fe19bbb7469342eb34b31c76232dee0"
+    val privateKeyData = pvk.toHexBytes()
+    val privateKey = PrivateKey(privateKeyData)
+
+    val sign1 = privateKey.sign(Hash.sha256(nonce.toByteArray()), Curve.SECP256K1)
+
+    Log.d("sign1", sign1.toHexString(true))
+    Log.d("publickey", privateKey.getPublicKeySecp256k1(false).data().toHexString(true))
+
+    try {
+        val walletAddress: String = SignUtil.getAddressUsedToSignHashedMessage(
+            sign1.toHexString(true),
+            nonce
+        )
+        Log.d("kiemtra", walletAddress)
+    } catch (ex: SignatureException) {
+        Log.d("kiemtra", "loginByWalletAddress ex: $ex")
+    }
 }

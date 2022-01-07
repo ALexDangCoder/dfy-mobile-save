@@ -360,6 +360,9 @@ class MainActivity : FlutterFragmentActivity() {
                         walletAddress = walletAddress
                     )
                 }
+                "testSign" -> {
+                    this.testSign()
+                }
             }
         }
     }

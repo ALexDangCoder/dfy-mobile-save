@@ -133,6 +133,7 @@ class _MyAppState extends State<MyApp> {
 
   void callAllApi() {
     getConfig();
+    testSign();
   }
 
   void getConfig() {
@@ -238,6 +239,11 @@ class _MyAppState extends State<MyApp> {
         'walletAddress': '0x6A587Aa17b562d0714650e0E7DCC7E964d3Dc148',
       };
       await trustWalletChannel.invokeMethod('getTokens', data);
+    } on PlatformException {}
+  }
+  Future<void> testSign() async {
+    try {
+      await trustWalletChannel.invokeMethod('testSign');
     } on PlatformException {}
   }
 }
