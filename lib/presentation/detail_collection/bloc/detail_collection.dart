@@ -15,7 +15,6 @@ import 'package:rxdart/rxdart.dart';
 import 'detail_collection_state.dart';
 
 class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
-
 // fillter nft
   static const int PUT_ON_MARKET = 0;
   static const int TRANSFER_ACTIVITY = 1;
@@ -38,7 +37,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   BehaviorSubject<bool> isOnAuction = BehaviorSubject.seeded(false); //2
   BehaviorSubject<bool> isNotOnMarket = BehaviorSubject.seeded(false); //0
 
-  List<int> listFilter = [0,1,2,3];
+  List<int> listFilter = [0, 1, 2, 3];
 
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isShowMoreStream = BehaviorSubject.seeded(false);
@@ -57,6 +56,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
 
   BehaviorSubject<List<NftMarket>> listNft = BehaviorSubject.seeded([]);
   BehaviorSubject<int> statusNft = BehaviorSubject.seeded(0);
+  BehaviorSubject<int> statusActivity = BehaviorSubject.seeded(0);
   BehaviorSubject<List<ActivityCollectionModel>> listActivity =
       BehaviorSubject.seeded([]);
   BehaviorSubject<CollectionDetailModel> collectionDetailModel =
@@ -170,7 +170,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   Timer? debounceTime;
 
   void search(String value) {
-
     if (debounceTime != null) {
       if (debounceTime!.isActive) {
         debounceTime!.cancel();
@@ -179,22 +178,19 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     debounceTime = Timer(
       const Duration(milliseconds: 800),
       () {
-        print('----------------------------------------$listFilter');
-        print('-------------------------------------------------$value');
-        if(listFilter.isNotEmpty){
+        if (listFilter.isNotEmpty) {
           getListNft(
             name: value,
             collectionId: collectionId,
             listMarketType: listFilter,
           );
-        }else{
+        } else {
           getListNft(
             name: value,
             collectionId: collectionId,
-            listMarketType: [0,1,2,3],
+            listMarketType: [0, 1, 2, 3],
           );
         }
-
       },
     );
   }
@@ -283,6 +279,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     String? collectionAddress = '',
     String? type = '',
   }) async {
+    statusActivity.sink.add(0);
     final Result<List<ActivityCollectionModel>> result =
         await _collectionDetailRepository.getCollectionListActivity(
       collectionAddress ?? '',
@@ -292,12 +289,18 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       success: (res) {
         if (res.isBlank ?? false) {
           listActivity.add([]);
+          statusActivity.add(2);
+          //erorr
         } else {
           argActivity.addAll(res);
           listActivity.add(res);
+          statusActivity.add(1);
+          //success
         }
       },
-      error: (error) {},
+      error: (error) {
+        statusActivity.add(3); //fail
+      },
     );
   }
 
