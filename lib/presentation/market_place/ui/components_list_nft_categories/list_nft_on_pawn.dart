@@ -17,10 +17,12 @@ class ListNftOnPawn extends StatelessWidget {
     required this.cubit,
     required this.isLoading,
     required this.isLoadFail,
+    required this.marketType,
   }) : super(key: key);
   final MarketplaceCubit cubit;
   final bool isLoading;
   final bool isLoadFail;
+  final String marketType;
 
   @override
   Widget build(BuildContext context) {
