@@ -54,6 +54,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   }
   String getTitleStream(int num){
     if (num  == 2) {
+
       return S.current.nft_on_auction;
     } else if (num == 3) {
       return S.current.nft_on_pawn;
@@ -64,10 +65,16 @@ class ListNftCubit extends BaseCubit<ListNftState> {
 
   String status(MarketType? type) {
     if (type == MarketType.AUCTION) {
+      checkFilterArr.add(S.current.on_auction);
+      selectStatus.add(2);
       return '2';
     } else if (type == MarketType.PAWN) {
+      checkFilterArr.add(S.current.on_pawn);
+      selectStatus.add(3);
       return '3';
     } else if (type == MarketType.SALE) {
+      checkFilterArr.add(S.current.on_sale);
+      selectStatus.add(1);
       return '1';
     } else {
       return '';
