@@ -296,11 +296,13 @@ class _ApproveState extends State<Approve> {
                           isApproved || !(widget.isShowTwoButton ?? false),
                     ),
                     onTap: () async {
-                      final navigator = Navigator.of(context);
-                      cubit.changeLoadingState(isShow: true);
-                      await widget.action();
-                      cubit.changeLoadingState(isShow: false);
-                      navigator.pop();
+                      if (isApproved){
+                        final navigator = Navigator.of(context);
+                        cubit.changeLoadingState(isShow: true);
+                        await widget.action();
+                        cubit.changeLoadingState(isShow: false);
+                        navigator.pop();
+                      }
                     },
                   ),
                 ),
