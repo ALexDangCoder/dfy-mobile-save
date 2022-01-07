@@ -37,4 +37,5 @@ class ApiConstants {
   ///NFT
   static const String GET_DETAIL_NFT_ON_SALE = '/nft-market-svc/public-api/market/detail/';
   static const String GET_HISTORY = 'inventory-svc/public-api/v1.0.0/histories';
+  static const String GET_OWNER = 'inventory-svc/public-api/v1.0.0/owners';
 }

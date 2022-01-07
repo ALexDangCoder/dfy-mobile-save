@@ -1,5 +1,6 @@
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 
@@ -9,5 +10,12 @@ mixin NFTRepository {
   Future<Result<NftMarket>> getDetailNftOnSale(String marketId);
 
   Future<Result<List<HistoryNFT>>> getHistory(
-      String collectionAddress, String nftTokenId);
+    String collectionAddress,
+    String nftTokenId,
+  );
+
+  Future<Result<List<OwnerNft>>> getOwner(
+    String collectionAddress,
+    String nftTokenId,
+  );
 }

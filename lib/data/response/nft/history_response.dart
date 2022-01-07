@@ -1,5 +1,4 @@
 import 'package:Dfy/domain/model/history_nft.dart';
-import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -28,45 +27,45 @@ class HistoryResponse extends Equatable {
 
 @JsonSerializable()
 class DetailHistoryResponse {
-  @JsonKey(name: 'collection_address')
+  @JsonKey(name: 'collectionAddress')
   String? collectionAddress;
-  @JsonKey(name: 'event_date_time')
+  @JsonKey(name: 'eventDateTime')
   int? eventDateTime;
-  @JsonKey(name: 'event_name')
+  @JsonKey(name: 'eventName')
   String? eventName;
-  @JsonKey(name: 'event_type')
+  @JsonKey(name: 'eventType')
   int? eventType;
-  @JsonKey(name: 'excepted_loan')
+  @JsonKey(name: 'exceptedLoan')
   num? exceptedLoan;
-  @JsonKey(name: 'from_address')
+  @JsonKey(name: 'fromAddress')
   String? fromAddress;
-  @JsonKey(name: 'history_type')
+  @JsonKey(name: 'historyType')
   int? historyType;
-  @JsonKey(name: 'id_ref')
+  @JsonKey(name: 'idRef')
   String? idRef;
-  @JsonKey(name: 'is_you')
+  @JsonKey(name: 'isYou')
   bool? isYou;
-  @JsonKey(name: 'market_id')
+  @JsonKey(name: 'marketId')
   String? marketId;
-  @JsonKey(name: 'nft_standard')
+  @JsonKey(name: 'nftStandard')
   int? nftStandard;
-  @JsonKey(name: 'nft_token_id')
+  @JsonKey(name: 'nftTokenId')
   int? nftTokenId;
   @JsonKey(name: 'price')
   num? price;
-  @JsonKey(name: 'price_symbol')
+  @JsonKey(name: 'priceSymbol')
   String? priceSymbol;
   @JsonKey(name: 'processing')
   bool? processing;
   @JsonKey(name: 'quantity')
   int? quantity;
-  @JsonKey(name: 'to_address')
+  @JsonKey(name: 'toAddress')
   String? toAddress;
   @JsonKey(name: 'token')
   String? token;
-  @JsonKey(name: 'txn_hash')
+  @JsonKey(name: 'txnHash')
   String? txnHash;
-  @JsonKey(name: 'wallet_address')
+  @JsonKey(name: 'walletAddress')
   String? walletAddress;
 
 
