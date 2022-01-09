@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
@@ -11,6 +12,9 @@ import 'package:rxdart/rxdart.dart';
 
 class CategoryDetailCubit extends BaseCubit<CategoryState> {
   CategoryDetailCubit() : super(CategoryStateInitState());
+
+  int nextPage = 1;
+  bool canLoadMore = true;
 
   CategoryRepository get _categoryService => Get.find();
 
@@ -29,13 +33,20 @@ class CategoryDetailCubit extends BaseCubit<CategoryState> {
   Future<void> getListCollection(String id) async {
     final Result<List<CollectionDetailModel>> result =
         await _detailCategoryService.getListCollectInCategory(
-      25,
+      10,
       id,
-      1,
+      nextPage,
     );
     result.map(
       success: (result) {
-        _listCollectionSubject.sink.add(result.data);
+        final List<CollectionDetailModel> currentList =
+            _listCollectionSubject.valueOrNull ?? [];
+        if (result.data.isNotEmpty) {
+          _listCollectionSubject.sink.add([...currentList, ...result.data]);
+        } else {
+          canLoadMore = false;
+        }
+        nextPage++;
       },
       error: (error) {
         print(error);
@@ -44,14 +55,16 @@ class CategoryDetailCubit extends BaseCubit<CategoryState> {
   }
 
   Future<void> getCategory(String id) async {
+    showLoading();
     final result = await _categoryService.getCategory(id);
-    result.when(
-        success: (response) {
-          _categorySubject.sink.add(response.first);
-        },
-        error: (error) {
-          print(error);
-        });
+    result.when(success: (response) {
+      if (response.isNotEmpty) {
+        _categorySubject.sink.add(response.first);
+      }
+    }, error: (error) {
+      print(error);
+    });
+    showContent();
   }
 
   void dispose() {
