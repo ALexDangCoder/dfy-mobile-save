@@ -2,6 +2,7 @@ import 'package:Dfy/data/response/market_place/detail_category_res.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/market_place/detail_category_service.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
+import 'package:Dfy/domain/model/market_place/list_collection_detail_model.dart';
 import 'package:Dfy/domain/repository/market_place/detail_category_repository.dart';
 
 class DetailCategoryRepositoryImpl implements DetailCategoryRepository {
@@ -12,19 +13,18 @@ class DetailCategoryRepositoryImpl implements DetailCategoryRepository {
   );
 
   @override
-  Future<Result<List<CollectionDetailModel>>> getListCollectInCategory(
+  Future<Result<ListCollectionDetailModel>> getListCollectInCategory(
     int size,
     String category,
     int page,
   ) {
-    return runCatchingAsync<DetailCategoryResponse,
-        List<CollectionDetailModel>>(
+    return runCatchingAsync<DetailCategoryResponse, ListCollectionDetailModel>(
       () => _detailCategoryService.getListCollectInCategory(
         size,
         category,
         page,
       ),
-      (response) => (response.rows ?? []).map((e) => e.toDomain()).toList(),
+      (response) => response.toDomain(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:Dfy/data/response/collection_detail/collection_detail_res.dart';
+import 'package:Dfy/domain/model/market_place/list_collection_detail_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -22,10 +23,16 @@ class DetailCategoryResponse extends Equatable {
   factory DetailCategoryResponse.fromJson(Map<String, dynamic> json) =>
       _$DetailCategoryResponseFromJson(json);
 
-
   Map<String, dynamic> toJson() => _$DetailCategoryResponseToJson(this);
 
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
+
+  ListCollectionDetailModel toDomain() {
+    return ListCollectionDetailModel(
+      listData: rows?.map((e) => e.toDomain()).toList() ?? [],
+      total: total ?? 0,
+    );
+  }
 }
