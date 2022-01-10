@@ -88,14 +88,14 @@ void configureDependencies() {
   Get.put<DetailCategoryRepository>(DetailCategoryRepositoryImpl(Get.find()));
 }
 
-int _connectTimeOut = 60000;
+const int _connectTimeOut = 60000;
 
-Dio provideDio() {
+Dio provideDio({int connectTimeOut = _connectTimeOut}) {
   final appConstants = Get.find<AppConstants>();
   final options = BaseOptions(
     baseUrl: appConstants.baseUrl,
-    receiveTimeout: _connectTimeOut,
-    connectTimeout: _connectTimeOut,
+    receiveTimeout: connectTimeOut,
+    connectTimeout: connectTimeOut,
     followRedirects: false,
   );
   final dio = Dio(options);
