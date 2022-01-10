@@ -33,7 +33,7 @@ class CategoryDetailCubit extends BaseCubit<CategoryState> {
   Future<void> getListCollection(String id) async {
     final Result<List<CollectionDetailModel>> result =
         await _detailCategoryService.getListCollectInCategory(
-      10,
+      5,
       id,
       nextPage,
     );

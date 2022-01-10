@@ -52,8 +52,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           balanceWallet = await Web3Utils().getBalanceOfBnb(
               ofAddress: _addressWalletCoreSubject.valueOrNull ?? '');
           _balanceWalletSubject.sink.add(balanceWallet?? 0);
-          showContent();
         }
+        showContent();
         break;
     }
   }

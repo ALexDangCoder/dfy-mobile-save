@@ -9,6 +9,7 @@ import 'package:Dfy/domain/model/market_place/collection_detail.dart';
 import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/categories_detail/bloc/category_detail_cubit.dart';
+import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/base_collection.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -69,6 +70,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
             topLeft: Radius.circular(30),
           ),
           child: NestedScrollView(
+            controller: _listCollectionController,
             physics: const ScrollPhysics(),
             headerSliverBuilder: (context, innerScroll) => [
               StreamBuilder<Category>(
@@ -118,6 +120,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           const SizedBox(height: 12),
                           Text(
@@ -149,73 +152,84 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                           )
                         ],
                       ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 32),
+                      color: backgroundBottomSheetColor,
+                      child: StreamBuilder<List<CollectionDetailModel>>(
+                        stream: cubit.listCollectionStream,
+                        builder: (context, snapshot) {
+                          final data = snapshot.data ?? [];
+                          return RefreshIndicator(
+                            onRefresh: () async {
+                              await cubit.getListCollection(
+                                  widget.exploreCategory.id ?? '');
+                            },
+                            child: Column(
+                              children: [
+                                StaggeredGridView.countBuilder(
+                                  physics: const NeverScrollableScrollPhysics() ,
+                                  shrinkWrap: true,
+                                  mainAxisSpacing: 20,
+                                  crossAxisSpacing: 15,
+                                  itemCount: data.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                            const DetailCollection(
+                                              id: '',
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: ItemCollection(
+                                        fixWidth: false,
+                                        urlBackGround:
+                                        ApiConstants.BASE_URL_IMAGE +
+                                            (data[index].coverCid ?? ''),
+                                        backgroundFit: BoxFit.cover,
+                                        urlIcon: ApiConstants.BASE_URL_IMAGE +
+                                            (data[index].avatarCid ?? ''),
+                                        title: data[index].name ?? '',
+                                        items: (data[index].totalNft ?? 0)
+                                            .toString(),
+                                        owners: (data[index].nftOwnerCount ?? 0)
+                                            .toString(),
+                                        text: (data[index].description ?? '')
+                                            .stripHtmlIfNeeded(),
+                                      ),
+                                    );
+                                  },
+                                  crossAxisCount: 2,
+                                  staggeredTileBuilder: (int index) =>
+                                  const StaggeredTile.fit(1),
+                                ),
+                                SizedBox(
+                                  height: 50,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 3,
+                                      color:
+                                      AppTheme.getInstance().whiteColor(),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     )
                   ],
                 ),
               ),
             ],
-            body: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-              color: backgroundBottomSheetColor,
-              child: StreamBuilder<List<CollectionDetailModel>>(
-                stream: cubit.listCollectionStream,
-                builder: (context, snapshot) {
-                  final data = snapshot.data ?? [];
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      await cubit
-                          .getListCollection(widget.exploreCategory.id ?? '');
-                    },
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          StaggeredGridView.countBuilder(
-                            physics: const BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            controller: _listCollectionController,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 15,
-                            itemCount: data.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {},
-                                child: ItemCollection(
-                                  fixWidth: false,
-                                  urlBackGround: ApiConstants.BASE_URL_IMAGE +
-                                      (data[index].coverCid ?? ''),
-                                  backgroundFit: BoxFit.cover,
-                                  urlIcon: ApiConstants.BASE_URL_IMAGE +
-                                      (data[index].avatarCid ?? ''),
-                                  title: data[index].name ?? '',
-                                  items: (data[index].totalNft ?? 0).toString(),
-                                  owners: (data[index].nftOwnerCount ?? 0)
-                                      .toString(),
-                                  text: (data[index].description ?? '')
-                                      .stripHtmlIfNeeded(),
-                                ),
-                              );
-                            },
-                            crossAxisCount: 2,
-                            staggeredTileBuilder: (int index) =>
-                                const StaggeredTile.fit(1),
-                          ),
-                          SizedBox(
-                            height: 50,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 3,
-                                color: AppTheme.getInstance().whiteColor(),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            body:  Container (height: 0,),
           ),
         ),
       ),

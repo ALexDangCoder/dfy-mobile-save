@@ -253,7 +253,7 @@ class _AuctionTabState extends State<AuctionTab>
                               await Future.delayed(Duration(seconds: 3));
                               print(' call approve  in hear ');
                               return true;
-                            },
+                            }, gasLimit: 10.0,
                           ),
                         ),
                       );

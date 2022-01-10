@@ -35,6 +35,7 @@ class Approve extends StatefulWidget {
   final Widget? header;
   final bool? isShowTwoButton;
   final String textActiveButton;
+  final double gasLimit;
   final Function approve;
   final Function action;
 
@@ -47,7 +48,7 @@ class Approve extends StatefulWidget {
     required this.textActiveButton,
     this.header,
     required this.approve,
-    required this.action,
+    required this.action, required this.gasLimit,
   }) : super(key: key);
 
   @override
@@ -192,7 +193,7 @@ class _ApproveState extends State<Approve> {
                               });
                             },
                             cubit: cubit,
-                            gasLimitStart: 10,
+                            gasLimitStart: widget.gasLimit,
                           ),
                         ],
                       ),
