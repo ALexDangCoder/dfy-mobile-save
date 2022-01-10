@@ -21,12 +21,15 @@ class CollectionDetailImpl implements CollectionDetailRepository {
 
   @override
   Future<Result<List<ActivityCollectionModel>>> getCollectionListActivity(
-    String collectionAddress,
-    String type,
-  ) {
+      String collectionAddress, String type, int page, int size) {
     return runCatchingAsync<ActivityCollectionResponse,
         List<ActivityCollectionModel>>(
-      () => _client.getListActivityCollection(collectionAddress, type),
+      () => _client.getListActivityCollection(
+        collectionAddress,
+        type,
+        page,
+        size,
+      ),
       (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
     );
   }

@@ -63,3 +63,19 @@ extension StringParse on String {
     return parsedString;
   }
 }
+extension DiacriticsAwareString on String{
+  bool checkEmail() {
+    return RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}")
+        .hasMatch(this);
+  }
+
+  bool checkSdt() {
+    return RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(this);
+  }
+
+  String stripHtmlIfNeeded() {
+    return replaceAll(RegExp(r'<[^>]*>|&[^;]+;'), ' ');
+  }
+
+}
