@@ -41,6 +41,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const String INSTAGRAM = 'instagram';
   static const String TELEGRAM = 'telegram';
   static const String TWITTER = 'twitter';
+  static const int SOFT_COLLECTION = 0;
+  static const int HARD_COLLECTION = 1;
 
 //
 

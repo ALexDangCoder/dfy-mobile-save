@@ -262,7 +262,8 @@ class _CollectionListState extends State<CollectionList> {
                                         MaterialPageRoute(
                                           builder: (context) {
                                             return DetailCollection(
-                                              //typeCollection: , // todo type collection
+                                              typeCollection: collectionBloc
+                                                  .list.value[index].type,
                                               id: collectionBloc
                                                       .list.value[index].id ??
                                                   '',
