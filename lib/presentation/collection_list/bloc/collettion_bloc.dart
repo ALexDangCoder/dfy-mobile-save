@@ -56,6 +56,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   BehaviorSubject<bool> isAllCategory = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isAllCategoryMyAcc = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isChooseAcc = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCanLoadMore = BehaviorSubject.seeded(true);
 
   BehaviorSubject<bool> isMusic = BehaviorSubject.seeded(false);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
@@ -64,6 +65,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   BehaviorSubject<String> textSearchCategory = BehaviorSubject.seeded('');
   BehaviorSubject<List<Category>> listCategoryStream =
       BehaviorSubject.seeded([]);
+  int nextPage = 1;
 
   List<bool> isListCategory = [false, false, false, false];
 
@@ -239,13 +241,44 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     listCategoryStream.add(listCategory);
   }
 
+  Future<void> getListCollection({
+    String? name = '',
+    int? sortFilter = 0,
+    int? size = 10,
+    String address = '',
+  }) async {
+    final Result<List<CollectionModel>> result =
+        await _marketPlaceRepository.getListCollection(
+      name: name,
+      sort: sortFilter,
+      size: size,
+      page: nextPage,
+      address: address,
+    );
+    result.when(
+      success: (res) {
+        final List<CollectionModel> currentList = list.valueOrNull ?? [];
+        if (res.isNotEmpty) {
+          list.sink.add([...currentList, ...res]);
+        } else {
+          isCanLoadMore.add(false);
+        }
+        nextPage++;
+      },
+      error: (error) {
+        emit(LoadingDataFail());
+      },
+    );
+  }
+
   Future<void> getCollection({
     String? name = '',
     int? sortFilter = 0,
-    int? size = 0,
+    int? size = 10,
     int? page = 0,
     String address = '',
   }) async {
+    isCanLoadMore.add(true);
     emit(LoadingData());
     final Result<List<CollectionModel>> result =
         await _marketPlaceRepository.getListCollection(

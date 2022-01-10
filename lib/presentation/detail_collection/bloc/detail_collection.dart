@@ -101,6 +101,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String collectionAddress = '';
   String typeActivity = '';
 
+
   void funFilterNft() {
     if (isOnSale.value) {
       listFilter.add(SALE);

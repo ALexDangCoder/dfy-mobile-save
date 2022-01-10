@@ -42,7 +42,20 @@ class CollectionList extends StatefulWidget {
 class _CollectionListState extends State<CollectionList> {
   late final CollectionBloc collectionBloc;
   late final TextEditingController searchCollection;
-  bool isMyacc = false;
+  bool isMyAcc = false;
+
+  final ScrollController _listCollectionController = ScrollController();
+  bool loading = true;
+
+  void _onScroll() {
+    if (_listCollectionController.hasClients || !loading) {
+      final thresholdReached = _listCollectionController.position.pixels ==
+          _listCollectionController.position.maxScrollExtent;
+      if (thresholdReached) {
+        collectionBloc.getListCollection();
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -53,11 +66,15 @@ class _CollectionListState extends State<CollectionList> {
       widget.title = S.current.collection_list;
     }
     collectionBloc = CollectionBloc();
+
+    searchCollection = TextEditingController();
+    searchCollection.text = widget.query;
+
+    _listCollectionController.addListener(_onScroll);
     collectionBloc.getCollection(
       name: widget.query,
     );
-    searchCollection = TextEditingController();
-    searchCollection.text = widget.query;
+
     trustWalletChannel
         .setMethodCallHandler(collectionBloc.nativeMethodCallBackTrustWallet);
     collectionBloc.getListWallets();
@@ -152,7 +169,7 @@ class _CollectionListState extends State<CollectionList> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          if (!isMyacc) {
+                          if (!isMyAcc) {
                             showModalBottomSheet(
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,
@@ -244,58 +261,106 @@ class _CollectionListState extends State<CollectionList> {
                             AsyncSnapshot<List<CollectionModel>> snapshot,
                           ) {
                             return Expanded(
-                              child: StaggeredGridView.countBuilder(
-                                padding: EdgeInsets.only(
-                                  left: 21.w,
-                                  right: 21.w,
-                                  top: 10.h,
-                                  bottom: 20.h,
-                                ),
-                                mainAxisSpacing: 20.h,
-                                crossAxisSpacing: 26.w,
-                                itemCount: collectionBloc.list.value.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return DetailCollection(
-                                              typeCollection: collectionBloc
-                                                  .list.value[index].type,
-                                              id: collectionBloc
-                                                      .list.value[index].id ??
-                                                  '',
-                                              walletAddress: 'alo alo alo',
+                              child: RefreshIndicator(
+                                onRefresh: () async {
+                                  await collectionBloc.getCollection();
+                                },
+                                child: Expanded(
+                                  child: SingleChildScrollView(
+                                    controller: _listCollectionController,
+                                    child: Column(
+                                      children: [
+                                        StaggeredGridView.countBuilder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.only(
+                                            left: 21.w,
+                                            right: 21.w,
+                                            top: 10.h,
+                                            bottom: 20.h,
+                                          ),
+                                          mainAxisSpacing: 20.h,
+                                          crossAxisSpacing: 26.w,
+                                          itemCount:
+                                              collectionBloc.list.value.length,
+                                          itemBuilder: (context, index) {
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) {
+                                                      return DetailCollection(
+                                                        typeCollection:
+                                                            collectionBloc
+                                                                .list
+                                                                .value[index]
+                                                                .type,
+                                                        id: collectionBloc
+                                                                .list
+                                                                .value[index]
+                                                                .id ??
+                                                            '',
+                                                        walletAddress:
+                                                            'alo alo alo',
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                              child: ItemCollection(
+                                                items:
+                                                    '${snapshot.data?[index].totalNft ?? 0}',
+                                                text: snapshot.data?[index]
+                                                        .description
+                                                        ?.parseHtml() ??
+                                                    '',
+                                                urlIcon: ApiConstants.URL_BASE +
+                                                    (snapshot.data?[index]
+                                                            .avatarCid ??
+                                                        ''),
+                                                owners:
+                                                    '${snapshot.data?[index].nftOwnerCount ?? 0}',
+                                                title: snapshot
+                                                        .data?[index].name
+                                                        ?.parseHtml() ??
+                                                    '',
+                                                urlBackGround:
+                                                    ApiConstants.URL_BASE +
+                                                        (snapshot.data?[index]
+                                                                .coverCid ??
+                                                            ''),
+                                              ),
                                             );
                                           },
+                                          crossAxisCount: 2,
+                                          staggeredTileBuilder: (int index) =>
+                                              const StaggeredTile.fit(1),
                                         ),
-                                      );
-                                    },
-                                    child: ItemCollection(
-                                      items:
-                                          '${snapshot.data?[index].totalNft ?? 0}',
-                                      text: snapshot.data?[index].description
-                                              ?.parseHtml() ??
-                                          '',
-                                      urlIcon: ApiConstants.URL_BASE +
-                                          (snapshot.data?[index].avatarCid ??
-                                              ''),
-                                      owners:
-                                          '${snapshot.data?[index].nftOwnerCount ?? 0}',
-                                      title: snapshot.data?[index].name
-                                              ?.parseHtml() ??
-                                          '',
-                                      urlBackGround: ApiConstants.URL_BASE +
-                                          (snapshot.data?[index].coverCid ??
-                                              ''),
+                                        StreamBuilder<bool>(
+                                          stream: collectionBloc.isCanLoadMore,
+                                          builder: (context, snapshot) {
+                                            return snapshot.data ?? false
+                                                ? SizedBox(
+                                                    height: 50.h,
+                                                    child: Center(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        strokeWidth: 3,
+                                                        color: AppTheme
+                                                                .getInstance()
+                                                            .whiteColor(),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : const SizedBox.shrink();
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                },
-                                crossAxisCount: 2,
-                                staggeredTileBuilder: (int index) =>
-                                    const StaggeredTile.fit(1),
+                                  ),
+                                ),
                               ),
                             );
                           },
