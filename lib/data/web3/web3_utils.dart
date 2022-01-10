@@ -380,7 +380,7 @@ class Web3Utils {
       };
     } catch (error) {
       return {
-        'isSuccess': true,
+        'isSuccess': false,
         'txHash': '',
       };
     }
