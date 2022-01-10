@@ -1,4 +1,5 @@
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_bid.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_burn.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_buy.dart';
@@ -28,6 +29,8 @@ class ListActivity extends StatelessWidget {
   final int auctionType;
   final int nft_type;
   final String urlSymbol;
+  final int index;
+  final DetailCollectionBloc bloc;
 
   const ListActivity({
     Key? key,
@@ -45,6 +48,8 @@ class ListActivity extends StatelessWidget {
     required this.price,
     required this.priceSymbol,
     required this.urlSymbol,
+    required this.index,
+    required this.bloc,
   }) : super(key: key);
 
   @override
@@ -74,12 +79,20 @@ class ListActivity extends StatelessWidget {
     if (addressMyWallet == addressWallet) {
       myAddress = S.current.activity_you;
     } else {
-      myAddress = addressWallet.formatAddressActivityFire();
+      if (addressWallet.length < 12) {
+        myAddress = addressWallet;
+      } else {
+        myAddress = addressWallet.formatAddressActivityFire();
+      }
     }
     if (addressMyWallet == addressWalletSend) {
       myAddressTo = S.current.activity_you;
     } else {
-      myAddressTo = addressWalletSend.formatAddressActivityFire();
+      if (addressWallet.length < 12) {
+        myAddress = addressWalletSend;
+      } else {
+        myAddressTo = addressWalletSend.formatAddressActivityFire();
+      }
     }
     return itemActivity(
       price: price,
@@ -95,6 +108,8 @@ class ListActivity extends StatelessWidget {
       date: date,
       each: each,
       market: market,
+      index: index,
+      bloc: bloc,
     );
   }
 
@@ -112,9 +127,11 @@ class ListActivity extends StatelessWidget {
     int? typeActivity,
     int? auctionType,
     String? urlSymbol,
+    required int index,
+    required DetailCollectionBloc bloc,
   }) {
     switch (typeActivity) {
-      case 0:
+      case DetailCollectionBloc.PUT_ON_MARKET:
         return PutOnMarket(
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
@@ -126,9 +143,13 @@ class ListActivity extends StatelessWidget {
           market: market ?? '',
           moneySymbol: priceSymbol ?? '',
           urlSymbol: urlSymbol ?? '',
+          bloc: bloc,
+          index: index,
         );
-      case 1:
+      case DetailCollectionBloc.TRANSFER_ACTIVITY:
         return TransferActivity(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -136,16 +157,20 @@ class ListActivity extends StatelessWidget {
           addressSend: addressWalletSend ?? '',
           address: addressWallet ?? '',
         );
-      case 2:
+      case DetailCollectionBloc.BURN:
         return Burn(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
           content: addressWallet ?? '',
           copy: copy ?? '',
         );
-      case 3:
+      case DetailCollectionBloc.CANCEL:
         return Cancel(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -153,22 +178,28 @@ class ListActivity extends StatelessWidget {
           market: market ?? '',
           copy: copy ?? '',
         );
-      case 4:
+      case DetailCollectionBloc.LIKE:
         return Like(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
           content: addressWallet ?? '',
         );
-      case 5:
+      case DetailCollectionBloc.REPORT:
         return Report(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
           content: addressWallet ?? '',
         );
-      case 6:
+      case DetailCollectionBloc.BUY:
         return Buy(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -178,9 +209,11 @@ class ListActivity extends StatelessWidget {
           amountSymbol: priceSymbol ?? '',
           urlSymbol: urlSymbol ?? '',
         );
-      case 7:
+      case DetailCollectionBloc.BID_BUY_OUT:
         if (auctionType == 0) {
           return Bid(
+            bloc: bloc,
+            index: index,
             urlAvatar: urlAvatar ?? '',
             title: title ?? '',
             date: date ?? '',
@@ -191,6 +224,8 @@ class ListActivity extends StatelessWidget {
           );
         } else {
           return BuyOut(
+            bloc: bloc,
+            index: index,
             urlAvatar: urlAvatar ?? '',
             title: title ?? '',
             date: date ?? '',
@@ -200,8 +235,10 @@ class ListActivity extends StatelessWidget {
             amountSymbol: priceSymbol ?? '',
           );
         }
-      case 8:
+      case DetailCollectionBloc.RECEIVE_OFFER:
         return ReceiveOffer(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -210,8 +247,10 @@ class ListActivity extends StatelessWidget {
           valueSymbol: priceSymbol ?? '',
           urlSymbol: urlSymbol ?? '',
         );
-      case 9:
+      case DetailCollectionBloc.SIGN_CONTRACT:
         return SignContract(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',

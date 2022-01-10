@@ -64,9 +64,19 @@ class _FilterNFTState extends State<FilterNFT> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    height: 30.h,
-                    width: 65.w,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 6.h,
+                    ),
+                    child: Text(
+                      S.current.reset,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().bgBtsColor(),
+                        14,
+                        null,
+                      ),
+                    ),
                   ),
                   Text(
                     S.current.filter,
@@ -82,7 +92,6 @@ class _FilterNFTState extends State<FilterNFT> {
                     },
                     child: Container(
                       height: 30.h,
-                      width: 65.w,
                       padding: EdgeInsets.symmetric(
                         horizontal: 16.w,
                         vertical: 6.h,
@@ -93,14 +102,12 @@ class _FilterNFTState extends State<FilterNFT> {
                           Radius.circular(6.r),
                         ),
                       ),
-                      child: FittedBox(
-                        child: Text(
-                          S.current.reset,
-                          style: textNormalCustom(
-                            null,
-                            14,
-                            null,
-                          ),
+                      child: Text(
+                        S.current.reset,
+                        style: textNormalCustom(
+                          null,
+                          14,
+                          null,
                         ),
                       ),
                     ),
@@ -124,24 +131,6 @@ class _FilterNFTState extends State<FilterNFT> {
                         S.current.nft_type,
                         style: textNormalCustom(null, 16, FontWeight.w600),
                       ),
-                    )
-                  else
-                    const SizedBox.shrink(),
-                  if (widget.isOwner)
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsBaseCheckBox(
-                            funCheckBox: collectionBloc.allTypeNft,
-                            funText: collectionBloc.allTypeNft,
-                            title: S.current.all,
-                            stream: collectionBloc.isAll,
-                          ),
-                        ),
-                        const Expanded(
-                          child: SizedBox.shrink(),
-                        ),
-                      ],
                     )
                   else
                     const SizedBox.shrink(),
@@ -175,27 +164,16 @@ class _FilterNFTState extends State<FilterNFT> {
                     children: [
                       Expanded(
                         child: IsBaseCheckBox(
-                          funCheckBox: collectionBloc.allStatusNft,
-                          funText: collectionBloc.allStatusNft,
-                          title: S.current.all,
-                          stream: collectionBloc.isAllStatus,
-                        ),
-                      ),
-                      const Expanded(
-                        child: SizedBox.shrink(),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
                           title: S.current.on_sale,
                           stream: collectionBloc.isOnSale,
                         ),
                       ),
                       Expanded(
                         child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
                           title: S.current.on_pawn,
                           stream: collectionBloc.isOnPawn,
                         ),
@@ -207,12 +185,16 @@ class _FilterNFTState extends State<FilterNFT> {
                     children: [
                       Expanded(
                         child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
                           title: S.current.on_auction,
                           stream: collectionBloc.isOnAuction,
                         ),
                       ),
                       Expanded(
                         child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
                           title: S.current.not_on_market,
                           stream: collectionBloc.isNotOnMarket,
                         ),
@@ -225,6 +207,7 @@ class _FilterNFTState extends State<FilterNFT> {
             spaceH24,
             GestureDetector(
               onTap: () {
+                collectionBloc.funFilterNft();
                 Navigator.pop(context);
               },
               child: ButtonLuxury(

@@ -3,6 +3,8 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/ui/buy_nft.dart';
@@ -30,6 +32,7 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 const String EXAMPLE_TITLE = 'Naruto kkcam allfp lflll alffwl c ';
 const String EXAMPLE_IMAGE_URL =
@@ -58,8 +61,11 @@ final auctionObj = NFTOnAuction(
 );
 
 class NFTDetailScreen extends StatefulWidget {
-  const NFTDetailScreen({Key? key, required this.type, this.marketId})
-      : super(key: key);
+  const NFTDetailScreen({
+    Key? key,
+    required this.type,
+    this.marketId,
+  }) : super(key: key);
   final MarketType type;
   final String? marketId;
 
@@ -81,7 +87,9 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
           HistoryTab(
             listHistory: [],
           ),
-          OwnerTab(),
+          OwnerTab(
+            listOwner: [],
+          ),
           BidTab(),
         ];
         _tabTit = [
@@ -97,11 +105,29 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         ];
         break;
       case MarketType.SALE:
-        _tabPage = const [
-          HistoryTab(
-            listHistory: [],
+        _tabPage = [
+          StreamBuilder<List<HistoryNFT>>(
+            stream: _bloc.listHistoryStream,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<HistoryNFT>> snapshot,
+            ) {
+              return HistoryTab(
+                listHistory: snapshot.data ?? [],
+              );
+            },
           ),
-          OwnerTab(),
+          StreamBuilder<List<OwnerNft>>(
+            stream: _bloc.listOwnerStream,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<OwnerNft>> snapshot,
+            ) {
+              return OwnerTab(
+                listOwner: snapshot.data ?? [],
+              );
+            },
+          ),
         ];
         _tabTit = [
           Tab(
@@ -113,11 +139,13 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         ];
         break;
       case MarketType.PAWN:
-        _tabPage = const [
+        _tabPage = [
           HistoryTab(
             listHistory: [],
           ),
-          OwnerTab(),
+          OwnerTab(
+            listOwner: [],
+          ),
           OfferTab(),
         ];
         _tabTit = [
@@ -132,8 +160,12 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
           ),
         ];
         break;
+      default:
+        break;
     }
   }
+
+  final formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
 
   @override
   void initState() {
@@ -490,8 +522,12 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         ),
       );
 
-  Container _priceContainerOnSale(
-          {required double price, String shortName = 'DFY'}) =>
+  Container _priceContainerOnSale({
+    required double price,
+    String shortName = 'DFY',
+    String urlToken = '',
+    double usdExchange = 0,
+  }) =>
       Container(
         width: 343.w,
         height: 64.h,
@@ -513,11 +549,20 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
               children: [
                 Row(
                   children: [
-                    sizedSvgImage(
-                      w: 20,
-                      h: 20,
-                      image: ImageAssets.ic_token_dfy_svg,
-                    ),
+                    if (urlToken.isNotEmpty)
+                      Image(
+                        image: NetworkImage(
+                          urlToken,
+                        ),
+                        width: 20.w,
+                        height: 20.h,
+                      )
+                    else
+                       Image(
+                        image: const AssetImage(ImageAssets.symbol),
+                        width: 20.w,
+                        height: 20.h,
+                      ),
                     spaceW4,
                     Text(
                       '$price $shortName',
@@ -531,7 +576,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                 ),
                 Expanded(
                   child: Text(
-                    '~100,000,000',
+                    formatUSD.format(price * usdExchange),
                     style: textNormalCustom(
                       AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                       14,
@@ -742,7 +787,12 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                   title: objSale.name,
                   quantity: objSale.totalCopies ?? 1,
                 ),
-                _priceContainerOnSale(price: objSale.price),
+                _priceContainerOnSale(
+                  price: objSale.price,
+                  usdExchange: objSale.usdExchange ?? 0,
+                  urlToken: objSale.urlToken ?? '',
+                  shortName: objSale.symbolToken ?? '',
+                ),
                 divide,
                 spaceH12,
                 _description(
@@ -786,7 +836,9 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                             spaceH12,
                             buildRow(
                               title: S.current.nft_standard,
-                              detail: objSale.nftStandard ?? '',
+                              detail: objSale.nftStandard == '0'
+                                  ? 'ERC - 721'
+                                  : 'ERC - 1155',
                               type: TextType.NORMAL,
                             ),
                             spaceH12,
@@ -1054,6 +1106,8 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
             divide,
           ],
         );
+      default:
+        return Container();
     }
   }
 }

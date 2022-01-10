@@ -1,3 +1,4 @@
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -34,10 +35,12 @@ class NavCollection extends StatelessWidget {
                     null,
                     14,
                     FontWeight.w600,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
+              spaceW4,
               Expanded(
                 child: Text(
                   owners,
@@ -45,10 +48,12 @@ class NavCollection extends StatelessWidget {
                     null,
                     14,
                     FontWeight.w600,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
+              spaceW4,
               Expanded(
                 child: Text(
                   volumeTraded,
@@ -56,7 +61,8 @@ class NavCollection extends StatelessWidget {
                     null,
                     14,
                     FontWeight.w600,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -72,10 +78,12 @@ class NavCollection extends StatelessWidget {
                     null,
                     12,
                     null,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
+              spaceW4,
               Expanded(
                 child: Text(
                   S.current.owners,
@@ -83,10 +91,12 @@ class NavCollection extends StatelessWidget {
                     null,
                     12,
                     null,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
+              spaceW4,
               Expanded(
                 child: Text(
                   S.current.volume_traded,
@@ -94,12 +104,14 @@ class NavCollection extends StatelessWidget {
                     null,
                     12,
                     null,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
             ],
           ),
+
         ],
       ),
     );

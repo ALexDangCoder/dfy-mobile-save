@@ -22,11 +22,11 @@ class CollectionDetailImpl implements CollectionDetailRepository {
   @override
   Future<Result<List<ActivityCollectionModel>>> getCollectionListActivity(
     String collectionAddress,
-    String status,
+    String type,
   ) {
     return runCatchingAsync<ActivityCollectionResponse,
         List<ActivityCollectionModel>>(
-      () => _client.getListActivityCollection(collectionAddress, status),
+      () => _client.getListActivityCollection(collectionAddress, type),
       (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
     );
   }

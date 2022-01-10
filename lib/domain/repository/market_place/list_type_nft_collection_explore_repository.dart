@@ -11,7 +11,7 @@ mixin MarketPlaceRepository {
       {
         String? address,
         String? name,
-        // String? nftType,
+        int? sort,
         // String? collectionId,
       }
       );
