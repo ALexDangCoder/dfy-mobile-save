@@ -6,11 +6,34 @@ abstract class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);
 }
 
-abstract class BaseState<T extends BaseScreen> extends State<T> {
+abstract class BaseStateScreen<T extends BaseScreen> extends State<T>
+    with WidgetsBindingObserver {
   @override
   void initState() {
+    WidgetsBinding.instance?.addObserver(this);
     super.initState();
     _handleEventBus();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    _unAuthSubscription.clear();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.paused:
+        break;
+      case AppLifecycleState.detached:
+        break;
+    }
   }
 
   final CompositeSubscription _unAuthSubscription = CompositeSubscription();
@@ -19,12 +42,6 @@ abstract class BaseState<T extends BaseScreen> extends State<T> {
     eventBus.on<TimeOutEvent>().listen((event) {
       _showTimeoutDialog();
     }).addTo(_unAuthSubscription);
-  }
-
-  @override
-  void dispose() {
-    _unAuthSubscription.clear();
-    super.dispose();
   }
 
   void _showTimeoutDialog() {
