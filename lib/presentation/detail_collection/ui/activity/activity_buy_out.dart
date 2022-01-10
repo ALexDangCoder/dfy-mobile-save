@@ -1,10 +1,12 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'base_activity.dart';
 
 class BuyOut extends StatelessWidget {
   final String urlAvatar;
@@ -14,6 +16,8 @@ class BuyOut extends StatelessWidget {
   final String amount;
   final String urlSymbol;
   final String amountSymbol;
+  final int index;
+  final DetailCollectionBloc bloc;
 
   const BuyOut({
     Key? key,
@@ -24,104 +28,38 @@ class BuyOut extends StatelessWidget {
     required this.amount,
     required this.urlSymbol,
     required this.amountSymbol,
+    required this.index,
+    required this.bloc,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        spaceW12,
-        Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.topLeft,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.r),
-                ),
-              ),
-              clipBehavior: Clip.hardEdge,
-              child: CachedNetworkImage(
-                width: 66.w,
-                height: 66.w,
-                fit: BoxFit.fill,
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.yellow,
-                  child: Text(
-                    title.substring(0, 1),
-                    style: textNormalCustom(
-                      Colors.black,
-                      60,
-                      FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                imageUrl: urlAvatar,
-              ),
+    return BaseActivity(
+      urlAvatar: urlAvatar,
+      childText: SizedBox(
+        width: MediaQuery.of(context).size.width - 106,
+        child: RichText(
+          //  Bought out %amount% by %địa chỉ ví%
+          //
+          // %amount%:.Số tiền buy out
+          // %địa chỉ ví%: Địa chỉ ví buyout.  Nếu user đang connect địa chỉ ví trùng với %địa chỉ ví%, hiển thị là YOU.
+          text: TextSpan(
+            text: '${S.current.activity_bought_out} ',
+            style: textNormalCustom(
+              AppTheme.getInstance().whiteWithOpacitySevenZero(),
+              14,
+              FontWeight.w400,
             ),
-            Positioned(
-              top: -2,
-              left: -4,
-              child: Container(
-                width: 20.w,
-                height: 20.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    width: 1.w,
-                    color: AppTheme.getInstance().bgBtsColor(),
-                  ),
-                  image: const DecorationImage(
-                    image: AssetImage(
-                      ImageAssets.img_activity_bid,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        spaceW12,
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //title
-            Text(
-              title,
-              style: textNormalCustom(
-                null,
-                14,
-                FontWeight.w600,
-              ),
-            ),
-            //content
-            SizedBox(
-              width: MediaQuery.of(context).size.width - 106,
-              child: RichText(
-                //  Bought out %amount% by %địa chỉ ví%
-                //
-                // %amount%:.Số tiền buy out
-                // %địa chỉ ví%: Địa chỉ ví buyout.  Nếu user đang connect địa chỉ ví trùng với %địa chỉ ví%, hiển thị là YOU.
-                text: TextSpan(
-                  text: '${S.current.activity_bought_out} ',
-                  style: textNormalCustom(
-                    AppTheme.getInstance().whiteWithOpacitySevenZero(),
-                    14,
-                    FontWeight.w400,
-                  ),
-                  children: [
-                    WidgetSpan(
-                      alignment: PlaceholderAlignment.middle,
-                      child: urlSymbol.isNotEmpty
-                          ? Image.asset(
-                              urlSymbol,
-                              width: 14.w,
-                              height: 14.w,
-                            )
-                          : Container(
+            children: [
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: urlSymbol.isNotEmpty
+                    ? Image.asset(
+                        urlSymbol,
+                        width: 14.w,
+                        height: 14.w,
+                      )
+                    : Container(
                         decoration: BoxDecoration(
                           color: Colors.yellow,
                           borderRadius: BorderRadius.all(
@@ -130,59 +68,51 @@ class BuyOut extends StatelessWidget {
                         ),
                         width: 14.w,
                         height: 14.w,
-                              child: FittedBox(
-                                child: Text(
-                                  amountSymbol.substring(0, 1),
-                                ),
-                              ),
-                            ),
-                    ),
-                    TextSpan(
-                      text: ' $amount $amountSymbol',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().amountTextColor(),
-                        14,
-                        FontWeight.w600,
+                        child: FittedBox(
+                          child: Text(
+                            amountSymbol.substring(0, 1),
+                          ),
+                        ),
                       ),
-                    ),
-                    TextSpan(
-                      text: ' ${S.current.activity_by} ',
-                    ),
-                    TextSpan(
-                      text: content == S.current.activity_you
-                          ? S.current.activity_you
-                          : content,
-                      style: content == S.current.activity_you
-                          ? textNormalCustom(
-                              null,
-                              14,
-                              FontWeight.w600,
-                            )
-                          : textNormalCustom(
-                              null,
-                              14,
-                              FontWeight.w600,
-                            ).copyWith(
-                              decoration: TextDecoration.underline,
-                            ),
-                    ),
-                  ],
+              ),
+              TextSpan(
+                text: ' $amount $amountSymbol',
+                style: textNormalCustom(
+                  AppTheme.getInstance().amountTextColor(),
+                  14,
+                  FontWeight.w600,
                 ),
               ),
-            ),
-            //date
-            spaceH6,
-            Text(
-              date,
-              style: textNormalCustom(
-                AppTheme.getInstance().activityDateColor(),
-                14,
-                null,
+              TextSpan(
+                text: ' ${S.current.activity_by} ',
               ),
-            ),
-          ],
+              TextSpan(
+                text: content == S.current.activity_you
+                    ? S.current.activity_you
+                    : content,
+                style: content == S.current.activity_you
+                    ? textNormalCustom(
+                        null,
+                        14,
+                        FontWeight.w600,
+                      )
+                    : textNormalCustom(
+                        null,
+                        14,
+                        FontWeight.w600,
+                      ).copyWith(
+                        decoration: TextDecoration.underline,
+                      ),
+              ),
+            ],
+          ),
         ),
-      ],
+      ),
+      title: title,
+      date: date,
+      statusIconActivity: ImageAssets.img_activity_bid,
+      index: index,
+      bloc: bloc,
     );
   }
 }
