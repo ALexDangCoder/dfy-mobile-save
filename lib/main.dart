@@ -128,6 +128,9 @@ class _MyAppState extends State<MyApp> {
       case 'getNFTCallback':
         print('getNFTCallback ${methodCall.arguments}');
         break;
+      case 'signTransactionWithDataCallback':
+        print('signTransactionWithDataCallback ${methodCall.arguments}');
+        break;
     }
   }
 
@@ -156,6 +159,21 @@ class _MyAppState extends State<MyApp> {
         'isImport': true,
       };
       await trustWalletChannel.invokeMethod('importToken', data);
+    } on PlatformException {}
+  }
+
+  Future<void> signTransactionWithData() async {
+    try {
+      final data = {
+        'walletAddress': 'String',
+        'contractAddress': 'String',
+        'nonce': 'String',
+        'chainId': 'String',
+        'gasPrice': 'String',
+        'gasLimit': 'String',
+        'withData': 'String'
+      };
+      await trustWalletChannel.invokeMethod('signTransactionWithData', data);
     } on PlatformException {}
   }
 

@@ -18,7 +18,10 @@ abstract class MarketPlaceHomeClient {
 
   @GET(ApiConstants.GET_LIST_COLLECTION)
   Future<ListCollectionResponse> getListCollection(
-      @Query('address') String? address,
-      @Query('name') String? name,
-      @Query('sort') int? sort);
+    @Query('address') String? address,
+    @Query('name') String? name,
+    @Query('sort') int? sort,
+    @Query('page') int? page,
+    @Query('size') int? size,
+  );
 }
