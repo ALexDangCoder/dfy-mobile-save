@@ -3,6 +3,8 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
+import 'package:Dfy/presentation/put_on_market/ui/component/pick_time.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_with_select_type.dart';
@@ -10,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
 
 class AuctionTab extends StatefulWidget {
@@ -245,15 +248,17 @@ class _AuctionTabState extends State<AuctionTab>
                               ),
                             ],
                             textActiveButton: S.current.put_on_sale,
-                            action: () async {
+                            action: (gasLimit, gasPrice) async {
                               await Future.delayed(Duration(seconds: 3));
-                              print(' call action in hear ');
+                              print(' gasLimit:  $gasLimit ');
+                              print(' gasPrice:  $gasPrice ');
                             },
                             approve: () async {
                               await Future.delayed(Duration(seconds: 3));
                               print(' call approve  in hear ');
                               return true;
-                            }, gasLimit: 10.0,
+                            },
+                            gasLimitFirst: 100.0,
                           ),
                         ),
                       );
@@ -289,23 +294,36 @@ class _AuctionTabState extends State<AuctionTab>
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
                 children: [
-                  Container(
-                    height: 25,
-                    width: 25,
-                    color: Colors.red,
+                  SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Image.asset(
+                      ImageAssets.ic_clock_white,
+                      height: 20,
+                      width: 20,
+                    ),
                   ),
                   const SizedBox(
                     width: 12,
                   ),
                   Expanded(
-                    child: Container(
-                      color: Colors.blue,
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => const AlertDialog(
+                            backgroundColor: Colors.transparent,
+                            content: PickTime(),
+                          ),
+                        );
+                      },
                       child: TextField(
                         style: textNormal(
                           AppTheme.getInstance().whiteColor(),
                           16,
                         ),
                         readOnly: true,
+                        enabled: false,
                         decoration: InputDecoration(
                           hintText: date,
                           hintStyle: textNormal(
@@ -332,10 +350,14 @@ class _AuctionTabState extends State<AuctionTab>
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
                 children: [
-                  Container(
-                    height: 25,
-                    width: 25,
-                    color: Colors.red,
+                  SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Image.asset(
+                      ImageAssets.ic_calendar,
+                      height: 20,
+                      width: 20,
+                    ),
                   ),
                   Expanded(
                       child:

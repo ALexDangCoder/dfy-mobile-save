@@ -220,7 +220,7 @@ class _PawnTabState extends State<PawnTab>
                         context,
                         MaterialPageRoute(
                           builder: (context) => Approve(
-                            gasLimit: 10.0,
+                            gasLimitFirst: 10.0,
                             isShowTwoButton: true,
                             title: S.current.put_on_sale,
                             listDetail: [
@@ -242,9 +242,10 @@ class _PawnTabState extends State<PawnTab>
                               )
                             ],
                             textActiveButton: S.current.put_on_sale,
-                            action: () async {
+                            action: (gasLimit,gasPrice ) async {
                               await Future.delayed(Duration(seconds: 3));
-                              print(' call action in hear ');
+                              print(' gasLimit:  $gasLimit ');
+                              print(' gasPrice:  $gasPrice ');
                             },
                             approve: () async {
                               await Future.delayed(Duration(seconds: 3));

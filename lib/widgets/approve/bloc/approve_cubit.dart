@@ -14,6 +14,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   List<Wallet> listWallet = [];
   String? nameWallet;
+  double? gasLimit;
   String? addressWallet;
   double? balanceWallet;
 
