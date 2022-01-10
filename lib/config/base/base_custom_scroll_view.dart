@@ -138,7 +138,7 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 maxWidth: 305.w,
-                minWidth: 253.w,
+                minWidth: 100.w,
               ),
               child: _tabBar,
             ),
