@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_state.dart';
+import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 
 abstract class NFTDetailState extends BaseState{
@@ -12,6 +13,14 @@ class NftOnSaleSuccess extends NFTDetailState {
   final NftMarket nftMarket;
 
   NftOnSaleSuccess(this.nftMarket);
+
+  @override
+  List<Object?> get props => [];
+}
+class NftOnAuctionSuccess extends NFTDetailState {
+  final NFTOnAuction nftOnAuction;
+
+  NftOnAuctionSuccess(this.nftOnAuction);
 
   @override
   List<Object?> get props => [];

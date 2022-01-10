@@ -1,5 +1,6 @@
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
+import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
@@ -20,4 +21,8 @@ mixin NFTRepository {
     String collectionAddress,
     String nftTokenId,
   );
+
+  Future<Result<List<BiddingNft>>> getBidding(
+      String auctionId,
+      );
 }

@@ -2,7 +2,9 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
-import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
+import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
 import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
@@ -33,7 +35,7 @@ class _NFTSCollectionState extends State<NFTSCollection> {
 
   @override
   Widget build(BuildContext context) {
-    final detailCollectionBloc = widget.detailCollectionBloc;
+    final bloc = widget.detailCollectionBloc;
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
@@ -66,8 +68,8 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                       child: TextFormField(
                         controller: textSearch,
                         onChanged: (value) {
-                          detailCollectionBloc.textSearch.sink.add(value);
-                          detailCollectionBloc.search(value);
+                          bloc.textSearch.sink.add(value);
+                          bloc.search(value);
                         },
                         cursorColor: AppTheme.getInstance().whiteColor(),
                         style: textNormal(
@@ -87,13 +89,13 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                     ),
                   ),
                   StreamBuilder(
-                    stream: detailCollectionBloc.textSearch,
+                    stream: bloc.textSearch,
                     builder: (context, AsyncSnapshot<String> snapshot) {
                       return GestureDetector(
                         onTap: () {
-                          detailCollectionBloc.textSearch.sink.add('');
+                          bloc.textSearch.sink.add('');
                           textSearch.text = '';
-                          detailCollectionBloc.search('');
+                          bloc.search('');
                         },
                         child: snapshot.data?.isNotEmpty ?? false
                             ? Image.asset(
@@ -113,11 +115,11 @@ class _NFTSCollectionState extends State<NFTSCollection> {
             ),
           ),
           StreamBuilder<int>(
-            stream: widget.detailCollectionBloc.statusNft,
+            stream: bloc.statusNft,
             builder: (context, snapshot) {
               final statusNft = snapshot.data ?? 0;
-              final list = widget.detailCollectionBloc.listNft.value;
-              if (statusNft == 1) {
+              final list = bloc.listNft.value;
+              if (statusNft == DetailCollectionBloc.SUCCESS) {
                 return StaggeredGridView.countBuilder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -137,7 +139,7 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                   staggeredTileBuilder: (int index) =>
                       const StaggeredTile.fit(1),
                 );
-              } else if (statusNft == 2) {
+              } else if (statusNft == DetailCollectionBloc.FAILD) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -162,7 +164,7 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                     ),
                   ],
                 );
-              } else if (statusNft == 0) {
+              } else if (statusNft == DetailCollectionBloc.LOADING) {
                 return StaggeredGridView.countBuilder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),

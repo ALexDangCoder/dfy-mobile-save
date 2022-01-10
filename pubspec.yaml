@@ -74,6 +74,7 @@ dependencies:
   dots_indicator: ^2.0.0
   scrollable_positioned_list: ^0.2.3
   video_player: ^2.2.10
+  flutter_countdown_timer: ^4.1.0
   #svg
   flutter_svg: ^0.22.0
   formz: ^0.4.1
