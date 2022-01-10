@@ -52,8 +52,8 @@ class _CollectionListState extends State<CollectionList> {
       final thresholdReached = _listCollectionController.position.pixels ==
           _listCollectionController.position.maxScrollExtent;
       if (thresholdReached) {
+        collectionBloc.isCanLoadMore.add(true);
         collectionBloc.getListCollection(
-          size: 10,
           name: collectionBloc.textSearch.value,
           sortFilter: collectionBloc.sortFilter,
         );
@@ -258,6 +258,9 @@ class _CollectionListState extends State<CollectionList> {
                           ),
                         );
                       } else if (state is LoadingDataSuccess) {
+                        if (collectionBloc.list.value.length < 9) {
+                          collectionBloc.isCanLoadMore.add(false);
+                        }
                         return StreamBuilder(
                           stream: collectionBloc.list,
                           builder: (
