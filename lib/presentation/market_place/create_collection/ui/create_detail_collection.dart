@@ -6,6 +6,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/widget/categories_cool.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/widget/input_row_widget.dart';
+import 'package:Dfy/presentation/market_place/create_collection/ui/widget/upload_progess_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
@@ -19,12 +20,10 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class CreateDetailCollection extends StatefulWidget {
   final CreateCollectionBloc bloc;
-  final int typeNFT;
 
   const CreateDetailCollection({
     Key? key,
     required this.bloc,
-    required this.typeNFT,
   }) : super(key: key);
 
   @override
@@ -96,8 +95,11 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                           fontSize: 20,
                           onTap: () {
                             if (statusButton) {
-                              widget.bloc.createCollection(
-                                collectionType: widget.typeNFT,
+                              showDialog(
+                                context: context,
+                                builder: (context) => UploadProgress(
+                                  bloc: widget.bloc,
+                                ),
                               );
                             } else {}
                           },

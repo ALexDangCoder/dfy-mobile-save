@@ -347,7 +347,7 @@
   "feature_photo_required" : "Feature photo is required",
   "all": "All",
   "could_not_load_data": "Couldn’t load the data",
-  "create_collection": "Create Collection",
+  "create_collection": "Create collection",
   "coming_soon": "COMING SOON",
   "upload_cover_photo": "UPLOAD COVER PHOTO",
   "upload_avatar": "UPLOAD AVATAR",
@@ -431,5 +431,10 @@
   "item_from_high_to_low": "Item from high to low",
   "item_from_low_to_high": "Item from low to high",
   "category_require" : "Category is required",
-  "collection_name_require" : "Name for collection is required"
+  "collection_name_require" : "Name for collection is required",
+  "avatar_photo" : "Avatar Photo",
+  "cover_photo" : "Cover Photo",
+  "feature_photo" : "Feature Photo",
+  "uploading_successfully" : "Uploading successfully",
+  "uploading_fail" : "Uploading failed"
 }

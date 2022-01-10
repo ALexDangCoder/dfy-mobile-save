@@ -111,19 +111,18 @@ class CreateCollectionScreen extends StatelessWidget {
           builder: (context, snapshot) {
             final enable = snapshot.data?.isNotEmpty ?? false;
             return ButtonLuxury(
-              marginHorizontal: 16,
               title: S.current.continue_s,
               isEnable: enable,
               buttonHeight: 64,
               fontSize: 20,
               onTap: () {
                 if (enable) {
+                  bloc.getStandardFromID(snapshot.data ?? '');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => CreateDetailCollection(
                         bloc: bloc,
-                        typeNFT: bloc.getStandardFromID(snapshot.data ?? ''),
                       ),
                     ),
                   );

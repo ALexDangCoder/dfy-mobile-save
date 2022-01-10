@@ -1,4 +1,5 @@
-import 'package:Dfy/presentation/market_place/create_collection/ui/widget/upload_progess_widget.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
+import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
 import 'package:flutter/material.dart';
 
 class StakingScreen extends StatefulWidget {
@@ -28,14 +29,10 @@ class _StakingState extends State<StakingScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const UploadProgress(),
-                // builder: (context) => CreateCollectionScreen(
-                //       bloc: CreateCollectionBloc(),
-                // ),
-                // builder: (context) => CreateDetailCollection(
-                //   bloc: CreateCollectionBloc(),
-                //   typeNFT: TypeNFT.SOFT_NFT_ERC721,
-                // ),
+                // builder: (context) => const UploadProgress(),
+                builder: (context) => CreateCollectionScreen(
+                      bloc: CreateCollectionBloc(),
+                ),
               ),
             );
           },

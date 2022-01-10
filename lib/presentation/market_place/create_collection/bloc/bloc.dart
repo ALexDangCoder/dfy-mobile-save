@@ -17,6 +17,7 @@ import 'package:rxdart/rxdart.dart';
 
 class CreateCollectionBloc {
   String createType = '';
+  int collectionType = -1;
 
   String collectionName = '';
   String customUrl = '';
@@ -94,8 +95,13 @@ class CreateCollectionBloc {
   BehaviorSubject<File> coverPhotoSubject = BehaviorSubject();
   BehaviorSubject<File> featurePhotoSubject = BehaviorSubject();
 
+  ///Image Upload progress
+  BehaviorSubject<int> avatarUploadStatusSubject = BehaviorSubject();
+  BehaviorSubject<int> coverPhotoUploadStatusSubject = BehaviorSubject();
+  BehaviorSubject<int> featurePhotoUploadStatusSubject = BehaviorSubject();
+
   ///Send Category
-  BehaviorSubject<List<Map<String,String>>> listCategorySubject =
+  BehaviorSubject<List<Map<String, String>>> listCategorySubject =
       BehaviorSubject();
 
   ///Send TypeNFT
@@ -194,7 +200,7 @@ class CreateCollectionBloc {
         hintText != 'Instagram' &&
         hintText != 'Telegram' &&
         hintText != S.current.royalties &&
-        hintText != 'app.defiforyou/uk/marketplace/....'&&
+        hintText != 'app.defiforyou/uk/marketplace/....' &&
         hintText != S.current.description) {
       return S.current.collection_name_require;
     } else if (hintText == S.current.royalties) {
@@ -309,7 +315,6 @@ class CreateCollectionBloc {
       mapCheck['categories'] = false;
     }
   }
-
 
   ///validate custom URL
   Timer? debounceTime;
@@ -431,14 +436,14 @@ class CreateCollectionBloc {
     );
   }
 
-  int getStandardFromID(String id) {
+  void getStandardFromID(String id) {
     final st = listNFT.where((element) => element.id == id).first;
-    return st.standard ?? 0;
+    collectionType = st.standard ?? 0;
   }
 
   /// get list category
   Future<void> getListCategory() async {
-    List<Map<String,String>> menuItems = [];
+    List<Map<String, String>> menuItems = [];
     final Result<List<Category>> result =
         await _categoryRepository.getListCategory();
     result.when(
@@ -456,11 +461,10 @@ class CreateCollectionBloc {
   }
 
   ///Upload image IPFS
-  Future<void> uploadImageToIPFS({
-    required String hint,
+  Future<String> uploadImageToIPFS({
     required String bin,
   }) async {
-    log('START UPLOAD IMAGE');
+    String ipfsHash = '';
     final headers = {
       'pinata_api_key': 'ac8828bff3bcd1c1b828',
       'pinata_secret_api_key':
@@ -477,34 +481,14 @@ class CreateCollectionBloc {
       if (response.statusCode == 200) {
         final Map<String, dynamic> map =
             jsonDecode(await response.stream.bytesToString());
-        log(map['IpfsHash']);
+        ipfsHash = map['IpfsHash'];
       } else {
         log(response.reasonPhrase.toString());
       }
     } catch (e) {
       log(e.toString());
     }
-    log('END UPLOAD IMAGE');
-  }
-
-  ///Create Collection
-  Future<void> createCollection({required int collectionType}) async {
-    final List<Map<String, String>> socialLink = createSocialMap();
-    final String standard = collectionType == 0 ? 'ERC-721' : 'ERC-1155';
-    final Map<String, dynamic> sortParam = {
-      'avatar_cid': '???',
-      'category_id': categoryId,
-      'collection_standard': standard,
-      'cover_cid': '???',
-      'custom_url': customUrl,
-      'description': description,
-      'feature_cid': '???',
-      'name': collectionName,
-      'royalty': royalties,
-      'social_links': socialLink,
-      'txn_hash': 'txnHash',
-    };
-    log(sortParam.toString());
+    return ipfsHash;
   }
 
   ///Create list Social link from data
@@ -535,5 +519,53 @@ class CreateCollectionBloc {
       });
     }
     return list;
+  }
+
+  ///Create CID map
+  Map<String,String> cidMap = {
+    'avatar_cid' : '',
+    'cover_cid' : '',
+    'feature_cid' : '',
+  };
+  Future<void> cidCreate() async {
+    coverPhotoUploadStatusSubject.sink.add(-1);
+    final coverCid = await uploadImageToIPFS(bin: avatarPath);
+    coverCid.isEmpty
+        ? coverPhotoUploadStatusSubject.sink.add(0)
+        : coverPhotoUploadStatusSubject.sink.add(1);
+    avatarUploadStatusSubject.sink.add(-1);
+    final avatarCid = await uploadImageToIPFS(bin: avatarPath);
+    avatarCid.isEmpty
+        ? avatarUploadStatusSubject.sink.add(0)
+        : avatarUploadStatusSubject.sink.add(1);
+    featurePhotoUploadStatusSubject.sink.add(-1);
+    final featureCid = await uploadImageToIPFS(bin: avatarPath);
+    featureCid.isEmpty
+        ? featurePhotoUploadStatusSubject.sink.add(0)
+        : featurePhotoUploadStatusSubject.sink.add(1);
+    cidMap['cover_cid'] = coverCid;
+    cidMap['avatar_cid'] = avatarCid;
+    cidMap['feature_cid'] = featureCid;
+  }
+
+
+  ///Create Collection
+  Future<void> createCollection() async {
+    final List<Map<String, String>> socialLink = createSocialMap();
+    final String standard = collectionType == 0 ? 'ERC-721' : 'ERC-1155';
+    final Map<String, dynamic> sortParam = {
+      'avatar_cid': cidMap['cover_cid'],
+      'category_id': categoryId,
+      'collection_standard': standard,
+      'cover_cid': cidMap['cover_cid'],
+      'custom_url': customUrl,
+      'description': description,
+      'feature_cid': cidMap['feature_cid'],
+      'name': collectionName,
+      'royalty': royalties,
+      'social_links': socialLink,
+      'txn_hash': 'txnHash',
+    };
+    log(sortParam.toString());
   }
 }

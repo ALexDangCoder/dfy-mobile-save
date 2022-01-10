@@ -395,7 +395,6 @@
   "feature_soft_nfts" : "Featured Soft NFTs",
   "buy_sell_create_collectible_nfts": "Mua, bán và tạo cácNFT sưu tập",
   "loading_text": "Đang tải...",
-  "error_text": "Lỗi tải...",
   "nfts_search_result": "NFT kết quả tìm kiếm",
   "collection_search_result": "Collection kết quả tìm kiếm",
   "sort_by": "Sắp xếp theo",
@@ -406,7 +405,7 @@
   "owner_from_high_to_low": "Chủ từ cao đến thấp",
   "owner_from_low_to_high": "Chủ từ thấp đến cao",
   "item_from_high_to_low": "Mục từ cao đến thấp",
-  "item_from_low_to_high": "Mục từ thấp đến cao"
+  "item_from_low_to_high": "Mục từ thấp đến cao",
   "error_text": "Lỗi tải...",
   "could_not_load_data" : "Không thể tải dữ liệu",
   "create_collection" : "Tạo bộ sưu tập",
@@ -427,5 +426,10 @@
   "cover_photo_required" : "Ảnh bìa là bắt buộc",
   "feature_photo_required" : "Ảnh nổi bật là bắt buộc",
   "category_require" : "Danh mục là bắt buộc",
-  "collection_name_require" : "Tên của bộ sưu tập là bắt buộc"
+  "collection_name_require" : "Tên của bộ sưu tập là bắt buộc",
+  "avatar_photo" : "Ảnh đại diện",
+  "cover_photo" : "Ảnh bìa",
+  "feature_photo" : "Ảnh nổi bật",
+  "uploading_successfully" : "Tải ảnh lên thành công",
+  "uploading_fail" : "Tải ảnh lên thất bại"
 }
