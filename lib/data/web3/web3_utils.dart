@@ -527,6 +527,24 @@ class Web3Utils {
     return hex.encode(buyNFT.data ?? []);
   }
 
+  Future<String> getCancelListingData({
+    required String contractAddress,
+    required String orderId,
+    required BuildContext context,
+  }) async {
+    final deployedContract =
+        await deployedContractAddress(contractAddress, context);
+    final cancelFunction = deployedContract.function('cancelListing');
+    final cancelListing = Transaction.callContract(
+      contract: deployedContract,
+      function: cancelFunction,
+      parameters: [
+        BigInt.from(num.parse(orderId)),
+      ],
+    );
+    return hex.encode(cancelListing.data ?? []);
+  }
+
   Future<String> getBuyOutData({
     required String contractAddress,
     required String auctionId,
