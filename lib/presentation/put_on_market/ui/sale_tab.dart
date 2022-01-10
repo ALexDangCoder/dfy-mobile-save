@@ -2,8 +2,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/put_on_market/approve/ui/approve.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_number_of_quantity.dart';
 import 'package:Dfy/widgets/form/input_with_select_type.dart';
@@ -29,7 +29,6 @@ class SaleTab extends StatefulWidget {
 
 class _SaleTabState extends State<SaleTab>
     with AutomaticKeepAliveClientMixin<SaleTab> {
-  GlobalKey dropdownKey = GlobalKey();
   late double width, height, xPosition, yPosition;
   int chooseIndex = 0;
 
@@ -97,7 +96,9 @@ class _SaleTabState extends State<SaleTab>
                       keyboardType: TextInputType.number,
                       typeInput: typeInput(),
                       hintText: S.current.enter_price,
-                      onChangeType: (index) {},
+                      onChangeType: (index) {
+                        //print (index);
+                      },
                       onchangeText: (value) {
                         widget.cubit.changeTokenSale(
                           value: value != '' ? double.parse(value) : null,
@@ -157,7 +158,6 @@ class _SaleTabState extends State<SaleTab>
                       context,
                       MaterialPageRoute(
                         builder: (context) => Approve(
-                          isShowTwoButton: true,
                           warning: RichText(
                             text: TextSpan(
                               text:
@@ -213,7 +213,7 @@ class _SaleTabState extends State<SaleTab>
                             await Future.delayed(Duration(seconds: 3));
                             print(' call approve  in hear ');
                             return true;
-                          },
+                          }, gasLimit: 10,
                         ),
                       ),
                     );

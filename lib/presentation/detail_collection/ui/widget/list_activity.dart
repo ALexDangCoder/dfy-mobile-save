@@ -1,4 +1,4 @@
-import 'package:Dfy/generated/l10n.dart';
+
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_bid.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_burn.dart';
@@ -11,7 +11,6 @@ import 'package:Dfy/presentation/detail_collection/ui/activity/activity_receive_
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_report.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_sign_contract.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_transfer.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 
 class ListActivity extends StatelessWidget {
@@ -27,8 +26,10 @@ class ListActivity extends StatelessWidget {
   final String priceSymbol;
   final int typeActivity;
   final int auctionType;
-  final int nft_type;
+  final int nftType;
   final String urlSymbol;
+  final int index;
+  final DetailCollectionBloc bloc;
 
   const ListActivity({
     Key? key,
@@ -42,46 +43,33 @@ class ListActivity extends StatelessWidget {
     required this.typeActivity,
     required this.auctionType,
     required this.addressMyWallet,
-    required this.nft_type,
+    required this.nftType,
     required this.price,
     required this.priceSymbol,
     required this.urlSymbol,
+    required this.index,
+    required this.bloc,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String myCopy = '';
-    String each = '';
-    String myAddress = '';
-    String myAddressTo = '';
-    String market = '';
-    if (marketStatus == 1) {
-      market = S.current.sale;
-    } else if (marketStatus == 2) {
-      market = S.current.auction;
-    } else if (marketStatus == 3) {
-      market = S.current.pawn;
-    } else {
-      market = S.current.not_on_market;
-    }
-    if (nft_type == 0) {
-      //721
-      myCopy = '';
-      each = '';
-    } else {
-      myCopy = copy;
-      each = S.current.activity_each;
-    }
-    if (addressMyWallet == addressWallet) {
-      myAddress = S.current.activity_you;
-    } else {
-      myAddress = addressWallet.formatAddressActivityFire();
-    }
-    if (addressMyWallet == addressWalletSend) {
-      myAddressTo = S.current.activity_you;
-    } else {
-      myAddressTo = addressWalletSend.formatAddressActivityFire();
-    }
+    final String each = bloc.funCheckEach(
+      nftType: nftType,
+    );
+    final String myCopy = bloc.funCheckCopy(
+      copy: copy,
+      nftType: nftType,
+    );
+    final String market = bloc.funGetMarket(marketStatus);
+    final String myAddress = bloc.funCheckAddressSend(
+      addressWallet: addressWallet,
+      addressMyWallet: addressMyWallet,
+    );
+    final String myAddressTo = bloc.funCheckAddressTo(
+      addressMyWallet: addressMyWallet,
+      addressWalletSend: addressWalletSend,
+    );
+
     return itemActivity(
       price: price,
       typeActivity: typeActivity,
@@ -96,6 +84,8 @@ class ListActivity extends StatelessWidget {
       date: date,
       each: each,
       market: market,
+      index: index,
+      bloc: bloc,
     );
   }
 
@@ -113,6 +103,8 @@ class ListActivity extends StatelessWidget {
     int? typeActivity,
     int? auctionType,
     String? urlSymbol,
+    required int index,
+    required DetailCollectionBloc bloc,
   }) {
     switch (typeActivity) {
       case DetailCollectionBloc.PUT_ON_MARKET:
@@ -127,9 +119,13 @@ class ListActivity extends StatelessWidget {
           market: market ?? '',
           moneySymbol: priceSymbol ?? '',
           urlSymbol: urlSymbol ?? '',
+          bloc: bloc,
+          index: index,
         );
       case DetailCollectionBloc.TRANSFER_ACTIVITY:
         return TransferActivity(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -139,6 +135,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.BURN:
         return Burn(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -147,6 +145,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.CANCEL:
         return Cancel(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -156,6 +156,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.LIKE:
         return Like(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -163,6 +165,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.REPORT:
         return Report(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -170,6 +174,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.BUY:
         return Buy(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -182,6 +188,8 @@ class ListActivity extends StatelessWidget {
       case DetailCollectionBloc.BID_BUY_OUT:
         if (auctionType == 0) {
           return Bid(
+            bloc: bloc,
+            index: index,
             urlAvatar: urlAvatar ?? '',
             title: title ?? '',
             date: date ?? '',
@@ -192,6 +200,8 @@ class ListActivity extends StatelessWidget {
           );
         } else {
           return BuyOut(
+            bloc: bloc,
+            index: index,
             urlAvatar: urlAvatar ?? '',
             title: title ?? '',
             date: date ?? '',
@@ -203,6 +213,8 @@ class ListActivity extends StatelessWidget {
         }
       case DetailCollectionBloc.RECEIVE_OFFER:
         return ReceiveOffer(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -213,6 +225,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.SIGN_CONTRACT:
         return SignContract(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',

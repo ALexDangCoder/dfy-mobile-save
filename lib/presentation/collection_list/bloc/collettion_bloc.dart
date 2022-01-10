@@ -21,6 +21,16 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     getListCategory();
   }
 
+  static const int HIGHEST_TRADING_VOLUME=0;
+  static const int LOWEST_TRADING_VOLUME=1;
+  static const int NEWEST=2;
+  static const int OLDEST=3;
+  static const int OWNER_FROM_HIGH_TO_LOW=4;
+  static const int OWNER_FROM_LOW_TO_HIGH=5;
+  static const int ITEM_FROM_HIGH_TO_LOW=6;
+  static const int ITEM_FROM_LOW_TO_HIGH=7;
+
+
   //getlistcollection
   BehaviorSubject<List<CollectionModel>> list = BehaviorSubject();
 
@@ -102,7 +112,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       if (textSearch.value.isEmpty) {
         getCollection(sortFilter: sortFilter);
       } else {
-        getCollection(name: textSearch.value,sortFilter:sortFilter );
+        getCollection(name: textSearch.value, sortFilter: sortFilter);
       }
     });
   }
@@ -120,8 +130,17 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     );
   }
 
-  BehaviorSubject<List<bool>> listCheckBoxFilterStream = BehaviorSubject.seeded(
-      [false, false, false, false, false, false, false, false]);
+  BehaviorSubject<List<bool>> listCheckBoxFilterStream =
+      BehaviorSubject.seeded([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   List<bool> listCheckBoxFilter = [
     false,
@@ -136,8 +155,16 @@ class CollectionBloc extends BaseCubit<CollectionState> {
 
   void reset() {
     sortFilter = -1;
-    listCheckBoxFilterStream
-        .add([false, false, false, false, false, false, false, false]);
+    listCheckBoxFilterStream.add([
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ]);
     for (int i = 0; i < 8; i++) {
       listCheckBoxFilter[i] = false;
     }

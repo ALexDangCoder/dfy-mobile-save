@@ -380,7 +380,7 @@ class Web3Utils {
       };
     } catch (error) {
       return {
-        'isSuccess': true,
+        'isSuccess': false,
         'txHash': '',
       };
     }
@@ -527,6 +527,24 @@ class Web3Utils {
     return hex.encode(buyNFT.data ?? []);
   }
 
+  Future<String> getCancelListingData({
+    required String contractAddress,
+    required String orderId,
+    required BuildContext context,
+  }) async {
+    final deployedContract =
+        await deployedContractAddress(contractAddress, context);
+    final cancelFunction = deployedContract.function('cancelListing');
+    final cancelListing = Transaction.callContract(
+      contract: deployedContract,
+      function: cancelFunction,
+      parameters: [
+        BigInt.from(num.parse(orderId)),
+      ],
+    );
+    return hex.encode(cancelListing.data ?? []);
+  }
+
   Future<String> getBuyOutData({
     required String contractAddress,
     required String auctionId,
@@ -638,7 +656,7 @@ class Web3Utils {
     BuildContext context,
   ) async {
     final abiCode = await DefaultAssetBundle.of(context)
-        .loadString('assets/abi/SellNFT_ABI.json');
+        .loadString('assets/abi/SellNFT_ABI_DEV2.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'Sell NFT'),
       EthereumAddress.fromHex(contract),

@@ -4,16 +4,16 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/put_on_market/approve/bloc/approve_cubit.dart';
-import 'package:Dfy/presentation/put_on_market/approve/ui/component/estimate_gas_fee.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../main.dart';
+import 'component/estimate_gas_fee.dart';
 import 'component/pop_up_approve.dart';
 
 ///  Appbar                                   :                  title
@@ -35,6 +35,7 @@ class Approve extends StatefulWidget {
   final Widget? header;
   final bool? isShowTwoButton;
   final String textActiveButton;
+  final double gasLimit;
   final Function approve;
   final Function action;
 
@@ -47,7 +48,7 @@ class Approve extends StatefulWidget {
     required this.textActiveButton,
     this.header,
     required this.approve,
-    required this.action,
+    required this.action, required this.gasLimit,
   }) : super(key: key);
 
   @override
@@ -192,7 +193,7 @@ class _ApproveState extends State<Approve> {
                               });
                             },
                             cubit: cubit,
-                            gasLimitStart: 10,
+                            gasLimitStart: widget.gasLimit,
                           ),
                         ],
                       ),
