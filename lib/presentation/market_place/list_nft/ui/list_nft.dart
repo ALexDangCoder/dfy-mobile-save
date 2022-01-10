@@ -5,7 +5,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/list_nft/bloc/list_nft_cubit.dart';
-import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
+import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/filter_bts.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -40,6 +40,7 @@ class _ListNftState extends State<ListNft> {
     _debounce = Timer(const Duration(milliseconds: 500), () {});
     _cubit = ListNftCubit();
     _cubit.title.add(_cubit.getTitle(widget.marketType));
+    _cubit.getTokenInf();
     _cubit.getCollectionFilter();
     if (widget.marketType != null) {
       _cubit.getListNft(status: _cubit.status(widget.marketType!));
@@ -97,72 +98,90 @@ class _ListNftState extends State<ListNft> {
                         ),
                         child: searchBar(),
                       ),
-                      BlocBuilder<ListNftCubit, ListNftState>(
-                        bloc: _cubit,
-                        builder: (context, state) {
-                          if (state is ListNftSuccess) {
-                            if (_cubit.listData.isNotEmpty) {
-                              return Expanded(
-                                child: StaggeredGridView.countBuilder(
-                                  shrinkWrap: true,
-                                  mainAxisSpacing: 20.h,
-                                  itemCount: _cubit.listData.length,
-                                  crossAxisCount: 2,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: EdgeInsets.only(left: 16.w),
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: NFTItemWidget(
-                                          nftMarket: _cubit.listData[index],
+                      NotificationListener<ScrollNotification>(
+                        onNotification: (ScrollNotification scrollInfo) {
+                          if (_cubit.canLoadMoreListNft &&
+                              (scrollInfo.metrics.pixels ==
+                                  scrollInfo.metrics.maxScrollExtent)) {
+                            _cubit.loadMorePosts();
+                          }
+                          return true;
+                        },
+                        child: BlocBuilder<ListNftCubit, ListNftState>(
+                          bloc: _cubit,
+                          builder: (context, state) {
+                            if (state is ListNftSuccess ||
+                                state is ListNftLoadMore ||
+                                state is ListNftRefresh) {
+                              if (_cubit.listData.isNotEmpty) {
+                                return Expanded(
+                                  child: RefreshIndicator(
+                                    onRefresh: () async {
+                                      _cubit.refreshPosts();
+                                    },
+                                    child: StaggeredGridView.countBuilder(
+                                      shrinkWrap: true,
+                                      mainAxisSpacing: 20.h,
+                                      itemCount: _cubit.listData.length,
+                                      crossAxisCount: 2,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: EdgeInsets.only(left: 16.w),
+                                          child: GestureDetector(
+                                            onTap: () {},
+                                            child: NFTItemWidget(
+                                              nftMarket: _cubit.listData[index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      staggeredTileBuilder: (int index) =>
+                                          const StaggeredTile.fit(1),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Padding(
+                                  padding: EdgeInsets.only(top: 150.h),
+                                  child: Column(
+                                    children: [
+                                      Image(
+                                        image: const AssetImage(
+                                          ImageAssets.img_search_empty,
+                                        ),
+                                        height: 120.h,
+                                        width: 120.w,
+                                      ),
+                                      SizedBox(
+                                        height: 17.7.h,
+                                      ),
+                                      Text(
+                                        S.current.no_result_found,
+                                        style: textNormal(
+                                          Colors.white54,
+                                          20.sp,
                                         ),
                                       ),
-                                    );
-                                  },
-                                  staggeredTileBuilder: (int index) =>
-                                      const StaggeredTile.fit(1),
-                                ),
-                              );
-                            } else {
-                              return Padding(
-                                padding: EdgeInsets.only(top: 150.h),
-                                child: Column(
-                                  children: [
-                                    Image(
-                                      image: const AssetImage(
-                                        ImageAssets.img_search_empty,
-                                      ),
-                                      height: 120.h,
-                                      width: 120.w,
-                                    ),
-                                    SizedBox(
-                                      height: 17.7.h,
-                                    ),
-                                    Text(
-                                      S.current.no_result_found,
-                                      style: textNormal(
-                                        Colors.white54,
-                                        20.sp,
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                );
+                              }
+                            } else if (state is ListNftError) {
+                              return Container();
+                            } else if (state is ListNftLoading) {
+                              return SizedBox(
+                                height: 100.h,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 3.r,
+                                    color: AppTheme.getInstance().whiteColor(),
+                                  ),
                                 ),
                               );
                             }
-                          } else if (state is ListNftError) {
-                            return Container();
-                          } else {
-                            return SizedBox(
-                              height: 100.h,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 3.r,
-                                  color: AppTheme.getInstance().whiteColor(),
-                                ),
-                              ),
-                            );
-                          }
-                        },
+                            return const SizedBox();
+                          },
+                        ),
                       ),
                     ],
                   ),

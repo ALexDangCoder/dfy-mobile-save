@@ -4,11 +4,16 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/ui/nft_item/bloc/nft_item_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_countdown_timer/countdown_controller.dart';
+import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
+import 'package:flutter_countdown_timer/current_remaining_time.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
@@ -28,6 +33,15 @@ class NFTItemWidget extends StatefulWidget {
 class _NFTItemState extends State<NFTItemWidget> {
   final formatValue = NumberFormat('###,###,###.###', 'en_US');
   late VideoPlayerController? _controller;
+  late CountdownTimerController countdownController;
+  DateTime? startTimeAuction;
+  DateTime? endTimeAuction;
+  late NftItemCubit cubitNft;
+
+  void onEnd() {
+    //todo
+    print('onEnd');
+  }
 
   @override
   void initState() {
@@ -39,6 +53,20 @@ class _NFTItemState extends State<NFTItemWidget> {
       });
       _controller!.setLooping(true);
       _controller!.initialize().then((_) => setState(() {}));
+    }
+    cubitNft = NftItemCubit();
+    if (widget.nftMarket.marketType == MarketType.AUCTION) {
+      startTimeAuction = cubitNft.parseTimeServerToDateTime(
+          value: widget.nftMarket.startTime ?? 0);
+      endTimeAuction = cubitNft.parseTimeServerToDateTime(
+        // value: (widget.nftMarket.endTime == 0) ? 0 : 0);
+        value: 1642637464000,
+      );
+      countdownController = CountdownTimerController(
+        endTime: endTimeAuction!.millisecondsSinceEpoch,
+      );
+    } else {
+      //todo when not auction
     }
   }
 
@@ -238,7 +266,7 @@ class _NFTItemState extends State<NFTItemWidget> {
       return Padding(
         padding: EdgeInsets.only(top: 119.h, left: 35.5.w),
         child: Container(
-          width: 85.w,
+          width: 97.w,
           height: 24.h,
           decoration: BoxDecoration(
             color: const Color(0xFFFFCD28).withOpacity(0.7),
@@ -262,16 +290,41 @@ class _NFTItemState extends State<NFTItemWidget> {
                 size: 13.sp,
               ),
               SizedBox(
-                width: 7.w,
+                width: 5.w,
               ),
-              Text(
-                '15:02:02',
-                style: textNormalCustom(
-                  AppTheme.getInstance().whiteColor(),
-                  13,
-                  FontWeight.w600,
-                ),
-              ),
+              if (cubitNft.isOutOfTimeAuction(endTime: endTimeAuction!))
+                CountdownTimer(
+                  controller: countdownController,
+                  widgetBuilder: (_, CurrentRemainingTime? time) {
+                    if (time == null) {
+                      return Text(
+                        '00:00:00:00',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          13,
+                          FontWeight.w600,
+                        ),
+                      );
+                    }
+                    return Text(
+                      '${time.days ?? 00}:${time.hours}:${time.min}:${time.sec}',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        13,
+                        FontWeight.w600,
+                      ),
+                    );
+                  },
+                )
+              else
+                Text(
+                  '00:00:00:00',
+                  style: textNormalCustom(
+                    AppTheme.getInstance().whiteColor(),
+                    13,
+                    FontWeight.w600,
+                  ),
+                )
             ],
           ),
         ),

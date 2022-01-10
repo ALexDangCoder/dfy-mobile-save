@@ -48,7 +48,8 @@ class Approve extends StatefulWidget {
     required this.textActiveButton,
     this.header,
     required this.approve,
-    required this.action, required this.gasLimit,
+    required this.action,
+    required this.gasLimit,
   }) : super(key: key);
 
   @override
@@ -120,6 +121,9 @@ class _ApproveState extends State<Approve> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
                           widget.header ?? const SizedBox(height: 0),
                           ...(widget.listDetail ?? []).map(
                             (item) => Column(
@@ -287,17 +291,20 @@ class _ApproveState extends State<Approve> {
                 Expanded(
                   child: GestureDetector(
                     child: ButtonGold(
-                      textColor: isApproved || !(widget.isShowTwoButton ?? false)
-                          ? null
-                          : disableText,
+                      textColor:
+                          isApproved || !(widget.isShowTwoButton ?? false)
+                              ? null
+                              : disableText,
                       fixSize: false,
                       haveMargin: false,
                       title: widget.textActiveButton,
                       isEnable:
-                          isApproved || !(widget.isShowTwoButton ?? false),
+                      (isApproved || !(widget.isShowTwoButton ?? false)) &&
+                          isCanAction,
                     ),
                     onTap: () async {
-                      if (isApproved){
+                      if ((isApproved || !(widget.isShowTwoButton ?? false)) &&
+                          isCanAction) {
                         final navigator = Navigator.of(context);
                         cubit.changeLoadingState(isShow: true);
                         await widget.action();

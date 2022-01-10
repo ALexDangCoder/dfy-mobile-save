@@ -2,8 +2,10 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
+import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/wallet.dart';
@@ -36,6 +38,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       BehaviorSubject.seeded([]);
   final BehaviorSubject<List<OwnerNft>> listOwnerStream =
       BehaviorSubject.seeded([]);
+  final BehaviorSubject<List<BiddingNft>> listBiddingStream =
+  BehaviorSubject.seeded([]);
+      BehaviorSubject.seeded([]);
+
+  String symbolToken = '';
 
   ///GetHistory
   Stream<bool> get pairStream => _pairSubject.stream;
@@ -52,6 +59,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }
 
   NFTRepository get _nftRepo => Get.find();
+
   late final NftMarket nftMarket;
   late final String walletAddress;
   late final String owner;
@@ -84,12 +92,27 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     );
   }
 
+  ///GetBiding
+  Future<void> getBidding(String auctionId) async {
+    final Result<List<BiddingNft>> result =
+    await _nftRepo.getBidding(auctionId);
+    result.when(
+      success: (res) {
+        listBiddingStream.add(res);
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
+  }
+
   ///GetInfoNft
-  ///
+
   Future<void> getInForNFT(String marketId, MarketType type) async {
+    showLoading();
+    getTokenInf();
     if (type == MarketType.SALE) {
       showLoading();
-      getTokenInf();
       final Result<NftMarket> result =
           await _nftRepo.getDetailNftOnSale(marketId);
       result.when(
@@ -117,12 +140,37 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       );
     }
     if (type == MarketType.AUCTION) {
-      ///call api Detail onAuction
+      showLoading();
+      final Result<NFTOnAuction> result =
+          await _nftRepo.getDetailNFTAuction(marketId);
+      result.when(
+        success: (res) {
+          for (final value in listTokenSupport) {
+            final tokenBuyOut = res.token ?? '';
+            final address = value.address ?? '';
+            if (tokenBuyOut.toLowerCase() == address.toLowerCase()) {
+              res.urlToken = value.iconUrl;
+              res.tokenSymbol = value.symbol;
+              res.usdExchange = value.usdExchange;
+              symbolToken = value.symbol ?? '';
+            }
+          }
+          showContent();
+          emit(NftOnAuctionSuccess(res));
+          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getBidding(res.auctionId.toString());
+        },
+        error: (error) {
+          updateStateError();
+        },
+      );
     }
     if (type == MarketType.PAWN) {
       ///call api detail onPawn
     }
   }
+
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
@@ -164,6 +212,17 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     listTokenSupport = TokenInf.decode(listToken);
   }
 
+  int getTimeCountDown(NFTOnAuction nftOnAuction) {
+    final endDate =
+        DateTime.fromMillisecondsSinceEpoch(nftOnAuction.endTime ?? 0);
+    final today = DateTime.now().millisecondsSinceEpoch;
+    if (endDate.millisecondsSinceEpoch > today) {
+      return endDate.microsecondsSinceEpoch - today;
+    }
+    else{
+      return 0;
+    }
+  }
   Future<String> getBuyNftData({
     required String contractAddress,
     required String orderId,
