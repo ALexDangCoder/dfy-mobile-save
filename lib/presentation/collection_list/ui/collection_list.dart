@@ -302,12 +302,7 @@ class _CollectionListState extends State<CollectionList> {
                                                   MaterialPageRoute(
                                                     builder: (context) {
                                                       return DetailCollection(
-                                                        typeCollection:
-                                                            collectionBloc
-                                                                .list
-                                                                .value[index]
-                                                                .type,
-                                                        id: collectionBloc
+                                                        collectionAddress: collectionBloc
                                                                 .list
                                                                 .value[index]
                                                                 .id ??

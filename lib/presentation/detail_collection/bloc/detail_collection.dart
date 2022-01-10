@@ -328,10 +328,11 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     listFilter.clear();
   }
 
-  Future<void> getCollection({String? id = ''}) async {
+  Future<void> getCollection({String? collectionAddress = ''}) async {
     emit(LoadingData());
     final Result<CollectionDetailModel> result =
-        await _collectionDetailRepository.getCollectionDetail(id ?? '');
+        await _collectionDetailRepository
+            .getCollectionDetail(collectionAddress ?? '');
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {

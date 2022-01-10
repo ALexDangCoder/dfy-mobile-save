@@ -12,9 +12,10 @@ class CollectionDetailImpl implements CollectionDetailRepository {
   CollectionDetailImpl(this._client);
 
   @override
-  Future<Result<CollectionDetailModel>> getCollectionDetail(String id) {
+  Future<Result<CollectionDetailModel>> getCollectionDetail(
+      String collectionAddress) {
     return runCatchingAsync<CollectionDetailResponse, CollectionDetailModel>(
-      () => _client.getCollection(id),
+      () => _client.getCollection(collectionAddress),
       (response) => response.item?.toDomain() ?? CollectionDetailModel(),
     );
   }

@@ -11,10 +11,10 @@ class CollectionDetailError extends StatelessWidget {
   const CollectionDetailError({
     Key? key,
     required this.cubit,
-    required this.id,
+    required this.collectionAddress,
   }) : super(key: key);
   final DetailCollectionBloc cubit;
-  final String id;
+  final String collectionAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class CollectionDetailError extends StatelessWidget {
           spaceH24,
           InkWell(
             onTap: () {
-              cubit.getCollection(id: id);
+              cubit.getCollection(collectionAddress: collectionAddress);
             },
             child: SizedBox(
               height: 60.h,

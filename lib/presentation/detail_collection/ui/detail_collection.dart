@@ -24,15 +24,11 @@ class DetailCollection extends StatefulWidget {
   const DetailCollection({
     Key? key,
     this.walletAddress,
-    this.typeCollection,
-    required this.id,
+    required this.collectionAddress,
   }) : super(key: key);
   final String? walletAddress;
-  final String id;
-  final int? typeCollection;
+  final String collectionAddress;
 
-  //todo doanh
-  //call api detail dua theo type collection soft 0 hard 1
 
   @override
   _DetailCollectionState createState() => _DetailCollectionState();
@@ -47,7 +43,7 @@ class _DetailCollectionState extends State<DetailCollection>
   void initState() {
     super.initState();
     detailCollectionBloc = DetailCollectionBloc();
-    detailCollectionBloc.getCollection(id: widget.id);
+    detailCollectionBloc.getCollection(collectionAddress: widget.collectionAddress);
     detailCollectionBloc.funGetUrl(detailCollectionBloc.arg.socialLinks ?? []);
     _tabController = TabController(length: 2, vsync: this);
   }
@@ -193,7 +189,7 @@ class _DetailCollectionState extends State<DetailCollection>
                 ),
                 height: 764.h,
                 child: CollectionDetailError(
-                  id: widget.id,
+                  collectionAddress: widget.collectionAddress,
                   cubit: detailCollectionBloc,
                 ),
               ),

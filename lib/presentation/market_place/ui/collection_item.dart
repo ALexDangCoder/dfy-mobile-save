@@ -1,4 +1,3 @@
-import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -30,8 +29,7 @@ class CollectionItem extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) {
               return DetailCollection(
-                id: idCollection,
-                typeCollection: typeCollection,
+                collectionAddress: idCollection,
               );
             },
           ),
