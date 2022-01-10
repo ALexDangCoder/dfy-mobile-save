@@ -1,8 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/cancel_sale/ui/cancel_sale.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
+import 'package:Dfy/presentation/market_place/cancel_sale/bloc/cancel_sale_cubit.dart';
+import 'package:Dfy/presentation/market_place/cancel_sale/ui/cancel_sale.dart';
+import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
+import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,21 +36,23 @@ class HeaderMarketPlace extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CancelSale(
-                              quantity: 100,
-                              ntfName: 'Ối dồi ôi',
-                            )));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CancelSale(
+                      cubit: CancelSaleCubit(quantity: '01', ntfValue: 'Ối dồi ôi'),
+                    ),
+                  ),
+                );
               },
             ),
-            searchBar(),
+            searchBar(context, cubit),
             GestureDetector(
               child: ImageIcon(
                 const AssetImage(ImageAssets.ic_notify),
                 size: 28.sp,
                 color: AppTheme.getInstance().whiteColor(),
               ),
+              onTap: () {},
             ),
           ],
         ),
@@ -55,10 +60,17 @@ class HeaderMarketPlace extends StatelessWidget {
     );
   }
 
-  Widget searchBar() {
+  Widget searchBar(BuildContext context, MarketplaceCubit cubit) {
     return GestureDetector(
       onTap: () {
-        cubit.emit(OnSearch());
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => SearchNFT(
+              cubit: cubit,
+            ),
+          ),
+        );
       },
       child: Container(
         width: 259.w,

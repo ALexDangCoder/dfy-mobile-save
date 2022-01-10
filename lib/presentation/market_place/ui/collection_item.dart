@@ -1,5 +1,6 @@
-import 'package:Dfy/config/routes/router.dart';
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,21 +9,32 @@ class CollectionItem extends StatelessWidget {
   final String urlBackGround;
   final String urlIcon;
   final String title;
+  final String idCollection;
+  final int? typeCollection;
 
   const CollectionItem({
     Key? key,
     required this.urlBackGround,
     required this.urlIcon,
     required this.title,
+    required this.idCollection,
+    this.typeCollection,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(
+        Navigator.push(
           context,
-          AppRouter.detailCollection,
+          MaterialPageRoute(
+            builder: (context) {
+              return DetailCollection(
+                id: idCollection,
+                typeCollection: typeCollection,
+              );
+            },
+          ),
         );
       },
       child: Row(
@@ -54,7 +66,7 @@ class CollectionItem extends StatelessWidget {
                               ? const AssetImage(ImageAssets.ic_search)
                                   as ImageProvider
                               : NetworkImage(urlBackGround),
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.r),
@@ -62,16 +74,22 @@ class CollectionItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.only(
-                        top: 34.h,
-                      ),
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          color: AppTheme.getInstance().whiteColor(),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                    Flexible(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          top: 30.h,
+                          left: 10.w,
+                          right: 10.w,
+                        ),
+                        child: Center(
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              color: AppTheme.getInstance().whiteColor(),
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
                     ),

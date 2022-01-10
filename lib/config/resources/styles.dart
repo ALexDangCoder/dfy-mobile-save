@@ -18,11 +18,13 @@ final spaceH8 = SizedBox(height: 8.h);
 final spaceH10 = SizedBox(height: 10.h);
 final spaceH12 = SizedBox(height: 12.h);
 final spaceH15 = SizedBox(height: 15.h);
+final spaceH32 = SizedBox(height: 32.h,);
 
 final spaceH14 = SizedBox(height: 14.h);
 final spaceH16 = SizedBox(height: 16.h);
 final spaceH18 = SizedBox(height: 18.h);
 final spaceH20 = SizedBox(height: 20.h);
+final spaceH22 = SizedBox(height: 22.h);
 final spaceH24 = SizedBox(height: 24.h);
 final spaceH25 = SizedBox(height: 25.h);
 final spaceH30 = SizedBox(height: 30.h);
@@ -50,10 +52,10 @@ final spaceW16 = SizedBox(width: 16.w);
 final spaceW18 = SizedBox(width: 18.w);
 final spaceW20 = SizedBox(width: 20.w);
 final spaceW25 = SizedBox(width: 25.w);
+final spaceW28 = SizedBox(width: 28.w);
 final spaceW30 = SizedBox(width: 30.w);
 final spaceW60 = SizedBox(width: 60.w);
 final spaceW100 = SizedBox(width: 100.w);
-
 final divide = Divider(
   color: AppTheme.getInstance().divideColor(),
   thickness: 1,
@@ -73,6 +75,22 @@ final divider = Divider(thickness: 1, color: Colors.white.withOpacity(0.1));
 TextStyle tokenDetailAmount({
   Color color = Colors.white,
   double fontSize = 24,
+  FontWeight weight = FontWeight.w400,
+  FontStyle fontStyle = FontStyle.normal,
+  TextDecoration decoration = TextDecoration.none,
+}) {
+  return GoogleFonts.sourceSansPro(
+    color: color,
+    fontWeight: weight,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize.sp,
+    decoration: decoration,
+  );
+}
+
+TextStyle textCustom({
+  Color color = Colors.white,
+  double fontSize = 16,
   FontWeight weight = FontWeight.w400,
   FontStyle fontStyle = FontStyle.normal,
   TextDecoration decoration = TextDecoration.none,
@@ -117,7 +135,7 @@ TextStyle textNormalCustomUnderline(
     color: color ?? Colors.white,
     fontWeight: fontWeight ?? FontWeight.w500,
     fontStyle: FontStyle.normal,
-    fontSize: fontSize ?? 14,
+    fontSize: fontSize?.sp ?? 14.sp,
     decoration: TextDecoration.underline,
   );
 }
@@ -130,6 +148,11 @@ TextStyle textFieldNFT = GoogleFonts.sourceSansPro(
 TextStyle textValueNFT = GoogleFonts.sourceSansPro(
   color: AppTheme.getInstance().textThemeColor(),
   fontWeight: FontWeight.w400,
+  fontSize: 16.sp,
+);
+TextStyle textLabelNFT = GoogleFonts.sourceSansPro(
+  color: AppTheme.getInstance().textThemeColor(),
+  fontWeight: FontWeight.w600,
   fontSize: 16.sp,
 );
 TextStyle richTextBlue = GoogleFonts.sourceSansPro(
@@ -154,4 +177,16 @@ TextStyle unselectLabel = GoogleFonts.sen(
   color: AppTheme.getInstance().whiteColor(),
   fontWeight: FontWeight.w600,
   fontSize: 14,
+);
+TextStyle uploadText = GoogleFonts.sen(
+  color: AppTheme.getInstance().titleTabColor(),
+  fontWeight: FontWeight.w400,
+  fontSize: 14,
+);
+
+TextStyle normalText = GoogleFonts.sourceSansPro(
+  color: Colors.white,
+  fontWeight: FontWeight.w400,
+  fontStyle: FontStyle.normal,
+  fontSize: 14.sp,
 );

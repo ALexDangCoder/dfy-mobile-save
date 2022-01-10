@@ -45,6 +45,21 @@ class MainCubit extends BaseCubit<MainState> {
   }
 
 
+  TokenRepository get _tokenRepository => Get.find();
+
+  Future<void> getListTokenSupport() async{
+    final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
+    result.when(
+      success: (res) {
+        final String encodeData = TokenInf.encode(res);
+        PrefsService.saveListTokenSupport(encodeData);
+      },
+      error: (error) {
+
+      },
+    );
+  }
+
   @override
   Future<void> close() {
     _index.close();

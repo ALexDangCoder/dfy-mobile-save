@@ -153,14 +153,15 @@ class RemoveNft extends StatelessWidget {
                                             .listCollectionShow[indexCollection]
                                             .listNft!
                                             .isEmpty) {
-                                          cubit.listNftFromWalletCore
+                                          cubit.listCollectionShow
                                               .removeAt(indexCollection);
                                           cubit.listNFTStream
                                               .add(cubit.listCollectionShow);
                                         }
                                         Navigator.pop(context);
                                       },
-                                      child: SizedBox(
+                                      child: Container(
+                                        color: Colors.transparent,
                                         height: 64.h,
                                         child: Center(
                                           child: Text(

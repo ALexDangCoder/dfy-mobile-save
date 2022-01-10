@@ -4,12 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
-import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/hard_nft.dart';
-import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/not_on_market.dart';
-import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/on_auction.dart';
-import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/on_pawn.dart';
-import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/on_sale.dart';
-import 'package:Dfy/presentation/detail_collection/ui/check_box_nft_fillter/soft_nft.dart';
+import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,8 +13,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FilterNFT extends StatefulWidget {
   final DetailCollectionBloc collectionBloc;
+  final bool isOwner;
 
-  const FilterNFT({Key? key, required this.collectionBloc}) : super(key: key);
+  const FilterNFT({
+    Key? key,
+    required this.collectionBloc,
+    required this.isOwner,
+  }) : super(key: key);
 
   @override
   _FilterNFTState createState() => _FilterNFTState();
@@ -28,7 +28,6 @@ class FilterNFT extends StatefulWidget {
 class _FilterNFTState extends State<FilterNFT> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -46,6 +45,7 @@ class _FilterNFTState extends State<FilterNFT> {
           ),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
               height: 9.h,
@@ -59,86 +59,155 @@ class _FilterNFTState extends State<FilterNFT> {
               ),
             ),
             spaceH20,
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: 6.w,
-                    right: 16.w,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 6.h,
+                    ),
+                    child: Text(
+                      S.current.reset,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().bgBtsColor(),
+                        14,
+                        null,
+                      ),
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Text(
+                    S.current.filter,
+                    style: textNormalCustom(
+                      null,
+                      20,
+                      FontWeight.w600,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      widget.collectionBloc.reset();
+                    },
+                    child: Container(
+                      height: 30.h,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 6.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppTheme.getInstance().colorTextReset(),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(6.r),
+                        ),
+                      ),
+                      child: Text(
+                        S.current.reset,
+                        style: textNormalCustom(
+                          null,
+                          14,
+                          null,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            spaceH24,
+            Container(
+              padding: EdgeInsets.only(
+                left: 6.w,
+                right: 16.w,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (widget.isOwner)
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.w),
+                      child: Text(
+                        S.current.nft_type,
+                        style: textNormalCustom(null, 16, FontWeight.w600),
+                      ),
+                    )
+                  else
+                    const SizedBox.shrink(),
+                  if (widget.isOwner)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: IsBaseCheckBox(
+                            title: S.current.hard_nft,
+                            stream: collectionBloc.isHardNft,
+                          ),
+                        ),
+                        Expanded(
+                          child: IsBaseCheckBox(
+                            title: S.current.soft_nft,
+                            stream: collectionBloc.isSoftNft,
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    const SizedBox.shrink(),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.w),
+                    child: Text(
+                      S.current.status,
+                      style: textNormalCustom(null, 16, FontWeight.w600),
+                    ),
+                  ),
+                  Row(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Text(
-                          S.current.nft_type,
-                          style: textNormalCustom(null, 20.sp, FontWeight.w600),
+                      Expanded(
+                        child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
+                          title: S.current.on_sale,
+                          stream: collectionBloc.isOnSale,
                         ),
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: IsHardNft(
-                              title: S.current.hard_nft,
-                              collectionBloc: collectionBloc,
-                            ),
-                          ),
-                          Expanded(
-                            child: IsSortNft(
-                              title: S.current.soft_nft,
-                              collectionBloc: collectionBloc,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Text(
-                          S.current.status,
-                          style: textNormalCustom(null, 20.sp, FontWeight.w600),
+                      Expanded(
+                        child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
+                          title: S.current.on_pawn,
+                          stream: collectionBloc.isOnPawn,
                         ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: IsOnSale(
-                              title: S.current.on_sale,
-                              collectionBloc: collectionBloc,
-                            ),
-                          ),
-                          Expanded(
-                            child: IsOnPawn(
-                              title: S.current.on_pawn,
-                              collectionBloc: collectionBloc,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                            child: IsOnAuction(
-                              title: S.current.on_auction,
-                              collectionBloc: collectionBloc,
-                            ),
-                          ),
-                          Expanded(
-                            child: IsNotOnMarket(
-                              title: S.current.not_on_market,
-                              collectionBloc: collectionBloc,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
-                ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
+                          title: S.current.on_auction,
+                          stream: collectionBloc.isOnAuction,
+                        ),
+                      ),
+                      Expanded(
+                        child: IsBaseCheckBox(
+                          funCheckBox: () => collectionBloc.listFilter.clear(),
+                          funText: () => collectionBloc.listFilter.clear(),
+                          title: S.current.not_on_market,
+                          stream: collectionBloc.isNotOnMarket,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
+            spaceH24,
             GestureDetector(
               onTap: () {
+                collectionBloc.funFilterNft();
                 Navigator.pop(context);
               },
               child: ButtonLuxury(

@@ -1,19 +1,28 @@
+import 'dart:async';
+
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/list_nft/bloc/list_nft_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
-import 'package:Dfy/presentation/nft_on_sale/ui/nft_list_on_sale/ui/components/filter_bts.dart';
+import 'package:Dfy/presentation/nft_detail/ui/component/filter_bts.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ListNft extends StatefulWidget {
-  const ListNft({Key? key, required this.marketType}) : super(key: key);
-  final MarketType marketType;
+  ListNft({
+    Key? key,
+    this.marketType,
+    this.queryAllResult,
+  }) : super(key: key);
+  MarketType? marketType;
+  String? queryAllResult;
 
   @override
   _ListNftState createState() => _ListNftState();
@@ -23,17 +32,27 @@ class _ListNftState extends State<ListNft> {
   late ListNftCubit _cubit;
   String title = '';
   TextEditingController controller = TextEditingController();
+  late Timer _debounce;
 
   @override
   void initState() {
     super.initState();
+    _debounce = Timer(const Duration(milliseconds: 500), () {});
     _cubit = ListNftCubit();
-    title = _cubit.getTitle(widget.marketType);
+    _cubit.title.add(_cubit.getTitle(widget.marketType));
+    _cubit.getCollectionFilter();
+    if (widget.marketType != null) {
+      _cubit.getListNft(status: _cubit.status(widget.marketType!));
+    } else {
+      _cubit.getListNft(name: widget.queryAllResult);
+    }
   }
 
   @override
   void dispose() {
+    _cubit.close();
     controller.dispose();
+    _debounce.cancel();
     super.dispose();
   }
 
@@ -42,61 +61,114 @@ class _ListNftState extends State<ListNft> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusScope.of(context).unfocus();
         },
         child: Align(
           alignment: Alignment.bottomCenter,
-          child: BaseBottomSheet(
-            onRightClick: () {
-              showModalBottomSheet(
-                backgroundColor: Colors.black,
-                isScrollControlled: true,
-                context: context,
-                builder: (_) {
-                  return FilterBts(listNftCubit: _cubit,);
+          child: StreamBuilder<String>(
+            stream: _cubit.title,
+            builder: (context, AsyncSnapshot<String> snapshot) {
+              return BaseBottomSheet(
+                onRightClick: () {
+                  showModalBottomSheet(
+                    backgroundColor: Colors.black,
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (_) {
+                      return FilterBts(
+                        listNftCubit: _cubit,
+                      );
+                    },
+                  );
                 },
+                isImage: true,
+                title: snapshot.data ?? _cubit.getTitle(widget.marketType),
+                text: ImageAssets.ic_filter,
+                child: SizedBox(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 16.w,
+                          right: 16.w,
+                          top: 12.h,
+                          bottom: 6.h,
+                        ),
+                        child: searchBar(),
+                      ),
+                      BlocBuilder<ListNftCubit, ListNftState>(
+                        bloc: _cubit,
+                        builder: (context, state) {
+                          if (state is ListNftSuccess) {
+                            if (_cubit.listData.isNotEmpty) {
+                              return Expanded(
+                                child: StaggeredGridView.countBuilder(
+                                  shrinkWrap: true,
+                                  mainAxisSpacing: 20.h,
+                                  itemCount: _cubit.listData.length,
+                                  crossAxisCount: 2,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(left: 16.w),
+                                      child: GestureDetector(
+                                        onTap: () {},
+                                        child: NFTItemWidget(
+                                          nftMarket: _cubit.listData[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  staggeredTileBuilder: (int index) =>
+                                      const StaggeredTile.fit(1),
+                                ),
+                              );
+                            } else {
+                              return Padding(
+                                padding: EdgeInsets.only(top: 150.h),
+                                child: Column(
+                                  children: [
+                                    Image(
+                                      image: const AssetImage(
+                                        ImageAssets.img_search_empty,
+                                      ),
+                                      height: 120.h,
+                                      width: 120.w,
+                                    ),
+                                    SizedBox(
+                                      height: 17.7.h,
+                                    ),
+                                    Text(
+                                      S.current.no_result_found,
+                                      style: textNormal(
+                                        Colors.white54,
+                                        20.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          } else if (state is ListNftError) {
+                            return Container();
+                          } else {
+                            return SizedBox(
+                              height: 100.h,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 3.r,
+                                  color: AppTheme.getInstance().whiteColor(),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               );
             },
-            isImage: true,
-            title: title,
-            text: ImageAssets.ic_filter,
-            child: SizedBox(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 16.w,
-                      right: 16.w,
-                      top: 12.h,
-                      bottom: 6.h,
-                    ),
-                    child: searchBar(),
-                  ),
-                  Expanded(
-                    child: StaggeredGridView.countBuilder(
-                      shrinkWrap: true,
-                      mainAxisSpacing: 20.h,
-                      itemCount: _cubit.listData.length,
-                      crossAxisCount: 2,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(left: 16.w),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: NFTItemWidget(
-                              nftMarket: _cubit.listData[index],
-                            ),
-                          ),
-                        );
-                      },
-                      staggeredTileBuilder: (int index) =>
-                      const StaggeredTile.fit(1),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ),
         ),
       ),
@@ -111,7 +183,7 @@ class _ListNftState extends State<ListNft> {
             width: 343.w,
             height: 46.h,
             decoration: BoxDecoration(
-              color: const Color(0xff4F4F65),
+              color: backSearch,
               borderRadius: BorderRadius.all(Radius.circular(12.r)),
             ),
             child: Row(
@@ -132,8 +204,8 @@ class _ListNftState extends State<ListNft> {
                     controller: controller,
                     onChanged: (value) {
                       _cubit.show();
+                      _onSearchChanged(value);
                     },
-                    onFieldSubmitted: (value) {},
                     cursorColor: Colors.white,
                     style: textNormal(
                       Colors.white,
@@ -160,6 +232,10 @@ class _ListNftState extends State<ListNft> {
                             controller.text = '';
                             _cubit.hide();
                           });
+                          _cubit.getListNft(
+                            status: _cubit.status(widget.marketType!),
+                          );
+                          FocusScope.of(context).unfocus();
                         },
                         child: Padding(
                           padding: EdgeInsets.only(
@@ -183,5 +259,12 @@ class _ListNftState extends State<ListNft> {
         ),
       ],
     );
+  }
+
+  void _onSearchChanged(String query) {
+    if (_debounce.isActive) _debounce.cancel();
+    _debounce = Timer(const Duration(milliseconds: 900), () {
+      _cubit.searchNft(query, _cubit.status(widget.marketType));
+    });
   }
 }

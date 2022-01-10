@@ -44,7 +44,6 @@ dependencies:
   package_info: ^2.0.0
   google_fonts: ^2.0.0
   connectivity: ^3.0.3
-  url_launcher: ^6.0.5
   path_provider: ^2.0.1
   webview_flutter: ^2.0.10
   shared_preferences: ^2.0.5
@@ -74,6 +73,7 @@ dependencies:
   carousel_slider: ^4.0.0-nullsafety.0
   dots_indicator: ^2.0.0
   scrollable_positioned_list: ^0.2.3
+  video_player: ^2.2.10
   #svg
   flutter_svg: ^0.22.0
   formz: ^0.4.1
@@ -109,11 +109,17 @@ dependencies:
   sticky_headers: ^0.2.0
   flutter_sticky_header: ^0.6.0
   #flutter_appavailability: ^0.0.21
-
+  url_launcher: ^6.0.17
   #web3
   web3dart: ^2.3.3
   http: ^0.13.4
+  keyboard_dismisser: ^2.0.0
+  dotted_border: ^2.0.0+1
 
+  #OTP input
+  pin_code_fields: ^7.3.0
+
+  html: ^0.15.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

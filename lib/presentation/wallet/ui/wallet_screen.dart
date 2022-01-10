@@ -23,6 +23,7 @@ import 'package:Dfy/presentation/wallet/ui/popup_copied.dart';
 import 'package:Dfy/presentation/wallet/ui/token_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/change_wallet_name.dart';
+import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -110,7 +111,14 @@ class _WalletState extends State<WalletScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ComingSoon(),
+                            ),
+                          );
+                        },
                         icon: Icon(
                           Icons.menu,
                           size: 24.sp,
@@ -306,7 +314,7 @@ class _WalletState extends State<WalletScreen>
                                       );
                                     },
                                   );
-                                } else if (snapshot.data?.isEmpty ?? true) {
+                                } else if (snapshot.data?.isEmpty ?? false) {
                                   return const SizedBox();
                                 }
                                 return SizedBox(

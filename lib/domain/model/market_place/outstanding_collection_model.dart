@@ -8,6 +8,7 @@ class OutstandingCollection {
   String? featureCid;
   int? totalNft;
   int? nftOwnerCount;
+  int? collectionType;
 
   OutstandingCollection({
     this.id,
@@ -19,5 +20,6 @@ class OutstandingCollection {
     this.featureCid,
     this.totalNft,
     this.nftOwnerCount,
+    this.collectionType,
   });
 }

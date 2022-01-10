@@ -1,22 +1,43 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/widget/Copied.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/widgets/toast/toast_copy.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class FromText extends StatelessWidget {
+enum TypeText { address, key }
+
+class FromText extends StatefulWidget {
   final String urlPrefixIcon;
   final String title;
   final String urlSuffixIcon;
+  final TypeText type;
 
   const FromText({
     Key? key,
     required this.urlPrefixIcon,
     required this.title,
     required this.urlSuffixIcon,
+    required this.type,
   }) : super(key: key);
+
+  @override
+  State<FromText> createState() => _FromTextState();
+}
+
+class _FromTextState extends State<FromText> {
+  late FToast fToast;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +58,7 @@ class FromText extends StatelessWidget {
           Row(
             children: [
               Image.asset(
-                urlPrefixIcon,
+                widget.urlPrefixIcon,
                 height: 20.h,
                 width: 20.14.w,
               ),
@@ -47,7 +68,7 @@ class FromText extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 child: Text(
-                  title.formatAddressWalletConfirm(),
+                  widget.title.formatAddressWalletConfirm(),
                   style: textNormal(
                     AppTheme.getInstance().whiteColor(),
                     16,
@@ -58,13 +79,23 @@ class FromText extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              FlutterClipboard.copy(title);
-              toast_copy();
+              FlutterClipboard.copy(widget.title);
+              fToast.showToast(
+                child: Copied(
+                  title: widget.type == TypeText.address
+                      ? S.current.copied_address
+                      : S.current.copied_private_key,
+                ),
+                gravity: ToastGravity.CENTER,
+                toastDuration: const Duration(
+                  seconds: 2,
+                ),
+              );
             },
             child: Container(
-              child: urlSuffixIcon.isNotEmpty
+              child: widget.urlSuffixIcon.isNotEmpty
                   ? Image.asset(
-                      urlSuffixIcon,
+                      widget.urlSuffixIcon,
                       height: 20.67.h,
                       width: 20.14.w,
                     )

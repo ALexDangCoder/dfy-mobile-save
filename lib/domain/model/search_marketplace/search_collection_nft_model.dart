@@ -1,0 +1,19 @@
+class SearchCollectionNftModel {
+  String? id;
+  String? name;
+  String? info;
+  String? imageCid;
+  String? marketType;
+  String? fileType;
+  String? coverCid;
+
+  SearchCollectionNftModel({
+    this.id,
+    this.name,
+    this.info,
+    this.imageCid,
+    this.marketType,
+    this.fileType,
+    this.coverCid,
+  });
+}

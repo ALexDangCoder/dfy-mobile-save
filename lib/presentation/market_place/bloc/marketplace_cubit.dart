@@ -1,17 +1,12 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/domain/model/collection.dart';
 import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
 import 'package:Dfy/domain/model/market_place/list_type_nft_collection_explore_model.dart';
-import 'package:Dfy/domain/model/market_place/nft_collection_explore_model.dart';
-import 'package:Dfy/domain/model/market_place/nft_model_full.dart';
 import 'package:Dfy/domain/model/market_place/outstanding_collection_model.dart';
-import 'package:Dfy/domain/model/nft_item.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
-import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
@@ -29,13 +24,16 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
   //pawnNft
   List<NftMarket> nftsCollateral = [];
   List<NftMarket> nftsHardNft = [];
+  List<NftMarket> nftsBuySellCreateCollectible = [];
+  List<NftMarket> nftsFeaturedSoft = [];
   List<OutstandingCollection> outstandingCollection = [];
   List<ExploreCategory> exploreCategories = [];
+  List<NftMarket> nftsFeaturedNfts = [];
 
   Future<void> getListNftCollectionExplore() async {
     emit(LoadingDataLoading());
     final Result<List<ListTypeNftCollectionExploreModel>> result =
-        await _marketPlaceRepo.getListTypeNftCollectionExplore();
+    await _marketPlaceRepo.getListTypeNftCollectionExplore();
     result.when(
       success: (res) {
         getNftCollectionExplore(res);
@@ -48,255 +46,282 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
     );
   }
 
+  List<Map<String, dynamic>> listCollectionFtExploreFtNft = [];
+
+  String getMarketType(String urlResponse) {
+    String marketType = '';
+    if (urlResponse.contains('status=1,') ||
+        urlResponse.contains('status=2,') ||
+        urlResponse.contains('status=3,')) {
+      marketType = 'all';
+    } else if (urlResponse.contains('status=1')) {
+      marketType = 'sale';
+    } else if (urlResponse.contains('status=2')) {
+      marketType = 'auction';
+    } else if (urlResponse.contains('status=3')) {
+      marketType = 'pawn';
+    } else {
+      marketType = 'all';
+    }
+    return marketType;
+  }
+
+  /// not in market 0
+  /// sell 1
+  /// auction 2
+  /// pawn 3
+
   void getNftCollectionExplore(
-    List<ListTypeNftCollectionExploreModel> response,
-  ) {
+      List<ListTypeNftCollectionExploreModel> response,) {
     for (final e in response) {
       if (e.name == 'Buy, sell, and create collectible NFTs') {
+        e.items?.forEach(
+              (element) =>
+              nftsBuySellCreateCollectible.add(
+                NftMarket(
+                  marketId: element.id,
+                  nftId: element.nftId ?? '',
+                  tokenBuyOut: element.token ?? '',
+                  name: element.name ?? '',
+                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+                  price: element.price ?? 0,
+                  marketType: element.marketType == 1
+                      ? MarketType.SALE
+                      : (element.marketType == 2
+                      ? MarketType.AUCTION
+                      : MarketType.PAWN),
+                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
+                      .HARD_NFT,
+                  typeImage: (element.fileType == 'image/jpeg' ||
+                      element.fileType == 'image/gif')
+                      ? TypeImage.IMAGE
+                      : TypeImage.VIDEO,
+                  numberOfCopies: element.numberOfCopies,
+                  totalCopies: element.totalCopies ?? 0,
+                ),
+              ),
+        );
+        listCollectionFtExploreFtNft.add({
+          'name': e.name,
+          'position': e.position,
+          'nfts': nftsBuySellCreateCollectible,
+          'market_type': getMarketType(e.url!) //todo,
+        });
       } else if (e.name == 'Featured NFTs') {
+        e.items?.forEach(
+              (element) =>
+              nftsFeaturedNfts.add(
+                NftMarket(
+                  marketId: element.id,
+                  nftId: element.nftId ?? '',
+                  tokenBuyOut: element.token ?? '',
+                  name: element.name ?? '',
+                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+                  price: element.price ?? 0,
+                  marketType: element.marketType == 1
+                      ? MarketType.SALE
+                      : (element.marketType == 2
+                      ? MarketType.AUCTION
+                      : MarketType.PAWN),
+                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
+                      .HARD_NFT,
+                  typeImage: (element.fileType == 'image/jpeg' ||
+                      element.fileType == 'image/gif')
+                      ? TypeImage.IMAGE
+                      : TypeImage.VIDEO,
+                  numberOfCopies: element.numberOfCopies,
+                  totalCopies: element.totalCopies ?? 0,
+                ),
+              ),
+        );
+        listCollectionFtExploreFtNft.add({
+          'name': e.name,
+          'position': e.position,
+          'nfts': nftsFeaturedNfts,
+          'market_type': getMarketType(e.url!) //todo,
+        });
+      }
+      else if (e.name == 'Featured Soft NFTs') {
         //hard nft chưa có
         e.items?.forEach(
-          (e) => nftsHardNft.add(
-            NftMarket(
-              nftId: e.nftId ?? '',
-              collectionId: e.id ?? '',
-              name: e.name ?? '',
-              image: e.fileCid ?? '',
-              price: e.price ?? 0,
-              tokenBuyOut: e.token ?? '',
-              reservePrice: e.reservePrice,
-              buyOutPrice: e.buyOutPrice,
-              numberOfCopies: e.numberOfCopies,
-              totalCopies: e.totalCopies,
-              marketType: e.marketType == 1
-                  ? MarketType.SALE
-                  : (e.marketType == 2 ? MarketType.AUCTION : MarketType.PAWN),
-              typeImage: TypeImage.IMAGE,
-              typeNFT: e.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-            ),
-          ),
+              (element) =>
+              nftsFeaturedSoft.add(
+                NftMarket(
+                  marketId: element.id,
+                  nftId: element.nftId ?? '',
+                  tokenBuyOut: element.token ?? '',
+                  name: element.name ?? '',
+                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+                  price: element.price ?? 0,
+                  marketType: element.marketType == 1
+                      ? MarketType.SALE
+                      : (element.marketType == 2
+                      ? MarketType.AUCTION
+                      : MarketType.PAWN),
+                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
+                      .HARD_NFT,
+                  typeImage: (element.fileType == 'image/jpeg' ||
+                      element.fileType == 'image/gif')
+                      ? TypeImage.IMAGE
+                      : TypeImage.VIDEO,
+                  numberOfCopies: element.numberOfCopies,
+                  totalCopies: element.totalCopies ?? 0,
+                ),
+              ),
         );
+        listCollectionFtExploreFtNft.add({
+          'name': e.name,
+          'position': e.position,
+          'nfts': nftsFeaturedSoft,
+          'market_type': getMarketType(e.url!)
+        });
       } else if (e.name == 'Hot auction') {
         e.items?.forEach(
-          (e) => nftsHotAution.add(
-            NftMarket(
-              nftId: e.nftId ?? '',
-              collectionId: e.id ?? '',
-              name: e.name ?? '',
-              image: e.fileCid ?? '',
-              price: e.price ?? 0,
-              tokenBuyOut: e.token ?? '',
-              reservePrice: e.reservePrice,
-              buyOutPrice: e.buyOutPrice,
-              numberOfCopies: e.numberOfCopies,
-              totalCopies: e.totalCopies,
-              marketType: MarketType.AUCTION,
-              typeImage: TypeImage.IMAGE,
-              typeNFT: e.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-            ),
-          ),
+              (element) =>
+              nftsHotAution.add(
+                NftMarket(
+                  marketId: element.id,
+                  nftId: element.nftId ?? '',
+                  tokenBuyOut: element.token ?? '',
+                  name: element.name ?? '',
+                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+                  price: element.price ?? 0,
+                  marketType: element.marketType == 1
+                      ? MarketType.SALE
+                      : (element.marketType == 2
+                      ? MarketType.AUCTION
+                      : MarketType.PAWN),
+                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
+                      .HARD_NFT,
+                  typeImage: (element.fileType == 'image/jpeg' ||
+                      element.fileType == 'image/gif')
+                      ? TypeImage.IMAGE
+                      : TypeImage.VIDEO,
+                  numberOfCopies: element.numberOfCopies,
+                  totalCopies: element.totalCopies ?? 0,
+                ),
+              ),
         );
+        listCollectionFtExploreFtNft.add({
+          'name': e.name,
+          'position': e.position,
+          'nfts': nftsHotAution,
+          'market_type': getMarketType(e.url!)
+        });
       } else if (e.name == 'Outstanding collection') {
         e.items?.forEach(
-          (e) => outstandingCollection.add(
-            OutstandingCollection(
-              id: e.id,
-              name: e.name,
-              itemId: e.itemId,
-              avatarCid: e.avatarCid,
-              coverCid: e.coverCid,
-              nftOwnerCount: e.nftOwnerCount,
-              totalNft: e.totalNft,
-            ),
-          ),
+              (e) =>
+              outstandingCollection.add(
+                OutstandingCollection(
+                  collectionType: e.collectionType,
+                  id: e.id,
+                  name: e.name,
+                  itemId: e.itemId,
+                  avatarCid: ApiConstants.BASE_URL_IMAGE + (e.avatarCid ?? ''),
+                  coverCid: ApiConstants.BASE_URL_IMAGE + (e.coverCid ?? ''),
+                  nftOwnerCount: e.nftOwnerCount,
+                  totalNft: e.totalNft,
+                ),
+              ),
         );
-      } else if (e.name == 'Sell items') {
+        listCollectionFtExploreFtNft.add({
+          'name': e.name,
+          'position': e.position,
+          'collection': outstandingCollection,
+        });
+      } else if (e.name == 'Sale items' || e.name == 'Sell items') {
         e.items?.forEach(
-          (e) => nftsSale.add(
-            NftMarket(
-              nftId: e.nftId ?? '',
-              collectionId: e.id ?? '',
-              name: e.name ?? '',
-              image: e.fileCid ?? '',
-              price: e.price ?? 0,
-              tokenBuyOut: e.token ?? '',
-              reservePrice: e.reservePrice,
-              buyOutPrice: e.buyOutPrice,
-              numberOfCopies: e.numberOfCopies,
-              totalCopies: e.totalCopies,
-              marketType: MarketType.SALE,
-              typeImage: TypeImage.IMAGE,
-              typeNFT: e.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-            ),
-          ),
+              (element) =>
+              nftsSale.add(
+                NftMarket(
+                  marketId: element.id,
+                  nftId: element.nftId ?? '',
+                  tokenBuyOut: element.token ?? '',
+                  name: element.name ?? '',
+                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+                  price: element.price ?? 0,
+                  marketType: element.marketType == 1
+                      ? MarketType.SALE
+                      : (element.marketType == 2
+                      ? MarketType.AUCTION
+                      : MarketType.PAWN),
+                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
+                      .HARD_NFT,
+                  typeImage: (element.fileType == 'image/jpeg' ||
+                      element.fileType == 'image/gif')
+                      ? TypeImage.IMAGE
+                      : TypeImage.VIDEO,
+                  numberOfCopies: element.numberOfCopies,
+                  totalCopies: element.totalCopies ?? 0,
+                ),
+              ),
         );
+        listCollectionFtExploreFtNft.add({
+          'name': e.name,
+          'position': e.position,
+          'nfts': nftsSale,
+          'market_type': getMarketType(e.url!)
+        });
       } else if (e.name == 'NFTs collateral') {
         e.items?.forEach(
-          (e) => nftsCollateral.add(
-              NftMarket(
-                nftId: e.nftId ?? '',
-                collectionId: e.id ?? '',
-                name: e.name ?? '',
-                image: e.fileCid ?? '',
-                price: e.price ?? 0,
-                tokenBuyOut: e.token ?? '',
-                reservePrice: e.reservePrice,
-                buyOutPrice: e.buyOutPrice,
-                numberOfCopies: e.numberOfCopies,
-                totalCopies: e.totalCopies,
-                marketType:  MarketType.PAWN,
-                typeImage: TypeImage.IMAGE,
-                typeNFT: e.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+              (element) =>
+              nftsCollateral.add(
+                NftMarket(
+                  marketId: element.id,
+                  nftId: element.nftId ?? '',
+                  tokenBuyOut: element.token ?? '',
+                  name: element.name ?? '',
+                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+                  price: element.price ?? 0,
+                  marketType: element.marketType == 1
+                      ? MarketType.SALE
+                      : (element.marketType == 2
+                      ? MarketType.AUCTION
+                      : MarketType.PAWN),
+                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
+                      .HARD_NFT,
+                  typeImage: (element.fileType == 'image/jpeg' ||
+                      element.fileType == 'image/gif')
+                      ? TypeImage.IMAGE
+                      : TypeImage.VIDEO,
+                  numberOfCopies: element.numberOfCopies,
+                  totalCopies: element.totalCopies ?? 0,
+                ),
               ),
-          ),
         );
+        listCollectionFtExploreFtNft.add({
+          'name': e.name,
+          'position': e.position,
+          'nfts': nftsCollateral,
+          'market_type': getMarketType(e.url!)
+        });
       } //this else is explore categories
       else {
         e.items?.forEach(
-          (e) => exploreCategories.add(
-            ExploreCategory(
-              itemId: e.itemId,
-              id: e.id,
-              name: e.name,
-              bannerCid: e.bannerCid,
-              displayRow: e.displayRow,
-              displayCol: e.displayCol,
-              position: e.position,
-              avatarCid: e.avatarCid,
-            ),
-          ),
+              (e) =>
+              exploreCategories.add(
+                ExploreCategory(
+                  itemId: e.itemId,
+                  id: e.id,
+                  name: e.name,
+                  bannerCid: ApiConstants.BASE_URL_IMAGE + (e.bannerCid ?? ''),
+                  displayRow: e.displayRow,
+                  displayCol: e.displayCol,
+                  position: e.position,
+                  avatarCid: ApiConstants.BASE_URL_IMAGE + (e.avatarCid ?? ''),
+                ),
+              ),
         );
+        listCollectionFtExploreFtNft.add({
+          'name': e.name,
+          'position': e.position,
+          'explore': exploreCategories,
+        });
       }
     }
+
+    ///sort list map by position to show in UI
+    listCollectionFtExploreFtNft
+        .sort((a, b) => a["position"].compareTo(b["position"]));
   }
-
-  List<String> categories = [
-    S.current.collectibles,
-    S.current.game,
-    S.current.art,
-    S.current.music,
-    S.current.ultilities,
-    S.current.car,
-    S.current.sports
-  ];
-  List<Collection> listCollections = [
-    Collection(
-      background: ImageAssets.img_art,
-      avatar: ImageAssets.img_collection,
-      title: 'Artwork collection',
-      items: 100,
-    ),
-    Collection(
-      background: ImageAssets.img_nature,
-      avatar: ImageAssets.img_collection,
-      title: 'Nature collection',
-      items: 100,
-    ),
-    Collection(
-      background: ImageAssets.img_art,
-      avatar: ImageAssets.img_collection,
-      title: 'Vehicle collection',
-      items: 100,
-    ),
-    Collection(
-      background: ImageAssets.img_nature,
-      avatar: ImageAssets.img_collection,
-      title: 'Technology collection',
-      items: 100,
-    ),
-  ];
-
-  List<NftMarket> listFake = [
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.SALE,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.PAWN,
-      typeNFT: TypeNFT.SOFT_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.AUCTION,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.VIDEO,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.PAWN,
-      typeNFT: TypeNFT.SOFT_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.SALE,
-      typeNFT: TypeNFT.SOFT_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.AUCTION,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.VIDEO,
-    ),
-    NftMarket(
-      nftId: '',
-      collectionId: 'e48845cc-d9a6-4461-b358-c46da9278c3c',
-      //backGround: '',
-      tokenBuyOut: '',
-      name: 'Tôi cầm IP 13++++',
-      image:
-          'https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xd07dc4262bcdbf85190c01c996b4c06a461d2430:556713/2014ad4f',
-      price: 1000,
-      marketType: MarketType.PAWN,
-      typeNFT: TypeNFT.HARD_NFT,
-      typeImage: TypeImage.IMAGE,
-    ),
-  ];
 }

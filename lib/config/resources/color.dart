@@ -15,7 +15,8 @@ const formColor = Color(0xff6F6FC5);
 const subTitleTxtColor = Color(0xff9097A3);
 const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
 const backgroundMarketColor = [Color(0xFF3C3B54), Color(0xFF24203A)];
-
+const dateColor = Color(0xffD4D5D7);
+const amountColor = Color(0xffDBA83D);
 const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
@@ -24,6 +25,7 @@ const purple = Color(0xff9997FF);
 const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
+const textHistory = Color(0xFFE4E4E4);
 
 //skeleton
 const colorSkeletonLight = Color(0xFF605F83);
@@ -32,12 +34,16 @@ const colorSkeleton = Color(0xFF585782);
 const bgBottomTab = Color(0xFF3A3956);
 const tabSelected = Color(0xff0ABAB5);
 const tabUnselected = Color(0xFFA9B8BD);
+const backSearch = Color(0xFF31334C);
 
 //custom color
 Color whiteOpacityZeroFire = Colors.white.withOpacity(0.5);
 const borderItemColors = Color(0xff474666);
 const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
+const borderApprovedButton  = Color(0xff39984E);
+const disableText = Color(0xff979797);
+const fillApprovedButton = Color(0xffD4ECD9);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
 const errorColor = Color(0xFFCDCDCD);
 const dialogColor = Color(0xff585782);
@@ -85,11 +91,17 @@ abstract class AppColor {
 
   Color skeleton();
 
+  Color amountTextColor();
+
+  Color activityDateColor();
+
   Color backgroundBTSColor();
 
   Color redColor();
 
   Color colorTextFieldZeroFire();
+
+  Color colorTextReset();
 
   Color borderItemColor();
 
@@ -131,7 +143,11 @@ abstract class AppColor {
 
   Color whiteWithOpacity();
 
+  Color blueText();
+
   Color whiteWithOpacityFireZero();
+
+  Color whiteWithOpacitySevenZero();
 
   Color textThemeColor();
 
@@ -170,6 +186,8 @@ abstract class AppColor {
   Color unselectedTabLabelColor();
 
   Color titleTabColor();
+
+  Color disableRadioColor();
 
   List<Color> listBackgroundMarketColor();
 
@@ -408,6 +426,12 @@ class LightApp extends AppColor {
   }
 
   @override
+  Color disableRadioColor() {
+    // TODO: implement disableRadioColor
+    return const Color(0xFFE0E0E0);
+  }
+
+  @override
   Color skeleton() {
     // TODO: implement skeleton
     return colorSkeleton;
@@ -428,6 +452,34 @@ class LightApp extends AppColor {
   @override
   Color bgTextFormField() {
     return bgTextField;
+  }
+  Color activityDateColor() {
+    // TODO: implement activityDateColor
+    return dateColor;
+  }
+
+  @override
+  Color whiteWithOpacitySevenZero() {
+    // TODO: implement whiteWithOpacitySevenZero
+   return Colors.white.withOpacity(0.7);
+  }
+
+  @override
+  Color amountTextColor() {
+    // TODO: implement amountTextColor
+  return amountColor;
+  }
+
+  @override
+  Color blueText() {
+    // TODO: implement blueText
+    return const Color(0xff46BCFF);
+  }
+
+  @override
+  Color colorTextReset() {
+    // TODO: implement colorTextReset
+    return const Color(0xff585782);
   }
 }
 
@@ -690,6 +742,12 @@ class DarkApp extends AppColor {
   }
 
   @override
+  Color disableRadioColor() {
+    // TODO: implement disableRadioColor
+    throw UnimplementedError();
+  }
+
+  @override
   Color skeleton() {
     return colorSkeleton;
   }
@@ -707,6 +765,34 @@ class DarkApp extends AppColor {
   @override
   Color bgTextFormField() {
     return bgTextField;
+  }
+  Color activityDateColor() {
+    // TODO: implement activityDateColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color whiteWithOpacitySevenZero() {
+    // TODO: implement whiteWithOpacitySevenZero
+    throw UnimplementedError();
+  }
+
+  @override
+  Color amountTextColor() {
+    // TODO: implement amountTextColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color blueText() {
+    // TODO: implement blueText
+    throw UnimplementedError();
+  }
+
+  @override
+  Color colorTextReset() {
+    // TODO: implement colorTextReset
+    throw UnimplementedError();
   }
 }
 

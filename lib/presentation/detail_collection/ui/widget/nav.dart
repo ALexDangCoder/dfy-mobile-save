@@ -1,3 +1,4 @@
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -32,31 +33,36 @@ class NavCollection extends StatelessWidget {
                   items,
                   style: textNormalCustom(
                     null,
-                    14.sp,
+                    14,
                     FontWeight.w600,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
+              spaceW4,
               Expanded(
                 child: Text(
                   owners,
                   style: textNormalCustom(
                     null,
-                    14.sp,
+                    14,
                     FontWeight.w600,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
+              spaceW4,
               Expanded(
                 child: Text(
                   volumeTraded,
                   style: textNormalCustom(
                     null,
-                    14.sp,
+                    14,
                     FontWeight.w600,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -70,36 +76,42 @@ class NavCollection extends StatelessWidget {
                   S.current.items,
                   style: textNormalCustom(
                     null,
-                    12.sp,
+                    12,
                     null,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
+              spaceW4,
               Expanded(
                 child: Text(
                   S.current.owners,
                   style: textNormalCustom(
                     null,
-                    12.sp,
+                    12,
                     null,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
+              spaceW4,
               Expanded(
                 child: Text(
                   S.current.volume_traded,
                   style: textNormalCustom(
                     null,
-                    12.sp,
+                    12,
                     null,
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
+                  maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
               ),
             ],
           ),
+
         ],
       ),
     );

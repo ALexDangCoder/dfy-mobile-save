@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class TokenInf {
   int? id;
   bool? whitelistCollateral;
@@ -18,4 +20,31 @@ class TokenInf {
     this.address,
     this.iconUrl,
   });
+
+  factory TokenInf.fromJson(Map<String, dynamic> json) {
+    return TokenInf(
+      address: json['address'],
+      symbol: json['symbol'],
+      iconUrl: json['iconUrl'],
+      usdExchange: json['usdExchange'],
+    );
+  }
+
+  static Map<String, dynamic> toMap(TokenInf tokenInf) => {
+        'address': tokenInf.address,
+        'symbol': tokenInf.symbol,
+        'iconUrl': tokenInf.iconUrl,
+        'usdExchange': tokenInf.usdExchange,
+      };
+
+  static String encode(List<TokenInf> listTokens) => json.encode(
+        listTokens
+            .map<Map<String, dynamic>>((token) => TokenInf.toMap(token))
+            .toList(),
+      );
+
+  static List<TokenInf> decode(String listTokens) =>
+      (json.decode(listTokens) as List<dynamic>)
+          .map<TokenInf>((item) => TokenInf.fromJson(item))
+          .toList();
 }

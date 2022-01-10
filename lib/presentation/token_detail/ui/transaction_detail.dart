@@ -13,10 +13,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 class TransactionHistoryDetailScreen extends StatelessWidget {
   final DetailHistoryTransaction transaction;
+  final String shortName;
 
   const TransactionHistoryDetailScreen({
     Key? key,
     required this.transaction,
+    required this.shortName,
   }) : super(key: key);
 
   @override
@@ -39,7 +41,7 @@ class TransactionHistoryDetailScreen extends StatelessWidget {
                     children: [
                       textRow(
                         name: S.current.amount,
-                        value: transaction.quantity ?? '0',
+                        value: '${transaction.quantity ?? 0} $shortName',
                       ),
                       transactionStatsWidget(transaction.status ?? ''),
                     ],

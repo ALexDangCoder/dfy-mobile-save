@@ -1,5 +1,8 @@
 {
   "type": "develop",
-  "base_url": "https://dev2.gwapi.defiforyou.uk/nft-market-svc/public-api/",
-  "base_image_url": "https://dev2.gwapi.defiforyou.uk/nft-market-svc/public-api/"
+  "base_url": "https://dev2.gwapi.defiforyou.uk/",
+  "base_image_url": "https://dev2.gwapi.defiforyou.uk/nft-market-svc/public-api/",
+  "rpc_url": "https://data-seed-prebsc-1-s1.binance.org:8545",
+  "chain_id": "97",
+  "bsc_scan": "https://testnet.bscscan.com/address/"
 }

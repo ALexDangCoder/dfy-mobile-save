@@ -1,5 +1,6 @@
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+
 final formatValue = NumberFormat('###,###,###.###', 'en_US');
 
 extension StringHandle on String {
@@ -15,12 +16,31 @@ extension StringMoneyFormat on String {
     final String result = formatValue.format(money);
     return result;
   }
+
+  String formatDateTimeMy(int date) {
+    var millis = date;
+    var dt = DateTime.fromMillisecondsSinceEpoch(millis);
+    String d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
+    return d24;
+  }
 }
 
 extension FormatAddress on String {
   String formatAddressWallet() {
     final String result = '${substring(0, 5)}...${substring(
-      length - 4, length,)}';
+      length - 4,
+      length,
+    )}';
+    return result;
+  }
+}
+
+extension FormatAddressFire on String {
+  String formatAddressActivityFire() {
+    final String result = '${substring(0, 5)}...${substring(
+      length - 5,
+      length,
+    )}';
     return result;
   }
 }
@@ -28,11 +48,12 @@ extension FormatAddress on String {
 extension FormatAddressConfirm on String {
   String formatAddressWalletConfirm() {
     final String result = '${substring(0, 10)}...${substring(
-      length - 9, length,)}';
+      length - 9,
+      length,
+    )}';
     return result;
   }
 }
-
 
 extension StringParse on String {
   String parseHtml() {

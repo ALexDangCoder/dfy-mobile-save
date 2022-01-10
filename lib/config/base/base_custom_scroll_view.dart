@@ -1,6 +1,6 @@
 import 'package:Dfy/config/base/base_app_bar.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/widgets/common_bts/base_collection.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -16,6 +16,7 @@ class BaseCustomScrollView extends StatefulWidget {
     this.tabBar,
     this.tabBarView,
     this.bottomBar,
+    this.typeImage,
   }) : super(key: key);
   final List<Widget> content;
   final String image;
@@ -26,6 +27,7 @@ class BaseCustomScrollView extends StatefulWidget {
   final Widget? tabBar;
   final Widget? tabBarView;
   final Widget? bottomBar;
+  final TypeImage? typeImage;
 
   @override
   _BaseCustomScrollViewState createState() => _BaseCustomScrollViewState();
@@ -81,6 +83,7 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
                     initHeight: widget.initHeight,
                     leading: widget.leading,
                     actions: widget.actions,
+                    typeImage: widget.typeImage,
                   ),
                   SliverList(
                     delegate: SliverChildListDelegate(
@@ -106,5 +109,47 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
         ),
       ),
     );
+  }
+}
+
+class BaseSliverHeader extends SliverPersistentHeaderDelegate {
+  final Widget _tabBar;
+
+  BaseSliverHeader(this._tabBar);
+
+  @override
+  double get minExtent => 60.h;
+
+  @override
+  double get maxExtent => 60.h;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Column(
+      children: [
+        Container(
+          color: AppTheme.getInstance().bgBtsColor(),
+          height: 58.h,
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 305.w,
+                minWidth: 253.w,
+              ),
+              child: _tabBar,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  bool shouldRebuild(BaseSliverHeader oldDelegate) {
+    return false;
   }
 }

@@ -7,6 +7,7 @@ class PrefsService {
   static const _PREF_APPLOCK = 'pref_appLock';
   static const _PREF_FACE_ID = 'pref_face_id';
   static const _PREF_FIRST_APP = 'pref_first_app';
+  static const _PREF_LIST_TOKEN_SUPPORT = '';
 
   static SharedPreferences? _prefsInstance;
 
@@ -44,6 +45,15 @@ class PrefsService {
   static Future<bool> saveFirstAppConfig(String value) async {
     final prefs = await _instance;
     return prefs.setString(_PREF_FIRST_APP, value);
+  }
+
+  static String getListTokenSupport() {
+    return _prefsInstance?.getString(_PREF_LIST_TOKEN_SUPPORT) ?? '';
+  }
+
+  static Future<bool> saveListTokenSupport(String value) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_LIST_TOKEN_SUPPORT, value);
   }
 
   static Future<bool> saveLanguage(String code) async {
