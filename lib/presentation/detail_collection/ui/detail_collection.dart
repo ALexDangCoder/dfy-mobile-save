@@ -200,6 +200,7 @@ class _DetailCollectionState extends State<DetailCollection>
             ),
           );
         } else if (state is LoadingDataSuccess) {
+          final list = detailCollectionBloc.arg;
           return GestureDetector(
             onTap: () {
               final FocusScopeNode currentFocus = FocusScope.of(context);
@@ -210,12 +211,10 @@ class _DetailCollectionState extends State<DetailCollection>
             child: BaseCustomScrollViewDetail(
               isOwner: isOwner,
               initHeight: 190.h,
-              title: detailCollectionBloc.arg.name ?? '',
+              title: list.name ?? '',
               imageVerified: ImageAssets.ic_dfy,
-              imageAvatar: ApiConstants.BASE_URL_IMAGE +
-                  (detailCollectionBloc.arg.avatarCid ?? ''),
-              imageCover: ApiConstants.BASE_URL_IMAGE +
-                  (detailCollectionBloc.arg.customUrl ?? ''),
+              imageAvatar: ApiConstants.BASE_URL_IMAGE + (list.avatarCid ?? ''),
+              imageCover: ApiConstants.BASE_URL_IMAGE + (list.coverCid ?? ''),
               leading: SizedBox(
                 child: InkWell(
                   onTap: () {
@@ -309,18 +308,16 @@ class _DetailCollectionState extends State<DetailCollection>
               content: [
                 BodyDetailCollection(
                   detailCollectionBloc: detailCollectionBloc,
-                  bodyText:
-                      (detailCollectionBloc.arg.description ?? '').parseHtml(),
-                  owner: detailCollectionBloc.arg.owner ?? '',
-                  category: detailCollectionBloc.arg.categoryId ?? '',
-                  title: detailCollectionBloc.arg.name ?? '',
-                  nftStandard:
-                      detailCollectionBloc.arg.collectionStandard ?? '',
-                  contract: detailCollectionBloc.arg.collectionAddress ?? '',
-                  owners: '${detailCollectionBloc.arg.nftOwnerCount ?? 0}',
-                  items: '${detailCollectionBloc.arg.totalNft ?? 0}',
-                  volumeTraded:
-                      '${detailCollectionBloc.arg.totalVolumeTraded ?? 0}',
+                  bodyText: (list.description ?? '').parseHtml(),
+                  owner: list.owner ?? '',
+                  category: list.categoryType ?? '',
+                  title: list.name ?? '',
+                  nftStandard: detailCollectionBloc
+                      .funGetTypeNFT(list.collectionType ?? 0),
+                  contract: list.collectionAddress ?? '',
+                  owners: '${list.nftOwnerCount ?? 0}',
+                  items: '${list.totalNft ?? 0}',
+                  volumeTraded: '${list.totalVolumeTraded ?? 0}',
                   urlTwitter: detailCollectionBloc.linkUrlTwitter,
                   urlTelegram: detailCollectionBloc.linkUrlTelegram,
                   urlInstagram: detailCollectionBloc.linkUrlInstagram,

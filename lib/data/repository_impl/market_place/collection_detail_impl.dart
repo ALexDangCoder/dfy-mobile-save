@@ -1,5 +1,5 @@
 import 'package:Dfy/data/response/activity_collection/activity_collection.dart';
-import 'package:Dfy/data/response/collection_detail/collection_detail_res.dart';
+import 'package:Dfy/data/response/collection_detail/collection_detail_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/market_place/collection_detail_service.dart';
 import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
@@ -13,7 +13,7 @@ class CollectionDetailImpl implements CollectionDetailRepository {
 
   @override
   Future<Result<CollectionDetailModel>> getCollectionDetail(String id) {
-    return runCatchingAsync<CollectionDetailRes, CollectionDetailModel>(
+    return runCatchingAsync<CollectionDetailResponse, CollectionDetailModel>(
       () => _client.getCollection(id),
       (response) => response.item?.toDomain() ?? CollectionDetailModel(),
     );

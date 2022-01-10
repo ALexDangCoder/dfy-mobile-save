@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/data/response/collection_detail/collection_detail_res.dart';
+import 'package:Dfy/data/response/collection_detail/collection_detail_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
@@ -101,7 +101,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String collectionAddress = '';
   String typeActivity = '';
 
-
   void funFilterNft() {
     if (isOnSale.value) {
       listFilter.add(SALE);
@@ -154,6 +153,16 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       market = S.current.not_on_market;
     }
     return market;
+  }
+
+  String funGetTypeNFT(int collectionType) {
+    String typeNft = '';
+    if (collectionType == SOFT_COLLECTION) {
+      typeNft = S.current.erc_721;
+    } else {
+      typeNft = S.current.erc_1155;
+    }
+    return typeNft;
   }
 
   String funCheckAddressSend({

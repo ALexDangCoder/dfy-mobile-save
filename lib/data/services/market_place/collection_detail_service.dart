@@ -1,5 +1,5 @@
 import 'package:Dfy/data/response/activity_collection/activity_collection.dart';
-import 'package:Dfy/data/response/collection_detail/collection_detail_res.dart';
+import 'package:Dfy/data/response/collection_detail/collection_detail_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/http.dart';
@@ -14,7 +14,7 @@ abstract class CollectionDetailService {
       _CollectionDetailService;
 
   @GET('${ApiConstants.COLLECTION_DETAIL}{id}')
-  Future<CollectionDetailRes> getCollection(
+  Future<CollectionDetailResponse> getCollection(
     @Path('id') String idCollection,
   );
 
