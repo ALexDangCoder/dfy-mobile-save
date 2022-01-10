@@ -56,7 +56,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   BehaviorSubject<bool> isAllCategory = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isAllCategoryMyAcc = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isChooseAcc = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isCanLoadMore = BehaviorSubject.seeded(true);
+  BehaviorSubject<bool> isCanLoadMore = BehaviorSubject.seeded(false);
 
   BehaviorSubject<bool> isMusic = BehaviorSubject.seeded(false);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
@@ -252,9 +252,9 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     int? size = 10,
     String address = '',
   }) async {
-   if( nextPage==1){
-     nextPage=2;
-   }
+    if (nextPage == 1) {
+      nextPage = 2;
+    }
     final Result<List<CollectionModel>> result =
         await _marketPlaceRepository.getListCollection(
       name: name,
