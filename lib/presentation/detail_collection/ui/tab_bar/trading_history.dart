@@ -3,9 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/list_activity.dart';
-import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:flutter/material.dart';
@@ -38,47 +36,30 @@ class _ActivityCollectionState extends State<ActivityCollection> {
             padding: EdgeInsets.only(
               top: 24.h,
             ),
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                if (list[index].status == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return NFTDetailScreen(
-                          type: MarketType.SALE,
-                          marketId: list[index].marketId ?? '',
-                        );
-                      },
-                    ),
-                  );
-                } else if (list[index].status == 2) {
-                } else if (list[index].status == 3) {
-                } else {}
-              },
-              child: Container(
-                color: Colors.transparent,
-                padding: EdgeInsets.only(bottom: 24.h),
-                child: ListActivity(
-                  urlAvatar:
-                      '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid ?? ''}',
-                  copy: '${list[index].numberOfCopies ?? 0}',
-                  auctionType: list[index].auctionType ?? 99,
-                  addressWalletSend: list[index].fromAddress ?? '',
-                  marketStatus: list[index].marketStatus ?? 99,
-                  price: '${list[index].price ?? 0}',
-                  priceSymbol: list[index].priceSymbol ?? '',
-                  addressMyWallet: widget.addressWallet,
-                  title: list[index].nftName ?? '',
-                  date: 0.formatDateTimeMy(
-                    list[index].eventDateTime ?? 0,
-                  ),
-                  addressWallet: list[index].toAddress ?? '',
-                  urlSymbol: widget.detailCollectionBloc
-                      .funGetSymbolUrl(list[index].priceSymbol ?? ''),
-                  nft_type: list[index].nftType ?? 99,
-                  typeActivity: list[index].activityType ?? 99,
+            itemBuilder: (context, index) => Container(
+              color: Colors.transparent,
+              padding: EdgeInsets.only(bottom: 24.h),
+              child: ListActivity(
+                urlAvatar:
+                    '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid ?? ''}',
+                copy: '${list[index].numberOfCopies ?? 0}',
+                auctionType: list[index].auctionType ?? 99,
+                addressWalletSend: list[index].fromAddress ?? '',
+                marketStatus: list[index].marketStatus ?? 99,
+                price: '${list[index].price ?? 0}',
+                priceSymbol: list[index].priceSymbol ?? '',
+                addressMyWallet: widget.addressWallet,
+                title: list[index].nftName ?? '',
+                date: 0.formatDateTimeMy(
+                  list[index].eventDateTime ?? 0,
                 ),
+                addressWallet: list[index].toAddress ?? '',
+                urlSymbol: widget.detailCollectionBloc
+                    .funGetSymbolUrl(list[index].priceSymbol ?? ''),
+                nft_type: list[index].nftType ?? 99,
+                typeActivity: list[index].activityType ?? 99,
+                index: index,
+                bloc: widget.detailCollectionBloc,
               ),
             ),
           );
@@ -108,7 +89,7 @@ class _ActivityCollectionState extends State<ActivityCollection> {
             ],
           );
         } else if (statusActivity == 0) {
-          return  Column(
+          return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(

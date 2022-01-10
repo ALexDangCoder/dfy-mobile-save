@@ -29,6 +29,8 @@ class ListActivity extends StatelessWidget {
   final int auctionType;
   final int nft_type;
   final String urlSymbol;
+  final int index;
+  final DetailCollectionBloc bloc;
 
   const ListActivity({
     Key? key,
@@ -46,6 +48,8 @@ class ListActivity extends StatelessWidget {
     required this.price,
     required this.priceSymbol,
     required this.urlSymbol,
+    required this.index,
+    required this.bloc,
   }) : super(key: key);
 
   @override
@@ -88,7 +92,6 @@ class ListActivity extends StatelessWidget {
         myAddress = addressWalletSend;
       } else {
         myAddressTo = addressWalletSend.formatAddressActivityFire();
-
       }
     }
     return itemActivity(
@@ -105,6 +108,8 @@ class ListActivity extends StatelessWidget {
       date: date,
       each: each,
       market: market,
+      index: index,
+      bloc: bloc,
     );
   }
 
@@ -122,6 +127,8 @@ class ListActivity extends StatelessWidget {
     int? typeActivity,
     int? auctionType,
     String? urlSymbol,
+    required int index,
+    required DetailCollectionBloc bloc,
   }) {
     switch (typeActivity) {
       case DetailCollectionBloc.PUT_ON_MARKET:
@@ -136,9 +143,13 @@ class ListActivity extends StatelessWidget {
           market: market ?? '',
           moneySymbol: priceSymbol ?? '',
           urlSymbol: urlSymbol ?? '',
+          bloc: bloc,
+          index: index,
         );
       case DetailCollectionBloc.TRANSFER_ACTIVITY:
         return TransferActivity(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -148,6 +159,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.BURN:
         return Burn(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -156,6 +169,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.CANCEL:
         return Cancel(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -165,6 +180,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.LIKE:
         return Like(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -172,6 +189,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.REPORT:
         return Report(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -179,6 +198,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.BUY:
         return Buy(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -191,6 +212,8 @@ class ListActivity extends StatelessWidget {
       case DetailCollectionBloc.BID_BUY_OUT:
         if (auctionType == 0) {
           return Bid(
+            bloc: bloc,
+            index: index,
             urlAvatar: urlAvatar ?? '',
             title: title ?? '',
             date: date ?? '',
@@ -201,6 +224,8 @@ class ListActivity extends StatelessWidget {
           );
         } else {
           return BuyOut(
+            bloc: bloc,
+            index: index,
             urlAvatar: urlAvatar ?? '',
             title: title ?? '',
             date: date ?? '',
@@ -212,6 +237,8 @@ class ListActivity extends StatelessWidget {
         }
       case DetailCollectionBloc.RECEIVE_OFFER:
         return ReceiveOffer(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
@@ -222,6 +249,8 @@ class ListActivity extends StatelessWidget {
         );
       case DetailCollectionBloc.SIGN_CONTRACT:
         return SignContract(
+          bloc: bloc,
+          index: index,
           urlAvatar: urlAvatar ?? '',
           title: title ?? '',
           date: date ?? '',
