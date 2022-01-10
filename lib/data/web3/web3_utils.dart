@@ -651,6 +651,26 @@ class Web3Utils {
     return hex.encode(putOnAuction.data ?? []);
   }
 
+  Future<String> getTokenApproveData({
+    required String contractAddress,
+    required String spender,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await deployedERC20Contract(contractAddress, context);
+    final function = deployContract.function('approve');
+    final approve = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        EthereumAddress.fromHex(spender),
+        BigInt.from(num.parse(
+            '115792089237316195423570985008687907853269984665640564039457')),
+      ],
+    );
+    return hex.encode(approve.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
@@ -675,6 +695,19 @@ class Web3Utils {
       ContractAbi.fromJson(abiCode, 'Aunction NFT'),
       EthereumAddress.fromHex(contract),
       // EthereumAddress.fromHex('0x988b342d1223e01b0d6Ba4F496FD42d47969656b'),
+    );
+    return deployContract;
+  }
+
+  Future<DeployedContract> deployedERC20Contract(
+    String contract,
+    BuildContext context,
+  ) async {
+    final abiCode = await DefaultAssetBundle.of(context)
+        .loadString('assets/abi/erc20.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'erc20'),
+      EthereumAddress.fromHex(contract),
     );
     return deployContract;
   }
