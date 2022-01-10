@@ -30,6 +30,19 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
   List<ExploreCategory> exploreCategories = [];
   List<NftMarket> nftsFeaturedNfts = [];
 
+  void clearAllBeforePullToRefresh() {
+    nftsHotAution.clear();
+    nftsSale.clear();
+    nftsCollateral.clear();
+    nftsHardNft.clear();
+    nftsBuySellCreateCollectible.clear();
+    nftsFeaturedSoft.clear();
+    outstandingCollection.clear();
+    exploreCategories.clear();
+    nftsFeaturedNfts.clear();
+    listCollectionFtExploreFtNft.clear();
+  }
+
   Future<void> getListNftCollectionExplore() async {
     emit(LoadingDataLoading());
     final Result<List<ListTypeNftCollectionExploreModel>> result =
