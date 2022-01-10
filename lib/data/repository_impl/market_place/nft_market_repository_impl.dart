@@ -16,9 +16,10 @@ class NftMarketRepositoryImpl implements NftMarketRepository {
     String? status,
     String? nftType,
     String? collectionId,
+    String? page,
   }) {
     return runCatchingAsync<ListNftResponseFromApi, List<NftMarket>>(
-      () => _client.getListNft(status, nftType, name, collectionId),
+      () => _client.getListNft(status, nftType, name, collectionId,page,'12'),
       (response) => response.toDomain() ?? [],
     );
   }

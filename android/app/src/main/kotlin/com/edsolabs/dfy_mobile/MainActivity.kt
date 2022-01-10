@@ -249,6 +249,39 @@ class MainActivity : FlutterFragmentActivity() {
                             ?: return@setMethodCallHandler
                     this.getNFT(channel = channel, walletAddress = walletAddress)
                 }
+                "signTransactionWithData" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    val contractAddress =
+                        call.argument<String>("contractAddress")?.lowercase(Locale.getDefault())
+                            ?: return@setMethodCallHandler
+                    val nonce =
+                        call.argument<String>("nonce")
+                            ?: return@setMethodCallHandler
+                    val chainId =
+                        call.argument<String>("chainId")
+                            ?: return@setMethodCallHandler
+                    val gasPrice =
+                        call.argument<String>("gasPrice")
+                            ?: return@setMethodCallHandler
+                    val gasLimit =
+                        call.argument<String>("gasLimit")
+                            ?: return@setMethodCallHandler
+                    val withData =
+                        call.argument<String>("withData")
+                            ?: return@setMethodCallHandler
+                    this.signTransactionWithData(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        contractAddress = contractAddress,
+                        nonce = nonce,
+                        chainId = chainId,
+                        gasPrice = gasPrice,
+                        gasLimit = gasLimit,
+                        withData = withData
+                    )
+                }
                 "signTransactionToken" -> {
                     val walletAddress =
                         call.argument<String>("walletAddress")
