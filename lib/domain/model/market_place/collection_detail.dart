@@ -15,7 +15,7 @@ class CollectionDetailModel {
   int? totalNft;
   int? nftOwnerCount;
   int? totalVolumeTraded;
-  List<SocialLink>? socialLinks;
+  List<SocialLinkModel>? socialLinks;
   bool? isOwner;
   bool? isDefault;
   bool? isWhiteList;
@@ -44,4 +44,11 @@ class CollectionDetailModel {
     this.beId,
     this.categoryType,
   });
+}
+
+class SocialLinkModel {
+  String? url;
+  String? link;
+
+  SocialLinkModel(this.url, this.link);
 }

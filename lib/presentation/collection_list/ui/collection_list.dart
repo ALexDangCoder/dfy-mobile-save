@@ -305,7 +305,7 @@ class _CollectionListState extends State<CollectionList> {
                                                         collectionAddress: collectionBloc
                                                                 .list
                                                                 .value[index]
-                                                                .id ??
+                                                                .collectionAddress ??
                                                             '',
                                                         walletAddress:
                                                             'alo alo alo',

@@ -51,18 +51,22 @@ class CollectionResponse extends Equatable {
   int? totalVolumeTraded;
   @JsonKey(name: 'is_feature')
   bool? isFeature;
+  @JsonKey(name: 'collection_address')
+  String? collectionAddress;
 
   CollectionResponse(
-      this.id,
-      this.name,
-      this.description,
-      this.type,
-      this.avatarCid,
-      this.coverCid,
-      this.totalNft,
-      this.nftOwnerCount,
-      this.totalVolumeTraded,
-      this.isFeature);
+    this.id,
+    this.name,
+    this.description,
+    this.type,
+    this.avatarCid,
+    this.coverCid,
+    this.totalNft,
+    this.nftOwnerCount,
+    this.totalVolumeTraded,
+    this.isFeature,
+    this.collectionAddress,
+  );
 
   factory CollectionResponse.fromJson(Map<String, dynamic> json) =>
       _$CollectionResponseFromJson(json);

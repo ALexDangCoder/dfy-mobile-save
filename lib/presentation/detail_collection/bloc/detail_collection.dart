@@ -37,10 +37,10 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const int AUCTION = 2;
   static const int PAWN = 3;
   static const int TYPE721 = 0;
-  static const String FACEBOOK = 'facebook';
-  static const String INSTAGRAM = 'instagram';
-  static const String TELEGRAM = 'telegram';
-  static const String TWITTER = 'twitter';
+  static const String FACEBOOK = 'FACEBOOK';
+  static const String INSTAGRAM = 'INSTAGRAM';
+  static const String TELEGRAM = 'TELEGRAM';
+  static const String TWITTER = 'TWITTER';
   static const int SOFT_COLLECTION = 0;
   static const int HARD_COLLECTION = 1;
 
@@ -339,7 +339,9 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           emit(LoadingDataErorr());
         } else {
           emit(LoadingDataSuccess());
+
           arg = res;
+          funGetUrl(arg.socialLinks as List<SocialLink>);
           collectionDetailModel.sink.add(arg);
           collectionId = arg.id ?? '';
           collectionAddress = arg.collectionAddress ?? '';
@@ -419,8 +421,9 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   }
 
   void funGetUrl(List<SocialLink> link) {
+    print(link.length);
     for (final SocialLink value in link) {
-      switch (value.type?.toLowerCase()) {
+      switch (value.type?.toUpperCase()) {
         case FACEBOOK:
           linkUrlFacebook = value.url ?? '';
           break;
@@ -437,6 +440,10 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           break;
       }
     }
+    print(linkUrlFacebook);
+    print(linkUrlInstagram);
+    print(linkUrlInstagram);
+    print(linkUrlTwitter);
   }
 
   String funGetSymbolUrl(String link) {

@@ -9,6 +9,7 @@ class CollectionModel {
   int? nftOwnerCount;
   int? totalVolumeTraded;
   bool? isFeature;
+  String? collectionAddress;
 
   CollectionModel({
     this.id,
@@ -21,5 +22,6 @@ class CollectionModel {
     this.nftOwnerCount,
     this.totalVolumeTraded,
     this.isFeature,
+    this.collectionAddress,
   });
 }

@@ -29,7 +29,6 @@ class DetailCollection extends StatefulWidget {
   final String? walletAddress;
   final String collectionAddress;
 
-
   @override
   _DetailCollectionState createState() => _DetailCollectionState();
 }
@@ -43,8 +42,10 @@ class _DetailCollectionState extends State<DetailCollection>
   void initState() {
     super.initState();
     detailCollectionBloc = DetailCollectionBloc();
-    detailCollectionBloc.getCollection(collectionAddress: widget.collectionAddress);
-    detailCollectionBloc.funGetUrl(detailCollectionBloc.arg.socialLinks ?? []);
+    detailCollectionBloc.getCollection(
+      collectionAddress: '0x9371f7d8710bf370136b1eba91be1dc98e90a45c',
+    ); //todo collection address
+
     _tabController = TabController(length: 2, vsync: this);
   }
 

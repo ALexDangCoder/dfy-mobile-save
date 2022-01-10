@@ -283,7 +283,8 @@ class _SearchNFTState extends State<SearchNFT> {
                             context,
                             MaterialPageRoute(
                               builder: (ctx) => DetailCollection(
-                                collectionAddress: searchCubit.collections[index].id,
+                                collectionAddress: searchCubit.collections[index].id,// todo collection address
+                                walletAddress: 'alo alo',
                               ),
                             ),
                           );

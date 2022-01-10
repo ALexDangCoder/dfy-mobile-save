@@ -108,7 +108,7 @@ class CollectionDetail {
         name: name,
         collectionAddress: collectionAddress,
         status: status,
-        socialLinks: socialLinks,
+        socialLinks: socialLinks?.map((e) => e.toDomain()).toList(),
         owner: owner,
         isWhiteList: isWhiteList,
         isOwner: isOwner,
@@ -138,6 +138,11 @@ class SocialLink {
 
   @JsonKey(name: 'url')
   String? url;
+
+  SocialLinkModel toDomain() => SocialLinkModel(
+        type,
+        url,
+      );
 
   SocialLink(this.type, this.url);
 

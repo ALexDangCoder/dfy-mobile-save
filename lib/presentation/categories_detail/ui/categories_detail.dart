@@ -76,9 +76,9 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
               bloc: cubit,
               builder: (BuildContext context, state) {
                 if (state is LoadingCategoryState) {
-                  return Column (
+                  return Column(
                     children: [
-                      Container (height:  145.h ,color:colorSkeletonLight),
+                      Container(height: 145.h, color: colorSkeletonLight),
                     ],
                   );
                 }
@@ -94,8 +94,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                           return BaseAppBar(
                             image: data?.bannerCid ?? '',
                             title:
-                            '${widget.exploreCategory.name} ${S.current
-                                .categories}',
+                                '${widget.exploreCategory.name} ${S.current.categories}',
                             initHeight: 145.h,
                             leading: SizedBox(
                               child: InkWell(
@@ -140,9 +139,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                 children: [
                                   const SizedBox(height: 12),
                                   Text(
-                                    '${S.current.explore} ${widget
-                                        .exploreCategory.name} ${S.current
-                                        .categories}',
+                                    '${S.current.explore} ${widget.exploreCategory.name} ${S.current.categories}',
                                     style: textNormalCustom(
                                       AppTheme.getInstance().textThemeColor(),
                                       20,
@@ -178,10 +175,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                               ),
                               constraints: BoxConstraints(
                                 minHeight:
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height - 145,
+                                    MediaQuery.of(context).size.height - 145,
                               ),
                               color: backgroundBottomSheetColor,
                               child: StreamBuilder<List<CollectionDetailModel>>(
@@ -192,7 +186,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                     children: [
                                       StaggeredGridView.countBuilder(
                                         physics:
-                                        const NeverScrollableScrollPhysics(),
+                                            const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         mainAxisSpacing: 20,
                                         crossAxisSpacing: 15,
@@ -205,37 +199,40 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       DetailCollection(
-                                                        collectionAddress: data[index].collectionAddress ??
-                                                            '',
-                                                      ),
+                                                    walletAddress: 'alo alo',
+                                                    collectionAddress: data[
+                                                                index]
+                                                            .collectionAddress ??
+                                                        '',
+                                                  ),
                                                 ),
                                               );
                                             },
                                             child: ItemCollection(
                                               fixWidth: false,
                                               urlBackGround: ApiConstants
-                                                  .BASE_URL_IMAGE +
+                                                      .BASE_URL_IMAGE +
                                                   (data[index].coverCid ?? ''),
                                               backgroundFit: BoxFit.cover,
                                               urlIcon: ApiConstants
-                                                  .BASE_URL_IMAGE +
+                                                      .BASE_URL_IMAGE +
                                                   (data[index].avatarCid ?? ''),
                                               title: data[index].name ?? '',
                                               items: (data[index].totalNft ?? 0)
                                                   .toString(),
                                               owners:
-                                              (data[index].nftOwnerCount ??
-                                                  0)
-                                                  .toString(),
+                                                  (data[index].nftOwnerCount ??
+                                                          0)
+                                                      .toString(),
                                               text: (data[index].description ??
-                                                  '')
+                                                      '')
                                                   .stripHtmlIfNeeded(),
                                             ),
                                           );
                                         },
                                         crossAxisCount: 2,
                                         staggeredTileBuilder: (int index) =>
-                                        const StaggeredTile.fit(1),
+                                            const StaggeredTile.fit(1),
                                       ),
                                       StreamBuilder<bool>(
                                         stream: cubit.canLoadMoreStream,
@@ -246,7 +243,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                               height: 40,
                                               child: Center(
                                                 child:
-                                                CircularProgressIndicator(
+                                                    CircularProgressIndicator(
                                                   strokeWidth: 3,
                                                   color: AppTheme.getInstance()
                                                       .whiteColor(),
