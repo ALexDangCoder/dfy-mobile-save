@@ -311,12 +311,14 @@ class _AuctionTabState extends State<AuctionTab>
                           barrierDismissible: true,
                           context: context,
                           builder: (_) => BackdropFilter(
-                            filter:
-                            ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                            child:const AlertDialog(
+                            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                            child:  AlertDialog(
                               elevation: 0,
                               backgroundColor: Colors.transparent,
-                              content:   PickTime(),
+                              content: PickTime(
+                                onChange: (){
+                                },
+                              ),
                             ),
                           ),
                         );
@@ -329,7 +331,7 @@ class _AuctionTabState extends State<AuctionTab>
                         readOnly: true,
                         enabled: false,
                         decoration: InputDecoration(
-                          hintText: date,
+                          hintText: time,
                           hintStyle: textNormal(
                             Colors.white.withOpacity(0.5),
                             16,
@@ -363,9 +365,45 @@ class _AuctionTabState extends State<AuctionTab>
                       width: 20,
                     ),
                   ),
+                  const SizedBox(
+                    width: 12,
+                  ),
                   Expanded(
-                      child:
-                          Container(color: Colors.yellow, child: TextField()))
+                    child: GestureDetector(
+                      onTap: () {
+                        // showDialog(
+                        //   barrierDismissible: true,
+                        //   context: context,
+                        //   builder: (_) => BackdropFilter(
+                        //     filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                        //     child:  AlertDialog(
+                        //       elevation: 0,
+                        //       backgroundColor: Colors.transparent,
+                        //       content: PickTime(
+                        //         onChange: (){
+                        //         },
+                        //       ),
+                        //     ),
+                        //   ),
+                        // );
+                      },
+                      child: TextField(
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                        readOnly: true,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          hintText: date,
+                          hintStyle: textNormal(
+                            Colors.white.withOpacity(0.5),
+                            16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
