@@ -36,7 +36,8 @@ class BaseActivity extends StatelessWidget {
         GestureDetector(
           onTap: () {
             final list = bloc.listActivity.value;
-            if (list[index].marketStatus == 0) {
+            if (list[index].marketStatus ==
+                DetailCollectionBloc.NOT_ON_MARKET) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -48,7 +49,7 @@ class BaseActivity extends StatelessWidget {
                   },
                 ),
               );
-            } else if (list[index].marketStatus == 1) {
+            } else if (list[index].marketStatus == DetailCollectionBloc.SALE) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -60,7 +61,8 @@ class BaseActivity extends StatelessWidget {
                   },
                 ),
               );
-            } else if (list[index].marketStatus == 2) {
+            } else if (list[index].marketStatus ==
+                DetailCollectionBloc.AUCTION) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -147,7 +149,8 @@ class BaseActivity extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 final list = bloc.listActivity.value;
-                if (list[index].marketStatus == 0) {
+                if (list[index].marketStatus ==
+                    DetailCollectionBloc.NOT_ON_MARKET) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -159,7 +162,8 @@ class BaseActivity extends StatelessWidget {
                       },
                     ),
                   );
-                } else if (list[index].marketStatus == 1) {
+                } else if (list[index].marketStatus ==
+                    DetailCollectionBloc.SALE) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -171,7 +175,8 @@ class BaseActivity extends StatelessWidget {
                       },
                     ),
                   );
-                } else if (list[index].marketStatus == 2) {
+                } else if (list[index].marketStatus ==
+                    DetailCollectionBloc.AUCTION) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
