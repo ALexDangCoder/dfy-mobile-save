@@ -141,13 +141,13 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
         break;
       case MarketType.PAWN:
         _tabPage = [
-          HistoryTab(
+          const HistoryTab(
             listHistory: [],
           ),
-          OwnerTab(
+          const OwnerTab(
             listOwner: [],
           ),
-          OfferTab(),
+          const OfferTab(),
         ];
         _tabTit = [
           Tab(
@@ -174,7 +174,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
     bloc = NFTDetailBloc();
     caseTabBar(widget.type);
     onRefresh();
-
     _tabController = TabController(length: _tabPage.length, vsync: this);
   }
 

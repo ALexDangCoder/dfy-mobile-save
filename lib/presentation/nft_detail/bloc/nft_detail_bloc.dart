@@ -11,6 +11,7 @@ import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,15 +25,16 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   final _pairSubject = BehaviorSubject<bool>();
   final Web3Utils web3Client = Web3Utils();
   late final double balance;
+  late final String hexString;
 
   Stream<bool> get viewStream => _viewSubject.stream;
 
   Sink<bool> get viewSink => _viewSubject.sink;
 
   final BehaviorSubject<List<HistoryNFT>> listHistoryStream =
-  BehaviorSubject.seeded([]);
+      BehaviorSubject.seeded([]);
   final BehaviorSubject<List<OwnerNft>> listOwnerStream =
-  BehaviorSubject.seeded([]);
+      BehaviorSubject.seeded([]);
 
   ///GetHistory
   Stream<bool> get pairStream => _pairSubject.stream;
@@ -54,10 +56,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   late final String owner;
   List<Wallet> wallets = [];
 
-
   Future<void> getHistory(String collectionAddress, String nftTokenId) async {
     final Result<List<HistoryNFT>> result =
-    await _nftRepo.getHistory(collectionAddress, nftTokenId);
+        await _nftRepo.getHistory(collectionAddress, nftTokenId);
     result.when(
       success: (res) {
         listHistoryStream.add(res);
@@ -71,7 +72,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   ///GetOwner
   Future<void> getOwner(String collectionAddress, String nftTokenId) async {
     final Result<List<OwnerNft>> result =
-    await _nftRepo.getOwner(collectionAddress, nftTokenId);
+        await _nftRepo.getOwner(collectionAddress, nftTokenId);
     result.when(
       success: (res) {
         listOwnerStream.add(res);
@@ -89,7 +90,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       showLoading();
       getTokenInf();
       final Result<NftMarket> result =
-      await _nftRepo.getDetailNftOnSale(marketId);
+          await _nftRepo.getDetailNftOnSale(marketId);
       result.when(
         success: (res) {
           for (final value in listTokenSupport) {
@@ -160,5 +161,20 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   void getTokenInf() {
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
+  }
+
+  Future<String> getBuyNftData({
+    required String contractAddress,
+    required String orderId,
+    required String numberOfCopies,
+    required BuildContext context,
+  }) async {
+    hexString = await web3Client.getBuyNftData(
+      contractAddress: contractAddress,
+      orderId: orderId,
+      numberOfCopies: numberOfCopies,
+      context: context,
+    );
+    return hexString;
   }
 }

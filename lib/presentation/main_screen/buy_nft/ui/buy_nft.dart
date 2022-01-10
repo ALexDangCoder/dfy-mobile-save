@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
@@ -115,6 +117,13 @@ class _BuyNFTState extends State<BuyNFT> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    _nftBloc.getBuyNftData(
+                      contractAddress:
+                          '0x988b342d1223e01b0d6Ba4F496FD42d47969656b',
+                      orderId: nftMarket.orderId.toString(),
+                      numberOfCopies: '1',
+                      context: context,
+                    ).then((value) => log(value));
                   },
                   child: ButtonGold(
                     title: '${S.current.buy} NFT',
