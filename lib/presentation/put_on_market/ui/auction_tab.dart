@@ -249,13 +249,11 @@ class _AuctionTabState extends State<AuctionTab>
                             ],
                             textActiveButton: S.current.put_on_sale,
                             action: (gasLimit, gasPrice) async {
-                              await Future.delayed(Duration(seconds: 3));
-                              print(' gasLimit:  $gasLimit ');
-                              print(' gasPrice:  $gasPrice ');
+                              await Future.delayed(const Duration(seconds: 3));
+
                             },
                             approve: () async {
-                              await Future.delayed(Duration(seconds: 3));
-                              print(' call approve  in hear ');
+                              await Future.delayed(const Duration(seconds: 3));
                               return true;
                             },
                             gasLimitFirst: 100.0,
