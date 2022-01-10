@@ -334,7 +334,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                             child: Text(
                               S.current.could_not_load_data,
                               style: textNormalCustom(
-                                const Color(0xffE6E6E6),
+                                textErrorLoad,
                                 13.sp,
                                 FontWeight.w400,
                               ),
