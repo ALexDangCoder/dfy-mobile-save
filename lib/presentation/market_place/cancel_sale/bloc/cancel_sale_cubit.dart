@@ -2,14 +2,15 @@ import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'cancel_sale_state.dart';
 
@@ -21,11 +22,10 @@ class CancelSaleCubit extends BaseCubit<CancelSaleState> {
 
   String transaction = '';
   String dataString = '';
-  BehaviorSubject<double> gasLimitSubject = BehaviorSubject.seeded(0);
-
-  Stream<double> get gasLimitStream => gasLimitSubject.stream;
 
   Web3Utils web3utils = Web3Utils();
+
+  AppConstants get appConstant => Get.find();
 
   List<DetailItemApproveModel> initListApprove() {
     List<DetailItemApproveModel> listApprove = [
@@ -35,34 +35,9 @@ class CancelSaleCubit extends BaseCubit<CancelSaleState> {
     return listApprove;
   }
 
-  //get limit gas
-  Future<void> getGasLimit(
-      {required BuildContext context,
-      required String orderId,
-      required String walletAddress}) async {
-    //a19d9f27-e023-4824-8a6e-23a9566fb733
-    //get dataString
-    dataString = await web3utils.getCancelListingData(
-      contractAddress: nft_sales_address_dev2,
-      orderId: orderId,
-      context: context,
-    );
-    //get gas limit by  data
-    double gasLimit = double.parse(
-      await web3utils.getGasLimitByData(
-        from: walletAddress,
-        toContractAddress: nft_sales_address_dev2,
-        dataString: dataString,
-      ),
-    );
-    gasLimitSubject.sink.add(gasLimit);
-  }
-
   //ky giao dich
   Future<void> signTransactionWithData(
       {required String walletAddress,
-      required String nonce,
-      required String chainId,
       required String gasPrice,
       required String gasLimit,
       required String withData}) async {
@@ -76,8 +51,8 @@ class CancelSaleCubit extends BaseCubit<CancelSaleState> {
         'walletAddress': walletAddress,
         'contractAddress': nft_sales_address_dev2,
         'nonce': transaction.count.toString(),
-        'chainId': String,
-        'gasPrice': String,
+        'chainId': appConstant.chaninId,
+        'gasPrice': gasPrice,
         'gasLimit': String,
         'withData': withData,
       };

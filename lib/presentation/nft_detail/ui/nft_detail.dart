@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/base/base_custom_scroll_view.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
@@ -9,6 +11,8 @@ import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/ui/buy_nft.dart';
+import 'package:Dfy/presentation/market_place/cancel_sale/bloc/cancel_sale_cubit.dart';
+import 'package:Dfy/presentation/market_place/cancel_sale/ui/cancel_sale.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
 import 'package:Dfy/presentation/market_place/send_offer/send_offer.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
@@ -233,7 +237,24 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                 width: 25.h,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () async {
+
+                  //todo
+                  final double gasLimit = await _bloc.getGasLimit(
+                    walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
+                    context: context,
+                    orderId: '80',
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CancelSale(
+                        cubit: CancelSaleCubit(ntfValue: 'Oi doi oi', quantity: '1'),
+                        gasLimit: gasLimit, dataString: '', walletAdress: '',
+                      ),
+                    ),
+                  );
+                },
                 child: roundButton(
                   image: ImageAssets.ic_flag_svg,
                   whiteBackground: true,

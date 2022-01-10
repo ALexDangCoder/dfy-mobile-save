@@ -1,5 +1,6 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
@@ -10,6 +11,7 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -29,7 +31,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   final BehaviorSubject<List<OwnerNft>> listOwnerStream =
       BehaviorSubject.seeded([]);
   final BehaviorSubject<List<BiddingNft>> listBiddingStream =
-  BehaviorSubject.seeded([]);
+      BehaviorSubject.seeded([]);
 
   String symbolToken = '';
 
@@ -66,7 +68,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   ///GetBiding
   Future<void> getBidding(String auctionId) async {
     final Result<List<BiddingNft>> result =
-    await _nftRepo.getBidding(auctionId);
+        await _nftRepo.getBidding(auctionId);
     result.when(
       success: (res) {
         listBiddingStream.add(res);
@@ -154,9 +156,39 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     final today = DateTime.now().millisecondsSinceEpoch;
     if (endDate.millisecondsSinceEpoch > today) {
       return endDate.microsecondsSinceEpoch - today;
-    }
-    else{
+    } else {
       return 0;
     }
+  }
+
+  //////////////////////
+  //get limit gas
+  final Web3Utils web3utils = Web3Utils();
+
+  Future<double> getGasLimit({
+    required BuildContext context,
+    required String orderId,
+    required String walletAddress,
+  }) async {
+    try{
+      final String dataString = await web3utils.getCancelListingData(
+        contractAddress: nft_sales_address_dev2,
+        orderId: orderId,
+        context: context,
+      );
+      //get gas limit by  data
+      double gasLimit = double.parse(
+        await web3utils.getGasLimitByData(
+          from: walletAddress,
+          toContractAddress: nft_sales_address_dev2,
+          dataString: dataString,
+        ),
+      );
+      return gasLimit;
+    }catch (e){
+      return 0;
+    }
+    //get dataString
+
   }
 }

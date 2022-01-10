@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/market_place/cancel_sale/bloc/cancel_sale_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
@@ -13,10 +14,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CancelSale extends StatefulWidget {
   final CancelSaleCubit cubit;
+  final double gasLimit;
+  final String walletAdress;
+  final String dataString;
 
   const CancelSale({
     Key? key,
     required this.cubit,
+    required this.gasLimit,
+    required this.walletAdress,
+    required this.dataString,
   }) : super(key: key);
 
   @override
@@ -24,68 +31,61 @@ class CancelSale extends StatefulWidget {
 }
 
 class _CancelSaleState extends State<CancelSale> {
-
   @override
   void initState() {
-      widget.cubit.getGasLimit(
-      walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
-      context: context,
-      orderId: '80',
-    );
+    trustWalletChannel
+        .setMethodCallHandler(widget.cubit.nativeMethodCallBackTrustWallet);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<double>(
-      stream: widget.cubit.gasLimitStream,
-      builder: (context, snapshot) {
-        log('>>>>>>>>>'+snapshot.data.toString());
-        return Approve(
-          listDetail: widget.cubit.initListApprove(),
-          action: () {},
-          title: S.current.cancel_sale,
-          header: Container(
-            padding: EdgeInsets.only(
-              top: 16.h,
-              bottom: 20.h,
-            ),
-            alignment: Alignment.centerLeft,
+    return Approve(
+      listDetail: widget.cubit.initListApprove(),
+      action: () {
+        widget.cubit.signTransactionWithData(
+            gasLimit: '0', gasPrice: '0', walletAddress: '', withData: '');
+      },
+      title: S.current.cancel_sale,
+      header: Container(
+        padding: EdgeInsets.only(
+          top: 16.h,
+          bottom: 20.h,
+        ),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          S.current.cancel_sale_info,
+          style: textNormal(
+            AppTheme.getInstance().whiteColor(),
+            16.sp,
+          ).copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      approve: () {},
+      warning: Row(
+        children: [
+          sizedSvgImage(
+              w: 16.67.w, h: 16.67.h, image: ImageAssets.ic_warning_canel),
+          SizedBox(
+            width: 5.w,
+          ),
+          Expanded(
             child: Text(
-              S.current.cancel_sale_info,
+              S.current.customer_cannot,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: textNormal(
-                AppTheme.getInstance().whiteColor(),
-                16.sp,
-              ).copyWith(
-                fontWeight: FontWeight.w600,
+                AppTheme.getInstance().currencyDetailTokenColor(),
+                14.sp,
               ),
             ),
           ),
-          approve: () {},
-          warning: Row(
-            children: [
-              sizedSvgImage(
-                  w: 16.67.w, h: 16.67.h, image: ImageAssets.ic_warning_canel),
-              SizedBox(
-                width: 5.w,
-              ),
-              Expanded(
-                child: Text(
-                  S.current.customer_cannot,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: textNormal(
-                    AppTheme.getInstance().currencyDetailTokenColor(),
-                    14.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          textActiveButton: S.current.cancel_sale,
-          gasLimit: widget.cubit.gasLimitSubject.value,
-        );
-      }
+        ],
+      ),
+      textActiveButton: S.current.cancel_sale,
+      gasLimit: widget.gasLimit,
     );
   }
 }

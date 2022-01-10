@@ -35,14 +35,7 @@ class HeaderMarketPlace extends StatelessWidget {
                 color: AppTheme.getInstance().whiteColor(),
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CancelSale(
-                      cubit: CancelSaleCubit(quantity: '01', ntfValue: 'Ối dồi ôi'),
-                    ),
-                  ),
-                );
+
               },
             ),
             searchBar(context, cubit),
