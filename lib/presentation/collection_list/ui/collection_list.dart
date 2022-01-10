@@ -342,9 +342,11 @@ class _CollectionListState extends State<CollectionList> {
                                           stream: collectionBloc.isCanLoadMore,
                                           builder: (context, snapshot) {
                                             return snapshot.data ?? false
-                                                ? SizedBox(
-                                                    height: 50.h,
-                                                    child: Center(
+                                                ? Center(
+                                                    child: Padding(
+                                                      padding: EdgeInsets.all(
+                                                        16.w,
+                                                      ),
                                                       child:
                                                           CircularProgressIndicator(
                                                         strokeWidth: 3,
