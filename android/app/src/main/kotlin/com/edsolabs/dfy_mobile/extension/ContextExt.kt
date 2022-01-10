@@ -860,11 +860,6 @@ fun Context.signTransactionWithData(
     gasLimit: String,
     withData: String
 ) {
-    val dataTest =
-        "1d85bf03000000000000000000000000000000000000000000000000000000000000001c0000000000000000000000000000000000000000000000000000000000000001"
-    val datatest1 = "0x$dataTest"
-    Log.d("kiemtra2", datatest1)
-    Log.d("kiemtra1", ByteString.copyFrom(("0x$dataTest").toByteArray()).toString())
     val hasMap = HashMap<String, Any>()
     val walletModel =
         AppPreference(this).getListWallet().firstOrNull { it.walletAddress == walletAddress }
@@ -882,7 +877,7 @@ fun Context.signTransactionWithData(
             this.transaction = Ethereum.Transaction.newBuilder().apply {
                 transfer = Ethereum.Transaction.Transfer.newBuilder().apply {
                     this.amount = BigInteger("0").toByteString()
-                    this.data = ByteString.copyFrom(("0x$dataTest").toByteArray())
+                    this.data = ByteString.copyFrom(("0x$withData").toByteArray())
                 }.build()
             }.build()
             this.privateKey =
@@ -904,5 +899,5 @@ fun Context.signTransactionWithData(
     hasMap["gasPrice"] = gasPrice
     hasMap["gasLimit"] = gasLimit
     hasMap["withData"] = withData
-    channel?.invokeMethod("signTransactionTokenCallback", hasMap)
+    channel?.invokeMethod("signTransactionWithDataCallback", hasMap)
 }
