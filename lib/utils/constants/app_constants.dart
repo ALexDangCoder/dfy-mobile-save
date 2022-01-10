@@ -50,6 +50,9 @@ const _dtFormat3 = 'dd/MM hh:mm a';
 const _dtFormat4 = 'yyyy-MM-dd';
 const _dtFormat5 = 'MMM dd, yyyy';
 
+//contract
+const nft_sales_address_dev2 = '0xcE80f7DFEC1589D6cf9a0586446618aAbBC711E7';
+
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
   static const HOUR_FORMAT = _dtFormat2;
