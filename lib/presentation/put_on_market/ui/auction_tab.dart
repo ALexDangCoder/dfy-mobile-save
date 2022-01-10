@@ -11,6 +11,7 @@ import 'package:Dfy/widgets/form/input_with_select_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
@@ -250,7 +251,6 @@ class _AuctionTabState extends State<AuctionTab>
                             textActiveButton: S.current.put_on_sale,
                             action: (gasLimit, gasPrice) async {
                               await Future.delayed(const Duration(seconds: 3));
-
                             },
                             approve: () async {
                               await Future.delayed(const Duration(seconds: 3));
@@ -308,10 +308,16 @@ class _AuctionTabState extends State<AuctionTab>
                     child: GestureDetector(
                       onTap: () {
                         showDialog(
+                          barrierDismissible: true,
                           context: context,
-                          builder: (_) => const AlertDialog(
-                            backgroundColor: Colors.transparent,
-                            content: PickTime(),
+                          builder: (_) => BackdropFilter(
+                            filter:
+                            ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                            child:const AlertDialog(
+                              elevation: 0,
+                              backgroundColor: Colors.transparent,
+                              content:   PickTime(),
+                            ),
                           ),
                         );
                       },

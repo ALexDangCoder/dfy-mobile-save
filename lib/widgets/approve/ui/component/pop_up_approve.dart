@@ -216,6 +216,7 @@ class PopUpApprove extends StatelessWidget {
                           barrierDismissible: false,
                           context: context,
                           builder: (_) => const AlertDialog(
+                            elevation: 0,
                             backgroundColor: Colors.transparent,
                             content: TransactionSubmit(),
                           ),
