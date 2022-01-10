@@ -1108,7 +1108,10 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                       child: Column(
                         children: [
                           _rowCollection(
-                              'DFY', nftOnAuction.collectionName ?? '', true),
+                            'DFY',
+                            nftOnAuction.collectionName ?? '',
+                            true,
+                          ),
                           spaceH20,
                           additionalColumn(nftOnAuction.properties ?? []),
                           spaceH20,
