@@ -5,8 +5,8 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
-import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
@@ -26,6 +26,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   final Web3Utils web3Client = Web3Utils();
   late final double balance;
   late final String hexString;
+  late final String gasFee;
 
   Stream<bool> get viewStream => _viewSubject.stream;
 
@@ -176,5 +177,17 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       context: context,
     );
     return hexString;
+  }
+
+  Future<String> getGasLimitByData(
+      {required String fromAddress,
+      required String toAddress,
+      required String hexString}) async {
+    gasFee = await web3Client.getGasLimitByData(
+      from: fromAddress,
+      toContractAddress: toAddress,
+      dataString: hexString,
+    );
+    return gasFee;
   }
 }

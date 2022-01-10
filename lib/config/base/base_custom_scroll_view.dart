@@ -75,7 +75,7 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
                 ),
               ),
               child: NestedScrollView(
-                physics: const ScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 headerSliverBuilder: (context, innerScroll) => [
                   BaseAppBar(
                     image: widget.image,

@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/bloc/buy_nft_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -117,13 +115,20 @@ class _BuyNFTState extends State<BuyNFT> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    _nftBloc.getBuyNftData(
-                      contractAddress:
-                          '0x988b342d1223e01b0d6Ba4F496FD42d47969656b',
-                      orderId: nftMarket.orderId.toString(),
-                      numberOfCopies: '1',
-                      context: context,
-                    ).then((value) => log(value));
+                    _nftBloc
+                        .getBuyNftData(
+                          contractAddress: nft_sales_address_dev2,
+                          orderId: nftMarket.orderId.toString(),
+                          numberOfCopies: '1',
+                          context: context,
+                        )
+                        .then(
+                          (value) => _nftBloc.getGasLimitByData(
+                            fromAddress: _nftBloc.wallets.first.address ?? '',
+                            toAddress: nft_sales_address_dev2,
+                            hexString: value,
+                          ),
+                        );
                   },
                   child: ButtonGold(
                     title: '${S.current.buy} NFT',
