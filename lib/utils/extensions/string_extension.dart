@@ -16,6 +16,13 @@ extension StringMoneyFormat on String {
     final String result = formatValue.format(money);
     return result;
   }
+
+  String formatDateTimeMy(int date) {
+    var millis = date;
+    var dt = DateTime.fromMillisecondsSinceEpoch(millis);
+    String d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
+    return d24;
+  }
 }
 
 extension FormatAddress on String {
@@ -55,4 +62,20 @@ extension StringParse on String {
         parse(document.body?.text).documentElement?.text ?? '';
     return parsedString;
   }
+}
+extension DiacriticsAwareString on String{
+  bool checkEmail() {
+    return RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}")
+        .hasMatch(this);
+  }
+
+  bool checkSdt() {
+    return RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(this);
+  }
+
+  String stripHtmlIfNeeded() {
+    return replaceAll(RegExp(r'<[^>]*>|&[^;]+;'), ' ');
+  }
+
 }

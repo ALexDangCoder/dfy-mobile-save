@@ -13,18 +13,21 @@ class BaseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 68.h,
-      padding: EdgeInsets.only(top: 12.h),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border(
-          bottom: BorderSide(
-            color: AppTheme.getInstance().divideColor(),
+    return ConstrainedBox(
+      constraints:BoxConstraints(
+        minHeight: 68.h,
+      ),
+      child: Container(
+        padding: EdgeInsets.only(top: 12.h),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          border: Border(
+            bottom: BorderSide(
+              color: AppTheme.getInstance().divideColor(),
+            ),
           ),
         ),
-      ),
-      child: child,
+        child: child,),
     );
   }
 }

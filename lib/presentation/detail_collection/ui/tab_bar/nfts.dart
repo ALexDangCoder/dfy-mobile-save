@@ -2,8 +2,10 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
+import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/nft_item_by_category/nft_type_product.dart';
+import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
+import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -31,7 +33,7 @@ class _NFTSCollectionState extends State<NFTSCollection> {
 
   @override
   Widget build(BuildContext context) {
-    final detailCollectionBloc = widget.detailCollectionBloc;
+    final bloc = widget.detailCollectionBloc;
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
@@ -64,8 +66,8 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                       child: TextFormField(
                         controller: textSearch,
                         onChanged: (value) {
-                          detailCollectionBloc.textSearch.sink.add(value);
-                          //detailCollectionBloc.search();
+                          bloc.textSearch.sink.add(value);
+                          bloc.search(value);
                         },
                         cursorColor: AppTheme.getInstance().whiteColor(),
                         style: textNormal(
@@ -85,13 +87,13 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                     ),
                   ),
                   StreamBuilder(
-                    stream: detailCollectionBloc.textSearch,
+                    stream: bloc.textSearch,
                     builder: (context, AsyncSnapshot<String> snapshot) {
                       return GestureDetector(
                         onTap: () {
-                          detailCollectionBloc.textSearch.sink.add('');
+                          bloc.textSearch.sink.add('');
                           textSearch.text = '';
-                          detailCollectionBloc.search();
+                          bloc.search('');
                         },
                         child: snapshot.data?.isNotEmpty ?? false
                             ? Image.asset(
@@ -110,9 +112,12 @@ class _NFTSCollectionState extends State<NFTSCollection> {
               ),
             ),
           ),
-          StreamBuilder(
+          StreamBuilder<int>(
+            stream: bloc.statusNft,
             builder: (context, snapshot) {
-              if (snapshot.data == null) {
+              final statusNft = snapshot.data ?? 0;
+              final list = bloc.listNft.value;
+              if (statusNft == DetailCollectionBloc.SUCCESS) {
                 return StaggeredGridView.countBuilder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -124,21 +129,15 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                   ),
                   mainAxisSpacing: 20.h,
                   crossAxisSpacing: 26.w,
-                  itemCount: 10,
+                  itemCount: list.length,
                   crossAxisCount: 2,
                   itemBuilder: (context, index) {
-                    return const NftProduct(
-                      nftName: 'Name of NFT',
-                      price: 10000,
-                      nftCategory: NFT_CATEGORY.SALE,
-                      nftIsHard: NFT_IS_HARD.NON_HARD_NFT,
-                      nftIsVidOrImg: NFT_IS_VID_OR_IMG.IMG_NFT,
-                    );
+                    return NFTItemWidget(nftMarket: list[index]);
                   },
                   staggeredTileBuilder: (int index) =>
                       const StaggeredTile.fit(1),
                 );
-              } else if (snapshot.hasError) {
+              } else if (statusNft == DetailCollectionBloc.FAILD) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -163,17 +162,55 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                     ),
                   ],
                 );
+              } else if (statusNft == DetailCollectionBloc.LOADING) {
+                return StaggeredGridView.countBuilder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.only(
+                    left: 21.w,
+                    right: 21.w,
+                    top: 20.h,
+                    bottom: 20.h,
+                  ),
+                  mainAxisSpacing: 20.h,
+                  crossAxisSpacing: 26.w,
+                  itemCount: 4,
+                  crossAxisCount: 2,
+                  itemBuilder: (context, index) {
+                    return const SkeletonNft();
+                  },
+                  staggeredTileBuilder: (int index) =>
+                      const StaggeredTile.fit(1),
+                );
               } else {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      height: 80.h,
-                    ),
-                    CircularProgressIndicator(
-                      color: AppTheme.getInstance().whiteColor(),
-                    )
-                  ],
+                return StaggeredGridView.countBuilder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.only(
+                    left: 21.w,
+                    right: 21.w,
+                    top: 20.h,
+                    bottom: 20.h,
+                  ),
+                  mainAxisSpacing: 20.h,
+                  crossAxisSpacing: 26.w,
+                  itemCount: 4,
+                  crossAxisCount: 2,
+                  itemBuilder: (context, index) {
+                    return ErrorLoadNft(
+                      callback: () {
+                        widget.detailCollectionBloc.getListNft(
+                          collectionId:
+                              widget.detailCollectionBloc.collectionId,
+                          name: widget.detailCollectionBloc.textSearch.value,
+                          listMarketType:
+                              widget.detailCollectionBloc.listFilter,
+                        );
+                      },
+                    );
+                  },
+                  staggeredTileBuilder: (int index) =>
+                      const StaggeredTile.fit(1),
                 );
               }
             },

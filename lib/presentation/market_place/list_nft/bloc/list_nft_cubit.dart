@@ -1,7 +1,9 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/collection_filter.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -60,13 +62,15 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-  String status(MarketType type) {
+  String status(MarketType? type) {
     if (type == MarketType.AUCTION) {
       return '2';
     } else if (type == MarketType.PAWN) {
       return '3';
-    } else {
+    } else if (type == MarketType.SALE) {
       return '1';
+    } else {
+      return '';
     }
   }
 
@@ -79,7 +83,10 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   }
 
   void searchNft(String? name, String? status) {
-    if (name?.isNotEmpty ?? true) {
+    if(status!.isEmpty) {
+      getListNft(name: name);
+    }
+    else if (name?.isNotEmpty ?? true && status.isNotEmpty) {
       getListNft(name: name, status: status);
     } else {
       getListNft(status: status);
@@ -93,6 +100,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     String? collectionId,
   }) async {
     emit(ListNftLoading());
+    getTokenInf();
     final Result<List<NftMarket>> result = await _nftRepo.getListNft(
       status: status,
       name: name,
@@ -101,6 +109,17 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     );
     result.when(
       success: (res) {
+        for(final item in res) {
+          final tokenBuyOut = item.tokenBuyOut ?? '';
+          for(final value in listTokenSupport){
+            final address = value.address ?? '';
+            if(tokenBuyOut.toLowerCase() == address.toLowerCase()){
+              item.urlToken = value.iconUrl;
+              item.symbolToken = value.symbol;
+              item.usdExchange = value.usdExchange;
+            }
+          }
+        }
         listData = res;
         emit(ListNftSuccess());
       },
@@ -109,6 +128,13 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         emit(ListNftError());
       },
     );
+  }
+  ///getListTokenSupport
+
+  List<TokenInf> listTokenSupport = [];
+  void getTokenInf() {
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
   }
 
   ///Param Filter
@@ -223,8 +249,11 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     listCheckBox.add(listCollectionCheck);
   }
 
-  String getTitle(MarketType type) {
-    if (type == MarketType.SALE) {
+  String getTitle(MarketType? type) {
+    if(type == null) {
+      return S.current.nfts_search_result;
+    }
+    else if (type == MarketType.SALE) {
       return S.current.nft_on_sale;
     } else if (type == MarketType.AUCTION) {
       return S.current.on_auction;

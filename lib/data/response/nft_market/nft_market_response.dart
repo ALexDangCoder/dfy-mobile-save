@@ -91,7 +91,7 @@ class NftMarketResponse extends Equatable {
 
   NftMarket toDomain() => NftMarket(
         marketId: id,
-        marketType: getTypeMarket(type),
+        marketType: getTypeMarket(marketType),
         typeImage: getTypeImage(fileType ?? ''),
         price: price,
         typeNFT: getTypeNft(type),

@@ -1,3 +1,4 @@
+
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';

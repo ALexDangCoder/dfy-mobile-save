@@ -1,7 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_number_of_quantity.dart';
 import 'package:Dfy/widgets/form/input_with_select_type.dart';
@@ -25,7 +27,7 @@ class PawnTab extends StatefulWidget {
 
 class _PawnTabState extends State<PawnTab>
     with AutomaticKeepAliveClientMixin<PawnTab> {
-  GlobalKey dropdownKey = GlobalKey();
+
   late double width, height, xPosition, yPosition;
   int chooseIndex = 0;
 
@@ -37,179 +39,168 @@ class _PawnTabState extends State<PawnTab>
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 24,
-                ),
-                Center(
-                  child: Text(
-                    S.current.get_a_loan_by_nft_on_pawn_marketplace,
-                    style: textNormalCustom(
-                      AppTheme.getInstance().textThemeColor(),
-                      16,
-                      FontWeight.w600,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 23,
-                ),
-                Text(
-                  S.current.expected_loan,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 24,
+              ),
+              Center(
+                child: Text(
+                  S.current.get_a_loan_by_nft_on_pawn_marketplace,
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),
                     16,
                     FontWeight.w600,
                   ),
                 ),
-                const SizedBox(
-                  height: 4,
+              ),
+              const SizedBox(
+                height: 23,
+              ),
+              Text(
+                S.current.expected_loan,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  16,
+                  FontWeight.w600,
                 ),
-                Text(
-                  S.current
-                      .set_the_loan_amount_you_expected_to_have_for_the_nft,
-                  style: textNormalCustom(
-                    AppTheme.getInstance()
-                        .textThemeColor()
-                        .withOpacity(0.7),
-                    14,
-                    FontWeight.w400,
-                  ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                S.current.set_the_loan_amount_you_expected_to_have_for_the_nft,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                  14,
+                  FontWeight.w400,
                 ),
-                const SizedBox(
-                  height: 4,
-                ),
-                InputWithSelectType(
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d+\.?\d{0,5}'),
-                      ),
-                    ],
-                    maxSize: 100,
-                    keyboardType: TextInputType.number,
-                    typeInput: typeInput(),
-                    hintText: S.current.enter_price,
-                    onChangeType: (index) {},
-                    onchangeText: (value) {
-                      widget.cubit.changeTokenPawn(
-                        value: value != '' ? double.parse(value) : null,
-                      );
-                    }),
-                const SizedBox(
-                  height: 16,
-                ),
-                Text(
-                  S.current.duration,
-                  style: textNormalCustom(
-                    AppTheme.getInstance().textThemeColor(),
-                    16,
-                    FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  S.current
-                      .Set_a_duration_for_the_desired_loan_term,
-                  style: textNormalCustom(
-                    AppTheme.getInstance()
-                        .textThemeColor()
-                        .withOpacity(0.7),
-                    14,
-                    FontWeight.w400,
-                  ),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                InputWithSelectType(
-                  maxSize: 4,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              InputWithSelectType(
                   inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  keyboardType: TextInputType.number,
-                  typeInput: [
-                    SizedBox(
-                      height: 40,
-                      width: 70,
-                      child: Center(
-                        child: Text(
-                          S.current.week,
-                          style: textNormalCustom(
-                            AppTheme.getInstance().textThemeColor(),
-                            16,
-                            FontWeight.w400,
-                          ).copyWith(decoration: TextDecoration.none),
-                        ),
-                      ),
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^\d+\.?\d{0,5}'),
                     ),
-                    SizedBox(
-                      height: 40,
-                      width: 70,
-                      child: Center(
-                        child: Text(
-                          S.current.month,
-                          style: textNormalCustom(
-                            AppTheme.getInstance().textThemeColor(),
-                            16,
-                            FontWeight.w400,
-                          ).copyWith(decoration: TextDecoration.none),
-                        ),
-                      ),
-                    )
                   ],
-                  hintText: S.current.enter_duration,
+                  maxSize: 100,
+                  keyboardType: TextInputType.number,
+                  typeInput: typeInput(),
+                  hintText: S.current.enter_price,
                   onChangeType: (index) {},
                   onchangeText: (value) {
-                    widget.cubit.changeDurationPawn(
-                      value: value != '' ? int.parse(value) : null,
+                    widget.cubit.changeTokenPawn(
+                      value: value != '' ? double.parse(value) : null,
                     );
-                  },
+                  }),
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                S.current.duration,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  16,
+                  FontWeight.w600,
                 ),
-                const SizedBox(
-                  height: 16,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                S.current.Set_a_duration_for_the_desired_loan_term,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                  14,
+                  FontWeight.w400,
                 ),
-                Text(
-                  S.current.quantity_of_collateral,
-                  style: textNormalCustom(
-                    AppTheme.getInstance().textThemeColor(),
-                    16,
-                    FontWeight.w600,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              InputWithSelectType(
+                maxSize: 4,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                keyboardType: TextInputType.number,
+                typeInput: [
+                  SizedBox(
+                    height: 40,
+                    width: 70,
+                    child: Center(
+                      child: Text(
+                        S.current.week,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w400,
+                        ).copyWith(decoration: TextDecoration.none),
+                      ),
+                    ),
                   ),
+                  SizedBox(
+                    height: 40,
+                    width: 70,
+                    child: Center(
+                      child: Text(
+                        S.current.month,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w400,
+                        ).copyWith(decoration: TextDecoration.none),
+                      ),
+                    ),
+                  )
+                ],
+                hintText: S.current.enter_duration,
+                onChangeType: (index) {},
+                onchangeText: (value) {
+                  widget.cubit.changeDurationPawn(
+                    value: value != '' ? int.parse(value) : null,
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                S.current.quantity_of_collateral,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  16,
+                  FontWeight.w600,
                 ),
-                const SizedBox(
-                  height: 4,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                S.current.set_the_nft_quantity_as_collateral,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                  14,
+                  FontWeight.w400,
                 ),
-                Text(
-                  S.current.set_the_nft_quantity_as_collateral,
-                  style: textNormalCustom(
-                    AppTheme.getInstance()
-                        .textThemeColor()
-                        .withOpacity(0.7),
-                    14,
-                    FontWeight.w400,
-                  ),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                InputNumberOfQuantity(
-                  maxLength: 5,
-                  canEdit: widget.canEdit,
-                  quantity: widget.quantity,
-                  onchangeText: (value) {
-                    widget.cubit.changeQuantityPawn(
-                      value: value != '' ? int.parse(value) : 0,
-                    );
-                  },
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              InputNumberOfQuantity(
+                maxLength: 5,
+                canEdit: widget.canEdit,
+                quantity: widget.quantity,
+                onchangeText: (value) {
+                  widget.cubit.changeQuantityPawn(
+                    value: value != '' ? int.parse(value) : 0,
+                  );
+                },
+              ),
+            ],
           ),
-
+        ),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -224,7 +215,46 @@ class _PawnTabState extends State<PawnTab>
                 final data = snapshot.data ?? false;
                 return GestureDetector(
                   onTap: () {
-                    if (data) Navigator.pop(context);
+                    if (data) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Approve(
+                            gasLimit: 10.0,
+                            isShowTwoButton: true,
+                            title: S.current.put_on_sale,
+                            listDetail: [
+                              DetailItemApproveModel(
+                                title: '${S.current.expected_loan} :',
+                                value:
+                                    '${widget.cubit.valueTokenInputPawn ?? 0} DFY',
+                                isToken: true,
+                              ),
+                              DetailItemApproveModel(
+                                title: '${S.current.duration} :',
+                                value:
+                                    '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == DurationType.WEEK ? S.current.week : S.current.month}',
+                              ),
+                              DetailItemApproveModel(
+                                title: '${S.current.price_per_1} :',
+                                value:
+                                    '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
+                              )
+                            ],
+                            textActiveButton: S.current.put_on_sale,
+                            action: () async {
+                              await Future.delayed(Duration(seconds: 3));
+                              print(' call action in hear ');
+                            },
+                            approve: () async {
+                              await Future.delayed(Duration(seconds: 3));
+                              print(' call approve  in hear ');
+                              return true;
+                            },
+                          ),
+                        ),
+                      );
+                    }
                   },
                   child: ButtonGold(
                     title: S.current.continue_s,
