@@ -1,5 +1,6 @@
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:dio/dio.dart';
 
 class NetworkHandler {
@@ -12,6 +13,7 @@ class NetworkHandler {
       return AppException(S.current.error, S.current.something_went_wrong);
     }
     if (_isNetWorkError(error)) {
+      eventBus.fire(TimeOutEvent(S.current.something_went_wrong));
       return AppException(S.current.error, S.current.something_went_wrong);
     }
     final parsedException = _parseError(error);
