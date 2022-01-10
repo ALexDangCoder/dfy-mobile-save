@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/text_helper.dart';
@@ -8,9 +9,13 @@ import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class BidTab extends StatelessWidget {
-  const BidTab({Key? key}) : super(key: key);
+  const BidTab({Key? key, required this.listBidding, required this.symbolToken})
+      : super(key: key);
+  final List<BiddingNft> listBidding;
+  final String symbolToken;
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +23,14 @@ class BidTab extends StatelessWidget {
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       physics: const ScrollPhysics(),
-      itemCount: 30,
+      itemCount: listBidding.length,
       itemBuilder: (context, index) {
-        return _buildItemBid(index);
+        return _buildItemBid(listBidding[index]);
       },
     );
   }
 
-  Widget _buildItemBid(int index) {
+  Widget _buildItemBid(BiddingNft biddingNft) {
     return BaseItem(
       child: Row(
         children: [
@@ -38,8 +43,9 @@ class BidTab extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: '0xFE529a8d8adk2829a9d02adad4fd0 bid'
-                            .handleString(),
+                        text: biddingNft.biddingWallet!.isNotEmpty
+                            ? '${biddingNft.biddingWallet!.handleString()} bid'
+                            : '',
                         style: richTextWhite.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -49,13 +55,17 @@ class BidTab extends StatelessWidget {
                 ),
                 spaceH7,
                 Text(
-                  DateTime.now().stringFromDateTime,
+                  DateFormat('HH:mm - dd/MM/yyyy').format(
+                    DateTime.fromMillisecondsSinceEpoch(
+                      biddingNft.time ?? 0,
+                    ),
+                  ),
                   style: textNormalCustom(
-                    AppTheme.getInstance().textThemeColor(),
+                    Colors.white.withOpacity(0.5),
                     14,
                     FontWeight.w400,
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -73,7 +83,7 @@ class BidTab extends StatelessWidget {
                     ),
                     spaceW4,
                     Text(
-                      '0.0025 ETH',
+                      '${biddingNft.bidValue} $symbolToken',
                       style: textNormalCustom(
                         AppTheme.getInstance().textThemeColor(),
                         16,
@@ -83,19 +93,46 @@ class BidTab extends StatelessWidget {
                   ],
                 ),
                 spaceH7,
-                Text(
-                  'Wining',
-                  style: textNormalCustom(
-                    const Color(0xff61C777),
-                    14,
-                    FontWeight.w600,
-                  ),
-                ),
+                statusBid(biddingNft.status ?? 0)
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  Widget statusBid(int status) {
+    switch (status) {
+      case 2:
+        return Text(
+          'Out bid',
+          style: textNormalCustom(
+            Colors.red,
+            14,
+            FontWeight.w600,
+          ),
+        );
+      case 1:
+        return Text(
+          'Winning',
+          style: textNormalCustom(
+            Colors.green,
+            14,
+            FontWeight.w600,
+          ),
+        );
+      case 4:
+        return Text(
+          'Won',
+          style: textNormalCustom(
+            Colors.yellow,
+            14,
+            FontWeight.w600,
+          ),
+        );
+      default:
+        return const SizedBox();
+    }
   }
 }

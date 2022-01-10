@@ -1,4 +1,6 @@
 import 'package:Dfy/domain/model/nft_auction.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -161,21 +163,76 @@ class DetailAuctionResponse {
 
   List<Object?> get props => [];
 
+  String getPath(String avatarCid) {
+    return ApiConstants.BASE_URL_IMAGE + avatarCid;
+  }
+
+  TypeImage getTypeImage(String type) {
+    if (type.toLowerCase().contains('image')) {
+      return TypeImage.IMAGE;
+    } else {
+      return TypeImage.VIDEO;
+    }
+  }
+
+  TypeNFT getTypeNft(int type) {
+    if (type == 0) {
+      return TypeNFT.SOFT_NFT;
+    } else {
+      return TypeNFT.HARD_NFT;
+    }
+  }
+
+  MarketType getTypeMarket(int type) {
+    if (type == 2) {
+      return MarketType.AUCTION;
+    } else if (type == 3) {
+      return MarketType.PAWN;
+    } else {
+      return MarketType.SALE;
+    }
+  }
+
   NFTOnAuction toAuction() => NFTOnAuction(
-        fileCid,
-        name,
-        reservePrice,
-        nftStandard,
-        collectionAddress,
-        collectionName,
-        collectionId,
-        nftTokenId,
-        blockchainNetwork,
-        totalCopies,
-        endTime,
-        isOwner,
-        properties?.map((e) => e.toDomain()).toList(),
-        description,
+        auctionId: auctionId,
+        blockchainNetwork: blockchainNetwork,
+        buyOutPrice: buyOutPrice,
+        collectionAddress: collectionAddress,
+        collectionId: collectionId,
+        collectionName: collectionName,
+        coverCid: coverCid,
+        currentPrice: currentPrice,
+        currentWinner: currentWinner,
+        description: description,
+        endTime: endTime,
+        fileCid: getPath(fileCid??''),
+        typeImage: getTypeImage(fileType ?? ''),
+        id: id,
+        idRef: idRef,
+        isBidByOther: isBidByOthers,
+        isBidProcessing: isBidProcessing,
+        isBoughtByOther: isBoughtByOther,
+        isOwner: isOwner,
+        marketStatus: getTypeMarket(marketStatus ?? 2),
+        mediaCid: mediaCid,
+        name: name,
+        nftCid: nftCid,
+        nftStandard: nftStandard,
+        nftTokenId: nftTokenId,
+        numberBid: numberBid,
+        numberOfCopies: numberOfCopies,
+        owner: owner,
+        ownerAccount: ownerAccount,
+        priceStep: priceStep,
+        properties: properties?.map((e) => e.toDomain()).toList(),
+        reservePrice: reservePrice,
+        show: show,
+        startTime: startTime,
+        ticked: ticked,
+        token: token,
+        totalCopies: totalCopies,
+        txnHash: txnHash,
+        type: type,
       );
 }
 

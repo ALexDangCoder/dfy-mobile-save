@@ -7,6 +7,11 @@ class UnAuthEvent {
 
   UnAuthEvent(this.message);
 }
+class TimeOutEvent {
+  final String message;
+
+  TimeOutEvent(this.message);
+}
 
 class OpenMainTabIndex {
   final int tabIndex;

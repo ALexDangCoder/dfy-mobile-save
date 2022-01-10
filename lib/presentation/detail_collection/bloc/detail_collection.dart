@@ -41,6 +41,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const String INSTAGRAM = 'instagram';
   static const String TELEGRAM = 'telegram';
   static const String TWITTER = 'twitter';
+  static const int SOFT_COLLECTION = 0;
+  static const int HARD_COLLECTION = 1;
 
 //
 
@@ -98,6 +100,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String collectionId = '';
   String collectionAddress = '';
   String typeActivity = '';
+
 
   void funFilterNft() {
     if (isOnSale.value) {
@@ -347,6 +350,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   Future<void> getListNft({
     List<int>? listMarketType,
     String? name,
+    int? size = 0,
+    int? page = 0,
     required String collectionId,
   }) async {
     statusNft.add(LOADING);
@@ -354,6 +359,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       collectionId: collectionId,
       nameNft: name,
       listMarketType: listMarketType,
+      size: size,
+      page: page,
     );
     result.when(
       success: (res) {
@@ -373,12 +380,16 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   Future<void> getListActivityCollection({
     String? collectionAddress = '',
     String? type = '',
+    int? page,
+    int? size,
   }) async {
     statusActivity.sink.add(LOADING);
     final Result<List<ActivityCollectionModel>> result =
         await _collectionDetailRepository.getCollectionListActivity(
       collectionAddress ?? '',
       type ?? '',
+      page ?? 0,
+      size ?? 0,
     );
     result.when(
       success: (res) {
