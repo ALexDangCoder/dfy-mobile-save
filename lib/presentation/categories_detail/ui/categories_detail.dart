@@ -82,7 +82,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                 if (state is LoadingCategoryState) {
                   return Column (
                     children: [
-                      
+                      Container (height:  145.h ,color:colorSkeletonLight),
                     ],
                   );
                 }
@@ -100,7 +100,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                             title:
                             '${widget.exploreCategory.name} ${S.current
                                 .categories}',
-                            initHeight: 145,
+                            initHeight: 145.h,
                             leading: SizedBox(
                               child: InkWell(
                                 onTap: () {
