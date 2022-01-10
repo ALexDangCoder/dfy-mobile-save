@@ -158,6 +158,7 @@ class _UploadProgressState extends State<UploadProgress>
                       context,
                       MaterialPageRoute(
                         builder: (_) => Approve(
+                          gasLimit: 2000000,
                           listDetail: [
                             DetailItemApproveModel(
                               title: S.current.collection_name,

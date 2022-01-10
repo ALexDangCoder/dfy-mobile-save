@@ -28,16 +28,11 @@ class ApiConstants {
   static const String GET_BOOL_CUSTOM_URL =
       'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=https://marketplace.defiforyou.uk/';
   static const String GET_LIST_COLLECTION_FILTER = '/nft-market-svc/public-api/collection';
-      'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=https://beta-marketplace.defiforyou.uk/';
-  static const String GET_LIST_COLLECTION_FILTER =
-      '/nft-market-svc/public-api/collection';
   static const String GET_LIST_NFT = '/nft-market-svc/public-api/search/nft';
   static const String GET_LIST_TYPE_NFT = '/hard-nft-svc/public-api/collections/types';
 
 
   static const String GET_LIST_NFT_COLLECTION = 'nft-market-svc/public-api/collection/list-nft';
-  static const String GET_LIST_NFT_COLLECTION =
-      'nft-market-svc/public-api/collection/list-nft';
   static const String COLLECTION_DETAIL =
       '/nft-market-svc/public-api/collection/';
   static const String COLLECTION_ACTIVITY_LIST =

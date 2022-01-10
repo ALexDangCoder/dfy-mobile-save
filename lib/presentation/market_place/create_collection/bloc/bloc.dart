@@ -43,6 +43,16 @@ class CreateCollectionBloc {
   File? coverPhoto;
   File? featurePhoto;
 
+  ///Social link map
+  List<Map<String, String>> socialLinkMap = [];
+
+  ///Image cid map
+  Map<String, String> cidMap = {
+    'avatar_cid': '',
+    'cover_cid': '',
+    'feature_cid': '',
+  };
+
   ///Default value of validate field
   Map<String, bool> mapCheck = {
     'cover_photo': false,
@@ -482,8 +492,6 @@ class CreateCollectionBloc {
         final Map<String, dynamic> map =
             jsonDecode(await response.stream.bytesToString());
         ipfsHash = map['IpfsHash'];
-      } else {
-        log(response.reasonPhrase.toString());
       }
     } catch (e) {
       log(e.toString());
@@ -491,8 +499,9 @@ class CreateCollectionBloc {
     return ipfsHash;
   }
 
+
   ///Create list Social link from data
-  List<Map<String, String>> createSocialMap() {
+  void createSocialMap() {
     final List<Map<String, String>> list = [];
     if (faceBook.isNotEmpty) {
       list.add({
@@ -518,15 +527,10 @@ class CreateCollectionBloc {
         'url': telegram,
       });
     }
-    return list;
+    socialLinkMap = list;
   }
 
   ///Create CID map
-  Map<String,String> cidMap = {
-    'avatar_cid' : '',
-    'cover_cid' : '',
-    'feature_cid' : '',
-  };
   Future<void> cidCreate() async {
     coverPhotoUploadStatusSubject.sink.add(-1);
     final coverCid = await uploadImageToIPFS(bin: avatarPath);
@@ -548,13 +552,49 @@ class CreateCollectionBloc {
     cidMap['feature_cid'] = featureCid;
   }
 
+  ///GET IPFS collection
+  Future<String> getCollectionIPFS() async {
+    String ipfsHash = '';
+    final Map<String, dynamic> body = {
+      'avatar_cid': cidMap['avatar_cid'],
+      'category': categoryId,
+      'cover_cid': cidMap['cover_cid'],
+      'custom_url': customUrl,
+      'description': description,
+      'external_link': 'https://defiforyou.mypinata.cloud/ipfs/${cidMap['avatar_cid']}',
+      'feature_cid': cidMap['feature_cid'],
+      'image': 'https://defiforyou.mypinata.cloud/ipfs/${cidMap['avatar_cid']}',
+      'name': collectionName,
+      'social_links': socialLinkMap,
+    };
+    final headers = {
+      'pinata_api_key': 'ac8828bff3bcd1c1b828',
+      'pinata_secret_api_key':
+      'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
+    };
+    try {
+      final response = await http.post(
+        Uri.parse('https://api.pinata.cloud/pinning/pinJSONToIPFS'),
+        headers: headers,
+        body: body,
+      );
+      if (response.statusCode == 200) {
+        final map = response.body as Map<String, dynamic>;
+        ipfsHash = map['IpfsHash'];
+      } else {
+        log(response.reasonPhrase.toString());
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return ipfsHash;
+  }
 
   ///Create Collection
   Future<void> createCollection() async {
-    final List<Map<String, String>> socialLink = createSocialMap();
     final String standard = collectionType == 0 ? 'ERC-721' : 'ERC-1155';
     final Map<String, dynamic> sortParam = {
-      'avatar_cid': cidMap['cover_cid'],
+      'avatar_cid': cidMap['avatar_cid'],
       'category_id': categoryId,
       'collection_standard': standard,
       'cover_cid': cidMap['cover_cid'],
@@ -563,7 +603,7 @@ class CreateCollectionBloc {
       'feature_cid': cidMap['feature_cid'],
       'name': collectionName,
       'royalty': royalties,
-      'social_links': socialLink,
+      'social_links': socialLinkMap,
       'txn_hash': 'txnHash',
     };
     log(sortParam.toString());
