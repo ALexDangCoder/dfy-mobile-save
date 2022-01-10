@@ -14,6 +14,17 @@ class ListNftLoading extends ListNftState {
   // TODO: implement props
   List<Object?> get props => [];
 }
+class ListNftLoadMore extends ListNftState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class ListNftRefresh extends ListNftState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
 
 class ListNftSuccess extends ListNftState {
   @override

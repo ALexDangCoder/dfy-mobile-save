@@ -1,6 +1,7 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
@@ -27,6 +28,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       BehaviorSubject.seeded([]);
   final BehaviorSubject<List<OwnerNft>> listOwnerStream =
       BehaviorSubject.seeded([]);
+  final BehaviorSubject<List<BiddingNft>> listBiddingStream =
+  BehaviorSubject.seeded([]);
+
+  String symbolToken = '';
 
   ///GetHistory
   NFTRepository get _nftRepo => Get.find();
@@ -58,8 +63,22 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     );
   }
 
+  ///GetBiding
+  Future<void> getBidding(String auctionId) async {
+    final Result<List<BiddingNft>> result =
+    await _nftRepo.getBidding(auctionId);
+    result.when(
+      success: (res) {
+        listBiddingStream.add(res);
+      },
+      error: (error) {
+        updateStateError();
+      },
+    );
+  }
+
   ///GetInfoNft
-  ///
+
   Future<void> getInForNFT(String marketId, MarketType type) async {
     showLoading();
     getTokenInf();
@@ -101,12 +120,14 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               res.urlToken = value.iconUrl;
               res.tokenSymbol = value.symbol;
               res.usdExchange = value.usdExchange;
+              symbolToken = value.symbol ?? '';
             }
           }
           showContent();
           emit(NftOnAuctionSuccess(res));
           getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getBidding(res.auctionId.toString());
         },
         error: (error) {
           updateStateError();

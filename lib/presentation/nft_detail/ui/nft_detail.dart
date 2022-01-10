@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
@@ -81,7 +82,18 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
               );
             },
           ),
-          BidTab(),
+          StreamBuilder<List<BiddingNft>>(
+            stream: _bloc.listBiddingStream,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<BiddingNft>> snapshot,
+            ) {
+              return BidTab(
+                listBidding: snapshot.data ?? [],
+                symbolToken: _bloc.symbolToken,
+              );
+            },
+          ),
         ];
         _tabTit = [
           Tab(
@@ -851,9 +863,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                             spaceH12,
                             buildRow(
                               title: S.current.nft_standard,
-                              detail: objSale.nftStandard == '0'
-                                  ? 'ERC - 721'
-                                  : 'ERC - 1155',
+                              detail: objSale.nftStandard ?? '',
                               type: TextType.NORMAL,
                             ),
                             spaceH12,
@@ -1053,7 +1063,19 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                 ),
                 tabs: _tabTit,
               ),
-              bottomBar: _buildButtonPlaceBid(context),
+              bottomBar: Row(
+                children: [
+                  Expanded(
+                    child: _buildButtonBuyOut(context),
+                  ),
+                  SizedBox(
+                    width: 23.w,
+                  ),
+                  Expanded(
+                    child: _buildButtonPlaceBid(context),
+                  ),
+                ],
+              ),
               content: [
                 _nameNFT(
                   title: nftOnAuction.name ?? '',
@@ -1105,9 +1127,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                           spaceH12,
                           buildRow(
                             title: S.current.nft_standard,
-                            detail: nftOnAuction.nftStandard == '0'
-                                ? 'ERC - 721'
-                                : 'ERC - 1155',
+                            detail: nftOnAuction.nftStandard ?? '',
                             type: TextType.NORMAL,
                           ),
                           spaceH12,
