@@ -52,7 +52,11 @@ class _CollectionListState extends State<CollectionList> {
       final thresholdReached = _listCollectionController.position.pixels ==
           _listCollectionController.position.maxScrollExtent;
       if (thresholdReached) {
-        collectionBloc.getListCollection();
+        collectionBloc.getListCollection(
+          size: 10,
+          name: collectionBloc.textSearch.value,
+          sortFilter: collectionBloc.sortFilter,
+        );
       }
     }
   }
@@ -263,7 +267,10 @@ class _CollectionListState extends State<CollectionList> {
                             return Expanded(
                               child: RefreshIndicator(
                                 onRefresh: () async {
-                                  await collectionBloc.getCollection();
+                                  await collectionBloc.getCollection(
+                                    name: collectionBloc.textSearch.value,
+                                    sortFilter: collectionBloc.sortFilter,
+                                  );
                                 },
                                 child: Expanded(
                                   child: SingleChildScrollView(

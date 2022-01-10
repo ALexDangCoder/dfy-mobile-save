@@ -111,9 +111,14 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     }
     debounceTime = Timer(const Duration(milliseconds: 800), () {
       if (textSearch.value.isEmpty) {
-        getCollection(sortFilter: sortFilter);
+        getCollection(
+          sortFilter: sortFilter,
+        );
       } else {
-        getCollection(name: textSearch.value, sortFilter: sortFilter);
+        getCollection(
+          name: textSearch.value,
+          sortFilter: sortFilter,
+        );
       }
     });
   }
@@ -247,6 +252,9 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     int? size = 10,
     String address = '',
   }) async {
+   if( nextPage==1){
+     nextPage=2;
+   }
     final Result<List<CollectionModel>> result =
         await _marketPlaceRepository.getListCollection(
       name: name,
@@ -277,8 +285,10 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     int? size = 10,
     int? page = 0,
     String address = '',
+    bool isLoad = true,
   }) async {
-    isCanLoadMore.add(true);
+    nextPage = 1;
+    isCanLoadMore.add(isLoad);
     emit(LoadingData());
     final Result<List<CollectionModel>> result =
         await _marketPlaceRepository.getListCollection(
