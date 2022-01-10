@@ -16,8 +16,8 @@ abstract class BaseState<T extends BaseScreen> extends State<T> {
   final CompositeSubscription _unAuthSubscription = CompositeSubscription();
 
   void _handleEventBus() {
-    eventBus.on<UnAuthEvent>().listen((event) {
-      //_showUnAuthDialog();
+    eventBus.on<TimeOutEvent>().listen((event) {
+      _showTimeoutDialog();
     }).addTo(_unAuthSubscription);
   }
 
@@ -25,6 +25,10 @@ abstract class BaseState<T extends BaseScreen> extends State<T> {
   void dispose() {
     _unAuthSubscription.clear();
     super.dispose();
+  }
+
+  void _showTimeoutDialog() {
+    //todo
   }
 
 // void _showUnAuthDialog() {
