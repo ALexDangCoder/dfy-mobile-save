@@ -1,5 +1,0 @@
-class DetailCategoryModel{
-
-
-  ///model here
-}

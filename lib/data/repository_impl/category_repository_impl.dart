@@ -18,4 +18,14 @@ class CategoryRepositoryImpl implements CategoryRepository {
       (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
+
+  @override
+  Future<Result<List<Category>>> getCategory(String name) {
+    return runCatchingAsync<ListCategoryResponse, List<Category>>(
+          () => _categoryService.getCategory(name),
+          (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+
 }

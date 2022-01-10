@@ -1,4 +1,4 @@
-import 'package:Dfy/generated/l10n.dart';
+
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_bid.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_burn.dart';
@@ -11,7 +11,6 @@ import 'package:Dfy/presentation/detail_collection/ui/activity/activity_receive_
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_report.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_sign_contract.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_transfer.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 
 class ListActivity extends StatelessWidget {
@@ -27,7 +26,7 @@ class ListActivity extends StatelessWidget {
   final String priceSymbol;
   final int typeActivity;
   final int auctionType;
-  final int nft_type;
+  final int nftType;
   final String urlSymbol;
   final int index;
   final DetailCollectionBloc bloc;
@@ -44,7 +43,7 @@ class ListActivity extends StatelessWidget {
     required this.typeActivity,
     required this.auctionType,
     required this.addressMyWallet,
-    required this.nft_type,
+    required this.nftType,
     required this.price,
     required this.priceSymbol,
     required this.urlSymbol,
@@ -54,46 +53,23 @@ class ListActivity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String myCopy = '';
-    String each = '';
-    String myAddress = '';
-    String myAddressTo = '';
-    String market = '';
-    if (marketStatus == 1) {
-      market = S.current.sale;
-    } else if (marketStatus == 2) {
-      market = S.current.auction;
-    } else if (marketStatus == 3) {
-      market = S.current.pawn;
-    } else {
-      market = S.current.not_on_market;
-    }
-    if (nft_type == 0) {
-      //721
-      myCopy = '';
-      each = '';
-    } else {
-      myCopy = copy;
-      each = S.current.activity_each;
-    }
-    if (addressMyWallet == addressWallet) {
-      myAddress = S.current.activity_you;
-    } else {
-      if (addressWallet.length < 12) {
-        myAddress = addressWallet;
-      } else {
-        myAddress = addressWallet.formatAddressActivityFire();
-      }
-    }
-    if (addressMyWallet == addressWalletSend) {
-      myAddressTo = S.current.activity_you;
-    } else {
-      if (addressWallet.length < 12) {
-        myAddress = addressWalletSend;
-      } else {
-        myAddressTo = addressWalletSend.formatAddressActivityFire();
-      }
-    }
+    final String each = bloc.funCheckEach(
+      nftType: nftType,
+    );
+    final String myCopy = bloc.funCheckCopy(
+      copy: copy,
+      nftType: nftType,
+    );
+    final String market = bloc.funGetMarket(marketStatus);
+    final String myAddress = bloc.funCheckAddressSend(
+      addressWallet: addressWallet,
+      addressMyWallet: addressMyWallet,
+    );
+    final String myAddressTo = bloc.funCheckAddressTo(
+      addressMyWallet: addressMyWallet,
+      addressWalletSend: addressWalletSend,
+    );
+
     return itemActivity(
       price: price,
       typeActivity: typeActivity,

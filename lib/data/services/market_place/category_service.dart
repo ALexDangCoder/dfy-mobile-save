@@ -13,4 +13,9 @@ abstract class CategoryService {
 
   @GET(ApiConstants.GET_LIST_CATEGORY)
   Future<ListCategoryResponse> getListCategory();
+
+  @GET(ApiConstants.GET_LIST_CATEGORY)
+  Future<ListCategoryResponse> getCategory(
+      @Query('name') String name,
+      );
 }
