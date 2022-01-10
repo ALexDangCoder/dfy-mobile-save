@@ -146,7 +146,7 @@ class _CollectionListState extends State<CollectionList> {
                           20.sp,
                           FontWeight.w700,
                         ).copyWith(
-                          overflow: TextOverflow.ellipsis
+                          overflow: TextOverflow.ellipsis,
                         ),
                         maxLines: 1,
                       ),
@@ -274,8 +274,7 @@ class _CollectionListState extends State<CollectionList> {
                                     },
                                     child: ItemCollection(
                                       items:
-                                          '${snapshot.data?[index].totalNft ??
-                                              0}',
+                                          '${snapshot.data?[index].totalNft ?? 0}',
                                       text: snapshot.data?[index].description
                                               ?.parseHtml() ??
                                           '',

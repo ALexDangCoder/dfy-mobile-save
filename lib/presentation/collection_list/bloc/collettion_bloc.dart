@@ -21,15 +21,14 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     getListCategory();
   }
 
-  static const int HIGHEST_TRADING_VOLUME=0;
-  static const int LOWEST_TRADING_VOLUME=1;
-  static const int NEWEST=2;
-  static const int OLDEST=3;
-  static const int OWNER_FROM_HIGH_TO_LOW=4;
-  static const int OWNER_FROM_LOW_TO_HIGH=5;
-  static const int ITEM_FROM_HIGH_TO_LOW=6;
-  static const int ITEM_FROM_LOW_TO_HIGH=7;
-
+  static const int HIGHEST_TRADING_VOLUME = 0;
+  static const int LOWEST_TRADING_VOLUME = 1;
+  static const int NEWEST = 2;
+  static const int OLDEST = 3;
+  static const int OWNER_FROM_HIGH_TO_LOW = 4;
+  static const int OWNER_FROM_LOW_TO_HIGH = 5;
+  static const int ITEM_FROM_HIGH_TO_LOW = 6;
+  static const int ITEM_FROM_LOW_TO_HIGH = 7;
 
   //getlistcollection
   BehaviorSubject<List<CollectionModel>> list = BehaviorSubject();
@@ -243,10 +242,19 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   Future<void> getCollection({
     String? name = '',
     int? sortFilter = 0,
+    int? size = 0,
+    int? page = 0,
+    String address = '',
   }) async {
     emit(LoadingData());
-    final Result<List<CollectionModel>> result = await _marketPlaceRepository
-        .getListCollection(name: name, sort: sortFilter);
+    final Result<List<CollectionModel>> result =
+        await _marketPlaceRepository.getListCollection(
+      name: name,
+      sort: sortFilter,
+      size: size,
+      page: page,
+      address: address,
+    );
     result.when(
       success: (res) {
         if (res.isEmpty) {
