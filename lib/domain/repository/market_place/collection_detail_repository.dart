@@ -7,8 +7,10 @@ mixin CollectionDetailRepository {
     String id,
   );
 
-  Future<Result< List<ActivityCollectionModel>>> getCollectionListActivity(
+  Future<Result<List<ActivityCollectionModel>>> getCollectionListActivity(
     String collectionAddress,
     String type,
+    int page,
+    int size,
   );
 }

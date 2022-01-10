@@ -34,9 +34,6 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     result.when(
       success: (res) {
         addCollectionFilter(list: res);
-        selectCollection.clear();
-        selectTypeNft.clear();
-        selectStatus.clear();
       },
       error: (error) {
         updateStateError();
@@ -44,30 +41,39 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     );
   }
 
-  void setTitle(){
-    if(selectStatus.isEmpty || selectStatus.length >1){
+  void setTitle() {
+    if (selectStatus.isEmpty || selectStatus.length > 1) {
       title.add('All NFT');
-    }
-    else{
+    } else {
       title.add(getTitleStream(selectStatus.first));
     }
   }
-  String getTitleStream(int num){
-    if (num  == 2) {
+
+  String getTitleStream(int num) {
+    if (num == 2) {
+      selectStatus.add(2);
       return S.current.nft_on_auction;
     } else if (num == 3) {
+      selectStatus.add(3);
       return S.current.nft_on_pawn;
     } else {
+      selectStatus.add(1);
       return S.current.nft_on_sale;
     }
   }
 
   String status(MarketType? type) {
     if (type == MarketType.AUCTION) {
+      checkFilterArr.add(S.current.on_auction);
+      selectStatus.add(2);
       return '2';
     } else if (type == MarketType.PAWN) {
+      checkFilterArr.add(S.current.on_pawn);
+      selectStatus.add(3);
       return '3';
     } else if (type == MarketType.SALE) {
+      checkFilterArr.add(S.current.on_sale);
+      selectStatus.add(1);
       return '1';
     } else {
       return '';
@@ -83,13 +89,42 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   }
 
   void searchNft(String? name, String? status) {
-    if(status!.isEmpty) {
+    page = 0;
+    if (status!.isEmpty) {
       getListNft(name: name);
-    }
-    else if (name?.isNotEmpty ?? true && status.isNotEmpty) {
+    } else if (name?.isNotEmpty ?? true && status.isNotEmpty) {
       getListNft(name: name, status: status);
     } else {
       getListNft(status: status);
+    }
+  }
+
+  int page = 0;
+  bool loadMore  = false;
+  bool canLoadMoreListNft = true;
+  bool refresh = false;
+
+  void loadMorePosts() {
+    if(!loadMore){
+      page +=1;
+      canLoadMoreListNft = true;
+      loadMore = true;
+      getListNft(
+        status: getParam(selectStatus),
+        nftType: getParam(selectTypeNft),
+        collectionId: getParam(selectCollection),
+      );
+    }
+  }
+  void refreshPosts() {
+    page = 0;
+    if(!refresh){
+      refresh = true;
+      getListNft(
+        status: getParam(selectStatus),
+        nftType: getParam(selectTypeNft),
+        collectionId: getParam(selectCollection),
+      );
     }
   }
 
@@ -99,39 +134,60 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     String? name,
     String? collectionId,
   }) async {
-    emit(ListNftLoading());
-    getTokenInf();
+    if(loadMore){
+      emit(ListNftLoadMore());
+    } else if(refresh){
+      emit(ListNftRefresh());
+    }
+    else {
+      emit(ListNftLoading());
+    }
     final Result<List<NftMarket>> result = await _nftRepo.getListNft(
       status: status,
       name: name,
       nftType: nftType,
       collectionId: collectionId,
+      page: page.toString(),
     );
     result.when(
       success: (res) {
-        for(final item in res) {
+        for (final item in res) {
           final tokenBuyOut = item.tokenBuyOut ?? '';
-          for(final value in listTokenSupport){
+          for (final value in listTokenSupport) {
             final address = value.address ?? '';
-            if(tokenBuyOut.toLowerCase() == address.toLowerCase()){
+            if (tokenBuyOut.toLowerCase() == address.toLowerCase()) {
               item.urlToken = value.iconUrl;
               item.symbolToken = value.symbol;
               item.usdExchange = value.usdExchange;
             }
           }
         }
-        listData = res;
+        if(res.isEmpty && loadMore){
+          canLoadMoreListNft = false;
+        }
+        if(loadMore){
+          listData = listData + res;
+          loadMore = false;
+        }
+        else {
+          listData = res;
+          refresh = false;
+        }
         emit(ListNftSuccess());
       },
       error: (error) {
         updateStateError();
         emit(ListNftError());
+        loadMore = false;
+        refresh = false;
       },
     );
   }
+
   ///getListTokenSupport
 
   List<TokenInf> listTokenSupport = [];
+
   void getTokenInf() {
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
@@ -139,6 +195,39 @@ class ListNftCubit extends BaseCubit<ListNftState> {
 
   ///Param Filter
   final List<int> selectTypeNft = [];
+
+  void setCheck(
+    List<int>? selectTypeNft,
+    List<int>? selectStatus,
+    List<String?> selectCollection,
+  ) {
+    for (final value in selectTypeNft ?? []) {
+      if (value == 1) {
+        checkFilterArr.add(S.current.hard_NFT);
+      }
+      if (value == 0) {
+        checkFilterArr.add(S.current.soft_nft);
+      }
+    }
+    for (final value in selectStatus ?? []) {
+      if (value == 1) {
+        checkFilterArr.add(S.current.on_sale);
+      }
+      if (value == 2) {
+        checkFilterArr.add(S.current.on_auction);
+      }
+      if (value == 3) {
+        checkFilterArr.add(S.current.on_pawn);
+      }
+    }
+    for (final value in selectCollection) {
+      for (final address in listCollectionCheck) {
+        if (value == address.collectionId) {
+          checkFilterArr.add(address.nameCkcFilter);
+        }
+      }
+    }
+  }
 
   String getParam(List<dynamic> list) {
     final query = StringBuffer();
@@ -151,89 +240,106 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   void selectParamTypeNft(String type) {
     if (type == S.current.hard_NFT) {
       selectTypeNft.add(1);
-      checkFilterArr.add(type);
     }
     if (type == S.current.soft_nft) {
       selectTypeNft.add(0);
-      checkFilterArr.add(type);
     }
   }
 
   void moveParamTypeNft(String type) {
     if (type == S.current.hard_NFT) {
       selectTypeNft.remove(1);
-      checkFilterArr.remove(type);
     }
     if (type == S.current.soft_nft) {
       selectTypeNft.remove(0);
-      checkFilterArr.remove(type);
     }
   }
 
   final List<int> selectStatus = [];
 
+  void checkStatus() {
+    if (selectCollection.length > 1) {
+      for (int i = 0; i < selectCollection.length -1; i++) {
+        for (int j = i + 1; j < selectCollection.length; j++) {
+          if (selectCollection[i] == selectCollection[j]) {
+            selectCollection.removeAt(j);
+          }
+        }
+      }
+    }
+
+    if (selectStatus.length > 1) {
+      for (int i = 0; i < selectStatus.length -1; i++) {
+        for (int j = i + 1; j < selectStatus.length; j++) {
+          if (selectStatus[i] == selectStatus[j]) {
+            selectStatus.removeAt(j);
+          }
+        }
+      }
+    }
+    if (selectTypeNft.length > 1) {
+      for (int i = 0; i < selectTypeNft.length -1; i++) {
+        for (int j = i + 1; j < selectTypeNft.length; j++) {
+          if (selectTypeNft[i] == selectTypeNft[j]) {
+            selectTypeNft.removeAt(j);
+          }
+        }
+      }
+    }
+  }
+
   void selectParamStatus(String type) {
     if (type == S.current.on_sale) {
       selectStatus.add(1);
-      checkFilterArr.add(type);
     }
     if (type == S.current.on_pawn) {
       selectStatus.add(3);
-      checkFilterArr.add(type);
     }
     if (type == S.current.on_auction) {
       selectStatus.add(2);
-      checkFilterArr.add(type);
     }
   }
 
   void moveParamStatus(String type) {
     if (type == S.current.on_sale) {
       selectStatus.remove(1);
-      checkFilterArr.remove(type);
     }
     if (type == S.current.on_pawn) {
       selectStatus.remove(3);
-      checkFilterArr.remove(type);
     }
     if (type == S.current.on_auction) {
       selectStatus.remove(2);
-      checkFilterArr.remove(type);
     }
   }
 
   final List<String?> selectCollection = [];
 
   void selectParamCollection(String type) {
-    for(final value in listCollectionCheck) {
-      if(type == value.nameCkcFilter){
+    for (final value in listCollectionCheck) {
+      if (type == value.nameCkcFilter) {
         selectCollection.add(value.collectionId);
-        checkFilterArr.add(type);
       }
     }
   }
 
   void moveParamCollection(String type) {
-    for(final value in listCollectionCheck) {
-      if(type == value.nameCkcFilter){
+    for (final value in listCollectionCheck) {
+      if (type == value.nameCkcFilter) {
         selectCollection.remove(value.collectionId);
-        checkFilterArr.remove(type);
       }
     }
   }
 
   List<String> checkFilterArr = [];
 
-
   bool checkFilter(String key) {
-    if(checkFilterArr.isNotEmpty){
-      if(checkFilterArr.contains(key)){
+    if (checkFilterArr.isNotEmpty) {
+      if (checkFilterArr.contains(key)) {
         return true;
       } else {
         return false;
       }
-    }
-    else {
+    } else {
       return false;
     }
   }
@@ -250,10 +356,9 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   }
 
   String getTitle(MarketType? type) {
-    if(type == null) {
+    if (type == null) {
       return S.current.nfts_search_result;
-    }
-    else if (type == MarketType.SALE) {
+    } else if (type == MarketType.SALE) {
       return S.current.nft_on_sale;
     } else if (type == MarketType.AUCTION) {
       return S.current.on_auction;
@@ -295,4 +400,6 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   }
 
   List<NftMarket> listData = [];
+
+
 }

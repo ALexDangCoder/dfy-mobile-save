@@ -22,5 +22,7 @@ abstract class CollectionDetailService {
   Future<ActivityCollectionResponse> getListActivityCollection(
     @Query('address') String collectionAddress,
     @Query('type') String type,
+    @Query('page') int page,
+    @Query('size') int size,
   );
 }
