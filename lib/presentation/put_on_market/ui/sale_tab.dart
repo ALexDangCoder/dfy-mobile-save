@@ -158,6 +158,7 @@ class _SaleTabState extends State<SaleTab>
                       context,
                       MaterialPageRoute(
                         builder: (context) => Approve(
+                          showPopUp: false,
                           warning: RichText(
                             text: TextSpan(
                               text:
@@ -205,15 +206,14 @@ class _SaleTabState extends State<SaleTab>
                             )
                           ],
                           textActiveButton: S.current.put_on_sale,
-                          action: () async {
-                            await Future.delayed(Duration(seconds: 3));
-                            print(' call action in hear ');
+                          action: (gasLimit,gasPrice )  async {
+                            await Future.delayed(const Duration(seconds: 3));
                           },
                           approve: () async {
-                            await Future.delayed(Duration(seconds: 3));
-                            print(' call approve  in hear ');
+                            await Future.delayed(const Duration(seconds: 3));
                             return true;
-                          }, gasLimit: 10,
+                          },
+                          gasLimitFirst: 100,
                         ),
                       ),
                     );
