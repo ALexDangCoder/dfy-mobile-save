@@ -296,7 +296,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                   widgetBuilder: (_, CurrentRemainingTime? time) {
                     if (time == null) {
                       return Text(
-                        '00:00:00:01',
+                        '00:00:00:00',
                         style: textNormalCustom(
                           AppTheme.getInstance().whiteColor(),
                           13,
