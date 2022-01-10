@@ -158,7 +158,6 @@ class _SaleTabState extends State<SaleTab>
                       context,
                       MaterialPageRoute(
                         builder: (context) => Approve(
-                          isShowTwoButton: true,
                           warning: RichText(
                             text: TextSpan(
                               text:
@@ -214,7 +213,7 @@ class _SaleTabState extends State<SaleTab>
                             await Future.delayed(Duration(seconds: 3));
                             print(' call approve  in hear ');
                             return true;
-                          },
+                          }, gasLimit: 10,
                         ),
                       ),
                     );

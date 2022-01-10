@@ -80,12 +80,8 @@ class ListExploreCategory extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => CategoriesDetail(
-                                      title:
-                                          cubit.exploreCategories[index].name ??
-                                              'name',
-                                      id: cubit.exploreCategories[index]
-                                              .itemId ??
-                                          '',
+                                      exploreCategory:
+                                          cubit.exploreCategories[index],
                                     ),
                                   ),
                                 );
