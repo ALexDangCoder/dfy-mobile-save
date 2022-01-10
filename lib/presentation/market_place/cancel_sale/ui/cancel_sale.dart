@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -33,8 +32,6 @@ class CancelSale extends StatefulWidget {
 class _CancelSaleState extends State<CancelSale> {
   @override
   void initState() {
-    trustWalletChannel
-        .setMethodCallHandler(widget.cubit.nativeMethodCallBackTrustWallet);
     super.initState();
   }
 
@@ -42,9 +39,13 @@ class _CancelSaleState extends State<CancelSale> {
   Widget build(BuildContext context) {
     return Approve(
       listDetail: widget.cubit.initListApprove(),
-      action: () {
-        widget.cubit.signTransactionWithData(
-            gasLimit: '0', gasPrice: '0', walletAddress: '', withData: '');
+      action: (gasLimit, gasPrice) async {
+        await widget.cubit.signTransactionWithData(
+          gasLimit: gasLimit.toString(),
+          gasPrice: gasPrice.toString(),
+          walletAddress: widget.walletAdress,
+          withData: widget.dataString,
+        );
       },
       title: S.current.cancel_sale,
       header: Container(
@@ -85,7 +86,7 @@ class _CancelSaleState extends State<CancelSale> {
         ],
       ),
       textActiveButton: S.current.cancel_sale,
-      gasLimit: widget.gasLimit,
+      gasLimitFirst: widget.gasLimit,
     );
   }
 }

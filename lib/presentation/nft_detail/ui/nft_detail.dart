@@ -238,19 +238,29 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               InkWell(
                 onTap: () async {
-
                   //todo
+                  final String dataString = await _bloc.getDataString(
+                    context: context,
+                    orderId: '84',
+                    walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
+                  );
                   final double gasLimit = await _bloc.getGasLimit(
                     walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
-                    context: context,
-                    orderId: '80',
+                    dataString: dataString,
                   );
-                  Navigator.push(
+
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => CancelSale(
-                        cubit: CancelSaleCubit(ntfValue: 'Oi doi oi', quantity: '1'),
-                        gasLimit: gasLimit, dataString: '', walletAdress: '',
+                        cubit: CancelSaleCubit(
+                          ntfValue: 'Oi doi oi',
+                          quantity: '1',
+                        ),
+                        gasLimit: gasLimit,
+                        dataString: dataString,
+                        walletAdress:
+                            '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb',
                       ),
                     ),
                   );

@@ -34,13 +34,24 @@ class CancelSaleCubit extends BaseCubit<CancelSaleState> {
     ];
     return listApprove;
   }
+  Future<dynamic> nativeMethodCallBack(MethodCall methodCall) async {
+    if (methodCall.method == 'signTransactionWithDataCallback') {
+      bool isSuccess = await methodCall.arguments['isSuccess'];
+    }else if(methodCall.method == 'getListWalletsCallback'){
+      print('sds');
+    } else {
+      print('okok');
+    }
+    return;
+  }
 
   //ky giao dich
-  Future<void> signTransactionWithData(
-      {required String walletAddress,
-      required String gasPrice,
-      required String gasLimit,
-      required String withData}) async {
+  Future<void> signTransactionWithData({
+    required String walletAddress,
+    required String gasPrice,
+    required String gasLimit,
+    required String withData,
+  }) async {
     try {
       final TransactionCountResponse transaction =
           await web3utils.getTransactionCount(address: walletAddress);
@@ -53,20 +64,16 @@ class CancelSaleCubit extends BaseCubit<CancelSaleState> {
         'nonce': transaction.count.toString(),
         'chainId': appConstant.chaninId,
         'gasPrice': gasPrice,
-        'gasLimit': String,
+        'gasLimit': gasLimit,
         'withData': withData,
       };
       await trustWalletChannel.invokeMethod('signTransactionWithData', data);
     } on PlatformException catch (e) {
       //
+      throw e;
     }
   }
 
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    if (methodCall.method == 'signTransactionWithDataCallback') {
-      transaction = await methodCall.arguments;
-    }
-  }
 
   //cancel sale:
   Future<Map<String, dynamic>> cancelSale() async {

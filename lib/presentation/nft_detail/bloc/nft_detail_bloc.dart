@@ -165,7 +165,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   //get limit gas
   final Web3Utils web3utils = Web3Utils();
 
-  Future<double> getGasLimit({
+  Future<String> getDataString({
     required BuildContext context,
     required String orderId,
     required String walletAddress,
@@ -176,8 +176,21 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         orderId: orderId,
         context: context,
       );
+
+      return dataString;
+    }catch (e){
+      return '';
+    }
+    //get dataString
+  }
+
+  Future<double> getGasLimit({
+    required String dataString,
+    required String walletAddress,
+  }) async {
+    try{
       //get gas limit by  data
-      double gasLimit = double.parse(
+      final double gasLimit = double.parse(
         await web3utils.getGasLimitByData(
           from: walletAddress,
           toContractAddress: nft_sales_address_dev2,
@@ -186,9 +199,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       );
       return gasLimit;
     }catch (e){
-      return 0;
+      return -1;
     }
-    //get dataString
-
   }
 }
