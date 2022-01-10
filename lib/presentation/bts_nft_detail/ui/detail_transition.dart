@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
@@ -109,7 +110,11 @@ class TransactionDetail extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                launch(appConstants.bscScan + (txhID ?? ''));
+                launch(
+                  appConstants.bscScan +
+                      ApiConstants.BSC_SCAN_ADDRESS +
+                      (txhID ?? ''),
+                );
               },
               child: Text(
                 S.current.view_on_bscscan,
