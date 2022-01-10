@@ -2,8 +2,12 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
@@ -11,6 +15,7 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../main.dart';
 import 'component/estimate_gas_fee.dart';
@@ -65,18 +70,28 @@ class _ApproveState extends State<Approve> {
   bool isApproved = false;
   late int accountImage;
   double gasFee = 0;
+  int nonce = 0;
+  final NFTDetailBloc nftDetailBloc = nftKey.currentState!.bloc;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     accountImage = cubit.randomAvatar();
+    getNonce();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       heightScaffold = scaffoldKey.currentContext?.size?.height;
     });
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
+    // trustWalletChannel.setMethodCallHandler(
+    //   nftDetailBloc.nativeMethodCallBackTrustWallet,
+    // );
     cubit.getListWallets();
+  }
+
+  Future<void> getNonce() async {
+    nonce = await nftDetailBloc.getNonceWeb3(
+        walletAddress: nftDetailBloc.wallets.first.address ?? '');
   }
 
   @override
@@ -299,18 +314,29 @@ class _ApproveState extends State<Approve> {
                       haveMargin: false,
                       title: widget.textActiveButton,
                       isEnable:
-                      (isApproved || !(widget.isShowTwoButton ?? false)) &&
-                          isCanAction,
+                          (isApproved || !(widget.isShowTwoButton ?? false)) &&
+                              isCanAction,
                     ),
                     onTap: () async {
-                      if ((isApproved || !(widget.isShowTwoButton ?? false)) &&
-                          isCanAction) {
-                        final navigator = Navigator.of(context);
-                        cubit.changeLoadingState(isShow: true);
-                        await widget.action();
-                        cubit.changeLoadingState(isShow: false);
-                        navigator.pop();
-                      }
+                      await cubit
+                          .signTransactionWithData(
+                            walletAddress:
+                                nftDetailBloc.wallets.first.address ?? '',
+                            contractAddress: nft_sales_address_dev2,
+                            nonce: nonce.toString(),
+                            chainId: Get.find<AppConstants>().chaninId,
+                            gasPrice: cubit.gasPriceSubject.value.toString(),
+                            gasLimit: nftDetailBloc.gasLimit,
+                            hexString: nftDetailBloc.hexString,
+                          );
+                      // if ((isApproved || !(widget.isShowTwoButton ?? false)) &&
+                      //     isCanAction) {
+                      //   final navigator = Navigator.of(context);
+                      //   cubit.changeLoadingState(isShow: true);
+                      //   await widget.action();
+                      //   cubit.changeLoadingState(isShow: false);
+                      //   navigator.pop();
+                      // }
                     },
                   ),
                 ),

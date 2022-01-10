@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -10,6 +11,7 @@ import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -28,7 +30,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   final Web3Utils web3Client = Web3Utils();
   late final double balance;
   late final String hexString;
-  late final String gasFee;
+  late final String gasLimit;
+  late final String rawData;
 
   Stream<bool> get viewStream => _viewSubject.stream;
 
@@ -39,7 +42,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   final BehaviorSubject<List<OwnerNft>> listOwnerStream =
       BehaviorSubject.seeded([]);
   final BehaviorSubject<List<BiddingNft>> listBiddingStream =
-  BehaviorSubject.seeded([]);
       BehaviorSubject.seeded([]);
 
   String symbolToken = '';
@@ -49,8 +51,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   Sink<bool> get pairSink => _pairSubject.sink;
 
-  Future<double> getBalanceToken(
-      {required String ofAddress, required String tokenAddress}) async {
+  Future<double> getBalanceToken({
+    required String ofAddress,
+    required String tokenAddress,
+  }) async {
     balance = await web3Client.getBalanceOfToken(
       ofAddress: ofAddress,
       tokenAddress: tokenAddress,
@@ -95,7 +99,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   ///GetBiding
   Future<void> getBidding(String auctionId) async {
     final Result<List<BiddingNft>> result =
-    await _nftRepo.getBidding(auctionId);
+        await _nftRepo.getBidding(auctionId);
     result.when(
       success: (res) {
         listBiddingStream.add(res);
@@ -171,7 +175,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     }
   }
 
-
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'getListWalletsCallback':
@@ -191,10 +194,19 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           emit(HaveWallet(nftMarket));
         }
         break;
+
       default:
         break;
     }
   }
+
+  Future<int> getNonceWeb3({required String walletAddress}) async {
+    final result =
+        await web3Client.getTransactionCount(address: walletAddress);
+    return result.count;
+  }
+
+
 
   Future<void> getListWallets() async {
     try {
@@ -218,23 +230,28 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     final today = DateTime.now().millisecondsSinceEpoch;
     if (endDate.millisecondsSinceEpoch > today) {
       return endDate.microsecondsSinceEpoch - today;
-    }
-    else{
+    } else {
       return 0;
     }
   }
+
   Future<String> getBuyNftData({
     required String contractAddress,
     required String orderId,
     required String numberOfCopies,
     required BuildContext context,
   }) async {
-    hexString = await web3Client.getBuyNftData(
-      contractAddress: contractAddress,
-      orderId: orderId,
-      numberOfCopies: numberOfCopies,
-      context: context,
-    );
+    try {
+      hexString = await web3Client.getBuyNftData(
+        contractAddress: contractAddress,
+        orderId: orderId,
+        numberOfCopies: numberOfCopies,
+        context: context,
+      );
+    } catch (e) {
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
     return hexString;
   }
 
@@ -242,11 +259,39 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       {required String fromAddress,
       required String toAddress,
       required String hexString}) async {
-    gasFee = await web3Client.getGasLimitByData(
-      from: fromAddress,
-      toContractAddress: toAddress,
-      dataString: hexString,
-    );
-    return gasFee;
+    try {
+      gasLimit = await web3Client.getGasLimitByData(
+        from: fromAddress,
+        toContractAddress: toAddress,
+        dataString: hexString,
+      );
+      emit(GetGasLimitSuccess(gasLimit));
+    } catch (e) {
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
+    return gasLimit;
+  }
+
+  Future<void> callWeb3(BuildContext context) async {
+    showLoading();
+    try {
+      await getBuyNftData(
+        contractAddress: nft_sales_address_dev2,
+        orderId: nftMarket.orderId.toString(),
+        numberOfCopies: '1',
+        context: context,
+      ).then(
+        (value) => getGasLimitByData(
+          fromAddress: wallets.first.address ?? '',
+          toAddress: nft_sales_address_dev2,
+          hexString: value,
+        ),
+      );
+      showContent();
+    } catch (e) {
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
   }
 }

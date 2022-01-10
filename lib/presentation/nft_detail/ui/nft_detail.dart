@@ -36,7 +36,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
+
 final nftKey = GlobalKey<NFTDetailScreenState>();
+
 class NFTDetailScreen extends StatefulWidget {
   const NFTDetailScreen({Key? key, required this.type, this.marketId})
       : super(key: key);
@@ -59,7 +61,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       case MarketType.AUCTION:
         _tabPage = [
           StreamBuilder<List<HistoryNFT>>(
-            stream: _bloc.listHistoryStream,
+            stream: bloc.listHistoryStream,
             builder: (
               BuildContext context,
               AsyncSnapshot<List<HistoryNFT>> snapshot,
@@ -70,7 +72,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             },
           ),
           StreamBuilder<List<OwnerNft>>(
-            stream: _bloc.listOwnerStream,
+            stream: bloc.listOwnerStream,
             builder: (
               BuildContext context,
               AsyncSnapshot<List<OwnerNft>> snapshot,
@@ -81,14 +83,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             },
           ),
           StreamBuilder<List<BiddingNft>>(
-            stream: _bloc.listBiddingStream,
+            stream: bloc.listBiddingStream,
             builder: (
               BuildContext context,
               AsyncSnapshot<List<BiddingNft>> snapshot,
             ) {
               return BidTab(
                 listBidding: snapshot.data ?? [],
-                symbolToken: _bloc.symbolToken,
+                symbolToken: bloc.symbolToken,
               );
             },
           ),
@@ -754,8 +756,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       onPressed: () async {
         await bloc
             .getBalanceToken(
-                ofAddress: bloc.wallets.first.address ?? '',
-                tokenAddress: bloc.nftMarket.token ?? '')
+              ofAddress: bloc.wallets.first.address ?? '',
+              tokenAddress: bloc.nftMarket.token ?? '',
+            )
             .then(
               (value) => Navigator.push(
                 context,
@@ -789,11 +792,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
         if (state is NftOnSaleSuccess) {
           final objSale = state.nftMarket;
           return StateStreamLayout(
-            stream: _bloc.stateStream,
+            stream: bloc.stateStream,
             error:
                 AppException(S.current.error, S.current.something_went_wrong),
             retry: () async {
-              await _bloc.getInForNFT(widget.marketId ?? '', widget.type);
+              await bloc.getInForNFT(widget.marketId ?? '', widget.type);
             },
             textEmpty: '',
             child: BaseCustomScrollView(
@@ -841,7 +844,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 spaceH20,
                 StreamBuilder<bool>(
                   initialData: false,
-                  stream: _bloc.viewStream,
+                  stream: bloc.viewStream,
                   builder: (context, snapshot) {
                     return Visibility(
                       visible: !snapshot.data!,
@@ -892,12 +895,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 ),
                 StreamBuilder<bool>(
                   initialData: true,
-                  stream: _bloc.viewStream,
+                  stream: bloc.viewStream,
                   builder: (context, snapshot) {
                     return Visibility(
                       child: InkWell(
                         onTap: () {
-                          _bloc.viewSink.add(!snapshot.data!);
+                          bloc.viewSink.add(!snapshot.data!);
                         },
                         child: Container(
                           padding: EdgeInsets.only(
@@ -948,6 +951,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
         }
       case MarketType.PAWN:
         return BaseCustomScrollView(
+          typeImage: TypeImage.IMAGE,
           image: '',
           initHeight: 360.h,
           leading: _leading(),
@@ -978,7 +982,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             spaceH20,
             StreamBuilder<bool>(
               initialData: false,
-              stream: _bloc.viewStream,
+              stream: bloc.viewStream,
               builder: (context, snapshot) {
                 return Visibility(
                   visible: !snapshot.data!,
@@ -997,12 +1001,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
             StreamBuilder<bool>(
               initialData: true,
-              stream: _bloc.viewStream,
+              stream: bloc.viewStream,
               builder: (context, snapshot) {
                 return Visibility(
                   child: InkWell(
                     onTap: () {
-                      _bloc.viewSink.add(!snapshot.data!);
+                      bloc.viewSink.add(!snapshot.data!);
                     },
                     child: Container(
                       padding: EdgeInsets.only(
@@ -1047,14 +1051,15 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
         if (state is NftOnAuctionSuccess) {
           final nftOnAuction = state.nftOnAuction;
           return StateStreamLayout(
-            stream: _bloc.stateStream,
+            stream: bloc.stateStream,
             error:
                 AppException(S.current.error, S.current.something_went_wrong),
             retry: () async {
-              await _bloc.getInForNFT(widget.marketId ?? '', widget.type);
+              await bloc.getInForNFT(widget.marketId ?? '', widget.type);
             },
             textEmpty: '',
             child: BaseCustomScrollView(
+              typeImage: nftOnAuction.typeImage ?? TypeImage.IMAGE,
               image: nftOnAuction.fileCid ?? '',
               initHeight: 360.h,
               leading: _leading(),
@@ -1101,7 +1106,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                   urlToken: nftOnAuction.urlToken ?? '',
                   shortName: nftOnAuction.tokenSymbol ?? '',
                 ),
-                _timeContainer(_bloc.getTimeCountDown(nftOnAuction)),
+                _timeContainer(bloc.getTimeCountDown(nftOnAuction)),
                 divide,
                 spaceH12,
                 _description(
@@ -1112,7 +1117,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 spaceH20,
                 StreamBuilder<bool>(
                   initialData: false,
-                  stream: _bloc.viewStream,
+                  stream: bloc.viewStream,
                   builder: (context, snapshot) {
                     return Visibility(
                       visible: !snapshot.data!,
@@ -1158,12 +1163,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 ),
                 StreamBuilder<bool>(
                   initialData: true,
-                  stream: _bloc.viewStream,
+                  stream: bloc.viewStream,
                   builder: (context, snapshot) {
                     return Visibility(
                       child: InkWell(
                         onTap: () {
-                          _bloc.viewSink.add(!snapshot.data!);
+                          bloc.viewSink.add(!snapshot.data!);
                         },
                         child: Container(
                           padding: EdgeInsets.only(

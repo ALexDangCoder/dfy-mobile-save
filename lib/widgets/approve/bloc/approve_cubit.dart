@@ -16,7 +16,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   String? nameWallet;
   String? addressWallet;
   double? balanceWallet;
-
+  String? rawData;
+  final Web3Utils web3Client = Web3Utils();
   final BehaviorSubject<String> _addressWalletCoreSubject =
       BehaviorSubject<String>();
   final BehaviorSubject<String> _nameWalletSubject = BehaviorSubject<String>();
@@ -32,8 +33,10 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   Stream<double> get balanceWalletStream => _balanceWalletSubject.stream;
 
   Stream<double> get gasPriceStream => gasPriceSubject.stream;
-
-
+  Future<bool> sendRawData(String rawData) async {
+    final result = await web3Client.sendRawTransaction(transaction: rawData);
+    return result['isSuccess'];
+  }
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'getListWalletsCallback':
@@ -51,11 +54,38 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           nameWallet = listWallet.first.name;
           balanceWallet = await Web3Utils().getBalanceOfBnb(
               ofAddress: _addressWalletCoreSubject.valueOrNull ?? '');
-          _balanceWalletSubject.sink.add(balanceWallet?? 0);
+          _balanceWalletSubject.sink.add(balanceWallet ?? 0);
         }
         showContent();
         break;
+      case 'signTransactionWithDataCallback':
+        rawData = methodCall.arguments['signedTransaction'];
+        final result = await sendRawData(rawData ?? '');
+        break;
     }
+  }
+
+  Future<void> signTransactionWithData({
+    required String walletAddress,
+    required String contractAddress,
+    required String nonce,
+    required String chainId,
+    required String gasPrice,
+    required String gasLimit,
+    required String hexString,
+  }) async {
+    try {
+      final data = {
+        'walletAddress': walletAddress,
+        'contractAddress': contractAddress,
+        'nonce': nonce,
+        'chainId': chainId,
+        'gasPrice': gasPrice,
+        'gasLimit': gasLimit,
+        'withData': hexString,
+      };
+      await trustWalletChannel.invokeMethod('signTransactionWithData', data);
+    } on PlatformException {}
   }
 
   Future<void> getListWallets() async {
@@ -72,13 +102,13 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     final Random rd = Random();
     return rd.nextInt(10);
   }
-  void changeLoadingState ({required bool isShow}){
+
+  void changeLoadingState({required bool isShow}) {
     if (isShow) {
       showLoading();
     } else {
       showContent();
     }
-
   }
 
   Future<void> getGasPrice() async {
@@ -86,12 +116,10 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     gasPriceSubject.sink.add(double.parse(result));
   }
 
-
   void dispose() {
     gasPriceSubject.close();
     _addressWalletCoreSubject.close();
     _balanceWalletSubject.close();
     _nameWalletSubject.close();
-
   }
 }

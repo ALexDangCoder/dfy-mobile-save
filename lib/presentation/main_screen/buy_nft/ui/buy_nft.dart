@@ -1,16 +1,20 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/bloc/buy_nft_cubit.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/form_without_prefix.dart';
 import 'package:Dfy/widgets/image/circular_image.dart';
+import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BuyNFT extends StatefulWidget {
@@ -51,92 +55,106 @@ class _BuyNFTState extends State<BuyNFT> {
         resizeToAvoidBottomInset: false,
         body: Align(
           alignment: Alignment.bottomCenter,
-          child: BaseBottomSheet(
-            isImage: true,
-            text: ImageAssets.ic_close,
-            title: '${S.current.buy} NFT',
-            child: Column(
-              children: [
-                spaceH24,
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        left: 16.w,
-                        right: 16.w,
-                      ),
-                      child: Column(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+          child: BlocListener(
+            bloc: _nftBloc,
+            listener: (context, state) {
+              if (state is GetGasLimitSuccess) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Approve(
+                      title: S.current.buy_nft,
+                      textActiveButton: S.current.buy_nft,
+                      approve: () {},
+                      action: () {},
+                      gasLimit: double.parse(state.gasLimit),
+                    ),
+                  ),
+                );
+              }
+            },
+            child: StateStreamLayout(
+              stream: _nftBloc.stateStream,
+              error:
+                  AppException(S.current.error, S.current.something_went_wrong),
+              retry: () async {},
+              textEmpty: '',
+              child: BaseBottomSheet(
+                isImage: true,
+                text: ImageAssets.ic_close,
+                title: '${S.current.buy} NFT',
+                child: Column(
+                  children: [
+                    spaceH24,
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Container(
+                          padding: EdgeInsets.only(
+                            left: 16.w,
+                            right: 16.w,
+                          ),
+                          child: Column(
                             children: [
-                              Text(
-                                S.current.quantity,
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().textThemeColor(),
-                                  14.sp,
-                                  FontWeight.w400,
-                                ),
-                              ),
-                              spaceH4,
-                              FormWithOutPrefix(
-                                hintText: S.current.enter_quantity,
-                                typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
-                                cubit: BuyNftCubit,
-                                txtController: txtQuantity,
-                                quantityOfAll: nftMarket.totalCopies,
-                                imageAsset: ImageAssets.ic_symbol,
-                                isTokenOrQuantity: false,
-                              ),
-                              spaceH20,
-                              pricePerOne(),
-                              spaceH12,
-                              divider,
-                              spaceH12,
-                              showTotalPayment(),
-                              spaceH4,
-                              Text(
-                                '${S.current.your_balance} ${widget.balance} DFY',
-                                style: textNormalCustom(
-                                  Colors.white.withOpacity(0.7),
-                                  14,
-                                  FontWeight.w400,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 300.h,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    S.current.quantity,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      14.sp,
+                                      FontWeight.w400,
+                                    ),
+                                  ),
+                                  spaceH4,
+                                  FormWithOutPrefix(
+                                    hintText: S.current.enter_quantity,
+                                    typeForm:
+                                        TypeFormWithoutPrefix.IMAGE_FT_TEXT,
+                                    cubit: BuyNftCubit,
+                                    txtController: txtQuantity,
+                                    quantityOfAll: nftMarket.totalCopies,
+                                    imageAsset: ImageAssets.ic_symbol,
+                                    isTokenOrQuantity: false,
+                                  ),
+                                  spaceH20,
+                                  pricePerOne(),
+                                  spaceH12,
+                                  divider,
+                                  spaceH12,
+                                  showTotalPayment(),
+                                  spaceH4,
+                                  Text(
+                                    '${S.current.your_balance} ${widget.balance} DFY',
+                                    style: textNormalCustom(
+                                      Colors.white.withOpacity(0.7),
+                                      14,
+                                      FontWeight.w400,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 300.h,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        _nftBloc.callWeb3(context);
+                      },
+                      child: ButtonGold(
+                        title: '${S.current.buy} NFT',
+                        isEnable: true,
+                      ),
+                    ),
+                    spaceH38,
+                  ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    _nftBloc
-                        .getBuyNftData(
-                          contractAddress: nft_sales_address_dev2,
-                          orderId: nftMarket.orderId.toString(),
-                          numberOfCopies: '1',
-                          context: context,
-                        )
-                        .then(
-                          (value) => _nftBloc.getGasLimitByData(
-                            fromAddress: _nftBloc.wallets.first.address ?? '',
-                            toAddress: nft_sales_address_dev2,
-                            hexString: value,
-                          ),
-                        );
-                  },
-                  child: ButtonGold(
-                    title: '${S.current.buy} NFT',
-                    isEnable: true,
-                  ),
-                ),
-                spaceH38,
-              ],
+              ),
             ),
           ),
         ),

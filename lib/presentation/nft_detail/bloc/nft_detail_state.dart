@@ -17,10 +17,10 @@ class NftOnSaleSuccess extends NFTDetailState {
   @override
   List<Object?> get props => [nftMarket];
 }
+
 class NftOnSaleFail extends NFTDetailState {
   @override
   List<Object?> get props => [];
-
 }
 
 class HaveWallet extends NftOnSaleSuccess {
@@ -29,6 +29,7 @@ class HaveWallet extends NftOnSaleSuccess {
   @override
   List<Object?> get props => [nftMarket];
 }
+
 class NftOnAuctionSuccess extends NFTDetailState {
   final NFTOnAuction nftOnAuction;
 
@@ -38,10 +39,18 @@ class NftOnAuctionSuccess extends NFTDetailState {
   List<Object?> get props => [];
 }
 
-
 class NoWallet extends NftOnSaleSuccess {
   NoWallet(NftMarket nftMarket) : super(nftMarket);
 
   @override
   List<Object?> get props => [nftMarket];
+}
+
+class GetGasLimitSuccess extends NFTDetailState {
+  final String gasLimit;
+
+  GetGasLimitSuccess(this.gasLimit);
+
+  @override
+  List<Object?> get props => [gasLimit];
 }
