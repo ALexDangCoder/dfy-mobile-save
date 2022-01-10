@@ -206,7 +206,7 @@ class _SaleTabState extends State<SaleTab>
                             )
                           ],
                           textActiveButton: S.current.put_on_sale,
-                          action: (gasLimit,gasPrice )  {
+                          action: (gasLimit,gasPrice )  async {
                             await Future.delayed(const Duration(seconds: 3));
                           },
                           approve: () async {
