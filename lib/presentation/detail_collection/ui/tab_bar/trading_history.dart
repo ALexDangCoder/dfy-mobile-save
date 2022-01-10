@@ -30,7 +30,7 @@ class _ActivityCollectionState extends State<ActivityCollection> {
       builder: (context, snapshot) {
         final statusActivity = snapshot.data ?? 0;
         final list = widget.detailCollectionBloc.listActivity.value;
-        if (statusActivity == 1) {
+        if (statusActivity == DetailCollectionBloc.SUCCESS) {
           return ListView.builder(
             itemCount: list.length,
             padding: EdgeInsets.only(
@@ -56,14 +56,14 @@ class _ActivityCollectionState extends State<ActivityCollection> {
                 addressWallet: list[index].toAddress ?? '',
                 urlSymbol: widget.detailCollectionBloc
                     .funGetSymbolUrl(list[index].priceSymbol ?? ''),
-                nft_type: list[index].nftType ?? 99,
+                nftType: list[index].nftType ?? 99,
                 typeActivity: list[index].activityType ?? 99,
                 index: index,
                 bloc: widget.detailCollectionBloc,
               ),
             ),
           );
-        } else if (statusActivity == 2) {
+        } else if (statusActivity == DetailCollectionBloc.FAILD) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -88,7 +88,7 @@ class _ActivityCollectionState extends State<ActivityCollection> {
               ),
             ],
           );
-        } else if (statusActivity == 0) {
+        } else if (statusActivity == DetailCollectionBloc.LOADING) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -104,7 +104,7 @@ class _ActivityCollectionState extends State<ActivityCollection> {
           );
         } else {
           return Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 height: 40.h,
