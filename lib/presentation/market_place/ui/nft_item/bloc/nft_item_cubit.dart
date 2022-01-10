@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'nft_item_state.dart';
 
@@ -14,17 +13,22 @@ class NftItemCubit extends Cubit<NftItemState> {
       return DateTime.now(); //todo dang hardcode
     } else {
       final dt = DateTime.fromMillisecondsSinceEpoch(value);
-      final dtFormat = DateFormat('dd/MM/yyyy, HH:mm:ss').format(dt);
-      final result = DateTime.parse(dtFormat);
-      return result;
+      return dt;
     }
 
   }
 
+  int daysBetween(DateTime endTimeAuction) {
+    final dtNow = DateTime.now();
+    final difference = endTimeAuction.difference(dtNow).inMilliseconds;
+    return difference;
+  }
+
   bool isOutOfTimeAuction({required DateTime endTime}) {
-    final int currentTimestamp = DateTime.now().microsecondsSinceEpoch;
-    final int endTimestamp = endTime.microsecondsSinceEpoch;
-    if(currentTimestamp > endTimestamp) {
+    // final int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+    // final int endTimestamp = endTime.millisecondsSinceEpoch;
+    //nếu endtime trước hôm nay -> quá hạn
+    if(endTime.isBefore(DateTime.now())) {
       return false;
     } else {
       return true;

@@ -12,6 +12,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_controller.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
+import 'package:flutter_countdown_timer/current_remaining_time.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
@@ -36,6 +38,11 @@ class _NFTItemState extends State<NFTItemWidget> {
   DateTime? endTimeAuction;
   late NftItemCubit cubitNft;
 
+  void onEnd() {
+    //todo
+    print('onEnd');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -49,16 +56,17 @@ class _NFTItemState extends State<NFTItemWidget> {
     }
     cubitNft = NftItemCubit();
     if (widget.nftMarket.marketType == MarketType.AUCTION) {
-      countdownController = CountdownTimerController(
-        endTime: DateTime.now().millisecondsSinceEpoch +
-            Duration(seconds: 5).inMilliseconds,
-      );
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
           value: widget.nftMarket.startTime ?? 0);
       endTimeAuction = cubitNft.parseTimeServerToDateTime(
-          value: (widget.nftMarket.endTime == 0) ? 1641727464 : 0);
+        // value: (widget.nftMarket.endTime == 0) ? 0 : 0);
+        value: 1642637464000,
+      );
+      countdownController = CountdownTimerController(
+        endTime: endTimeAuction!.millisecondsSinceEpoch,
+      );
     } else {
-
+      //todo when not auction
     }
   }
 
@@ -256,7 +264,7 @@ class _NFTItemState extends State<NFTItemWidget> {
       return Padding(
         padding: EdgeInsets.only(top: 119.h, left: 35.5.w),
         child: Container(
-          width: 85.w,
+          width: 97.w,
           height: 24.h,
           decoration: BoxDecoration(
             color: const Color(0xFFFFCD28).withOpacity(0.7),
@@ -280,21 +288,35 @@ class _NFTItemState extends State<NFTItemWidget> {
                 size: 13.sp,
               ),
               SizedBox(
-                width: 7.w,
+                width: 5.w,
               ),
-              if (cubitNft.isOutOfTimeAuction(
-                  endTime: endTimeAuction ?? DateTime.now()))
-                Text(
-                  '15:02:02',
-                  style: textNormalCustom(
-                    AppTheme.getInstance().whiteColor(),
-                    13,
-                    FontWeight.w600,
-                  ),
+              if (cubitNft.isOutOfTimeAuction(endTime: endTimeAuction!))
+                CountdownTimer(
+                  controller: countdownController,
+                  widgetBuilder: (_, CurrentRemainingTime? time) {
+                    if (time == null) {
+                      return Text(
+                        '00:00:00:01',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          13,
+                          FontWeight.w600,
+                        ),
+                      );
+                    }
+                    return Text(
+                      '${time.days ?? 00}:${time.hours}:${time.min}:${time.sec}',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        13,
+                        FontWeight.w600,
+                      ),
+                    );
+                  },
                 )
               else
                 Text(
-                  '00:00:00',
+                  '00:00:00:00',
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteColor(),
                     13,
