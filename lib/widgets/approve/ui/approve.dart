@@ -185,7 +185,7 @@ class _ApproveState extends State<Approve> {
                                           AppTheme.getInstance()
                                               .whiteColor()
                                               .withOpacity(0.7),
-                                          14.sp,
+                                          14,
                                         ),
                                       ),
                                     ),
@@ -197,13 +197,13 @@ class _ApproveState extends State<Approve> {
                                             ? textNormalCustom(
                                                 AppTheme.getInstance()
                                                     .fillColor(),
-                                                20.sp,
+                                                20,
                                                 FontWeight.w600,
                                               )
                                             : textNormal(
                                                 AppTheme.getInstance()
                                                     .whiteColor(),
-                                                16.sp,
+                                                16,
                                               ),
                                       ),
                                     )
