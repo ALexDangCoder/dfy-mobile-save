@@ -877,7 +877,7 @@ fun Context.signTransactionWithData(
             this.transaction = Ethereum.Transaction.newBuilder().apply {
                 transfer = Ethereum.Transaction.Transfer.newBuilder().apply {
                     this.amount = BigInteger("0").toByteString()
-                    this.data = ByteString.copyFromUtf8("0x$withData")
+                    this.data = ByteString.copyFrom((withData).hexStringToByteArray())
                 }.build()
             }.build()
             this.privateKey =
