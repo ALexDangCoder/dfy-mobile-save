@@ -7,8 +7,12 @@ import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
+import 'package:Dfy/domain/model/nft_on_pawn.dart';
+import 'package:Dfy/domain/model/offer_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/ui/buy_nft.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
 import 'package:Dfy/presentation/market_place/send_offer/send_offer.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
@@ -39,11 +43,17 @@ import 'package:share/share.dart';
 class NFTDetailScreen extends StatefulWidget {
   const NFTDetailScreen({
     Key? key,
-    required this.type,
+    required this.typeMarket,
     this.marketId,
+    this.typeNft,
+    this.nftId,
+    this.pawnId,
   }) : super(key: key);
-  final MarketType type;
+  final MarketType typeMarket;
+  final TypeNFT? typeNft;
   final String? marketId;
+  final String? nftId;
+  final int? pawnId;
 
   @override
   _NFTDetailScreenState createState() => _NFTDetailScreenState();
@@ -56,7 +66,7 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
   late final TabController _tabController;
   late final NFTDetailBloc _bloc;
 
-  void caseTabBar(MarketType type) {
+  void caseTabBar(MarketType type, TypeNFT? typeNft) {
     switch (type) {
       case MarketType.AUCTION:
         _tabPage = [
@@ -82,6 +92,8 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
               );
             },
           ),
+          if (widget.typeNft == TypeNFT.HARD_NFT)
+            EvaluationTab(bloc: HardNFTBloc()),
           StreamBuilder<List<BiddingNft>>(
             stream: _bloc.listBiddingStream,
             builder: (
@@ -102,6 +114,10 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
           Tab(
             text: S.current.owner,
           ),
+          if (widget.typeNft == TypeNFT.HARD_NFT)
+            Tab(
+              text: S.current.evaluation,
+            ),
           Tab(
             text: S.current.bidding,
           ),
@@ -131,6 +147,8 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
               );
             },
           ),
+          if (widget.typeNft == TypeNFT.HARD_NFT)
+            EvaluationTab(bloc: HardNFTBloc())
         ];
         _tabTit = [
           Tab(
@@ -139,17 +157,49 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
           Tab(
             text: S.current.owner,
           ),
+          if (widget.typeNft == TypeNFT.HARD_NFT)
+            Tab(
+              text: S.current.evaluation,
+            ),
         ];
         break;
       case MarketType.PAWN:
         _tabPage = [
-          HistoryTab(
-            listHistory: [],
+          StreamBuilder<List<HistoryNFT>>(
+            stream: _bloc.listHistoryStream,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<HistoryNFT>> snapshot,
+            ) {
+              return HistoryTab(
+                listHistory: snapshot.data ?? [],
+              );
+            },
           ),
-          OwnerTab(
-            listOwner: [],
+          StreamBuilder<List<OwnerNft>>(
+            stream: _bloc.listOwnerStream,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<OwnerNft>> snapshot,
+            ) {
+              return OwnerTab(
+                listOwner: snapshot.data ?? [],
+              );
+            },
           ),
-          OfferTab(),
+          if (widget.typeNft == TypeNFT.HARD_NFT)
+            EvaluationTab(bloc: HardNFTBloc()),
+          StreamBuilder<List<OfferDetail>>(
+            stream: _bloc.listOfferStream,
+            builder: (
+                BuildContext context,
+                AsyncSnapshot<List<OfferDetail>> snapshot,
+                ) {
+              return OfferTab(
+                listOffer: snapshot.data ?? [],
+              );
+            },
+          ),
         ];
         _tabTit = [
           Tab(
@@ -158,6 +208,10 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
           Tab(
             text: S.current.owner,
           ),
+          if (widget.typeNft == TypeNFT.HARD_NFT)
+            Tab(
+              text: S.current.evaluation,
+            ),
           Tab(
             text: S.current.offer,
           ),
@@ -174,8 +228,14 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
   void initState() {
     super.initState();
     _bloc = NFTDetailBloc();
-    _bloc.getInForNFT(widget.marketId ?? '', widget.type);
-    caseTabBar(widget.type);
+    _bloc.getInForNFT(
+      marketId: widget.marketId ?? '',
+      nftId: widget.nftId ?? '',
+      type: widget.typeMarket,
+      typeNFT: widget.typeNft ?? TypeNFT.SOFT_NFT,
+      pawnId: widget.pawnId ?? 0,
+    );
+    caseTabBar(widget.typeMarket, widget.typeNft);
     _tabController = TabController(length: _tabPage.length, vsync: this);
   }
 
@@ -191,7 +251,21 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
     return BlocBuilder<NFTDetailBloc, NFTDetailState>(
       bloc: _bloc,
       builder: (context, state) {
-        return _content(widget.type, state);
+        return StateStreamLayout(
+          stream: _bloc.stateStream,
+          error: AppException(S.current.error, S.current.something_went_wrong),
+          retry: () async {
+            await _bloc.getInForNFT(
+              marketId: widget.marketId ?? '',
+              nftId: widget.nftId ?? '',
+              type: widget.typeMarket,
+              typeNFT: widget.typeNft ?? TypeNFT.SOFT_NFT,
+              pawnId: widget.pawnId ?? 0,
+            );
+          },
+          textEmpty: '',
+          child: _content(widget.typeMarket, state),
+        );
       },
     );
   }
@@ -317,47 +391,29 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
   }
 
   Widget _description(String des) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        des.parseHtml(),
+    if (des.isNotEmpty) {
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          des.parseHtml(),
+          style: textNormalCustom(
+            AppTheme.getInstance().textThemeColor(),
+            14,
+            FontWeight.w400,
+          ),
+        ),
+      );
+    } else {
+      return Text(
+        S.current.no_des,
         style: textNormalCustom(
           AppTheme.getInstance().textThemeColor(),
           14,
           FontWeight.w400,
         ),
-      ),
-    );
-  }
-
-  Widget _buildTable() => Column(
-        children: [
-          buildRow(
-            title: S.current.collection_address,
-            detail: 'auctionObj.collectionAddress',
-            type: TextType.RICH_BLUE,
-            isShowCopy: true,
-          ),
-          spaceH12,
-          buildRow(
-            title: S.current.nft_id,
-            detail: 'auctionObj.nftId',
-            type: TextType.NORMAL,
-          ),
-          spaceH12,
-          buildRow(
-            title: S.current.nft_standard,
-            detail: 'auctionObj.nftStandard',
-            type: TextType.NORMAL,
-          ),
-          spaceH12,
-          buildRow(
-            title: S.current.block_chain,
-            detail: 'auctionObj.blockChain',
-            type: TextType.NORMAL,
-          ),
-        ],
       );
+    }
+  }
 
   Widget additionalColumn(List<Properties> properties) {
     return Column(
@@ -615,85 +671,106 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
         ),
       );
 
-  Container _priceContainerOnPawn() => Container(
-        width: 343.w,
-        height: 50.h,
-        margin: EdgeInsets.only(top: 12.h),
-        child: Row(
+  Container _priceContainerOnPawn({required NftOnPawn nftOnPawn}) {
+    return Container(
+      width: 343.w,
+      height: 50.h,
+      margin: EdgeInsets.only(top: 12.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            S.current.expected_loan,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+              14,
+              FontWeight.normal,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Row(
+                children: [
+                  if (nftOnPawn.urlToken?.isNotEmpty ?? false)
+                    Image(
+                      image: NetworkImage(
+                        nftOnPawn.urlToken ?? '',
+                      ),
+                      width: 20.w,
+                      height: 20.h,
+                    )
+                  else
+                    Image(
+                      image: const AssetImage(ImageAssets.symbol),
+                      width: 20.w,
+                      height: 20.h,
+                    ),
+                  spaceW4,
+                  Text(
+                    '${nftOnPawn.expectedLoanAmount} '
+                    '${nftOnPawn.expectedCollateralSymbol}',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().textThemeColor(),
+                      20,
+                      FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Text(
+                  formatUSD.format(
+                    (nftOnPawn.expectedLoanAmount ?? 0) *
+                        (nftOnPawn.usdExchange ?? 0),
+                  ),
+                  style: textNormalCustom(
+                    AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                    14,
+                    FontWeight.normal,
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _durationRowOnPawn({
+    required int durationType,
+    required int durationQty,
+  }) {
+    final String duration = (durationType == 0) ? 'week' : 'months';
+    return Column(
+      children: [
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              S.current.expected_loan,
+              '${S.current.duration}:',
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                 14,
                 FontWeight.normal,
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Row(
-                  children: [
-                    sizedSvgImage(
-                      w: 20,
-                      h: 20,
-                      image: ImageAssets.ic_token_dfy_svg,
-                    ),
-                    spaceW4,
-                    Text(
-                      '30,000 DFY',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().textThemeColor(),
-                        20,
-                        FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Text(
-                    '~100,000,000',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().textThemeColor().withOpacity(0.7),
-                      14,
-                      FontWeight.normal,
-                    ),
-                  ),
-                ),
-              ],
-            )
+            Text(
+              '$durationQty $duration',
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor(),
+                16,
+                FontWeight.w600,
+              ),
+            ),
           ],
         ),
-      );
-
-  Widget _durationRowOnPawn() => Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '${S.current.duration}:',
-                style: textNormalCustom(
-                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
-                  14,
-                  FontWeight.normal,
-                ),
-              ),
-              Text(
-                '12 ${S.current.month}',
-                style: textNormalCustom(
-                  AppTheme.getInstance().textThemeColor(),
-                  16,
-                  FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-          spaceH12,
-        ],
-      );
+        spaceH12,
+      ],
+    );
+  }
 
   SizedBox _timeContainer(int second) => SizedBox(
         width: 343.w,
@@ -777,156 +854,147 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
       case MarketType.SALE:
         if (state is NftOnSaleSuccess) {
           final objSale = state.nftMarket;
-          return StateStreamLayout(
-            stream: _bloc.stateStream,
-            error:
-                AppException(S.current.error, S.current.something_went_wrong),
-            retry: () async {
-              await _bloc.getInForNFT(widget.marketId ?? '', widget.type);
-            },
-            textEmpty: '',
-            child: BaseCustomScrollView(
-              typeImage: objSale.typeImage,
-              image: objSale.image,
-              initHeight: 360.h,
-              leading: _leading(),
-              title: objSale.name,
-              tabBarView: TabBarView(
-                controller: _tabController,
-                children: _tabPage,
+          return BaseCustomScrollView(
+            typeImage: objSale.typeImage,
+            image: objSale.image ?? '',
+            initHeight: 360.h,
+            leading: _leading(),
+            title: objSale.name ?? '',
+            tabBarView: TabBarView(
+              controller: _tabController,
+              children: _tabPage,
+            ),
+            tabBar: TabBar(
+              controller: _tabController,
+              labelColor: Colors.white,
+              unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+              indicatorColor: AppTheme.getInstance().titleTabColor(),
+              labelStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
               ),
-              tabBar: TabBar(
-                controller: _tabController,
-                labelColor: Colors.white,
-                unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
-                indicatorColor: AppTheme.getInstance().titleTabColor(),
-                labelStyle: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-                tabs: _tabTit,
+              tabs: _tabTit,
+            ),
+            bottomBar: _buildButtonBuyOutOnSale(context),
+            content: [
+              _nameNFT(
+                title: objSale.name ?? '',
+                quantity: objSale.totalCopies ?? 1,
+                url: objSale.image ?? '',
+                price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
               ),
-              bottomBar: _buildButtonBuyOutOnSale(context),
-              content: [
-                _nameNFT(
-                  title: objSale.name,
-                  quantity: objSale.totalCopies ?? 1,
-                  url: objSale.image,
-                  price: objSale.price * (objSale.usdExchange ?? 1),
-                ),
-                _priceContainerOnSale(
-                  price: objSale.price,
-                  usdExchange: objSale.usdExchange ?? 0,
-                  urlToken: objSale.urlToken ?? '',
-                  shortName: objSale.symbolToken ?? '',
-                ),
-                divide,
-                spaceH12,
-                _description(
-                  objSale.description?.isEmpty ?? true
-                      ? S.current.no_des
-                      : objSale.description ?? S.current.no_des,
-                ),
-                spaceH20,
-                StreamBuilder<bool>(
-                  initialData: false,
-                  stream: _bloc.viewStream,
-                  builder: (context, snapshot) {
-                    return Visibility(
-                      visible: !snapshot.data!,
-                      child: Column(
-                        children: [
-                          if (objSale.collectionName?.isEmpty ?? true)
-                            const SizedBox()
-                          else
-                            _rowCollection(
-                              'DFY',
-                              objSale.collectionName ?? '',
-                              objSale.ticked == 1,
+              _priceContainerOnSale(
+                price: objSale.price ?? 0,
+                usdExchange: objSale.usdExchange ?? 0,
+                urlToken: objSale.urlToken ?? '',
+                shortName: objSale.symbolToken ?? '',
+              ),
+              divide,
+              spaceH12,
+              _description(
+                objSale.description?.isEmpty ?? true
+                    ? S.current.no_des
+                    : objSale.description ?? S.current.no_des,
+              ),
+              spaceH20,
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: _bloc.viewStream,
+                builder: (context, snapshot) {
+                  return Visibility(
+                    visible: !snapshot.data!,
+                    child: Column(
+                      children: [
+                        if (objSale.collectionName?.isEmpty ?? true)
+                          const SizedBox()
+                        else
+                          _rowCollection(
+                            'DFY',
+                            objSale.collectionName ?? '',
+                            objSale.ticked == 1,
+                          ),
+                        spaceH20,
+                        additionalColumn(objSale.properties ?? []),
+                        spaceH20,
+                        ...[
+                          buildRow(
+                            title: S.current.collection_address,
+                            detail: objSale.collectionAddress ?? '',
+                            type: TextType.RICH_BLUE,
+                            isShowCopy: true,
+                          ),
+                          spaceH12,
+                          buildRow(
+                            title: S.current.nft_token_id,
+                            detail: objSale.nftTokenId ?? '',
+                            type: TextType.NORMAL,
+                          ),
+                          spaceH12,
+                          buildRow(
+                            title: S.current.nft_standard,
+                            detail: objSale.nftStandard ?? '',
+                            type: TextType.NORMAL,
+                          ),
+                          spaceH12,
+                          buildRow(
+                            title: S.current.block_chain,
+                            detail: 'Binance smart chain',
+                            type: TextType.NORMAL,
+                          ),
+                        ],
+                        spaceH12,
+                      ],
+                    ),
+                  );
+                },
+              ),
+              StreamBuilder<bool>(
+                initialData: true,
+                stream: _bloc.viewStream,
+                builder: (context, snapshot) {
+                  return Visibility(
+                    child: InkWell(
+                      onTap: () {
+                        _bloc.viewSink.add(!snapshot.data!);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          right: 16.w,
+                          left: 16.w,
+                        ),
+                        height: 40.h,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            sizedSvgImage(
+                              w: 14,
+                              h: 14,
+                              image: !snapshot.data!
+                                  ? ImageAssets.ic_collapse_svg
+                                  : ImageAssets.ic_expand_svg,
                             ),
-                          spaceH20,
-                          additionalColumn(objSale.properties ?? []),
-                          spaceH20,
-                          ...[
-                            buildRow(
-                              title: S.current.collection_address,
-                              detail: objSale.collectionAddress ?? '',
-                              type: TextType.RICH_BLUE,
-                              isShowCopy: true,
+                            SizedBox(
+                              width: 13.15.w,
                             ),
-                            spaceH12,
-                            buildRow(
-                              title: S.current.nft_token_id,
-                              detail: objSale.nftTokenId ?? '',
-                              type: TextType.NORMAL,
-                            ),
-                            spaceH12,
-                            buildRow(
-                              title: S.current.nft_standard,
-                              detail: objSale.nftStandard ?? '',
-                              type: TextType.NORMAL,
-                            ),
-                            spaceH12,
-                            buildRow(
-                              title: S.current.block_chain,
-                              detail: 'Binance smart chain',
-                              type: TextType.NORMAL,
+                            Text(
+                              !snapshot.data!
+                                  ? S.current.view_less
+                                  : S.current.view_more,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().fillColor(),
+                                16,
+                                FontWeight.w400,
+                              ),
                             ),
                           ],
-                          spaceH12,
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                StreamBuilder<bool>(
-                  initialData: true,
-                  stream: _bloc.viewStream,
-                  builder: (context, snapshot) {
-                    return Visibility(
-                      child: InkWell(
-                        onTap: () {
-                          _bloc.viewSink.add(!snapshot.data!);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            right: 16.w,
-                            left: 16.w,
-                          ),
-                          height: 40.h,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              sizedSvgImage(
-                                w: 14,
-                                h: 14,
-                                image: !snapshot.data!
-                                    ? ImageAssets.ic_collapse_svg
-                                    : ImageAssets.ic_expand_svg,
-                              ),
-                              SizedBox(
-                                width: 13.15.w,
-                              ),
-                              Text(
-                                !snapshot.data!
-                                    ? S.current.view_less
-                                    : S.current.view_more,
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().fillColor(),
-                                  16,
-                                  FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
                       ),
-                    );
-                  },
-                ),
-                divide,
-              ],
-            ),
+                    ),
+                  );
+                },
+              ),
+              divide,
+            ],
           );
         } else {
           return const ModalProgressHUD(
@@ -936,263 +1004,304 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
           );
         }
       case MarketType.PAWN:
-        return BaseCustomScrollView(
-          image: '',
-          initHeight: 360.h,
-          leading: _leading(),
-          title: '',
-          tabBarView: TabBarView(
-            controller: _tabController,
-            children: _tabPage,
-          ),
-          tabBar: TabBar(
-            controller: _tabController,
-            labelColor: Colors.white,
-            unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
-            indicatorColor: AppTheme.getInstance().titleTabColor(),
-            labelStyle: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+        if (state is NftOnPawnSuccess) {
+          final nftOnPawn = state.nftOnPawn;
+          return BaseCustomScrollView(
+            image: nftOnPawn.nftCollateralDetailDTO?.image ?? '',
+            initHeight: 360.h,
+            leading: _leading(),
+            title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
+            tabBarView: TabBarView(
+              controller: _tabController,
+              children: _tabPage,
             ),
-            tabs: _tabTit,
-          ),
-          bottomBar: Container(),
-          content: [
-            _nameNFT(title: ''),
-            Container(),
-            Container(),
-            divide,
-            spaceH12,
-            Container(),
-            spaceH20,
-            StreamBuilder<bool>(
-              initialData: false,
-              stream: _bloc.viewStream,
-              builder: (context, snapshot) {
-                return Visibility(
-                  visible: !snapshot.data!,
-                  child: Column(
-                    children: [
-                      _rowCollection('DFY', 'n', true),
-                      spaceH20,
-                      additionalColumn([]),
-                      spaceH20,
-                      _buildTable(),
-                      spaceH12,
-                    ],
-                  ),
-                );
-              },
+            tabBar: TabBar(
+              controller: _tabController,
+              labelColor: Colors.white,
+              unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+              indicatorColor: AppTheme.getInstance().titleTabColor(),
+              labelStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+              tabs: _tabTit,
             ),
-            StreamBuilder<bool>(
-              initialData: true,
-              stream: _bloc.viewStream,
-              builder: (context, snapshot) {
-                return Visibility(
-                  child: InkWell(
-                    onTap: () {
-                      _bloc.viewSink.add(!snapshot.data!);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        right: 16.w,
-                        left: 16.w,
-                      ),
-                      height: 40.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          sizedSvgImage(
-                            w: 14,
-                            h: 14,
-                            image: !snapshot.data!
-                                ? ImageAssets.ic_collapse_svg
-                                : ImageAssets.ic_expand_svg,
-                          ),
-                          SizedBox(
-                            width: 13.15.w,
-                          ),
-                          Text(
-                            !snapshot.data!
-                                ? S.current.view_less
-                                : S.current.view_more,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().fillColor(),
-                              16,
-                              FontWeight.w400,
+            bottomBar: _buildButtonSendOffer(context),
+            content: [
+              _nameNFT(title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? ''),
+              _priceContainerOnPawn(nftOnPawn: nftOnPawn),
+              _durationRowOnPawn(
+                durationType: nftOnPawn.durationType ?? 0,
+                durationQty: nftOnPawn.durationQuantity ?? 0,
+              ),
+              divide,
+              spaceH12,
+              _description(nftOnPawn.description ?? ''),
+              spaceH20,
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: _bloc.viewStream,
+                builder: (context, snapshot) {
+                  return Visibility(
+                    visible: !snapshot.data!,
+                    child: Column(
+                      children: [
+                        _rowCollection(
+                          'DFY',
+                          nftOnPawn.nftCollateralDetailDTO?.nameCollection ??
+                              '',
+                          nftOnPawn.nftCollateralDetailDTO?.isWhitelist ??
+                              false,
+                        ),
+                        spaceH20,
+                        additionalColumn([]),
+                        spaceH20,
+                        buildRow(
+                          title: S.current.collection_address,
+                          detail: nftOnPawn
+                                  .nftCollateralDetailDTO?.collectionAddress ??
+                              '',
+                          type: TextType.RICH_BLUE,
+                          isShowCopy: true,
+                        ),
+                        spaceH12,
+                        buildRow(
+                          title: S.current.nft_token_id,
+                          detail: nftOnPawn.nftCollateralDetailDTO?.nftTokenId
+                                  .toString() ??
+                              '',
+                          type: TextType.NORMAL,
+                        ),
+                        spaceH12,
+                        buildRow(
+                          title: S.current.nft_standard,
+                          detail:
+                              (nftOnPawn.nftCollateralDetailDTO?.nftStandard ??
+                                          '0') ==
+                                      '0'
+                                  ? 'ERC - 721'
+                                  : 'ERC - 1155',
+                          type: TextType.NORMAL,
+                        ),
+                        spaceH12,
+                        buildRow(
+                          title: S.current.block_chain,
+                          detail: 'Binance smart chain',
+                          type: TextType.NORMAL,
+                        ),
+                        spaceH12,
+                      ],
+                    ),
+                  );
+                },
+              ),
+              StreamBuilder<bool>(
+                initialData: true,
+                stream: _bloc.viewStream,
+                builder: (context, snapshot) {
+                  return Visibility(
+                    child: InkWell(
+                      onTap: () {
+                        _bloc.viewSink.add(!snapshot.data!);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          right: 16.w,
+                          left: 16.w,
+                        ),
+                        height: 40.h,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            sizedSvgImage(
+                              w: 14,
+                              h: 14,
+                              image: !snapshot.data!
+                                  ? ImageAssets.ic_collapse_svg
+                                  : ImageAssets.ic_expand_svg,
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              width: 13.15.w,
+                            ),
+                            Text(
+                              !snapshot.data!
+                                  ? S.current.view_less
+                                  : S.current.view_more,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().fillColor(),
+                                16,
+                                FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-            divide,
-          ],
-        );
+                  );
+                },
+              ),
+              divide,
+            ],
+          );
+        } else {
+          return const ModalProgressHUD(
+            inAsyncCall: true,
+            progressIndicator: CupertinoLoading(),
+            child: SizedBox(),
+          );
+        }
       case MarketType.AUCTION:
         if (state is NftOnAuctionSuccess) {
           final nftOnAuction = state.nftOnAuction;
-          return StateStreamLayout(
-            stream: _bloc.stateStream,
-            error:
-                AppException(S.current.error, S.current.something_went_wrong),
-            retry: () async {
-              await _bloc.getInForNFT(widget.marketId ?? '', widget.type);
-            },
-            textEmpty: '',
-            child: BaseCustomScrollView(
-              image: nftOnAuction.fileCid ?? '',
-              initHeight: 360.h,
-              leading: _leading(),
-              title: nftOnAuction.name ?? '',
-              tabBarView: TabBarView(
-                controller: _tabController,
-                children: _tabPage,
+          return BaseCustomScrollView(
+            image: nftOnAuction.fileCid ?? '',
+            initHeight: 360.h,
+            leading: _leading(),
+            title: nftOnAuction.name ?? '',
+            tabBarView: TabBarView(
+              controller: _tabController,
+              children: _tabPage,
+            ),
+            tabBar: TabBar(
+              controller: _tabController,
+              labelColor: Colors.white,
+              unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+              indicatorColor: AppTheme.getInstance().titleTabColor(),
+              labelStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
               ),
-              tabBar: TabBar(
-                controller: _tabController,
-                labelColor: Colors.white,
-                unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
-                indicatorColor: AppTheme.getInstance().titleTabColor(),
-                labelStyle: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+              tabs: _tabTit,
+            ),
+            bottomBar: Row(
+              children: [
+                Expanded(
+                  child: _buildButtonBuyOut(context),
                 ),
-                tabs: _tabTit,
-              ),
-              bottomBar: Row(
-                children: [
-                  Expanded(
-                    child: _buildButtonBuyOut(context),
-                  ),
-                  SizedBox(
-                    width: 23.w,
-                  ),
-                  Expanded(
-                    child: _buildButtonPlaceBid(context),
-                  ),
-                ],
-              ),
-              content: [
-                _nameNFT(
-                  title: nftOnAuction.name ?? '',
-                  quantity: nftOnAuction.numberOfCopies ?? 1,
-                  url: nftOnAuction.fileCid ?? '',
-                  price: (nftOnAuction.reservePrice ?? 0) *
-                      (nftOnAuction.usdExchange ?? 1),
+                SizedBox(
+                  width: 23.w,
                 ),
-                _priceContainerOnAuction(
-                  price: nftOnAuction.reservePrice ?? 0,
-                  usdExchange: nftOnAuction.usdExchange ?? 0,
-                  urlToken: nftOnAuction.urlToken ?? '',
-                  shortName: nftOnAuction.tokenSymbol ?? '',
+                Expanded(
+                  child: _buildButtonPlaceBid(context),
                 ),
-                _timeContainer(_bloc.getTimeCountDown(nftOnAuction)),
-                divide,
-                spaceH12,
-                _description(
-                  nftOnAuction.description?.isEmpty ?? true
-                      ? S.current.no_des
-                      : nftOnAuction.description ?? S.current.no_des,
-                ),
-                spaceH20,
-                StreamBuilder<bool>(
-                  initialData: false,
-                  stream: _bloc.viewStream,
-                  builder: (context, snapshot) {
-                    return Visibility(
-                      visible: !snapshot.data!,
-                      child: Column(
-                        children: [
-                          _rowCollection(
-                            'DFY',
-                            nftOnAuction.collectionName ?? '',
-                            true,
-                          ),
-                          spaceH20,
-                          additionalColumn(nftOnAuction.properties ?? []),
-                          spaceH20,
-                          buildRow(
-                            title: S.current.collection_address,
-                            detail: nftOnAuction.collectionAddress ?? '',
-                            type: TextType.RICH_BLUE,
-                            isShowCopy: true,
-                          ),
-                          spaceH12,
-                          buildRow(
-                            title: S.current.nft_token_id,
-                            detail: nftOnAuction.nftTokenId ?? '',
-                            type: TextType.NORMAL,
-                          ),
-                          spaceH12,
-                          buildRow(
-                            title: S.current.nft_standard,
-                            detail: nftOnAuction.nftStandard ?? '',
-                            type: TextType.NORMAL,
-                          ),
-                          spaceH12,
-                          buildRow(
-                            title: S.current.block_chain,
-                            detail: 'Binance smart chain',
-                            type: TextType.NORMAL,
-                          ),
-                          spaceH12,
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                StreamBuilder<bool>(
-                  initialData: true,
-                  stream: _bloc.viewStream,
-                  builder: (context, snapshot) {
-                    return Visibility(
-                      child: InkWell(
-                        onTap: () {
-                          _bloc.viewSink.add(!snapshot.data!);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            right: 16.w,
-                            left: 16.w,
-                          ),
-                          height: 40.h,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              sizedSvgImage(
-                                w: 14,
-                                h: 14,
-                                image: !snapshot.data!
-                                    ? ImageAssets.ic_collapse_svg
-                                    : ImageAssets.ic_expand_svg,
-                              ),
-                              SizedBox(
-                                width: 13.15.w,
-                              ),
-                              Text(
-                                !snapshot.data!
-                                    ? S.current.view_less
-                                    : S.current.view_more,
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().fillColor(),
-                                  16,
-                                  FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                divide,
               ],
             ),
+            content: [
+              _nameNFT(
+                title: nftOnAuction.name ?? '',
+                quantity: nftOnAuction.numberOfCopies ?? 1,
+                url: nftOnAuction.fileCid ?? '',
+                price: (nftOnAuction.reservePrice ?? 0) *
+                    (nftOnAuction.usdExchange ?? 1),
+              ),
+              _priceContainerOnAuction(
+                price: nftOnAuction.reservePrice ?? 0,
+                usdExchange: nftOnAuction.usdExchange ?? 0,
+                urlToken: nftOnAuction.urlToken ?? '',
+                shortName: nftOnAuction.tokenSymbol ?? '',
+              ),
+              _timeContainer(_bloc.getTimeCountDown(nftOnAuction)),
+              divide,
+              spaceH12,
+              _description(
+                nftOnAuction.description?.isEmpty ?? true
+                    ? S.current.no_des
+                    : nftOnAuction.description ?? S.current.no_des,
+              ),
+              spaceH20,
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: _bloc.viewStream,
+                builder: (context, snapshot) {
+                  return Visibility(
+                    visible: !snapshot.data!,
+                    child: Column(
+                      children: [
+                        _rowCollection(
+                          'DFY',
+                          nftOnAuction.collectionName ?? '',
+                          true,
+                        ),
+                        spaceH20,
+                        additionalColumn(nftOnAuction.properties ?? []),
+                        spaceH20,
+                        buildRow(
+                          title: S.current.collection_address,
+                          detail: nftOnAuction.collectionAddress ?? '',
+                          type: TextType.RICH_BLUE,
+                          isShowCopy: true,
+                        ),
+                        spaceH12,
+                        buildRow(
+                          title: S.current.nft_token_id,
+                          detail: nftOnAuction.nftTokenId ?? '',
+                          type: TextType.NORMAL,
+                        ),
+                        spaceH12,
+                        buildRow(
+                          title: S.current.nft_standard,
+                          detail: nftOnAuction.nftStandard ?? '',
+                          type: TextType.NORMAL,
+                        ),
+                        spaceH12,
+                        buildRow(
+                          title: S.current.block_chain,
+                          detail: 'Binance smart chain',
+                          type: TextType.NORMAL,
+                        ),
+                        spaceH12,
+                      ],
+                    ),
+                  );
+                },
+              ),
+              StreamBuilder<bool>(
+                initialData: true,
+                stream: _bloc.viewStream,
+                builder: (context, snapshot) {
+                  return Visibility(
+                    child: InkWell(
+                      onTap: () {
+                        _bloc.viewSink.add(!snapshot.data!);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          right: 16.w,
+                          left: 16.w,
+                        ),
+                        height: 40.h,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            sizedSvgImage(
+                              w: 14,
+                              h: 14,
+                              image: !snapshot.data!
+                                  ? ImageAssets.ic_collapse_svg
+                                  : ImageAssets.ic_expand_svg,
+                            ),
+                            SizedBox(
+                              width: 13.15.w,
+                            ),
+                            Text(
+                              !snapshot.data!
+                                  ? S.current.view_less
+                                  : S.current.view_more,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().fillColor(),
+                                16,
+                                FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              divide,
+            ],
           );
         } else {
           return const ModalProgressHUD(

@@ -5,6 +5,7 @@ class ApiConstants {
   static const int PAGE_BEGIN = 1;
   static const int NOT_SAVED_ID = -1;
   static const int TIME_OUT = 30;
+  static const String DEFAULT_NFT_SIZE = '12';
   static const String GET_LIST_TOKEN =
       '/nft-market-svc/public-api/market/coin-list';
   static const String DETAIL_CATEGORY = 'nft-market-svc/public-api/collection';
@@ -40,10 +41,18 @@ class ApiConstants {
   ///NFT
   static const String GET_DETAIL_NFT_ON_SALE =
       '/nft-market-svc/public-api/market/detail/';
+  static const String GET_DETAIL_HARD_NFT =
+      '/nft-market-svc/public-api/hard-nft/';
   static const String GET_HISTORY = 'inventory-svc/public-api/v1.0.0/histories';
   static const String GET_OWNER = 'inventory-svc/public-api/v1.0.0/owners';
   static const String GET_BIDDING =
       '/nft-market-svc/public-api/auction/bidding-list';
+
+  static const String GET_DETAIL_NFT_ON_PAWN =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts/';
+
+  static const String GET_OFFER =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/loan-crypto-offer';
 
   // BSC SCAN
 

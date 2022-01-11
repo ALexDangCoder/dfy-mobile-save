@@ -1,5 +1,7 @@
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/offer_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/text_helper.dart';
@@ -8,9 +10,11 @@ import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class OfferTab extends StatelessWidget {
-  const OfferTab({Key? key}) : super(key: key);
+  const OfferTab({Key? key, required this.listOffer}) : super(key: key);
+  final List<OfferDetail> listOffer;
 
   @override
   Widget build(BuildContext context) {
@@ -18,83 +22,83 @@ class OfferTab extends StatelessWidget {
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       physics: const ScrollPhysics(),
-      itemCount: 30,
+      itemCount: listOffer.length,
       itemBuilder: (context, index) {
-        return _buildItemOffer(index);
+        return _buildItemOffer(listOffer[index]);
       },
     );
   }
 
-  Widget _buildItemOffer(int index) {
+  Widget _buildItemOffer(OfferDetail objOffer) {
+    final String duration = (objOffer.durationType == 0) ? 'week' : 'month';
     return BaseItem(
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  maxLines: 1,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '0xFE529a8d8adk2829a9d02adad4fd0 bid'
-                            .handleString(),
-                        style: richTextWhite.copyWith(
-                          fontWeight: FontWeight.bold,
+      child: GestureDetector(
+        onTap: (){
+          /// push to Offer detail
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 5,
+              child: Row(
+                children: [
+                  Text(
+                    '${objOffer.addressLender}'.handleString(),
+                    style: richTextWhite.copyWith(
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'offered',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().textThemeColor(),
+                            14,
+                            FontWeight.w400,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                spaceH7,
-                Text(
-                  DateTime.now().stringFromDateTime,
-                  style: textNormalCustom(
-                    AppTheme.getInstance().textThemeColor(),
-                    14,
-                    FontWeight.w400,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    sizedSvgImage(
-                      w: 20,
-                      h: 20,
-                      image: ImageAssets.ic_token_dfy_svg,
+                        TextSpan(
+                          text: '${objOffer.supplyCurrency?.amount ?? ''} '
+                              '${objOffer.supplyCurrency?.symbol ?? ''}',
+                          style: textNormal(
+                            amountColor,
+                            14,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'with a ${objOffer.duration ?? ''} $duration',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().textThemeColor(),
+                            14,
+                            FontWeight.w400,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'loan term',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().textThemeColor(),
+                            14,
+                            FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
-                    spaceW4,
-                    Text(
-                      '0.0025 ETH',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().textThemeColor(),
-                        16,
-                        FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-                spaceH7,
-                Text(
-                  'Wining',
-                  style: textNormalCustom(
-                    const Color(0xff61C777),
-                    14,
-                    FontWeight.w600,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          )
-        ],
+            Expanded(
+              child: ImageIcon(
+                const AssetImage(ImageAssets.ic_line_right),
+                size: 24.sp,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

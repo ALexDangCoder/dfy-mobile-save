@@ -10,7 +10,6 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_countdown_timer/countdown_controller.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
@@ -47,7 +46,7 @@ class _NFTItemState extends State<NFTItemWidget> {
   void initState() {
     super.initState();
     if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
-      _controller = VideoPlayerController.network(widget.nftMarket.image);
+      _controller = VideoPlayerController.network(widget.nftMarket.image ?? '');
       _controller!.addListener(() {
         setState(() {});
       });
@@ -85,19 +84,18 @@ class _NFTItemState extends State<NFTItemWidget> {
         if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
           _controller!.pause();
         }
-        if (widget.nftMarket.typeNFT == TypeNFT.SOFT_NFT) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NFTDetailScreen(
-                type: widget.nftMarket.marketType,
-                marketId: widget.nftMarket.marketId,
-              ),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NFTDetailScreen(
+              typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
+              marketId: widget.nftMarket.marketId,
+              typeNft: widget.nftMarket.typeNFT,
+              nftId: widget.nftMarket.nftId,
+              pawnId: widget.nftMarket.pawnId,
             ),
-          );
-        } else {
-          ///push HardNft
-        }
+          ),
+        );
       },
       child: Stack(
         children: [
@@ -130,8 +128,12 @@ class _NFTItemState extends State<NFTItemWidget> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => NFTDetailScreen(
-                                type: widget.nftMarket.marketType,
+                                typeMarket: widget.nftMarket.marketType ??
+                                    MarketType.SALE,
                                 marketId: widget.nftMarket.marketId,
+                                typeNft: widget.nftMarket.typeNFT,
+                                nftId: widget.nftMarket.nftId,
+                                pawnId: widget.nftMarket.pawnId,
                               ),
                             ),
                           );
@@ -156,7 +158,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                                             AppTheme.getInstance().bgBtsColor(),
                                       ),
                                     ),
-                                    imageUrl: widget.nftMarket.image,
+                                    imageUrl: widget.nftMarket.image ?? '',
                                     fit: BoxFit.cover,
                                   )
                                 : VideoPlayer(_controller!),
@@ -172,7 +174,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                   SizedBox(
                     height: 16.h,
                     child: Text(
-                      widget.nftMarket.name,
+                      widget.nftMarket.name ?? '',
                       style: textNormalCustom(
                         null,
                         13,
@@ -199,9 +201,9 @@ class _NFTItemState extends State<NFTItemWidget> {
                             children: [
                               if (widget.nftMarket.urlToken?.isNotEmpty ??
                                   false)
-                                Image(
-                                  image: NetworkImage(
-                                    widget.nftMarket.urlToken ?? '',
+                                ClipRRect(
+                                  child: CachedNetworkImage(
+                                    imageUrl: widget.nftMarket.urlToken ?? '',
                                   ),
                                 )
                               else

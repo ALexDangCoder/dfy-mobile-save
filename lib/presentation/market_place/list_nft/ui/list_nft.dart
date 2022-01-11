@@ -230,7 +230,9 @@ class _ListNftState extends State<ListNft> {
                       Colors.white,
                       16.sp,
                     ),
+                    maxLength: 255,
                     decoration: InputDecoration(
+                      counterText: '',
                       hintText: S.current.name_of_nft,
                       hintStyle: textNormal(
                         Colors.white54,
