@@ -671,6 +671,29 @@ class Web3Utils {
     return hex.encode(approve.data ?? []);
   }
 
+  Future<String> getCreateCollectionData({
+    required String contractAddress,
+    required String name,
+    required String royaltyRate,
+    required String collectionCID,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await deployedNFTCollectionContract(contractAddress, context);
+    final function = deployContract.function('createCollection');
+    final createCollection = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        name,
+        'DFY-NFT',
+        BigInt.from(num.parse(royaltyRate)),
+        collectionCID
+      ],
+    );
+    return hex.encode(createCollection.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
@@ -707,6 +730,19 @@ class Web3Utils {
         .loadString('assets/abi/erc20.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'erc20'),
+      EthereumAddress.fromHex(contract),
+    );
+    return deployContract;
+  }
+
+  Future<DeployedContract> deployedNFTCollectionContract(
+    String contract,
+    BuildContext context,
+  ) async {
+    final abiCode = await DefaultAssetBundle.of(context)
+        .loadString('assets/abi/DefiForYouNFTFactory_ABI_DEV2.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'nftFactory'),
       EthereumAddress.fromHex(contract),
     );
     return deployContract;
