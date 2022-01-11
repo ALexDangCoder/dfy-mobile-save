@@ -6,6 +6,7 @@ class SearchCollectionNftModel {
   String? marketType;
   String? fileType;
   String? coverCid;
+  String? collectionAddress;
 
   SearchCollectionNftModel({
     this.id,
@@ -15,5 +16,6 @@ class SearchCollectionNftModel {
     this.marketType,
     this.fileType,
     this.coverCid,
+    this.collectionAddress,
   });
 }

@@ -18,13 +18,16 @@ class NftCollectionExploreModel {
   String? fileType;
   String? coverCid;
   dynamic isReservePrice;
+
   ///Explore categories
   String? avatarCid;
   String? bannerCid;
   int? displayCol;
   int? displayRow;
+
   ///outstading collection
   String? featureCid;
+  String? collectionAddress;
   int? totalNft;
   int? nftOwnerCount;
   int? collectionType;
@@ -57,5 +60,6 @@ class NftCollectionExploreModel {
     this.totalNft,
     this.nftOwnerCount,
     this.collectionType,
+    this.collectionAddress,
   });
 }
