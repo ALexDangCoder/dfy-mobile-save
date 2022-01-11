@@ -172,6 +172,11 @@ class _ApproveState extends State<Approve> {
       bloc: cubit,
       listener: (context, state) {
         if (state is BuySuccess) {
+          cubit.emitJsonNftToWalletCore(
+            contract: cubit.nftMarket.collectionAddress ?? '',
+            id: int.parse(cubit.nftMarket.nftTokenId ?? ''),
+            address: nftDetailBloc.walletAddress,
+          );
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -189,11 +194,6 @@ class _ApproveState extends State<Approve> {
                   );
                 },
               ),
-            ),
-          ).then(
-            (_) => cubit.emitJsonNftToWalletCore(
-              contract: cubit.nftMarket.collectionAddress ?? '',
-              address: nftDetailBloc.walletAddress,
             ),
           );
         }
