@@ -226,6 +226,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
               (e) =>
               outstandingCollection.add(
                 OutstandingCollection(
+                  collectionAddress: e.collectionAddress,
                   collectionType: e.collectionType,
                   id: e.id,
                   name: e.name,

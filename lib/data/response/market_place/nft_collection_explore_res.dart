@@ -63,6 +63,9 @@ class NftCollectionExploreResponse extends Equatable {
   @JsonKey(name: 'nft_owner_count')
   int? nftOwnerCount;
 
+  @JsonKey(name: 'collection_address')
+  String? collectionAddress;
+
   @JsonKey(name: 'collection_type')
   int? collectionType;
 
@@ -94,6 +97,7 @@ class NftCollectionExploreResponse extends Equatable {
     this.totalNft,
     this.nftOwnerCount,
     this.collectionType,
+    this.collectionAddress,
   );
 
   factory NftCollectionExploreResponse.fromJson(Map<String, dynamic> json) =>
@@ -104,8 +108,7 @@ class NftCollectionExploreResponse extends Equatable {
   @override
   List<Object?> get props => [];
 
-  NftCollectionExploreModel toDomain() =>
-      NftCollectionExploreModel(
+  NftCollectionExploreModel toDomain() => NftCollectionExploreModel(
         id: id,
         type: type,
         token: token,
@@ -132,7 +135,7 @@ class NftCollectionExploreResponse extends Equatable {
         itemId: itemId,
         nftId: nftId,
         nftOwnerCount: nftOwnerCount,
-        collectionType: collectionType
+        collectionType: collectionType,
+        collectionAddress: collectionAddress,
       );
-
 }

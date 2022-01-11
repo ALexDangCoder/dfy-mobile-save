@@ -10,6 +10,7 @@ import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/presentation/market_place/search/bloc/search_cubit.dart';
 import 'package:Dfy/presentation/market_place/search/ui/results_search.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -216,6 +217,13 @@ class _SearchNFTState extends State<SearchNFT> {
                           onTap: () {
                             setState(() {
                               controller.text = '';
+                              // searchCubit.clearCollectionsFtNftsAfterSearch();
+                              _debounce =
+                                  Timer(const Duration(milliseconds: 1000), () {
+                                searchCubit.getCollectionFeatNftBySearch(
+                                  query: '',
+                                );
+                              });
                               searchCubit.hide();
                             });
                           },
@@ -283,8 +291,10 @@ class _SearchNFTState extends State<SearchNFT> {
                             context,
                             MaterialPageRoute(
                               builder: (ctx) => DetailCollection(
-                                collectionAddress: searchCubit.collections[index].id,// todo collection address
-                                walletAddress: 'alo alo',//todo address wallet
+                                collectionAddress: searchCubit
+                                    .collections[index]
+                                    .collectionAddress, // todo collection address
+                                walletAddress: 'alo alo', //todo address wallet
                               ),
                             ),
                           );
@@ -371,7 +381,23 @@ class _SearchNFTState extends State<SearchNFT> {
                         Container()
                       else
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            //todo chuyen man sang man detail
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NFTDetailScreen(
+                                  typeMarket:
+                                      searchCubit.listNFT[index].marketType!,
+                                  marketId: searchCubit.listNFT[index].marketId,
+                                  // typeNft: widget.nftMarket.typeNFT,
+                                  // nftId: widget.nftMarket.nftId,
+                                  // pawnId: widget.nftMarket.pawnId,
+                                  //todo fill nốt các trường vào
+                                ),
+                              ),
+                            );
+                          },
                           child: ResultNFTSearch(
                             nftItem: searchCubit.listNFT[index],
                           ),

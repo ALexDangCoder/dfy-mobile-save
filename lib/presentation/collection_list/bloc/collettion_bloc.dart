@@ -161,7 +161,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   ];
 
   void reset() {
-    sortFilter=null;
+    sortFilter = null;
     listCheckBoxFilterStream.add([
       false,
       false,
