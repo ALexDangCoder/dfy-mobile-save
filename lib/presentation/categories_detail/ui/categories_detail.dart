@@ -79,30 +79,30 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                 if (state is LoadingCategoryState) {
                   return Container(
                     color: backgroundBottomSheetColor,
-                    child: Column (
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container (height:  145.h ,color:colorSkeletonLight),
-                        const SizedBox (height : 12),
-                        Container (
+                        Container(height: 145.h, color: colorSkeletonLight),
+                        const SizedBox(height: 12),
+                        Container(
                           width: 200.w,
-                          height:  25,
-                          margin:const EdgeInsets.symmetric(horizontal: 16),
+                          height: 25,
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: colorSkeletonLight,
                           ),
                         ),
-                        const SizedBox (height : 6),
-                        Container (
-                          height:  18,
-                          margin:const EdgeInsets.symmetric(horizontal: 16),
+                        const SizedBox(height: 6),
+                        Container(
+                          height: 18,
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: colorSkeletonLight,
                           ),
                         ),
-                        const SizedBox (height : 32),
+                        const SizedBox(height: 32),
                         Expanded(
                           child: StaggeredGridView.countBuilder(
                             padding: const EdgeInsets.only(
@@ -119,7 +119,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                             },
                             crossAxisCount: 2,
                             staggeredTileBuilder: (int index) =>
-                            const StaggeredTile.fit(1),
+                                const StaggeredTile.fit(1),
                           ),
                         )
                       ],
@@ -138,8 +138,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                           return BaseAppBar(
                             image: data?.bannerCid ?? '',
                             title:
-                            '${widget.exploreCategory.name} ${S.current
-                                .categories}',
+                                '${widget.exploreCategory.name} ${S.current.categories}',
                             initHeight: 145.h,
                             leading: SizedBox(
                               child: InkWell(
@@ -152,7 +151,8 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                   child: Image.asset(ImageAssets.img_back),
                                 ),
                               ),
-                            ), actions: const  [],
+                            ),
+                            actions: const [],
                           );
                         },
                       ),
@@ -169,9 +169,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                 children: [
                                   const SizedBox(height: 12),
                                   Text(
-                                    '${S.current.explore} ${widget
-                                        .exploreCategory.name} ${S.current
-                                        .categories}',
+                                    '${S.current.explore} ${widget.exploreCategory.name} ${S.current.categories}',
                                     style: textNormalCustom(
                                       AppTheme.getInstance().textThemeColor(),
                                       20,
@@ -207,10 +205,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                               ),
                               constraints: BoxConstraints(
                                 minHeight:
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height - 145,
+                                    MediaQuery.of(context).size.height - 145,
                               ),
                               color: backgroundBottomSheetColor,
                               child: StreamBuilder<List<CollectionDetailModel>>(
@@ -221,7 +216,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                     children: [
                                       StaggeredGridView.countBuilder(
                                         physics:
-                                        const NeverScrollableScrollPhysics(),
+                                            const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         mainAxisSpacing: 20,
                                         crossAxisSpacing: 15,
@@ -234,37 +229,37 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       DetailCollection(
-                                                        id: data[index].id ??
-                                                            '',
-                                                      ),
+                                                    collectionAddress:
+                                                        data[index].id ?? '',
+                                                  ),
                                                 ),
                                               );
                                             },
                                             child: ItemCollection(
                                               fixWidth: false,
                                               urlBackGround: ApiConstants
-                                                  .BASE_URL_IMAGE +
+                                                      .BASE_URL_IMAGE +
                                                   (data[index].coverCid ?? ''),
                                               backgroundFit: BoxFit.cover,
                                               urlIcon: ApiConstants
-                                                  .BASE_URL_IMAGE +
+                                                      .BASE_URL_IMAGE +
                                                   (data[index].avatarCid ?? ''),
                                               title: data[index].name ?? '',
                                               items: (data[index].totalNft ?? 0)
                                                   .toString(),
                                               owners:
-                                              (data[index].nftOwnerCount ??
-                                                  0)
-                                                  .toString(),
+                                                  (data[index].nftOwnerCount ??
+                                                          0)
+                                                      .toString(),
                                               text: (data[index].description ??
-                                                  '')
+                                                      '')
                                                   .stripHtmlIfNeeded(),
                                             ),
                                           );
                                         },
                                         crossAxisCount: 2,
                                         staggeredTileBuilder: (int index) =>
-                                        const StaggeredTile.fit(1),
+                                            const StaggeredTile.fit(1),
                                       ),
                                       StreamBuilder<bool>(
                                         stream: cubit.canLoadMoreStream,
@@ -275,7 +270,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                               height: 40,
                                               child: Center(
                                                 child:
-                                                CircularProgressIndicator(
+                                                    CircularProgressIndicator(
                                                   strokeWidth: 3,
                                                   color: AppTheme.getInstance()
                                                       .whiteColor(),
@@ -298,7 +293,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                     ],
                   );
                 } else {
-                  return  Container(
+                  return Container(
                     color: backgroundBottomSheetColor,
                     child: Center(
                       child: Column(
@@ -309,7 +304,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                             width: 54,
                             child: Image.asset(ImageAssets.err_load_category),
                           ),
-                          const SizedBox (height : 24),
+                          const SizedBox(height: 24),
                           Flexible(
                             child: Text(
                               S.current.could_not_load_data,
@@ -320,7 +315,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                               ),
                             ),
                           ),
-                          const SizedBox (height : 24),
+                          const SizedBox(height: 24),
                           InkWell(
                             onTap: () {
                               cubit.getData(widget.exploreCategory.id ?? '');
