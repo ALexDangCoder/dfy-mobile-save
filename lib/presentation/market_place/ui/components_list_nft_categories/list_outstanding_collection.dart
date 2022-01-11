@@ -117,6 +117,9 @@ class ListOutstandingCollection extends StatelessWidget {
                               ],
                             )
                           : CollectionItem(
+                              collectionAddress: cubit
+                                  .outstandingCollection[index]
+                                  .collectionAddress,
                               typeCollection: cubit
                                   .outstandingCollection[index].collectionType,
                               urlIcon: cubit
