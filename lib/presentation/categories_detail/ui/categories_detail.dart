@@ -228,7 +228,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      DetailCollection(
+                                                      DetailCollection(//todo address wallet
                                                     collectionAddress:
                                                         data[index].id ?? '',
                                                   ),

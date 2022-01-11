@@ -338,7 +338,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     );
     result.when(
       success: (res) {
-        print('----------------------------------------${res.first.key}');
+        //todo fillter
       },
       error: (error) {},
     );
@@ -361,7 +361,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           // collectionAddress = arg.id ?? '';
           collectionAddress = collectionAddressDetail ?? '';
           getListFilterCollectionDetail(
-              collectionAddress: '0x94f5062d4862ede6f8b6fc2dabd7e9dc76f94a9f');
+              collectionAddress: arg.collectionAddress ?? '');
           getListNft(
             collectionAddress: collectionAddressDetail ?? '',
           );
@@ -554,6 +554,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         return ImageAssets.imgTokenYFII;
       case 'ZEC':
         return ImageAssets.imgTokenZEC;
+      case 'USDT':
+        return ImageAssets.imgTokenUSDT;
       default:
         return '';
     }

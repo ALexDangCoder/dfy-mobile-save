@@ -309,7 +309,7 @@ class _CollectionListState extends State<CollectionList> {
                                                                   .addressCollection ??
                                                               '',
                                                       walletAddress:
-                                                          'alo alo alo',
+                                                          'alo alo alo',//todo address wallet
                                                     );
                                                   },
                                                 ),

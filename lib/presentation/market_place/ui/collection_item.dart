@@ -29,7 +29,7 @@ class CollectionItem extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) {
               return DetailCollection(
-                walletAddress: 'alo alo',
+                walletAddress: 'alo alo',//todo address wallet
                 collectionAddress: idCollection,
               );
             },
