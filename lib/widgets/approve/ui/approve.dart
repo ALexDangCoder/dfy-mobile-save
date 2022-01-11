@@ -34,9 +34,12 @@ class Approve extends StatefulWidget {
   final Widget? warning;
   final Widget? header;
   final bool? isShowTwoButton;
+  final int? flexTitle;
+  final int? flexContent;
   final String? purposeText;
   final String textActiveButton;
   final double gasLimitFirst;
+  final bool? showTransitionProcess;
   final bool? showPopUp;
   final Function approve;
   final Function action;
@@ -54,6 +57,9 @@ class Approve extends StatefulWidget {
     required this.gasLimitFirst,
     this.showPopUp = false,
     this.purposeText,
+    this.flexTitle,
+    this.flexContent,
+    this.showTransitionProcess,
   }) : super(key: key);
 
   @override
@@ -137,7 +143,7 @@ class _ApproveState extends State<Approve> {
                                 Row(
                                   children: [
                                     Expanded(
-                                      flex: 4,
+                                      flex: widget.flexTitle ?? 4,
                                       child: Text(
                                         item.title,
                                         style: textNormal(
@@ -149,7 +155,7 @@ class _ApproveState extends State<Approve> {
                                       ),
                                     ),
                                     Expanded(
-                                      flex: 6,
+                                      flex: widget.flexContent ?? 6,
                                       child: Text(
                                         item.value,
                                         style: item.isToken ?? false
@@ -276,6 +282,8 @@ class _ApproveState extends State<Approve> {
                                       approveSuccess: (value) {
                                         isCanAction = true;
                                       },
+                                      showTransitionProcess:
+                                          widget.showTransitionProcess ?? true,
                                     );
                                   },
                                 );
@@ -324,6 +332,8 @@ class _ApproveState extends State<Approve> {
                             context: context,
                             builder: (_) {
                               return PopUpApprove(
+                                showTransitionProcess:
+                                    widget.showTransitionProcess ?? true,
                                 approve: () async {
                                   await widget.action(
                                     cubit.gasLimit ?? widget.gasLimitFirst,

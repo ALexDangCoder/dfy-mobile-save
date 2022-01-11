@@ -11,6 +11,7 @@ import 'package:Dfy/widgets/form/input_with_select_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
@@ -250,7 +251,6 @@ class _AuctionTabState extends State<AuctionTab>
                             textActiveButton: S.current.put_on_sale,
                             action: (gasLimit, gasPrice) async {
                               await Future.delayed(const Duration(seconds: 3));
-
                             },
                             approve: () async {
                               await Future.delayed(const Duration(seconds: 3));
@@ -306,14 +306,21 @@ class _AuctionTabState extends State<AuctionTab>
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        showDialog(
+                      onTap: () async {
+                         final result = await showDialog(
+                          barrierDismissible: true,
                           context: context,
-                          builder: (_) => const AlertDialog(
-                            backgroundColor: Colors.transparent,
-                            content: PickTime(),
+                          builder: (_) => BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                            child: const AlertDialog(
+                              elevation: 0,
+                              backgroundColor: Colors.transparent,
+                              content: PickTime(),
+                            ),
                           ),
                         );
+                         if (result != null)
+                           print (result);
                       },
                       child: TextField(
                         style: textNormal(
@@ -323,7 +330,8 @@ class _AuctionTabState extends State<AuctionTab>
                         readOnly: true,
                         enabled: false,
                         decoration: InputDecoration(
-                          hintText: date,
+                          border: InputBorder.none,
+                          hintText: time,
                           hintStyle: textNormal(
                             Colors.white.withOpacity(0.5),
                             16,
@@ -357,9 +365,46 @@ class _AuctionTabState extends State<AuctionTab>
                       width: 20,
                     ),
                   ),
+                  const SizedBox(
+                    width: 12,
+                  ),
                   Expanded(
-                      child:
-                          Container(color: Colors.yellow, child: TextField()))
+                    child: GestureDetector(
+                      onTap: () {
+                        // showDialog(
+                        //   barrierDismissible: true,
+                        //   context: context,
+                        //   builder: (_) => BackdropFilter(
+                        //     filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                        //     child:  AlertDialog(
+                        //       elevation: 0,
+                        //       backgroundColor: Colors.transparent,
+                        //       content: PickTime(
+                        //         onChange: (){
+                        //         },
+                        //       ),
+                        //     ),
+                        //   ),
+                        // );
+                      },
+                      child: TextField(
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                        readOnly: true,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: date,
+                          hintStyle: textNormal(
+                            Colors.white.withOpacity(0.5),
+                            16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

@@ -158,7 +158,7 @@ class _SaleTabState extends State<SaleTab>
                       context,
                       MaterialPageRoute(
                         builder: (context) => Approve(
-                          showPopUp: false,
+                          showPopUp: true,
                           warning: RichText(
                             text: TextSpan(
                               text:
@@ -211,6 +211,7 @@ class _SaleTabState extends State<SaleTab>
                           },
                           approve: () async {
                             await Future.delayed(const Duration(seconds: 3));
+                            print ("approve");
                             return true;
                           },
                           gasLimitFirst: 100,

@@ -51,7 +51,7 @@ class _InputWithSelectTypeState extends State<InputWithSelectType> {
   void findDropDownSize() {
     height = dropdownKey.currentContext?.size?.height ?? 0;
     width = dropdownKey.currentContext?.size?.width ?? 0;
-    final Offset offset =
+    Offset offset =
         (dropdownKey.currentContext?.findRenderObject() as RenderBox)
             .localToGlobal(Offset.zero);
     xPosition = offset.dx;
@@ -169,16 +169,16 @@ class DropDown extends StatelessWidget {
 
   final double xPosition;
 
-  const DropDown(
-      {Key? key,
-      required this.height,
-      required this.yPosition,
-      required this.width,
-      required this.xPosition,
-      this.heightOfWidget,
-      required this.typeInput,
-      this.chooseIndex = 0,})
-      : super(key: key);
+  const DropDown({
+    Key? key,
+    required this.height,
+    required this.yPosition,
+    required this.width,
+    required this.xPosition,
+    this.heightOfWidget,
+    required this.typeInput,
+    this.chooseIndex = 0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
