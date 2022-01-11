@@ -70,7 +70,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   NFTRepository get _nftRepo => Get.find();
 
   late final NftMarket nftMarket;
-  late final String walletAddress;
+  String walletAddress = '';
   late final String owner;
   List<Wallet> wallets = [];
 
@@ -191,6 +191,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           for (final element in data) {
             wallets.add(Wallet.fromJson(element));
           }
+          walletAddress = wallets.first.address ?? '';
           if (wallets.first.address == owner) {
             pairSink.add(false);
           } else {

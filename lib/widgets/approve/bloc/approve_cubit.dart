@@ -6,11 +6,11 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../main.dart';
 import 'approve_state.dart';
-
 
 enum TYPE_CONFIRM_BASE {
   SEND_NFT,
@@ -23,6 +23,8 @@ enum TYPE_CONFIRM_BASE {
 class ApproveCubit extends BaseCubit<ApproveState> {
   ApproveCubit() : super(ApproveInitState());
   late final NftMarket nftMarket;
+  TYPE_CONFIRM_BASE type = TYPE_CONFIRM_BASE.BUY_NFT;
+
   List<Wallet> listWallet = [];
   String? nameWallet;
   double? gasLimit;
@@ -56,7 +58,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     int? id,
     required String address,
   }) async {
-    final  listNft = <Map<String, dynamic>>[];
+    final listNft = <Map<String, dynamic>>[];
     listNft.add({
       'id': '${nftMarket.nftTokenId}',
       'contract': '${nftMarket.collectionAddress}',
@@ -114,24 +116,32 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
         final result = await sendRawData(rawData ?? '');
-        if (result) {
-          showContent();
-          emit(BuySuccess());
-        } else {
-          emit(BuyFail());
+
+        switch (type) {
+          case TYPE_CONFIRM_BASE.BUY_NFT:
+            if (result) {
+              showContent();
+              emit(BuySuccess());
+            } else {
+              emit(BuyFail());
+            }
+            break;
+          default:
+            break;
         }
-        // cancel
-        //place bid
-        //...
         break;
+        //todo
       case 'importNftCallback':
         final int code = await methodCall.arguments['code'];
         switch (code) {
           case 200:
+            Fluttertoast.showToast(msg: 'Success');
             break;
           case 400:
+            Fluttertoast.showToast(msg: 'Fail');
             break;
           case 401:
+            Fluttertoast.showToast(msg: 'Fail');
             break;
         }
         break;

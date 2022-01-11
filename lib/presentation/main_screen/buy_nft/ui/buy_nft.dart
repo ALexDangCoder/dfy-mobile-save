@@ -7,6 +7,7 @@ import 'package:Dfy/presentation/main_screen/buy_nft/bloc/buy_nft_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -40,12 +41,11 @@ class _BuyNFTState extends State<BuyNFT> {
     cubit = BuyNftCubit();
     txtQuantity = TextEditingController();
   }
-  void emitValue(String value){
+
+  void emitValue(String value) {
     if (value.isNotEmpty) {
-      if (int.parse(value) <=
-          (nftMarket.totalCopies ?? 1)) {
-        cubit.amountSink
-            .add(int.parse(value));
+      if (int.parse(value) <= (nftMarket.totalCopies ?? 1)) {
+        cubit.amountSink.add(int.parse(value));
         cubit.warnSink.add('');
         cubit.btnSink.add(true);
       } else {
@@ -59,6 +59,7 @@ class _BuyNFTState extends State<BuyNFT> {
       cubit.btnSink.add(false);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -82,25 +83,9 @@ class _BuyNFTState extends State<BuyNFT> {
                   MaterialPageRoute(
                     builder: (context) => Approve(
                       title: S.current.buy_nft,
-                      textActiveButton: S.current.buy_nft,
-
-                      approve: () {
-
-                      },
-                      action: () async{
-                        // await cubit.signTransactionWithData(
-                        //   walletAddress:
-                        //   nftDetailBloc.wallets.first.address ?? '',
-                        //   contractAddress: nft_sales_address_dev2,
-                        //   nonce: nonce.toString(),
-                        //   chainId: Get.find<AppConstants>().chaninId,
-                        //   gasPrice: (cubit.gasPriceSubject.value / 10e8)
-                        //       .toStringAsFixed(0),
-                        //   gasLimit: nftDetailBloc.gasLimit,
-                        //   hexString: nftDetailBloc.hexString,
-                        // );
-                      },
-                      gasLimitFirst: double.parse(state.gasLimit),
+                      textActiveButton: S.current.approve,
+                      gasLimitInit: double.parse(state.gasLimit),
+                      typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
                     ),
                   ),
                 );

@@ -2,15 +2,25 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
+import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 
 import '../../../../main.dart';
 import 'component/estimate_gas_fee.dart';
@@ -56,7 +66,8 @@ class Approve extends StatefulWidget {
     this.purposeText,
     this.flexTitle,
     this.flexContent,
-    this.showTransitionProcess, required this.typeApprove,
+    this.showTransitionProcess,
+    required this.typeApprove,
   }) : super(key: key);
 
   @override
@@ -64,7 +75,7 @@ class Approve extends StatefulWidget {
 }
 
 class _ApproveState extends State<Approve> {
-  ApproveCubit cubit = ApproveCubit();
+  late final ApproveCubit cubit;
   GlobalKey scaffoldKey = GlobalKey();
   double? heightScaffold;
   bool? enableButtonAction;
@@ -74,337 +85,405 @@ class _ApproveState extends State<Approve> {
   double gasLimit = 0;
   late int accountImage;
   double gasFee = 0;
+  int nonce = 0;
+  final NFTDetailBloc nftDetailBloc = nftKey.currentState!.bloc;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    cubit = ApproveCubit();
+    cubit.nftMarket = nftDetailBloc.nftMarket;
+    cubit.type = widget.typeApprove;
     accountImage = cubit.randomAvatar();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       heightScaffold = scaffoldKey.currentContext?.size?.height;
     });
+    getNonce();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     cubit.getListWallets();
   }
 
+  Future<void> getNonce() async {
+    nonce = await nftDetailBloc.getNonceWeb3(
+        walletAddress: nftDetailBloc.wallets.first.address ?? '');
+  }
+
   /// NamLV used
-   Future<void> approve (double gasLimitFinal, double gasPriceFinal)async {
-    switch (widget.typeApprove){
-      case TYPE_CONFIRM_BASE.BUY_NFT : {
-        break;
-      }
-      case TYPE_CONFIRM_BASE.PLACE_BID : {
-        break;
-      }
-      case TYPE_CONFIRM_BASE.SEND_NFT : {
-        break;
-      }
-
-
+  Future<void> approve(double gasLimitFinal, double gasPriceFinal) async {
+    switch (widget.typeApprove) {
+      case TYPE_CONFIRM_BASE.BUY_NFT:
+        {
+          break;
+        }
+      case TYPE_CONFIRM_BASE.PLACE_BID:
+        {
+          break;
+        }
+      case TYPE_CONFIRM_BASE.SEND_NFT:
+        {
+          break;
+        }
     }
   }
 
-
+  // await cubit.signTransactionWithData(
+  // walletAddress:
+  // nftDetailBloc.wallets.first.address ?? '',
+  // contractAddress: nft_sales_address_dev2,
+  // nonce: nonce.toString(),
+  // chainId: Get.find<AppConstants>().chaninId,
+  // gasPrice: (cubit.gasPriceSubject.value / 10e8)
+  //     .toStringAsFixed(0),
+  // gasLimit: nftDetailBloc.gasLimit,
+  // hexString: nftDetailBloc.hexString,
+  // );
   ///  use base call NamLV
-  Future<void> action  (double gasLimitFinal, double gasPriceFinal)async {
-    switch (widget.typeApprove){
-      case TYPE_CONFIRM_BASE.BUY_NFT : {
+  Future<void> action(double gasLimitFinal, double gasPriceFinal) async {
+    switch (widget.typeApprove) {
+      case TYPE_CONFIRM_BASE.BUY_NFT:
+        {
+          await cubit.signTransactionWithData(
+            walletAddress: nftDetailBloc.walletAddress,
+            contractAddress: nft_sales_address_dev2,
+            nonce: nonce.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: (cubit.gasPriceSubject.value / 10e8).toStringAsFixed(0),
+            gasLimit: nftDetailBloc.gasLimit,
+            hexString: nftDetailBloc.hexString,
+          );
+        }
         break;
-      }
-      case TYPE_CONFIRM_BASE.PLACE_BID : {
-        break;
-      }
-      case TYPE_CONFIRM_BASE.SEND_NFT : {
-        break;
-      }
-
-
+      case TYPE_CONFIRM_BASE.PLACE_BID:
+        {
+          break;
+        }
+      case TYPE_CONFIRM_BASE.SEND_NFT:
+        {
+          break;
+        }
     }
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      resizeToAvoidBottomInset: true,
-      body: StateStreamLayout(
-        stream: cubit.stateStream,
-        error: AppException('', S.current.something_went_wrong),
-        retry: () async {
-          await cubit.getListWallets();
-        },
-        textEmpty: '',
-        child: GestureDetector(
-          onTap: () {
-            final FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 48),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().bgBtsColor(),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
+    return BlocListener(
+      bloc: cubit,
+      listener: (context, state) {
+        if (state is BuySuccess) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BaseSuccess(
+                title: S.current.buy_nft,
+                content: S.current.congratulation,
+                callback: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(
+                        index: 1,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
-            child: Column(
-              children: [
-                header(),
-                Divider(
-                  thickness: 1,
-                  color: AppTheme.getInstance().divideColor(),
+          ).then(
+            (_) => cubit.emitJsonNftToWalletCore(
+              contract: cubit.nftMarket.collectionAddress ?? '',
+              address: nftDetailBloc.walletAddress,
+            ),
+          );
+        }
+        if (state is BuyFail) {
+          Fluttertoast.showToast(msg: 'Fail');
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: true,
+        body: StateStreamLayout(
+          stream: cubit.stateStream,
+          error: AppException('', S.current.something_went_wrong),
+          retry: () async {
+            await cubit.getListWallets();
+          },
+          textEmpty: '',
+          child: GestureDetector(
+            onTap: () {
+              final FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            child: Container(
+              margin: const EdgeInsets.only(top: 48),
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().bgBtsColor(),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
-                Expanded(
-                  child: Container(
-                    height: heightScaffold,
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          widget.header ?? const SizedBox(height: 0),
-                          ...(widget.listDetail ?? []).map(
-                            (item) => Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: widget.flexTitle ?? 4,
-                                      child: Text(
-                                        item.title,
-                                        style: textNormal(
-                                          AppTheme.getInstance()
-                                              .whiteColor()
-                                              .withOpacity(0.7),
-                                          14.sp,
+              ),
+              child: Column(
+                children: [
+                  header(),
+                  Divider(
+                    thickness: 1,
+                    color: AppTheme.getInstance().divideColor(),
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: heightScaffold,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            widget.header ?? const SizedBox(height: 0),
+                            ...(widget.listDetail ?? []).map(
+                              (item) => Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        flex: widget.flexTitle ?? 4,
+                                        child: Text(
+                                          item.title,
+                                          style: textNormal(
+                                            AppTheme.getInstance()
+                                                .whiteColor()
+                                                .withOpacity(0.7),
+                                            14.sp,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      flex: widget.flexContent ?? 6,
-                                      child: Text(
-                                        item.value,
-                                        style: item.isToken ?? false
-                                            ? textNormalCustom(
-                                                AppTheme.getInstance()
-                                                    .fillColor(),
-                                                20.sp,
-                                                FontWeight.w600,
-                                              )
-                                            : textNormal(
-                                                AppTheme.getInstance()
-                                                    .whiteColor(),
-                                                16.sp,
-                                              ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(height: 16)
-                              ],
+                                      Expanded(
+                                        flex: widget.flexContent ?? 6,
+                                        child: Text(
+                                          item.value,
+                                          style: item.isToken ?? false
+                                              ? textNormalCustom(
+                                                  AppTheme.getInstance()
+                                                      .fillColor(),
+                                                  20.sp,
+                                                  FontWeight.w600,
+                                                )
+                                              : textNormal(
+                                                  AppTheme.getInstance()
+                                                      .whiteColor(),
+                                                  16.sp,
+                                                ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16)
+                                ],
+                              ),
                             ),
-                          ),
-                          if (widget.warning != null)
-                            Column(
-                              children: [
-                                const SizedBox(height: 4),
-                                widget.warning ?? const SizedBox(height: 0),
-                                const SizedBox(height: 20),
-                              ],
-                            )
-                          else
-                            const SizedBox(height: 4),
-                          Divider(
-                            thickness: 1,
-                            color: AppTheme.getInstance().divideColor(),
-                          ),
-                          const SizedBox(height: 16),
-                          walletView(),
-                          const SizedBox(height: 16),
-                          EstimateGasFee(
-                            stateChange: (gasFee) {
-                              WidgetsBinding.instance
-                                  ?.addPostFrameCallback((timeStamp) {
-                                setState(() {
-                                  if (cubit.balanceWallet != null) {
-                                    isCanAction =
-                                        gasFee <= (cubit.balanceWallet ?? 0);
-                                  }
+                            if (widget.warning != null)
+                              Column(
+                                children: [
+                                  const SizedBox(height: 4),
+                                  widget.warning ?? const SizedBox(height: 0),
+                                  const SizedBox(height: 20),
+                                ],
+                              )
+                            else
+                              const SizedBox(height: 4),
+                            Divider(
+                              thickness: 1,
+                              color: AppTheme.getInstance().divideColor(),
+                            ),
+                            const SizedBox(height: 16),
+                            walletView(),
+                            const SizedBox(height: 16),
+                            EstimateGasFee(
+                              stateChange: (gasFee) {
+                                WidgetsBinding.instance
+                                    ?.addPostFrameCallback((timeStamp) {
+                                  setState(() {
+                                    if (cubit.balanceWallet != null) {
+                                      isCanAction =
+                                          gasFee <= (cubit.balanceWallet ?? 0);
+                                    }
+                                  });
+                                  this.gasFee = gasFee;
                                 });
-                                this.gasFee = gasFee;
-                              });
-                            },
-                            cubit: cubit,
-                            gasLimitStart: widget.gasLimitInit,
-                          ),
-                        ],
+                              },
+                              cubit: cubit,
+                              gasLimitStart: widget.gasLimitInit,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: AppTheme.getInstance().bgBtsColor(),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                SizedBox(width: 16.w),
-                if (widget.isShowTwoButton ?? false)
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            child: ButtonGold(
-                              haveGradient: !isApproved,
-                              background:
-                                  isApproved ? fillApprovedButton : null,
-                              textColor: isApproved
-                                  ? borderApprovedButton
-                                  : isCanAction
-                                      ? null
-                                      : disableText,
-                              border: isApproved
-                                  ? Border.all(
-                                      color: borderApprovedButton,
-                                      width: 2,
-                                    )
-                                  : null,
-                              title: S.current.approve,
-                              isEnable: isCanAction,
-                              fixSize: false,
-                              haveMargin: false,
-                            ),
-                            onTap: () async {
-                              if (isCanAction && !isApproved) {
-                                final result = await showModalBottomSheet(
-                                  backgroundColor: Colors.black,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(30),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: AppTheme.getInstance().bgBtsColor(),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: 16.w),
+                  if (widget.isShowTwoButton ?? false)
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              child: ButtonGold(
+                                haveGradient: !isApproved,
+                                background:
+                                    isApproved ? fillApprovedButton : null,
+                                textColor: isApproved
+                                    ? borderApprovedButton
+                                    : isCanAction
+                                        ? null
+                                        : disableText,
+                                border: isApproved
+                                    ? Border.all(
+                                        color: borderApprovedButton,
+                                        width: 2,
+                                      )
+                                    : null,
+                                title: S.current.approve,
+                                isEnable: isCanAction,
+                                fixSize: false,
+                                haveMargin: false,
+                              ),
+                              onTap: () async {
+                                if (isCanAction && !isApproved) {
+                                  final result = await showModalBottomSheet(
+                                    backgroundColor: Colors.black,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(30),
+                                      ),
                                     ),
-                                  ),
-                                  isScrollControlled: true,
-                                  context: context,
-                                  builder: (_) {
-                                    return PopUpApprove(
-                                      approve: approve,
-                                      addressWallet: cubit.addressWallet ?? '',
-                                      accountName:
-                                          cubit.nameWallet ?? 'Account',
-                                      imageAccount: accountImage,
-                                      balanceWallet: cubit.balanceWallet ?? 0,
-                                      gasFee: gasFee,
-                                      purposeText: widget.purposeText ??
-                                          'Give this site permission to access your NFTs',
-                                      approveSuccess: (value) {
-                                        isCanAction = true;
-                                      },
-                                      showTransitionProcess:
-                                          widget.showTransitionProcess ?? true,
+                                    isScrollControlled: true,
+                                    context: context,
+                                    builder: (_) {
+                                      return PopUpApprove(
+                                        approve: approve,
+                                        addressWallet:
+                                            cubit.addressWallet ?? '',
+                                        accountName:
+                                            cubit.nameWallet ?? 'Account',
+                                        imageAccount: accountImage,
+                                        balanceWallet: cubit.balanceWallet ?? 0,
+                                        gasFee: gasFee,
+                                        purposeText: widget.purposeText ??
+                                            'Give this site permission to access your NFTs',
+                                        approveSuccess: (value) {
+                                          isCanAction = true;
+                                        },
+                                        showTransitionProcess:
+                                            widget.showTransitionProcess ??
+                                                true,
+                                      );
+                                    },
+                                  );
+                                  if (result ?? false) {
+                                    setState(() {
+                                      isApproved = result;
+                                    });
+                                  }
+                                }
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 25),
+                        ],
+                      ),
+                    )
+                  else
+                    const SizedBox(height: 0),
+                  Expanded(
+                    child: GestureDetector(
+                      child: ButtonGold(
+                        textColor:
+                            isApproved || !(widget.isShowTwoButton ?? false)
+                                ? null
+                                : disableText,
+                        fixSize: false,
+                        haveMargin: false,
+                        title: widget.textActiveButton,
+                        isEnable: (isApproved ||
+                                !(widget.isShowTwoButton ?? false)) &&
+                            isCanAction,
+                      ),
+                      onTap: () async {
+                        if ((isApproved ||
+                                !(widget.isShowTwoButton ?? false)) &&
+                            isCanAction) {
+                          final navigator = Navigator.of(context);
+                          if (widget.showPopUp ?? false) {
+                            await showModalBottomSheet(
+                              backgroundColor: Colors.black,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(30),
+                                ),
+                              ),
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (_) {
+                                return PopUpApprove(
+                                  showTransitionProcess:
+                                      widget.showTransitionProcess ?? true,
+                                  approve: () async {
+                                    await action(
+                                      cubit.gasLimit ?? widget.gasLimitInit,
+                                      cubit.gasPriceSubject.valueOrNull ?? 0,
                                     );
                                   },
+                                  addressWallet: cubit.addressWallet ?? '',
+                                  accountName: cubit.nameWallet ?? 'Account',
+                                  imageAccount: accountImage,
+                                  balanceWallet: cubit.balanceWallet ?? 0,
+                                  gasFee: gasFee,
+                                  purposeText: widget.purposeText ??
+                                      'Give this site permission to access your NFTs',
+                                  approveSuccess: (value) {
+                                    navigator.pop();
+                                    navigator.pop();
+                                  },
                                 );
-                                if (result ?? false) {
-                                  setState(() {
-                                    isApproved = result;
-                                  });
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 25),
-                      ],
-                    ),
-                  )
-                else
-                  const SizedBox(height: 0),
-                Expanded(
-                  child: GestureDetector(
-                    child: ButtonGold(
-                      textColor:
-                          isApproved || !(widget.isShowTwoButton ?? false)
-                              ? null
-                              : disableText,
-                      fixSize: false,
-                      haveMargin: false,
-                      title: widget.textActiveButton,
-                      isEnable:
-                          (isApproved || !(widget.isShowTwoButton ?? false)) &&
-                              isCanAction,
-                    ),
-                    onTap: () async {
-                      if ((isApproved || !(widget.isShowTwoButton ?? false)) &&
-                          isCanAction) {
-                        final navigator = Navigator.of(context);
-                        if (widget.showPopUp ?? false) {
-                          await showModalBottomSheet(
-                            backgroundColor: Colors.black,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(30),
-                              ),
-                            ),
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (_) {
-                              return PopUpApprove(
-                                showTransitionProcess:
-                                    widget.showTransitionProcess ?? true,
-                                approve: () async {
-                                  await action(cubit.gasLimit ?? widget.gasLimitInit,
-                                    cubit.gasPriceSubject.valueOrNull ?? 0,);
-                                },
-                                addressWallet: cubit.addressWallet ?? '',
-                                accountName: cubit.nameWallet ?? 'Account',
-                                imageAccount: accountImage,
-                                balanceWallet: cubit.balanceWallet ?? 0,
-                                gasFee: gasFee,
-                                purposeText: widget.purposeText ??
-                                    'Give this site permission to access your NFTs',
-                                approveSuccess: (value) {
-                                  navigator.pop();
-                                  navigator.pop();
-                                },
-                              );
-                            },
-                          );
-                        } else {
-                          cubit.changeLoadingState(isShow: true);
-                          await action(
-                            cubit.gasLimit ?? widget.gasLimitInit,
-                            cubit.gasPriceSubject.valueOrNull ?? 0,
-                          );
-                          cubit.changeLoadingState(isShow: false);
-                          navigator.pop();
+                              },
+                            );
+                          } else {
+                            cubit.changeLoadingState(isShow: true);
+                            await action(
+                              cubit.gasLimit ?? widget.gasLimitInit,
+                              cubit.gasPriceSubject.valueOrNull ?? 0,
+                            );
+                            cubit.changeLoadingState(isShow: false);
+                            navigator.pop();
+                          }
                         }
-                      }
-                    },
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 16.w),
-              ],
-            ),
-            const SizedBox(height: 38)
-          ],
+                  SizedBox(width: 16.w),
+                ],
+              ),
+              const SizedBox(height: 38)
+            ],
+          ),
         ),
       ),
     );
