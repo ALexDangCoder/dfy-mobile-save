@@ -107,7 +107,10 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                               Expanded(
                                 flex: 7,
                                 child: Text(
-                                  widget.owner.formatAddressWalletConfirm(),
+                                  widget.owner.length < 20
+                                      ? widget.contract
+                                      : widget.owner
+                                          .formatAddressWalletConfirm(),
                                   style: textNormalCustom(
                                     null,
                                     14,
@@ -150,8 +153,10 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                                     );
                                   },
                                   child: Text(
-                                    widget.contract
-                                        .formatAddressWalletConfirm(),
+                                    widget.contract.length < 20
+                                        ? widget.contract
+                                        : widget.contract
+                                            .formatAddressWalletConfirm(),
                                     style: textNormalCustom(
                                       AppTheme.getInstance().blueText(),
                                       14,

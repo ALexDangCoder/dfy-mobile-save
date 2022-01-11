@@ -65,6 +65,7 @@ class ImageAssets {
   static const String imgTokenYFI = '$baseImg/YFI.png';
   static const String imgTokenYFII = '$baseImg/YFII.png';
   static const String imgTokenZEC = '$baseImg/ZEC.png';
+  static const String imgTokenUSDT = '$baseImg/USDT.png';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';

@@ -1,25 +1,39 @@
 class CollectionModel {
-  String? id;
-  String? name;
-  String? description;
-  int? type;
-  String? avatarCid;
-  String? coverCid;
-  int? totalNft;
-  int? nftOwnerCount;
-  int? totalVolumeTraded;
-  bool? isFeature;
 
-  CollectionModel({
-    this.id,
-    this.name,
-    this.description,
-    this.type,
-    this.avatarCid,
-    this.coverCid,
-    this.totalNft,
-    this.nftOwnerCount,
-    this.totalVolumeTraded,
-    this.isFeature,
-  });
+  String? id;
+  String? txnHash;
+  String? coverCid;
+  String? avatarCid;
+  String? collectionName;
+  int? numberOfItem;
+  int? numberOfOwner;
+  String? walletAddress;
+  String? collectionAddress;
+  String? description;
+  int? nftType;
+  String? collectionId;
+  String? beId;
+  int? standard;
+  String? customUrl;
+  String? featureCid;
+  bool? isWhitelist;
+
+  CollectionModel(
+      this.id,
+      this.txnHash,
+      this.coverCid,
+      this.avatarCid,
+      this.collectionName,
+      this.numberOfItem,
+      this.numberOfOwner,
+      this.walletAddress,
+      this.collectionAddress,
+      this.description,
+      this.nftType,
+      this.collectionId,
+      this.beId,
+      this.standard,
+      this.customUrl,
+      this.featureCid,
+      this.isWhitelist);
 }
