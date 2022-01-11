@@ -169,16 +169,16 @@ class DropDown extends StatelessWidget {
 
   final double xPosition;
 
-  const DropDown(
-      {Key? key,
-      required this.height,
-      required this.yPosition,
-      required this.width,
-      required this.xPosition,
-      this.heightOfWidget,
-      required this.typeInput,
-      this.chooseIndex = 0})
-      : super(key: key);
+  const DropDown({
+    Key? key,
+    required this.height,
+    required this.yPosition,
+    required this.width,
+    required this.xPosition,
+    this.heightOfWidget,
+    required this.typeInput,
+    this.chooseIndex = 0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
