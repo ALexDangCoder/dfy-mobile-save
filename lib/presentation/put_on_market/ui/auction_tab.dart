@@ -306,22 +306,21 @@ class _AuctionTabState extends State<AuctionTab>
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        showDialog(
+                      onTap: () async {
+                         final result = await showDialog(
                           barrierDismissible: true,
                           context: context,
                           builder: (_) => BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                            child:  AlertDialog(
+                            child: const AlertDialog(
                               elevation: 0,
                               backgroundColor: Colors.transparent,
-                              content: PickTime(
-                                onChange: (){
-                                },
-                              ),
+                              content: PickTime(),
                             ),
                           ),
                         );
+                         if (result != null)
+                           print (result);
                       },
                       child: TextField(
                         style: textNormal(
@@ -331,6 +330,7 @@ class _AuctionTabState extends State<AuctionTab>
                         readOnly: true,
                         enabled: false,
                         decoration: InputDecoration(
+                          border: InputBorder.none,
                           hintText: time,
                           hintStyle: textNormal(
                             Colors.white.withOpacity(0.5),
@@ -395,6 +395,7 @@ class _AuctionTabState extends State<AuctionTab>
                         readOnly: true,
                         enabled: false,
                         decoration: InputDecoration(
+                          border: InputBorder.none,
                           hintText: date,
                           hintStyle: textNormal(
                             Colors.white.withOpacity(0.5),

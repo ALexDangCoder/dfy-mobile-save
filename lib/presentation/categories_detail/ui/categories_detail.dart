@@ -1,9 +1,7 @@
 import 'package:Dfy/config/base/base_app_bar.dart';
-import 'package:Dfy/config/base/base_custom_scroll_view.dart';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
 import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
@@ -11,14 +9,11 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/categories_detail/bloc/category_detail_cubit.dart';
 import 'package:Dfy/presentation/categories_detail/bloc/category_detail_state.dart';
 import 'package:Dfy/presentation/collection_list/ui/item_collection_load.dart';
-import 'package:Dfy/presentation/collection_list/ui/item_error.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
-import 'package:Dfy/presentation/detail_collection/ui/widget/base_collection.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/item/item_collection/item_colection.dart';
-import 'package:Dfy/widgets/pull_to_refresh/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -157,22 +152,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                   child: Image.asset(ImageAssets.img_back),
                                 ),
                               ),
-                            ),
-                            actions: [
-                              Container(
-                                margin: const EdgeInsets.only(
-                                  right: 16,
-                                ),
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: SizedBox(
-                                    height: 32,
-                                    width: 32,
-                                    child: Image.asset(ImageAssets.img_filter),
-                                  ),
-                                ),
-                              )
-                            ],
+                            ), actions: const  [],
                           );
                         },
                       ),

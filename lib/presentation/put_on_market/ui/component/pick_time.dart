@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class PickTime extends StatefulWidget {
-  const PickTime({Key? key, required this.onChange}) : super(key: key);
-  final Function onChange;
+  const PickTime({Key? key}) : super(key: key);
 
   @override
   _PickTimeState createState() => _PickTimeState();
@@ -21,7 +20,9 @@ class _PickTimeState extends State<PickTime> {
     editMinuteController.text = DateTime.now().minute < 10
         ? '0${DateTime.now().minute}'
         : DateTime.now().minute.toString();
-    editHourController.text = DateTime.now().hour.toString();
+    editHourController.text = DateTime.now().hour < 10
+        ? '0${DateTime.now().hour}'
+        : DateTime.now().hour.toString();
     return Container(
       constraints: const BoxConstraints(maxWidth: 430),
       width: MediaQuery.of(context).size.width - 64,
@@ -67,9 +68,7 @@ class _PickTimeState extends State<PickTime> {
                   Expanded(
                     child: TextField(
                       keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       textAlign: TextAlign.end,
                       decoration: const InputDecoration(
                         counter: SizedBox(height: 0),
@@ -171,7 +170,10 @@ class _PickTimeState extends State<PickTime> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context, {
+                        'hour': editHourController.text,
+                        'minute': editMinuteController.text
+                      });
                     },
                     child: Center(
                       child: Text(
