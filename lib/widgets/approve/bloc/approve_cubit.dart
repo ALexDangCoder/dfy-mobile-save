@@ -9,11 +9,21 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../main.dart';
 import 'approve_state.dart';
 
+
+enum TYPE_CONFIRM_BASE {
+  SEND_NFT,
+  SEND_TOKEN,
+  BUY_NFT,
+  SEND_OFFER,
+  PLACE_BID,
+}
+
 class ApproveCubit extends BaseCubit<ApproveState> {
   ApproveCubit() : super(ApproveInitState());
 
   List<Wallet> listWallet = [];
   String? nameWallet;
+  double? gasLimit;
   String? addressWallet;
   double? balanceWallet;
 
@@ -34,6 +44,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   Stream<double> get gasPriceStream => gasPriceSubject.stream;
 
 
+  ///
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'getListWalletsCallback':

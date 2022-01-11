@@ -8,6 +8,7 @@ import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/categories_detail/bloc/category_detail_cubit.dart';
 import 'package:Dfy/presentation/categories_detail/bloc/category_detail_state.dart';
+import 'package:Dfy/presentation/collection_list/ui/item_collection_load.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -76,10 +77,53 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
               bloc: cubit,
               builder: (BuildContext context, state) {
                 if (state is LoadingCategoryState) {
-                  return Column(
-                    children: [
-                      Container(height: 145.h, color: colorSkeletonLight),
-                    ],
+                  return Container(
+                    color: backgroundBottomSheetColor,
+                    child: Column (
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container (height:  145.h ,color:colorSkeletonLight),
+                        const SizedBox (height : 12),
+                        Container (
+                          width: 200.w,
+                          height:  25,
+                          margin:const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: colorSkeletonLight,
+                          ),
+                        ),
+                        const SizedBox (height : 6),
+                        Container (
+                          height:  18,
+                          margin:const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: colorSkeletonLight,
+                          ),
+                        ),
+                        const SizedBox (height : 32),
+                        Expanded(
+                          child: StaggeredGridView.countBuilder(
+                            padding: const EdgeInsets.only(
+                              left: 21,
+                              right: 21,
+                              top: 10,
+                              bottom: 20,
+                            ),
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 15,
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              return const ItemCollectionLoad();
+                            },
+                            crossAxisCount: 2,
+                            staggeredTileBuilder: (int index) =>
+                            const StaggeredTile.fit(1),
+                          ),
+                        )
+                      ],
+                    ),
                   );
                 }
                 if (state is LoadedCategoryState) {
@@ -94,7 +138,8 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                           return BaseAppBar(
                             image: data?.bannerCid ?? '',
                             title:
-                                '${widget.exploreCategory.name} ${S.current.categories}',
+                            '${widget.exploreCategory.name} ${S.current
+                                .categories}',
                             initHeight: 145.h,
                             leading: SizedBox(
                               child: InkWell(
@@ -107,22 +152,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                   child: Image.asset(ImageAssets.img_back),
                                 ),
                               ),
-                            ),
-                            actions: [
-                              Container(
-                                margin: const EdgeInsets.only(
-                                  right: 16,
-                                ),
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: SizedBox(
-                                    height: 32,
-                                    width: 32,
-                                    child: Image.asset(ImageAssets.img_filter),
-                                  ),
-                                ),
-                              )
-                            ],
+                            ), actions: const  [],
                           );
                         },
                       ),
@@ -139,7 +169,9 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                 children: [
                                   const SizedBox(height: 12),
                                   Text(
-                                    '${S.current.explore} ${widget.exploreCategory.name} ${S.current.categories}',
+                                    '${S.current.explore} ${widget
+                                        .exploreCategory.name} ${S.current
+                                        .categories}',
                                     style: textNormalCustom(
                                       AppTheme.getInstance().textThemeColor(),
                                       20,
@@ -175,7 +207,10 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                               ),
                               constraints: BoxConstraints(
                                 minHeight:
-                                    MediaQuery.of(context).size.height - 145,
+                                MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height - 145,
                               ),
                               color: backgroundBottomSheetColor,
                               child: StreamBuilder<List<CollectionDetailModel>>(
@@ -186,7 +221,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                     children: [
                                       StaggeredGridView.countBuilder(
                                         physics:
-                                            const NeverScrollableScrollPhysics(),
+                                        const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         mainAxisSpacing: 20,
                                         crossAxisSpacing: 15,
@@ -199,40 +234,37 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       DetailCollection(
-                                                    walletAddress: 'alo alo',
-                                                    collectionAddress: data[
-                                                                index]
-                                                            .collectionAddress ??
-                                                        '',
-                                                  ),
+                                                        id: data[index].id ??
+                                                            '',
+                                                      ),
                                                 ),
                                               );
                                             },
                                             child: ItemCollection(
                                               fixWidth: false,
                                               urlBackGround: ApiConstants
-                                                      .BASE_URL_IMAGE +
+                                                  .BASE_URL_IMAGE +
                                                   (data[index].coverCid ?? ''),
                                               backgroundFit: BoxFit.cover,
                                               urlIcon: ApiConstants
-                                                      .BASE_URL_IMAGE +
+                                                  .BASE_URL_IMAGE +
                                                   (data[index].avatarCid ?? ''),
                                               title: data[index].name ?? '',
                                               items: (data[index].totalNft ?? 0)
                                                   .toString(),
                                               owners:
-                                                  (data[index].nftOwnerCount ??
-                                                          0)
-                                                      .toString(),
+                                              (data[index].nftOwnerCount ??
+                                                  0)
+                                                  .toString(),
                                               text: (data[index].description ??
-                                                      '')
+                                                  '')
                                                   .stripHtmlIfNeeded(),
                                             ),
                                           );
                                         },
                                         crossAxisCount: 2,
                                         staggeredTileBuilder: (int index) =>
-                                            const StaggeredTile.fit(1),
+                                        const StaggeredTile.fit(1),
                                       ),
                                       StreamBuilder<bool>(
                                         stream: cubit.canLoadMoreStream,
@@ -243,7 +275,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                               height: 40,
                                               child: Center(
                                                 child:
-                                                    CircularProgressIndicator(
+                                                CircularProgressIndicator(
                                                   strokeWidth: 3,
                                                   color: AppTheme.getInstance()
                                                       .whiteColor(),
@@ -266,8 +298,42 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                     ],
                   );
                 } else {
-                  return const Center(
-                    child: Text('Co loxi '),
+                  return  Container(
+                    color: backgroundBottomSheetColor,
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: 54,
+                            width: 54,
+                            child: Image.asset(ImageAssets.err_load_category),
+                          ),
+                          const SizedBox (height : 24),
+                          Flexible(
+                            child: Text(
+                              S.current.could_not_load_data,
+                              style: textNormalCustom(
+                                textErrorLoad,
+                                13.sp,
+                                FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          const SizedBox (height : 24),
+                          InkWell(
+                            onTap: () {
+                              cubit.getData(widget.exploreCategory.id ?? '');
+                            },
+                            child: SizedBox(
+                              height: 36,
+                              width: 36,
+                              child: Image.asset(ImageAssets.reload_category),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 }
               },

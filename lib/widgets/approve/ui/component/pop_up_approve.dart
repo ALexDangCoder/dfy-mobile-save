@@ -22,8 +22,10 @@ class PopUpApprove extends StatelessWidget {
     required this.purposeText,
     required this.approve,
     required this.approveSuccess,
+    required this.showTransitionProcess,
   }) : super(key: key);
 
+  final bool showTransitionProcess;
   final int imageAccount;
   final Function approveSuccess;
   final String accountName;
@@ -211,16 +213,19 @@ class PopUpApprove extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () async {
                       final navigator = Navigator.of(context);
-                      unawaited(
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (_) => const AlertDialog(
-                            backgroundColor: Colors.transparent,
-                            content: TransactionSubmit(),
+                      if (showTransitionProcess) {
+                        unawaited(
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (_) => const AlertDialog(
+                              elevation: 0,
+                              backgroundColor: Colors.transparent,
+                              content: TransactionSubmit(),
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }
                       final result = await approve();
                       navigator.pop();
                       navigator.pop(result);

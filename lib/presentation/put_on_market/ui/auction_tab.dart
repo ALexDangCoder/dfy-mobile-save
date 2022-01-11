@@ -3,14 +3,21 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
+import 'package:Dfy/presentation/put_on_market/ui/component/pick_time.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_with_select_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
+
+import 'component/custom_calandar.dart';
 
 class AuctionTab extends StatefulWidget {
   final PutOnMarketCubit cubit;
@@ -245,15 +252,8 @@ class _AuctionTabState extends State<AuctionTab>
                               ),
                             ],
                             textActiveButton: S.current.put_on_sale,
-                            action: () async {
-                              await Future.delayed(Duration(seconds: 3));
-                              print(' call action in hear ');
-                            },
-                            approve: () async {
-                              await Future.delayed(Duration(seconds: 3));
-                              print(' call approve  in hear ');
-                              return true;
-                            }, gasLimit: 10.0,
+                            gasLimitInit: 100.0,
+                            typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
                           ),
                         ),
                       );
@@ -289,25 +289,45 @@ class _AuctionTabState extends State<AuctionTab>
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
                 children: [
-                  Container(
-                    height: 25,
-                    width: 25,
-                    color: Colors.red,
+                  SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Image.asset(
+                      ImageAssets.ic_clock_white,
+                      height: 20,
+                      width: 20,
+                    ),
                   ),
                   const SizedBox(
                     width: 12,
                   ),
                   Expanded(
-                    child: Container(
-                      color: Colors.blue,
+                    child: GestureDetector(
+                      onTap: () async {
+                        final result = await showDialog(
+                          barrierDismissible: true,
+                          context: context,
+                          builder: (_) => BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                            child: const AlertDialog(
+                              elevation: 0,
+                              backgroundColor: Colors.transparent,
+                              content: PickTime(),
+                            ),
+                          ),
+                        );
+                        if (result != null) print(result);
+                      },
                       child: TextField(
                         style: textNormal(
                           AppTheme.getInstance().whiteColor(),
                           16,
                         ),
                         readOnly: true,
+                        enabled: false,
                         decoration: InputDecoration(
-                          hintText: date,
+                          border: InputBorder.none,
+                          hintText: time,
                           hintStyle: textNormal(
                             Colors.white.withOpacity(0.5),
                             16,
@@ -332,14 +352,50 @@ class _AuctionTabState extends State<AuctionTab>
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
                 children: [
-                  Container(
-                    height: 25,
-                    width: 25,
-                    color: Colors.red,
+                  SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Image.asset(
+                      ImageAssets.ic_calendar,
+                      height: 20,
+                      width: 20,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 12,
                   ),
                   Expanded(
-                      child:
-                          Container(color: Colors.yellow, child: TextField()))
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            transitionDuration: Duration.zero,
+                            opaque: false,
+                            pageBuilder: (_, __, ___) {
+                              return const CustomCalendar();
+                            },
+                          ),
+                        );
+                      },
+                      child: TextField(
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                        readOnly: true,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: date,
+                          hintStyle: textNormal(
+                            Colors.white.withOpacity(0.5),
+                            16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_number_of_quantity.dart';
@@ -220,7 +221,7 @@ class _PawnTabState extends State<PawnTab>
                         context,
                         MaterialPageRoute(
                           builder: (context) => Approve(
-                            gasLimit: 10.0,
+                            gasLimitInit: 10.0,
                             isShowTwoButton: true,
                             title: S.current.put_on_sale,
                             listDetail: [
@@ -242,15 +243,7 @@ class _PawnTabState extends State<PawnTab>
                               )
                             ],
                             textActiveButton: S.current.put_on_sale,
-                            action: () async {
-                              await Future.delayed(Duration(seconds: 3));
-                              print(' call action in hear ');
-                            },
-                            approve: () async {
-                              await Future.delayed(Duration(seconds: 3));
-                              print(' call approve  in hear ');
-                              return true;
-                            },
+                            typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
                           ),
                         ),
                       );
