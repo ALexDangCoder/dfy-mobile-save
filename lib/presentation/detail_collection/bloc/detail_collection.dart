@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/data/response/collection_detail/collection_detail_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
@@ -41,6 +40,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const String INSTAGRAM = 'INSTAGRAM';
   static const String TELEGRAM = 'TELEGRAM';
   static const String TWITTER = 'TWITTER';
+  static const String HTTPS = 'https://';
   static const int SOFT_COLLECTION = 0;
   static const int HARD_COLLECTION = 1;
 
@@ -341,7 +341,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           emit(LoadingDataSuccess());
 
           arg = res;
-          funGetUrl(arg.socialLinks as List<SocialLink>);
+          funGetUrl(res.socialLinks ?? []);
           collectionDetailModel.sink.add(arg);
           collectionId = arg.id ?? '';
           collectionAddress = arg.collectionAddress ?? '';
@@ -420,30 +420,35 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     );
   }
 
-  void funGetUrl(List<SocialLink> link) {
-    print(link.length);
-    for (final SocialLink value in link) {
+  String funCheckLinkHttp(String link) {
+    String linkURL = '';
+    if (link.substring(0, 7) == HTTPS) {
+      linkURL = link;
+    } else {
+      linkURL = HTTPS + link;
+    }
+    return linkURL;
+  }
+
+  void funGetUrl(List<SocialLinkModel> link) {
+    for (final SocialLinkModel value in link) {
       switch (value.type?.toUpperCase()) {
         case FACEBOOK:
-          linkUrlFacebook = value.url ?? '';
+          linkUrlFacebook = funCheckLinkHttp(value.url ?? '');
           break;
         case INSTAGRAM:
-          linkUrlInstagram = value.url ?? '';
+          linkUrlInstagram = funCheckLinkHttp(value.url?.substring(0, 7) ?? '');
           break;
         case TELEGRAM:
-          linkUrlTelegram = value.url ?? '';
+          linkUrlTelegram = funCheckLinkHttp(value.url?.substring(0, 7) ?? '');
           break;
         case TWITTER:
-          linkUrlTwitter = value.url ?? '';
+          linkUrlTwitter = funCheckLinkHttp(value.url?.substring(0, 7) ?? '');
           break;
         default:
           break;
       }
     }
-    print(linkUrlFacebook);
-    print(linkUrlInstagram);
-    print(linkUrlInstagram);
-    print(linkUrlTwitter);
   }
 
   String funGetSymbolUrl(String link) {

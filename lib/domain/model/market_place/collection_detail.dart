@@ -1,4 +1,4 @@
-import 'package:Dfy/data/response/collection_detail/collection_detail_response.dart';
+
 
 class CollectionDetailModel {
   String? id;
@@ -48,7 +48,7 @@ class CollectionDetailModel {
 
 class SocialLinkModel {
   String? url;
-  String? link;
+  String? type;
 
-  SocialLinkModel(this.url, this.link);
+  SocialLinkModel(this.url, this.type);
 }

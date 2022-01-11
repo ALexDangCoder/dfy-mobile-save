@@ -140,8 +140,8 @@ class SocialLink {
   String? url;
 
   SocialLinkModel toDomain() => SocialLinkModel(
-        type,
         url,
+        type,
       );
 
   SocialLink(this.type, this.url);
