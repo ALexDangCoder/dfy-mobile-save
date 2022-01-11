@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:Dfy/config/base/base_custom_scroll_view.dart';
@@ -39,6 +40,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
+
+import '../../../main.dart';
 
 class NFTDetailScreen extends StatefulWidget {
   const NFTDetailScreen({
@@ -181,6 +184,16 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
     _bloc.getInForNFT(widget.marketId ?? '', widget.type);
     caseTabBar(widget.type);
     _tabController = TabController(length: _tabPage.length, vsync: this);
+    trustWalletChannel
+        .setMethodCallHandler(_bloc.nativeMethodCallBackTrustWallet);
+    _bloc.getDataString(
+      orderId: '88',
+      walletAddress: '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb',
+      context: context,
+    );
+    _bloc.getGasLimit(
+      walletAddress: '',
+    );
   }
 
   @override
@@ -238,29 +251,15 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               InkWell(
                 onTap: () async {
+                  final navigator = Navigator.of(context);
                   //todo
-                  final String dataString = await _bloc.getDataString(
-                    context: context,
-                    orderId: '84',
-                    walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
-                  );
-                  final double gasLimit = await _bloc.getGasLimit(
-                    walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
-                    dataString: dataString,
-                  );
 
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CancelSale(
-                        cubit: CancelSaleCubit(
-                          ntfValue: 'Oi doi oi',
-                          quantity: '1',
+                  unawaited(
+                    navigator.push(
+                      MaterialPageRoute(
+                        builder: (context) => CancelSale(
+                          bloc: _bloc,
                         ),
-                        gasLimit: gasLimit,
-                        dataString: dataString,
-                        walletAdress:
-                            '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb',
                       ),
                     ),
                   );

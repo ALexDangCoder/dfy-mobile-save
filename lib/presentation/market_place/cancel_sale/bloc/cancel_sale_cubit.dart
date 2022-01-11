@@ -25,7 +25,6 @@ class CancelSaleCubit extends BaseCubit<CancelSaleState> {
 
   Web3Utils web3utils = Web3Utils();
 
-  AppConstants get appConstant => Get.find();
 
   List<DetailItemApproveModel> initListApprove() {
     List<DetailItemApproveModel> listApprove = [
@@ -34,16 +33,8 @@ class CancelSaleCubit extends BaseCubit<CancelSaleState> {
     ];
     return listApprove;
   }
-  Future<dynamic> nativeMethodCallBack(MethodCall methodCall) async {
-    if (methodCall.method == 'signTransactionWithDataCallback') {
-      bool isSuccess = await methodCall.arguments['isSuccess'];
-    }else if(methodCall.method == 'getListWalletsCallback'){
-      print('sds');
-    } else {
-      print('okok');
-    }
-    return;
-  }
+
+
 
   //ky giao dich
   Future<void> signTransactionWithData({
@@ -53,27 +44,27 @@ class CancelSaleCubit extends BaseCubit<CancelSaleState> {
     required String withData,
   }) async {
     try {
-      final TransactionCountResponse transaction =
-          await web3utils.getTransactionCount(address: walletAddress);
-      if (!transaction.isSuccess) {
-        return;
-      }
+      // final TransactionCountResponse transaction =
+      //     await web3utils.getTransactionCount(address: walletAddress);
+      // if (!transaction.isSuccess) {
+      //   return;
+      // }
       final data = {
-        'walletAddress': walletAddress,
-        'contractAddress': nft_sales_address_dev2,
-        'nonce': transaction.count.toString(),
-        'chainId': appConstant.chaninId,
-        'gasPrice': gasPrice,
-        'gasLimit': gasLimit,
-        'withData': withData,
+        'walletAddress': 'walletAddress',
+        'contractAddress': 'nft_sales_address_dev2',
+        'nonce': 'transaction.count.toString()',
+        'chainId': 'appConstant.chaninId',
+        'gasPrice': 'gasPrice',
+        'gasLimit': 'gasLimit',
+        'withData': 'withData',
       };
+
       await trustWalletChannel.invokeMethod('signTransactionWithData', data);
     } on PlatformException catch (e) {
       //
       throw e;
     }
   }
-
 
   //cancel sale:
   Future<Map<String, dynamic>> cancelSale() async {

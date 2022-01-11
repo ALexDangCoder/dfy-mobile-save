@@ -1,9 +1,9 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/market_place/cancel_sale/bloc/cancel_sale_cubit.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -12,17 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CancelSale extends StatefulWidget {
-  final CancelSaleCubit cubit;
-  final double gasLimit;
-  final String walletAdress;
-  final String dataString;
+  final NFTDetailBloc bloc;
 
   const CancelSale({
     Key? key,
-    required this.cubit,
-    required this.gasLimit,
-    required this.walletAdress,
-    required this.dataString,
+    required this.bloc,
   }) : super(key: key);
 
   @override
@@ -33,18 +27,24 @@ class _CancelSaleState extends State<CancelSale> {
   @override
   void initState() {
     super.initState();
+    trustWalletChannel.setMethodCallHandler(widget.bloc.nativeMethodCallBackTrustWallet);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Approve(
-      listDetail: widget.cubit.initListApprove(),
+      listDetail: widget.bloc.initListApprove(),
       action: (gasLimit, gasPrice) async {
-        await widget.cubit.signTransactionWithData(
+        await widget.bloc.signTransactionWithData(
           gasLimit: gasLimit.toString(),
           gasPrice: gasPrice.toString(),
-          walletAddress: widget.walletAdress,
-          withData: widget.dataString,
+          walletAddress: '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb',
+          withData: widget.bloc.dataString,
         );
       },
       title: S.current.cancel_sale,
@@ -86,7 +86,7 @@ class _CancelSaleState extends State<CancelSale> {
         ],
       ),
       textActiveButton: S.current.cancel_sale,
-      gasLimitFirst: widget.gasLimit,
+      gasLimitFirst: widget.bloc.gasLimit,
     );
   }
 }
