@@ -46,11 +46,6 @@ abstract class BaseStateScreen<T extends BaseScreen> extends State<T>
     }).addTo(_unAuthSubscription);
   }
 
-  @override
-  void dispose() {
-    _unAuthSubscription.clear();
-    super.dispose();
-  }
 
   void _showTimeoutDialog(String msg) {
     Fluttertoast.showToast(msg: msg);

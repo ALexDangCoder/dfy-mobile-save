@@ -47,7 +47,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     int? id,
     required String address,
   }) async {
-    final listNft = <Map<String, dynamic>>[].add({
+    final  listNft = <Map<String, dynamic>>[];
+    listNft.add({
       'id': '${nftMarket.nftTokenId}',
       'contract': '${nftMarket.collectionAddress}',
       'uri': nftMarket.image,
@@ -109,6 +110,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
         } else {
           emit(BuyFail());
         }
+        // cancel
+        //place bid
+        //...
         break;
       case 'importNftCallback':
         final int code = await methodCall.arguments['code'];

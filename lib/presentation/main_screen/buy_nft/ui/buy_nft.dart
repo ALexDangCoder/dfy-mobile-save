@@ -83,9 +83,24 @@ class _BuyNFTState extends State<BuyNFT> {
                     builder: (context) => Approve(
                       title: S.current.buy_nft,
                       textActiveButton: S.current.buy_nft,
-                      approve: () {},
-                      action: () {},
-                      gasLimit: double.parse(state.gasLimit),
+
+                      approve: () {
+
+                      },
+                      action: () async{
+                        // await cubit.signTransactionWithData(
+                        //   walletAddress:
+                        //   nftDetailBloc.wallets.first.address ?? '',
+                        //   contractAddress: nft_sales_address_dev2,
+                        //   nonce: nonce.toString(),
+                        //   chainId: Get.find<AppConstants>().chaninId,
+                        //   gasPrice: (cubit.gasPriceSubject.value / 10e8)
+                        //       .toStringAsFixed(0),
+                        //   gasLimit: nftDetailBloc.gasLimit,
+                        //   hexString: nftDetailBloc.hexString,
+                        // );
+                      },
+                      gasLimitFirst: double.parse(state.gasLimit),
                     ),
                   ),
                 );
