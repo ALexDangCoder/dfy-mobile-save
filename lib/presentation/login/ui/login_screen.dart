@@ -127,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ImageIcon(
                             const AssetImage(ImageAssets.ic_lock),
                             color: AppTheme.getInstance().whiteColor(),
-                            size: 24,
+                            size: 24.sp,
                           ),
                           SizedBox(
                             width: 20.5.w,
