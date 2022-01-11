@@ -33,10 +33,12 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   Stream<double> get balanceWalletStream => _balanceWalletSubject.stream;
 
   Stream<double> get gasPriceStream => gasPriceSubject.stream;
+
   Future<bool> sendRawData(String rawData) async {
     final result = await web3Client.sendRawTransaction(transaction: rawData);
     return result['isSuccess'];
   }
+
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'getListWalletsCallback':
@@ -61,6 +63,12 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
         final result = await sendRawData(rawData ?? '');
+        if (result) {
+          showContent();
+          emit(BuySuccess());
+        } else {
+          emit(BuyFail());
+        }
         break;
     }
   }
@@ -75,6 +83,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     required String hexString,
   }) async {
     try {
+      showLoading();
       final data = {
         'walletAddress': walletAddress,
         'contractAddress': contractAddress,
