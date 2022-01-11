@@ -11,6 +11,7 @@ const dfTxtColor = Color(0xFF303742);
 const secondTxtColor = Color(0xFF808FA8);
 const highlightTxtColor = Color(0xff303742);
 const backgroundBottomSheetColor = Color(0xff32324c);
+const textErrorLoad = Color(0xffE6E6E6);
 const formColor = Color(0xff6F6FC5);
 const subTitleTxtColor = Color(0xff9097A3);
 const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];

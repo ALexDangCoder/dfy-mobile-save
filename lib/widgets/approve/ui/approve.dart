@@ -34,8 +34,13 @@ class Approve extends StatefulWidget {
   final Widget? warning;
   final Widget? header;
   final bool? isShowTwoButton;
+  final int? flexTitle;
+  final int? flexContent;
+  final String? purposeText;
   final String textActiveButton;
-  final double gasLimit;
+  final double gasLimitFirst;
+  final bool? showTransitionProcess;
+  final bool? showPopUp;
   final Function approve;
   final Function action;
 
@@ -49,7 +54,12 @@ class Approve extends StatefulWidget {
     this.header,
     required this.approve,
     required this.action,
-    required this.gasLimit,
+    required this.gasLimitFirst,
+    this.showPopUp = false,
+    this.purposeText,
+    this.flexTitle,
+    this.flexContent,
+    this.showTransitionProcess,
   }) : super(key: key);
 
   @override
@@ -63,6 +73,8 @@ class _ApproveState extends State<Approve> {
   bool? enableButtonAction;
   bool isCanAction = false;
   bool isApproved = false;
+  double gasPrice = 0;
+  double gasLimit = 0;
   late int accountImage;
   double gasFee = 0;
 
@@ -131,7 +143,7 @@ class _ApproveState extends State<Approve> {
                                 Row(
                                   children: [
                                     Expanded(
-                                      flex: 4,
+                                      flex: widget.flexTitle ?? 4,
                                       child: Text(
                                         item.title,
                                         style: textNormal(
@@ -143,7 +155,7 @@ class _ApproveState extends State<Approve> {
                                       ),
                                     ),
                                     Expanded(
-                                      flex: 6,
+                                      flex: widget.flexContent ?? 6,
                                       child: Text(
                                         item.value,
                                         style: item.isToken ?? false
@@ -197,7 +209,7 @@ class _ApproveState extends State<Approve> {
                               });
                             },
                             cubit: cubit,
-                            gasLimitStart: widget.gasLimit,
+                            gasLimitStart: widget.gasLimitFirst,
                           ),
                         ],
                       ),
@@ -265,11 +277,13 @@ class _ApproveState extends State<Approve> {
                                       imageAccount: accountImage,
                                       balanceWallet: cubit.balanceWallet ?? 0,
                                       gasFee: gasFee,
-                                      purposeText:
+                                      purposeText: widget.purposeText ??
                                           'Give this site permission to access your NFTs',
                                       approveSuccess: (value) {
                                         isCanAction = true;
                                       },
+                                      showTransitionProcess:
+                                          widget.showTransitionProcess ?? true,
                                     );
                                   },
                                 );
@@ -299,17 +313,56 @@ class _ApproveState extends State<Approve> {
                       haveMargin: false,
                       title: widget.textActiveButton,
                       isEnable:
-                      (isApproved || !(widget.isShowTwoButton ?? false)) &&
-                          isCanAction,
+                          (isApproved || !(widget.isShowTwoButton ?? false)) &&
+                              isCanAction,
                     ),
                     onTap: () async {
                       if ((isApproved || !(widget.isShowTwoButton ?? false)) &&
                           isCanAction) {
                         final navigator = Navigator.of(context);
-                        cubit.changeLoadingState(isShow: true);
-                        await widget.action();
-                        cubit.changeLoadingState(isShow: false);
-                        navigator.pop();
+                        if (widget.showPopUp ?? false) {
+                          await showModalBottomSheet(
+                            backgroundColor: Colors.black,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(30),
+                              ),
+                            ),
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (_) {
+                              return PopUpApprove(
+                                showTransitionProcess:
+                                    widget.showTransitionProcess ?? true,
+                                approve: () async {
+                                  await widget.action(
+                                    cubit.gasLimit ?? widget.gasLimitFirst,
+                                    cubit.gasPriceSubject.valueOrNull ?? 0,
+                                  );
+                                },
+                                addressWallet: cubit.addressWallet ?? '',
+                                accountName: cubit.nameWallet ?? 'Account',
+                                imageAccount: accountImage,
+                                balanceWallet: cubit.balanceWallet ?? 0,
+                                gasFee: gasFee,
+                                purposeText: widget.purposeText ??
+                                    'Give this site permission to access your NFTs',
+                                approveSuccess: (value) {
+                                  navigator.pop();
+                                  navigator.pop();
+                                },
+                              );
+                            },
+                          );
+                        } else {
+                          cubit.changeLoadingState(isShow: true);
+                          await widget.action(
+                            cubit.gasLimit ?? widget.gasLimitFirst,
+                            cubit.gasPriceSubject.valueOrNull ?? 0,
+                          );
+                          cubit.changeLoadingState(isShow: false);
+                          navigator.pop();
+                        }
                       }
                     },
                   ),

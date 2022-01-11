@@ -50,7 +50,7 @@ class MainScreen extends BaseScreen {
   }
 }
 
-class _MainScreenState extends BaseState<MainScreen> {
+class _MainScreenState extends BaseStateScreen<MainScreen> {
   List<Widget> _pages = [];
   int pageIndex = 0;
   List<GlobalKey<NavigatorState>> navigatorKeys = <GlobalKey<NavigatorState>>[];
