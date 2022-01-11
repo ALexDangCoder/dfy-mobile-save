@@ -854,7 +854,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                             const SizedBox()
                           else
                             _rowCollection(
-                              'DFY',
+                              objSale.symbolToken ?? '',
                               objSale.collectionName ?? '',
                               objSale.ticked == 1,
                             ),

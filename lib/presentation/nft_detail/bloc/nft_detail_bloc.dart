@@ -55,10 +55,18 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     required String ofAddress,
     required String tokenAddress,
   }) async {
-    balance = await web3Client.getBalanceOfToken(
-      ofAddress: ofAddress,
-      tokenAddress: tokenAddress,
-    );
+    showLoading();
+    try{
+      balance = await web3Client.getBalanceOfToken(
+        ofAddress: ofAddress,
+        tokenAddress: tokenAddress,
+      );
+      showContent();
+    }
+    catch(e){
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
     return balance;
   }
 
@@ -273,13 +281,13 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return gasLimit;
   }
 
-  Future<void> callWeb3(BuildContext context) async {
+  Future<void> callWeb3(BuildContext context, int quantity) async {
     showLoading();
     try {
       await getBuyNftData(
         contractAddress: nft_sales_address_dev2,
         orderId: nftMarket.orderId.toString(),
-        numberOfCopies: '1',
+        numberOfCopies: quantity.toString(),
         context: context,
       ).then(
         (value) => getGasLimitByData(

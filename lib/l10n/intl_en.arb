@@ -431,5 +431,7 @@
   "item_from_low_to_high": "Item from low to high",
   "no_des": "No description available",
   "available": "Available",
-  "empty_data": "Empty data"
+  "empty_data": "Empty data",
+  "you_enter_greater": "you enter greater than the total amount",
+  "you_must": "You must enter the quantity you want to buy"
 }

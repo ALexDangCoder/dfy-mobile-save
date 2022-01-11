@@ -8,10 +8,10 @@ import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
-import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/button/button_gradient.dart';
+import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/form_without_prefix.dart';
-import 'package:Dfy/widgets/image/circular_image.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +40,25 @@ class _BuyNFTState extends State<BuyNFT> {
     cubit = BuyNftCubit();
     txtQuantity = TextEditingController();
   }
-
+  void emitValue(String value){
+    if (value.isNotEmpty) {
+      if (int.parse(value) <=
+          (nftMarket.totalCopies ?? 1)) {
+        cubit.amountSink
+            .add(int.parse(value));
+        cubit.warnSink.add('');
+        cubit.btnSink.add(true);
+      } else {
+        cubit.warnSink.add(
+          S.current.you_enter_greater,
+        );
+        cubit.btnSink.add(false);
+      }
+    } else {
+      cubit.warnSink.add(S.current.you_must);
+      cubit.btnSink.add(false);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -108,15 +126,19 @@ class _BuyNFTState extends State<BuyNFT> {
                                   ),
                                   spaceH4,
                                   FormWithOutPrefix(
+                                    textValue: (value) {
+                                      emitValue(value);
+                                    },
                                     hintText: S.current.enter_quantity,
                                     typeForm:
                                         TypeFormWithoutPrefix.IMAGE_FT_TEXT,
                                     cubit: BuyNftCubit,
                                     txtController: txtQuantity,
                                     quantityOfAll: nftMarket.totalCopies,
-                                    imageAsset: ImageAssets.ic_symbol,
+                                    imageAsset: nftMarket.urlToken,
                                     isTokenOrQuantity: false,
                                   ),
+                                  warningAmount(),
                                   spaceH20,
                                   pricePerOne(),
                                   spaceH12,
@@ -125,7 +147,8 @@ class _BuyNFTState extends State<BuyNFT> {
                                   showTotalPayment(),
                                   spaceH4,
                                   Text(
-                                    '${S.current.your_balance} ${widget.balance} DFY',
+                                    '${S.current.your_balance} ${widget.balance} '
+                                    '${nftMarket.symbolToken}',
                                     style: textNormalCustom(
                                       Colors.white.withOpacity(0.7),
                                       14,
@@ -142,14 +165,50 @@ class _BuyNFTState extends State<BuyNFT> {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        _nftBloc.callWeb3(context);
+                    StreamBuilder<bool>(
+                      initialData: false,
+                      stream: cubit.btnStream,
+                      builder: (ctx, snapshot) {
+                        final isEnable = snapshot.data!;
+                        if (isEnable) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: ButtonGradient(
+                              onPressed: () {
+                                _nftBloc.callWeb3(context, cubit.amountValue);
+                              },
+                              gradient: RadialGradient(
+                                center: const Alignment(0.5, -0.5),
+                                radius: 4,
+                                colors: AppTheme.getInstance()
+                                    .gradientButtonColor(),
+                              ),
+                              child: Text(
+                                S.current.buy_nft,
+                                style: textNormal(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  20,
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: ErrorButton(
+                              child: Center(
+                                child: Text(
+                                  S.current.buy_nft,
+                                  style: textNormal(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
                       },
-                      child: ButtonGold(
-                        title: '${S.current.buy} NFT',
-                        isEnable: true,
-                      ),
                     ),
                     spaceH38,
                   ],
@@ -162,42 +221,74 @@ class _BuyNFTState extends State<BuyNFT> {
     );
   }
 
-  Row showTotalPayment() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          S.current.total_payment_upper,
-          style: textNormalCustom(
-            AppTheme.getInstance().textThemeColor(),
-            16.sp,
-            FontWeight.w600,
+  Widget warningAmount() {
+    return StreamBuilder<String>(
+      stream: cubit.warnStream,
+      builder: (BuildContext context, snapshot) {
+        return Visibility(
+          visible: snapshot.data!.isNotEmpty,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 343.w,
+                // height: 30.h,
+                child: Text(
+                  snapshot.data ?? '',
+                  style: textNormal(AppTheme.getInstance().wrongColor(), 12)
+                      .copyWith(fontWeight: FontWeight.w400),
+                ),
+              ),
+            ],
           ),
-        ),
-        Wrap(
-          children: [
-            Row(
-              children: [
-                circularImage(
-                  ImageAssets.ic_symbol,
-                  height: 20,
-                  width: 20,
-                ),
-                spaceW4,
-                Text(
-                  '${nftMarket.price}DFY',
-                  style: textNormalCustom(
-                    AppTheme.getInstance().textThemeColor(),
-                    20.sp,
-                    FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        )
-      ],
+        );
+      },
     );
+  }
+
+  Widget showTotalPayment() {
+    return StreamBuilder<int>(
+        stream: cubit.amountStream,
+        builder: (context, snapshot) {
+          final total = nftMarket.price.toInt() * (snapshot.data ?? 1);
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                S.current.total_payment_upper,
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  16.sp,
+                  FontWeight.w600,
+                ),
+              ),
+              Wrap(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        height: 20.h,
+                        width: 20.w,
+                        child: Image.network(nftMarket.urlToken ?? ''),
+                      ),
+                      spaceW4,
+                      Text(
+                        '${total} ${nftMarket.symbolToken}',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          20.sp,
+                          FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          );
+        });
   }
 
   ConstrainedBox pricePerOne() {
@@ -222,14 +313,14 @@ class _BuyNFTState extends State<BuyNFT> {
             children: [
               Row(
                 children: [
-                  circularImage(
-                    ImageAssets.ic_symbol,
-                    height: 20,
-                    width: 20,
+                  SizedBox(
+                    height: 20.h,
+                    width: 20.w,
+                    child: Image.network(nftMarket.urlToken ?? ''),
                   ),
                   spaceW4,
                   Text(
-                    '${nftMarket.price} DFY',
+                    '${nftMarket.price} ${nftMarket.symbolToken}',
                     style: textNormalCustom(
                       AppTheme.getInstance().textThemeColor(),
                       16.sp,
