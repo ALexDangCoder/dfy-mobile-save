@@ -84,18 +84,18 @@ void configureDependencies() {
 
   // get detail category
 
-  Get.put(DetailCategoryClient(provideDio()));
+  Get.put(DetailCategoryClient(provideDio(connectionTimeOut: 40000)));
   Get.put<DetailCategoryRepository>(DetailCategoryRepositoryImpl(Get.find()));
 }
 
 const int _connectTimeOut = 60000;
 
-Dio provideDio({int connectTimeOut = _connectTimeOut}) {
+Dio provideDio({int connectionTimeOut = 60000}) {
   final appConstants = Get.find<AppConstants>();
   final options = BaseOptions(
     baseUrl: appConstants.baseUrl,
-    receiveTimeout: connectTimeOut,
-    connectTimeout: connectTimeOut,
+    receiveTimeout: connectionTimeOut,
+    connectTimeout: connectionTimeOut,
     followRedirects: false,
   );
   final dio = Dio(options);

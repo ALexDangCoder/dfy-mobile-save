@@ -57,13 +57,16 @@ class CategoryDetailCubit extends BaseCubit<CategoryState> {
   }
 
   Future<void> getCategory(String id) async {
-    showLoading();
+    emit(LoadingCategoryState());
     final result = await _categoryService.getCategory(id);
     result.when(
       success: (response) {
         if (response.isNotEmpty) {
           _categorySubject.sink.add(response.first);
-          //emit(LoadedCategoryState());
+          emit(LoadedCategoryState());
+        }
+        else {
+          emit(ErrorCategoryState());
         }
       },
       error: (error) {

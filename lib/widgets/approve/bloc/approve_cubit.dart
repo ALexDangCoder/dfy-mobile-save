@@ -16,6 +16,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   late final NftMarket nftMarket;
   List<Wallet> listWallet = [];
   String? nameWallet;
+  double? gasLimit;
   String? addressWallet;
   double? balanceWallet;
   String? rawData;
