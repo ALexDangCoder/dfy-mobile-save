@@ -188,7 +188,7 @@ class _FilterBtsState extends State<FilterBts> {
               ),
               GestureDetector(
                 onTap: () {
-                  widget.listNftCubit.page = 0;
+                  widget.listNftCubit.page = 1;
                   widget.listNftCubit.canLoadMoreListNft = true;
                   widget.listNftCubit.checkStatus();
                   widget.listNftCubit.checkFilterArr.clear();

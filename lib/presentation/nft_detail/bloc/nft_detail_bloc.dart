@@ -29,7 +29,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   final BehaviorSubject<List<OwnerNft>> listOwnerStream =
       BehaviorSubject.seeded([]);
   final BehaviorSubject<List<BiddingNft>> listBiddingStream =
-  BehaviorSubject.seeded([]);
+      BehaviorSubject.seeded([]);
 
   String symbolToken = '';
 
@@ -66,7 +66,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   ///GetBiding
   Future<void> getBidding(String auctionId) async {
     final Result<List<BiddingNft>> result =
-    await _nftRepo.getBidding(auctionId);
+        await _nftRepo.getBidding(auctionId);
     result.when(
       success: (res) {
         listBiddingStream.add(res);
@@ -79,13 +79,21 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   ///GetInfoNft
 
-  Future<void> getInForNFT(String marketId, MarketType type) async {
+  Future<void> getInForNFT(
+      {required String marketId,
+      required MarketType type,
+      required TypeNFT typeNFT,
+      required String nftId}) async {
     showLoading();
     getTokenInf();
     if (type == MarketType.SALE) {
       showLoading();
-      final Result<NftMarket> result =
-          await _nftRepo.getDetailNftOnSale(marketId);
+      final Result<NftMarket> result;
+      if (typeNFT == TypeNFT.SOFT_NFT) {
+        result = await _nftRepo.getDetailNftOnSale(marketId);
+      } else {
+        result = await _nftRepo.getDetailHardNftOnSale(nftId);
+      }
       result.when(
         success: (res) {
           for (final value in listTokenSupport) {
@@ -103,14 +111,18 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
         },
         error: (error) {
-          updateStateError();
+          showError();
         },
       );
     }
     if (type == MarketType.AUCTION) {
       showLoading();
-      final Result<NFTOnAuction> result =
-          await _nftRepo.getDetailNFTAuction(marketId);
+      final Result<NFTOnAuction> result;
+      if (typeNFT == TypeNFT.SOFT_NFT) {
+        result = await _nftRepo.getDetailNFTAuction(marketId);
+      } else {
+        result = await _nftRepo.getDetailHardNftOnAuction(nftId);
+      }
       result.when(
         success: (res) {
           for (final value in listTokenSupport) {
@@ -154,8 +166,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     final today = DateTime.now().millisecondsSinceEpoch;
     if (endDate.millisecondsSinceEpoch > today) {
       return endDate.microsecondsSinceEpoch - today;
-    }
-    else{
+    } else {
       return 0;
     }
   }

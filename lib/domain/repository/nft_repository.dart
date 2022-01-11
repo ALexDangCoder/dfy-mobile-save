@@ -9,6 +9,8 @@ mixin NFTRepository {
   Future<Result<NFTOnAuction>> getDetailNFTAuction(String marketId);
 
   Future<Result<NftMarket>> getDetailNftOnSale(String marketId);
+  Future<Result<NftMarket>> getDetailHardNftOnSale(String nftId);
+  Future<Result<NFTOnAuction>> getDetailHardNftOnAuction(String nftId);
 
   Future<Result<List<HistoryNFT>>> getHistory(
     String collectionAddress,
