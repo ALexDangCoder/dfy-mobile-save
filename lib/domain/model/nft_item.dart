@@ -7,6 +7,7 @@ class NftItem {
   final MarketType? marketType;
   final TypeNFT? typeNFT;
   final TypeImage? typeImage;
+  final String? marketId;
 
   NftItem({
     required this.name,
@@ -15,5 +16,6 @@ class NftItem {
     this.marketType,
     this.typeNFT,
     this.typeImage,
+    this.marketId,
   });
 }

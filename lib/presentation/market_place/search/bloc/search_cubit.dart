@@ -37,6 +37,7 @@ class SearchCubit extends BaseCubit<SearchState> {
 
   Future<void> getCollectionFeatNftBySearch({required String query}) async {
     emit(SearchLoading());
+    clearCollectionsFtNftsAfterSearch();
     final Result<List<ListSearchCollectionFtNftModel>> result =
         await _searchMarketRepo.getCollectionFeatNftSearch(name: query.trim());
     result.when(
@@ -79,6 +80,7 @@ class SearchCubit extends BaseCubit<SearchState> {
         for (final element in nftsSearch) {
           listNFT.add(
             NftItem(
+              marketId: element.id,
               price: 0,
               name: element.name ?? 'name',
               image: ApiConstants.BASE_URL_IMAGE + (element.imageCid ?? 'url'),
