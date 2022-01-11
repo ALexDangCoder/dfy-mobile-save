@@ -1,3 +1,4 @@
+import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
 import 'package:Dfy/data/response/nft/history_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_auction_response.dart';
@@ -48,16 +49,24 @@ class NFTRepositoryImpl implements NFTRepository {
   Future<Result<List<OwnerNft>>> getOwner(
       String collectionAddress, String nftTokenId) {
     return runCatchingAsync<OwnerResponse, List<OwnerNft>>(
-          () => _nftClient.getOwner(collectionAddress, nftTokenId),
-          (response) => response.toDomain() ?? [],
+      () => _nftClient.getOwner(collectionAddress, nftTokenId),
+      (response) => response.toDomain() ?? [],
     );
   }
 
   @override
   Future<Result<List<BiddingNft>>> getBidding(String auctionId) {
     return runCatchingAsync<BiddingResponse, List<BiddingNft>>(
-          () => _nftClient.getBidding(auctionId),
-          (response) => response.toDomain() ?? [],
+      () => _nftClient.getBidding(auctionId),
+      (response) => response.toDomain() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<String>> buyNftRequest(BuyNftRequest nftRequest) {
+    return runCatchingAsync<String, String>(
+      () => _nftClient.buyNftRequest(nftRequest),
+      (response) => response.toString(),
     );
   }
 }

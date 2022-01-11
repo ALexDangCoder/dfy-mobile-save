@@ -1,3 +1,4 @@
+import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
 import 'package:Dfy/data/response/nft/history_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_auction_response.dart';
@@ -22,21 +23,28 @@ abstract class NFTClient {
 
   @GET('${ApiConstants.GET_DETAIL_NFT_ON_SALE}{marketId}')
   Future<OnSaleResponse> getDetailNftOnSale(
-      @Path('marketId') String marketID,
-      );
+    @Path('marketId') String marketID,
+  );
+
   @GET(ApiConstants.GET_HISTORY)
   Future<HistoryResponse> getHistory(
-      @Query('collection_address') String collectionAddress,
-      @Query('nft_token_id') String nftTokenId,
-      );
+    @Query('collection_address') String collectionAddress,
+    @Query('nft_token_id') String nftTokenId,
+  );
 
   @GET(ApiConstants.GET_OWNER)
   Future<OwnerResponse> getOwner(
-      @Query('collection_address') String collectionAddress,
-      @Query('nft_token_id') String nftTokenId,
-      );
+    @Query('collection_address') String collectionAddress,
+    @Query('nft_token_id') String nftTokenId,
+  );
+
   @GET(ApiConstants.GET_BIDDING)
   Future<BiddingResponse> getBidding(
-      @Query('auction_id') String auctionId,
-      );
+    @Query('auction_id') String auctionId,
+  );
+
+  @POST(ApiConstants.BUY_NFT)
+  Future<String> buyNftRequest(
+    @Body() BuyNftRequest buyNftRequest,
+  );
 }

@@ -176,6 +176,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   void initState() {
     super.initState();
     bloc = NFTDetailBloc();
+    bloc.nftMarketId = widget.marketId ?? '';
     caseTabBar(widget.type);
     onRefresh();
     _tabController = TabController(length: _tabPage.length, vsync: this);

@@ -30,6 +30,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String hexString = '';
   String gasLimit = '';
   String rawData = '';
+  String nftMarketId = '';
 
   Stream<bool> get viewStream => _viewSubject.stream;
 
