@@ -23,6 +23,11 @@ class NftOnSaleFail extends NFTDetailState {
   List<Object?> get props => [];
 }
 
+class Web3Fail extends NFTDetailState {
+  @override
+  List<Object?> get props => [];
+}
+
 class HaveWallet extends NftOnSaleSuccess {
   HaveWallet(NftMarket nftMarket) : super(nftMarket);
 
@@ -46,10 +51,10 @@ class NoWallet extends NftOnSaleSuccess {
   List<Object?> get props => [nftMarket];
 }
 
-class GetGasLimitSuccess extends NFTDetailState {
+class GetGasLimitSuccess extends NftOnSaleSuccess {
   final String gasLimit;
 
-  GetGasLimitSuccess(this.gasLimit);
+  GetGasLimitSuccess(NftMarket nftMarket, this.gasLimit) : super(nftMarket);
 
   @override
   List<Object?> get props => [gasLimit];

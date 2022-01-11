@@ -21,17 +21,15 @@ import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NFTDetailBloc extends BaseCubit<NFTDetailState> {
-  NFTDetailBloc() : super(NFTDetailInitial()) {
-    showLoading();
-  }
+  NFTDetailBloc() : super(NFTDetailInitial());
 
   final _viewSubject = BehaviorSubject.seeded(true);
   final _pairSubject = BehaviorSubject<bool>();
   final Web3Utils web3Client = Web3Utils();
-  late final double balance;
-  late final String hexString;
-  late final String gasLimit;
-  late final String rawData;
+  double balance = 0;
+  String hexString = '';
+  String gasLimit = '';
+  String rawData = '';
 
   Stream<bool> get viewStream => _viewSubject.stream;
 
@@ -56,15 +54,14 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     required String tokenAddress,
   }) async {
     showLoading();
-    try{
+    try {
       balance = await web3Client.getBalanceOfToken(
         ofAddress: ofAddress,
         tokenAddress: tokenAddress,
       );
       showContent();
-    }
-    catch(e){
-      showError();
+    } catch (e) {
+      emit(Web3Fail());
       throw AppException(S.current.error, e.toString());
     }
     return balance;
@@ -209,12 +206,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }
 
   Future<int> getNonceWeb3({required String walletAddress}) async {
-    final result =
-        await web3Client.getTransactionCount(address: walletAddress);
+    final result = await web3Client.getTransactionCount(address: walletAddress);
     return result.count;
   }
-
-
 
   Future<void> getListWallets() async {
     try {
@@ -257,7 +251,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         context: context,
       );
     } catch (e) {
-      showError();
+      emit(Web3Fail());
       throw AppException(S.current.error, e.toString());
     }
     return hexString;
@@ -273,7 +267,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         toContractAddress: toAddress,
         dataString: hexString,
       );
-      emit(GetGasLimitSuccess(gasLimit));
+      emit(GetGasLimitSuccess(nftMarket,gasLimit,));
     } catch (e) {
       showError();
       throw AppException(S.current.error, e.toString());

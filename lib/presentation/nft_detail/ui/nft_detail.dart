@@ -337,34 +337,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
     );
   }
 
-  Widget _buildTable() => Column(
-        children: [
-          buildRow(
-            title: S.current.collection_address,
-            detail: 'auctionObj.collectionAddress',
-            type: TextType.RICH_BLUE,
-            isShowCopy: true,
-          ),
-          spaceH12,
-          buildRow(
-            title: S.current.nft_id,
-            detail: 'auctionObj.nftId',
-            type: TextType.NORMAL,
-          ),
-          spaceH12,
-          buildRow(
-            title: S.current.nft_standard,
-            detail: 'auctionObj.nftStandard',
-            type: TextType.NORMAL,
-          ),
-          spaceH12,
-          buildRow(
-            title: S.current.block_chain,
-            detail: 'auctionObj.blockChain',
-            type: TextType.NORMAL,
-          ),
-        ],
-      );
 
   Widget additionalColumn(List<Properties> properties) {
     return Column(
@@ -942,7 +914,49 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ],
             ),
           );
-        } else {
+        }else if(state is NftOnSaleFail){
+          return Scaffold(
+            backgroundColor: AppTheme.getInstance().bgBtsColor(),
+            body: StateStreamLayout(
+              stream: bloc.stateStream,
+              error:
+              AppException(S.current.error, S.current.could_not_load_data),
+              retry: () async {
+                await bloc.getInForNFT(widget.marketId ?? '', widget.type);
+              },
+              textEmpty: '',
+              child: const SizedBox(),
+            ),
+          );
+        } if(state is Web3Fail){
+          return Scaffold(
+            backgroundColor: AppTheme.getInstance().backgroundBTSColor(),
+            body: StateStreamLayout(
+              stream: bloc.stateStream,
+              error:
+              AppException(S.current.error, S.current.something_went_wrong),
+              retry: () async {
+                await bloc
+                    .getBalanceToken(
+                  ofAddress: bloc.wallets.first.address ?? '',
+                  tokenAddress: bloc.nftMarket.token ?? '',
+                )
+                    .then(
+                      (value) => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BuyNFT(
+                        balance: value,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              textEmpty: '',
+              child: const SizedBox(),
+            ),
+          );
+        }else  {
           return const ModalProgressHUD(
             inAsyncCall: true,
             progressIndicator: CupertinoLoading(),
@@ -992,7 +1006,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                       spaceH20,
                       additionalColumn([]),
                       spaceH20,
-                      _buildTable(),
                       spaceH12,
                     ],
                   ),

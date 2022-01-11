@@ -77,7 +77,7 @@ class _BuyNFTState extends State<BuyNFT> {
             bloc: _nftBloc,
             listener: (context, state) {
               if (state is GetGasLimitSuccess) {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => Approve(
@@ -223,6 +223,7 @@ class _BuyNFTState extends State<BuyNFT> {
 
   Widget warningAmount() {
     return StreamBuilder<String>(
+      initialData: '',
       stream: cubit.warnStream,
       builder: (BuildContext context, snapshot) {
         return Visibility(
