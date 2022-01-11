@@ -44,11 +44,6 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
             .toString();
   }
 
-  void resetEditGasFee() {
-    _editGasLimitController.text = widget.gasLimitStart.toString();
-    _editGasLimitController.text = gasPriceStart.toString();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -204,6 +199,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                           (gasLimit ?? widget.gasLimitStart) /
                                           1000000000;
                                   widget.stateChange(gasFee);
+                                  widget.cubit.gasLimit = double.parse(value);
                                   setState(() {
                                     gasLimit = double.parse(value);
                                   });
@@ -290,7 +286,8 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                         gasPrice = gasPriceStart;
                         _editGasPriceController.text = gasPriceStart.toString();
                         gasLimit = widget.gasLimitStart;
-                        _editGasLimitController.text = widget.gasLimitStart.toString();
+                        _editGasLimitController.text =
+                            widget.gasLimitStart.toString();
                       });
                     },
                     child: Container(
