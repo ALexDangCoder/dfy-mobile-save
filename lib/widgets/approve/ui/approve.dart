@@ -104,8 +104,8 @@ class _ApproveState extends State<Approve> {
       resizeToAvoidBottomInset: true,
       body: BlocListener(
         bloc: cubit,
-        listener: (context, state){
-          if(state is BuySuccess){
+        listener: (context, state) {
+          if (state is BuySuccess) {
             Fluttertoast.showToast(msg: 'Success');
           }
         },
@@ -329,7 +329,6 @@ class _ApproveState extends State<Approve> {
                               isCanAction,
                     ),
                     onTap: () async {
-
                       await cubit.signTransactionWithData(
                         walletAddress:
                             nftDetailBloc.wallets.first.address ?? '',

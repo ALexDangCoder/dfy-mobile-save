@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
@@ -11,7 +13,7 @@ import 'approve_state.dart';
 
 class ApproveCubit extends BaseCubit<ApproveState> {
   ApproveCubit() : super(ApproveInitState());
-
+  late final NftMarket nftMarket;
   List<Wallet> listWallet = [];
   String? nameWallet;
   String? addressWallet;
@@ -37,6 +39,43 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   Future<bool> sendRawData(String rawData) async {
     final result = await web3Client.sendRawTransaction(transaction: rawData);
     return result['isSuccess'];
+  }
+
+  Future<void> emitJsonNftToWalletCore({
+    required String contract,
+    int? id,
+    required String address,
+  }) async {
+    final listNft = <Map<String, dynamic>>[].add({
+      'id': '${nftMarket.nftTokenId}',
+      'contract': '${nftMarket.collectionAddress}',
+      'uri': nftMarket.image,
+    });
+    final result = {
+      'name': nftMarket.name,
+      'symbol': nftMarket.symbolToken,
+      'contract': nftMarket.collectionAddress,
+      'listNft': listNft,
+    };
+    await importNftIntoWalletCore(
+      jsonNft: json.encode(result),
+      address: address,
+    );
+  }
+
+  Future<void> importNftIntoWalletCore({
+    required String jsonNft,
+    required String address,
+  }) async {
+    try {
+      final data = {
+        'jsonNft': jsonNft,
+        'walletAddress': address,
+      };
+      await trustWalletChannel.invokeMethod('importNft', data);
+    } on PlatformException {
+      //todo
+    }
   }
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
@@ -68,6 +107,17 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           emit(BuySuccess());
         } else {
           emit(BuyFail());
+        }
+        break;
+      case 'importNftCallback':
+        final int code = await methodCall.arguments['code'];
+        switch (code) {
+          case 200:
+            break;
+          case 400:
+            break;
+          case 401:
+            break;
         }
         break;
     }
