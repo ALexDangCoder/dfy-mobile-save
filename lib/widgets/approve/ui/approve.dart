@@ -348,8 +348,6 @@ class _ApproveState extends State<Approve> {
                                 purposeText: widget.purposeText ??
                                     'Give this site permission to access your NFTs',
                                 approveSuccess: (value) {
-                                  navigator.pop();
-                                  navigator.pop();
                                 },
                               );
                             },
@@ -361,7 +359,6 @@ class _ApproveState extends State<Approve> {
                             cubit.gasPriceSubject.valueOrNull ?? 0,
                           );
                           cubit.changeLoadingState(isShow: false);
-                          navigator.pop();
                         }
                       }
                     },

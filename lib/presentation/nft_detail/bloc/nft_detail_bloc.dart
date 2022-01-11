@@ -261,6 +261,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       if (!transaction.isSuccess) {
         return;
       }
+      //10.0  66932
       final data = {
         'walletAddress': walletAddress,
         'contractAddress': nft_sales_address_dev2,
