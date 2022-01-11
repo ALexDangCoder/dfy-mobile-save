@@ -554,6 +554,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         return ImageAssets.imgTokenYFII;
       case 'ZEC':
         return ImageAssets.imgTokenZEC;
+      case 'USDT':
+        return ImageAssets.imgTokenUSDT;
       default:
         return '';
     }
