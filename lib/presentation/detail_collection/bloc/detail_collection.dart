@@ -219,7 +219,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     String each = '';
     if (nftType == TYPE721) {
       each = '';
-    } else {
+    } else  {
       each = S.current.activity_each;
     }
     return each;
