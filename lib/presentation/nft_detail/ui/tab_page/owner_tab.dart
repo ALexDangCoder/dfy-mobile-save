@@ -126,7 +126,7 @@ class OwnerTab extends StatelessWidget {
       case 3:
         return RichText(
           text: TextSpan(
-            text: '1 of 1 on pawn for',
+            text: '1 of 1 on pawn for ',
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
               14,

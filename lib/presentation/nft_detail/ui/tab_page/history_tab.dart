@@ -258,11 +258,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -289,11 +291,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.fromAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -313,11 +317,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.toAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -344,11 +350,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -375,11 +383,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -399,7 +409,7 @@ Widget status(HistoryNFT historyNFT) {
             TextSpan(
               text: price,
               style: textNormal(
-                Colors.yellow,
+                amountColor,
                 14,
               ),
             ),
@@ -420,11 +430,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -444,7 +456,7 @@ Widget status(HistoryNFT historyNFT) {
             TextSpan(
               text: expectedLoan,
               style: textNormal(
-                Colors.yellow,
+                amountColor,
                 14,
               ),
             ),
@@ -472,11 +484,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -496,7 +510,7 @@ Widget status(HistoryNFT historyNFT) {
             TextSpan(
               text: price,
               style: textNormal(
-                Colors.yellow,
+                amountColor,
                 14,
               ),
             ),
@@ -517,11 +531,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -548,11 +564,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -579,11 +597,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -610,7 +630,7 @@ Widget status(HistoryNFT historyNFT) {
             TextSpan(
               text: price,
               style: textNormal(
-                Colors.yellow,
+                amountColor,
                 14,
               ),
             ),
@@ -624,11 +644,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -655,11 +677,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.fromAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -679,11 +703,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.toAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -703,7 +729,7 @@ Widget status(HistoryNFT historyNFT) {
             TextSpan(
               text: price,
               style: textNormal(
-                Colors.yellow,
+                amountColor,
                 14,
               ),
             ),
@@ -731,11 +757,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.fromAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -756,13 +784,12 @@ Widget status(HistoryNFT historyNFT) {
               TextSpan(
                 text: historyNFT.toAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () =>
-                      launch(Get.find<AppConstants>().bscScan + walletAddress),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -782,13 +809,12 @@ Widget status(HistoryNFT historyNFT) {
             TextSpan(
               text: historyNFT.fromAddress!.formatAddress(index: 4),
               recognizer: TapGestureRecognizer()
-                ..onTap = () =>
-                    launch(Get.find<AppConstants>().bscScan + walletAddress),
-              style: const TextStyle(
-                decoration: TextDecoration.underline,
-                fontSize: 14,
-                color: textHistory,
-              ),
+                ..onTap = () => launch(
+                  Get.find<AppConstants>().bscScan +
+                      ApiConstants.BSC_SCAN_ADDRESS +
+                      walletAddress,
+                ),
+              style: richTextBlue,
             ),
           ],
         ),
@@ -800,11 +826,13 @@ Widget status(HistoryNFT historyNFT) {
             if (!isYou)
               TextSpan(
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: textHistory,
-                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  ),
+                style: richTextBlue,
               )
             else
               TextSpan(
@@ -824,7 +852,7 @@ Widget status(HistoryNFT historyNFT) {
             TextSpan(
               text: price,
               style: textNormal(
-                Colors.yellow,
+                amountColor,
                 14,
               ),
             ),

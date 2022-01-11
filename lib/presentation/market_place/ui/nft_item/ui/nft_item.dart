@@ -92,6 +92,7 @@ class _NFTItemState extends State<NFTItemWidget> {
               marketId: widget.nftMarket.marketId,
               typeNft: widget.nftMarket.typeNFT,
               nftId: widget.nftMarket.nftId,
+              pawnId: widget.nftMarket.pawnId,
             ),
           ),
         );
@@ -132,6 +133,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                                 marketId: widget.nftMarket.marketId,
                                 typeNft: widget.nftMarket.typeNFT,
                                 nftId: widget.nftMarket.nftId,
+                                pawnId: widget.nftMarket.pawnId,
                               ),
                             ),
                           );
@@ -199,9 +201,9 @@ class _NFTItemState extends State<NFTItemWidget> {
                             children: [
                               if (widget.nftMarket.urlToken?.isNotEmpty ??
                                   false)
-                                Image(
-                                  image: NetworkImage(
-                                    widget.nftMarket.urlToken ?? '',
+                                ClipRRect(
+                                  child: CachedNetworkImage(
+                                    imageUrl: widget.nftMarket.urlToken ?? '',
                                   ),
                                 )
                               else

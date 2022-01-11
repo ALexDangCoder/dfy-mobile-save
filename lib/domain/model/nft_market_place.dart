@@ -44,6 +44,7 @@ class NftMarket {
   int? updateAt;
   String? evaluationId;
   bool? isWhitelist;
+  int? pawnId;
 
   NftMarket.init();
 
@@ -54,6 +55,7 @@ class NftMarket {
     this.image,
     this.price,
     this.marketType,
+    this.pawnId,
     this.typeNFT,
     this.typeImage,
     this.ticked,

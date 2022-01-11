@@ -32,7 +32,7 @@ class _FilterBtsState extends State<FilterBts> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: BackdropFilter(
@@ -157,29 +157,58 @@ class _FilterBtsState extends State<FilterBts> {
                   stream: widget.listNftCubit.listCheckBox,
                   builder:
                       (context, AsyncSnapshot<List<CheckBoxFilter>> snapshot) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: snapshot.data?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        return Column(
+                    final itemCount = snapshot.data?.length ?? 0;
+                    if(itemCount != 0) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: itemCount,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              CheckBoxFilter(
+                                cubit: widget.listNftCubit,
+                                nameCkcFilter:
+                                snapshot.data?[index].nameCkcFilter ?? '',
+                                typeCkc: snapshot.data?[index].typeCkc ??
+                                    TYPE_CKC_FILTER.NON_IMG,
+                                urlCover: snapshot.data![index].urlCover,
+                                filterType: S.current.collection,
+                                collectionId:
+                                snapshot.data?[index].collectionId ?? '',
+                              ),
+                              spaceH12,
+                            ],
+                          );
+                        },
+                      );
+                    }
+                    else {
+                      return Padding(
+                        padding: EdgeInsets.only(top: 40.h),
+                        child: Column(
                           children: [
-                            CheckBoxFilter(
-                              cubit: widget.listNftCubit,
-                              nameCkcFilter:
-                              snapshot.data?[index].nameCkcFilter ?? '',
-                              typeCkc: snapshot.data?[index].typeCkc ??
-                                  TYPE_CKC_FILTER.NON_IMG,
-                              urlCover: snapshot.data![index].urlCover,
-                              filterType: S.current.collection,
-                              collectionId:
-                              snapshot.data?[index].collectionId ?? '',
+                            Image(
+                              image: const AssetImage(
+                                ImageAssets.img_search_empty,
+                              ),
+                              height: 40.h,
+                              width: 40.w,
                             ),
-                            spaceH12,
+                            SizedBox(
+                              height: 17.7.h,
+                            ),
+                            Text(
+                              S.current.no_result_found,
+                              style: textNormal(
+                                Colors.white54,
+                                14.sp,
+                              ),
+                            ),
                           ],
-                        );
-                      },
-                    );
+                        ),
+                      );
+                    }
                   },
                 ),
               ),
@@ -257,7 +286,9 @@ class _FilterBtsState extends State<FilterBts> {
                       Colors.white,
                       16,
                     ),
+                    maxLength: 255,
                     decoration: InputDecoration(
+                      counterText: '',
                       hintText: S.current.search,
                       hintStyle: textNormal(
                         Colors.white54,
