@@ -635,7 +635,7 @@ Widget status(HistoryNFT historyNFT) {
               ),
             ),
             TextSpan(
-              text: 'buy ',
+              text: ' by ',
               style: textNormal(
                 textHistory,
                 14,
