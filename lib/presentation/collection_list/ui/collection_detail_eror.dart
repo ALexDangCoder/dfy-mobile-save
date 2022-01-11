@@ -67,7 +67,7 @@ class CollectionDetailError extends StatelessWidget {
           spaceH24,
           InkWell(
             onTap: () {
-              cubit.getCollection(collectionAddress: collectionAddress);
+              cubit.getCollection(collectionAddressDetail: collectionAddress);
             },
             child: SizedBox(
               height: 60.h,

@@ -11,6 +11,7 @@ import 'package:Dfy/presentation/detail_collection/ui/widget/base_collection.dar
 import 'package:Dfy/presentation/detail_collection/ui/widget/filter_activity.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/double_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +44,8 @@ class _DetailCollectionState extends State<DetailCollection>
     super.initState();
     detailCollectionBloc = DetailCollectionBloc();
     detailCollectionBloc.getCollection(
-      collectionAddress: '0x9371f7d8710bf370136b1eba91be1dc98e90a45c',
-    ); //todo collection address
+      collectionAddressDetail: widget.collectionAddress,
+    );
 
     _tabController = TabController(length: 2, vsync: this);
   }
@@ -314,7 +315,8 @@ class _DetailCollectionState extends State<DetailCollection>
                   contract: list.collectionAddress ?? '',
                   owners: '${list.nftOwnerCount ?? 0}',
                   items: '${list.totalNft ?? 0}',
-                  volumeTraded: '${list.totalVolumeTraded ?? 0}',
+                  volumeTraded:
+                      '${list.totalVolumeTraded?.truncateToDecimalPlaces(5) ?? 0}',
                   urlTwitter: detailCollectionBloc.linkUrlTwitter,
                   urlTelegram: detailCollectionBloc.linkUrlTelegram,
                   urlInstagram: detailCollectionBloc.linkUrlInstagram,

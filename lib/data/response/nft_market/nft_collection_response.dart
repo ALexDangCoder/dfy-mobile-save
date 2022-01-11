@@ -19,7 +19,7 @@ class NftCollectionResponse extends Equatable {
   @JsonKey(name: 'id_ref')
   String? idRef;
   @JsonKey(name: 'market_id')
-  int? marketId;
+  String? marketId;
   @JsonKey(name: 'market_type')
   String? marketType;
   @JsonKey(name: 'file_cid')
@@ -34,6 +34,12 @@ class NftCollectionResponse extends Equatable {
   String? fileType;
   @JsonKey(name: 'market_status')
   int? marketStatus;
+  @JsonKey(name: 'is_reserve_price')
+  bool? isReservePrice;
+  @JsonKey(name: 'startTime')
+  int? startTime;
+  @JsonKey(name: 'endTime')
+  int? endTime;
   @JsonKey(name: 'expected_loan_amount')
   double? expectedLoanAmount;
   @JsonKey(name: 'expected_loan_symbol')
@@ -53,6 +59,9 @@ class NftCollectionResponse extends Equatable {
     this.totalOfCopies,
     this.fileType,
     this.marketStatus,
+    this.isReservePrice,
+    this.startTime,
+    this.endTime,
     this.expectedLoanAmount,
     this.expectedLoanSymbol,
   );
@@ -98,17 +107,17 @@ class NftCollectionResponse extends Equatable {
   }
 
   NftMarket toDomain() => NftMarket(
-        marketId: 'ádf' ?? '',
-        marketType: getTypeMarket(0 ?? 0),
+        marketId: marketId ?? '',
+        marketType: getTypeMarket(marketStatus ?? 0),
         typeImage: getTypeImage(fileType ?? ''),
-        price: 0 ?? 0,
+        price: expectedLoanAmount ?? 0,
         typeNFT: getTypeNft(type ?? 0),
-        image: getPath('file_cid' ?? ''),
+        image: getPath(fileCid ?? ''),
         tokenBuyOut: token,
         name: name ?? '',
-        totalCopies: 0,
-        endTime: 0,
-        startTime: 0,
-        numberOfCopies: 0,
+        totalCopies: totalOfCopies ?? 0,
+        endTime: endTime ?? 0,
+        startTime: startTime ?? 0,
+        numberOfCopies: numberOfCopies ?? 0,
       );
 }

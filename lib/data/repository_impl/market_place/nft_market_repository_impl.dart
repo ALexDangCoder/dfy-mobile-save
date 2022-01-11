@@ -26,14 +26,14 @@ class NftMarketRepositoryImpl implements NftMarketRepository {
 
   @override
   Future<Result<List<NftMarket>>> getListNftCollection(
-      {String? collectionId,
+      {String? collectionAddress,
       int? page,
       int? size,
       String? nameNft,
       List<int>? listMarketType}) {
     return runCatchingAsync<ListNftCollectionResponse, List<NftMarket>>(
           () => _client.getListNftCollection(
-              collectionId, page, size, nameNft, listMarketType),
+              collectionAddress, page, size, nameNft, listMarketType),
           (response) => response.toDomain() ?? [],);
   }
 }

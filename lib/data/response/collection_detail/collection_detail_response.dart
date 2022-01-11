@@ -63,7 +63,7 @@ class CollectionDetail {
   @JsonKey(name: 'nft_owner_count')
   int? nftOwnerCount;
   @JsonKey(name: 'total_volume_traded')
-  int? totalVolumeTraded;
+  double? totalVolumeTraded;
   @JsonKey(name: 'collection_standard')
   int? collectionStandard;
   @JsonKey(name: 'social_links')

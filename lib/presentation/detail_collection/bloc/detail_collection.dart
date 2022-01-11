@@ -4,6 +4,7 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
+import 'package:Dfy/domain/model/market_place/collection_detail_filter_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
@@ -129,13 +130,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         listFilter.add(NOT_ON_MARKET);
       }
       getListNft(
-        collectionId: collectionId,
+        collectionAddress: collectionAddress,
         listMarketType: listFilter,
         name: textSearch.value,
       );
     } else {
       getListNft(
-        collectionId: collectionId,
+        collectionAddress: collectionAddress,
         name: textSearch.value,
       );
     }
@@ -286,13 +287,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         if (listFilter.isNotEmpty) {
           getListNft(
             name: value,
-            collectionId: collectionId,
+            collectionAddress: collectionAddress,
             listMarketType: listFilter,
           );
         } else {
           getListNft(
             name: value,
-            collectionId: collectionId,
+            collectionAddress: collectionAddress,
             listMarketType: [
               NOT_ON_MARKET,
               SALE,
@@ -328,28 +329,44 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     listFilter.clear();
   }
 
-  Future<void> getCollection({String? collectionAddress = ''}) async {
+  Future<void> getListFilterCollectionDetail({
+    String collectionAddress = '',
+  }) async {
+    final Result<List<CollectionFilterDetailModel>> result =
+        await _collectionDetailRepository.getListFilterCollectionDetail(
+      collectionAddress: collectionAddress,
+    );
+    result.when(
+      success: (res) {
+        print('----------------------------------------${res.first.key}');
+      },
+      error: (error) {},
+    );
+  }
+
+  Future<void> getCollection({String? collectionAddressDetail = ''}) async {
     emit(LoadingData());
     final Result<CollectionDetailModel> result =
         await _collectionDetailRepository
-            .getCollectionDetail(collectionAddress ?? '');
+            .getCollectionDetail(collectionAddressDetail ?? '');
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
           emit(LoadingDataErorr());
         } else {
           emit(LoadingDataSuccess());
-
           arg = res;
           funGetUrl(res.socialLinks ?? []);
           collectionDetailModel.sink.add(arg);
-          collectionId = arg.id ?? '';
-          collectionAddress = arg.collectionAddress ?? '';
+          // collectionAddress = arg.id ?? '';
+          collectionAddress = collectionAddressDetail ?? '';
+          getListFilterCollectionDetail(
+              collectionAddress: '0x94f5062d4862ede6f8b6fc2dabd7e9dc76f94a9f');
           getListNft(
-            collectionId: arg.id ?? '',
+            collectionAddress: collectionAddressDetail ?? '',
           );
           getListActivityCollection(
-            collectionAddress: arg.collectionAddress ?? '',
+            collectionAddress: collectionAddressDetail ?? '',
           );
         }
       },
@@ -362,13 +379,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   Future<void> getListNft({
     List<int>? listMarketType,
     String? name,
-    int? size = 0,
+    int? size = 100,
     int? page = 0,
-    required String collectionId,
+    required String collectionAddress,
   }) async {
     statusNft.add(LOADING);
     final Result<List<NftMarket>> result = await _nftRepo.getListNftCollection(
-      collectionId: collectionId,
+      collectionAddress: collectionAddress,
       nameNft: name,
       listMarketType: listMarketType,
       size: size,

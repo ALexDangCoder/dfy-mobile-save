@@ -22,9 +22,9 @@ abstract class NftMarketClient {
 
   @POST(ApiConstants.GET_LIST_NFT_COLLECTION)
   Future<ListNftCollectionResponse> getListNftCollection(
-      @Field('collection_id') String? collectionId,
+      @Field('collection_address') String? collectionAddress,
       @Field('page') int? page,
       @Field('size') int? size,
-      @Field('name_nft') String? nameNft,
+      @Field('name') String? nameNft,
       @Field('market_type') List<int>? listMarketType);
 }

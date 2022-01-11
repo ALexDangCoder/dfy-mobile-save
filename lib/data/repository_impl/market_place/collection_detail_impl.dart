@@ -1,9 +1,11 @@
 import 'package:Dfy/data/response/activity_collection/activity_collection.dart';
+import 'package:Dfy/data/response/collection_detail/collection_detail_filter_response.dart';
 import 'package:Dfy/data/response/collection_detail/collection_detail_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/market_place/collection_detail_service.dart';
 import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
+import 'package:Dfy/domain/model/market_place/collection_detail_filter_model.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 
 class CollectionDetailImpl implements CollectionDetailRepository {
@@ -32,6 +34,16 @@ class CollectionDetailImpl implements CollectionDetailRepository {
         size,
       ),
       (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<CollectionFilterDetailModel>>>
+  getListFilterCollectionDetail({String? collectionAddress}) {
+    return runCatchingAsync<CollectionDetailFilterResponse,
+        List<CollectionFilterDetailModel>>(
+          () => _client.getListFilterCollectionDetail(collectionAddress),
+          (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
 }

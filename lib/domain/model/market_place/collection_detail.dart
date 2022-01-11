@@ -14,7 +14,7 @@ class CollectionDetailModel {
   String? featureCid;
   int? totalNft;
   int? nftOwnerCount;
-  int? totalVolumeTraded;
+  double? totalVolumeTraded;
   List<SocialLinkModel>? socialLinks;
   bool? isOwner;
   bool? isDefault;
