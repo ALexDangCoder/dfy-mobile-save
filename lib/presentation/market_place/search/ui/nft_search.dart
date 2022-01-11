@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/response/collection_detail/collection_detail_res.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
@@ -284,7 +283,8 @@ class _SearchNFTState extends State<SearchNFT> {
                             context,
                             MaterialPageRoute(
                               builder: (ctx) => DetailCollection(
-                                id: searchCubit.collections[index].id,
+                                collectionAddress: searchCubit.collections[index].id,// todo collection address
+                                walletAddress: 'alo alo',
                               ),
                             ),
                           );

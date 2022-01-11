@@ -24,7 +24,11 @@ class ApiConstants {
       '/defi-user-service/public-api/v1.0.0/users/nonce?';
   static const String URL_BASE = 'https://defiforyou.mypinata.cloud/ipfs/';
   static const String GET_LIST_COLLECTION =
+      '/inventory-svc/public-api/collections';
+  static const String GET_LIST_COLLECTION_MARKET =
       '/nft-market-svc/public-api/search/collection';
+  static const String GET_LIST_FILTER_COLLECTION_DETAIL =
+      '/inventory-svc/public-api/collections/get-filter-properties';
   static const String GET_LIST_CATEGORY = '/nft-market-svc/public-api/category';
   static const String GET_BOOL_CUSTOM_URL =
       'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=https://beta-marketplace.defiforyou.uk/';
@@ -32,9 +36,9 @@ class ApiConstants {
       '/nft-market-svc/public-api/collection';
   static const String GET_LIST_NFT = '/nft-market-svc/public-api/search/nft';
   static const String GET_LIST_NFT_COLLECTION =
-      'nft-market-svc/public-api/collection/list-nft';
+      '/inventory-svc/public-api/collections/list-nft';
   static const String COLLECTION_DETAIL =
-      '/nft-market-svc/public-api/collection/';
+      '/inventory-svc/public-api/collections/';
   static const String COLLECTION_ACTIVITY_LIST =
       '/inventory-svc/public-api/v1.0.0/collections/activities';
 

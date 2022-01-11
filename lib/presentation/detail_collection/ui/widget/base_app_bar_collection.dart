@@ -98,11 +98,11 @@ class BaseSpace extends StatelessWidget {
         alignment: Alignment.topCenter,
         children: [
           CachedNetworkImage(
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
             width: double.infinity,
             height: 145.h,
-            errorWidget: (context, url, error) =>Container(
-              color:AppTheme.getInstance().selectDialogColor(),
+            errorWidget: (context, url, error) => Container(
+              color: AppTheme.getInstance().selectDialogColor(),
             ),
             imageUrl: imageCover,
           ),
@@ -131,8 +131,9 @@ class BaseSpace extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: imageAvatar,
                       fit: BoxFit.cover,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+                      errorWidget: (context, url, error) => Container(
+                        color: AppTheme.getInstance().selectDialogColor(),
+                      ),
                     ),
                   ),
                 ),
