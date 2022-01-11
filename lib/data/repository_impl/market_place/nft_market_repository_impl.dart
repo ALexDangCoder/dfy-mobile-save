@@ -4,6 +4,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/market_place/nft_market_services.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 
 class NftMarketRepositoryImpl implements NftMarketRepository {
   final NftMarketClient _client;
@@ -19,7 +20,8 @@ class NftMarketRepositoryImpl implements NftMarketRepository {
     String? page,
   }) {
     return runCatchingAsync<ListNftResponseFromApi, List<NftMarket>>(
-      () => _client.getListNft(status, nftType, name, collectionId,page,'12'),
+      () => _client.getListNft(status, nftType, name, collectionId, page,
+          ApiConstants.DEFAULT_NFT_SIZE),
       (response) => response.toDomain() ?? [],
     );
   }
