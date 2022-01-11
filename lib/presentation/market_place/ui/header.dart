@@ -5,6 +5,8 @@ import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/cancel_sale/bloc/cancel_sale_cubit.dart';
 import 'package:Dfy/presentation/market_place/cancel_sale/ui/cancel_sale.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -36,7 +38,7 @@ class HeaderMarketPlace extends StatelessWidget {
                 color: AppTheme.getInstance().whiteColor(),
               ),
               onTap: () {
-                  showDialog(context: context, builder: (context) => ConnectWalletDialog(currentScreen: Container()));
+                  showDialog(context: context, builder: (context) => EnterEmail(cubit: LoginWithEmailCubit()));
               },
             ),
             searchBar(context, cubit),

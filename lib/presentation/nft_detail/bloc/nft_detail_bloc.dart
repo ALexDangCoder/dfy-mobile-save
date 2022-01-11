@@ -186,27 +186,33 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   final Web3Utils web3utils = Web3Utils();
 
   //get dataString
-  Future<void> getDataString({
+  Future<String> getDataString({
     required BuildContext context,
     required String orderId,
     required String walletAddress,
   }) async {
     try {
+      showLoading();
       dataString = await web3utils.getCancelListingData(
         contractAddress: nft_sales_address_dev2,
         orderId: orderId,
         context: context,
       );
+      showContent();
+      return dataString;
     } catch (e) {
-      throw e;
+      showContent();
+      return '';
     }
+
   }
 
   //get gas limit by  data
-  Future<void> getGasLimit({
+  Future<double> getGasLimit({
     required String walletAddress,
   }) async {
     try {
+      showLoading();
       gasLimit = double.parse(
         await web3utils.getGasLimitByData(
           from: walletAddress,
@@ -214,8 +220,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           dataString: dataString,
         ),
       );
+      showContent();
+      return gasLimit;
     } catch (e) {
-      rethrow;
+      showContent();
+      return 0;
     }
   }
 
@@ -224,10 +233,14 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   //handle core callback:
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
+
       case 'signTransactionWithDataCallback':
+        showContent();
         bool isSuccess = await methodCall.arguments['isSuccess'];
+        print('>>>>>>>>>>>>>>>> $isSuccess');
         break;
       default:
+        showContent();
         break;
     }
   }
@@ -242,6 +255,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     required String withData,
   }) async {
     try {
+      showLoading();
       final TransactionCountResponse transaction =
           await web3utils.getTransactionCount(address: walletAddress);
       if (!transaction.isSuccess) {
@@ -258,8 +272,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       };
 
       await trustWalletChannel.invokeMethod('signTransactionWithData', data);
+      showContent();
     } on PlatformException catch (e) {
       //
+      showContent();
       throw e;
     }
   }

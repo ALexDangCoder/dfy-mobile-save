@@ -106,7 +106,6 @@ class EnterEmail extends StatelessWidget {
                     bloc: cubit,
                     listener: (context, state) {
                       // TODO: implement listener
-                      log(state.runtimeType.toString());
                     },
                     builder: (context, state) {
                       return Padding(

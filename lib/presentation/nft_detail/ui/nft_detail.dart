@@ -184,16 +184,6 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
     _bloc.getInForNFT(widget.marketId ?? '', widget.type);
     caseTabBar(widget.type);
     _tabController = TabController(length: _tabPage.length, vsync: this);
-    trustWalletChannel
-        .setMethodCallHandler(_bloc.nativeMethodCallBackTrustWallet);
-    _bloc.getDataString(
-      orderId: '88',
-      walletAddress: '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb',
-      context: context,
-    );
-    _bloc.getGasLimit(
-      walletAddress: '',
-    );
   }
 
   @override
@@ -253,12 +243,23 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
                 onTap: () async {
                   final navigator = Navigator.of(context);
                   //todo
-
+                  String dataString = await _bloc.getDataString(
+                    context: context,
+                    orderId: '88',
+                    walletAddress: '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb',
+                  );
+                  double gasLimit = await _bloc.getGasLimit(
+                      walletAddress:
+                          '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb');
                   unawaited(
                     navigator.push(
                       MaterialPageRoute(
                         builder: (context) => CancelSale(
                           bloc: _bloc,
+                          walletAddress:
+                              '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb',
+                          gasLimit: gasLimit,
+                          dataString: dataString,
                         ),
                       ),
                     ),
@@ -805,6 +806,8 @@ class _NFTDetailScreenState extends State<NFTDetailScreen>
   Widget _content(MarketType type, NFTDetailState state) {
     switch (type) {
       case MarketType.SALE:
+        trustWalletChannel
+            .setMethodCallHandler(_bloc.nativeMethodCallBackTrustWallet);
         if (state is NftOnSaleSuccess) {
           final objSale = state.nftMarket;
           return StateStreamLayout(

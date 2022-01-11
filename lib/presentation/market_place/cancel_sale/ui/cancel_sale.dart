@@ -13,10 +13,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CancelSale extends StatefulWidget {
   final NFTDetailBloc bloc;
+  final String walletAddress;
+  final String dataString;
+  final double gasLimit;
 
   const CancelSale({
     Key? key,
     required this.bloc,
+    required this.walletAddress,
+    required this.dataString,
+    required this.gasLimit,
   }) : super(key: key);
 
   @override
@@ -27,7 +33,6 @@ class _CancelSaleState extends State<CancelSale> {
   @override
   void initState() {
     super.initState();
-    trustWalletChannel.setMethodCallHandler(widget.bloc.nativeMethodCallBackTrustWallet);
   }
 
   @override
@@ -39,11 +44,12 @@ class _CancelSaleState extends State<CancelSale> {
   Widget build(BuildContext context) {
     return Approve(
       listDetail: widget.bloc.initListApprove(),
-      action: (gasLimit, gasPrice) async {
-        await widget.bloc.signTransactionWithData(
+      action: (gasLimit, gasPrice) {
+        double gasPr = gasPrice/10e8;
+        widget.bloc.signTransactionWithData(
           gasLimit: gasLimit.toString(),
-          gasPrice: gasPrice.toString(),
-          walletAddress: '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb',
+          gasPrice: gasPr.toString(),
+          walletAddress: widget.walletAddress,
           withData: widget.bloc.dataString,
         );
       },
@@ -86,7 +92,7 @@ class _CancelSaleState extends State<CancelSale> {
         ],
       ),
       textActiveButton: S.current.cancel_sale,
-      gasLimitFirst: widget.bloc.gasLimit,
+      gasLimitFirst: widget.gasLimit,
     );
   }
 }
