@@ -371,7 +371,9 @@ class _SearchNFTState extends State<SearchNFT> {
                         Container()
                       else
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            //todo chuyen man sang man detail
+                          },
                           child: ResultNFTSearch(
                             nftItem: searchCubit.listNFT[index],
                           ),

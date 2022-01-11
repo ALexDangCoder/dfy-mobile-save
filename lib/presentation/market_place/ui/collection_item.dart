@@ -81,7 +81,8 @@ class CollectionItem extends StatelessWidget {
                           left: 10.w,
                           right: 10.w,
                         ),
-                        child: Center(
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
                           child: Text(
                             title,
                             style: TextStyle(

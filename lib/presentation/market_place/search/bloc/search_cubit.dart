@@ -55,7 +55,6 @@ class SearchCubit extends BaseCubit<SearchState> {
   List<Collection> collections = [];
   List<NftItem> listNFT = [];
 
-
   void responseToCollectionFtNftModel(
     List<ListSearchCollectionFtNftModel> response,
   ) {
@@ -65,6 +64,7 @@ class SearchCubit extends BaseCubit<SearchState> {
         for (final element in collectionsSearch) {
           collections.add(
             Collection(
+              collectionAddress: element.collectionAddress ?? '',
               id: element.id ?? '',
               items: int.parse(element.info ?? '0'),
               title: element.name ?? 'name',
@@ -123,62 +123,62 @@ class SearchCubit extends BaseCubit<SearchState> {
     _lengthStream.close();
   }
 
-  // List<Collection> collections = [
-  //   Collection(
-  //     background: 'http://placeimg.com/640/480',
-  //     avatar: 'https://cdn.fakercloud.com/avatars/aaronalfred_128.jpg',
-  //     title: 'Trinidad',
-  //     items: 1000,
-  //   ),
-  //   Collection(
-  //     background: 'http://placeimg.com/640/480',
-  //     avatar: 'https://cdn.fakercloud.com/avatars/aaronalfred_128.jpg',
-  //     title: 'Kyat',
-  //     items: 1000,
-  //   ),
-  //   Collection(
-  //     background: 'http://placeimg.com/640/480',
-  //     avatar: 'https://cdn.fakercloud.com/avatars/aaronalfred_128.jpg',
-  //     title: 'Zambian Kwacha',
-  //     items: 1000,
-  //   ),
-  //   Collection(
-  //     background: 'http://placeimg.com/640/480',
-  //     avatar: 'https://cdn.fakercloud.com/avatars/bobwassermann_128.jpg',
-  //     title: 'Pataca',
-  //     items: 1000,
-  //   ),
-  //   Collection(
-  //     background: 'http://placeimg.com/640/480',
-  //     avatar: 'https://cdn.fakercloud.com/avatars/picard102_128.jpg',
-  //     title: 'Trinidad',
-  //     items: 1000,
-  //   ),
-  //   Collection(
-  //     background: 'http://placeimg.com/640/480',
-  //     avatar: 'https://cdn.fakercloud.com/avatars/supervova_128.jpg',
-  //     title: 'Trinidad',
-  //     items: 1000,
-  //   ),
-  // ];
-  // List<NftItem> listNFT = [
-  //   NftItem(
-  //     name: 'Lamborghi',
-  //     image: 'http://placeimg.com/640/480',
-  //     price: 0,
-  //     marketType: MarketType.AUCTION,
-  //   ),
-  //   NftItem(
-  //     name: 'Lamborghin',
-  //     image: 'http://placeimg.com/640/480',
-  //     price: 10000,
-  //     marketType: MarketType.PAWN,
-  //   ),
-  //   NftItem(
-  //     name: ' Pink 21',
-  //     image: 'http://placeimg.com/640/480',
-  //     price: 10000,
-  //     marketType: MarketType.SALE,
-  //   ),
-  // ];
+// List<Collection> collections = [
+//   Collection(
+//     background: 'http://placeimg.com/640/480',
+//     avatar: 'https://cdn.fakercloud.com/avatars/aaronalfred_128.jpg',
+//     title: 'Trinidad',
+//     items: 1000,
+//   ),
+//   Collection(
+//     background: 'http://placeimg.com/640/480',
+//     avatar: 'https://cdn.fakercloud.com/avatars/aaronalfred_128.jpg',
+//     title: 'Kyat',
+//     items: 1000,
+//   ),
+//   Collection(
+//     background: 'http://placeimg.com/640/480',
+//     avatar: 'https://cdn.fakercloud.com/avatars/aaronalfred_128.jpg',
+//     title: 'Zambian Kwacha',
+//     items: 1000,
+//   ),
+//   Collection(
+//     background: 'http://placeimg.com/640/480',
+//     avatar: 'https://cdn.fakercloud.com/avatars/bobwassermann_128.jpg',
+//     title: 'Pataca',
+//     items: 1000,
+//   ),
+//   Collection(
+//     background: 'http://placeimg.com/640/480',
+//     avatar: 'https://cdn.fakercloud.com/avatars/picard102_128.jpg',
+//     title: 'Trinidad',
+//     items: 1000,
+//   ),
+//   Collection(
+//     background: 'http://placeimg.com/640/480',
+//     avatar: 'https://cdn.fakercloud.com/avatars/supervova_128.jpg',
+//     title: 'Trinidad',
+//     items: 1000,
+//   ),
+// ];
+// List<NftItem> listNFT = [
+//   NftItem(
+//     name: 'Lamborghi',
+//     image: 'http://placeimg.com/640/480',
+//     price: 0,
+//     marketType: MarketType.AUCTION,
+//   ),
+//   NftItem(
+//     name: 'Lamborghin',
+//     image: 'http://placeimg.com/640/480',
+//     price: 10000,
+//     marketType: MarketType.PAWN,
+//   ),
+//   NftItem(
+//     name: ' Pink 21',
+//     image: 'http://placeimg.com/640/480',
+//     price: 10000,
+//     marketType: MarketType.SALE,
+//   ),
+// ];
 }
