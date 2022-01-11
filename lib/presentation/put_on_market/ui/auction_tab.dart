@@ -5,6 +5,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/ui/component/pick_time.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_with_select_type.dart';
@@ -15,6 +16,8 @@ import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
+
+import 'component/custom_calandar.dart';
 
 class AuctionTab extends StatefulWidget {
   final PutOnMarketCubit cubit;
@@ -249,14 +252,8 @@ class _AuctionTabState extends State<AuctionTab>
                               ),
                             ],
                             textActiveButton: S.current.put_on_sale,
-                            action: (gasLimit, gasPrice) async {
-                              await Future.delayed(const Duration(seconds: 3));
-                            },
-                            approve: () async {
-                              await Future.delayed(const Duration(seconds: 3));
-                              return true;
-                            },
-                            gasLimitFirst: 100.0,
+                            gasLimitInit: 100.0,
+                            typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
                           ),
                         ),
                       );
@@ -307,7 +304,7 @@ class _AuctionTabState extends State<AuctionTab>
                   Expanded(
                     child: GestureDetector(
                       onTap: () async {
-                         final result = await showDialog(
+                        final result = await showDialog(
                           barrierDismissible: true,
                           context: context,
                           builder: (_) => BackdropFilter(
@@ -319,8 +316,7 @@ class _AuctionTabState extends State<AuctionTab>
                             ),
                           ),
                         );
-                         if (result != null)
-                           print (result);
+                        if (result != null) print(result);
                       },
                       child: TextField(
                         style: textNormal(
@@ -371,21 +367,16 @@ class _AuctionTabState extends State<AuctionTab>
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        // showDialog(
-                        //   barrierDismissible: true,
-                        //   context: context,
-                        //   builder: (_) => BackdropFilter(
-                        //     filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                        //     child:  AlertDialog(
-                        //       elevation: 0,
-                        //       backgroundColor: Colors.transparent,
-                        //       content: PickTime(
-                        //         onChange: (){
-                        //         },
-                        //       ),
-                        //     ),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            transitionDuration: Duration.zero,
+                            opaque: false,
+                            pageBuilder: (_, __, ___) {
+                              return const CustomCalendar();
+                            },
+                          ),
+                        );
                       },
                       child: TextField(
                         style: textNormal(
