@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:async';
 import 'dart:math' hide log;
 
 import 'package:Dfy/config/resources/dimen.dart';
@@ -6,7 +6,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -97,9 +97,7 @@ class _UploadProgressState extends State<UploadProgress>
                           }
                         },
                       ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
+                      spaceH20,
                       Text(
                         S.current.avatar_photo,
                         style: textCustom(
@@ -121,9 +119,7 @@ class _UploadProgressState extends State<UploadProgress>
                           }
                         },
                       ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
+                      spaceH20,
                       Text(
                         S.current.feature_photo,
                         style: textCustom(
@@ -145,65 +141,76 @@ class _UploadProgressState extends State<UploadProgress>
                           }
                         },
                       ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
+                      spaceH20,
                     ],
                   ),
                 ),
                 line,
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => Approve(
-                          gasLimit: 2000000,
-                          listDetail: [
-                            DetailItemApproveModel(
-                              title: S.current.collection_name,
-                              value: widget.bloc.collectionName,
+                StreamBuilder<bool>(
+                    stream: widget.bloc.upLoadStatusSubject,
+                    initialData: false,
+                    builder: (context, snapshot) {
+                      final isComplete = snapshot.data ?? false;
+                      return InkWell(
+                        onTap: () async {
+                          if (isComplete) {
+                            final navigator = Navigator.of(context);
+                            await widget.bloc.sendDataWeb3(context);
+                            navigator.pop();
+                            unawaited(
+                              navigator.push(
+                                MaterialPageRoute(
+                                  builder: (_) => Approve(
+                                    gasLimitFirst:
+                                        double.parse(widget.bloc.gasLimit),
+                                    listDetail: [
+                                      DetailItemApproveModel(
+                                        title: '${S.current.name}:',
+                                        value: widget.bloc.collectionName,
+                                      ),
+                                      DetailItemApproveModel(
+                                        title: 'URL:',
+                                        value: widget.bloc.customUrl,
+                                      ),
+                                      DetailItemApproveModel(
+                                        title: '${S.current.categories}:',
+                                        value: widget.bloc.categoryId,
+                                      ),
+                                      DetailItemApproveModel(
+                                        title: '${S.current.royalties}:',
+                                        value:
+                                            '${widget.bloc.royalties.toString()} %',
+                                      ),
+                                    ],
+                                    title: S.current.create_collection,
+                                    textActiveButton: S.current.create,
+                                    approve: () {
+                                      widget.bloc.createCollection();
+                                    },
+                                    action: () {},
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: SizedBox(
+                          height: 64.h,
+                          child: Center(
+                            child: Text(
+                              'OK',
+                              style: textCustom(
+                                color: isComplete
+                                    ? AppTheme.getInstance().fillColor()
+                                    : AppTheme.getInstance().disableColor(),
+                                weight: FontWeight.w700,
+                                fontSize: 20,
+                              ),
                             ),
-                            DetailItemApproveModel(
-                              title: 'URL',
-                              value: widget.bloc.customUrl,
-                            ),
-                            DetailItemApproveModel(
-                              title: S.current.categories,
-                              value: widget.bloc.categoryId,
-                            ),
-                            DetailItemApproveModel(
-                              title: S.current.royalties,
-                              value: '${widget.bloc.royalties.toString()} %',
-                            ),
-                          ],
-                          title: S.current.create_collection,
-                          textActiveButton: S.current.create,
-                          approve: () {
-                            widget.bloc.createCollection();
-                          },
-                          action: () {
-                            log('ON ACTION');
-                            widget.bloc.createCollection();
-                          },
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  child: SizedBox(
-                    height: 64.h,
-                    child: Center(
-                      child: Text(
-                        'OK',
-                        style: textCustom(
-                          color: AppTheme.getInstance().fillColor(),
-                          weight: FontWeight.w700,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
+                      );
+                    })
               ],
             ),
           ),

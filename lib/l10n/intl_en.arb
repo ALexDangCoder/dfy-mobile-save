@@ -440,5 +440,10 @@
   "cover_photo" : "Cover Photo",
   "feature_photo" : "Feature Photo",
   "uploading_successfully" : "Uploading successfully",
-  "uploading_fail" : "Uploading failed"
+  "uploading_fail" : "Uploading failed",
+  "custom_url_taken" : "This URL has been taken",
+  "custom_url_info" : "Customize your URL on Defi for you. Must only contain lowercase letters, numbers, and hyphens.",
+  "custom_url_err" : "Only contain lowercase letters, numbers, and hyphens",
+  "royalties_info" : "Collect a fee when a user re-sells an item you originally created. This is deducted from the final sale price and paid monthly to a payout address of your choosing.",
+  "name" : "Name"
 }

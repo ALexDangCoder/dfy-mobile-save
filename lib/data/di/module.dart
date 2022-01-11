@@ -14,9 +14,7 @@ import 'package:Dfy/data/repository_impl/market_place/collection_filter_reposito
 import 'package:Dfy/data/repository_impl/category_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/nft_market_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/nft_repository_impl.dart';
-import 'package:Dfy/data/repository_impl/price_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/search_market/search_market_impl.dart';
-import 'package:Dfy/data/repository_impl/token_repository_impl.dart';
 import 'package:Dfy/data/services/market_place/collection_detail_service.dart';
 import 'package:Dfy/data/services/market_place/collection_filter_service.dart';
 import 'package:Dfy/data/services/market_place/category_service.dart';

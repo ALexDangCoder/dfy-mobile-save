@@ -1,21 +1,34 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
+import 'dart:math' hide log;
 
+import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
 class CreateCollectionBloc {
+  final Web3Utils _web3utils = Web3Utils();
+
+  String walletAddress = '';
+  String gasLimit = '';
+  int transactionNonce = 0;
+
   String createType = '';
   int collectionType = -1;
 
@@ -52,6 +65,9 @@ class CreateCollectionBloc {
     'cover_cid': '',
     'feature_cid': '',
   };
+
+  ///IPFS of the collection send to Web3
+  String collectionIPFS = '';
 
   ///Default value of validate field
   Map<String, bool> mapCheck = {
@@ -118,6 +134,9 @@ class CreateCollectionBloc {
   BehaviorSubject<List<TypeNFTModel>> listHardNFTSubject = BehaviorSubject();
   BehaviorSubject<List<TypeNFTModel>> listSoftNFTSubject = BehaviorSubject();
 
+  ///Enable OK button upload Image
+  BehaviorSubject<bool> upLoadStatusSubject = BehaviorSubject();
+
   //func
   void changeSelectedItem(String type) {
     createType = type;
@@ -153,11 +172,6 @@ class CreateCollectionBloc {
       case 'name':
         {
           validateName(mess, value);
-          break;
-        }
-      case 'url':
-        {
-          validateURL(mess, value);
           break;
         }
       case 'des':
@@ -244,16 +258,6 @@ class CreateCollectionBloc {
       mapCheck['collection_name'] = true;
     } else {
       mapCheck['collection_name'] = false;
-    }
-  }
-
-  void validateURL(String mess, String value) {
-    customURLSubject.sink.add(mess);
-    if (mess.isEmpty) {
-      customUrl = value;
-      mapCheck['custom_url'] = true;
-    } else {
-      mapCheck['custom_url'] = false;
     }
   }
 
@@ -353,9 +357,10 @@ class CreateCollectionBloc {
             );
             if (response.statusCode == 200) {
               if (response.body == 'true') {
+                customUrl = _customUrl;
                 mapCheck['custom_url'] = true;
               } else {
-                customURLSubject.sink.add('LOI ME MAY ROI');
+                customURLSubject.sink.add(S.current.custom_url_taken);
                 mapCheck['custom_url'] = false;
               }
             } else {
@@ -364,7 +369,8 @@ class CreateCollectionBloc {
           },
         );
       } else {
-        customURLSubject.sink.add('NOT TRUE');
+        mapCheck['custom_url'] = false;
+        customURLSubject.sink.add(S.current.custom_url_err);
       }
     } else {
       mapCheck['custom_url'] = true;
@@ -446,9 +452,9 @@ class CreateCollectionBloc {
     );
   }
 
-  void getStandardFromID(String id) {
+  int getStandardFromID(String id) {
     final st = listNFT.where((element) => element.id == id).first;
-    collectionType = st.standard ?? 0;
+    return st.standard ?? 0;
   }
 
   /// get list category
@@ -475,18 +481,18 @@ class CreateCollectionBloc {
     required String bin,
   }) async {
     String ipfsHash = '';
-    final headers = {
-      'pinata_api_key': 'ac8828bff3bcd1c1b828',
-      'pinata_secret_api_key':
-          'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
-    };
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('https://api.pinata.cloud/pinning/pinFileToIPFS?file'),
-    );
-    request.files.add(await http.MultipartFile.fromPath('file', bin));
-    request.headers.addAll(headers);
     try {
+      final headers = {
+        'pinata_api_key': 'ac8828bff3bcd1c1b828',
+        'pinata_secret_api_key':
+            'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
+      };
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse('https://api.pinata.cloud/pinning/pinFileToIPFS?file'),
+      );
+      request.files.add(await http.MultipartFile.fromPath('file', bin));
+      request.headers.addAll(headers);
       final http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         final Map<String, dynamic> map =
@@ -494,11 +500,38 @@ class CreateCollectionBloc {
         ipfsHash = map['IpfsHash'];
       }
     } catch (e) {
-      log(e.toString());
+      rethrow;
     }
     return ipfsHash;
   }
 
+  ///Gen random URL
+  Future<void> generateRandomURL({int len = 11}) async {
+    final r = Random();
+    const _chars = 'abcdefghijklmnopqrstuvwxyz_0123456789';
+    final autogenURL =
+        List.generate(len, (index) => _chars[r.nextInt(_chars.length)]).join();
+    final appConstants = Get.find<AppConstants>();
+    final String uri =
+        appConstants.baseUrl + ApiConstants.GET_BOOL_CUSTOM_URL + autogenURL;
+    try {
+      final response = await http.get(
+        Uri.parse(uri),
+      );
+      if (response.statusCode == 200) {
+        if (response.body == 'true') {
+          customUrl = autogenURL;
+        } else {
+          customUrl = '';
+          await generateRandomURL();
+        }
+      } else {
+        throw Exception('Get response fail');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   ///Create list Social link from data
   void createSocialMap() {
@@ -532,17 +565,19 @@ class CreateCollectionBloc {
 
   ///Create CID map
   Future<void> cidCreate() async {
+    upLoadStatusSubject.sink.add(false);
     coverPhotoUploadStatusSubject.sink.add(-1);
+    avatarUploadStatusSubject.sink.add(-1);
+    featurePhotoUploadStatusSubject.sink.add(-1);
+
     final coverCid = await uploadImageToIPFS(bin: avatarPath);
     coverCid.isEmpty
         ? coverPhotoUploadStatusSubject.sink.add(0)
         : coverPhotoUploadStatusSubject.sink.add(1);
-    avatarUploadStatusSubject.sink.add(-1);
     final avatarCid = await uploadImageToIPFS(bin: avatarPath);
     avatarCid.isEmpty
         ? avatarUploadStatusSubject.sink.add(0)
         : avatarUploadStatusSubject.sink.add(1);
-    featurePhotoUploadStatusSubject.sink.add(-1);
     final featureCid = await uploadImageToIPFS(bin: avatarPath);
     featureCid.isEmpty
         ? featurePhotoUploadStatusSubject.sink.add(0)
@@ -550,27 +585,30 @@ class CreateCollectionBloc {
     cidMap['cover_cid'] = coverCid;
     cidMap['avatar_cid'] = avatarCid;
     cidMap['feature_cid'] = featureCid;
+    upLoadStatusSubject.sink.add(true);
   }
 
   ///GET IPFS collection
-  Future<String> getCollectionIPFS() async {
+  Future<void> getCollectionIPFS() async {
+    const prefixURL = 'https://marketplace.defiforyou.uk/';
+    await generateRandomURL();
     String ipfsHash = '';
     final Map<String, dynamic> body = {
-      'avatar_cid': cidMap['avatar_cid'],
-      'category': categoryId,
-      'cover_cid': cidMap['cover_cid'],
-      'custom_url': customUrl,
-      'description': description,
-      'external_link': 'https://defiforyou.mypinata.cloud/ipfs/${cidMap['avatar_cid']}',
+      'external_link':
+          'https://defiforyou.mypinata.cloud/ipfs/${cidMap['avatar_cid']}',
       'feature_cid': cidMap['feature_cid'],
       'image': 'https://defiforyou.mypinata.cloud/ipfs/${cidMap['avatar_cid']}',
       'name': collectionName,
-      'social_links': socialLinkMap,
+      'custom_url': '$prefixURL$customUrl',
+      'avatar_cid': cidMap['avatar_cid'],
+      'category': categoryId,
+      'cover_cid': cidMap['cover_cid'],
+      'social_links': socialLinkMap.toString(),
     };
     final headers = {
       'pinata_api_key': 'ac8828bff3bcd1c1b828',
       'pinata_secret_api_key':
-      'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
+          'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
     };
     try {
       final response = await http.post(
@@ -579,15 +617,34 @@ class CreateCollectionBloc {
         body: body,
       );
       if (response.statusCode == 200) {
-        final map = response.body as Map<String, dynamic>;
+        final map = json.decode(response.body);
         ipfsHash = map['IpfsHash'];
-      } else {
-        log(response.reasonPhrase.toString());
       }
     } catch (e) {
-      log(e.toString());
+      rethrow;
     }
-    return ipfsHash;
+    collectionIPFS = ipfsHash;
+  }
+
+  Future<void> sendDataWeb3(BuildContext context) async {
+    await getCollectionIPFS();
+    final String transactionData = await _web3utils.getCreateCollectionData(
+      contractAddress: nft_factory_dev2,
+      name: collectionName,
+      royaltyRate: royalties.toString(),
+      collectionCID: collectionIPFS,
+      context: context,
+    );
+    gasLimit = await _web3utils.getGasLimitByData(
+      from: walletAddress,
+      toContractAddress: nft_factory_dev2,
+      dataString: transactionData,
+    );
+    //final String gasPrice = await _web3utils.getGasPrice();
+    final TransactionCountResponse model = await _web3utils.getTransactionCount(
+      address: walletAddress,
+    );
+    transactionNonce = model.count;
   }
 
   ///Create Collection
@@ -606,6 +663,30 @@ class CreateCollectionBloc {
       'social_links': socialLinkMap,
       'txn_hash': 'txnHash',
     };
-    log(sortParam.toString());
+  }
+
+  ///get Wallet Address
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'getListWalletsCallback':
+        final List<dynamic> data = methodCall.arguments;
+        if (data.isEmpty) {
+        } else {
+          final List<Wallet> listWallet = [];
+          for (final element in data) {
+            listWallet.add(Wallet.fromJson(element));
+          }
+          walletAddress = listWallet.first.address ?? '';
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  Future<void> getListWallets() async {
+    try {
+      await trustWalletChannel.invokeMethod('getListWallets', {});
+    } on PlatformException {}
   }
 }

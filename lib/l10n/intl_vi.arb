@@ -435,5 +435,10 @@
   "cover_photo" : "Ảnh bìa",
   "feature_photo" : "Ảnh nổi bật",
   "uploading_successfully" : "Tải ảnh lên thành công",
-  "uploading_fail" : "Tải ảnh lên thất bại"
+  "uploading_fail" : "Tải ảnh lên thất bại",
+  "custom_url_taken" : "URL đã có người chọn",
+  "custom_url_info" : "Đường dẫn tùy chỉnh của bạn trên Defi for you. Chỉ bao gồm chữ thường, số và dấu gạch dưới (_).",
+  "custom_url_err" : "Chỉ bao gồm chữ thường, số và dấu gạch dưới ",
+  "royalties_info" : "Thu phí khi người dùng bán lại một mặt hàng mà bạn đã tạo ban đầu. Khoản tiền này được khấu trừ vào giá ưu đãi cuối cùng và được thanh toán hàng tháng cho địa chỉ thanh toán bạn chọn.",
+  "name" : "Tên"
 }

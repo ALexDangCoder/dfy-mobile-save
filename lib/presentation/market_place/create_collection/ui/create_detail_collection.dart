@@ -1,9 +1,11 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
+import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_bloc.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/widget/categories_cool.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/widget/upload_progess_widget.dart';
@@ -20,10 +22,12 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class CreateDetailCollection extends StatefulWidget {
   final CreateCollectionBloc bloc;
+  final int collectionType;
 
   const CreateDetailCollection({
     Key? key,
     required this.bloc,
+    required this.collectionType,
   }) : super(key: key);
 
   @override
@@ -39,12 +43,17 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
   final TextEditingController twitterController = TextEditingController();
   final TextEditingController instagramController = TextEditingController();
   final TextEditingController telegramController = TextEditingController();
+  GlobalKey<FormState> globalKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     widget.bloc.getListCategory();
+    widget.bloc.collectionType = widget.collectionType;
+    trustWalletChannel.setMethodCallHandler(
+      widget.bloc.nativeMethodCallBackTrustWallet,
+    );
   }
 
   @override
@@ -64,58 +73,47 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
   @override
   Widget build(BuildContext context) {
     return KeyboardDismisser(
-      gestures: const [GestureType.onTap, GestureType.onVerticalDragStart],
       child: BaseBottomSheet(
         resizeBottomInset: true,
         title: S.current.create_collection,
         child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Stack(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    uploadWidget(),
-                    SizedBox(height: 32.h),
-                    informationWidget(),
-                    SizedBox(height: 32.h),
-                    socialLinkWidget(),
-                    SizedBox(height: 32.h),
-                    StreamBuilder<bool>(
-                      stream: widget.bloc.enableCreateStream,
-                      initialData: false,
-                      builder: (context, snapshot) {
-                        final statusButton = snapshot.data ?? false;
-                        return ButtonLuxury(
-                          marginHorizontal: 16.w,
-                          title: S.current.create,
-                          isEnable: statusButton,
-                          buttonHeight: 64,
-                          fontSize: 20,
-                          onTap: () {
-                            if (statusButton) {
-                              showDialog(
-                                context: context,
-                                builder: (context) => UploadProgress(
-                                  bloc: widget.bloc,
-                                ),
-                              );
-                            } else {}
-                          },
-                        );
+                uploadWidget(),
+                SizedBox(height: 32.h),
+                informationWidget(),
+                SizedBox(height: 32.h),
+                socialLinkWidget(),
+                SizedBox(height: 32.h),
+                StreamBuilder<bool>(
+                  stream: widget.bloc.enableCreateStream,
+                  initialData: false,
+                  builder: (context, snapshot) {
+                    final statusButton = snapshot.data ?? false;
+                    return ButtonLuxury(
+                      marginHorizontal: 16.w,
+                      title: S.current.create,
+                      isEnable: statusButton,
+                      buttonHeight: 64,
+                      fontSize: 20,
+                      onTap: () {
+                        if (statusButton) {
+                          widget.bloc.createSocialMap();
+                          widget.bloc.getListWallets();
+                          showDialog(
+                            context: context,
+                            builder: (context) => UploadProgress(
+                              bloc: widget.bloc,
+                            ),
+                          );
+                        } else {}
                       },
-                    ),
-                  ],
+                    );
+                  },
                 ),
-                // Positioned(
-                //   top: 1032.h,
-                //   left: 0,
-                //   right: 0,
-                //   child: SelectCategory(
-                //     bloc: widget.bloc,
-                //   ),
-                // ),
               ],
             ),
           ),

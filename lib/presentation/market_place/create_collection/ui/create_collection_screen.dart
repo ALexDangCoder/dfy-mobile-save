@@ -2,7 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_bloc.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/create_detail_collection.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
@@ -117,12 +117,14 @@ class CreateCollectionScreen extends StatelessWidget {
               fontSize: 20,
               onTap: () {
                 if (enable) {
-                  bloc.getStandardFromID(snapshot.data ?? '');
+                  final _collectionType =
+                      bloc.getStandardFromID(snapshot.data ?? '');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => CreateDetailCollection(
-                        bloc: bloc,
+                        bloc: CreateCollectionBloc(),
+                        collectionType: _collectionType,
                       ),
                     ),
                   );
