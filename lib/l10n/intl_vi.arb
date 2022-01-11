@@ -3,6 +3,7 @@
   "ok": "Đồng ý",
   "cancel": "Huỷ",
   "something_went_wrong": "Có lỗi xảy ra. Bạn vui lòng thử lại sau",
+  "empty_data": "Dữ liệu rỗng",
   "error": "Lỗi",
   "error_network": "Vui lòng kiểm tra kết nối mạng!",
   "retry": "Thử lại",
@@ -225,7 +226,7 @@
   "send_nft": "Gửi NFT",
   "buy": "Mua",
   "enter_quantity": "Nhập số lượng",
-  "price_per_1": "Giá copy 1 cái",
+  "price_per_1": "Giá 1 bản",
   "total_payment_upper": "TỔNG TIỀN",
   "total_payment_normal": "Tổng tiền",
   "your_balance": "Số dư:",
@@ -414,8 +415,9 @@
   "copied_seed_phrase": "Sao chép seed phrase!",
   "all_category": "Tất cả loại",
   "no_more_info": "Không có thông tin thêm",
+  "available": "khả dụng",
   "no_des": "Không có mô tả",
-  "feature_soft_nfts" : "Featured Soft NFTs",
+  "feature_soft_nfts": "Featured Soft NFTs",
   "buy_sell_create_collectible_nfts": "Mua, bán và tạo cácNFT sưu tập",
   "loading_text": "Đang tải...",
   "error_text": "Lỗi tải...",
@@ -429,5 +431,7 @@
   "owner_from_high_to_low": "Chủ từ cao đến thấp",
   "owner_from_low_to_high": "Chủ từ thấp đến cao",
   "item_from_high_to_low": "Mục từ cao đến thấp",
-  "item_from_low_to_high": "Mục từ thấp đến cao"
+  "item_from_low_to_high": "Mục từ thấp đến cao",
+  "you_enter_greater": "Bạn nhập lớn hơn tổng số bản",
+  "you_must": "Bạn phải nhập vào số lượng bạn muốn mua"
 }

@@ -1,7 +1,9 @@
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/style_utils.dart';
 import 'package:Dfy/widgets/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StateErrorView extends StatelessWidget {
   final String? _message;
@@ -16,16 +18,24 @@ class StateErrorView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          SizedBox(
+            height: 54.h,
+            width: 54.w,
+            child: Image.asset(ImageAssets.err_load_nft),
+          ),
+          spaceH12,
           Text(
             _message ?? S.of(context).something_went_wrong,
             style: textStyle(),
           ),
           spaceH15,
-          AppButton(
-            S.of(context).retry,
-            _retry,
-            borderRadius: 8,
-            width: 90,
+          InkWell(
+            onTap: _retry,
+            child: SizedBox(
+              height: 54.h,
+              width: 54.w,
+              child: Image.asset(ImageAssets.reload_nft),
+            ),
           ),
         ],
       ),

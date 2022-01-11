@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:flutter/material.dart';
 
 class EmptyView extends StatelessWidget {
@@ -10,7 +11,7 @@ class EmptyView extends StatelessWidget {
     return Center(
       child: Text(
         _message ?? '',
-        style: const TextStyle(color: Colors.black, fontSize: 16),
+        style: textNormal(null, 20),
       ),
     );
   }

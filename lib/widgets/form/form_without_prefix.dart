@@ -1,10 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/widgets/image/circular_image.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/generated/l10n.dart';
 
 enum TypeFormWithoutPrefix {
   DROP_DOWN,
@@ -25,7 +24,7 @@ class FormWithOutPrefix extends StatelessWidget {
     this.imageAsset,
     this.quantityOfAll,
     required this.isTokenOrQuantity,
-    this.nameToken,
+    this.nameToken, required this.textValue,
   }) : super(key: key);
   final String hintText;
   final TypeFormWithoutPrefix typeForm;
@@ -35,6 +34,7 @@ class FormWithOutPrefix extends StatelessWidget {
   final int? quantityOfAll;
   final String? nameToken;
   final bool isTokenOrQuantity;
+  final Function(String value) textValue;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +51,10 @@ class FormWithOutPrefix extends StatelessWidget {
         ),
         child: Center(
           child: TextFormField(
+            onChanged: (value){
+              textValue(value);
+            },
+            keyboardType: TextInputType.number,
             textAlignVertical: TextAlignVertical.center,
             cursorColor: AppTheme.getInstance().textThemeColor(),
             controller: txtController,
@@ -65,20 +69,14 @@ class FormWithOutPrefix extends StatelessWidget {
                 AppTheme.getInstance().disableColor(),
                 16.sp,
               ),
-              suffixIcon: SizedBox(
-                height: 20.h,
-                width: 78.w,
-                child: Padding(
-                  padding: EdgeInsets.only(right: 20.w),
+              suffixIcon: Padding(
+                padding: EdgeInsets.only(right: 16.w),
+                child: SizedBox(
+                  height: 20.h,
+                  width: 78.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      circularImage(
-                        imageAsset ?? '',
-                        height: 16,
-                        width: 16,
-                      ),
-                      spaceW4,
                       if (isTokenOrQuantity)
                         Text(
                           '$nameToken',
@@ -137,13 +135,12 @@ class FormWithOutPrefix extends StatelessWidget {
               suffixIcon: Container(
                 padding: EdgeInsets.only(top: 15.h),
                 child: Text(
-                    '${S.current.of_all} $quantityOfAll',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().textThemeColor(),
-                      16.sp,
-                      FontWeight.w400,
-                    ),
-
+                  '${S.current.of_all} $quantityOfAll',
+                  style: textNormalCustom(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                    FontWeight.w400,
+                  ),
                 ),
               ),
             ),
@@ -217,12 +214,11 @@ class FormWithOutPrefix extends StatelessWidget {
                 16.sp,
               ),
               suffixIcon: const Text(''),
-              ),
             ),
+          ),
         ),
-        );
-    }
-    else {
+      );
+    } else {
       // TODO handle UI WHEN SHOW DROPDOWN AND DROWDOWN WITH MONTH
       return const Text('CHUA CO CHUC NANG');
     }

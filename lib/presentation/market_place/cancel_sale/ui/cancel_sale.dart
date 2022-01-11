@@ -5,6 +5,7 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/market_place/cancel_sale/bloc/cancel_sale_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,20 +40,17 @@ class _CancelSaleState extends State<CancelSale> {
   void dispose() {
     super.dispose();
   }
+  // widget.bloc.signTransactionWithData(
+  // gasLimit: gasLimit.toString(),
+  // gasPrice: gasPr.toString(),
+  // walletAddress: widget.walletAddress,
+  // withData: widget.bloc.dataString,
+  // );
 
   @override
   Widget build(BuildContext context) {
     return Approve(
       listDetail: widget.bloc.initListApprove(),
-      action: (gasLimit, gasPrice) {
-        double gasPr = gasPrice/10e8;
-        widget.bloc.signTransactionWithData(
-          gasLimit: gasLimit.toString(),
-          gasPrice: gasPr.toString(),
-          walletAddress: widget.walletAddress,
-          withData: widget.bloc.dataString,
-        );
-      },
       title: S.current.cancel_sale,
       header: Container(
         padding: EdgeInsets.only(
@@ -70,7 +68,6 @@ class _CancelSaleState extends State<CancelSale> {
           ),
         ),
       ),
-      approve: () {},
       warning: Row(
         children: [
           sizedSvgImage(
@@ -92,7 +89,7 @@ class _CancelSaleState extends State<CancelSale> {
         ],
       ),
       textActiveButton: S.current.cancel_sale,
-      gasLimitFirst: widget.gasLimit,
+      gasLimitInit: widget.gasLimit, typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
     );
   }
 }

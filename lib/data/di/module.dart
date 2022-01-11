@@ -38,10 +38,14 @@ import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
+GetIt getIt = GetIt.instance;
 
 void configureDependencies() {
   Get.put(TokenClient(provideDio()));
@@ -73,7 +77,6 @@ void configureDependencies() {
   Get.put(NftMarketClient(provideDio()));
   Get.put<NftMarketRepository>(NftMarketRepositoryImpl(Get.find()));
 
-
   Get.put(NFTClient(provideDio()));
   Get.put<NFTRepository>(NFTRepositoryImpl(Get.find()));
   Get.put(CollectionDetailService(provideDio()));
@@ -85,7 +88,7 @@ void configureDependencies() {
   Get.put<DetailCategoryRepository>(DetailCategoryRepositoryImpl(Get.find()));
 }
 
-int _connectTimeOut = 60000;
+const int _connectTimeOut = 60000;
 
 Dio provideDio({int connectionTimeOut = 60000}) {
   final appConstants = Get.find<AppConstants>();
