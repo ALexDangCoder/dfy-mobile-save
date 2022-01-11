@@ -15,7 +15,7 @@ class OwnerTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
-      physics: const NeverScrollableScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       itemCount: listOwner.length,
       itemBuilder: (context, index) {
         return GestureDetector(

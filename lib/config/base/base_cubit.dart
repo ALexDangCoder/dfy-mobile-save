@@ -16,7 +16,7 @@ abstract class BaseCubit<BaseState> extends BlocBase<BaseState> {
       canLoadMore ? loadMoreList.length + 1 : loadMoreList.length;
 
   final BehaviorSubject<StateLayout> _state =
-      BehaviorSubject<StateLayout>.seeded(StateLayout.showLoading);
+      BehaviorSubject<StateLayout>.seeded(StateLayout.showContent);
 
   Stream<StateLayout> get stateStream => _state.stream;
 

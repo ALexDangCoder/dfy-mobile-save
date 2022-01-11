@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/color.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -39,10 +40,10 @@ const spaceW25 = SizedBox(width: 25);
 const spaceW30 = SizedBox(width: 30);
 
 TextStyle textStyle({double size = 16, double height = 1.2}) =>
-    GoogleFonts.mulish(
+    GoogleFonts.sourceSansPro(
       fontSize: size,
       fontWeight: FontWeight.w500,
-      color: dfTxtColor,
+      color: AppTheme.getInstance().textThemeColor(),
       fontStyle: FontStyle.normal,
       height: height,
     );
