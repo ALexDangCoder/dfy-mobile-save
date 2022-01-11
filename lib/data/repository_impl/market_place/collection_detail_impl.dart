@@ -15,7 +15,7 @@ class CollectionDetailImpl implements CollectionDetailRepository {
 
   @override
   Future<Result<CollectionDetailModel>> getCollectionDetail(
-      String collectionAddress) {
+      String collectionAddress,) {
     return runCatchingAsync<CollectionDetailResponse, CollectionDetailModel>(
       () => _client.getCollection(collectionAddress),
       (response) => response.item?.toDomain() ?? CollectionDetailModel(),
@@ -24,7 +24,7 @@ class CollectionDetailImpl implements CollectionDetailRepository {
 
   @override
   Future<Result<List<ActivityCollectionModel>>> getCollectionListActivity(
-      String collectionAddress, String type, int page, int size) {
+      String collectionAddress, String type, int page, int size,) {
     return runCatchingAsync<ActivityCollectionResponse,
         List<ActivityCollectionModel>>(
       () => _client.getListActivityCollection(

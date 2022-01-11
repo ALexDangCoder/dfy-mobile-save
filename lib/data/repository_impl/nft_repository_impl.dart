@@ -42,7 +42,7 @@ class NFTRepositoryImpl implements NFTRepository {
 
   @override
   Future<Result<List<HistoryNFT>>> getHistory(
-      String collectionAddress, String nftTokenId) {
+      String collectionAddress, String nftTokenId,) {
     return runCatchingAsync<HistoryResponse, List<HistoryNFT>>(
       () => _nftClient.getHistory(collectionAddress, nftTokenId),
       (response) => response.toDomain() ?? [],
@@ -51,7 +51,7 @@ class NFTRepositoryImpl implements NFTRepository {
 
   @override
   Future<Result<List<OwnerNft>>> getOwner(
-      String collectionAddress, String nftTokenId) {
+      String collectionAddress, String nftTokenId,) {
     return runCatchingAsync<OwnerResponse, List<OwnerNft>>(
       () => _nftClient.getOwner(collectionAddress, nftTokenId),
       (response) => response.toDomain() ?? [],
