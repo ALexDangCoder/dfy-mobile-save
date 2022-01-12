@@ -5,6 +5,7 @@ class NftMarket {
   String? nftId;
   String? marketId;
   String? name;
+  String? token;
   String? image;
   double? price;
   String? tokenBuyOut;

@@ -102,7 +102,7 @@ class _NFTItemState extends State<NFTItemWidget> {
             MaterialPageRoute(
               builder: (context) => NFTDetailScreen(
                 key: nftKey,
-                type: widget.nftMarket.marketType,
+                typeMarket: widget.nftMarket.marketType!,
                 marketId: widget.nftMarket.marketId,
               ),
             ),
@@ -143,7 +143,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                             MaterialPageRoute(
                               builder: (context) => NFTDetailScreen(
                                 key: nftKey,
-                                type: widget.nftMarket.marketType,
+                                typeMarket: widget.nftMarket.marketType!,
                                 marketId: widget.nftMarket.marketId,
                                 typeNft: widget.nftMarket.typeNFT,
                                 nftId: widget.nftMarket.nftId,

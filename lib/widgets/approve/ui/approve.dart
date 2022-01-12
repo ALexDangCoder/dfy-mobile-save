@@ -103,15 +103,16 @@ class _ApproveState extends State<Approve> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       heightScaffold = scaffoldKey.currentContext?.size?.height;
     });
-    getNonce();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
-    cubit.getListWallets();
+    getNonce();
   }
 
   Future<void> getNonce() async {
+    await cubit.getListWallets();
     nonce = await nftDetailBloc.getNonceWeb3(
-        walletAddress: nftDetailBloc.wallets.first.address ?? '');
+      walletAddress: cubit.addressWallet ?? '',
+    );
   }
 
   /// NamLV used

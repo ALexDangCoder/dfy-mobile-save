@@ -43,7 +43,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   BehaviorSubject.seeded([]);
   final BehaviorSubject<List<BiddingNft>> listBiddingStream =
       BehaviorSubject.seeded([]);
-  BehaviorSubject.seeded([]);
   final BehaviorSubject<List<OfferDetail>> listOfferStream =
   BehaviorSubject.seeded([]);
 
