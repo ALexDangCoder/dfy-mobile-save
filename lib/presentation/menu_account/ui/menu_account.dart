@@ -1,13 +1,18 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/menu_account/cubit/menu_account_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'component/Expansion_title_custom.dart';
 
 class MenuAccount extends StatefulWidget {
   const MenuAccount({Key? key}) : super(key: key);
@@ -17,18 +22,33 @@ class MenuAccount extends StatefulWidget {
 }
 
 class _MenuAccountState extends State<MenuAccount> {
+  MenuAccountCubit cubit = MenuAccountCubit();
 
-  void pushRoute (String routeName, BuildContext context){
-    switch (routeName){
-      case 'put_on_market': {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const PutOnMarket(),
-          ),
-        );
-        break;
-      }
+  int currentTab = -1;
+  int selectedTab = -1;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    for (int i=0 ; i< initData.length; i++ ){
+      openTab.add(false);
+    }
+    super.initState();
+  }
+
+  void pushRoute(String routeName, BuildContext context) {
+    switch (routeName) {
+      case 'put_on_market':
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PutOnMarket(),
+            ),
+          );
+          break;
+        }
     }
   }
 
@@ -36,7 +56,20 @@ class _MenuAccountState extends State<MenuAccount> {
     {
       'icon': ImageAssets.ic_profile,
       'title': S.current.put_on_sale,
-      'children': [],
+      'children': [
+        {
+          'title': S.current.not_on_market,
+        },
+        {
+          'title': S.current.on_sale,
+        },
+        {
+          'title': S.current.on_pawn,
+        },
+        {
+          'title': S.current.on_auction,
+        },
+      ],
       'routeName': 'put_on_market'
     },
     {
@@ -60,42 +93,54 @@ class _MenuAccountState extends State<MenuAccount> {
     {
       'icon': ImageAssets.ic_profile,
       'title': S.current.put_on_sale,
-      'children': []
     },
-    {
-      'icon': ImageAssets.ic_profile,
-      'title': S.current.my_collection,
-    },
-    {
-      'icon': ImageAssets.ic_profile,
-      'title': S.current.my_collection,
-    },
-    {
-      'icon': ImageAssets.ic_profile,
-      'title': S.current.put_on_sale,
-      'children': []
-    },
-    {
-      'icon': ImageAssets.ic_profile,
-      'title': S.current.put_on_sale,
-      'children': []
-    },
-    {
-      'icon': ImageAssets.ic_profile,
-      'title': S.current.my_collection,
-    },
-    {
-      'icon': ImageAssets.ic_profile,
-      'title': S.current.my_collection,
-    },
+    // {
+    //   'icon': ImageAssets.ic_profile,
+    //   'title': S.current.my_collection,
+    // },
+    // {
+    //   'icon': ImageAssets.ic_profile,
+    //   'title': S.current.my_collection,
+    // },
+    // {
+    //   'icon': ImageAssets.ic_profile,
+    //   'title': S.current.put_on_sale,
+    //   'children': [
+    //     {
+    //       'title': S.current.not_on_market,
+    //     },
+    //     {
+    //       'title': S.current.on_sale,
+    //     },
+    //     {
+    //       'title': S.current.on_pawn,
+    //     },
+    //     {
+    //       'title': S.current.on_auction,
+    //     },
+    //   ]
+    // },
+    // {
+    //   'icon': ImageAssets.ic_profile,
+    //   'title': S.current.put_on_sale,
+    //   'children': []
+    // },
+    // {
+    //   'icon': ImageAssets.ic_profile,
+    //   'title': S.current.my_collection,
+    // },
+    // {
+    //   'icon': ImageAssets.ic_profile,
+    //   'title': S.current.my_collection,
+    // },
   ];
+  List<bool> openTab = [];
 
-  int tabOpen = -1;
+
 
   //todo
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -115,59 +160,135 @@ class _MenuAccountState extends State<MenuAccount> {
             //account detail here
             const SizedBox(height: 0),
             // list item menu
-            ...initData.indexedMap((e, index) {
-              if (e.arrayValueOrEmpty('children').isNotEmpty) {
-                return ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child:  Theme(
-                  data: theme,
-                  child:  ExpansionTile(
-                    onExpansionChanged: (value){
-                      tabOpen = index;
-                    },
-                    collapsedIconColor: AppTheme.getInstance().whiteColor(),
-                    backgroundColor: dialogColor,
-                    iconColor: AppTheme.getInstance().whiteColor(),
-                    title: Row(
-                      children: [
-                        ImageIcon(
-                          AssetImage(e.stringValueOrEmpty('icon')),
-                          size: 28,
-                          color: AppTheme.getInstance().whiteColor(),
-                        ),
-                        Text(
-                          e.stringValueOrEmpty('title'),
-                          style: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            20,
-                            FontWeight.w400,
+            Expanded(
+              child: Column(
+                children: [
+                  ...initData.indexedMap((e, index) {
+                    if (e.arrayValueOrEmpty('children').isNotEmpty) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     final indexOpen = openTab
+                          //           .indexWhere((element) => element == true);
+                          //       if (indexOpen >=0)openTab[indexOpen] = false;
+                          //       setState(() {
+                          //         openTab[index] = !openTab[index];
+                          //       });
+                          //   },
+                          //   child: ClipRRect(
+                          //     borderRadius: BorderRadius.circular(10),
+                          //     child: Row(
+                          //       children: [
+                          //         ImageIcon(
+                          //           AssetImage(e.stringValueOrEmpty('icon')),
+                          //           size: 28,
+                          //           color: AppTheme.getInstance().whiteColor(),
+                          //         ),
+                          //         Text(
+                          //           e.stringValueOrEmpty('title'),
+                          //           style: textNormalCustom(
+                          //             AppTheme.getInstance().whiteColor(),
+                          //             20,
+                          //             FontWeight.w400,
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                          ExpansionTitleCustom(
+                            title: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Row(
+                                children: [
+                                  ImageIcon(
+                                    AssetImage(e.stringValueOrEmpty('icon')),
+                                    size: 28,
+                                    color: AppTheme.getInstance().whiteColor(),
+                                  ),
+                                  Text(
+                                    e.stringValueOrEmpty('title'),
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().whiteColor(),
+                                      20,
+                                      FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            expand: openTab[index],
+                            onChangeExpand: (){
+                              final indexOpen = openTab
+                                  .indexWhere((element) => element == true);
+                              if (indexOpen >=0)openTab[indexOpen] = false;
+                              if (indexOpen != index ) {
+                                setState(() {
+                                openTab[index] = !openTab[index];
+                              });
+                              } else {
+                                setState(() {
+                                  openTab[index] = false;
+                                });
+                              }
+                            },
+                            child: Column(
+                              children: [
+                                ...e.arrayValueOrEmpty('children').indexedMap(
+                                  (element, index) {
+                                    final child =
+                                        element as Map<String, dynamic>;
+                                    return Row(
+                                      children: [
+                                        Text(child.stringValueOrEmpty('title'))
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: GestureDetector(
+                          onTap: () {
+                            for (int i=0; i<openTab.length; i++){
+                              setState(() {
+                                openTab[i] = false;
+                              });
+                            }
+                            pushRoute(
+                                e.stringValueOrEmpty('routeName'), context);
+                          },
+                          child: Row(
+                            children: [
+                              ImageIcon(
+                                AssetImage(e.stringValueOrEmpty('icon')),
+                                size: 28,
+                                color: AppTheme.getInstance().whiteColor(),
+                              ),
+                              Text(
+                                e.stringValueOrEmpty('title'),
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().whiteColor(),
+                                  20,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                    children: [
-                      ...e
-                          .arrayValueOrEmpty('children')
-                          .indexedMap((element, index) {
-                        final child = element as Map<String, dynamic>;
-                        return Row(
-                          children: [
-                            Text(child.stringValueOrEmpty('title'))
-                          ],
-                        );
-                      },),
-                    ],
-                  ),
-                ),
-              );
-              } else {
-
-                return ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container (),
-              ) ;
-              }
-            }).toList()
+                      );
+                    }
+                  }).toList()
+                ],
+              ),
+            )
           ],
         ),
       ),
