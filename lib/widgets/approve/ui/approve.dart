@@ -90,7 +90,7 @@ class _ApproveState extends State<Approve> {
   double gasFee = 0;
   int nonce = 0;
   final NFTDetailBloc nftDetailBloc =
-      nftKey.currentState?.bloc ?? NFTDetailBloc();
+      nftKey.currentState!.bloc;
 
   @override
   void initState() {

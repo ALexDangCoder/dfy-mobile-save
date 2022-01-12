@@ -258,7 +258,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       nftId: widget.nftId ?? '',
       pawnId: widget.pawnId ?? 0,
       type: widget.typeMarket,
-      typeNFT: widget.typeNft!,
+      typeNFT: widget.typeNft ?? TypeNFT.SOFT_NFT,
     );
     await bloc.getListWallets();
   }
@@ -843,7 +843,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       onPressed: () async {
         await bloc
             .getBalanceToken(
-              ofAddress: bloc.wallets.first.address ?? '',
+              ofAddress: bloc.walletAddress,
               tokenAddress: bloc.nftMarket.token ?? '',
             )
             .then(
