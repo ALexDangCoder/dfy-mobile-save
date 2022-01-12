@@ -53,6 +53,7 @@ dependencies:
   table_calendar: ^3.0.2
   image_picker: ^0.8.4+3
   flutter_tab_indicator_styler: ^2.0.0
+  flutter_speed_dial: ^5.0.0+1
   # add this line to your dependencies
   avatar_view: ^1.0.1
   #Library helpful
