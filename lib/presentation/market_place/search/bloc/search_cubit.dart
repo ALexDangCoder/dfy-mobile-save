@@ -87,6 +87,10 @@ class SearchCubit extends BaseCubit<SearchState> {
                   : (element.marketType == 'Sell'
                       ? MarketType.SALE
                       : MarketType.PAWN),
+              pawnId: element.pawnId,
+              typeNFT:
+                  (element.type == 0) ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+              nftId: element.nftId,
             ),
           );
         }
