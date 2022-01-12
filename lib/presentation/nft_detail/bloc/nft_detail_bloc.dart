@@ -32,6 +32,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String hexString = '';
   String gasLimit = '';
   String rawData = '';
+  String nftMarketId = '';
+
   String walletAddress = '';
   Stream<bool> get viewStream => _viewSubject.stream;
 
@@ -308,7 +310,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         context: context,
       );
     } catch (e) {
-      emit(Web3Fail());
       throw AppException(S.current.error, e.toString());
     }
     return hexString;
@@ -326,7 +327,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       );
       emit(GetGasLimitSuccess(nftMarket,gasLimit,));
     } catch (e) {
-      showError();
       throw AppException(S.current.error, e.toString());
     }
     return gasLimit;

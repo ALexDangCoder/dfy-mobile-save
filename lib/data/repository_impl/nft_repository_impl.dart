@@ -1,4 +1,5 @@
 import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
+import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
 import 'package:Dfy/data/response/nft/hard_nft_respone.dart';
 import 'package:Dfy/data/response/nft/history_response.dart';
@@ -73,6 +74,14 @@ class NFTRepositoryImpl implements NFTRepository {
     return runCatchingAsync<BiddingResponse, List<BiddingNft>>(
       () => _nftClient.getBidding(auctionId),
       (response) => response.toDomain() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<String>> buyNftRequest(BuyNftRequest nftRequest) {
+    return runCatchingAsync<String, String>(
+      () => _nftClient.buyNftRequest(nftRequest),
+      (response) => response.toString(),
     );
   }
 

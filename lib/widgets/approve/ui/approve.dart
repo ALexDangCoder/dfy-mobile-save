@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -206,6 +207,13 @@ class _ApproveState extends State<Approve> {
       bloc: cubit,
       listener: (context, state) {
         if (state is BuySuccess) {
+          cubit.buyNftRequest(
+            BuyNftRequest(
+              nftDetailBloc.nftMarketId,
+              1,
+              state.txh,
+            ),
+          );
           cubit.emitJsonNftToWalletCore(
             contract: cubit.nftMarket.collectionAddress ?? '',
             id: int.parse(cubit.nftMarket.nftTokenId ?? ''),

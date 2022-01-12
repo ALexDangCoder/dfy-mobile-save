@@ -95,7 +95,9 @@ class _BuyNFTState extends State<BuyNFT> {
               stream: _nftBloc.stateStream,
               error:
                   AppException(S.current.error, S.current.something_went_wrong),
-              retry: () async {},
+              retry: () async {
+                await _nftBloc.callWeb3(context, cubit.amountValue);
+              },
               textEmpty: '',
               child: BaseBottomSheet(
                 isImage: true,

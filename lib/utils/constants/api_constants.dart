@@ -52,6 +52,8 @@ class ApiConstants {
   static const String GET_OWNER = 'inventory-svc/public-api/v1.0.0/owners';
   static const String GET_BIDDING =
       '/nft-market-svc/public-api/auction/bidding-list';
+  static const String BUY_NFT =
+      '/nft-market-svc/api/market/buy';
 
   static const String GET_DETAIL_NFT_ON_PAWN =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts/';
