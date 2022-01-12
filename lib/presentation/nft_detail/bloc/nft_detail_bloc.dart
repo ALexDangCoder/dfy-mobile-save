@@ -253,7 +253,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         context: context,
       );
     } catch (e) {
-      emit(Web3Fail());
       throw AppException(S.current.error, e.toString());
     }
     return hexString;

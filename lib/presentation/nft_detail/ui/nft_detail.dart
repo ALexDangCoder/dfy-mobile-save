@@ -929,35 +929,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
           );
         }
-        if (state is Web3Fail) {
-          return Scaffold(
-            backgroundColor: AppTheme.getInstance().backgroundBTSColor(),
-            body: StateStreamLayout(
-              stream: bloc.stateStream,
-              error:
-                  AppException(S.current.error, S.current.something_went_wrong),
-              retry: () async {
-                await bloc
-                    .getBalanceToken(
-                      ofAddress: bloc.wallets.first.address ?? '',
-                      tokenAddress: bloc.nftMarket.token ?? '',
-                    )
-                    .then(
-                      (value) => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BuyNFT(
-                            balance: value,
-                          ),
-                        ),
-                      ),
-                    );
-              },
-              textEmpty: '',
-              child: const SizedBox(),
-            ),
-          );
-        } else {
+         else {
           return const ModalProgressHUD(
             inAsyncCall: true,
             progressIndicator: CupertinoLoading(),
