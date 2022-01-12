@@ -23,6 +23,23 @@ class ImageAssets {
 
   //urltoken
 
+
+  // menu icon
+
+
+  static const String ic_token_symbol = '$baseImg/ic_token_symbol.png';
+  static const String ic_profile_circle = '$baseImg/ic_profile_circle.png';
+  static const String ic_logout = '$baseImg/ic_logout.png';
+  static const String ic_about = '$baseImg/ic_about.png';
+  static const String ic_card = '$baseImg/ic_card.png';
+  static const String ic_activity = '$baseImg/ic_activity.png';
+  static const String ic_faq = '$baseImg/ic_FAQ.png';
+  static const String ic_folder = '$baseImg/ic_folder.png';
+  static const String ic_graph = '$baseImg/ic_graph.png';
+  static const String ic_nft = '$baseImg/ic_nft.png';
+  static const String ic_setting = '$baseImg/ic_setting.png';
+
+
   static const String imgTokenADA = '$baseImg/ADA.png';
   static const String imgTokenATOM = '$baseImg/ATOM.png';
   static const String imgTokenBAND = '$baseImg/BAND.png';

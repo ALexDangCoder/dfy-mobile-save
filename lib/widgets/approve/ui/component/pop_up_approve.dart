@@ -210,8 +210,7 @@ class PopUpApprove extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      final navigator = Navigator.of(context);
-                      final result = await approve();
+                      await approve();
                     },
                     child: ButtonGold(
                       radiusButton: 15,

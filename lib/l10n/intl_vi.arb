@@ -449,6 +449,18 @@
   "item_from_low_to_high": "Mục từ thấp đến cao",
   "erc_721": "ERC-721",
   "erc_1155": "ERC-1155",
-  "on_sale": "Đang bán"
-
+  "on_sale": "Đang bán",
+  "give_this_site_permission_to_access_your_nft" : "Cho phép ứng dụng truy cập vào NFT của bạn",
+  "profile_setting": "thiết lập hồ sơ",
+  "my_nft" : "nft của tôi",
+  "hard_nft_management" : "Quản lý hard NFT",
+  "nft_activity" : "Hoạt động NFT",
+  "borrower_profile" : "Hồ sơ người vay",
+  "about_us" : "Về chúng tôi",
+  "collateral" : "Thế chấp",
+  "contracts" : "Danh sách hợp đồng",
+  "hard_nft_list" : "Danh sách hard NFT",
+  "hard_nft_mint_request" : "Hard NFT đặt yêu cầu",
+  "lender_profile" : "Hồ sơ người cho vay",
+  "my_account" : "Tài khoản của tôi"
 }

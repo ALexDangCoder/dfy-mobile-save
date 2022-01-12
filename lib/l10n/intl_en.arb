@@ -452,6 +452,18 @@
   "you_enter_greater": "you enter greater than the total amount",
   "you_must": "You must enter the quantity you want to buy",
   "no_des": "No description",
-  "on_sale": "On sale"
-
+  "on_sale": "On sale",
+  "give_this_site_permission_to_access_your_nft" : "Give this site permission to access your NFTs",
+  "profile_setting": "Profile setting",
+  "my_nft" : "My NFT",
+  "hard_nft_management" : "Hard NFT management",
+  "hard_nft_list" : "Hard NFT List",
+  "hard_nft_mint_request" : "Hard NFT mint request",
+  "nft_activity" : "NFT activity",
+  "borrower_profile" : "Borrower profile",
+  "about_us" : "About us",
+  "collateral" : "Collateral",
+  "contracts" : "Contracts",
+  "lender_profile" : "Lender profile",
+  "my_account" : "My account"
 }

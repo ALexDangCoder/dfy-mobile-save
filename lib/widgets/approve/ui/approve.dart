@@ -203,11 +203,11 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
         {
-          await showPopupApprove();
+          showLoading();
           Timer(Duration(seconds: 2), () {
             Navigator.pop(context);
+            Navigator.pop(context);
           });
-          break;
         }
         break;
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
@@ -309,7 +309,7 @@ class _ApproveState extends State<Approve> {
           balanceWallet: cubit.balanceWallet ?? 0,
           gasFee: gasFee,
           purposeText: widget.purposeText ??
-              'Give this site permission to access your NFTs',
+              S.current.give_this_site_permission_to_access_your_nft,
           approveSuccess: (value) {
             isCanAction = true;
           },
