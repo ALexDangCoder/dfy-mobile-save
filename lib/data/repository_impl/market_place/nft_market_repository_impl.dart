@@ -21,7 +21,7 @@ class NftMarketRepositoryImpl implements NftMarketRepository {
   }) {
     return runCatchingAsync<ListNftResponseFromApi, List<NftMarket>>(
       () => _client.getListNft(status, nftType, name, collectionId, page,
-          ApiConstants.DEFAULT_NFT_SIZE),
+          ApiConstants.DEFAULT_NFT_SIZE,),
       (response) => response.toDomain() ?? [],
     );
   }
@@ -32,10 +32,10 @@ class NftMarketRepositoryImpl implements NftMarketRepository {
       int? page,
       int? size,
       String? nameNft,
-      List<int>? listMarketType}) {
+      List<int>? listMarketType,}) {
     return runCatchingAsync<ListNftCollectionResponse, List<NftMarket>>(
           () => _client.getListNftCollection(
-              collectionAddress, page, size, nameNft, listMarketType),
+              collectionAddress, page, size, nameNft, listMarketType,),
           (response) => response.toDomain() ?? [],);
   }
 }

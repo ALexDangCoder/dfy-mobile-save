@@ -8,6 +8,9 @@ class NftItem {
   final TypeNFT? typeNFT;
   final TypeImage? typeImage;
   final String? marketId;
+  final int? type;
+  final int? pawnId;
+  final String? nftId;
 
   NftItem({
     required this.name,
@@ -17,5 +20,8 @@ class NftItem {
     this.typeNFT,
     this.typeImage,
     this.marketId,
+    this.pawnId,
+    this.type,
+    this.nftId,
   });
 }

@@ -73,12 +73,14 @@ class _CollectionListState extends State<CollectionList> {
 
     searchCollection = TextEditingController();
     searchCollection.text = widget.query;
-
+    collectionBloc.textSearch.sink.add(widget.query);
     _listCollectionController.addListener(_onScroll);
     collectionBloc.getCollection(
       name: widget.query,
       sortFilter: collectionBloc.sortFilter,
     );
+
+
 
     trustWalletChannel
         .setMethodCallHandler(collectionBloc.nativeMethodCallBackTrustWallet);

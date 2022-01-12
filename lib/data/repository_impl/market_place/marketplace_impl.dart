@@ -44,21 +44,23 @@ class MarketPlaceImpl implements MarketPlaceRepository {
   }
 
   @override
-  Future<Result<List<CollectionMarketModel>>> getListCollectionMarket({String? address, String? name, int? sort, int? page, int? size}) {
-    return runCatchingAsync<ListCollectionResponseMarket, List<CollectionMarketModel>>(
-          () => _client.getListCollectionMarket(
+  Future<Result<List<CollectionMarketModel>>> getListCollectionMarket({
+    String? address,
+    String? name,
+    int? sort,
+    int? page,
+    int? size,
+  }) {
+    return runCatchingAsync<ListCollectionResponseMarket,
+        List<CollectionMarketModel>>(
+      () => _client.getListCollectionMarket(
         address,
         name,
         sort,
         page,
         size,
       ),
-          (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
+      (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
-
-
-
-
-
 }

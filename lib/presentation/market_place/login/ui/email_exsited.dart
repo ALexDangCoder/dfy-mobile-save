@@ -20,7 +20,6 @@ class EmailExisted extends StatefulWidget {
 }
 
 class _EmailExistedState extends State<EmailExisted> {
-
   @override
   void initState() {
     super.initState();
@@ -31,14 +30,17 @@ class _EmailExistedState extends State<EmailExisted> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: ButtonLuxuryBigSize(
-          title: S.current.confirm_account,
-          isEnable: true,
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) => const ConnectWalletDialog(currentScreen: MarketPlaceScreen(),),
-            );
-          }),
+        title: S.current.confirm_account,
+        isEnable: true,
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) => const ConnectWalletDialog(
+              currentScreen: MarketPlaceScreen(),
+            ),
+          );
+        },
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: BaseBottomSheet(
         title: S.current.enter_email,

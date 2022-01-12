@@ -7,6 +7,9 @@ class SearchCollectionNftModel {
   String? fileType;
   String? coverCid;
   String? collectionAddress;
+  int? type;
+  int? pawnId;
+  String? nftId;
 
   SearchCollectionNftModel({
     this.id,
@@ -17,5 +20,8 @@ class SearchCollectionNftModel {
     this.fileType,
     this.coverCid,
     this.collectionAddress,
+    this.type,
+    this.nftId,
+    this.pawnId,
   });
 }
