@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
 import 'package:Dfy/data/response/nft/hard_nft_respone.dart';
 import 'package:Dfy/data/response/nft/history_response.dart';
@@ -8,6 +9,7 @@ import 'package:Dfy/data/response/nft/offer_nft_response.dart';
 import 'package:Dfy/data/response/nft/owner_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/nft_service.dart';
+import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
@@ -46,6 +48,14 @@ class NFTRepositoryImpl implements NFTRepository {
     return runCatchingAsync<HistoryResponse, List<HistoryNFT>>(
       () => _nftClient.getHistory(collectionAddress, nftTokenId),
       (response) => response.toDomain() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<TypeNFTModel>>> getListTypeNFT() {
+    return runCatchingAsync<ListTypeNFTResponse, List<TypeNFTModel>>(
+      () => _nftClient.getListTypeNFT(),
+      (response) => response.rows?.map((e) => e.toModel()).toList() ?? [],
     );
   }
 

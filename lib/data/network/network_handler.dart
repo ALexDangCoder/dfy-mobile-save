@@ -13,7 +13,7 @@ class NetworkHandler {
       return AppException(S.current.error, S.current.something_went_wrong);
     }
     if (_isNetWorkError(error)) {
-      eventBus.fire(TimeOutEvent(S.current.something_went_wrong));
+      eventBus.fire(TimeOutEvent(error.message));
       return AppException(S.current.error, S.current.something_went_wrong);
     }
     final parsedException = _parseError(error);

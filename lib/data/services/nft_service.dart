@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
 import 'package:Dfy/data/response/nft/hard_nft_respone.dart';
 import 'package:Dfy/data/response/nft/history_response.dart';
@@ -22,6 +23,8 @@ abstract class NFTClient {
   Future<AuctionResponse> getDetailNFTAuction(
     @Path('marketId') String marketID,
   );
+  @GET(ApiConstants.GET_LIST_TYPE_NFT)
+  Future<ListTypeNFTResponse> getListTypeNFT();
 
   @GET('${ApiConstants.GET_DETAIL_NFT_ON_SALE}{marketId}')
   Future<OnSaleResponse> getDetailNftOnSale(

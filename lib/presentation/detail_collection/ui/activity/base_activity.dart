@@ -46,7 +46,6 @@ class BaseActivity extends StatelessWidget {
                     return NFTDetailScreen(
                       typeMarket: MarketType.NOT_ON_MARKET,
                       marketId: list[index].marketId ?? '',
-
                     );
                   },
                 ),

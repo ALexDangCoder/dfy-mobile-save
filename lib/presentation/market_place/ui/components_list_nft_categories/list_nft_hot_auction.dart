@@ -117,15 +117,16 @@ class ListNftHotAuction extends StatelessWidget {
                         onTap: () {
                           isLoading
                               ? () {}
-                              : () {};
-                          // Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //           builder: (context) => const NFTDetailScreen(
-                          //             typeMarket: MarketType.AUCTION,
-                          //           ),
-                          //         ),
-                          //       );
+                              : Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => NFTDetailScreen(
+                                      key: nftKey,
+                                      typeMarket: MarketType.AUCTION,
+
+                                    ),
+                                  ),
+                                );
                         },
                         child: Row(
                           children: [

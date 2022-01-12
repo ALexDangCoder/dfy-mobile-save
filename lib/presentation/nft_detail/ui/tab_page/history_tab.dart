@@ -59,7 +59,7 @@ class _HistoryTabState extends State<HistoryTab> {
       );
     } else {
       return ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         itemCount: widget.listHistory.length,
         itemBuilder: (context, index) {

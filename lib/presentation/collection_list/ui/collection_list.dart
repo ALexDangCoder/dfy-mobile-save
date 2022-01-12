@@ -7,7 +7,7 @@ import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/presentation/collection_list/ui/item_error.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/bloc.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -98,7 +98,7 @@ class _CollectionListState extends State<CollectionList> {
             MaterialPageRoute(
               builder: (context) {
                 return CreateCollectionScreen(
-                  bloc: CreateCollectionBloc(),
+                  bloc: CreateCollectionCubit(),
                 );
               },
             ),
