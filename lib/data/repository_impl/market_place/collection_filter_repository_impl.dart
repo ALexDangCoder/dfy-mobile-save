@@ -5,7 +5,6 @@ import 'package:Dfy/domain/model/collection_filter.dart';
 import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
 
 class CollectionFilterImpl implements CollectionFilterRepository {
-
   final CollectionFilterClient _client;
 
   CollectionFilterImpl(this._client);
@@ -13,9 +12,8 @@ class CollectionFilterImpl implements CollectionFilterRepository {
   @override
   Future<Result<List<CollectionFilter>>> getListCollection() {
     return runCatchingAsync<ListResponseFromApi, List<CollectionFilter>>(
-          () => _client.getListCollection(),
-          (response) => response.toDomain() ?? [],
+      () => _client.getListCollection(),
+      (response) => response.toDomain() ?? [],
     );
   }
-
 }
