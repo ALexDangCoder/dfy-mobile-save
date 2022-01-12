@@ -113,7 +113,7 @@ class _FilterBtsState extends State<FilterBts> {
               spaceH12,
               CheckBoxFilter(
                 cubit: widget.listNftCubit,
-                nameCkcFilter: S.current.on_sale,
+                nameCkcFilter: S.current.on_sell,
                 typeCkc: TYPE_CKC_FILTER.NON_IMG,
                 filterType: S.current.status,
               ),

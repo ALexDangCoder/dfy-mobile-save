@@ -4,6 +4,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
 import 'package:Dfy/presentation/login/ui/login_screen.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_cubit.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +16,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //chứa có wallet sẽ chuyển qua tạo wallet. Có rồi sẽ chuyển qua login
 class ConnectWalletDialog extends StatefulWidget {
   final Widget currentScreen;
-  const ConnectWalletDialog({Key? key, required this.currentScreen}) : super(key: key);
+
+  const ConnectWalletDialog({Key? key, required this.currentScreen})
+      : super(key: key);
 
   @override
   State<ConnectWalletDialog> createState() => _ConnectWalletDialogState();
@@ -130,18 +133,17 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const AddWalletFtSeedPharse(),
+                                        builder: (context) => const MainScreen(
+                                          index: 3,
+                                        ),
                                       ),
                                     );
                                   } else if (state is NeedLoginToUse) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => LoginScreen(
-                                          walletCubit: WalletCubit(),
-                                          isFromConnectDialog: true,
-                                          navigationToScreen: widget.currentScreen,
+                                        builder: (context) => const MainScreen(
+                                          index: 2,
                                         ),
                                       ),
                                     );

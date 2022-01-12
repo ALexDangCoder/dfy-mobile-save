@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/widgets/dialog/decorate_app.dart';
 import 'package:Dfy/widgets/dialog/line_spin_fade_loader.dart';
 import 'package:flutter/material.dart';
@@ -49,9 +50,10 @@ class CupertinoLoading extends StatelessWidget {
       height: 80,
       child: DecorateContext(
         decorateData: DecorateData(
-            indicator: Indicator.lineSpinFadeLoader,
-            colors: getListColor(),
-            strokeWidth: 4,),
+          indicator: Indicator.lineSpinFadeLoader,
+          colors: getListColor(),
+          strokeWidth: 4,
+        ),
         child: const AspectRatio(
           aspectRatio: 1,
           child: LineSpinFadeLoader(),
@@ -63,18 +65,20 @@ class CupertinoLoading extends StatelessWidget {
 
 List<Color> getListColor() {
   final colors = <Color>[
-    const Color(0xff0DBFBA),
-    const Color(0xff1BCEB8),
-    const Color(0xff26DBC0),
-    const Color(0xff2EE5C6),
-    const Color(0xff3BEDCB),
-    const Color(0xff57F7D8),
-    const Color(0xff76FFE5),
-    const Color(0xffBBFFF2),
-    const Color(0xffE1FFF9),
     const Color(0xffF3FFFD),
-    const Color(0xff11AEBA),
-    const Color(0xff0FB8BC),
+    const Color(0xffF3FFFD),
+    const Color(0xffF3FFFD),
+    const Color(0xffF3FFFD),
+    const Color(0xffF3FFFD),
+    const Color(0xffF3FFFD),
+    const Color(0xffF3FFFD),
+    const Color(0xffF3FFFD),
+    const Color(0xffF3FFFD),
+    const Color(0xffF3FFFD),
+    const Color(0xffF3FFFD),
+    const Color(0xffF3FFFD),
+    backSearch,
+    bgBottomTab,
   ];
   return colors;
 }

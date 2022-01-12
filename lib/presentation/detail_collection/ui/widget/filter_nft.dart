@@ -166,7 +166,7 @@ class _FilterNFTState extends State<FilterNFT> {
                         child: IsBaseCheckBox(
                           funCheckBox: () => collectionBloc.listFilter.clear(),
                           funText: () => collectionBloc.listFilter.clear(),
-                          title: S.current.on_sale,
+                          title: S.current.on_sell,
                           stream: collectionBloc.isOnSale,
                         ),
                       ),

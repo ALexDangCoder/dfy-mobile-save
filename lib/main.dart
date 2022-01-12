@@ -244,7 +244,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> getNFT() async {
     try {
       final data = {
-        'walletAddress': '0x5D3034094Eb47C3302d5BaE8D8422F34a04E79a5',
+        'walletAddress': '0xaB05Ab79C0F440ad982B1405536aBc8094C80AfB',
       };
       await trustWalletChannel.invokeMethod('getNFT', data);
     } on PlatformException {}

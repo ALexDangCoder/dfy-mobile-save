@@ -5,18 +5,30 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
+import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 
 import '../../../../main.dart';
 import 'component/estimate_gas_fee.dart';
@@ -47,6 +59,7 @@ class Approve extends StatefulWidget {
   final double gasLimitInit;
   final bool? showPopUp;
   final TYPE_CONFIRM_BASE typeApprove;
+  final CreateCollectionCubit? createCollectionCubit;
 
   const Approve({
     Key? key,
@@ -61,7 +74,9 @@ class Approve extends StatefulWidget {
     this.purposeText,
     this.flexTitle,
     this.flexContent,
+    this.showTransitionProcess,
     required this.typeApprove,
+    this.createCollectionCubit,
   }) : super(key: key);
 
   @override
@@ -69,7 +84,7 @@ class Approve extends StatefulWidget {
 }
 
 class _ApproveState extends State<Approve> {
-  ApproveCubit cubit = ApproveCubit();
+  late final ApproveCubit cubit;
   GlobalKey scaffoldKey = GlobalKey();
   double? heightScaffold;
   bool? enableButtonAction;
@@ -79,18 +94,37 @@ class _ApproveState extends State<Approve> {
   double gasLimit = 0;
   late int accountImage;
   double gasFee = 0;
+  int nonce = 0;
+  late final NFTDetailBloc nftDetailBloc;
+
+  void initData(TYPE_CONFIRM_BASE typeBase) {
+    switch (typeBase) {
+      case TYPE_CONFIRM_BASE.BUY_NFT:
+        nftDetailBloc = nftKey.currentState!.bloc;
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    cubit = ApproveCubit();
+    cubit.type = widget.typeApprove;
     accountImage = cubit.randomAvatar();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       heightScaffold = scaffoldKey.currentContext?.size?.height;
     });
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
-    cubit.getListWallets();
+    getNonce();
+    initData(widget.typeApprove);
+  }
+
+  Future<void> getNonce() async {
+    await cubit.getListWallets();
+    nonce = await nftDetailBloc.getNonceWeb3(
+      walletAddress: cubit.addressWallet ?? '',
+    );
   }
 
   /// NamLV used
@@ -118,16 +152,35 @@ class _ApproveState extends State<Approve> {
           });
           break;
         }
+      case TYPE_CONFIRM_BASE.SEND_TOKEN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_OFFER:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        // TODO: Handle this case.
+        break;
     }
   }
+
 
   ///  use base call NamLV
   Future<void> action(double gasLimitFinal, double gasPriceFinal) async {
     switch (widget.typeApprove) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         {
-          break;
+          await cubit.signTransactionWithData(
+            walletAddress: nftDetailBloc.walletAddress,
+            contractAddress: nft_sales_address_dev2,
+            nonce: nonce.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: (cubit.gasPriceSubject.value / 10e8).toStringAsFixed(0),
+            gasLimit: nftDetailBloc.gasLimit,
+            hexString: nftDetailBloc.hexString,
+          );
         }
+        break;
       case TYPE_CONFIRM_BASE.PLACE_BID:
         {
           break;
@@ -135,6 +188,19 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.SEND_NFT:
         {
           break;
+        }
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        {
+          await cubit.signTransactionWithData(
+            walletAddress: cubit.addressWallet ?? '',
+            contractAddress: nft_sales_address_dev2,
+            nonce: (widget.createCollectionCubit?.transactionNonce ?? 0)
+                .toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+            gasLimit: gasLimitFinal.toString(),
+            hexString: widget.createCollectionCubit?.transactionData ?? '',
+          );
         }
       case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
         {
@@ -144,73 +210,14 @@ class _ApproveState extends State<Approve> {
           });
           break;
         }
+        break;
+      case TYPE_CONFIRM_BASE.SEND_TOKEN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_OFFER:
+        // TODO: Handle this case.
+        break;
     }
-  }
-
-  void showLoading() {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        reverseTransitionDuration: Duration.zero,
-        transitionDuration: Duration.zero,
-        pageBuilder: (_, animation, ___) {
-          return Scaffold(
-            backgroundColor: Colors.black.withOpacity(0.4),
-            body: Center(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
-                child: const TransactionSubmit(),
-              ),
-            ),
-          );
-        },
-        opaque: false,
-      ),
-    );
-  }
-
-  void showLoadFail() {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        reverseTransitionDuration: Duration.zero,
-        transitionDuration: Duration.zero,
-        pageBuilder: (_, animation, ___) {
-          return Scaffold(
-            backgroundColor: Colors.black.withOpacity(0.4),
-            body: Center(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
-                child: const TransactionSubmitFail(),
-              ),
-            ),
-          );
-        },
-        opaque: false,
-      ),
-    );
-  }
-
-  void showLoadSuccess() {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        reverseTransitionDuration: Duration.zero,
-        transitionDuration: Duration.zero,
-        pageBuilder: (_, animation, ___) {
-          return Scaffold(
-            backgroundColor: Colors.black.withOpacity(0.4),
-            body: Center(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
-                child: const TransactionSubmitSuccess(),
-              ),
-            ),
-          );
-        },
-        opaque: false,
-      ),
-    );
   }
 
   Future<dynamic> showPopupApprove() async {

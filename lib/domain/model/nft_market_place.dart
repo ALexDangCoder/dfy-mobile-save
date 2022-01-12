@@ -5,6 +5,7 @@ class NftMarket {
   String? nftId;
   String? marketId;
   String? name;
+  String? token;
   String? image;
   double? price;
   String? tokenBuyOut;
@@ -49,6 +50,7 @@ class NftMarket {
   NftMarket.init();
 
   NftMarket({
+    this.token,
     this.nftId,
     this.tokenBuyOut,
     this.name,
