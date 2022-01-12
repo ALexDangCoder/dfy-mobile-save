@@ -69,7 +69,9 @@ class BaseSpace extends StatelessWidget {
         return Stack(
           children: [
             Container(
-              margin: const EdgeInsets.only(bottom: 8),
+              margin: EdgeInsets.only(
+                bottom: 8.h,
+              ),
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Opacity(
@@ -138,8 +140,8 @@ class BaseSpace extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: 6,
-                  right: 6,
+                  bottom: 6.h,
+                  right: 6.w,
                   child: isOwner
                       ? Image.asset(imageVerified)
                       : const SizedBox.shrink(),

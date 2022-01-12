@@ -56,7 +56,7 @@ class _FormSearchBaseState extends State<FormSearchBase> {
           Expanded(
             child: TextFormField(
               controller: widget.textSearch,
-              maxLength: 20,
+              maxLength: 225,
               onChanged: (value) {
                 widget.onChangedFunction!(value);
               },
