@@ -162,8 +162,10 @@ class ApproveCubit extends BaseCubit<ApproveState> {
             break;
           case TYPE_CONFIRM_BASE.CANCEL_SALE:
             if (result['isSuccess']) {
+              String txHash = result['txHash'];
               showContent();
             } else {
+              print('>>>>>>>>>>>>>>>>>loi');
             }
             break;
           default:

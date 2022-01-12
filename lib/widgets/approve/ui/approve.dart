@@ -193,10 +193,12 @@ class _ApproveState extends State<Approve> {
         }
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         {
+          int n = await nftDetailBloc.getNonceWeb3(
+          );
           await cubit.signTransactionWithData(
             walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
             contractAddress: nft_sales_address_dev2,
-            nonce: nonce.toString(),
+            nonce: n.toString(),
             chainId: Get.find<AppConstants>().chaninId,
             gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
             gasLimit: gasLimitFinal.toStringAsFixed(0),

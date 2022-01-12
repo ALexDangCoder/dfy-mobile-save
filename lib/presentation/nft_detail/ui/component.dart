@@ -15,6 +15,7 @@ Widget _nameNFT({
   int quantity = 1,
   String url = '',
   double? price,
+
 }) {
   return Container(
     margin: EdgeInsets.only(
@@ -37,7 +38,9 @@ Widget _nameNFT({
               width: 25.h,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+
+              },
               child: roundButton(
                 image: ImageAssets.ic_flag_svg,
                 whiteBackground: true,

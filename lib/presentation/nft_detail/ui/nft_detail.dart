@@ -26,6 +26,8 @@ import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
@@ -316,11 +318,62 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
             bottomBar: _buildButtonBuyOutOnSale(context,bloc),
             content: [
-              _nameNFT(
-                title: objSale.name ?? '',
-                quantity: objSale.totalCopies ?? 1,
-                url: objSale.image ?? '',
-                price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
+              GestureDetector(
+                onTap: ()async {
+                  var nav = Navigator.of(context);
+                  double gas = await bloc.getGasLimitForCancel(context: context);
+                  if(gas > 0){
+                    nav.push(MaterialPageRoute(builder: (context) => Approve(
+                      listDetail: bloc.initListApprove(),
+                      title: S.current.cancel_sale,
+                      header: Container(
+                        padding: EdgeInsets.only(
+                          top: 16.h,
+                          bottom: 20.h,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          S.current.cancel_sale_info,
+                          style: textNormal(
+                            AppTheme.getInstance().whiteColor(),
+                            16.sp,
+                          ).copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      warning: Row(
+                        children: [
+                          sizedSvgImage(
+                              w: 16.67.w, h: 16.67.h, image: ImageAssets.ic_warning_canel),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Expanded(
+                            child: Text(
+                              S.current.customer_cannot,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: textNormal(
+                                AppTheme.getInstance().currencyDetailTokenColor(),
+                                14.sp,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      textActiveButton: S.current.cancel_sale,
+                      gasLimitInit: double.parse(bloc.gasLimit),
+                      typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
+                    )));
+                  }
+                },
+                child: _nameNFT(
+                  title: objSale.name ?? '',
+                  quantity: objSale.totalCopies ?? 1,
+                  url: objSale.image ?? '',
+                  price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
+                ),
               ),
               _priceContainerOnSale(
                 price: objSale.price ?? 0,
