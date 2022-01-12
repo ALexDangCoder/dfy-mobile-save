@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/data/response/search_market/search_market_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/collection.dart';
 import 'package:Dfy/domain/model/nft_item.dart';
 import 'package:Dfy/domain/model/search_marketplace/list_search_collection_nft_model.dart';
 import 'package:Dfy/domain/model/search_marketplace/search_collection_nft_model.dart';
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
-import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
@@ -89,12 +87,16 @@ class SearchCubit extends BaseCubit<SearchState> {
                   : (element.marketType == 'Sell'
                       ? MarketType.SALE
                       : MarketType.PAWN),
+              pawnId: element.pawnId,
+              typeNFT:
+                  (element.type == 0) ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+              nftId: element.nftId,
             ),
           );
         }
       }
     }
-    if (collectionsSearch.length == 0 && nftsSearch.length == 0) {
+    if (collectionsSearch.isEmpty && nftsSearch.isEmpty) {
       emit(SearchError());
     } else {
       emit(SearchSuccess());
