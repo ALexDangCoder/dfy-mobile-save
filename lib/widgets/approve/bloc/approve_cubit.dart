@@ -21,6 +21,7 @@ enum TYPE_CONFIRM_BASE {
   BUY_NFT,
   SEND_OFFER,
   PLACE_BID,
+  CREATE_COLLECTION,
 }
 
 class ApproveCubit extends BaseCubit<ApproveState> {
@@ -133,7 +134,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
         final result = await sendRawData(rawData ?? '');
-
         switch (type) {
           case TYPE_CONFIRM_BASE.BUY_NFT:
             if (result['isSuccess']) {
@@ -141,6 +141,13 @@ class ApproveCubit extends BaseCubit<ApproveState> {
               emit(BuySuccess(result['txHash']));
             } else {
               emit(BuyFail());
+            }
+            break;
+          case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+            if (result['isSuccess']) {
+              showContent();
+            } else {
+
             }
             break;
           default:

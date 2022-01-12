@@ -255,7 +255,7 @@ class _BuyNFTState extends State<BuyNFT> {
     return StreamBuilder<int>(
         stream: cubit.amountStream,
         builder: (context, snapshot) {
-          final total = nftMarket.price.toInt() * (snapshot.data ?? 1);
+          final total = (nftMarket.price ?? 0) * (snapshot.data ?? 1);
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

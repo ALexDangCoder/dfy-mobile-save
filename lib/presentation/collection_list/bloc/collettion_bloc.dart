@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
-import 'package:Dfy/domain/model/market_place/collection_model.dart';
+import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
@@ -19,6 +19,7 @@ import '../../../main.dart';
 class CollectionBloc extends BaseCubit<CollectionState> {
   CollectionBloc() : super(CollectionState()) {
     getListCategory();
+
   }
 
   static const int HIGHEST_TRADING_VOLUME = 0;
@@ -31,7 +32,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   static const int ITEM_FROM_LOW_TO_HIGH = 7;
 
   //getlistcollection
-  BehaviorSubject<List<CollectionModel>> list = BehaviorSubject();
+  BehaviorSubject<List<CollectionMarketModel>> list = BehaviorSubject();
 
   BehaviorSubject<bool> isHighestTradingVolume = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isLowestTradingVolume = BehaviorSubject.seeded(false);
@@ -70,7 +71,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   List<bool> isListCategory = [false, false, false, false];
 
   MarketPlaceRepository get _marketPlaceRepository => Get.find();
-  List<CollectionModel> arg = [];
+  List<CollectionMarketModel> arg = [];
 
   List<String> listAcc = [
     S.current.all,
@@ -89,7 +90,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     );
   }
 
-  int sortFilter = -1;
+  int? sortFilter;
 
   void funChooseFilter(int index) {
     for (int i = 0; i < 8; i++) {
@@ -160,7 +161,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   ];
 
   void reset() {
-    sortFilter = -1;
+    sortFilter = null;
     listCheckBoxFilterStream.add([
       false,
       false,
@@ -246,6 +247,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     listCategoryStream.add(listCategory);
   }
 
+
   Future<void> getListCollection({
     String? name = '',
     int? sortFilter = 0,
@@ -255,8 +257,8 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     if (nextPage == 1) {
       nextPage = 2;
     }
-    final Result<List<CollectionModel>> result =
-        await _marketPlaceRepository.getListCollection(
+    final Result<List<CollectionMarketModel>> result =
+    await _marketPlaceRepository.getListCollectionMarket(
       name: name,
       sort: sortFilter,
       size: size,
@@ -265,7 +267,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     );
     result.when(
       success: (res) {
-        final List<CollectionModel> currentList = list.valueOrNull ?? [];
+        final List<CollectionMarketModel> currentList = list.valueOrNull ?? [];
         if (res.isNotEmpty) {
           list.sink.add([...currentList, ...res]);
         } else {
@@ -279,6 +281,11 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     );
   }
 
+
+
+
+
+
   Future<void> getCollection({
     String? name = '',
     int? sortFilter = 0,
@@ -290,13 +297,12 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     nextPage = 1;
     isCanLoadMore.add(isLoad);
     emit(LoadingData());
-    final Result<List<CollectionModel>> result =
-        await _marketPlaceRepository.getListCollection(
+    final Result<List<CollectionMarketModel>> result =
+        await _marketPlaceRepository.getListCollectionMarket(
       name: name,
       sort: sortFilter,
       size: size,
       page: page,
-      address: address,
     );
     result.when(
       success: (res) {

@@ -75,7 +75,7 @@ class ListActivity extends StatelessWidget {
       typeActivity: typeActivity,
       urlSymbol: urlSymbol,
       urlAvatar: urlAvatar,
-      priceSymbol: price,
+      priceSymbol: priceSymbol,
       title: title,
       addressWallet: myAddress,
       addressWalletSend: myAddressTo,

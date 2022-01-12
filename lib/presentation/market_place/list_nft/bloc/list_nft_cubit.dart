@@ -99,7 +99,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-  int page = 0;
+  int page = 1;
   bool loadMore  = false;
   bool canLoadMoreListNft = true;
   bool refresh = false;
@@ -117,7 +117,8 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
   void refreshPosts() {
-    page = 0;
+    canLoadMoreListNft = true;
+    page = 1;
     if(!refresh){
       refresh = true;
       getListNft(

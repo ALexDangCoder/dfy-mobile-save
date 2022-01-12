@@ -9,6 +9,7 @@ class OutstandingCollection {
   int? totalNft;
   int? nftOwnerCount;
   int? collectionType;
+  String? collectionAddress;
 
   OutstandingCollection({
     this.id,
@@ -21,5 +22,6 @@ class OutstandingCollection {
     this.totalNft,
     this.nftOwnerCount,
     this.collectionType,
+    this.collectionAddress,
   });
 }

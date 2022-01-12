@@ -7,6 +7,7 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -53,6 +54,7 @@ class Approve extends StatefulWidget {
   final bool? showTransitionProcess;
   final bool? showPopUp;
   final TYPE_CONFIRM_BASE typeApprove;
+  final CreateCollectionCubit? createCollectionCubit;
 
   const Approve({
     Key? key,
@@ -69,6 +71,7 @@ class Approve extends StatefulWidget {
     this.flexContent,
     this.showTransitionProcess,
     required this.typeApprove,
+    this.createCollectionCubit,
   }) : super(key: key);
 
   @override
@@ -87,28 +90,30 @@ class _ApproveState extends State<Approve> {
   late int accountImage;
   double gasFee = 0;
   int nonce = 0;
-  final NFTDetailBloc nftDetailBloc = nftKey.currentState!.bloc;
+  final NFTDetailBloc nftDetailBloc =
+      nftKey.currentState!.bloc;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     cubit = ApproveCubit();
-    cubit.nftMarket = nftDetailBloc.nftMarket;
+    //cubit.nftMarket = nftDetailBloc.nftMarket;
     cubit.type = widget.typeApprove;
     accountImage = cubit.randomAvatar();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       heightScaffold = scaffoldKey.currentContext?.size?.height;
     });
-    getNonce();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
-    cubit.getListWallets();
+    getNonce();
   }
 
   Future<void> getNonce() async {
+    await cubit.getListWallets();
     nonce = await nftDetailBloc.getNonceWeb3(
-        walletAddress: nftDetailBloc.wallets.first.address ?? '');
+      walletAddress: cubit.addressWallet ?? '',
+    );
   }
 
   /// NamLV used
@@ -126,6 +131,15 @@ class _ApproveState extends State<Approve> {
         {
           break;
         }
+      case TYPE_CONFIRM_BASE.SEND_TOKEN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_OFFER:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        // TODO: Handle this case.
+        break;
     }
   }
 
@@ -164,6 +178,26 @@ class _ApproveState extends State<Approve> {
         {
           break;
         }
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        {
+          await cubit.signTransactionWithData(
+            walletAddress: cubit.addressWallet ?? '',
+            contractAddress: nft_sales_address_dev2,
+            nonce: (widget.createCollectionCubit?.transactionNonce ?? 0)
+                .toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+            gasLimit: gasLimitFinal.toString(),
+            hexString: widget.createCollectionCubit?.transactionData ?? '',
+          );
+        }
+        break;
+      case TYPE_CONFIRM_BASE.SEND_TOKEN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_OFFER:
+        // TODO: Handle this case.
+        break;
     }
   }
 

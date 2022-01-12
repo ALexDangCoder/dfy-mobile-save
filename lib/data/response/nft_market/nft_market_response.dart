@@ -34,6 +34,12 @@ class NftMarketResponse extends Equatable {
   int? totalCopy;
   @JsonKey(name: 'file_type')
   String? fileType;
+  @JsonKey(name: 'collection_address')
+  String? collectionAddress;
+  @JsonKey(name: 'pawn_id')
+  int? pawnId;
+
+
 
   NftMarketResponse(
     this.id,
@@ -103,5 +109,7 @@ class NftMarketResponse extends Equatable {
         endTime: endTime,
         startTime: startTime,
         numberOfCopies: numberOfCopy,
+    collectionAddress: collectionAddress,
+    pawnId: pawnId,
       );
 }
