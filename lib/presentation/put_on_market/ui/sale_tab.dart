@@ -159,6 +159,7 @@ class _SaleTabState extends State<SaleTab>
                       context,
                       MaterialPageRoute(
                         builder: (context) => Approve(
+                          isShowTwoButton: true,
                           showPopUp: true,
                           warning: RichText(
                             text: TextSpan(
@@ -195,7 +196,7 @@ class _SaleTabState extends State<SaleTab>
                           title: S.current.put_on_sale,
                           listDetail: [
                             DetailItemApproveModel(
-                              title: '${S.current.sale_items} :',
+                              title: '${S.current.sell_items} :',
                               value:
                                   '${widget.cubit.quantitySale} of ${widget.quantity ?? 1}',
                             ),
@@ -207,7 +208,7 @@ class _SaleTabState extends State<SaleTab>
                             )
                           ],
                           textActiveButton: S.current.put_on_sale,
-                          typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
+                          typeApprove: TYPE_CONFIRM_BASE.PUT_ON_MARKET,
                           gasLimitInit: 100,
                         ),
                       ),

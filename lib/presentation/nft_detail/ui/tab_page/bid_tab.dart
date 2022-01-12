@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/text_helper.dart';
@@ -55,7 +56,7 @@ class BidTab extends StatelessWidget {
                 ),
                 spaceH7,
                 Text(
-                  DateFormat('HH:mm - dd/MM/yyyy').format(
+                  formatDateTime.format(
                     DateTime.fromMillisecondsSinceEpoch(
                       biddingNft.time ?? 0,
                     ),

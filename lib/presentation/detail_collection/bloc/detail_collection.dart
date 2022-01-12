@@ -145,7 +145,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String funGetMarket(int marketStatus) {
     String market = '';
     if (marketStatus == SALE) {
-      market = S.current.sale;
+      market = S.current.sell;
     } else if (marketStatus == AUCTION) {
       market = S.current.auction;
     } else if (marketStatus == PAWN) {
