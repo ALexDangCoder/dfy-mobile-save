@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/market_place/category_model.dart';
+import 'package:Dfy/domain/model/market_place/fillterCollectionModel.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
@@ -217,12 +217,16 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                                 child: IsBaseCheckBox(
                                   title: S.current.hard_nft,
                                   stream: collectionBloc.isHardNft,
+                                  funText: () {},
+                                  funCheckBox: () {},
                                 ),
                               ),
                               Expanded(
                                 child: IsBaseCheckBox(
                                   title: S.current.soft_nft,
                                   stream: collectionBloc.isSoftNft,
+                                  funText: () {},
+                                  funCheckBox: () {},
                                 ),
                               ),
                             ],
@@ -253,9 +257,10 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                       ),
                       height: 210.h,
                       width: double.infinity,
-                      child: StreamBuilder<List<Category>>(
+                      child: StreamBuilder<List<FilterCollectionModel>>(
                         stream: widget.collectionBloc.listCategoryStream,
                         builder: (context, snapshot) {
+                          final list = snapshot.data ?? [];
                           return ListView.builder(
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
@@ -265,12 +270,11 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                                 : snapshot.data?.length,
                             itemBuilder: (context, index) {
                               return InkWell(
+                                onTap: () {
+                                  collectionBloc.funCheckCategory(index);
+                                },
                                 child: ItemCategoryFilter(
-                                  title: snapshot.data?[index].name ?? '',
-                                  urlImage:
-                                      snapshot.data?[index].avatarCid ?? '',
-                                  collectionBloc: collectionBloc,
-                                  index: index,
+                                  filterModel: list[index],
                                 ),
                               );
                             },
