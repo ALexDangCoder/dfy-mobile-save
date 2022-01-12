@@ -144,7 +144,6 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
         {
           showLoading();
-
           Timer(Duration(seconds: 2), () {
             Navigator.pop(context);
             Navigator.pop(context, true);
@@ -191,12 +190,12 @@ class _ApproveState extends State<Approve> {
         {
           await cubit.signTransactionWithData(
             walletAddress: cubit.addressWallet ?? '',
-            contractAddress: nft_sales_address_dev2,
+            contractAddress: nft_factory_dev2,
             nonce: (widget.createCollectionCubit?.transactionNonce ?? 0)
                 .toString(),
             chainId: Get.find<AppConstants>().chaninId,
             gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toString(),
+            gasLimit: gasLimitFinal.toStringAsFixed(0),
             hexString: widget.createCollectionCubit?.transactionData ?? '',
           );
         }

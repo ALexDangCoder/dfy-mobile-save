@@ -658,9 +658,9 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   }
 
   ///Create Collection
-  Future<void> createCollection() async {
+  Map<String, dynamic> getMapCreateCollection() {
     final String standard = collectionType == 0 ? 'ERC-721' : 'ERC-1155';
-    final Map<String, dynamic> sortParam = {
+    return {
       'avatar_cid': cidMap['avatar_cid'],
       'category_id': categoryId,
       'collection_standard': standard,
@@ -670,7 +670,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
       'feature_cid': cidMap['feature_cid'],
       'name': collectionName,
       'royalty': royalties,
-      'social_links': socialLinkMap,
+      'social_links': socialLinkMap.toString(),
       'txn_hash': 'txnHash',
     };
   }
@@ -697,6 +697,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   Future<void> getListWallets() async {
     try {
       await trustWalletChannel.invokeMethod('getListWallets', {});
-    } on PlatformException {}
+    } on PlatformException {
+    }
   }
 }

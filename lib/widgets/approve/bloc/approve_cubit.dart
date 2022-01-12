@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:math' hide log;
+import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
@@ -37,6 +38,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   String? addressWallet;
   double? balanceWallet;
   String? rawData;
+  late Map<String, dynamic> param;
   final Web3Utils web3Client = Web3Utils();
   final BehaviorSubject<String> _addressWalletCoreSubject =
       BehaviorSubject<String>();
@@ -150,10 +152,11 @@ class ApproveCubit extends BaseCubit<ApproveState> {
             break;
           case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
             if (result['isSuccess']) {
+              final rawData = await web3Client.sendRawTransaction(
+                transaction: result['signedTransaction'],
+              );
               showContent();
-            } else {
-
-            }
+            } else {}
             break;
           default:
             break;
@@ -198,7 +201,10 @@ class ApproveCubit extends BaseCubit<ApproveState> {
         'withData': hexString,
       };
       await trustWalletChannel.invokeMethod('signTransactionWithData', data);
-    } on PlatformException {}
+    } on PlatformException {
+      showContent();
+    }
+    log('>>>>>>>>>>>>>>>>>>>>>>>> END <<<<<<<<<<<<<<<<<<');
   }
 
   Future<void> getListWallets() async {
