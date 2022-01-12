@@ -42,7 +42,7 @@ class CollectionList extends StatefulWidget {
 class _CollectionListState extends State<CollectionList> {
   late final CollectionBloc collectionBloc;
   late final TextEditingController searchCollection;
-  bool isMyAcc = false;
+  bool isMyAcc = true;
 
   final ScrollController _listCollectionController = ScrollController();
   bool loading = true;

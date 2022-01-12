@@ -215,21 +215,6 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                             children: [
                               Expanded(
                                 child: IsBaseCheckBox(
-                                  funText: collectionBloc.allCollection,
-                                  funCheckBox: collectionBloc.allCollection,
-                                  title: S.current.all,
-                                  stream: collectionBloc.isAll,
-                                ),
-                              ),
-                              const Expanded(
-                                child: SizedBox.shrink(),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: IsBaseCheckBox(
                                   title: S.current.hard_nft,
                                   stream: collectionBloc.isHardNft,
                                 ),
@@ -261,32 +246,6 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                       hint: S.current.name_of_collection,
                       textSearchStream: collectionBloc.textSearchCategory,
                       textSearch: searchFilter,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(
-                        left: 6.w,
-                        right: 16.w,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: IsBaseCheckBox(
-                                  funCheckBox: collectionBloc.allCategoryMyAcc,
-                                  funText: collectionBloc.allCategoryMyAcc,
-                                  title: S.current.all_category,
-                                  stream: collectionBloc.isAllCategoryMyAcc,
-                                ),
-                              ),
-                              const Expanded(
-                                child: SizedBox.shrink(),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
                     ),
                     Container(
                       margin: EdgeInsets.only(
