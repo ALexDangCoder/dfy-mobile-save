@@ -74,7 +74,6 @@ class Approve extends StatefulWidget {
     this.purposeText,
     this.flexTitle,
     this.flexContent,
-    this.showTransitionProcess,
     required this.typeApprove,
     this.createCollectionCubit,
   }) : super(key: key);
@@ -164,7 +163,6 @@ class _ApproveState extends State<Approve> {
     }
   }
 
-
   ///  use base call NamLV
   Future<void> action(double gasLimitFinal, double gasPriceFinal) async {
     switch (widget.typeApprove) {
@@ -202,6 +200,7 @@ class _ApproveState extends State<Approve> {
             hexString: widget.createCollectionCubit?.transactionData ?? '',
           );
         }
+        break;
       case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
         {
           await showPopupApprove();
@@ -218,6 +217,72 @@ class _ApproveState extends State<Approve> {
         // TODO: Handle this case.
         break;
     }
+  }
+
+  void showLoading() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        reverseTransitionDuration: Duration.zero,
+        transitionDuration: Duration.zero,
+        pageBuilder: (_, animation, ___) {
+          return Scaffold(
+            backgroundColor: Colors.black.withOpacity(0.4),
+            body: Center(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                child: const TransactionSubmit(),
+              ),
+            ),
+          );
+        },
+        opaque: false,
+      ),
+    );
+  }
+
+  void showLoadFail() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        reverseTransitionDuration: Duration.zero,
+        transitionDuration: Duration.zero,
+        pageBuilder: (_, animation, ___) {
+          return Scaffold(
+            backgroundColor: Colors.black.withOpacity(0.4),
+            body: Center(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                child: const TransactionSubmitFail(),
+              ),
+            ),
+          );
+        },
+        opaque: false,
+      ),
+    );
+  }
+
+  void showLoadSuccess() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        reverseTransitionDuration: Duration.zero,
+        transitionDuration: Duration.zero,
+        pageBuilder: (_, animation, ___) {
+          return Scaffold(
+            backgroundColor: Colors.black.withOpacity(0.4),
+            body: Center(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                child: const TransactionSubmitSuccess(),
+              ),
+            ),
+          );
+        },
+        opaque: false,
+      ),
+    );
   }
 
   Future<dynamic> showPopupApprove() async {
@@ -256,218 +321,260 @@ class _ApproveState extends State<Approve> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      resizeToAvoidBottomInset: true,
-      body: StateStreamLayout(
-        stream: cubit.stateStream,
-        error: AppException('', S.current.something_went_wrong),
-        retry: () async {
-          await cubit.getListWallets();
-        },
-        textEmpty: '',
-        child: GestureDetector(
-          onTap: () {
-            final FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 48),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().bgBtsColor(),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
+    return BlocListener(
+      bloc: cubit,
+      listener: (context, state) {
+        if (state is BuySuccess) {
+          cubit.buyNftRequest(
+            BuyNftRequest(
+              nftDetailBloc.nftMarketId,
+              1,
+              state.txh,
+            ),
+          );
+          cubit.emitJsonNftToWalletCore(
+            contract: cubit.nftMarket.collectionAddress ?? '',
+            id: int.parse(cubit.nftMarket.nftTokenId ?? ''),
+            address: nftDetailBloc.walletAddress,
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BaseSuccess(
+                title: S.current.buy_nft,
+                content: S.current.congratulation,
+                callback: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(
+                        index: 1,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
-            child: Column(
-              children: [
-                header(),
-                Divider(
-                  thickness: 1,
-                  color: AppTheme.getInstance().divideColor(),
+          );
+        }
+        if (state is BuyFail) {
+          Fluttertoast.showToast(msg: 'Fail');
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: true,
+        body: StateStreamLayout(
+          stream: cubit.stateStream,
+          error: AppException('', S.current.something_went_wrong),
+          retry: () async {
+            await cubit.getListWallets();
+          },
+          textEmpty: '',
+          child: GestureDetector(
+            onTap: () {
+              final FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            child: Container(
+              margin: const EdgeInsets.only(top: 48),
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().bgBtsColor(),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
-                Expanded(
-                  child: Container(
-                    height: heightScaffold,
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          widget.header ?? const SizedBox(height: 0),
-                          ...(widget.listDetail ?? []).map(
-                            (item) => Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: widget.flexTitle ?? 4,
-                                      child: Text(
-                                        item.title,
-                                        style: textNormal(
-                                          AppTheme.getInstance()
-                                              .whiteColor()
-                                              .withOpacity(0.7),
-                                          14,
+              ),
+              child: Column(
+                children: [
+                  header(),
+                  Divider(
+                    thickness: 1,
+                    color: AppTheme.getInstance().divideColor(),
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: heightScaffold,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            widget.header ?? const SizedBox(height: 0),
+                            ...(widget.listDetail ?? []).map(
+                              (item) => Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        flex: widget.flexTitle ?? 4,
+                                        child: Text(
+                                          item.title,
+                                          style: textNormal(
+                                            AppTheme.getInstance()
+                                                .whiteColor()
+                                                .withOpacity(0.7),
+                                            14,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      flex: widget.flexContent ?? 6,
-                                      child: Text(
-                                        item.value,
-                                        style: item.isToken ?? false
-                                            ? textNormalCustom(
-                                                AppTheme.getInstance()
-                                                    .fillColor(),
-                                                20,
-                                                FontWeight.w600,
-                                              )
-                                            : textNormal(
-                                                AppTheme.getInstance()
-                                                    .whiteColor(),
-                                                16,
-                                              ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(height: 16)
-                              ],
+                                      Expanded(
+                                        flex: widget.flexContent ?? 6,
+                                        child: Text(
+                                          item.value,
+                                          style: item.isToken ?? false
+                                              ? textNormalCustom(
+                                                  AppTheme.getInstance()
+                                                      .fillColor(),
+                                                  20,
+                                                  FontWeight.w600,
+                                                )
+                                              : textNormal(
+                                                  AppTheme.getInstance()
+                                                      .whiteColor(),
+                                                  16,
+                                                ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16)
+                                ],
+                              ),
                             ),
-                          ),
-                          if (widget.warning != null)
-                            Column(
-                              children: [
-                                const SizedBox(height: 4),
-                                widget.warning ?? const SizedBox(height: 0),
-                                const SizedBox(height: 20),
-                              ],
-                            )
-                          else
-                            const SizedBox(height: 4),
-                          Divider(
-                            thickness: 1,
-                            color: AppTheme.getInstance().divideColor(),
-                          ),
-                          const SizedBox(height: 16),
-                          walletView(),
-                          const SizedBox(height: 16),
-                          EstimateGasFee(
-                            stateChange: (gasFee) {
-                              WidgetsBinding.instance
-                                  ?.addPostFrameCallback((timeStamp) {
-                                setState(() {
-                                  if (cubit.balanceWallet != null) {
-                                    isCanAction =
-                                        gasFee <= (cubit.balanceWallet ?? 0);
-                                  }
+                            if (widget.warning != null)
+                              Column(
+                                children: [
+                                  const SizedBox(height: 4),
+                                  widget.warning ?? const SizedBox(height: 0),
+                                  const SizedBox(height: 20),
+                                ],
+                              )
+                            else
+                              const SizedBox(height: 4),
+                            Divider(
+                              thickness: 1,
+                              color: AppTheme.getInstance().divideColor(),
+                            ),
+                            const SizedBox(height: 16),
+                            walletView(),
+                            const SizedBox(height: 16),
+                            EstimateGasFee(
+                              stateChange: (gasFee) {
+                                WidgetsBinding.instance
+                                    ?.addPostFrameCallback((timeStamp) {
+                                  setState(() {
+                                    if (cubit.balanceWallet != null) {
+                                      isCanAction =
+                                          gasFee <= (cubit.balanceWallet ?? 0);
+                                    }
+                                  });
+                                  this.gasFee = gasFee;
                                 });
-                                this.gasFee = gasFee;
-                              });
-                            },
-                            cubit: cubit,
-                            gasLimitStart: widget.gasLimitInit,
-                          ),
-                        ],
+                              },
+                              cubit: cubit,
+                              gasLimitStart: widget.gasLimitInit,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: AppTheme.getInstance().bgBtsColor(),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                SizedBox(width: 16.w),
-                if (widget.isShowTwoButton ?? false)
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            child: ButtonGold(
-                              haveGradient: !isApproved,
-                              background:
-                                  isApproved ? fillApprovedButton : null,
-                              textColor: isApproved
-                                  ? borderApprovedButton
-                                  : isCanAction
-                                      ? null
-                                      : disableText,
-                              border: isApproved
-                                  ? Border.all(
-                                      color: borderApprovedButton,
-                                      width: 2,
-                                    )
-                                  : null,
-                              title: S.current.approve,
-                              isEnable: isCanAction,
-                              fixSize: false,
-                              haveMargin: false,
-                            ),
-                            onTap: () async {
-                              if (isCanAction && !isApproved) {
-                                final result = await showPopupApprove();
-                                if (result ?? false) {
-                                  setState(() {
-                                    isApproved = result;
-                                  });
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: AppTheme.getInstance().bgBtsColor(),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: 16.w),
+                  if (widget.isShowTwoButton ?? false)
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              child: ButtonGold(
+                                haveGradient: !isApproved,
+                                background:
+                                    isApproved ? fillApprovedButton : null,
+                                textColor: isApproved
+                                    ? borderApprovedButton
+                                    : isCanAction
+                                        ? null
+                                        : disableText,
+                                border: isApproved
+                                    ? Border.all(
+                                        color: borderApprovedButton,
+                                        width: 2,
+                                      )
+                                    : null,
+                                title: S.current.approve,
+                                isEnable: isCanAction,
+                                fixSize: false,
+                                haveMargin: false,
+                              ),
+                              onTap: () async {
+                                if (isCanAction && !isApproved) {
+                                  final result = await showPopupApprove();
+                                  if (result ?? false) {
+                                    setState(() {
+                                      isApproved = result;
+                                    });
+                                  }
                                 }
-                              }
-                            },
+                              },
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 25),
-                      ],
+                          const SizedBox(width: 25),
+                        ],
+                      ),
+                    )
+                  else
+                    const SizedBox(height: 0),
+                  Expanded(
+                    child: GestureDetector(
+                      child: ButtonGold(
+                        textColor:
+                            isApproved || !(widget.isShowTwoButton ?? false)
+                                ? null
+                                : disableText,
+                        fixSize: false,
+                        haveMargin: false,
+                        title: widget.textActiveButton,
+                        isEnable: (isApproved ||
+                                !(widget.isShowTwoButton ?? false)) &&
+                            isCanAction,
+                      ),
+                      onTap: () {
+                        if ((isApproved ||
+                                !(widget.isShowTwoButton ?? false)) &&
+                            isCanAction) {
+                          action(
+                            cubit.gasLimit ?? widget.gasLimitInit,
+                            cubit.gasPriceSubject.valueOrNull ?? 0,
+                          );
+                        }
+                      },
                     ),
-                  )
-                else
-                  const SizedBox(height: 0),
-                Expanded(
-                  child: GestureDetector(
-                    child: ButtonGold(
-                      textColor:
-                          isApproved || !(widget.isShowTwoButton ?? false)
-                              ? null
-                              : disableText,
-                      fixSize: false,
-                      haveMargin: false,
-                      title: widget.textActiveButton,
-                      isEnable:
-                          (isApproved || !(widget.isShowTwoButton ?? false)) &&
-                              isCanAction,
-                    ),
-                    onTap: () {
-                      if ((isApproved || !(widget.isShowTwoButton ?? false)) &&
-                          isCanAction) {
-                        action(
-                          cubit.gasLimit ?? widget.gasLimitInit,
-                          cubit.gasPriceSubject.valueOrNull ?? 0,
-                        );
-                      }
-                    },
                   ),
-                ),
-                SizedBox(width: 16.w),
-              ],
-            ),
-            const SizedBox(height: 38)
-          ],
+                  SizedBox(width: 16.w),
+                ],
+              ),
+              const SizedBox(height: 38)
+            ],
+          ),
         ),
       ),
     );
