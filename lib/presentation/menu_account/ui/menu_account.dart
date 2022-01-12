@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
@@ -16,11 +17,27 @@ class MenuAccount extends StatefulWidget {
 }
 
 class _MenuAccountState extends State<MenuAccount> {
+
+  void pushRoute (String routeName, BuildContext context){
+    switch (routeName){
+      case 'put_on_market': {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PutOnMarket(),
+          ),
+        );
+        break;
+      }
+    }
+  }
+
   final initData = [
     {
       'icon': ImageAssets.ic_profile,
       'title': S.current.put_on_sale,
-      'children': []
+      'children': [],
+      'routeName': 'put_on_market'
     },
     {
       'icon': ImageAssets.ic_profile,
@@ -75,6 +92,7 @@ class _MenuAccountState extends State<MenuAccount> {
 
   int tabOpen = -1;
 
+  //todo
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
@@ -98,11 +116,12 @@ class _MenuAccountState extends State<MenuAccount> {
             const SizedBox(height: 0),
             // list item menu
             ...initData.indexedMap((e, index) {
-              return ClipRRect(
+              if (e.arrayValueOrEmpty('children').isNotEmpty) {
+                return ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Theme(
+                child:  Theme(
                   data: theme,
-                  child: ExpansionTile(
+                  child:  ExpansionTile(
                     onExpansionChanged: (value){
                       tabOpen = index;
                     },
@@ -141,6 +160,13 @@ class _MenuAccountState extends State<MenuAccount> {
                   ),
                 ),
               );
+              } else {
+
+                return ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container (),
+              ) ;
+              }
             }).toList()
           ],
         ),
