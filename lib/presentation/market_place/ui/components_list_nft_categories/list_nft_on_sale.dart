@@ -38,7 +38,7 @@ class ListNftOnSale extends StatelessWidget {
                     ? S.current.loading_text
                     : (isLoadFail
                         ? S.current.error_text
-                        : S.current.sale_items),
+                        : S.current.sell_items),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,

@@ -10,7 +10,6 @@ import 'package:Dfy/domain/repository/market_place/collection_detail_repository.
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -145,7 +144,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String funGetMarket(int marketStatus) {
     String market = '';
     if (marketStatus == SALE) {
-      market = S.current.sale;
+      market = S.current.sell;
     } else if (marketStatus == AUCTION) {
       market = S.current.auction;
     } else if (marketStatus == PAWN) {
@@ -164,40 +163,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       typeNft = S.current.erc_1155;
     }
     return typeNft;
-  }
-
-  String funCheckAddressSend({
-    required String addressMyWallet,
-    required String addressWallet,
-  }) {
-    String myAddressSend = '';
-    if (addressMyWallet == addressWallet) {
-      myAddressSend = S.current.activity_you;
-    } else {
-      if (addressWallet.length < 12) {
-        myAddressSend = addressWallet;
-      } else {
-        myAddressSend = addressWallet.formatAddressActivityFire();
-      }
-    }
-    return myAddressSend;
-  }
-
-  String funCheckAddressTo({
-    required String addressMyWallet,
-    required String addressWalletSend,
-  }) {
-    String myAddressTo = '';
-    if (addressMyWallet == addressWalletSend) {
-      myAddressTo = S.current.activity_you;
-    } else {
-      if (addressWalletSend.length < 12) {
-        myAddressTo = addressWalletSend;
-      } else {
-        myAddressTo = addressWalletSend.formatAddressActivityFire();
-      }
-    }
-    return myAddressTo;
   }
 
   String funCheckCopy({
@@ -219,7 +184,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     String each = '';
     if (nftType == TYPE721) {
       each = '';
-    } else  {
+    } else {
       each = S.current.activity_each;
     }
     return each;
@@ -435,8 +400,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       },
     );
   }
-
-
 
   void funGetUrl(List<SocialLinkModel> link) {
     for (final SocialLinkModel value in link) {

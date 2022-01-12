@@ -40,13 +40,13 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   Sink<bool> get viewSink => _viewSubject.sink;
 
   final BehaviorSubject<List<HistoryNFT>> listHistoryStream =
-  BehaviorSubject.seeded([]);
+      BehaviorSubject.seeded([]);
   final BehaviorSubject<List<OwnerNft>> listOwnerStream =
-  BehaviorSubject.seeded([]);
+      BehaviorSubject.seeded([]);
   final BehaviorSubject<List<BiddingNft>> listBiddingStream =
       BehaviorSubject.seeded([]);
   final BehaviorSubject<List<OfferDetail>> listOfferStream =
-  BehaviorSubject.seeded([]);
+      BehaviorSubject.seeded([]);
 
   String symbolToken = '';
 
@@ -81,7 +81,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   Future<void> getHistory(String collectionAddress, String nftTokenId) async {
     final Result<List<HistoryNFT>> result =
-    await _nftRepo.getHistory(collectionAddress, nftTokenId);
+        await _nftRepo.getHistory(collectionAddress, nftTokenId);
     result.when(
       success: (res) {
         listHistoryStream.add(res);
@@ -95,7 +95,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   ///GetOwner
   Future<void> getOwner(String collectionAddress, String nftTokenId) async {
     final Result<List<OwnerNft>> result =
-    await _nftRepo.getOwner(collectionAddress, nftTokenId);
+        await _nftRepo.getOwner(collectionAddress, nftTokenId);
     result.when(
       success: (res) {
         listOwnerStream.add(res);
@@ -123,7 +123,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   ///GetOffer
   Future<void> getOffer(String collateralId) async {
     final Result<List<OfferDetail>> result =
-    await _nftRepo.getOffer(collateralId);
+        await _nftRepo.getOffer(collateralId);
     result.when(
       success: (res) {
         listOfferStream.add(res);
@@ -210,7 +210,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     if (type == MarketType.PAWN) {
       showLoading();
       final Result<NftOnPawn> result =
-      await _nftRepo.getDetailNftOnPawn(pawnId.toString());
+          await _nftRepo.getDetailNftOnPawn(pawnId.toString());
       result.when(
         success: (res) {
           for (final value in listTokenSupport) {
@@ -222,10 +222,14 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             }
           }
           emit(NftOnPawnSuccess(res));
-          getHistory(res.nftCollateralDetailDTO?.collectionAddress ?? '',
-              res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '');
-          getOwner(res.nftCollateralDetailDTO?.collectionAddress ?? '',
-              res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '');
+          getHistory(
+            res.nftCollateralDetailDTO?.collectionAddress ?? '',
+            res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '',
+          );
+          getOwner(
+            res.nftCollateralDetailDTO?.collectionAddress ?? '',
+            res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '',
+          );
           getOffer(pawnId.toString());
           showContent();
         },
@@ -285,12 +289,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   int getTimeCountDown(NFTOnAuction nftOnAuction) {
     final endDate =
-    DateTime.fromMillisecondsSinceEpoch(nftOnAuction.endTime ?? 0);
-    final today = DateTime
-        .now()
-        .millisecondsSinceEpoch;
+        DateTime.fromMillisecondsSinceEpoch(nftOnAuction.endTime ?? 0);
+    final today = DateTime.now().millisecondsSinceEpoch;
     if (endDate.millisecondsSinceEpoch > today) {
-      return endDate.microsecondsSinceEpoch - today;
+      return endDate.millisecondsSinceEpoch - today;
     } else {
       return 0;
     }

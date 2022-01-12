@@ -6,6 +6,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 
 import 'base_activity.dart';
+import 'base_text_bsc.dart';
 
 class Like extends StatelessWidget {
   final String urlAvatar;
@@ -40,25 +41,8 @@ class Like extends StatelessWidget {
               14,
               FontWeight.w400,
             ),
-            children: <TextSpan>[
-              TextSpan(
-                text: content == S.current.activity_you
-                    ? S.current.activity_you
-                    : content,
-                style: content == S.current.activity_you
-                    ? textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      )
-                    : textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      ).copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-              ),
+            children: [
+              baseTextBSC(content),
             ],
           ),
         ),

@@ -109,24 +109,24 @@ class DetailOnPawnResponse {
   List<Object?> get props => [];
 
   NftOnPawn toOnPawn() => NftOnPawn(
-    id: id,
-    userId: userId,
-    description: description,
-    status: status,
-    durationType: durationType,
-    durationQuantity: durationQuantity,
-    bcCollateralId: bcCollateralId,
-    numberOfferReceived: numberOfferReceived,
-    latestBlockChainTxn: latestBlockChainTxn,
-    estimatePrice: estimatePrice,
-    expectedLoanAmount: expectedLoanAmount,
-    expectedCollateralSymbol: expectedCollateralSymbol,
-    reputation: reputation,
-    walletAddress: walletAddress,
-    completeContracts: completeContracts,
-    isActive: isActive,
-    nftCollateralDetailDTO: nftCollateralDetailDTO!.toDomain(),
-  );
+        id: id,
+        userId: userId,
+        description: description,
+        status: status,
+        durationType: durationType,
+        durationQuantity: durationQuantity,
+        bcCollateralId: bcCollateralId,
+        numberOfferReceived: numberOfferReceived,
+        latestBlockChainTxn: latestBlockChainTxn,
+        estimatePrice: estimatePrice,
+        expectedLoanAmount: expectedLoanAmount,
+        expectedCollateralSymbol: expectedCollateralSymbol,
+        reputation: reputation,
+        walletAddress: walletAddress,
+        completeContracts: completeContracts,
+        isActive: isActive,
+        nftCollateralDetailDTO: nftCollateralDetailDTO!.toDomain(),
+      );
 }
 
 @JsonSerializable()
@@ -161,6 +161,8 @@ class NftCollateralDetailResponse {
   int? totalCopies;
   @JsonKey(name: 'evaluationId')
   String? evaluationId;
+  @JsonKey(name: 'properties')
+  List<PropertiesResponse>? propertiesResponse;
 
   NftCollateralDetailResponse(
     this.nftId,
@@ -178,6 +180,7 @@ class NftCollateralDetailResponse {
     this.numberOfCopies,
     this.totalCopies,
     this.evaluationId,
+    this.propertiesResponse,
   );
 
   String getPath(String avatarCid) {
@@ -231,6 +234,7 @@ class NftCollateralDetailResponse {
         numberOfCopies: numberOfCopies,
         evaluationId: evaluationId,
         image: getPath(nftAvatarCid ?? ''),
+        properties: propertiesResponse?.map((e) => e.toDomain()).toList(),
       );
 }
 

@@ -58,7 +58,7 @@ class _CheckBoxFilterState extends State<CheckBoxFilter> {
                   ? null
                   : Border.all(
                       color: const Color(0xffF2F2F2),
-                      width: 1,
+                      width: 1.w,
                     ),
             ),
             child: _isSelected

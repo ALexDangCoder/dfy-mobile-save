@@ -1,4 +1,3 @@
-
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_bid.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_burn.dart';
@@ -21,7 +20,6 @@ class ListActivity extends StatelessWidget {
   final int marketStatus;
   final String addressWalletSend;
   final String addressWallet;
-  final String addressMyWallet;
   final String price;
   final String priceSymbol;
   final int typeActivity;
@@ -42,7 +40,6 @@ class ListActivity extends StatelessWidget {
     required this.addressWallet,
     required this.typeActivity,
     required this.auctionType,
-    required this.addressMyWallet,
     required this.nftType,
     required this.price,
     required this.priceSymbol,
@@ -61,14 +58,6 @@ class ListActivity extends StatelessWidget {
       nftType: nftType,
     );
     final String market = bloc.funGetMarket(marketStatus);
-    final String myAddress = bloc.funCheckAddressSend(
-      addressWallet: addressWallet,
-      addressMyWallet: addressMyWallet,
-    );
-    final String myAddressTo = bloc.funCheckAddressTo(
-      addressMyWallet: addressMyWallet,
-      addressWalletSend: addressWalletSend,
-    );
 
     return itemActivity(
       price: price,
@@ -77,13 +66,13 @@ class ListActivity extends StatelessWidget {
       urlAvatar: urlAvatar,
       priceSymbol: priceSymbol,
       title: title,
-      addressWallet: myAddress,
-      addressWalletSend: myAddressTo,
+      addressWallet: addressWallet,
+      addressWalletSend: addressWalletSend,
       auctionType: auctionType,
       copy: myCopy,
       date: date,
       each: each,
-      market: market,
+      market: market.toLowerCase(),
       index: index,
       bloc: bloc,
     );
