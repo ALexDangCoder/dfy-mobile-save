@@ -6,6 +6,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 
 import 'base_activity.dart';
+import 'base_text_bsc.dart';
 
 class Burn extends StatelessWidget {
   final String urlAvatar;
@@ -45,30 +46,14 @@ class Burn extends StatelessWidget {
               14,
               FontWeight.w400,
             ),
-            children: <TextSpan>[
+            children: [
               TextSpan(
                 text: copy.isEmpty
                     ? '${S.current.activity_by} '
-                    : '${S.current.activity_copied} $copy ${S.current.activity_by} ',
+                    : '${S.current.activity_copied} $copy '
+                    '${S.current.activity_by} ',
               ),
-              TextSpan(
-                text: content == S.current.activity_you
-                    ? S.current.activity_you
-                    : content,
-                style: content == S.current.activity_you
-                    ? textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      )
-                    : textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      ).copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-              ),
+              baseTextBSC(content),
             ],
           ),
         ),
