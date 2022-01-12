@@ -37,7 +37,7 @@ class HeaderMarketPlace extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const MenuAccount(),
+                    builder: (context) => const PutOnMarket(),
                   ),
                 );
               },

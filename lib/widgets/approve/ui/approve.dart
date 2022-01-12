@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:ui';
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -91,71 +94,121 @@ class _ApproveState extends State<Approve> {
   }
 
   /// NamLV used
-  Future<void> approve(double gasLimitFinal, double gasPriceFinal) async {
+  Future<dynamic> approve(double gasLimitFinal, double gasPriceFinal) async {
     switch (widget.typeApprove) {
-      case TYPE_CONFIRM_BASE.BUY_NFT :
+      case TYPE_CONFIRM_BASE.BUY_NFT:
         {
           break;
         }
-      case TYPE_CONFIRM_BASE.PLACE_BID :
+      case TYPE_CONFIRM_BASE.PLACE_BID:
         {
           break;
         }
-      case TYPE_CONFIRM_BASE.SEND_NFT :
+      case TYPE_CONFIRM_BASE.SEND_NFT:
         {
+          break;
+        }
+      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+        {
+          showLoading();
+
+          Timer(Duration(seconds: 2), () {
+            Navigator.pop(context);
+            Navigator.pop(context, true);
+          });
           break;
         }
     }
   }
-
 
   ///  use base call NamLV
   Future<void> action(double gasLimitFinal, double gasPriceFinal) async {
     switch (widget.typeApprove) {
-      case TYPE_CONFIRM_BASE.BUY_NFT :
+      case TYPE_CONFIRM_BASE.BUY_NFT:
         {
           break;
         }
-      case TYPE_CONFIRM_BASE.PLACE_BID :
+      case TYPE_CONFIRM_BASE.PLACE_BID:
         {
           break;
         }
-      case TYPE_CONFIRM_BASE.SEND_NFT :
+      case TYPE_CONFIRM_BASE.SEND_NFT:
         {
+          break;
+        }
+      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+        {
+          await showPopupApprove();
+          Timer(Duration(seconds: 2), () {
+            Navigator.pop(context);
+          });
           break;
         }
     }
   }
-  void showLoading (){
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (_) => const AlertDialog(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        content: TransactionSubmit(),
+
+  void showLoading() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        reverseTransitionDuration: Duration.zero,
+        transitionDuration: Duration.zero,
+        pageBuilder: (_, animation, ___) {
+          return Scaffold(
+            backgroundColor: Colors.black.withOpacity(0.4),
+            body: Center(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                child: const TransactionSubmit(),
+              ),
+            ),
+          );
+        },
+        opaque: false,
       ),
     );
   }
-  void showLoadFail (){
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (_) => const AlertDialog(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        content: TransactionSubmitFail(),
+
+  void showLoadFail() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        reverseTransitionDuration: Duration.zero,
+        transitionDuration: Duration.zero,
+        pageBuilder: (_, animation, ___) {
+          return Scaffold(
+            backgroundColor: Colors.black.withOpacity(0.4),
+            body: Center(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                child: const TransactionSubmitFail(),
+              ),
+            ),
+          );
+        },
+        opaque: false,
       ),
     );
   }
-  void showLoadSuccess (){
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (_) => const AlertDialog(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        content: TransactionSubmitSuccess(),
+
+  void showLoadSuccess() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        reverseTransitionDuration: Duration.zero,
+        transitionDuration: Duration.zero,
+        pageBuilder: (_, animation, ___) {
+          return Scaffold(
+            backgroundColor: Colors.black.withOpacity(0.4),
+            body: Center(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                child: const TransactionSubmitSuccess(),
+              ),
+            ),
+          );
+        },
+        opaque: false,
       ),
     );
   }
@@ -172,13 +225,14 @@ class _ApproveState extends State<Approve> {
       context: context,
       builder: (_) {
         return PopUpApprove(
-          approve: (){
-            approve(cubit.gasLimit ?? widget.gasLimitInit,
-              cubit.gasPriceSubject.valueOrNull ?? 0,);
+          approve: () async {
+            await approve(
+              cubit.gasLimit ?? widget.gasLimitInit,
+              cubit.gasPriceSubject.valueOrNull ?? 0,
+            );
           },
           addressWallet: cubit.addressWallet ?? '',
-          accountName:
-          cubit.nameWallet ?? 'Account',
+          accountName: cubit.nameWallet ?? 'Account',
           imageAccount: accountImage,
           balanceWallet: cubit.balanceWallet ?? 0,
           gasFee: gasFee,
@@ -190,9 +244,8 @@ class _ApproveState extends State<Approve> {
         );
       },
     );
-    return result ;
+    return result;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -241,46 +294,45 @@ class _ApproveState extends State<Approve> {
                           ),
                           widget.header ?? const SizedBox(height: 0),
                           ...(widget.listDetail ?? []).map(
-                                (item) =>
-                                Column(
+                            (item) => Column(
+                              children: [
+                                Row(
                                   children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          flex: widget.flexTitle ?? 4,
-                                          child: Text(
-                                            item.title,
-                                            style: textNormal(
-                                              AppTheme.getInstance()
-                                                  .whiteColor()
-                                                  .withOpacity(0.7),
-                                              14,
-                                            ),
-                                          ),
+                                    Expanded(
+                                      flex: widget.flexTitle ?? 4,
+                                      child: Text(
+                                        item.title,
+                                        style: textNormal(
+                                          AppTheme.getInstance()
+                                              .whiteColor()
+                                              .withOpacity(0.7),
+                                          14,
                                         ),
-                                        Expanded(
-                                          flex: widget.flexContent ?? 6,
-                                          child: Text(
-                                            item.value,
-                                            style: item.isToken ?? false
-                                                ? textNormalCustom(
-                                              AppTheme.getInstance()
-                                                  .fillColor(),
-                                              20,
-                                              FontWeight.w600,
-                                            )
-                                                : textNormal(
-                                              AppTheme.getInstance()
-                                                  .whiteColor(),
-                                              16,
-                                            ),
-                                          ),
-                                        )
-                                      ],
+                                      ),
                                     ),
-                                    const SizedBox(height: 16)
+                                    Expanded(
+                                      flex: widget.flexContent ?? 6,
+                                      child: Text(
+                                        item.value,
+                                        style: item.isToken ?? false
+                                            ? textNormalCustom(
+                                                AppTheme.getInstance()
+                                                    .fillColor(),
+                                                20,
+                                                FontWeight.w600,
+                                              )
+                                            : textNormal(
+                                                AppTheme.getInstance()
+                                                    .whiteColor(),
+                                                16,
+                                              ),
+                                      ),
+                                    )
                                   ],
                                 ),
+                                const SizedBox(height: 16)
+                              ],
+                            ),
                           ),
                           if (widget.warning != null)
                             Column(
@@ -344,17 +396,17 @@ class _ApproveState extends State<Approve> {
                             child: ButtonGold(
                               haveGradient: !isApproved,
                               background:
-                              isApproved ? fillApprovedButton : null,
+                                  isApproved ? fillApprovedButton : null,
                               textColor: isApproved
                                   ? borderApprovedButton
                                   : isCanAction
-                                  ? null
-                                  : disableText,
+                                      ? null
+                                      : disableText,
                               border: isApproved
                                   ? Border.all(
-                                color: borderApprovedButton,
-                                width: 2,
-                              )
+                                      color: borderApprovedButton,
+                                      width: 2,
+                                    )
                                   : null,
                               title: S.current.approve,
                               isEnable: isCanAction,
@@ -383,24 +435,24 @@ class _ApproveState extends State<Approve> {
                   child: GestureDetector(
                     child: ButtonGold(
                       textColor:
-                      isApproved || !(widget.isShowTwoButton ?? false)
-                          ? null
-                          : disableText,
+                          isApproved || !(widget.isShowTwoButton ?? false)
+                              ? null
+                              : disableText,
                       fixSize: false,
                       haveMargin: false,
                       title: widget.textActiveButton,
                       isEnable:
-                      (isApproved || !(widget.isShowTwoButton ?? false)) &&
-                          isCanAction,
+                          (isApproved || !(widget.isShowTwoButton ?? false)) &&
+                              isCanAction,
                     ),
-                    onTap: ()  {
+                    onTap: () {
                       if ((isApproved || !(widget.isShowTwoButton ?? false)) &&
-                          isCanAction){
+                          isCanAction) {
                         action(
                           cubit.gasLimit ?? widget.gasLimitInit,
-                          cubit.gasPriceSubject.valueOrNull ?? 0,);
+                          cubit.gasPriceSubject.valueOrNull ?? 0,
+                        );
                       }
-
                     },
                   ),
                 ),
@@ -441,7 +493,7 @@ class _ApproveState extends State<Approve> {
                   fit: BoxFit.cover,
                   image: AssetImage(
                     '${ImageAssets.image_avatar}$accountImage'
-                        '.png',
+                    '.png',
                   ),
                 ),
               ),

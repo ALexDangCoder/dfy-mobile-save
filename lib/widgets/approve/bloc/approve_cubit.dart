@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +15,7 @@ enum TYPE_CONFIRM_BASE {
   SEND_NFT,
   SEND_TOKEN,
   BUY_NFT,
+  PUT_ON_MARKET,
   SEND_OFFER,
   PLACE_BID,
 }
@@ -50,8 +52,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       case 'getListWalletsCallback':
         final List<dynamic> data = methodCall.arguments;
         if (data.isEmpty) {
-          // emit(NavigatorFirst());
-          // await PrefsService.saveFirstAppConfig('true');
         } else {
           for (final element in data) {
             listWallet.add(Wallet.fromJson(element));
@@ -60,11 +60,16 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           addressWallet = listWallet.first.address;
           _nameWalletSubject.sink.add(listWallet.first.name!);
           nameWallet = listWallet.first.name;
-          balanceWallet = await Web3Utils().getBalanceOfBnb(
-              ofAddress: _addressWalletCoreSubject.valueOrNull ?? '');
+          try{
+            balanceWallet = await Web3Utils().getBalanceOfBnb(
+                ofAddress: _addressWalletCoreSubject.valueOrNull ?? '');
+            showContent();
+          } catch(e ){
+            showError();
+            AppException('title', e.toString());
+          }
           _balanceWalletSubject.sink.add(balanceWallet?? 0);
         }
-        showContent();
         break;
     }
   }
@@ -83,18 +88,15 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     final Random rd = Random();
     return rd.nextInt(10);
   }
-  void changeLoadingState ({required bool isShow}){
-    if (isShow) {
-      showLoading();
-    } else {
-      showContent();
-    }
-
-  }
 
   Future<void> getGasPrice() async {
-    final result = await Web3Utils().getGasPrice();
-    gasPriceSubject.sink.add(double.parse(result));
+    try{
+      final result = await Web3Utils().getGasPrice();
+      gasPriceSubject.sink.add(double.parse(result));
+    } catch(e ){
+      showError();
+      AppException('title', e.toString());
+    }
   }
 
 
