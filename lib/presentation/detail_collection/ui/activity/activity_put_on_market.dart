@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'base_activity.dart';
+import 'base_text_bsc.dart';
 
 class PutOnMarket extends StatelessWidget {
   final String urlAvatar;
@@ -52,7 +53,6 @@ class PutOnMarket extends StatelessWidget {
           // %địa chỉ ví%: Địa chỉ ví đẩy lên sàn. Nếu user đang connect địa chỉ ví trùng với %địa chỉ ví%, hiển thị là YOU.
           // %money%: Giá reserve price/sale/pawn
           // Each: chỉ hiển thị chữ này khi là NFT 1155
-
           text: TextSpan(
             text: '${S.current.activity_put} ',
             style: textNormalCustom(
@@ -69,24 +69,7 @@ class PutOnMarket extends StatelessWidget {
               TextSpan(
                 text: '$market ${S.current.activity_by} ',
               ),
-              TextSpan(
-                text: content == S.current.activity_you
-                    ? S.current.activity_you
-                    : content,
-                style: content == S.current.activity_you
-                    ? textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      )
-                    : textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      ).copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-              ),
+              baseTextBSC(content),
               TextSpan(
                 text: ' ${S.current.activity_for} ',
               ),
