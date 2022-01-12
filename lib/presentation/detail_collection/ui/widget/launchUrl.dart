@@ -1,3 +1,4 @@
+import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -99,12 +100,11 @@ class LaunchUrl extends StatelessWidget {
   }
 
   Future<void> _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-      );
+    if (url.startsWith(DetailCollectionBloc.HTTPS)) {
+      await launch(url);
     } else {
-      throw '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Could not launch $url>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>';
+      url = DetailCollectionBloc.HTTPS + url;
+      await launch(url);
     }
   }
 }

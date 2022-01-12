@@ -1,58 +1,54 @@
-import 'package:Dfy/data/response/collection_detail/collection_detail_res.dart';
+
 
 class CollectionDetailModel {
   String? id;
   String? name;
-  String? description;
   String? owner;
+  String? description;
   int? status;
+  int? collectionType;
+  int? collectionStandard;
   String? collectionAddress;
   String? avatarCid;
   String? coverCid;
   String? featureCid;
-  String? txnHash;
-  String? ownerAccount;
-  int? createAt;
-  int? updateAt;
   int? totalNft;
   int? nftOwnerCount;
-  int? totalVolumeTraded;
-  String? collectionType;
-  String? collectionStandard;
-  String? customUrl;
-  double? royalty;
-  List<SocialLink>? socialLinks;
-  String? categoryId;
-  String? royaltyToken;
+  double? totalVolumeTraded;
+  List<SocialLinkModel>? socialLinks;
   bool? isOwner;
   bool? isDefault;
   bool? isWhiteList;
+  String? beId;
+  String? categoryType;
 
-  CollectionDetailModel(
-      {this.id,
-      this.name,
-      this.description,
-      this.owner,
-      this.status,
-      this.collectionAddress,
-      this.avatarCid,
-      this.coverCid,
-      this.featureCid,
-      this.txnHash,
-      this.ownerAccount,
-      this.createAt,
-      this.updateAt,
-      this.totalNft,
-      this.nftOwnerCount,
-      this.totalVolumeTraded,
-      this.collectionType,
-      this.collectionStandard,
-      this.customUrl,
-      this.royalty,
-      this.socialLinks,
-      this.categoryId,
-      this.royaltyToken,
-      this.isOwner,
-      this.isDefault,
-      this.isWhiteList});
+  CollectionDetailModel({
+    this.id,
+    this.name,
+    this.owner,
+    this.description,
+    this.status,
+    this.collectionType,
+    this.collectionStandard,
+    this.collectionAddress,
+    this.avatarCid,
+    this.coverCid,
+    this.featureCid,
+    this.totalNft,
+    this.nftOwnerCount,
+    this.totalVolumeTraded,
+    this.socialLinks,
+    this.isOwner,
+    this.isDefault,
+    this.isWhiteList,
+    this.beId,
+    this.categoryType,
+  });
+}
+
+class SocialLinkModel {
+  String? url;
+  String? type;
+
+  SocialLinkModel(this.url, this.type);
 }

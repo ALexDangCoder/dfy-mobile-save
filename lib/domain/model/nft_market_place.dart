@@ -2,53 +2,63 @@ import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 
 class NftMarket {
-  final String? nftId;
-  final String? marketId;
-  final String? token;
-  final String name;
-  final String image;
-  final double price;
-  final String? tokenBuyOut;
-  final double? reservePrice;
-  final double? buyOutPrice;
-  final double? estimatePrice;
-  final MarketType marketType;
-  final TypeNFT typeNFT;
-  final TypeImage typeImage;
-  final int? startTime;
-  final int? endTime;
+  String? nftId;
+  String? marketId;
+  String? name;
+  String? image;
+  double? price;
+  String? tokenBuyOut;
+  double? reservePrice;
+  double? buyOutPrice;
+  double? estimatePrice;
+  MarketType? marketType;
+  TypeNFT? typeNFT;
+  TypeImage? typeImage;
+  int? startTime;
+  int? endTime;
   String? urlToken;
   String? symbolToken;
   double? usdExchange;
-  final int? numberOfCopies;
-  final int? totalCopies;
-  final int? ticked;
-  final String? owner;
-  final String? collectionID;
-  final String? collectionName;
-  final int? isOwner;
-  final String? nftStandard;
-  final double? marketFee;
-  final double? royalties;
-  final String? nftTokenId;
-  final String? collectionAddress;
-  final String? description;
-  final String? txnHash;
-  final int? orderId;
-  final String? ownerAccount;
-  final String? blockchainNetwork;
-  final List<Properties>? properties;
+  int? numberOfCopies;
+  int? totalCopies;
+  int? ticked;
+  String? owner;
+  String? collectionID;
+  String? collectionName;
+  int? isOwner;
+  String? nftStandard;
+  double? marketFee;
+  double? royalties;
+  String? nftTokenId;
+  String? collectionAddress;
+  String? description;
+  String? txnHash;
+  int? orderId;
+  String? ownerAccount;
+  String? blockchainNetwork;
+  List<Properties>? properties;
+  int? countProperties;
+  double? mintingFeeNumber;
+  String? mintingFeeToken;
+  int? createAt;
+  int? updateAt;
+  String? evaluationId;
+  bool? isWhitelist;
+  int? pawnId;
+
+  NftMarket.init();
 
   NftMarket({
     this.token,
     this.nftId,
     this.tokenBuyOut,
-    required this.name,
-    required this.image,
-    required this.price,
-    required this.marketType,
-    required this.typeNFT,
-    required this.typeImage,
+    this.name,
+    this.image,
+    this.price,
+    this.marketType,
+    this.pawnId,
+    this.typeNFT,
+    this.typeImage,
     this.ticked,
     this.marketId,
     this.reservePrice,
@@ -76,5 +86,12 @@ class NftMarket {
     this.collectionAddress,
     this.description,
     this.properties,
+    this.countProperties,
+    this.updateAt,
+    this.createAt,
+    this.evaluationId,
+    this.isWhitelist,
+    this.mintingFeeToken,
+    this.mintingFeeNumber,
   });
 }

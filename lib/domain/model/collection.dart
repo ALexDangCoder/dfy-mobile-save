@@ -4,6 +4,7 @@ class Collection {
   final String title;
   final int items;
   final String id;
+  final String collectionAddress;
 
   Collection({
     required this.background,
@@ -11,5 +12,6 @@ class Collection {
     required this.title,
     required this.items,
     required this.id,
+    required this.collectionAddress,
   });
 }

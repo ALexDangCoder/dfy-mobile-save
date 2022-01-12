@@ -69,7 +69,9 @@ class BaseSpace extends StatelessWidget {
         return Stack(
           children: [
             Container(
-              margin: const EdgeInsets.only(bottom: 8),
+              margin: EdgeInsets.only(
+                bottom: 8.h,
+              ),
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Opacity(
@@ -98,11 +100,11 @@ class BaseSpace extends StatelessWidget {
         alignment: Alignment.topCenter,
         children: [
           CachedNetworkImage(
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
             width: double.infinity,
             height: 145.h,
-            errorWidget: (context, url, error) =>Container(
-              color:AppTheme.getInstance().selectDialogColor(),
+            errorWidget: (context, url, error) => Container(
+              color: AppTheme.getInstance().selectDialogColor(),
             ),
             imageUrl: imageCover,
           ),
@@ -131,14 +133,15 @@ class BaseSpace extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: imageAvatar,
                       fit: BoxFit.cover,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+                      errorWidget: (context, url, error) => Container(
+                        color: AppTheme.getInstance().selectDialogColor(),
+                      ),
                     ),
                   ),
                 ),
                 Positioned(
-                  bottom: 6,
-                  right: 6,
+                  bottom: 6.h,
+                  right: 6.w,
                   child: isOwner
                       ? Image.asset(imageVerified)
                       : const SizedBox.shrink(),

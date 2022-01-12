@@ -415,7 +415,6 @@
   "item_from_high_to_low": "Mục từ cao đến thấp",
   "you_enter_greater": "Bạn nhập lớn hơn tổng số bản",
   "you_must": "Bạn phải nhập vào số lượng bạn muốn mua",
-  "item_from_low_to_high": "Mục từ thấp đến cao",
   "error_text": "Lỗi tải...",
   "could_not_load_data" : "Không thể tải dữ liệu",
   "create_collection" : "Tạo bộ sưu tập",
@@ -446,5 +445,8 @@
   "custom_url_info" : "Đường dẫn tùy chỉnh của bạn trên Defi for you. Chỉ bao gồm chữ thường, số và dấu gạch dưới (_).",
   "custom_url_err" : "Chỉ bao gồm chữ thường, số và dấu gạch dưới ",
   "royalties_info" : "Thu phí khi người dùng bán lại một mặt hàng mà bạn đã tạo ban đầu. Khoản tiền này được khấu trừ vào giá ưu đãi cuối cùng và được thanh toán hàng tháng cho địa chỉ thanh toán bạn chọn.",
-  "name" : "Tên"
+  "name" : "Tên",
+  "item_from_low_to_high": "Mục từ thấp đến cao",
+  "erc_721": "ERC-721",
+  "erc_1155": "ERC-1155"
 }
