@@ -6,6 +6,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 
 import 'base_activity.dart';
+import 'base_text_bsc.dart';
 
 class TransferActivity extends StatelessWidget {
   final String urlAvatar;
@@ -48,51 +49,17 @@ class TransferActivity extends StatelessWidget {
               14,
               FontWeight.w400,
             ),
-            children: <TextSpan>[
+            children: [
               TextSpan(
                 text: copy.isEmpty
                     ? '${S.current.activity_by} '
                     : '${S.current.activity_copied} $copy ${S.current.activity_by} ',
               ),
-              TextSpan(
-                text: addressSend == S.current.activity_you
-                    ? S.current.activity_you
-                    : addressSend,
-                style: addressSend == S.current.activity_you
-                    ? textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      )
-                    : textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      ).copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-              ),
+              baseTextBSC(addressSend),
               TextSpan(
                 text: ' ${S.current.activity_from_to} ',
               ),
-              TextSpan(
-                text: address == S.current.activity_you
-                    ? S.current.activity_you
-                    : address,
-                style: address == S.current.activity_you
-                    ? textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      )
-                    : textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      ).copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-              ),
+              baseTextBSC(address),
             ],
           ),
         ),

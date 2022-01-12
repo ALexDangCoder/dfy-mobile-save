@@ -451,6 +451,7 @@
   "empty_data": "Empty data",
   "you_enter_greater": "you enter greater than the total amount",
   "you_must": "You must enter the quantity you want to buy",
-  "no_des": "No description"
+  "no_des": "No description",
+  "on_sale": "On sale"
 
 }
