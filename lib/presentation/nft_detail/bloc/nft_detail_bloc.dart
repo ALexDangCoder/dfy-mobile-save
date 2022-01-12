@@ -35,6 +35,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String nftMarketId = '';
 
   late final String walletAddress;
+
   Stream<bool> get viewStream => _viewSubject.stream;
 
   Sink<bool> get viewSink => _viewSubject.sink;
@@ -329,28 +330,32 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         second = minute * 60 + endDate.second - today.second;
         secondEnd = second;
       } else if (endDate.month == today.month) {
-        if(endDate.day >= endDate.day){
+        if (endDate.day >= endDate.day) {
           day = endDate.day - today.day;
-          if(endDate.hour >= today.hour){
+          if (endDate.hour >= today.hour) {
             hour = day * 24 + endDate.hour - today.hour;
-            if(endDate.minute >= endDate.minute){
+            if (endDate.minute >= endDate.minute) {
               minute = hour * 60 + endDate.minute - today.minute;
-              if(endDate.second >=endDate.second){
+              if(endDate.second >= today.second){
                 second = minute * 60 + endDate.minute - today.minute;
                 secondEnd = second;
               }
               else {
-                secondEnd = 0;
+                second = minute * 60 + endDate.minute - today.minute;
+                secondEnd = second;
               }
-            }
-            else{
-              secondEnd = 0;
+            } else {
+              minute = hour * 60 + endDate.minute - today.minute;
+              second = minute * 60 + endDate.minute - today.minute;
+              secondEnd = second;
             }
           } else {
-            secondEnd = 0;
+            hour = day * 24 + endDate.hour - today.hour;
+            minute = hour * 60 + endDate.minute - today.minute;
+            second = minute * 60 + endDate.minute - today.minute;
+            secondEnd = second;
           }
-        }
-        else{
+        } else {
           secondEnd = 0;
         }
       } else {
