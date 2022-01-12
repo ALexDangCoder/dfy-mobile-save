@@ -140,12 +140,12 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       getListNft(
         collectionAddress: collectionAddress,
         listMarketType: listFilter,
-        name: textSearch.value,
+        name: textSearch.value.trim(),
       );
     } else {
       getListNft(
         collectionAddress: collectionAddress,
-        name: textSearch.value,
+        name: textSearch.value.trim(),
       );
     }
   }
@@ -260,13 +260,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       () {
         if (listFilter.isNotEmpty) {
           getListNft(
-            name: value,
+            name: value.trim(),
             collectionAddress: collectionAddress,
             listMarketType: listFilter,
           );
         } else {
           getListNft(
-            name: value,
+            name: value.trim(),
             collectionAddress: collectionAddress,
             listMarketType: [
               NOT_ON_MARKET,

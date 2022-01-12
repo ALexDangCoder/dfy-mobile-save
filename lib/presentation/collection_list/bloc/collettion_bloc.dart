@@ -81,7 +81,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   void funFilter({int index = 0}) {
     getCollection(
       sortFilter: sortFilter,
-      name: textSearch.value,
+      name: textSearch.value.trim(),
     );
   }
 
@@ -124,7 +124,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         );
       } else {
         getCollection(
-          name: textSearch.value,
+          name: textSearch.value.trim(),
           sortFilter: sortFilter,
         );
       }
