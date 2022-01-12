@@ -30,7 +30,7 @@ class _PutOnMarketState extends State<PutOnMarket>
 
   final List<Tab> titTab = [
     Tab(
-      text: S.current.sale,
+      text: S.current.sell,
     ),
     Tab(
       text: S.current.pawn,
