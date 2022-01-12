@@ -99,9 +99,9 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     sortFilter = index;
   }
 
-  void funCheckCategory(int index) {
+  void funCheckCategory(String name) {
     for (int i = 0; i < listCategory.length; i++) {
-      if (i == index) {
+      if (name == listCategory[i].name) {
         if (listCategory[i].isCheck ?? false) {
           listCategory[i].isCheck = false;
         } else {
@@ -109,7 +109,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         }
       }
     }
-    listCategoryStream.add(listCategory);
   }
 
   void searchCollection(String value) {
@@ -197,6 +196,14 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     isSoftNft.add(false);
     textAddressFilter.add(S.current.all);
     funOnTapSearchCategory();
+    funResetIsCategory();
+  }
+
+  void funResetIsCategory() {
+    for (int i = 0; i < listCategory.length; i++) {
+      listCategory[i].isCheck = false;
+    }
+    listCategoryStream.add(listCategory);
   }
 
   void funOnSearch(String value) {
@@ -218,10 +225,12 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       }
     }
     if (value.isEmpty) {
+      funResetIsCategory();
       listCategoryStream.add(listCategory);
     } else {
-      //todo reset lại list
+      funResetIsCategory();
       listCategoryStream.add(search);
+
     }
   }
 

@@ -34,6 +34,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
   void initState() {
     super.initState();
     searchFilter = TextEditingController();
+    searchFilter.text = widget.collectionBloc.textSearchCategory.value;
   }
 
   @override
@@ -265,16 +266,17 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: (snapshot.data?.length ?? 0) > 4
-                                ? 4
-                                : snapshot.data?.length,
+                            itemCount: list.length > 4 ? 4 : list.length,
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () {
-                                  collectionBloc.funCheckCategory(index);
+                                  collectionBloc
+                                      .funCheckCategory(list[index].name ?? '');
+                                  setState(() {});
                                 },
                                 child: ItemCategoryFilter(
                                   filterModel: list[index],
+                                  bloc: collectionBloc,
                                 ),
                               );
                             },
