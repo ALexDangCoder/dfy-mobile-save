@@ -32,7 +32,7 @@ class LaunchUrl extends StatelessWidget {
               ? const SizedBox.shrink()
               : GestureDetector(
                   onTap: () {
-                    _launchURL(urlFace ?? '');
+                    launchURL(urlFace ?? '');
                   },
                   child: Image.asset(
                     ImageAssets.img_facebook,
@@ -50,7 +50,7 @@ class LaunchUrl extends StatelessWidget {
               ? const SizedBox.shrink()
               : GestureDetector(
                   onTap: () {
-                    _launchURL(urlInstagram ?? '');
+                    launchURL(urlInstagram ?? '');
                   },
                   child: Image.asset(
                     ImageAssets.img_instagram,
@@ -68,7 +68,7 @@ class LaunchUrl extends StatelessWidget {
               ? null
               : GestureDetector(
                   onTap: () {
-                    _launchURL(urlTwitter ?? '');
+                    launchURL(urlTwitter ?? '');
                   },
                   child: Image.asset(
                     ImageAssets.img_twitter,
@@ -86,7 +86,7 @@ class LaunchUrl extends StatelessWidget {
               ? const SizedBox.shrink()
               : GestureDetector(
                   onTap: () {
-                    _launchURL(urlTelegram ?? '');
+                    launchURL(urlTelegram ?? '');
                   },
                   child: Image.asset(
                     ImageAssets.img_telegram,
@@ -99,7 +99,7 @@ class LaunchUrl extends StatelessWidget {
     );
   }
 
-  Future<void> _launchURL(String url) async {
+  Future<void> launchURL(String url) async {
     if (url.startsWith(DetailCollectionBloc.HTTPS)) {
       await launch(url);
     } else {
