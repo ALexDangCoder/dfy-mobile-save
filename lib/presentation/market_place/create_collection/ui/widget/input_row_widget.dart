@@ -16,6 +16,8 @@ class InputRow extends StatelessWidget {
   final TextInputType inputType;
   final TextEditingController textController;
   final String suffixes;
+  final String prefixText;
+
 
   const InputRow({
     Key? key,
@@ -27,6 +29,7 @@ class InputRow extends StatelessWidget {
     this.img2 = '',
     required this.textController,
     this.suffixes = '',
+    this.prefixText = '',
   }) : super(key: key);
 
   @override
@@ -77,7 +80,8 @@ class InputRow extends StatelessWidget {
                       16,
                     ),
                     suffixStyle: textCustom(),
-                    suffixText: suffixes.isNotEmpty? suffixes : null,
+                    suffixText: suffixes.isNotEmpty ? suffixes : null,
+                    prefixText: prefixText.isNotEmpty ? prefixText : null,
                     border: InputBorder.none,
                   ),
                   // onFieldSubmitted: ,

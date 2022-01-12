@@ -390,9 +390,9 @@ class _SearchNFTState extends State<SearchNFT> {
                                   typeMarket:
                                       searchCubit.listNFT[index].marketType!,
                                   marketId: searchCubit.listNFT[index].marketId,
-                                  // typeNft: widget.nftMarket.typeNFT,
-                                  // nftId: widget.nftMarket.nftId,
-                                  // pawnId: widget.nftMarket.pawnId,
+                                  typeNft: searchCubit.listNFT[index].typeNFT,
+                                  nftId: searchCubit.listNFT[index].nftId,
+                                  pawnId: searchCubit.listNFT[index].pawnId,
                                   //todo fill nốt các trường vào
                                 ),
                               ),

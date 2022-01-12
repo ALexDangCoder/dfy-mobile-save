@@ -358,7 +358,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           arg = res;
           funGetUrl(res.socialLinks ?? []);
           collectionDetailModel.sink.add(arg);
-          // collectionAddress = arg.id ?? '';
           collectionAddress = collectionAddressDetail ?? '';
           getListFilterCollectionDetail(
               collectionAddress: arg.collectionAddress ?? '');
@@ -437,30 +436,22 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     );
   }
 
-  String funCheckLinkHttp(String link) {
-    String linkURL = '';
-    if (link.substring(0, 7) == HTTPS) {
-      linkURL = link;
-    } else {
-      linkURL = HTTPS + link;
-    }
-    return linkURL;
-  }
+
 
   void funGetUrl(List<SocialLinkModel> link) {
     for (final SocialLinkModel value in link) {
       switch (value.type?.toUpperCase()) {
         case FACEBOOK:
-          linkUrlFacebook = funCheckLinkHttp(value.url ?? '');
+          linkUrlFacebook = value.url ?? '';
           break;
         case INSTAGRAM:
-          linkUrlInstagram = funCheckLinkHttp(value.url?.substring(0, 7) ?? '');
+          linkUrlInstagram = value.url ?? '';
           break;
         case TELEGRAM:
-          linkUrlTelegram = funCheckLinkHttp(value.url?.substring(0, 7) ?? '');
+          linkUrlTelegram = value.url ?? '';
           break;
         case TWITTER:
-          linkUrlTwitter = funCheckLinkHttp(value.url?.substring(0, 7) ?? '');
+          linkUrlTwitter = value.url ?? '';
           break;
         default:
           break;

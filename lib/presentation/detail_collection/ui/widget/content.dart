@@ -63,7 +63,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                spaceH10,
+                spaceH2,
                 Text(
                   widget.title,
                   style: textNormalCustom(

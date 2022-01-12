@@ -179,7 +179,8 @@ class _HardNFTScreenState extends State<HardNFTScreen>
                         style: whiteTextWithOpacity,
                       ),
                       Text(
-                        '$month ${(month <= 1) ? S.current.month : S.current.months}',
+                        '$month ${(month <= 1) ?
+                        S.current.month : S.current.months}',
                         style: tokenDetailAmount(fontSize: 16),
                       ),
                     ],

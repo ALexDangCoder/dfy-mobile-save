@@ -208,7 +208,7 @@ class _DetailCollectionState extends State<DetailCollection>
             },
             child: BaseCustomScrollViewDetail(
               isOwner: isOwner,
-              initHeight: 190.h,
+              initHeight: 200.h,
               title: list.name ?? '',
               imageVerified: ImageAssets.ic_dfy,
               imageAvatar: ApiConstants.BASE_URL_IMAGE + (list.avatarCid ?? ''),

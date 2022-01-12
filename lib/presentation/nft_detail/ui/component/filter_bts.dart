@@ -162,7 +162,7 @@ class _FilterBtsState extends State<FilterBts> {
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: (itemCount > 5) ? 5: itemCount,
+                        itemCount: (itemCount >5) ? 5: itemCount,
                         itemBuilder: (context, index) {
                           return Column(
                             children: [
