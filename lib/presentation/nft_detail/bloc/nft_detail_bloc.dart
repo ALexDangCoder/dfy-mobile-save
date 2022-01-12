@@ -34,7 +34,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String rawData = '';
   String nftMarketId = '';
 
-  String walletAddress = '';
+  late final String walletAddress;
   Stream<bool> get viewStream => _viewSubject.stream;
 
   Sink<bool> get viewSink => _viewSubject.sink;
@@ -252,6 +252,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             wallets.add(Wallet.fromJson(element));
           }
           walletAddress = wallets.first.address ?? '';
+
           if (wallets.first.address == owner) {
             pairSink.add(false);
           } else {
@@ -259,14 +260,13 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           }
           emit(HaveWallet(nftMarket));
         }
-        break;
-
+        return walletAddress;
       default:
         break;
     }
   }
 
-  Future<int> getNonceWeb3({required String walletAddress}) async {
+  Future<int> getNonceWeb3() async {
     final result = await web3Client.getTransactionCount(address: walletAddress);
     return result.count;
   }
