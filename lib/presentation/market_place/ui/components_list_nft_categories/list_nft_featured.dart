@@ -65,7 +65,7 @@ class ListFeaturedNft extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          ListNft(marketType: marketTypeEnum),
+                          const ListNft(marketType: MarketType.PAWN),
                     ),
                   );
                 },

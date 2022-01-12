@@ -5,6 +5,7 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
@@ -90,7 +91,7 @@ Widget _buildItemHistory(HistoryNFT historyNFT) {
               children: [
                 getHistory(historyNFT.historyType ?? 20),
                 Text(
-                  DateFormat('HH:mm - dd/MM/yyyy').format(
+                  formatDateTime.format(
                     DateTime.fromMillisecondsSinceEpoch(
                       historyNFT.eventDateTime ?? 0,
                     ),

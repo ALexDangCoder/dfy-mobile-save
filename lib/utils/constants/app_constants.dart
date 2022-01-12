@@ -31,6 +31,7 @@ const String ERASE_WALLET = 'earse_wallet';
 const String SUCCESS = 'success';
 const String FAIL = 'fail';
 NumberFormat formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
+DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 
 const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';

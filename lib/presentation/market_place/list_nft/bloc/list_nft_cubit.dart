@@ -358,7 +358,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
 
   String getTitle(MarketType? type) {
     if (type == null) {
-      return S.current.nfts_search_result;
+      return '${S.current.all} NFT';
     } else if (type == MarketType.SALE) {
       return S.current.nft_on_sell;
     } else if (type == MarketType.AUCTION) {
