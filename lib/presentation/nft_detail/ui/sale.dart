@@ -68,15 +68,22 @@ Container _priceContainerOnSale({
       ),
     );
 
-Widget _buildButtonBuyOutOnSale(BuildContext context) {
+Widget _buildButtonBuyOutOnSale(BuildContext context, NFTDetailBloc bloc) {
   return ButtonGradient(
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) {
-            return const BuyNFT();
-          },
+    onPressed: () async {
+      await bloc
+          .getBalanceToken(
+        ofAddress: bloc.wallets.first.address ?? '',
+        tokenAddress: bloc.nftMarket.token ?? '',
+      )
+          .then(
+            (value) => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BuyNFT(
+              balance: value,
+            ),
+          ),
         ),
       );
     },

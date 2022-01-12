@@ -319,7 +319,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonBuyOutOnSale(context),
+            bottomBar: _buildButtonBuyOutOnSale(context,bloc),
             content: [
               _nameNFT(
                 title: objSale.name ?? '',
