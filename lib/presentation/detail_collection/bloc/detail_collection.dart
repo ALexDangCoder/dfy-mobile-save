@@ -41,7 +41,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const String TELEGRAM = 'TELEGRAM';
   static const String TWITTER = 'TWITTER';
   static const String HTTPS = 'https://';
-  static const String BSC_SCAN = 'https://bscscan.com/address/';
   static const int SOFT_COLLECTION = 0;
   static const int HARD_COLLECTION = 1;
 
