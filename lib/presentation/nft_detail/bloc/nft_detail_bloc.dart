@@ -344,7 +344,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         context: context,
       ).then(
         (value) => getGasLimitByData(
-          fromAddress: walletAddress,
+          fromAddress: wallets.first.address ?? '',
           toAddress: nft_sales_address_dev2,
           hexString: value,
         ),
