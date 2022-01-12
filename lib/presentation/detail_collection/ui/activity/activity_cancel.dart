@@ -6,6 +6,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 
 import 'base_activity.dart';
+import 'base_text_bsc.dart';
 
 class Cancel extends StatelessWidget {
   final String urlAvatar;
@@ -40,7 +41,8 @@ class Cancel extends StatelessWidget {
           //
           // %copy%:.Số bản cancel. chỉ hiển thị khi là NFT 1155
           // %market%: sàn cancel. Sale/auction/pawn
-          // %địa chỉ ví%: Địa chỉ ví đẩy lên cancel. Nếu user đang connect địa chỉ ví trùng với %địa chỉ ví%, hiển thị là YOU.
+          // %địa chỉ ví%: Địa chỉ ví đẩy lên cancel. Nếu user đang connect địa
+          // chỉ ví trùng với %địa chỉ ví%, hiển thị là YOU.
 
           text: TextSpan(
             text: '${S.current.activity_cancelled} ',
@@ -49,38 +51,17 @@ class Cancel extends StatelessWidget {
               14,
               FontWeight.w400,
             ),
-            children: <TextSpan>[
+            children: [
               TextSpan(
                 text: copy.isEmpty
                     ? ''
-                    : '${S.current.activity_copied} $copy ${S.current.activity_on} ',
+                    : '${S.current.activity_copied} $copy '
+                        '${S.current.activity_on} ',
               ),
               TextSpan(
                 text: '$market ${S.current.activity_by} ',
-                style: textNormalCustom(
-                  AppTheme.getInstance().amountTextColor(),
-                  14,
-                  FontWeight.w600,
-                ),
               ),
-              TextSpan(
-                text: content == S.current.activity_you
-                    ? S.current.activity_you
-                    : content,
-                style: content == S.current.activity_you
-                    ? textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      )
-                    : textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      ).copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-              ),
+              baseTextBSC(content),
             ],
           ),
         ),

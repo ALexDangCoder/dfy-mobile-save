@@ -48,7 +48,6 @@ class _ActivityCollectionState extends State<ActivityCollection> {
                 marketStatus: list[index].marketStatus ?? 99,
                 price: '${list[index].price ?? 0}',
                 priceSymbol: list[index].priceSymbol ?? '',
-                addressMyWallet: widget.addressWallet,
                 title: list[index].nftName ?? '',
                 date: 0.formatDateTimeMy(
                   list[index].eventDateTime ?? 0,

@@ -100,6 +100,7 @@ class _ApproveState extends State<Approve> {
     switch (typeBase) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         nftDetailBloc = nftKey.currentState!.bloc;
+        getNonce();
     }
   }
 
@@ -115,15 +116,12 @@ class _ApproveState extends State<Approve> {
     });
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
-    getNonce();
+    cubit.getListWallets();
     initData(widget.typeApprove);
   }
 
   Future<void> getNonce() async {
-    await cubit.getListWallets();
-    nonce = await nftDetailBloc.getNonceWeb3(
-      walletAddress: cubit.addressWallet ?? '',
-    );
+    nonce = await nftDetailBloc.getNonceWeb3();
   }
 
   /// NamLV used
