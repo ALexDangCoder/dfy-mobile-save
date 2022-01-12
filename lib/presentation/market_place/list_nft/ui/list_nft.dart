@@ -45,7 +45,12 @@ class _ListNftState extends State<ListNft> {
     if (widget.marketType != null) {
       _cubit.getListNft(status: _cubit.status(widget.marketType));
     } else {
-      _cubit.getListNft(name: widget.queryAllResult);
+      if(widget.queryAllResult != null){
+        _cubit.getListNft(name: widget.queryAllResult);
+      }
+      else{
+        _cubit.getListNft();
+      }
     }
   }
 

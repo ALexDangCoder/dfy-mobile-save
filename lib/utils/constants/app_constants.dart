@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 enum AppMode { LIGHT, DARK }
 
 enum ServerType { DEV, QA, STAGING, PRODUCT }
@@ -28,6 +30,7 @@ const String CALENDAR_TYPE_YEAR = 'Year';
 const String ERASE_WALLET = 'earse_wallet';
 const String SUCCESS = 'success';
 const String FAIL = 'fail';
+NumberFormat formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
 
 const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';
