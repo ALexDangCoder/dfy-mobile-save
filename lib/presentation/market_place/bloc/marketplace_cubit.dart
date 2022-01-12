@@ -3,8 +3,8 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
 import 'package:Dfy/domain/model/market_place/list_type_nft_collection_explore_model.dart';
 import 'package:Dfy/domain/model/market_place/outstanding_collection_model.dart';
-import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
@@ -226,6 +226,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
               (e) =>
               outstandingCollection.add(
                 OutstandingCollection(
+                  collectionAddress: e.collectionAddress,
                   collectionType: e.collectionType,
                   id: e.id,
                   name: e.name,

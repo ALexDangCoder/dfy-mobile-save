@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../main.dart';
@@ -18,7 +21,8 @@ enum TYPE_CONFIRM_BASE {
   BUY_NFT,
   SEND_OFFER,
   PLACE_BID,
-  CANCEL_SALE
+  CANCEL_SALE,
+  CREATE_COLLECTION,
 }
 
 class ApproveCubit extends BaseCubit<ApproveState> {
@@ -49,9 +53,23 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   Stream<double> get gasPriceStream => gasPriceSubject.stream;
 
-  Future<bool> sendRawData(String rawData) async {
+  Future<Map<String, dynamic>> sendRawData(String rawData) async {
     final result = await web3Client.sendRawTransaction(transaction: rawData);
-    return result['isSuccess'];
+    return result;
+  }
+
+  NFTRepository get _nftRepo => Get.find();
+
+  Future<void> buyNftRequest(BuyNftRequest buyNftRequest) async {
+    final result = await _nftRepo.buyNftRequest(buyNftRequest);
+    result.when(
+      success: (res) {
+
+      },
+      error: (error) {
+
+      },
+    );
   }
 
   Future<void> emitJsonNftToWalletCore({
@@ -119,18 +137,25 @@ class ApproveCubit extends BaseCubit<ApproveState> {
         final result = await sendRawData(rawData ?? '');
         switch (type) {
           case TYPE_CONFIRM_BASE.BUY_NFT:
-            if (result) {
+            if (result['isSuccess']) {
               showContent();
-              emit(BuySuccess());
+              emit(BuySuccess(result['txHash']));
             } else {
               emit(BuyFail());
+            }
+            break;
+          case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+            if (result['isSuccess']) {
+              showContent();
+            } else {
+
             }
             break;
           default:
             break;
         }
         break;
-        //todo
+      //todo
       case 'importNftCallback':
         final int code = await methodCall.arguments['code'];
         switch (code) {

@@ -123,7 +123,7 @@ class _EvaluationTabState extends State<EvaluationTab>
                                                         1
                                                     : 0,
                                             duration: const Duration(
-                                                milliseconds: 300),
+                                                milliseconds: 300,),
                                           );
                                         },
                                         child: roundButton(

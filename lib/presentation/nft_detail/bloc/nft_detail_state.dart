@@ -1,6 +1,7 @@
 import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/model/nft_on_pawn.dart';
 
 abstract class NFTDetailState extends BaseState {}
 
@@ -27,6 +28,16 @@ class Web3Fail extends NFTDetailState {
   @override
   List<Object?> get props => [];
 }
+
+class NftOnPawnSuccess extends NFTDetailState {
+  final NftOnPawn nftOnPawn;
+
+  NftOnPawnSuccess(this.nftOnPawn);
+
+  @override
+  List<Object?> get props => [];
+}
+
 
 class HaveWallet extends NftOnSaleSuccess {
   HaveWallet(NftMarket nftMarket) : super(nftMarket);

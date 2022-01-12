@@ -11,6 +11,7 @@ import 'package:Dfy/presentation/detail_collection/ui/widget/base_collection.dar
 import 'package:Dfy/presentation/detail_collection/ui/widget/filter_activity.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/double_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,15 +25,10 @@ class DetailCollection extends StatefulWidget {
   const DetailCollection({
     Key? key,
     this.walletAddress,
-    this.typeCollection,
-    required this.id,
+    required this.collectionAddress,
   }) : super(key: key);
   final String? walletAddress;
-  final String id;
-  final int? typeCollection;
-
-  //todo doanh
-  //call api detail dua theo type collection soft 0 hard 1
+  final String collectionAddress;
 
   @override
   _DetailCollectionState createState() => _DetailCollectionState();
@@ -47,8 +43,10 @@ class _DetailCollectionState extends State<DetailCollection>
   void initState() {
     super.initState();
     detailCollectionBloc = DetailCollectionBloc();
-    detailCollectionBloc.getCollection(id: widget.id);
-    detailCollectionBloc.funGetUrl(detailCollectionBloc.arg.socialLinks ?? []);
+    detailCollectionBloc.getCollection(
+      collectionAddressDetail: widget.collectionAddress,
+    );
+
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -193,13 +191,14 @@ class _DetailCollectionState extends State<DetailCollection>
                 ),
                 height: 764.h,
                 child: CollectionDetailError(
-                  id: widget.id,
+                  collectionAddress: widget.collectionAddress,
                   cubit: detailCollectionBloc,
                 ),
               ),
             ),
           );
         } else if (state is LoadingDataSuccess) {
+          final list = detailCollectionBloc.arg;
           return GestureDetector(
             onTap: () {
               final FocusScopeNode currentFocus = FocusScope.of(context);
@@ -209,13 +208,11 @@ class _DetailCollectionState extends State<DetailCollection>
             },
             child: BaseCustomScrollViewDetail(
               isOwner: isOwner,
-              initHeight: 190.h,
-              title: detailCollectionBloc.arg.name ?? '',
+              initHeight: 200.h,
+              title: list.name ?? '',
               imageVerified: ImageAssets.ic_dfy,
-              imageAvatar: ApiConstants.BASE_URL_IMAGE +
-                  (detailCollectionBloc.arg.avatarCid ?? ''),
-              imageCover: ApiConstants.BASE_URL_IMAGE +
-                  (detailCollectionBloc.arg.customUrl ?? ''),
+              imageAvatar: ApiConstants.BASE_URL_IMAGE + (list.avatarCid ?? ''),
+              imageCover: ApiConstants.BASE_URL_IMAGE + (list.coverCid ?? ''),
               leading: SizedBox(
                 child: InkWell(
                   onTap: () {
@@ -309,18 +306,17 @@ class _DetailCollectionState extends State<DetailCollection>
               content: [
                 BodyDetailCollection(
                   detailCollectionBloc: detailCollectionBloc,
-                  bodyText:
-                      (detailCollectionBloc.arg.description ?? '').parseHtml(),
-                  owner: detailCollectionBloc.arg.owner ?? '',
-                  category: detailCollectionBloc.arg.categoryId ?? '',
-                  title: detailCollectionBloc.arg.name ?? '',
-                  nftStandard:
-                      detailCollectionBloc.arg.collectionStandard ?? '',
-                  contract: detailCollectionBloc.arg.collectionAddress ?? '',
-                  owners: '${detailCollectionBloc.arg.nftOwnerCount ?? 0}',
-                  items: '${detailCollectionBloc.arg.totalNft ?? 0}',
+                  bodyText: (list.description ?? '').parseHtml(),
+                  owner: list.owner ?? '',
+                  category: list.categoryType ?? '',
+                  title: list.name ?? '',
+                  nftStandard: detailCollectionBloc
+                      .funGetTypeNFT(list.collectionType ?? 0),
+                  contract: list.collectionAddress ?? '',
+                  owners: '${list.nftOwnerCount ?? 0}',
+                  items: '${list.totalNft ?? 0}',
                   volumeTraded:
-                      '${detailCollectionBloc.arg.totalVolumeTraded ?? 0}',
+                      '${list.totalVolumeTraded?.truncateToDecimalPlaces(5) ?? 0}',
                   urlTwitter: detailCollectionBloc.linkUrlTwitter,
                   urlTelegram: detailCollectionBloc.linkUrlTelegram,
                   urlInstagram: detailCollectionBloc.linkUrlInstagram,

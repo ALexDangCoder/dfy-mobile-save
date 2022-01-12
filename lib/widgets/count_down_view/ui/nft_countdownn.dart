@@ -43,7 +43,6 @@ class _CountDownViewState extends State<CountDownView> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
-
         children: [
           Expanded(
             child: BlocBuilder<TimeBloc, TimeState>(
@@ -126,20 +125,24 @@ class _CountDownViewState extends State<CountDownView> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            time.toString(),
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              24,
-              FontWeight.w600,
+          Flexible(
+            child: Text(
+              time.toString(),
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor(),
+                24,
+                FontWeight.w600,
+              ),
             ),
           ),
-          Text(
-            timeType,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              16,
-              FontWeight.w400,
+          Flexible(
+            child: Text(
+              timeType,
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor(),
+                16,
+                FontWeight.w400,
+              ),
             ),
           ),
         ],

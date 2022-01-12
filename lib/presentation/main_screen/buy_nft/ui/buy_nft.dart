@@ -95,7 +95,9 @@ class _BuyNFTState extends State<BuyNFT> {
               stream: _nftBloc.stateStream,
               error:
                   AppException(S.current.error, S.current.something_went_wrong),
-              retry: () async {},
+              retry: () async {
+                await _nftBloc.callWeb3(context, cubit.amountValue);
+              },
               textEmpty: '',
               child: BaseBottomSheet(
                 isImage: true,
@@ -253,7 +255,7 @@ class _BuyNFTState extends State<BuyNFT> {
     return StreamBuilder<int>(
         stream: cubit.amountStream,
         builder: (context, snapshot) {
-          final total = nftMarket.price.toInt() * (snapshot.data ?? 1);
+          final total = (nftMarket.price ?? 0) * (snapshot.data ?? 1);
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

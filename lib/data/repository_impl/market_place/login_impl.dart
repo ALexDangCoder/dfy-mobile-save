@@ -4,8 +4,7 @@ import 'package:Dfy/data/services/market_place/login_service.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 
-class LoginImpl implements LoginRepository{
-
+class LoginImpl implements LoginRepository {
   final LoginClient _loginClient;
 
   LoginImpl(this._loginClient);
@@ -13,8 +12,8 @@ class LoginImpl implements LoginRepository{
   @override
   Future<Result<LoginModel>> login(String signature, String walletAddress) {
     return runCatchingAsync<LoginResponse, LoginModel>(
-                () => _loginClient.login(signature, walletAddress),
-                (response) => response.toDomain(),
-          );
+      () => _loginClient.login(signature, walletAddress),
+      (response) => response.toDomain(),
+    );
   }
 }

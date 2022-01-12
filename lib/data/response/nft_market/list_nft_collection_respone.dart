@@ -1,4 +1,3 @@
-
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -15,9 +14,10 @@ class ListNftCollectionResponse extends Equatable {
   String? rd;
   @JsonKey(name: 'total')
   int? total;
+  @JsonKey(name: 'trace-id')
+  String? traceId;
   @JsonKey(name: 'rows')
   List<NftCollectionResponse>? rows;
-
 
   ListNftCollectionResponse(this.rc, this.rd, this.total, this.rows);
 
@@ -28,5 +28,6 @@ class ListNftCollectionResponse extends Equatable {
 
   @override
   List<Object?> get props => [];
+
   List<NftMarket>? toDomain() => rows?.map((e) => e.toDomain()).toList();
 }

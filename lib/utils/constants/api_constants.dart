@@ -5,6 +5,7 @@ class ApiConstants {
   static const int PAGE_BEGIN = 1;
   static const int NOT_SAVED_ID = -1;
   static const int TIME_OUT = 30;
+  static const String DEFAULT_NFT_SIZE = '12';
   static const String GET_LIST_TOKEN =
       '/nft-market-svc/public-api/market/coin-list';
   static const String DETAIL_CATEGORY = 'nft-market-svc/public-api/collection';
@@ -23,27 +24,42 @@ class ApiConstants {
       '/defi-user-service/public-api/v1.0.0/users/nonce?';
   static const String URL_BASE = 'https://defiforyou.mypinata.cloud/ipfs/';
   static const String GET_LIST_COLLECTION =
+      '/inventory-svc/public-api/collections';
+  static const String GET_LIST_COLLECTION_MARKET =
       '/nft-market-svc/public-api/search/collection';
+  static const String GET_LIST_FILTER_COLLECTION_DETAIL =
+      '/inventory-svc/public-api/collections/get-filter-properties';
   static const String GET_LIST_CATEGORY = '/nft-market-svc/public-api/category';
   static const String GET_BOOL_CUSTOM_URL =
-      'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=https://beta-marketplace.defiforyou.uk/';
-  static const String GET_LIST_COLLECTION_FILTER =
-      '/nft-market-svc/public-api/collection';
+      'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=https://marketplace.defiforyou.uk/';
+  static const String GET_LIST_COLLECTION_FILTER = '/nft-market-svc/public-api/collection';
   static const String GET_LIST_NFT = '/nft-market-svc/public-api/search/nft';
-  static const String GET_LIST_NFT_COLLECTION =
-      'nft-market-svc/public-api/collection/list-nft';
+  static const String GET_LIST_TYPE_NFT = '/hard-nft-svc/public-api/collections/types';
+
+
+  static const String GET_LIST_NFT_COLLECTION = 'nft-market-svc/public-api/collection/list-nft';
   static const String COLLECTION_DETAIL =
-      '/nft-market-svc/public-api/collection/';
+      '/inventory-svc/public-api/collections/';
   static const String COLLECTION_ACTIVITY_LIST =
       '/inventory-svc/public-api/v1.0.0/collections/activities';
 
   ///NFT
   static const String GET_DETAIL_NFT_ON_SALE =
       '/nft-market-svc/public-api/market/detail/';
+  static const String GET_DETAIL_HARD_NFT =
+      '/nft-market-svc/public-api/hard-nft/';
   static const String GET_HISTORY = 'inventory-svc/public-api/v1.0.0/histories';
   static const String GET_OWNER = 'inventory-svc/public-api/v1.0.0/owners';
   static const String GET_BIDDING =
       '/nft-market-svc/public-api/auction/bidding-list';
+  static const String BUY_NFT =
+      '/nft-market-svc/api/market/buy';
+
+  static const String GET_DETAIL_NFT_ON_PAWN =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts/';
+
+  static const String GET_OFFER =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/loan-crypto-offer';
 
   // BSC SCAN
 

@@ -22,5 +22,11 @@ Widget sizedSvgImage({
   required double h,
   required String image,
 }) {
-  return SizedBox(height: h.h, width: w.w, child: SvgPicture.asset(image));
+  return SizedBox(
+    height: h.h,
+    width: w.w,
+    child: SvgPicture.asset(
+      image,
+    ),
+  );
 }

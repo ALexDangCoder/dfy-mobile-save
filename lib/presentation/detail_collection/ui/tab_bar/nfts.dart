@@ -3,8 +3,6 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
 import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
@@ -139,7 +137,7 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                   staggeredTileBuilder: (int index) =>
                       const StaggeredTile.fit(1),
                 );
-              } else if (statusNft == DetailCollectionBloc.FAILD) {
+              } else if (statusNft == DetailCollectionBloc.ERORR) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -156,10 +154,9 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                     spaceH16,
                     Text(
                       S.current.no_result_found,
-                      style: textNormalCustom(
+                      style: textNormal(
                         AppTheme.getInstance().whiteWithOpacity(),
-                        20,
-                        FontWeight.bold,
+                        20.sp,
                       ),
                     ),
                   ],
@@ -202,7 +199,7 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                     return ErrorLoadNft(
                       callback: () {
                         widget.detailCollectionBloc.getListNft(
-                          collectionId:
+                          collectionAddress:
                               widget.detailCollectionBloc.collectionId,
                           name: widget.detailCollectionBloc.textSearch.value,
                           listMarketType:

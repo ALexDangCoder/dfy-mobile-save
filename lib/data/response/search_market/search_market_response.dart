@@ -81,6 +81,15 @@ class CollectionFeatNftResponse extends Equatable {
   @JsonKey(name: 'cover_cid')
   String? coverCid;
 
+  @JsonKey(name: 'collection_address')
+  String? collectionAddress;
+  @JsonKey(name: 'type')
+  int? type;
+  @JsonKey(name: 'pawn_id')
+  int? pawnId;
+  @JsonKey(name: 'nft_id')
+  String? nftId;
+
   CollectionFeatNftResponse(this.id, this.name, this.info, this.imageCid,
       this.marketType, this.fileType, this.coverCid);
 
@@ -97,6 +106,10 @@ class CollectionFeatNftResponse extends Equatable {
         marketType: marketType ?? '',
         fileType: fileType ?? '',
         coverCid: coverCid ?? '',
+        collectionAddress: collectionAddress ?? '',
+        nftId: nftId ?? '',
+        type: type,
+        pawnId: pawnId,
       );
 
   @override

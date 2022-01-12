@@ -89,43 +89,40 @@ class _ActivityCollectionState extends State<ActivityCollection> {
             ],
           );
         } else if (statusActivity == DetailCollectionBloc.LOADING) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 40.h,
+          return const Align(
+            alignment: Alignment.bottomCenter,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
               ),
-              const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                ),
-              )
-            ],
+            ),
           );
         } else {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 40.h,
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(top: 80.h),
+              child: Column(
+                children: [
+                  Image(
+                    image: const AssetImage(
+                      ImageAssets.img_search_empty,
+                    ),
+                    height: 120.h,
+                    width: 120.w,
+                  ),
+                  SizedBox(
+                    height: 17.7.h,
+                  ),
+                  Text(
+                    S.current.no_result_found,
+                    style: textNormal(
+                      AppTheme.getInstance().whiteWithOpacity(),
+                      20.sp,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
-                width: 120.w,
-                height: 117.23.h,
-                child: Image.asset(
-                  ImageAssets.err_load_collection,
-                ),
-              ),
-              spaceH16,
-              Text(
-                S.current.error_network,
-                style: textNormalCustom(
-                  AppTheme.getInstance().whiteWithOpacity(),
-                  20,
-                  FontWeight.bold,
-                ),
-              ),
-            ],
+            ),
           );
         }
       },

@@ -122,7 +122,8 @@ class ListNftHotAuction extends StatelessWidget {
                                   MaterialPageRoute(
                                     builder: (context) => NFTDetailScreen(
                                       key: nftKey,
-                                      type: MarketType.AUCTION,
+                                      typeMarket: MarketType.AUCTION,
+
                                     ),
                                   ),
                                 );
