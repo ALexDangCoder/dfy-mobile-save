@@ -90,15 +90,20 @@ class _ApproveState extends State<Approve> {
   late int accountImage;
   double gasFee = 0;
   int nonce = 0;
-  final NFTDetailBloc nftDetailBloc =
-      nftKey.currentState!.bloc;
+  late final NFTDetailBloc nftDetailBloc;
+
+  void initData(TYPE_CONFIRM_BASE typeBase) {
+    switch (typeBase) {
+      case TYPE_CONFIRM_BASE.BUY_NFT:
+        nftDetailBloc = nftKey.currentState!.bloc;
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     cubit = ApproveCubit();
-    //cubit.nftMarket = nftDetailBloc.nftMarket;
     cubit.type = widget.typeApprove;
     accountImage = cubit.randomAvatar();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
@@ -107,6 +112,7 @@ class _ApproveState extends State<Approve> {
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     getNonce();
+    initData(widget.typeApprove);
   }
 
   Future<void> getNonce() async {

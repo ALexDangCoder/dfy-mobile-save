@@ -69,6 +69,25 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   late final TabController _tabController;
   late final NFTDetailBloc bloc;
 
+  @override
+  void initState() {
+    super.initState();
+    bloc = NFTDetailBloc();
+    trustWalletChannel
+        .setMethodCallHandler(bloc.nativeMethodCallBackTrustWallet);
+    bloc.nftMarketId = widget.marketId ?? '';
+    caseTabBar(widget.typeMarket, widget.typeNft);
+    onRefresh();
+    bloc.getInForNFT(
+      marketId: widget.marketId ?? '',
+      nftId: widget.nftId ?? '',
+      type: widget.typeMarket,
+      typeNFT: widget.typeNft ?? TypeNFT.SOFT_NFT,
+      pawnId: widget.pawnId ?? 0,
+    );
+    _tabController = TabController(length: _tabPage.length, vsync: this);
+  }
+
   void caseTabBar(MarketType type, TypeNFT? typeNft) {
     switch (type) {
       case MarketType.AUCTION:
@@ -127,8 +146,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
         ];
         break;
       case MarketType.SALE:
-        trustWalletChannel
-            .setMethodCallHandler(bloc.nativeMethodCallBackTrustWallet);
         _tabPage = [
           StreamBuilder<List<HistoryNFT>>(
             stream: bloc.listHistoryStream,
@@ -228,24 +245,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   }
 
   final formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
-
-  @override
-  void initState() {
-    super.initState();
-    bloc = NFTDetailBloc();
-    caseTabBar(widget.typeMarket, widget.typeNft);
-    bloc.nftMarketId = widget.marketId ?? '';
-    caseTabBar(widget.type);
-    onRefresh();
-    bloc.getInForNFT(
-      marketId: widget.marketId ?? '',
-      nftId: widget.nftId ?? '',
-      type: widget.typeMarket,
-      typeNFT: widget.typeNft ?? TypeNFT.SOFT_NFT,
-      pawnId: widget.pawnId ?? 0,
-    );
-    _tabController = TabController(length: _tabPage.length, vsync: this);
-  }
 
   @override
   void dispose() {
@@ -845,7 +844,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       onPressed: () async {
         await bloc
             .getBalanceToken(
-              ofAddress: bloc.walletAddress,
+              ofAddress: bloc.wallets.first.address ?? '',
               tokenAddress: bloc.nftMarket.token ?? '',
             )
             .then(
