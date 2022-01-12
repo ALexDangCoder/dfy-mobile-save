@@ -181,7 +181,7 @@ class _FilterState extends State<Filter> {
             GestureDetector(
               onTap: () {
                 collectionBloc.funFilter(
-                  index: collectionBloc.sortFilter + 1,
+                  index: (collectionBloc.sortFilter ?? 0) + 1,
                 );
                 Navigator.pop(context);
               },

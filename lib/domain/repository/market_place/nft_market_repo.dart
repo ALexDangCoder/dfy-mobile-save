@@ -11,7 +11,7 @@ mixin NftMarketRepository {
   });
 
   Future<Result<List<NftMarket>>> getListNftCollection({
-    String? collectionId,
+    String? collectionAddress,
     int? page,
     int? size,
     String? nameNft,

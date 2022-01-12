@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/data/response/collection_detail/collection_detail_res.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
+import 'package:Dfy/domain/model/market_place/collection_detail_filter_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
@@ -37,10 +37,11 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const int AUCTION = 2;
   static const int PAWN = 3;
   static const int TYPE721 = 0;
-  static const String FACEBOOK = 'facebook';
-  static const String INSTAGRAM = 'instagram';
-  static const String TELEGRAM = 'telegram';
-  static const String TWITTER = 'twitter';
+  static const String FACEBOOK = 'FACEBOOK';
+  static const String INSTAGRAM = 'INSTAGRAM';
+  static const String TELEGRAM = 'TELEGRAM';
+  static const String TWITTER = 'TWITTER';
+  static const String HTTPS = 'https://';
   static const int SOFT_COLLECTION = 0;
   static const int HARD_COLLECTION = 1;
 
@@ -101,7 +102,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String collectionAddress = '';
   String typeActivity = '';
 
-
   void funFilterNft() {
     if (isOnSale.value) {
       listFilter.add(SALE);
@@ -130,13 +130,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         listFilter.add(NOT_ON_MARKET);
       }
       getListNft(
-        collectionId: collectionId,
+        collectionAddress: collectionAddress,
         listMarketType: listFilter,
         name: textSearch.value,
       );
     } else {
       getListNft(
-        collectionId: collectionId,
+        collectionAddress: collectionAddress,
         name: textSearch.value,
       );
     }
@@ -154,6 +154,16 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       market = S.current.not_on_market;
     }
     return market;
+  }
+
+  String funGetTypeNFT(int collectionType) {
+    String typeNft = '';
+    if (collectionType == SOFT_COLLECTION) {
+      typeNft = S.current.erc_721;
+    } else {
+      typeNft = S.current.erc_1155;
+    }
+    return typeNft;
   }
 
   String funCheckAddressSend({
@@ -209,7 +219,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     String each = '';
     if (nftType == TYPE721) {
       each = '';
-    } else {
+    } else  {
       each = S.current.activity_each;
     }
     return each;
@@ -277,13 +287,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         if (listFilter.isNotEmpty) {
           getListNft(
             name: value,
-            collectionId: collectionId,
+            collectionAddress: collectionAddress,
             listMarketType: listFilter,
           );
         } else {
           getListNft(
             name: value,
-            collectionId: collectionId,
+            collectionAddress: collectionAddress,
             listMarketType: [
               NOT_ON_MARKET,
               SALE,
@@ -319,10 +329,26 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     listFilter.clear();
   }
 
-  Future<void> getCollection({String? id = ''}) async {
+  Future<void> getListFilterCollectionDetail({
+    String collectionAddress = '',
+  }) async {
+    final Result<List<CollectionFilterDetailModel>> result =
+        await _collectionDetailRepository.getListFilterCollectionDetail(
+      collectionAddress: collectionAddress,
+    );
+    result.when(
+      success: (res) {
+        //todo fillter
+      },
+      error: (error) {},
+    );
+  }
+
+  Future<void> getCollection({String? collectionAddressDetail = ''}) async {
     emit(LoadingData());
     final Result<CollectionDetailModel> result =
-        await _collectionDetailRepository.getCollectionDetail(id ?? '');
+        await _collectionDetailRepository
+            .getCollectionDetail(collectionAddressDetail ?? '');
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
@@ -330,14 +356,16 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         } else {
           emit(LoadingDataSuccess());
           arg = res;
+          funGetUrl(res.socialLinks ?? []);
           collectionDetailModel.sink.add(arg);
-          collectionId = arg.id ?? '';
-          collectionAddress = arg.collectionAddress ?? '';
+          collectionAddress = collectionAddressDetail ?? '';
+          getListFilterCollectionDetail(
+              collectionAddress: arg.collectionAddress ?? '');
           getListNft(
-            collectionId: arg.id ?? '',
+            collectionAddress: collectionAddressDetail ?? '',
           );
           getListActivityCollection(
-            collectionAddress: arg.collectionAddress ?? '',
+            collectionAddress: collectionAddressDetail ?? '',
           );
         }
       },
@@ -350,13 +378,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   Future<void> getListNft({
     List<int>? listMarketType,
     String? name,
-    int? size = 0,
+    int? size = 100,
     int? page = 0,
-    required String collectionId,
+    required String collectionAddress,
   }) async {
     statusNft.add(LOADING);
     final Result<List<NftMarket>> result = await _nftRepo.getListNftCollection(
-      collectionId: collectionId,
+      collectionAddress: collectionAddress,
       nameNft: name,
       listMarketType: listMarketType,
       size: size,
@@ -408,9 +436,11 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     );
   }
 
-  void funGetUrl(List<SocialLink> link) {
-    for (final SocialLink value in link) {
-      switch (value.type?.toLowerCase()) {
+
+
+  void funGetUrl(List<SocialLinkModel> link) {
+    for (final SocialLinkModel value in link) {
+      switch (value.type?.toUpperCase()) {
         case FACEBOOK:
           linkUrlFacebook = value.url ?? '';
           break;
@@ -515,6 +545,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         return ImageAssets.imgTokenYFII;
       case 'ZEC':
         return ImageAssets.imgTokenZEC;
+      case 'USDT':
+        return ImageAssets.imgTokenUSDT;
       default:
         return '';
     }

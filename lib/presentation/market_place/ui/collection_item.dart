@@ -1,4 +1,3 @@
-import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -11,6 +10,7 @@ class CollectionItem extends StatelessWidget {
   final String title;
   final String idCollection;
   final int? typeCollection;
+  final String? collectionAddress;
 
   const CollectionItem({
     Key? key,
@@ -19,6 +19,7 @@ class CollectionItem extends StatelessWidget {
     required this.title,
     required this.idCollection,
     this.typeCollection,
+    this.collectionAddress,
   }) : super(key: key);
 
   @override
@@ -30,8 +31,8 @@ class CollectionItem extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) {
               return DetailCollection(
-                id: idCollection,
-                typeCollection: typeCollection,
+                // walletAddress: 'alo alo',//todo address wallet
+                collectionAddress: collectionAddress ?? '',
               );
             },
           ),
@@ -81,7 +82,8 @@ class CollectionItem extends StatelessWidget {
                           left: 10.w,
                           right: 10.w,
                         ),
-                        child: Center(
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
                           child: Text(
                             title,
                             style: TextStyle(

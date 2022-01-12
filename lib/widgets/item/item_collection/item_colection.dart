@@ -25,7 +25,7 @@ class ItemCollection extends StatelessWidget {
     required this.items,
     required this.owners,
     required this.text,
-    this.backgroundFit = BoxFit.fill,
+    this.backgroundFit = BoxFit.fitWidth,
     this.fixWidth = true,
     this.itemsKey,
     this.ownersKey,
@@ -63,7 +63,7 @@ class ItemCollection extends StatelessWidget {
                     image: NetworkImage(
                       urlBackGround,
                     ),
-                    fit: backgroundFit ?? BoxFit.fill,
+                    fit: backgroundFit ?? BoxFit.fitWidth,
                   ),
                 ),
                 // child: ,
@@ -149,7 +149,9 @@ class ItemCollection extends StatelessWidget {
                     color: AppTheme.getInstance().borderItemColor(),
                   ),
                 ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                errorWidget: (context, url, error) => Container(
+                  color: AppTheme.getInstance().selectDialogColor(),
+                ),
               ),
             ),
           ),
