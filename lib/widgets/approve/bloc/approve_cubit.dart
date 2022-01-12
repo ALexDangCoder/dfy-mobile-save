@@ -140,6 +140,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
               showContent();
               emit(BuySuccess(result['txHash']));
             } else {
+              showContent();
               emit(BuyFail());
             }
             break;

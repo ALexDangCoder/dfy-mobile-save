@@ -68,6 +68,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   late final List<Widget> _tabTit;
   late final TabController _tabController;
   late final NFTDetailBloc bloc;
+  late final String walletAddress;
 
   @override
   void initState() {
@@ -78,13 +79,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
     bloc.nftMarketId = widget.marketId ?? '';
     caseTabBar(widget.typeMarket, widget.typeNft);
     onRefresh();
-    bloc.getInForNFT(
-      marketId: widget.marketId ?? '',
-      nftId: widget.nftId ?? '',
-      type: widget.typeMarket,
-      typeNFT: widget.typeNft ?? TypeNFT.SOFT_NFT,
-      pawnId: widget.pawnId ?? 0,
-    );
+
     _tabController = TabController(length: _tabPage.length, vsync: this);
   }
 
@@ -844,7 +839,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       onPressed: () async {
         await bloc
             .getBalanceToken(
-              ofAddress: bloc.wallets.first.address ?? '',
+              ofAddress: bloc.walletAddress,
               tokenAddress: bloc.nftMarket.token ?? '',
             )
             .then(
