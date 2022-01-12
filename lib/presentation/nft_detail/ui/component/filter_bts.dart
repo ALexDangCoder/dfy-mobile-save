@@ -162,7 +162,11 @@ class _FilterBtsState extends State<FilterBts> {
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
+<<<<<<<<< Temporary merge branch 1
                         itemCount: (itemCount >5) ? 5: itemCount,
+=========
+                        itemCount: (itemCount > 5) ? 5: itemCount,
+>>>>>>>>> Temporary merge branch 2
                         itemBuilder: (context, index) {
                           return Column(
                             children: [
