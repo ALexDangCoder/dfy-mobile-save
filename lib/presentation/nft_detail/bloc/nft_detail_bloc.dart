@@ -213,6 +213,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           await _nftRepo.getDetailNftOnPawn(pawnId.toString());
       result.when(
         success: (res) {
+          getOffer(pawnId.toString());
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.expectedCollateralSymbol ?? '';
             final symbol = value.symbol ?? '';
@@ -230,7 +231,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             res.nftCollateralDetailDTO?.collectionAddress ?? '',
             res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '',
           );
-          getOffer(pawnId.toString());
           showContent();
         },
         error: (error) {
@@ -330,12 +330,22 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         secondEnd = second;
       } else if (endDate.month == today.month) {
         if(endDate.day >= endDate.day){
-          day = endDate.day + today.day;
+          day = endDate.day - today.day;
           if(endDate.hour >= today.hour){
             hour = day * 24 + endDate.hour - today.hour;
-            minute = hour * 60 + endDate.minute - today.minute;
-            second = minute * 60 + endDate.minute - today.minute;
-            secondEnd = second;
+            if(endDate.minute >= endDate.minute){
+              minute = hour * 60 + endDate.minute - today.minute;
+              if(endDate.second >=endDate.second){
+                second = minute * 60 + endDate.minute - today.minute;
+                secondEnd = second;
+              }
+              else {
+                secondEnd = 0;
+              }
+            }
+            else{
+              secondEnd = 0;
+            }
           } else {
             secondEnd = 0;
           }
@@ -349,11 +359,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     } else {
       secondEnd = 0;
     }
-    if (secondEnd > 0) {
-      return secondEnd;
-    } else {
-      return 0;
-    }
+    return secondEnd;
   }
 
   Future<String> getBuyNftData({

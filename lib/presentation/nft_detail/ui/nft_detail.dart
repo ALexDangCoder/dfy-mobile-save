@@ -97,7 +97,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<HistoryNFT>>(
             stream: bloc.listHistoryStream,
             builder: (
-              BuildContext context,
+               context,
               AsyncSnapshot<List<HistoryNFT>> snapshot,
             ) {
               return HistoryTab(
@@ -108,7 +108,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<OwnerNft>>(
             stream: bloc.listOwnerStream,
             builder: (
-              BuildContext context,
+               context,
               AsyncSnapshot<List<OwnerNft>> snapshot,
             ) {
               return OwnerTab(
@@ -121,7 +121,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<BiddingNft>>(
             stream: bloc.listBiddingStream,
             builder: (
-              BuildContext context,
+               context,
               AsyncSnapshot<List<BiddingNft>> snapshot,
             ) {
               return BidTab(
@@ -152,7 +152,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<HistoryNFT>>(
             stream: bloc.listHistoryStream,
             builder: (
-              BuildContext context,
+               context,
               AsyncSnapshot<List<HistoryNFT>> snapshot,
             ) {
               return HistoryTab(
@@ -163,7 +163,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<OwnerNft>>(
             stream: bloc.listOwnerStream,
             builder: (
-              BuildContext context,
+               context,
               AsyncSnapshot<List<OwnerNft>> snapshot,
             ) {
               return OwnerTab(
@@ -192,7 +192,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<HistoryNFT>>(
             stream: bloc.listHistoryStream,
             builder: (
-              BuildContext context,
+               context,
               AsyncSnapshot<List<HistoryNFT>> snapshot,
             ) {
               return HistoryTab(
@@ -203,7 +203,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<OwnerNft>>(
             stream: bloc.listOwnerStream,
             builder: (
-              BuildContext context,
+               context,
               AsyncSnapshot<List<OwnerNft>> snapshot,
             ) {
               return OwnerTab(
@@ -216,7 +216,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<OfferDetail>>(
             stream: bloc.listOfferStream,
             builder: (
-              BuildContext context,
+                context,
               AsyncSnapshot<List<OfferDetail>> snapshot,
             ) {
               return OfferTab(
