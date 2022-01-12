@@ -271,7 +271,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       );
       emit(GetGasLimitSuccess(nftMarket,gasLimit,));
     } catch (e) {
-      showError();
       throw AppException(S.current.error, e.toString());
     }
     return gasLimit;

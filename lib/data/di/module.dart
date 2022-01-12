@@ -1,26 +1,24 @@
 import 'package:Dfy/data/di/flutter_transformer.dart';
+import 'package:Dfy/data/repository_impl/category_repository_impl.dart';
+import 'package:Dfy/data/repository_impl/market_place/collection_detail_impl.dart';
+import 'package:Dfy/data/repository_impl/market_place/collection_filter_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/detail_category_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/login_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/marketplace_impl.dart';
-import 'package:Dfy/data/repository_impl/market_place/nonce_impl.dart';
-import 'package:Dfy/data/repository_impl/price_repository_impl.dart';
-import 'package:Dfy/data/repository_impl/token_repository_impl.dart';
-import 'package:Dfy/data/services/market_place/detail_category_service.dart';
-import 'package:Dfy/data/services/market_place/login_service.dart';
-import 'package:Dfy/data/services/market_place/marketplace_client.dart';
-import 'package:Dfy/data/services/market_place/nonce_service.dart';
-import 'package:Dfy/data/repository_impl/market_place/collection_detail_impl.dart';
-import 'package:Dfy/data/repository_impl/market_place/collection_filter_repository_impl.dart';
-import 'package:Dfy/data/repository_impl/category_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/nft_market_repository_impl.dart';
+import 'package:Dfy/data/repository_impl/market_place/nonce_impl.dart';
 import 'package:Dfy/data/repository_impl/nft_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/price_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/search_market/search_market_impl.dart';
 import 'package:Dfy/data/repository_impl/token_repository_impl.dart';
+import 'package:Dfy/data/services/market_place/category_service.dart';
 import 'package:Dfy/data/services/market_place/collection_detail_service.dart';
 import 'package:Dfy/data/services/market_place/collection_filter_service.dart';
-import 'package:Dfy/data/services/market_place/category_service.dart';
+import 'package:Dfy/data/services/market_place/detail_category_service.dart';
+import 'package:Dfy/data/services/market_place/login_service.dart';
+import 'package:Dfy/data/services/market_place/marketplace_client.dart';
 import 'package:Dfy/data/services/market_place/nft_market_services.dart';
+import 'package:Dfy/data/services/market_place/nonce_service.dart';
 import 'package:Dfy/data/services/nft_service.dart';
 import 'package:Dfy/data/services/price_service.dart';
 import 'package:Dfy/data/services/search_market/search_market_client.dart';
@@ -32,13 +30,12 @@ import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
 import 'package:Dfy/domain/repository/market_place/detail_category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
-import 'package:Dfy/domain/repository/market_place/nonce_repository.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
+import 'package:Dfy/domain/repository/market_place/nonce_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
-import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
@@ -106,6 +103,11 @@ Dio provideDio({int connectionTimeOut = 60000}) {
           (RequestOptions options, RequestInterceptorHandler handler) async {
         options.baseUrl = appConstants.baseUrl;
         options.headers['Content-Type'] = 'application/json';
+        options.headers = {
+          'pinata_api_key': 'ac8828bff3bcd1c1b828',
+          'pinata_secret_api_key':
+              'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
+        };
         return handler.next(options);
       },
       onResponse: (response, handler) {
