@@ -222,7 +222,7 @@ class _NftProductState extends State<NftProduct> {
     switch (nftCategory) {
       case NFT_CATEGORY.SALE:
         return Text(
-          S.current.sale,
+          S.current.sell,
           style: textNormalCustom(
               AppTheme.getInstance().successTransactionColors(),
               13.sp,

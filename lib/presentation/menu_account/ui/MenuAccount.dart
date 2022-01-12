@@ -30,7 +30,7 @@ class _MenuAccountState extends State<MenuAccount> {
           'title': S.current.not_on_market,
         },
         {
-          'title': S.current.on_sale,
+          'title': S.current.on_sell,
         },
         {
           'title': S.current.on_pawn,

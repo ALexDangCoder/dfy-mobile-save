@@ -1,3 +1,4 @@
+import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 
 class NftOnPawn {
@@ -70,9 +71,11 @@ class NftCollateralDetailDTO {
   int? numberOfCopies;
   int? totalCopies;
   String? evaluationId;
+  List<Properties>? properties;
 
   NftCollateralDetailDTO({
     this.nftId,
+    this.properties,
     this.nftTokenId,
     this.networkName,
     this.typeNFT,
