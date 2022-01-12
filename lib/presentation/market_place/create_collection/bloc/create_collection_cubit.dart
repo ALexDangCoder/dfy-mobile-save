@@ -22,12 +22,18 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
-class CreateCollectionBloc {
+part 'create_collection_state.dart';
+
+class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
+
+  CreateCollectionCubit() : super(CreateCollectionInitial());
+
   final Web3Utils _web3utils = Web3Utils();
 
   String walletAddress = '';
   String gasLimit = '';
   int transactionNonce = 0;
+  String transactionData = '';
 
   String createType = '';
   int collectionType = -1;
@@ -438,6 +444,7 @@ class CreateCollectionBloc {
 
   ///get List TypeNFT
   Future<void> getListTypeNFT() async {
+    showLoading();
     final Result<List<TypeNFTModel>> result = await _nftRepo.getListTypeNFT();
     result.when(
       success: (res) {
@@ -450,6 +457,7 @@ class CreateCollectionBloc {
       },
       error: (error) {},
     );
+    showContent();
   }
 
   int getStandardFromID(String id) {
@@ -627,8 +635,9 @@ class CreateCollectionBloc {
   }
 
   Future<void> sendDataWeb3(BuildContext context) async {
+    showLoading();
     await getCollectionIPFS();
-    final String transactionData = await _web3utils.getCreateCollectionData(
+    transactionData = await _web3utils.getCreateCollectionData(
       contractAddress: nft_factory_dev2,
       name: collectionName,
       royaltyRate: royalties.toString(),
@@ -645,6 +654,7 @@ class CreateCollectionBloc {
       address: walletAddress,
     );
     transactionNonce = model.count;
+    showContent();
   }
 
   ///Create Collection

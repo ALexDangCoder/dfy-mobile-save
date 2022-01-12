@@ -413,9 +413,8 @@
   "owner_from_high_to_low": "Chủ từ cao đến thấp",
   "owner_from_low_to_high": "Chủ từ thấp đến cao",
   "item_from_high_to_low": "Mục từ cao đến thấp",
-  "item_from_low_to_high": "Mục từ thấp đến cao",
   "you_enter_greater": "Bạn nhập lớn hơn tổng số bản",
-  "you_must": "Bạn phải nhập vào số lượng bạn muốn mua"
+  "you_must": "Bạn phải nhập vào số lượng bạn muốn mua",
   "item_from_low_to_high": "Mục từ thấp đến cao",
   "error_text": "Lỗi tải...",
   "could_not_load_data" : "Không thể tải dữ liệu",

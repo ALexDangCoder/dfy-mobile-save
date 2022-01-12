@@ -432,7 +432,6 @@
   "owner_from_high_to_low": "Owner from high to low",
   "owner_from_low_to_high": "Owner from low to high",
   "item_from_high_to_low": "Item from high to low",
-  "item_from_low_to_high": "Item from low to high",
   "category_require" : "Category is required",
   "collection_name_require" : "Name for collection is required",
   "avatar_photo" : "Avatar Photo",
@@ -444,7 +443,7 @@
   "custom_url_info" : "Customize your URL on Defi for you. Must only contain lowercase letters, numbers, and hyphens.",
   "custom_url_err" : "Only contain lowercase letters, numbers, and hyphens",
   "royalties_info" : "Collect a fee when a user re-sells an item you originally created. This is deducted from the final sale price and paid monthly to a payout address of your choosing.",
-  "name" : "Name"
+  "name" : "Name",
   "item_from_low_to_high": "Item from low to high",
   "no_des": "No description available",
   "available": "Available",

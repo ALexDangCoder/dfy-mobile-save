@@ -1,11 +1,10 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_bloc.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/widget/categories_cool.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/presentation/market_place/create_collection/ui/widget/upload_progess_widget.dart';
@@ -21,7 +20,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class CreateDetailCollection extends StatefulWidget {
-  final CreateCollectionBloc bloc;
+  final CreateCollectionCubit bloc;
   final int collectionType;
 
   const CreateDetailCollection({

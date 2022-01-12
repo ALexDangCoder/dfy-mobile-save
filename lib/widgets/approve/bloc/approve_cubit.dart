@@ -18,6 +18,7 @@ enum TYPE_CONFIRM_BASE {
   BUY_NFT,
   SEND_OFFER,
   PLACE_BID,
+  CREATE_COLLECTION,
 }
 
 class ApproveCubit extends BaseCubit<ApproveState> {
@@ -48,9 +49,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   Stream<double> get gasPriceStream => gasPriceSubject.stream;
 
-  Future<bool> sendRawData(String rawData) async {
+  Future<Map<String, dynamic>> sendRawData(String rawData) async {
     final result = await web3Client.sendRawTransaction(transaction: rawData);
-    return result['isSuccess'];
+    return result;
   }
 
   Future<void> emitJsonNftToWalletCore({
@@ -116,21 +117,27 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
         final result = await sendRawData(rawData ?? '');
-
         switch (type) {
           case TYPE_CONFIRM_BASE.BUY_NFT:
-            if (result) {
+            if (result['isSuccess']) {
               showContent();
               emit(BuySuccess());
             } else {
               emit(BuyFail());
             }
             break;
+          case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+            if (result['isSuccess']) {
+              showContent();
+            } else {
+
+            }
+            break;
           default:
             break;
         }
         break;
-        //todo
+      //todo
       case 'importNftCallback':
         final int code = await methodCall.arguments['code'];
         switch (code) {
