@@ -39,7 +39,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String rawData = '';
   String nftMarketId = '';
 
-  String walletAddress = '';
+  late final String walletAddress;
   Stream<bool> get viewStream => _viewSubject.stream;
 
   Sink<bool> get viewSink => _viewSubject.sink;
@@ -350,7 +350,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         context: context,
       ).then(
         (value) => getGasLimitByData(
-          fromAddress: walletAddress,
+          fromAddress: wallets.first.address ?? '',
           toAddress: nft_sales_address_dev2,
           hexString: value,
         ),
@@ -375,7 +375,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   //get limit gas
 
   //get dataString
-  Future<void> getGasLimitForCancel({
+  Future<double> getGasLimitForCancel({
     required BuildContext context,
   }) async {
     try {
@@ -386,17 +386,13 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         context: context,
       );
       gasLimit = await web3Client.getGasLimitByData(
-        from: wallets.first.address ?? '',
+        from: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
         toContractAddress: nft_sales_address_dev2,
         dataString: hexString,
       );
-      emit(
-        GetGasLimitSuccess(
-          nftMarket,
-          gasLimit,
-        ),
-      );
+      
       showContent();
+      return double.parse(gasLimit);
     } catch (e) {
       showError();
       throw AppException(S.current.error, e.toString());

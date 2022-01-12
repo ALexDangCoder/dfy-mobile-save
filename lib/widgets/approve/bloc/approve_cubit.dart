@@ -134,6 +134,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
         break;
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
+        print(methodCall.arguments['isSuccess']);
+        showContent();
+
         final result = await sendRawData(rawData ?? '');
         switch (type) {
           case TYPE_CONFIRM_BASE.BUY_NFT:
@@ -149,6 +152,12 @@ class ApproveCubit extends BaseCubit<ApproveState> {
               showContent();
             } else {
 
+            }
+            break;
+          case TYPE_CONFIRM_BASE.CANCEL_SALE:
+            if (result['isSuccess']) {
+              showContent();
+            } else {
             }
             break;
           default:

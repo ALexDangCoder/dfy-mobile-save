@@ -90,15 +90,23 @@ class _ApproveState extends State<Approve> {
   late int accountImage;
   double gasFee = 0;
   int nonce = 0;
-  final NFTDetailBloc nftDetailBloc =
-      nftKey.currentState!.bloc;
+  late final NFTDetailBloc nftDetailBloc;
+
+  void initData(TYPE_CONFIRM_BASE typeBase) {
+    switch (typeBase) {
+      case TYPE_CONFIRM_BASE.BUY_NFT:
+        nftDetailBloc = nftKey.currentState!.bloc;
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_SALE:
+        nftDetailBloc = nftKey.currentState!.bloc;
+        break;
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     cubit = ApproveCubit();
-    //cubit.nftMarket = nftDetailBloc.nftMarket;
     cubit.type = widget.typeApprove;
     accountImage = cubit.randomAvatar();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
@@ -107,12 +115,14 @@ class _ApproveState extends State<Approve> {
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     getNonce();
+    initData(widget.typeApprove);
+    super.initState();
   }
 
   Future<void> getNonce() async {
     await cubit.getListWallets();
     nonce = await nftDetailBloc.getNonceWeb3(
-      walletAddress: cubit.addressWallet ?? '',
+      walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB' ?? '',
     );
   }
 
@@ -159,13 +169,16 @@ class _ApproveState extends State<Approve> {
     switch (widget.typeApprove) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         {
+          int n = await nftDetailBloc.getNonceWeb3(
+            walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB' ?? '',
+          );
           await cubit.signTransactionWithData(
             walletAddress: nftDetailBloc.walletAddress,
             contractAddress: nft_sales_address_dev2,
-            nonce: nonce.toString(),
+            nonce: n.toString(),
             chainId: Get.find<AppConstants>().chaninId,
             gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toString(),
+            gasLimit: gasLimitFinal.toStringAsFixed(0),
             hexString: nftDetailBloc.hexString,
           );
         }
@@ -180,13 +193,17 @@ class _ApproveState extends State<Approve> {
         }
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         {
+          int n = await nftDetailBloc.getNonceWeb3(
+            walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB' ?? '',
+          );
+
           await cubit.signTransactionWithData(
-            walletAddress: nftDetailBloc.walletAddress,
+            walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
             contractAddress: nft_sales_address_dev2,
-            nonce: nonce.toString(),
+            nonce: n.toString(),
             chainId: Get.find<AppConstants>().chaninId,
             gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toString(),
+            gasLimit: gasLimitFinal.toStringAsFixed(0),
             hexString: nftDetailBloc.hexString,
           );
           break;

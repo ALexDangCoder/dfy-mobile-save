@@ -31,6 +31,8 @@ import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
@@ -75,6 +77,25 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   late final List<Widget> _tabTit;
   late final TabController _tabController;
   late final NFTDetailBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = NFTDetailBloc();
+    trustWalletChannel
+        .setMethodCallHandler(bloc.nativeMethodCallBackTrustWallet);
+    bloc.nftMarketId = widget.marketId ?? '';
+    caseTabBar(widget.typeMarket, widget.typeNft);
+    onRefresh();
+    bloc.getInForNFT(
+      marketId: widget.marketId ?? '',
+      nftId: widget.nftId ?? '',
+      type: widget.typeMarket,
+      typeNFT: widget.typeNft ?? TypeNFT.SOFT_NFT,
+      pawnId: widget.pawnId ?? 0,
+    );
+    _tabController = TabController(length: _tabPage.length, vsync: this);
+  }
 
   void caseTabBar(MarketType type, TypeNFT? typeNft) {
     switch (type) {
@@ -134,8 +155,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
         ];
         break;
       case MarketType.SALE:
-        trustWalletChannel
-            .setMethodCallHandler(bloc.nativeMethodCallBackTrustWallet);
         _tabPage = [
           StreamBuilder<List<HistoryNFT>>(
             stream: bloc.listHistoryStream,
@@ -237,24 +256,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   final formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
 
   @override
-  void initState() {
-    super.initState();
-    bloc = NFTDetailBloc();
-    caseTabBar(widget.typeMarket, widget.typeNft);
-    bloc.nftMarketId = widget.marketId ?? '';
-    // caseTabBar(widget.type);
-    onRefresh();
-    bloc.getInForNFT(
-      marketId: widget.marketId ?? '',
-      nftId: widget.nftId ?? '',
-      type: widget.typeMarket,
-      typeNFT: widget.typeNft ?? TypeNFT.SOFT_NFT,
-      pawnId: widget.pawnId ?? 0,
-    );
-    _tabController = TabController(length: _tabPage.length, vsync: this);
-  }
-
-  @override
   void dispose() {
     bloc.close();
     _tabController.dispose();
@@ -332,33 +333,99 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               SizedBox(
                 width: 25.h,
               ),
-              BlocConsumer<NFTDetailBloc, NFTDetailState>(
-                bloc: bloc,
-                listener: (context, state) {
-                  if (state is GetGasLimitSuccess) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CancelSale(
-                          walletAddress: bloc.wallets.first.address ?? '',
-                          nftDetailBloc: bloc,
+              // BlocConsumer<NFTDetailBloc, NFTDetailState>(
+              //   bloc: bloc,
+              //   listener: (context, state) {
+              //     if (1 ==2) {
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) => CancelSale(
+              //             walletAddress: bloc.wallets.first.address ?? '',
+              //             nftDetailBloc: bloc,
+              //           ),
+              //         ),
+              //       );
+              //     }
+              //   },
+              //   builder: (context, state) {
+              //     return InkWell(
+              //       onTap: () async {
+              //         //todo
+              //         await bloc.getGasLimitForCancel(context: context);
+              //       },
+              //       child: roundButton(
+              //         image: ImageAssets.ic_flag_svg,
+              //         whiteBackground: true,
+              //       ),
+              //     );
+              //   },
+              // ),
+              InkWell(
+                onTap: () async {
+                  final nav = Navigator.of(context);
+                  //todo
+                  double gas =
+                      await bloc.getGasLimitForCancel(context: context);
+                  if (gas > 0) {
+                    unawaited(
+                      nav.push(
+                        MaterialPageRoute(
+                          builder: (context) => Approve(
+                            listDetail: bloc.initListApprove(),
+                            title: S.current.cancel_sale,
+                            header: Container(
+                              padding: EdgeInsets.only(
+                                top: 16.h,
+                                bottom: 20.h,
+                              ),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                S.current.cancel_sale_info,
+                                style: textNormal(
+                                  AppTheme.getInstance().whiteColor(),
+                                  16.sp,
+                                ).copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            warning: Row(
+                              children: [
+                                sizedSvgImage(
+                                    w: 16.67.w,
+                                    h: 16.67.h,
+                                    image: ImageAssets.ic_warning_canel),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    S.current.customer_cannot,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: textNormal(
+                                      AppTheme.getInstance()
+                                          .currencyDetailTokenColor(),
+                                      14.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            textActiveButton: S.current.cancel_sale,
+                            gasLimitInit: double.parse(bloc.gasLimit),
+                            typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
+                          ),
                         ),
                       ),
                     );
                   }
                 },
-                builder: (context, state) {
-                  return InkWell(
-                    onTap: () async {
-                      //todo
-                      await bloc.getGasLimitForCancel(context: context);
-                    },
-                    child: roundButton(
-                      image: ImageAssets.ic_flag_svg,
-                      whiteBackground: true,
-                    ),
-                  );
-                },
+                child: roundButton(
+                  image: ImageAssets.ic_flag_svg,
+                  whiteBackground: true,
+                ),
               ),
               SizedBox(
                 width: 20.h,
@@ -873,7 +940,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       onPressed: () async {
         await bloc
             .getBalanceToken(
-              ofAddress: bloc.walletAddress,
+              ofAddress: bloc.wallets.first.address ?? '',
               tokenAddress: bloc.nftMarket.token ?? '',
             )
             .then(
