@@ -35,6 +35,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String nftMarketId = '';
 
   String walletAddress = '';
+
   Stream<bool> get viewStream => _viewSubject.stream;
 
   Sink<bool> get viewSink => _viewSubject.sink;
@@ -287,12 +288,70 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     listTokenSupport = TokenInf.decode(listToken);
   }
 
+  int dayOfMonth(int month, int year) {
+    switch (month) {
+      case 2:
+        if (year % 4 == 0) {
+          return 29;
+        } else {
+          return 28;
+        }
+      case 4:
+      case 6:
+      case 9:
+      case 11:
+        return 30;
+      default:
+        return 31;
+    }
+  }
+
   int getTimeCountDown(NFTOnAuction nftOnAuction) {
+    int secondEnd = 0;
+    int day = 0;
+    int hour = 0;
+    int minute = 0;
+    int second = 0;
     final endDate =
         DateTime.fromMillisecondsSinceEpoch(nftOnAuction.endTime ?? 0);
-    final today = DateTime.now().millisecondsSinceEpoch;
-    if (endDate.millisecondsSinceEpoch > today) {
-      return endDate.millisecondsSinceEpoch - today;
+    final today = DateTime.now();
+
+    if (endDate.year > today.year) {
+      day = 31 - today.day + endDate.day;
+      hour = day * 24 + endDate.hour - today.hour;
+      minute = hour * 60 + endDate.minute - today.minute;
+      second = minute * 60 + endDate.second - today.second;
+      secondEnd = second;
+    } else if (endDate.year == today.year) {
+      if (endDate.month > today.month) {
+        day = dayOfMonth(endDate.month, endDate.year) - today.day + endDate.day;
+        hour = day * 24 + endDate.hour - today.hour;
+        minute = hour * 60 + endDate.minute - today.minute;
+        second = minute * 60 + endDate.second - today.second;
+        secondEnd = second;
+      } else if (endDate.month == today.month) {
+        if(endDate.day >= endDate.day){
+          day = endDate.day + today.day;
+          if(endDate.hour >= today.hour){
+            hour = day * 24 + endDate.hour - today.hour;
+            minute = hour * 60 + endDate.minute - today.minute;
+            second = minute * 60 + endDate.minute - today.minute;
+            secondEnd = second;
+          } else {
+            secondEnd = 0;
+          }
+        }
+        else{
+          secondEnd = 0;
+        }
+      } else {
+        secondEnd = 0;
+      }
+    } else {
+      secondEnd = 0;
+    }
+    if (secondEnd > 0) {
+      return secondEnd;
     } else {
       return 0;
     }
@@ -327,7 +386,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         toContractAddress: toAddress,
         dataString: hexString,
       );
-      emit(GetGasLimitSuccess(nftMarket,gasLimit,));
+      emit(GetGasLimitSuccess(
+        nftMarket,
+        gasLimit,
+      ));
     } catch (e) {
       throw AppException(S.current.error, e.toString());
     }
