@@ -101,6 +101,11 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         nftDetailBloc = nftKey.currentState!.bloc;
         getNonce();
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        cubit.createCollectionParam =
+            widget.createCollectionCubit?.getMapCreateCollection() ?? {};
+        break;
     }
   }
 

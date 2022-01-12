@@ -38,7 +38,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   String? addressWallet;
   double? balanceWallet;
   String? rawData;
-  late Map<String, dynamic> param;
+  late Map<String, dynamic> createCollectionParam;
   final Web3Utils web3Client = Web3Utils();
   final BehaviorSubject<String> _addressWalletCoreSubject =
       BehaviorSubject<String>();
@@ -153,9 +153,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
             break;
           case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
             if (result['isSuccess']) {
-              final rawData = await web3Client.sendRawTransaction(
-                transaction: result['signedTransaction'],
-              );
+              createCollectionParam['txn_hash'] = result['txHash'];
               showContent();
             } else {}
             break;
