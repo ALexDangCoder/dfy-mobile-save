@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:ui';
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -11,6 +14,9 @@ import 'package:Dfy/presentation/market_place/create_collection/bloc/create_coll
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
@@ -51,7 +57,6 @@ class Approve extends StatefulWidget {
   final String? purposeText;
   final String textActiveButton;
   final double gasLimitInit;
-  final bool? showTransitionProcess;
   final bool? showPopUp;
   final TYPE_CONFIRM_BASE typeApprove;
   final CreateCollectionCubit? createCollectionCubit;
@@ -69,7 +74,6 @@ class Approve extends StatefulWidget {
     this.purposeText,
     this.flexTitle,
     this.flexContent,
-    this.showTransitionProcess,
     required this.typeApprove,
     this.createCollectionCubit,
   }) : super(key: key);
@@ -123,7 +127,7 @@ class _ApproveState extends State<Approve> {
   }
 
   /// NamLV used
-  Future<void> approve(double gasLimitFinal, double gasPriceFinal) async {
+  Future<dynamic> approve(double gasLimitFinal, double gasPriceFinal) async {
     switch (widget.typeApprove) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         {
@@ -135,6 +139,16 @@ class _ApproveState extends State<Approve> {
         }
       case TYPE_CONFIRM_BASE.SEND_NFT:
         {
+          break;
+        }
+      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+        {
+          showLoading();
+
+          Timer(Duration(seconds: 2), () {
+            Navigator.pop(context);
+            Navigator.pop(context, true);
+          });
           break;
         }
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
@@ -149,17 +163,6 @@ class _ApproveState extends State<Approve> {
     }
   }
 
-  // await cubit.signTransactionWithData(
-  // walletAddress:
-  // nftDetailBloc.wallets.first.address ?? '',
-  // contractAddress: nft_sales_address_dev2,
-  // nonce: nonce.toString(),
-  // chainId: Get.find<AppConstants>().chaninId,
-  // gasPrice: (cubit.gasPriceSubject.value / 10e8)
-  //     .toStringAsFixed(0),
-  // gasLimit: nftDetailBloc.gasLimit,
-  // hexString: nftDetailBloc.hexString,
-  // );
   ///  use base call NamLV
   Future<void> action(double gasLimitFinal, double gasPriceFinal) async {
     switch (widget.typeApprove) {
@@ -198,6 +201,15 @@ class _ApproveState extends State<Approve> {
           );
         }
         break;
+      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+        {
+          await showPopupApprove();
+          Timer(Duration(seconds: 2), () {
+            Navigator.pop(context);
+          });
+          break;
+        }
+        break;
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
         // TODO: Handle this case.
         break;
@@ -205,6 +217,106 @@ class _ApproveState extends State<Approve> {
         // TODO: Handle this case.
         break;
     }
+  }
+
+  void showLoading() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        reverseTransitionDuration: Duration.zero,
+        transitionDuration: Duration.zero,
+        pageBuilder: (_, animation, ___) {
+          return Scaffold(
+            backgroundColor: Colors.black.withOpacity(0.4),
+            body: Center(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                child: const TransactionSubmit(),
+              ),
+            ),
+          );
+        },
+        opaque: false,
+      ),
+    );
+  }
+
+  void showLoadFail() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        reverseTransitionDuration: Duration.zero,
+        transitionDuration: Duration.zero,
+        pageBuilder: (_, animation, ___) {
+          return Scaffold(
+            backgroundColor: Colors.black.withOpacity(0.4),
+            body: Center(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                child: const TransactionSubmitFail(),
+              ),
+            ),
+          );
+        },
+        opaque: false,
+      ),
+    );
+  }
+
+  void showLoadSuccess() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        reverseTransitionDuration: Duration.zero,
+        transitionDuration: Duration.zero,
+        pageBuilder: (_, animation, ___) {
+          return Scaffold(
+            backgroundColor: Colors.black.withOpacity(0.4),
+            body: Center(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                child: const TransactionSubmitSuccess(),
+              ),
+            ),
+          );
+        },
+        opaque: false,
+      ),
+    );
+  }
+
+  Future<dynamic> showPopupApprove() async {
+    final result = await showModalBottomSheet(
+      backgroundColor: Colors.black,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30),
+        ),
+      ),
+      isScrollControlled: true,
+      context: context,
+      builder: (_) {
+        return PopUpApprove(
+          approve: () async {
+            await approve(
+              cubit.gasLimit ?? widget.gasLimitInit,
+              cubit.gasPriceSubject.valueOrNull ?? 0,
+            );
+          },
+          addressWallet: cubit.addressWallet ?? '',
+          accountName: cubit.nameWallet ?? 'Account',
+          imageAccount: accountImage,
+          balanceWallet: cubit.balanceWallet ?? 0,
+          gasFee: gasFee,
+          purposeText: widget.purposeText ??
+              'Give this site permission to access your NFTs',
+          approveSuccess: (value) {
+            isCanAction = true;
+          },
+        );
+      },
+    );
+    return result;
   }
 
   @override
@@ -306,7 +418,7 @@ class _ApproveState extends State<Approve> {
                                             AppTheme.getInstance()
                                                 .whiteColor()
                                                 .withOpacity(0.7),
-                                            14.sp,
+                                            14,
                                           ),
                                         ),
                                       ),
@@ -318,13 +430,13 @@ class _ApproveState extends State<Approve> {
                                               ? textNormalCustom(
                                                   AppTheme.getInstance()
                                                       .fillColor(),
-                                                  20.sp,
+                                                  20,
                                                   FontWeight.w600,
                                                 )
                                               : textNormal(
                                                   AppTheme.getInstance()
                                                       .whiteColor(),
-                                                  16.sp,
+                                                  16,
                                                 ),
                                         ),
                                       )
@@ -415,36 +527,7 @@ class _ApproveState extends State<Approve> {
                               ),
                               onTap: () async {
                                 if (isCanAction && !isApproved) {
-                                  final result = await showModalBottomSheet(
-                                    backgroundColor: Colors.black,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(30),
-                                      ),
-                                    ),
-                                    isScrollControlled: true,
-                                    context: context,
-                                    builder: (_) {
-                                      return PopUpApprove(
-                                        approve: approve,
-                                        addressWallet:
-                                            cubit.addressWallet ?? '',
-                                        accountName:
-                                            cubit.nameWallet ?? 'Account',
-                                        imageAccount: accountImage,
-                                        balanceWallet: cubit.balanceWallet ?? 0,
-                                        gasFee: gasFee,
-                                        purposeText: widget.purposeText ??
-                                            'Give this site permission to access your NFTs',
-                                        approveSuccess: (value) {
-                                          isCanAction = true;
-                                        },
-                                        showTransitionProcess:
-                                            widget.showTransitionProcess ??
-                                                true,
-                                      );
-                                    },
-                                  );
+                                  final result = await showPopupApprove();
                                   if (result ?? false) {
                                     setState(() {
                                       isApproved = result;
@@ -474,54 +557,14 @@ class _ApproveState extends State<Approve> {
                                 !(widget.isShowTwoButton ?? false)) &&
                             isCanAction,
                       ),
-                      onTap: () async {
+                      onTap: () {
                         if ((isApproved ||
                                 !(widget.isShowTwoButton ?? false)) &&
                             isCanAction) {
-                          final navigator = Navigator.of(context);
-                          if (widget.showPopUp ?? false) {
-                            await showModalBottomSheet(
-                              backgroundColor: Colors.black,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(30),
-                                ),
-                              ),
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (_) {
-                                return PopUpApprove(
-                                  showTransitionProcess:
-                                      widget.showTransitionProcess ?? true,
-                                  approve: () async {
-                                    await action(
-                                      cubit.gasLimit ?? widget.gasLimitInit,
-                                      cubit.gasPriceSubject.valueOrNull ?? 0,
-                                    );
-                                  },
-                                  addressWallet: cubit.addressWallet ?? '',
-                                  accountName: cubit.nameWallet ?? 'Account',
-                                  imageAccount: accountImage,
-                                  balanceWallet: cubit.balanceWallet ?? 0,
-                                  gasFee: gasFee,
-                                  purposeText: widget.purposeText ??
-                                      'Give this site permission to access your NFTs',
-                                  approveSuccess: (value) {
-                                    navigator.pop();
-                                    navigator.pop();
-                                  },
-                                );
-                              },
-                            );
-                          } else {
-                            cubit.changeLoadingState(isShow: true);
-                            await action(
-                              cubit.gasLimit ?? widget.gasLimitInit,
-                              cubit.gasPriceSubject.valueOrNull ?? 0,
-                            );
-                            cubit.changeLoadingState(isShow: false);
-                            navigator.pop();
-                          }
+                          action(
+                            cubit.gasLimit ?? widget.gasLimitInit,
+                            cubit.gasPriceSubject.valueOrNull ?? 0,
+                          );
                         }
                       },
                     ),
