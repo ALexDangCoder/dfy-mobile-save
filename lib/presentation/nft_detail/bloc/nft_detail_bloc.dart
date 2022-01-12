@@ -262,7 +262,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     }
   }
 
-  Future<int> getNonceWeb3({required String walletAddress}) async {
+  Future<int> getNonceWeb3() async {
     final result = await web3Client.getTransactionCount(address: walletAddress);
     return result.count;
   }
