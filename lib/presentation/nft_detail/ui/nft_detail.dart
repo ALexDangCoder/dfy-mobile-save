@@ -43,6 +43,7 @@ import 'package:intl/intl.dart';
 import 'package:share/share.dart';
 
 import '../../../main.dart';
+
 final nftKey = GlobalKey<NFTDetailScreenState>();
 
 class NFTDetailScreen extends StatefulWidget {
@@ -245,36 +246,33 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               SizedBox(
                 width: 25.h,
               ),
-              InkWell(
-                onTap: () async {
-                  final navigator = Navigator.of(context);
-                  //todo
-                  String dataString = await bloc.getDataString(
-                    context: context,
-                    orderId: '88',
-                    walletAddress: '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb',
-                  );
-                  double gasLimit = await bloc.getGasLimit(
-                      walletAddress:
-                          '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb');
-                  unawaited(
-                    navigator.push(
+              BlocConsumer<NFTDetailBloc, NFTDetailState>(
+                bloc: bloc,
+                listener: (context, state) {
+                  if (state is GetGasLimitSuccess) {
+                    Navigator.push(
+                      context,
                       MaterialPageRoute(
                         builder: (context) => CancelSale(
-                          bloc: bloc,
-                          walletAddress:
-                              '0x39ee4c28e09ce6d908643dddeeaeef2341138ebb',
-                          gasLimit: gasLimit,
-                          dataString: dataString,
+                          walletAddress: bloc.wallets.first.address ?? '',
+                          nftDetailBloc: bloc,
                         ),
                       ),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  return InkWell(
+                    onTap: () async {
+                      //todo
+                      await bloc.getGasLimitForCancel(context: context);
+                    },
+                    child: roundButton(
+                      image: ImageAssets.ic_flag_svg,
+                      whiteBackground: true,
                     ),
                   );
                 },
-                child: roundButton(
-                  image: ImageAssets.ic_flag_svg,
-                  whiteBackground: true,
-                ),
               ),
               SizedBox(
                 width: 20.h,

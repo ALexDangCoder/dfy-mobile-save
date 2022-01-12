@@ -117,7 +117,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
         final result = await sendRawData(rawData ?? '');
-
         switch (type) {
           case TYPE_CONFIRM_BASE.BUY_NFT:
             if (result) {
@@ -178,6 +177,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       final data = {};
       showLoading();
       await trustWalletChannel.invokeMethod('getListWallets', data);
+      showContent();
     } on PlatformException {
       //nothing
     }

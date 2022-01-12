@@ -243,9 +243,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     }
   }
 
-
-
-
   Future<String> getBuyNftData({
     required String contractAddress,
     required String orderId,
@@ -276,7 +273,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         toContractAddress: toAddress,
         dataString: hexString,
       );
-      emit(GetGasLimitSuccess(nftMarket,gasLimit,));
+      emit(GetGasLimitSuccess(
+        nftMarket,
+        gasLimit,
+      ));
     } catch (e) {
       showError();
       throw AppException(S.current.error, e.toString());
@@ -299,13 +299,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           hexString: value,
         ),
       );
-      showContent();
     } catch (e) {
       showError();
       throw AppException(S.current.error, e.toString());
     }
   }
-
 
   //////////////////////
   ///CANCEL SALE
@@ -321,9 +319,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   //get limit gas
 
   //get dataString
-  Future<double> getGasLimit({
+  Future<void> getGasLimitForCancel({
     required BuildContext context,
-    required String walletAddress,
   }) async {
     try {
       showLoading();
@@ -331,80 +328,29 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         contractAddress: nft_sales_address_dev2,
         orderId: nftMarket.orderId.toString(),
         context: context,
-      ).then((value) async {
-        double gasLimit = double.parse(
-          await web3Client.getGasLimitByData(
-          from: walletAddress,
-          toContractAddress: nft_sales_address_dev2,
-          dataString: hexString,
+      );
+      gasLimit = await web3Client.getGasLimitByData(
+        from: wallets.first.address ?? '',
+        toContractAddress: nft_sales_address_dev2,
+        dataString: hexString,
+      );
+      showContent();
+      emit(
+        GetGasLimitSuccess(
+          nftMarket,
+          gasLimit,
         ),
-        );
-      });
+      );
     } catch (e) {
-      showContent();
-      return 0;
-    }
-
-  }
-
-  //get gas limit by  data
-  // Future<double> getGasLimit({
-  //   required String walletAddress,
-  // }) async {
-  //   try {
-  //     showLoading();
-  //
-  //     showContent();
-  //     return gasLimit;
-  //   } catch (e) {
-  //     showContent();
-  //     return 0;
-  //   }
-  // }
-
-  //ký giao dịch qua core
-
-  //handle core callback:
-  AppConstants get appConstant => Get.find();
-
-  //call tới core
-  Future<void> signTransactionWithData({
-    required String walletAddress,
-    required String gasPrice,
-    required String gasLimit,
-    required String withData,
-  }) async {
-    try {
-      showLoading();
-      final TransactionCountResponse transaction =
-      await web3utils.getTransactionCount(address: walletAddress);
-      if (!transaction.isSuccess) {
-        return;
-      }
-      //10.0  66932
-      final data = {
-        'walletAddress': walletAddress,
-        'contractAddress': nft_sales_address_dev2,
-        'nonce': transaction.count.toString(),
-        'chainId': appConstant.chaninId,
-        'gasPrice': gasPrice,
-        'gasLimit': gasLimit,
-        'withData': withData,
-      };
-
-      await trustWalletChannel.invokeMethod('signTransactionWithData', data);
-      showContent();
-    } on PlatformException catch (e) {
-      //
-      showContent();
-      throw e;
+      showError();
+      throw AppException(S.current.error, e.toString());
     }
   }
 
   //cancel sale:
   Future<Map<String, dynamic>> cancelSale({required String transaction}) async {
     final Map<String, dynamic> res =
-    await web3utils.sendRawTransaction(transaction: transaction);
+        await web3Client.sendRawTransaction(transaction: transaction);
     return res;
   }
 }

@@ -150,8 +150,8 @@ class _ApproveState extends State<Approve> {
             contractAddress: nft_sales_address_dev2,
             nonce: nonce.toString(),
             chainId: Get.find<AppConstants>().chaninId,
-            gasPrice: (cubit.gasPriceSubject.value / 10e8).toStringAsFixed(0),
-            gasLimit: nftDetailBloc.gasLimit,
+            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+            gasLimit: gasLimitFinal.toString(),
             hexString: nftDetailBloc.hexString,
           );
         }
@@ -166,6 +166,15 @@ class _ApproveState extends State<Approve> {
         }
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         {
+          await cubit.signTransactionWithData(
+            walletAddress: nftDetailBloc.walletAddress,
+            contractAddress: nft_sales_address_dev2,
+            nonce: nonce.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+            gasLimit: gasLimitFinal.toString(),
+            hexString: nftDetailBloc.hexString,
+          );
           break;
         }
     }

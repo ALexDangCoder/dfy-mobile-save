@@ -4,6 +4,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/market_place/cancel_sale/bloc/cancel_sale_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
@@ -13,17 +14,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CancelSale extends StatefulWidget {
-  final NFTDetailBloc bloc;
   final String walletAddress;
-  final String dataString;
-  final double gasLimit;
+  final NFTDetailBloc nftDetailBloc;
 
   const CancelSale({
     Key? key,
-    required this.bloc,
     required this.walletAddress,
-    required this.dataString,
-    required this.gasLimit,
+    required this.nftDetailBloc,
   }) : super(key: key);
 
   @override
@@ -31,26 +28,17 @@ class CancelSale extends StatefulWidget {
 }
 
 class _CancelSaleState extends State<CancelSale> {
+
   @override
   void initState() {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-  // widget.bloc.signTransactionWithData(
-  // gasLimit: gasLimit.toString(),
-  // gasPrice: gasPr.toString(),
-  // walletAddress: widget.walletAddress,
-  // withData: widget.bloc.dataString,
-  // );
 
   @override
   Widget build(BuildContext context) {
     return Approve(
-      listDetail: widget.bloc.initListApprove(),
+      listDetail: widget.nftDetailBloc.initListApprove(),
       title: S.current.cancel_sale,
       header: Container(
         padding: EdgeInsets.only(
@@ -89,7 +77,8 @@ class _CancelSaleState extends State<CancelSale> {
         ],
       ),
       textActiveButton: S.current.cancel_sale,
-      gasLimitInit: widget.gasLimit, typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
+      gasLimitInit: double.parse(widget.nftDetailBloc.gasLimit),
+      typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
     );
   }
 }
