@@ -66,7 +66,7 @@ class ListNftBuySellCollectible extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                ListNft(marketType: marketTypeEnum),
+                                const ListNft(),
                           ),
                         );
                 },
