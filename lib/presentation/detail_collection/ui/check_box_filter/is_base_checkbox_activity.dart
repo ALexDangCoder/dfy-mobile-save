@@ -7,18 +7,16 @@ import 'package:rxdart/rxdart.dart';
 
 class IsBaseCheckBox extends StatelessWidget {
   final String title;
-  final Function? funText;
-  final Function? funCheckBox;
+  final Function funText;
+  final Function funCheckBox;
   final BehaviorSubject<bool> stream;
-
-  const
 
   IsBaseCheckBox({
     Key? key,
     required this.title,
     required this.stream,
-    this.funText,
-    this.funCheckBox,
+    required this.funText,
+    required this.funCheckBox,
   }) : super(key: key);
 
   @override
@@ -49,7 +47,7 @@ class IsBaseCheckBox extends StatelessWidget {
                     if (snapshot.data ?? false) {
                       stream.sink.add(false);
                     }
-                    funCheckBox!();
+                    funCheckBox();
                   },
                 ),
               );
@@ -67,7 +65,7 @@ class IsBaseCheckBox extends StatelessWidget {
                   } else {
                     stream.sink.add(true);
                   }
-                  funText!();
+                  funText();
                 },
                 child: Text(
                   title,

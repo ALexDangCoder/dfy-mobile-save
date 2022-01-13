@@ -45,7 +45,7 @@ class CategoryDetailCubit extends BaseCubit<CategoryState> {
     if (state is! ErrorCategoryState && loading == false){
       loading = true;
       final Result<ListCollectionDetailModel> result =
-      await _detailCategoryService.getListCollectInCategory(1, id, nextPage);
+      await _detailCategoryService.getListCollectInCategory(10, id, nextPage);
       result.map(
         success: (result) {
           final List<CollectionCategoryModel> currentList =

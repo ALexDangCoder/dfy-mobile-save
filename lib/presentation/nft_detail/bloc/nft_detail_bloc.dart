@@ -35,6 +35,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String nftMarketId = '';
 
   late final String walletAddress;
+
   Stream<bool> get viewStream => _viewSubject.stream;
 
   Sink<bool> get viewSink => _viewSubject.sink;
@@ -200,7 +201,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           emit(NftOnAuctionSuccess(res));
           getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
-          getBidding(res.auctionId.toString());
+          getBidding(res.id.toString());
         },
         error: (error) {
           updateStateError();
@@ -213,6 +214,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           await _nftRepo.getDetailNftOnPawn(pawnId.toString());
       result.when(
         success: (res) {
+          getOffer(pawnId.toString());
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.expectedCollateralSymbol ?? '';
             final symbol = value.symbol ?? '';
@@ -230,7 +232,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             res.nftCollateralDetailDTO?.collectionAddress ?? '',
             res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '',
           );
-          getOffer(pawnId.toString());
           showContent();
         },
         error: (error) {
@@ -287,16 +288,80 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     listTokenSupport = TokenInf.decode(listToken);
   }
 
-  int getTimeCountDown(NFTOnAuction nftOnAuction) {
+  int dayOfMonth(int month, int year) {
+    switch (month) {
+      case 2:
+        if (year % 4 == 0) {
+          return 29;
+        } else {
+          return 28;
+        }
+      case 4:
+      case 6:
+      case 9:
+      case 11:
+        return 30;
+      default:
+        return 31;
+    }
+  }
+
+  int getTimeCountDown(int time) {
+    int secondEnd = 0;
+    int day = 0;
+    int hour = 0;
+    int minute = 0;
+    int second = 0;
     final endDate =
-        DateTime.fromMillisecondsSinceEpoch(nftOnAuction.endTime ?? 0);
-    final today = DateTime.now().millisecondsSinceEpoch;
-    if (endDate.millisecondsSinceEpoch > today) {
-      return endDate.millisecondsSinceEpoch - today;
+        DateTime.fromMillisecondsSinceEpoch(time);
+    final today = DateTime.now();
+
+    if (endDate.year > today.year) {
+      day = 31 - today.day + endDate.day;
+      hour = day * 24 + endDate.hour - today.hour;
+      minute = hour * 60 + endDate.minute - today.minute;
+      second = minute * 60 + endDate.second - today.second;
+      secondEnd = second;
+    } else if (endDate.year == today.year) {
+      if (endDate.month > today.month) {
+        day = dayOfMonth(endDate.month, endDate.year) - today.day + endDate.day;
+        hour = day * 24 + endDate.hour - today.hour;
+        minute = hour * 60 + endDate.minute - today.minute;
+        second = minute * 60 + endDate.second - today.second;
+        secondEnd = second;
+      } else if (endDate.month == today.month) {
+        if (endDate.day >= endDate.day) {
+          day = endDate.day - today.day;
+          hour = day * 24 + endDate.hour - today.hour;
+          minute = hour * 60 + endDate.minute - today.minute;
+          second = minute * 60 + endDate.second - today.second;
+          secondEnd = second;
+        } else {
+          secondEnd = 0;
+        }
+      } else {
+        secondEnd = 0;
+      }
+    } else {
+      secondEnd = 0;
+    }
+    if (secondEnd > 0) {
+      return secondEnd;
     } else {
       return 0;
     }
   }
+
+  bool isStartAuction(int startTime){
+    final int check = getTimeCountDown(startTime);
+    if(check > 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
 
   Future<String> getBuyNftData({
     required String contractAddress,
@@ -317,17 +382,23 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return hexString;
   }
 
-  Future<String> getGasLimitByData(
-      {required String fromAddress,
-      required String toAddress,
-      required String hexString}) async {
+  Future<String> getGasLimitByData({
+    required String fromAddress,
+    required String toAddress,
+    required String hexString,
+  }) async {
     try {
       gasLimit = await web3Client.getGasLimitByData(
         from: fromAddress,
         toContractAddress: toAddress,
         dataString: hexString,
       );
-      emit(GetGasLimitSuccess(nftMarket,gasLimit,));
+      emit(
+        GetGasLimitSuccess(
+          nftMarket,
+          gasLimit,
+        ),
+      );
     } catch (e) {
       throw AppException(S.current.error, e.toString());
     }

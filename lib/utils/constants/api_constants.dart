@@ -37,7 +37,7 @@ class ApiConstants {
   static const String GET_LIST_TYPE_NFT = '/hard-nft-svc/public-api/collections/types';
 
 
-  static const String GET_LIST_NFT_COLLECTION = 'nft-market-svc/public-api/collection/list-nft';
+  static const String GET_LIST_NFT_COLLECTION = '/inventory-svc/public-api/collections/list-nft/';
   static const String COLLECTION_DETAIL =
       '/inventory-svc/public-api/collections/';
   static const String COLLECTION_ACTIVITY_LIST =

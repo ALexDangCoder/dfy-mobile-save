@@ -465,5 +465,9 @@
   "collateral" : "Collateral",
   "contracts" : "Contracts",
   "lender_profile" : "Lender profile",
-  "my_account" : "My account"
+  "my_account" : "My account",
+  "auction_ends_in":"Auction ends in:",
+  "auction_start_in":"Auction start in:",
+  "auction_ends":"Auction ends:",
+  "is_bid":"Current price:"
 }

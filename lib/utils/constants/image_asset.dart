@@ -21,6 +21,14 @@ class ImageAssets {
   static const String icTokenBnb = '$baseImg/ic_token_bnb.png';
   static const String icTabHomeSelected = '$baseImg/ic_tab_home_selected.svg';
 
+  ///marketplace
+  static const String fabAddCollection = '$baseImg/float_btn_collection.png';
+  static const String fabAddNft = '$baseImg/float_btn_nft.png';
+  static const String fabCancel = '$baseImg/float_btn_cancel.png';
+  static const String folderFAB = '$baseImg/folder.png';
+  static const String nftFAB = '$baseImg/NFT.png';
+  static const String addFAB = '$baseImg/plus.png';
+  // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
 
 
