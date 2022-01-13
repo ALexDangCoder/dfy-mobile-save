@@ -7,7 +7,7 @@ part 'fab_state.dart';
 class FabCubit extends Cubit<FabState> {
   FabCubit() : super(FabInitial());
 
-  BehaviorSubject<bool> isAddingEvent = BehaviorSubject<bool>();
+  BehaviorSubject<bool> isAddingEvent = BehaviorSubject<bool>.seeded(false);
 
   void addToCancelOrReverse({required bool value}) {
     isAddingEvent.add(value);

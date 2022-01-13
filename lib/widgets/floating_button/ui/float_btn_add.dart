@@ -44,6 +44,7 @@ class FABMarketBase extends StatelessWidget {
         }
       },
       elevation: 0,
+      buttonSize: Size(65.w, 65.h),
       spaceBetweenChildren: 7,
       overlayOpacity: 0.6,
       childrenButtonSize: Size(75.w, 75.h),
@@ -99,8 +100,8 @@ class FABMarketBase extends StatelessWidget {
 
   Widget fabAdd() {
     return Container(
-      width: 70.w,
-      height: 70.h,
+      width: 75.w,
+      height: 75.h,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
