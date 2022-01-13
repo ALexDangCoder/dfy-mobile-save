@@ -332,29 +332,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       } else if (endDate.month == today.month) {
         if (endDate.day >= endDate.day) {
           day = endDate.day - today.day;
-          if (endDate.hour >= today.hour) {
-            hour = day * 24 + endDate.hour - today.hour;
-            if (endDate.minute >= endDate.minute) {
-              minute = hour * 60 + endDate.minute - today.minute;
-              if(endDate.second >= today.second){
-                second = minute * 60 + endDate.minute - today.minute;
-                secondEnd = second;
-              }
-              else {
-                second = minute * 60 + endDate.minute - today.minute;
-                secondEnd = second;
-              }
-            } else {
-              minute = hour * 60 + endDate.minute - today.minute;
-              second = minute * 60 + endDate.minute - today.minute;
-              secondEnd = second;
-            }
-          } else {
-            hour = day * 24 + endDate.hour - today.hour;
-            minute = hour * 60 + endDate.minute - today.minute;
-            second = minute * 60 + endDate.minute - today.minute;
-            secondEnd = second;
-          }
+          hour = day * 24 + endDate.hour - today.hour;
+          minute = hour * 60 + endDate.minute - today.minute;
+          second = minute * 60 + endDate.second - today.second;
+          secondEnd = second;
         } else {
           secondEnd = 0;
         }
@@ -364,7 +345,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     } else {
       secondEnd = 0;
     }
-    return secondEnd;
+    if (secondEnd > 0) {
+      return secondEnd;
+    } else {
+      return 0;
+    }
   }
 
   Future<String> getBuyNftData({
@@ -386,20 +371,23 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return hexString;
   }
 
-  Future<String> getGasLimitByData(
-      {required String fromAddress,
-      required String toAddress,
-      required String hexString}) async {
+  Future<String> getGasLimitByData({
+    required String fromAddress,
+    required String toAddress,
+    required String hexString,
+  }) async {
     try {
       gasLimit = await web3Client.getGasLimitByData(
         from: fromAddress,
         toContractAddress: toAddress,
         dataString: hexString,
       );
-      emit(GetGasLimitSuccess(
-        nftMarket,
-        gasLimit,
-      ));
+      emit(
+        GetGasLimitSuccess(
+          nftMarket,
+          gasLimit,
+        ),
+      );
     } catch (e) {
       throw AppException(S.current.error, e.toString());
     }
