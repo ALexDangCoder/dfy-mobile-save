@@ -12,4 +12,8 @@ class FabCubit extends Cubit<FabState> {
   void addToCancelOrReverse({required bool value}) {
     isAddingEvent.add(value);
   }
+
+  void dispose() {
+    isAddingEvent.close();
+  }
 }

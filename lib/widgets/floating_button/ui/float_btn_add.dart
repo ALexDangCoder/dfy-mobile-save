@@ -18,8 +18,9 @@ class FABMarketBase extends StatelessWidget {
   }) : super(key: key);
   final Function() nftCallBack;
   final Function() collectionCallBack;
-  final cubit = FabCubit();
+  static final cubit = FabCubit();
   bool value = false;
+
 
   @override
   Widget build(BuildContext context) {
