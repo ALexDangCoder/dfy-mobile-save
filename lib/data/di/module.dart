@@ -36,11 +36,11 @@ import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
 
 void configureDependencies() {
   Get.put(TokenClient(provideDio()));
@@ -85,7 +85,6 @@ void configureDependencies() {
   Get.put<DetailCategoryRepository>(DetailCategoryRepositoryImpl(Get.find()));
 }
 
-
 Dio provideDio({int connectionTimeOut = 60000}) {
   final appConstants = Get.find<AppConstants>();
   final options = BaseOptions(
@@ -105,7 +104,9 @@ Dio provideDio({int connectionTimeOut = 60000}) {
         options.headers = {
           'pinata_api_key': 'ac8828bff3bcd1c1b828',
           'pinata_secret_api_key':
-              'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
+              'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df',
+          'headers':'dmbe',
+          'Authorization': bearTokenViNhieuTien,
         };
         return handler.next(options);
       },

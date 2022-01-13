@@ -9,4 +9,9 @@ class PlaceBidCubit extends Cubit<PlaceBidState> {
   Stream<String> get warnStream => _warnSubject.stream;
 
   Sink<String> get warnSink => _warnSubject.sink;
+  final _btnSubject = BehaviorSubject<bool>.seeded(false);
+
+  Stream<bool> get btnStream => _btnSubject.stream;
+
+  Sink<bool> get btnSink => _btnSubject.sink;
 }
