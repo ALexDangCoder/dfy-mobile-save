@@ -8,8 +8,8 @@ import 'package:rxdart/rxdart.dart';
 class FormSearchBase extends StatefulWidget {
   final String urlIcon;
   final String hint;
-  final Function? onTapFunction;
-  final Function? onChangedFunction;
+  final Function onTapFunction;
+  final Function onChangedFunction;
   final BehaviorSubject<String> textSearchStream;
   final TextEditingController textSearch;
 
@@ -17,8 +17,8 @@ class FormSearchBase extends StatefulWidget {
     Key? key,
     required this.urlIcon,
     required this.hint,
-    this.onTapFunction,
-    this.onChangedFunction,
+    required this.onTapFunction,
+    required this.onChangedFunction,
     required this.textSearchStream,
     required this.textSearch,
   }) : super(key: key);
@@ -58,7 +58,7 @@ class _FormSearchBaseState extends State<FormSearchBase> {
               controller: widget.textSearch,
               maxLength: 225,
               onChanged: (value) {
-                widget.onChangedFunction!(value);
+                widget.onChangedFunction(value);
               },
               cursorColor: AppTheme.getInstance().whiteColor(),
               style: textNormal(
@@ -82,7 +82,7 @@ class _FormSearchBaseState extends State<FormSearchBase> {
             builder: (context, AsyncSnapshot<String> snapshot) {
               return GestureDetector(
                 onTap: () {
-                  widget.onTapFunction!();
+                  widget.onTapFunction();
                   widget.textSearch.text = '';
                 },
                 child: snapshot.data?.isNotEmpty ?? false

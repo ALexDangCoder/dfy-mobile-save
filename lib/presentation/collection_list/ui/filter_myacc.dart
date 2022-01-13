@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/market_place/category_model.dart';
+import 'package:Dfy/domain/model/market_place/fillterCollectionModel.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
@@ -34,6 +34,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
   void initState() {
     super.initState();
     searchFilter = TextEditingController();
+    searchFilter.text = widget.collectionBloc.textSearchCategory.value;
   }
 
   @override
@@ -215,29 +216,18 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                             children: [
                               Expanded(
                                 child: IsBaseCheckBox(
-                                  funText: collectionBloc.allCollection,
-                                  funCheckBox: collectionBloc.allCollection,
-                                  title: S.current.all,
-                                  stream: collectionBloc.isAll,
-                                ),
-                              ),
-                              const Expanded(
-                                child: SizedBox.shrink(),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: IsBaseCheckBox(
                                   title: S.current.hard_nft,
                                   stream: collectionBloc.isHardNft,
+                                  funText: () {},
+                                  funCheckBox: () {},
                                 ),
                               ),
                               Expanded(
                                 child: IsBaseCheckBox(
                                   title: S.current.soft_nft,
                                   stream: collectionBloc.isSoftNft,
+                                  funText: () {},
+                                  funCheckBox: () {},
                                 ),
                               ),
                             ],
@@ -263,55 +253,30 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                       textSearch: searchFilter,
                     ),
                     Container(
-                      padding: EdgeInsets.only(
-                        left: 6.w,
-                        right: 16.w,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: IsBaseCheckBox(
-                                  funCheckBox: collectionBloc.allCategoryMyAcc,
-                                  funText: collectionBloc.allCategoryMyAcc,
-                                  title: S.current.all_category,
-                                  stream: collectionBloc.isAllCategoryMyAcc,
-                                ),
-                              ),
-                              const Expanded(
-                                child: SizedBox.shrink(),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
                       margin: EdgeInsets.only(
                         left: 3.w,
                       ),
                       height: 210.h,
                       width: double.infinity,
-                      child: StreamBuilder<List<Category>>(
+                      child: StreamBuilder<List<FilterCollectionModel>>(
                         stream: widget.collectionBloc.listCategoryStream,
                         builder: (context, snapshot) {
+                          final list = snapshot.data ?? [];
                           return ListView.builder(
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: (snapshot.data?.length ?? 0) > 4
-                                ? 4
-                                : snapshot.data?.length,
+                            itemCount: list.length > 4 ? 4 : list.length,
                             itemBuilder: (context, index) {
                               return InkWell(
+                                onTap: () {
+                                  collectionBloc
+                                      .funCheckCategory(list[index].name ?? '');
+                                  setState(() {});
+                                },
                                 child: ItemCategoryFilter(
-                                  title: snapshot.data?[index].name ?? '',
-                                  urlImage:
-                                      snapshot.data?[index].avatarCid ?? '',
-                                  collectionBloc: collectionBloc,
-                                  index: index,
+                                  filterModel: list[index],
+                                  bloc: collectionBloc,
                                 ),
                               );
                             },

@@ -452,6 +452,10 @@
   "you_enter_greater": "You enter greater than the total amount",
   "you_must": "You must enter the quantity you want to buy",
   "no_des": "No description",
+  "auction_ends_in":"Auction ends in:",
+  "auction_start_in":"Auction start in:",
+  "auction_ends":"Auction ends:",
+  "is_bid":"Current price:",
   "on_sale": "On sale",
   "you_enter_balance": "You enter greater than the total balance ",
   "you_must_bid": "You must be enter your bid"

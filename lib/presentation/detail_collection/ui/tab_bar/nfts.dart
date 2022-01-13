@@ -201,7 +201,8 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                         widget.detailCollectionBloc.getListNft(
                           collectionAddress:
                               widget.detailCollectionBloc.collectionId,
-                          name: widget.detailCollectionBloc.textSearch.value,
+                          name: widget.detailCollectionBloc.textSearch.value
+                              .trim(),
                           listMarketType:
                               widget.detailCollectionBloc.listFilter,
                         );
