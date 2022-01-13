@@ -16,6 +16,7 @@ class BaseItem extends StatelessWidget {
     return ConstrainedBox(
       constraints:BoxConstraints(
         minHeight: 68.h,
+        maxHeight: 68.h,
       ),
       child: Container(
         padding: EdgeInsets.only(top: 12.h),
