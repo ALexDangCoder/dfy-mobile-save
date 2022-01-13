@@ -78,12 +78,19 @@ const divideColor = Color(0xFF8f8fad);
 const unselectedTabLabel = Color(0xFF9997FF);
 const bgErrorLoadData = Color(0xFF474666);
 
+const List<Color> colorsFab = [
+  Color.fromRGBO(255, 219, 101, 1),
+  Color.fromRGBO(228, 172, 26, 1),
+];
+
 ///=========== Using to make change app theme ================================
 const bgTranSubmitColor = Color(0xff585782);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color bgTranSubmit();
+
+  List<Color> colorFab();
 
   Color bgErrorLoad();
 
@@ -484,6 +491,12 @@ class LightApp extends AppColor {
     // TODO: implement bgProgressingColors
     return const Color(0xFF3E3D5C);
   }
+
+  @override
+  List<Color> colorFab() {
+    // TODO: implement colorFab
+    return colorsFab;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -799,6 +812,12 @@ class DarkApp extends AppColor {
   Color bgProgressingColors() {
     // TODO: implement bgProgressingColors
     throw UnimplementedError();
+  }
+
+  @override
+  List<Color> colorFab() {
+    // TODO: implement colorFab
+    return colorsFab;
   }
 }
 

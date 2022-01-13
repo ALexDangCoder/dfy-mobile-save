@@ -12,11 +12,11 @@ import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_on_pawn.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_on_sale.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_outstanding_collection.dart';
+import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class MarketPlaceScreen extends StatefulWidget {
   const MarketPlaceScreen({Key? key}) : super(key: key);
@@ -161,6 +161,14 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                 FocusScope.of(context).unfocus();
               },
               child: Scaffold(
+                // floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+                floatingActionButton: Padding(
+                  padding: EdgeInsets.only(bottom: 114.h),
+                  child: FABMarketBase(
+                    collectionCallBack: () {},
+                    nftCallBack: () {},
+                  ),
+                ),
                 body: Container(
                   width: double.infinity,
                   height: double.infinity,
@@ -168,8 +176,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: AppTheme.getInstance()
-                          .listBackgroundMarketColor(),
+                      colors:
+                          AppTheme.getInstance().listBackgroundMarketColor(),
                     ),
                   ),
                   child: Column(
@@ -199,7 +207,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                 //priority by position in
                                 // listCollectionFtExploreFtNft
                                 for (Map<String, dynamic> e
-                                in cubit.listCollectionFtExploreFtNft)
+                                    in cubit.listCollectionFtExploreFtNft)
                                   if (e['name'] ==
                                       'Buy, sell, and create collectible NFTs') ...[
                                     ListNftBuySellCollectible(
@@ -209,76 +217,69 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                                       marketType: e['market_type'],
                                     ),
                                     spaceH32,
-                                  ] else
-                                    if (e['name'] ==
-                                        'Featured Soft NFTs') ...[
-                                      ListFeaturedSoftNft(
-                                        cubit: cubit,
-                                        isLoading: false,
-                                        isLoadFail: false,
-                                        marketType: e['market_type'],
-                                      ),
-                                      spaceH32,
-                                    ] else
-                                      if (e['name'] == 'Hot auction') ...[
-                                        ListNftHotAuction(
-                                          cubit: cubit,
-                                          isLoading: false,
-                                          isLoadFail: false,
-                                          marketType: e['market_type'],
-                                        ),
-                                        spaceH32,
-                                      ] else
-                                        if (e['name'] == 'Featured NFTs') ...[
-                                          ListFeaturedNft(
-                                            cubit: cubit,
-                                            isLoading: false,
-                                            isLoadFail: false,
-                                            marketType: e['market_type'],
-                                          ),
-                                          spaceH32,
-                                        ] else
-                                          if (e['name'] ==
-                                              'Outstanding collection') ...[
-                                            ListOutstandingCollection(
-                                              cubit: cubit,
-                                              isLoading: false,
-                                              isLoadFail: false,
-                                            ),
-                                            spaceH32,
-                                          ] else
-                                            if (e['name'] == 'Sale items' ||
-                                                e['name'] == 'Sell items') ...[
-                                              ListNftOnSale(
-                                                cubit: cubit,
-                                                isLoading: false,
-                                                isLoadFail: false,
-                                                marketType: e['market_type'],
-                                              ),
-                                              spaceH32,
-                                            ] else
-                                              if (e['name'] ==
-                                                  'NFTs collateral') ...[
-                                                ListNftOnPawn(
-                                                  cubit: cubit,
-                                                  isLoading: false,
-                                                  isLoadFail: false,
-                                                  marketType: e['market_type'],
-                                                ),
-                                                spaceH32,
-                                              ]
-                                              //this else handle explore categories
-                                              else
-                                                ...[
-                                                  ListExploreCategory(
-                                                    cubit: cubit,
-                                                    isLoading: false,
-                                                    isLoadFail: false,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 32.h,
-                                                  ),
-                                                ],
+                                  ] else if (e['name'] ==
+                                      'Featured Soft NFTs') ...[
+                                    ListFeaturedSoftNft(
+                                      cubit: cubit,
+                                      isLoading: false,
+                                      isLoadFail: false,
+                                      marketType: e['market_type'],
+                                    ),
+                                    spaceH32,
+                                  ] else if (e['name'] == 'Hot auction') ...[
+                                    ListNftHotAuction(
+                                      cubit: cubit,
+                                      isLoading: false,
+                                      isLoadFail: false,
+                                      marketType: e['market_type'],
+                                    ),
+                                    spaceH32,
+                                  ] else if (e['name'] == 'Featured NFTs') ...[
+                                    ListFeaturedNft(
+                                      cubit: cubit,
+                                      isLoading: false,
+                                      isLoadFail: false,
+                                      marketType: e['market_type'],
+                                    ),
+                                    spaceH32,
+                                  ] else if (e['name'] ==
+                                      'Outstanding collection') ...[
+                                    ListOutstandingCollection(
+                                      cubit: cubit,
+                                      isLoading: false,
+                                      isLoadFail: false,
+                                    ),
+                                    spaceH32,
+                                  ] else if (e['name'] == 'Sale items' ||
+                                      e['name'] == 'Sell items') ...[
+                                    ListNftOnSale(
+                                      cubit: cubit,
+                                      isLoading: false,
+                                      isLoadFail: false,
+                                      marketType: e['market_type'],
+                                    ),
+                                    spaceH32,
+                                  ] else if (e['name'] ==
+                                      'NFTs collateral') ...[
+                                    ListNftOnPawn(
+                                      cubit: cubit,
+                                      isLoading: false,
+                                      isLoadFail: false,
+                                      marketType: e['market_type'],
+                                    ),
+                                    spaceH32,
+                                  ]
+                                  //this else handle explore categories
+                                  else ...[
+                                    ListExploreCategory(
+                                      cubit: cubit,
+                                      isLoading: false,
+                                      isLoadFail: false,
+                                    ),
+                                    SizedBox(
+                                      height: 32.h,
+                                    ),
+                                  ],
                                 SizedBox(
                                   height: 164.h,
                                 ),
