@@ -21,11 +21,9 @@ class PopUpApprove extends StatelessWidget {
     required this.gasFee,
     required this.purposeText,
     required this.approve,
-    required this.approveSuccess,
   }) : super(key: key);
 
   final int imageAccount;
-  final Function approveSuccess;
   final String accountName;
   final String purposeText;
   final String addressWallet;
@@ -209,8 +207,8 @@ class PopUpApprove extends StatelessWidget {
                 const SizedBox(width: 23),
                 Expanded(
                   child: GestureDetector(
-                    onTap: () async {
-                      await approve();
+                    onTap: ()  {
+                      approve();
                     },
                     child: ButtonGold(
                       radiusButton: 15,

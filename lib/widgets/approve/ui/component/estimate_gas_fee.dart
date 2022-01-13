@@ -24,13 +24,13 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
   bool isCustomFee = false;
   double? gasPrice;
 
-  double? gasLimit;
-  double? gasPriceStart;
+  late double  gasLimit ;
   final TextEditingController _editGasPriceController = TextEditingController();
   final TextEditingController _editGasLimitController = TextEditingController();
 
   @override
   void initState() {
+    gasLimit = widget.gasLimitStart;
     _editGasLimitController.text = widget.gasLimitStart.toString();
     initData();
     // TODO: implement initState
@@ -39,8 +39,9 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
 
   Future<void> initData() async {
     await widget.cubit.getGasPrice();
+    gasPrice =( widget.cubit.gasPriceFirst ?? 0) / 1000000000;
     _editGasPriceController.text =
-        ((widget.cubit.gasPriceSubject.valueOrNull ?? 0) / 1000000000)
+        ((widget.cubit.gasPriceFirstSubject.valueOrNull ?? 10) / 1000000000)
             .toString();
   }
 
@@ -79,12 +80,9 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                     ),
                   ),
                   StreamBuilder<double>(
-                    stream: widget.cubit.gasPriceStream,
+                    stream: widget.cubit.gasPriceFirstSubject,
                     builder: (context, snapshot) {
-                      gasPriceStart = (snapshot.data ?? 0) / 1000000000;
-                      final gasFee = (gasPrice ?? gasPriceStart ?? 0) *
-                          (gasLimit ?? widget.gasLimitStart) /
-                          1000000000;
+                      final gasFee = (gasPrice ?? 0) * gasLimit  / 1000000000;
                       widget.stateChange(gasFee);
                       return Column(
                         children: [
@@ -188,21 +186,15 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                   ),
                                   border: InputBorder.none,
                                 ),
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp(r'^\d*\.?\d{0,5}'),
-                                  ),
-                                ],
+                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                 onChanged: (value) {
-                                  final gasFee =
-                                      (gasPrice ?? gasPriceStart ?? 0) *
-                                          (gasLimit ?? widget.gasLimitStart) /
-                                          1000000000;
-                                  widget.stateChange(gasFee);
-                                  widget.cubit.gasLimit = double.parse(value);
                                   setState(() {
                                     gasLimit = double.parse(value);
                                   });
+                                  final gasFee =
+                                      (gasPrice??  0) * gasLimit  / 1000000000;
+                                  widget.stateChange(gasFee);
+                                  widget.cubit.gasLimit = double.parse(value);
                                 },
                               ),
                             ),
@@ -240,7 +232,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                               color: AppTheme.getInstance().itemBtsColors(),
                             ),
                             child: Center(
-                              child: TextFormField(
+                              child: TextField(
                                 controller: _editGasPriceController,
                                 textAlign: TextAlign.right,
                                 inputFormatters: [
@@ -263,14 +255,13 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                   border: InputBorder.none,
                                 ),
                                 onChanged: (value) {
-                                  final gasFee =
-                                      (gasPrice ?? gasPriceStart ?? 0) *
-                                          (gasLimit ?? widget.gasLimitStart) /
-                                          1000000000;
-                                  widget.stateChange(gasFee);
                                   setState(() {
                                     gasPrice = double.parse(value);
                                   });
+                                  widget.cubit.gasPrice = (gasPrice ?? 0) * 1000000000;
+                                  final gasFee =
+                                      (gasPrice  ?? 0) * gasLimit / 1000000000;
+                                  widget.stateChange(gasFee);
                                 },
                               ),
                             ),
@@ -283,11 +274,10 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        gasPrice = gasPriceStart;
-                        _editGasPriceController.text = gasPriceStart.toString();
+                        gasPrice = (widget.cubit.gasPriceFirst ?? 0)/ 1000000000;
+                        _editGasPriceController.text = gasPrice.toString();
                         gasLimit = widget.gasLimitStart;
-                        _editGasLimitController.text =
-                            widget.gasLimitStart.toString();
+                        _editGasLimitController.text =gasLimit.toString();
                       });
                     },
                     child: Container(

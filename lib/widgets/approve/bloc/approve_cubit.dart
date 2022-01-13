@@ -32,31 +32,87 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   TYPE_CONFIRM_BASE type = TYPE_CONFIRM_BASE.BUY_NFT;
 
   List<Wallet> listWallet = [];
+
+  /// Name current wallet , after load screen success [nameWallet] have data
+  /// when fail [nameWallet] is null
+  /// [nameWallet] get in core
   String? nameWallet;
-  double? gasLimit;
+
+  /// address current wallet ,after load screen success [addressWallet] have data
+  /// when fail [addressWallet] is null
+  /// [addressWallet] get in core
   String? addressWallet;
+
+  /// balance current wallet , after load screen success [balanceWallet] have data
+  /// when fail [balanceWallet] is null
+  /// [balanceWallet] get in web3
   double? balanceWallet;
+
+  /// balance current wallet , after load screen success [gasPriceFirst] have data
+  /// when fail [gasPriceFirst] is null
+  /// this is min value of gas price
+  /// [balanceWallet] get in web3
+  double? gasPriceFirst;
+
+  double? gasLimit;
+
+  double? gasPrice;
+
+
   String? rawData;
+
   final Web3Utils web3Client = Web3Utils();
   final BehaviorSubject<String> _addressWalletCoreSubject =
       BehaviorSubject<String>();
   final BehaviorSubject<String> _nameWalletSubject = BehaviorSubject<String>();
   final BehaviorSubject<double> _balanceWalletSubject =
       BehaviorSubject<double>();
-  final BehaviorSubject<double> gasPriceSubject = BehaviorSubject<double>();
+
+  /// [gasPriceSubject] contain gas price init, not gas price final
+  final BehaviorSubject<double> gasPriceFirstSubject = BehaviorSubject<double>();
+
+
+  final BehaviorSubject<bool> isApprovedSubject = BehaviorSubject.seeded(false);
 
   Stream<String> get addressWalletCoreStream =>
       _addressWalletCoreSubject.stream;
 
   Stream<String> get nameWalletStream => _nameWalletSubject.stream;
 
+  Stream<bool> get isApprovedStream => isApprovedSubject.stream;
+
   Stream<double> get balanceWalletStream => _balanceWalletSubject.stream;
 
-  Stream<double> get gasPriceStream => gasPriceSubject.stream;
+  Stream<double> get gasPriceFirstStream => gasPriceFirstSubject.stream;
 
   Future<Map<String, dynamic>> sendRawData(String rawData) async {
     final result = await web3Client.sendRawTransaction(transaction: rawData);
     return result;
+  }
+
+  Future<bool> checkApprove({
+    required String payValue,
+    required String tokenAddress,
+    required String spenderAddress,
+  }) async {
+    showLoading();
+    bool response = false;
+    try {
+      final data = {
+        'payValue': payValue,
+        'walletAddress': addressWallet ?? '',
+        'tokenAddress': tokenAddress,
+        'spenderAddress': spenderAddress,
+      };
+      final result = await trustWalletChannel.invokeMethod('isApproved', data);
+      isApprovedSubject.sink.add(result);
+      response = result;
+    } on PlatformException {
+      isApprovedSubject.sink.add(false);
+      response = false;
+    }
+    showContent();
+    return response;
   }
 
   NFTRepository get _nftRepo => Get.find();
@@ -64,12 +120,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   Future<void> buyNftRequest(BuyNftRequest buyNftRequest) async {
     final result = await _nftRepo.buyNftRequest(buyNftRequest);
     result.when(
-      success: (res) {
-
-      },
-      error: (error) {
-
-      },
+      success: (res) {},
+      error: (error) {},
     );
   }
 
@@ -125,15 +177,16 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           addressWallet = listWallet.first.address;
           _nameWalletSubject.sink.add(listWallet.first.name!);
           nameWallet = listWallet.first.name;
-          try{
+          try {
             balanceWallet = await Web3Utils().getBalanceOfBnb(
-                ofAddress: _addressWalletCoreSubject.valueOrNull ?? '');
+              ofAddress: _addressWalletCoreSubject.valueOrNull ?? '',
+            );
             showContent();
-          } catch(e ){
+          } catch (e) {
             showError();
             AppException('title', e.toString());
           }
-          _balanceWalletSubject.sink.add(balanceWallet?? 0);
+          _balanceWalletSubject.sink.add(balanceWallet ?? 0);
         }
         break;
       case 'signTransactionWithDataCallback':
@@ -152,9 +205,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
             if (result['isSuccess']) {
               showContent();
-            } else {
-
-            }
+            } else {}
             break;
           default:
             break;
@@ -218,19 +269,22 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   }
 
   Future<void> getGasPrice() async {
-    try{
+    try {
       final result = await Web3Utils().getGasPrice();
-      gasPriceSubject.sink.add(double.parse(result));
-    } catch(e ){
+      gasPriceFirstSubject.sink.add(double.parse(result));
+      gasPriceFirst = double.parse(result);
+      gasPrice = double.parse(result);
+    } catch (e) {
       showError();
       AppException('title', e.toString());
     }
   }
 
   void dispose() {
-    gasPriceSubject.close();
+    gasPriceFirstSubject.close();
     _addressWalletCoreSubject.close();
     _balanceWalletSubject.close();
     _nameWalletSubject.close();
+    isApprovedSubject.close();
   }
 }

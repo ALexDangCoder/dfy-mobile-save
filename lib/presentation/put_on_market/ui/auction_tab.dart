@@ -236,7 +236,7 @@ class _AuctionTabState extends State<AuctionTab>
                         context,
                         MaterialPageRoute(
                           builder: (context) => Approve(
-                            isShowTwoButton: true,
+                            needApprove: true,
                             title: S.current.put_on_sale,
                             listDetail: [
                               DetailItemApproveModel(
