@@ -499,7 +499,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
                           title: '${S.current.total_payment_normal}:',
                           child: Text(
                             '${quantity * nftMarket.price} '
-                            '${nftMarket.symbolToken}:',
+                            '${nftMarket.symbolToken}',
                             style: textNormalCustom(
                               AppTheme.getInstance().fillColor(),
                               20,
