@@ -65,4 +65,8 @@ class ApiConstants {
 
   static const String BSC_SCAN_ADDRESS = 'address/';
   static const String BSC_SCAN_TX = 'tx/';
+
+  //cacel sale
+  static const String CANCEL_SALE = '/nft-market-svc/api/market/cancel';
+
 }

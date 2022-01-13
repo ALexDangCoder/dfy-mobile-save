@@ -6,6 +6,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/data/services/market_place/confirm_service.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -170,8 +171,7 @@ class _ApproveState extends State<Approve> {
     switch (widget.typeApprove) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         {
-          int n = await nftDetailBloc.getNonceWeb3(
-          );
+          final int n = await nftDetailBloc.getNonceWeb3();
           await cubit.signTransactionWithData(
             walletAddress: nftDetailBloc.walletAddress,
             contractAddress: nft_sales_address_dev2,
@@ -193,17 +193,21 @@ class _ApproveState extends State<Approve> {
         }
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         {
-          int n = await nftDetailBloc.getNonceWeb3(
-          );
-          await cubit.signTransactionWithData(
-            walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
-            contractAddress: nft_sales_address_dev2,
-            nonce: n.toString(),
-            chainId: Get.find<AppConstants>().chaninId,
-            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toStringAsFixed(0),
-            hexString: nftDetailBloc.hexString,
-          );
+          cubit.showLoading();
+          final int n = await nftDetailBloc.getNonceWeb3();
+          await cubit
+              .signTransactionWithData(
+                walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
+                contractAddress: nft_sales_address_dev2,
+                nonce: n.toString(),
+                chainId: Get.find<AppConstants>().chaninId,
+                gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+                gasLimit: gasLimitFinal.toStringAsFixed(0),
+                hexString: nftDetailBloc.hexString,
+              )
+              .then((value) => print('ọk'));
+          cubit.showLoading();
+
           break;
         }
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
@@ -563,28 +567,44 @@ class _ApproveState extends State<Approve> {
                   else
                     const SizedBox(height: 0),
                   Expanded(
-                    child: GestureDetector(
-                      child: ButtonGold(
-                        textColor:
-                            isApproved || !(widget.isShowTwoButton ?? false)
-                                ? null
-                                : disableText,
-                        fixSize: false,
-                        haveMargin: false,
-                        title: widget.textActiveButton,
-                        isEnable: (isApproved ||
-                                !(widget.isShowTwoButton ?? false)) &&
-                            isCanAction,
-                      ),
-                      onTap: () {
-                        if ((isApproved ||
-                                !(widget.isShowTwoButton ?? false)) &&
-                            isCanAction) {
-                          action(
-                            cubit.gasLimit ?? widget.gasLimitInit,
-                            cubit.gasPriceSubject.valueOrNull ?? 0,
+                    child: BlocConsumer<ApproveCubit, ApproveState>(
+                      bloc: cubit,
+                      listener: (context, state) {
+                        // TODO:
+                        if (state is SendRawDataSuccess &&
+                            widget.typeApprove ==
+                                TYPE_CONFIRM_BASE.CANCEL_SALE) {
+                          cubit.confirmCancelSaleWithBE(
+                            txnHash: state.txnHash,
+                            marketId: nftDetailBloc.nftMarket.marketId ?? '',
                           );
                         }
+                      },
+                      builder: (context, state) {
+                        return GestureDetector(
+                          child: ButtonGold(
+                            textColor:
+                                isApproved || !(widget.isShowTwoButton ?? false)
+                                    ? null
+                                    : disableText,
+                            fixSize: false,
+                            haveMargin: false,
+                            title: widget.textActiveButton,
+                            isEnable: (isApproved ||
+                                    !(widget.isShowTwoButton ?? false)) &&
+                                isCanAction,
+                          ),
+                          onTap: () {
+                            if ((isApproved ||
+                                    !(widget.isShowTwoButton ?? false)) &&
+                                isCanAction) {
+                              action(
+                                cubit.gasLimit ?? widget.gasLimitInit,
+                                cubit.gasPriceSubject.valueOrNull ?? 0,
+                              );
+                            }
+                          },
+                        );
                       },
                     ),
                   ),

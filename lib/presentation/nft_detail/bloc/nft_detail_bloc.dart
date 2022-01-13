@@ -40,6 +40,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String nftMarketId = '';
 
   late final String walletAddress;
+
   Stream<bool> get viewStream => _viewSubject.stream;
 
   Sink<bool> get viewSink => _viewSubject.sink;
@@ -367,10 +368,29 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   ///CANCEL SALE
 
   List<DetailItemApproveModel> initListApprove() {
-    List<DetailItemApproveModel> listApprove = [
-      DetailItemApproveModel(title: 'NTF', value: 'Ối dồi ôi'),
-      DetailItemApproveModel(title: S.current.quantity, value: '10')
-    ];
+    //todo: Vũ: tạm hardcode
+    final List<DetailItemApproveModel> listApprove = [];
+    if (nftMarket.nftStandard == 'ERC-721') {
+      listApprove.add(
+        DetailItemApproveModel(
+          title: 'NTF',
+          value: nftMarket.name ?? '',
+        ),
+      );
+      listApprove.add(
+        DetailItemApproveModel(
+          title: S.current.quantity,
+          value: '${nftMarket.numberOfCopies}',
+        ),
+      );
+    } else {
+      listApprove.add(
+        DetailItemApproveModel(
+          title: 'NTF',
+          value: nftMarket.name ?? '',
+        ),
+      );
+    }
     return listApprove;
   }
 
@@ -392,7 +412,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         toContractAddress: nft_sales_address_dev2,
         dataString: hexString,
       );
-      
+
       showContent();
       return double.parse(gasLimit);
     } catch (e) {
