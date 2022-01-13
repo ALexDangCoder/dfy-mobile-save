@@ -228,7 +228,7 @@ class _ListNftState extends State<ListNft> {
                     controller: controller,
                     onChanged: (value) {
                       _cubit.show();
-                      _onSearchChanged(value);
+                      _onSearchChanged(value.trim());
                     },
                     cursorColor: Colors.white,
                     style: textNormal(

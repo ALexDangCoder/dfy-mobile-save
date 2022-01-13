@@ -4,100 +4,142 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/offer_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
-class OfferTab extends StatelessWidget {
+class OfferTab extends StatefulWidget {
   const OfferTab({Key? key, required this.listOffer}) : super(key: key);
+
   final List<OfferDetail> listOffer;
 
   @override
+  _OfferTabState createState() => _OfferTabState();
+}
+
+class _OfferTabState extends State<OfferTab> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      physics: const ScrollPhysics(),
-      itemCount: listOffer.length,
-      itemBuilder: (context, index) {
-        return _buildItemOffer(listOffer[index]);
-      },
-    );
+    if (widget.listOffer.isEmpty) {
+      return Center(
+        child: ListView(
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(vertical: 100.h),
+          children: [
+            Center(
+              child: sizedPngImage(
+                w: 94,
+                h: 94,
+                image: ImageAssets.icNoTransaction,
+              ),
+            ),
+            Center(
+              child: Text(
+                'No offer',
+                style: tokenDetailAmount(
+                  color: AppTheme.getInstance().currencyDetailTokenColor(),
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: widget.listOffer.length,
+        itemBuilder: (context, index) {
+          return _buildItemOffer(widget.listOffer[index]);
+        },
+      );
+    }
   }
 
   Widget _buildItemOffer(OfferDetail objOffer) {
     final String duration = (objOffer.durationType == 0) ? 'week' : 'month';
     return BaseItem(
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           /// push to Offer detail
         },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              flex: 5,
-              child: Row(
-                children: [
-                  Text(
-                    '${objOffer.addressLender}'.handleString(),
-                    style: richTextWhite.copyWith(
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
+        child: Padding(
+          padding: EdgeInsets.only(left: 16.w, right: 16.w),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${objOffer.addressLender}'.handleString(),
+                      style: richTextWhite.copyWith(
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'offered',
-                          style: textNormalCustom(
-                            AppTheme.getInstance().textThemeColor(),
-                            14,
-                            FontWeight.w400,
+                    spaceH6,
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'offered ',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              14,
+                              FontWeight.w400,
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: '${objOffer.supplyCurrency?.amount ?? ''} '
-                              '${objOffer.supplyCurrency?.symbol ?? ''}',
-                          style: textNormal(
-                            amountColor,
-                            14,
+                          TextSpan(
+                            text: '${objOffer.supplyCurrency?.amount ?? ''} '
+                                '${objOffer.supplyCurrency?.symbol ?? ''}',
+                            style: textNormal(
+                              amountColor,
+                              14,
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: 'with a ${objOffer.duration ?? ''} $duration',
-                          style: textNormalCustom(
-                            AppTheme.getInstance().textThemeColor(),
-                            14,
-                            FontWeight.w400,
+                          TextSpan(
+                            text:
+                                ' with a ${objOffer.duration ?? ''} $duration',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              14,
+                              FontWeight.w400,
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: 'loan term',
-                          style: textNormalCustom(
-                            AppTheme.getInstance().textThemeColor(),
-                            14,
-                            FontWeight.w400,
+                          TextSpan(
+                            text: ' loan term',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              14,
+                              FontWeight.w400,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ImageIcon(
-                const AssetImage(ImageAssets.ic_line_right),
-                size: 24.sp,
+              Expanded(
+                child: ImageIcon(
+                  const AssetImage(ImageAssets.ic_line_right),
+                  size: 24.sp,
+                  color: Colors.white.withOpacity(0.5),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
