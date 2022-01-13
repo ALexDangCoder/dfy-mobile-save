@@ -20,3 +20,15 @@ class LoadedCategoryState extends CategoryState {
   @override
   List<Object?> get props => [];
 }
+class LoadListCollectionFailState extends CategoryState {
+  @override
+  List<Object?> get props => [];
+}
+class LoadingListCollectionState extends CategoryState {
+  @override
+  List<Object?> get props => [];
+}
+class LoadListCollectionSuccessState extends CategoryState {
+  @override
+  List<Object?> get props => [];
+}
