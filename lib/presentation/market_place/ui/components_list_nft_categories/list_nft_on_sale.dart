@@ -38,7 +38,7 @@ class ListNftOnSale extends StatelessWidget {
                     ? S.current.loading_text
                     : (isLoadFail
                         ? S.current.error_text
-                        : S.current.sale_items),
+                        : S.current.sell_items),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
@@ -120,8 +120,9 @@ class ListNftOnSale extends StatelessWidget {
                               : Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>  NFTDetailScreen(
+                                    builder: (context) => NFTDetailScreen(
                                       typeMarket: MarketType.SALE,
+                                      key: nftKey,
                                       marketId: cubit.nftsSale[index].marketId,
                                     ),
                                   ),

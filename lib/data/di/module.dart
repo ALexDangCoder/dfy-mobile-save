@@ -41,6 +41,7 @@ import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+
 void configureDependencies() {
   Get.put(TokenClient(provideDio()));
   Get.put<TokenRepository>(TokenRepositoryImpl(Get.find()));
@@ -70,7 +71,8 @@ void configureDependencies() {
   Get.put<CollectionFilterRepository>(CollectionFilterImpl(Get.find()));
   Get.put(NftMarketClient(provideDio()));
   Get.put<NftMarketRepository>(NftMarketRepositoryImpl(Get.find()));
-
+  Get.put(NFTClient(provideDio()));
+  Get.put<NFTRepository>(NFTRepositoryImpl(Get.find()));
 
   Get.put(NFTClient(provideDio()));
   Get.put<NFTRepository>(NFTRepositoryImpl(Get.find()));
@@ -83,7 +85,6 @@ void configureDependencies() {
   Get.put<DetailCategoryRepository>(DetailCategoryRepositoryImpl(Get.find()));
 }
 
-int _connectTimeOut = 60000;
 
 Dio provideDio({int connectionTimeOut = 60000}) {
   final appConstants = Get.find<AppConstants>();
@@ -101,6 +102,11 @@ Dio provideDio({int connectionTimeOut = 60000}) {
           (RequestOptions options, RequestInterceptorHandler handler) async {
         options.baseUrl = appConstants.baseUrl;
         options.headers['Content-Type'] = 'application/json';
+        options.headers = {
+          'pinata_api_key': 'ac8828bff3bcd1c1b828',
+          'pinata_secret_api_key':
+              'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
+        };
         return handler.next(options);
       },
       onResponse: (response, handler) {

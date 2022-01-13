@@ -96,6 +96,20 @@ class _NFTItemState extends State<NFTItemWidget> {
             ),
           ),
         );
+        if (widget.nftMarket.typeNFT == TypeNFT.SOFT_NFT) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NFTDetailScreen(
+                key: nftKey,
+                typeMarket: widget.nftMarket.marketType!,
+                marketId: widget.nftMarket.marketId,
+              ),
+            ),
+          );
+        } else {
+          ///push HardNft
+        }
       },
       child: Stack(
         children: [
@@ -128,8 +142,8 @@ class _NFTItemState extends State<NFTItemWidget> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => NFTDetailScreen(
-                                typeMarket: widget.nftMarket.marketType ??
-                                    MarketType.SALE,
+                                key: nftKey,
+                                typeMarket: widget.nftMarket.marketType!,
                                 marketId: widget.nftMarket.marketId,
                                 typeNft: widget.nftMarket.typeNFT,
                                 nftId: widget.nftMarket.nftId,

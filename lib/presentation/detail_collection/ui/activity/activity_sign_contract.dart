@@ -6,6 +6,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 
 import 'base_activity.dart';
+import 'base_text_bsc.dart';
 
 class SignContract extends StatelessWidget {
   final String urlAvatar;
@@ -45,46 +46,12 @@ class SignContract extends StatelessWidget {
               14,
               FontWeight.w400,
             ),
-            children: <TextSpan>[
-              TextSpan(
-                text: addressSend == S.current.activity_you
-                    ? S.current.activity_you
-                    : addressSend,
-                style: addressSend == S.current.activity_you
-                    ? textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      )
-                    : textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      ).copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-              ),
+            children: [
+              baseTextBSC(addressSend),
               TextSpan(
                 text: ' ${S.current.activity_and} ',
               ),
-              TextSpan(
-                text: address == S.current.activity_you
-                    ? S.current.activity_you
-                    : '$address',
-                style: address == S.current.activity_you
-                    ? textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      )
-                    : textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      ).copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-              ),
+              baseTextBSC(address),
             ],
           ),
         ),

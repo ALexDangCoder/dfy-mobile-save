@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'base_activity.dart';
+import 'base_text_bsc.dart';
 
 class Bid extends StatelessWidget {
   final String urlAvatar;
@@ -86,24 +87,7 @@ class Bid extends StatelessWidget {
               TextSpan(
                 text: ' ${S.current.activity_by} ',
               ),
-              TextSpan(
-                text: content == S.current.activity_you
-                    ? S.current.activity_you
-                    : content,
-                style: content == S.current.activity_you
-                    ? textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      )
-                    : textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w600,
-                      ).copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-              ),
+              baseTextBSC(content),
             ],
           ),
         ),

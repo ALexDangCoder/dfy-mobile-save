@@ -48,7 +48,7 @@ class ItemCollectionError extends StatelessWidget {
               onTap: () {
                 cubit.getCollection(
                   sortFilter: cubit.sortFilter,
-                  name: cubit.textSearch.value,
+                  name: cubit.textSearch.value.trim(),
                 );
               },
               child: SizedBox(
