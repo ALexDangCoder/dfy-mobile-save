@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/floating_button/bloc/fab_cubit.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,6 @@ class FABMarketBase extends StatelessWidget {
   final Function() collectionCallBack;
   static final cubit = FabCubit();
   bool value = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -101,16 +101,12 @@ class FABMarketBase extends StatelessWidget {
     return Container(
       width: 70.w,
       height: 70.h,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
-          begin: Alignment.centerRight,
-          end: Alignment.centerLeft,
-          colors: [
-            Color.fromRGBO(255, 219, 101, 1),
-            Color.fromRGBO(228, 172, 26, 1),
-          ],
-        ),
+            begin: Alignment.centerRight,
+            end: Alignment.centerLeft,
+            colors: AppTheme.getInstance().colorFab()),
       ),
       child: const Icon(Icons.add),
     );
@@ -129,15 +125,12 @@ class FABMarketBase extends StatelessWidget {
             ),
           )
         : Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
                 begin: Alignment.centerRight,
                 end: Alignment.centerLeft,
-                colors: [
-                  Color.fromRGBO(255, 219, 101, 1),
-                  Color.fromRGBO(228, 172, 26, 1),
-                ],
+                colors: AppTheme.getInstance().colorFab(),
               ),
             ),
             child: Stack(
