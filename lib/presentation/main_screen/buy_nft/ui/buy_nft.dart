@@ -6,6 +6,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/bloc/buy_nft_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
@@ -96,7 +97,7 @@ class _BuyNFTState extends State<BuyNFT> {
               error:
                   AppException(S.current.error, S.current.something_went_wrong),
               retry: () async {
-                await _nftBloc.callWeb3(context, cubit.amountValue);
+                await _nftBloc.callWeb3(context, cubit.amountValue, MarketType.SALE);
               },
               textEmpty: '',
               child: BaseBottomSheet(
@@ -177,7 +178,11 @@ class _BuyNFTState extends State<BuyNFT> {
                             padding: EdgeInsets.symmetric(horizontal: 16.w),
                             child: ButtonGradient(
                               onPressed: () {
-                                _nftBloc.callWeb3(context, cubit.amountValue);
+                                _nftBloc.callWeb3(
+                                  context,
+                                  cubit.amountValue,
+                                  MarketType.SALE,
+                                );
                               },
                               gradient: RadialGradient(
                                 center: const Alignment(0.5, -0.5),
