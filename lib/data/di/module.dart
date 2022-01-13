@@ -41,7 +41,6 @@ import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-
 void configureDependencies() {
   Get.put(TokenClient(provideDio()));
   Get.put<TokenRepository>(TokenRepositoryImpl(Get.find()));
@@ -85,7 +84,6 @@ void configureDependencies() {
   Get.put<DetailCategoryRepository>(DetailCategoryRepositoryImpl(Get.find()));
 }
 
-
 Dio provideDio({int connectionTimeOut = 60000}) {
   final appConstants = Get.find<AppConstants>();
   final options = BaseOptions(
@@ -105,7 +103,20 @@ Dio provideDio({int connectionTimeOut = 60000}) {
         options.headers = {
           'pinata_api_key': 'ac8828bff3bcd1c1b828',
           'pinata_secret_api_key':
-              'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
+              'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df',
+          'headers':'dmbe',
+          'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZ'
+              'XRfYWRkcmVzcyI6IjB4YWIwNWFiNzljMGY0NDBhZDk4MmIxNDA1NTM2YWJjODA5N'
+              'GM4MGFmYiIsImdyYW50X3R5cGUiOiJ3YWxsZXQiLCJ1c2VyX25hbWUiOiIweGF'
+              'iMDVhYjc5YzBmNDQwYWQ5ODJiMTQwNTUzNmFiYzgwOTRjODBhZmIiLCJzY29wZS'
+              'I6WyJERUZBVUxUIl0sImV4cCI6MTY0MjA3NjgxMiwianRpIjoiYjNhYTkyNGYt'
+              'ZGVmZC00YzYxLTgyZGYtY2RiYThlMWM1ODNlIiwiY2xpZW50X2lkIjoidGFpbmQ'
+              'ifQ.CPDpOdnPYHTVCbBPxT4OzTT57rvSGxbGDUSux7X7g2JcHu_rL-2vjeONXk'
+              'vWxQfi5HREwtCcUbsCMCvicZt7pTRc8CGbBC8Ep4oAqaQRV3tE8KMytVoZXxeO'
+              'nK1JjrNlD6vjjcSRF6XsUoaT2gHK73EUZJ96W9a5FZnGLnPLsEwmNKP9ijXG'
+              '_ZmA0tSgCKdLMGWNDJofmLsZ1ykmFQrc7HLhFCic7X4zkn8OtWLfdh4MWaNnDhi'
+              'XmokB6n6_fFQPsx0tSWOI89BOUV0kd5b5mN1HTC4LEj_xhK8yDt0ffjZBpcI8tg'
+              'KJl_DU26CXtNS92JAIwBO8dybZwYA7NLgn4g'
         };
         return handler.next(options);
       },

@@ -318,6 +318,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             content: [
               _nameNFT(
                 title: objSale.name ?? '',
+                context: context,
                 quantity: objSale.totalCopies ?? 1,
                 url: objSale.image ?? '',
                 price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
@@ -466,7 +467,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
             bottomBar: _buildButtonSendOffer(context),
             content: [
-              _nameNFT(title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? ''),
+              _nameNFT(context: context,title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? ''),
               _priceContainerOnPawn(nftOnPawn: nftOnPawn),
               _durationRowOnPawn(
                 durationType: nftOnPawn.durationType ?? 0,
@@ -639,6 +640,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             content: [
               _nameNFT(
                 title: nftOnAuction.name ?? '',
+                context: context,
                 quantity: nftOnAuction.numberOfCopies ?? 1,
                 url: nftOnAuction.fileCid ?? '',
                 price: (nftOnAuction.reservePrice ?? 0) *

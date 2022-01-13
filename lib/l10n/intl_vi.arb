@@ -273,7 +273,7 @@
   "months": "Tháng",
   "duration": "Thời hạn",
   "place_a_bid": "Đấu giá",
-  "buy_out": "Mua lại",
+  "buy_out": "Mua ngay",
   "collection": "Bộ sưu tập",
   "owner": "Chủ sở hữu",
   "nft_token_id": "NFT token ID",
@@ -455,5 +455,7 @@
   "is_bid": "Giá hiện tại:",
   "on_sale": "Đang bán",
   "you_enter_balance": "Bạn nhập lớn số dư trong ví",
-  "you_must_bid": "Bạn phải nhập giá bạn muốn đấu giá"
+  "you_must_bid": "Bạn phải nhập giá bạn muốn đấu giá",
+  "you_must_bid_greater": "Bạn phải nhập giá cao hơn giá hiện tại",
+  "item_price": "Giá"
 }

@@ -1,4 +1,7 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/config/resources/dimen.dart';
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -17,6 +20,10 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
+import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -156,6 +163,12 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       }
       result.when(
         success: (res) {
+          showContent();
+          nftMarket = res;
+          owner = res.owner ?? '';
+          emit(NftOnSaleSuccess(res));
+          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.tokenBuyOut ?? '';
             final address = value.address ?? '';
@@ -165,12 +178,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               res.usdExchange = value.usdExchange;
             }
           }
-          showContent();
-          nftMarket = res;
-          owner = res.owner ?? '';
-          emit(NftOnSaleSuccess(res));
-          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
-          getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
         },
         error: (error) {
           emit(NftOnSaleFail());
@@ -188,7 +195,12 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       }
       result.when(
         success: (res) {
+          showContent();
           nftOnAuction = res;
+          emit(NftOnAuctionSuccess(res));
+          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getBidding(res.id.toString());
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.token ?? '';
             final address = value.address ?? '';
@@ -199,11 +211,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               symbolToken = value.symbol ?? '';
             }
           }
-          showContent();
-          emit(NftOnAuctionSuccess(res));
-          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
-          getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
-          getBidding(res.id.toString());
         },
         error: (error) {
           updateStateError();
@@ -312,8 +319,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     int hour = 0;
     int minute = 0;
     int second = 0;
-    final endDate =
-        DateTime.fromMillisecondsSinceEpoch(time);
+    final endDate = DateTime.fromMillisecondsSinceEpoch(time);
     final today = DateTime.now();
 
     if (endDate.year > today.year) {
@@ -352,16 +358,14 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     }
   }
 
-  bool isStartAuction(int startTime){
+  bool isStartAuction(int startTime) {
     final int check = getTimeCountDown(startTime);
-    if(check > 0) {
+    if (check > 0) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
-
 
   Future<String> getBuyNftData({
     required String contractAddress,
@@ -424,8 +428,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return gasLimit;
   }
 
-  Future<void> callWeb3(BuildContext context, dynamic quantity,
-      MarketType type) async {
+  Future<void> callWeb3(
+    BuildContext context,
+    dynamic quantity,
+    MarketType type,
+  ) async {
     showLoading();
     try {
       switch (type) {
@@ -440,6 +447,74 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               fromAddress: wallets.first.address ?? '',
               toAddress: nft_sales_address_dev2,
               hexString: value,
+            ).then(
+              (value) => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Approve(
+                    title: S.current.buy_nft,
+                    header: Column(
+                      children: [
+                        buildRowCustom(
+                          isPadding: false,
+                          title: '${S.current.from}:',
+                          child: Text(
+                            walletAddress.formatAddressWalletConfirm(),
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        buildRowCustom(
+                          isPadding: false,
+                          title: '${S.current.to}:',
+                          child: Text(
+                            owner.formatAddressWalletConfirm(),
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        spaceH20,
+                        line,
+                        spaceH20,
+                        buildRowCustom(
+                          isPadding: false,
+                          title: S.current.price,
+                          child: Text(
+                            '${nftMarket.price} ${nftMarket.symbolToken}',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
+                              FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        buildRowCustom(
+                          isPadding: false,
+                          title: '${S.current.total_payment_normal}:',
+                          child: Text(
+                            '${quantity * nftMarket.price} '
+                            '${nftMarket.symbolToken}:',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().fillColor(),
+                              20,
+                              FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    textActiveButton: S.current.approve,
+                    gasLimitInit: double.parse(value),
+                    typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
+                  ),
+                ),
+              ),
             ),
           );
           break;
@@ -454,6 +529,55 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               fromAddress: wallets.first.address ?? '',
               toAddress: nft_auction_dev2,
               hexString: value,
+            ).then(
+              (value) => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Approve(
+                    title: S.current.place_a_bid,
+                    header: Column(
+                      children: [
+                        buildRowCustom(
+                          title: S.current.from,
+                          child: Text(
+                            walletAddress.formatAddressWalletConfirm(),
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        buildRowCustom(
+                          title: S.current.to.formatAddressWalletConfirm(),
+                          child: Text(
+                            owner,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        buildRowCustom(
+                          title: S.current.amount,
+                          child: Text(
+                            quantity,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().fillColor(),
+                              20,
+                              FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    textActiveButton: S.current.approve,
+                    gasLimitInit: double.parse(value),
+                    typeApprove: TYPE_CONFIRM_BASE.PLACE_BID,
+                  ),
+                ),
+              ),
             ),
           );
       }
