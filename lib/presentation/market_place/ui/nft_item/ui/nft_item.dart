@@ -83,19 +83,19 @@ class _NFTItemState extends State<NFTItemWidget> {
       onTap: () {
         if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
           _controller!.pause();
-        }
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NFTDetailScreen(
-              typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
-              marketId: widget.nftMarket.marketId,
-              typeNft: widget.nftMarket.typeNFT,
-              nftId: widget.nftMarket.nftId,
-              pawnId: widget.nftMarket.pawnId,
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NFTDetailScreen(
+                typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
+                marketId: widget.nftMarket.marketId,
+                typeNft: widget.nftMarket.typeNFT,
+                nftId: widget.nftMarket.nftId,
+                pawnId: widget.nftMarket.pawnId,
+              ),
             ),
-          ),
-        );
+          );
+        }
         if (widget.nftMarket.typeNFT == TypeNFT.SOFT_NFT) {
           Navigator.push(
             context,

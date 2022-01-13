@@ -30,7 +30,7 @@ class NftOnPawnSuccess extends NFTDetailState {
   NftOnPawnSuccess(this.nftOnPawn);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [nftOnPawn];
 }
 
 class NftOnAuctionSuccess extends NFTDetailState {
@@ -39,7 +39,7 @@ class NftOnAuctionSuccess extends NFTDetailState {
   NftOnAuctionSuccess(this.nftOnAuction);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [nftOnAuction];
 }
 
 class GetGasLimitSuccess extends NftOnSaleSuccess {
@@ -48,5 +48,5 @@ class GetGasLimitSuccess extends NftOnSaleSuccess {
   GetGasLimitSuccess(NftMarket nftMarket, this.gasLimit) : super(nftMarket);
 
   @override
-  List<Object?> get props => [gasLimit];
+  List<Object?> get props => [gasLimit, nftMarket];
 }

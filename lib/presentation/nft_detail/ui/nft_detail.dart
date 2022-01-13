@@ -43,11 +43,11 @@ import 'package:share/share.dart';
 
 part 'auction.dart';
 
+part 'component.dart';
+
 part 'pawn.dart';
 
 part 'sale.dart';
-
-part 'component.dart';
 
 final nftKey = GlobalKey<NFTDetailScreenState>();
 
@@ -87,7 +87,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
     bloc.nftMarketId = widget.marketId ?? '';
     caseTabBar(widget.typeMarket, widget.typeNft);
     onRefresh();
-
     _tabController = TabController(length: _tabPage.length, vsync: this);
   }
 
@@ -332,9 +331,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               divide,
               spaceH12,
               _description(
-                objSale.description?.isEmpty ?? true
-                    ? S.current.no_des
-                    : objSale.description ?? S.current.no_des,
+                objSale.description ?? '',
               ),
               spaceH20,
               StreamBuilder<bool>(
@@ -349,7 +346,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           const SizedBox()
                         else
                           _rowCollection(
-                            'DFY',
+                            objSale.symbolToken ?? '',
                             objSale.collectionName ?? '',
                             objSale.ticked == 1,
                           ),
@@ -634,6 +631,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                     bloc.isStartAuction(
                       nftOnAuction.endTime ?? 0,
                     ),
+                    bloc,
                   ),
                 ),
               ],
@@ -658,9 +656,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               divide,
               spaceH12,
               _description(
-                nftOnAuction.description?.isEmpty ?? true
-                    ? S.current.no_des
-                    : nftOnAuction.description ?? S.current.no_des,
+                nftOnAuction.description ?? '',
               ),
               spaceH20,
               StreamBuilder<bool>(

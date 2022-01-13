@@ -1,23 +1,25 @@
 part of 'nft_detail.dart';
 
-Widget _buildButtonPlaceBid(BuildContext context, bool start,bool end) {
+Widget _buildButtonPlaceBid(
+    BuildContext context, bool start, bool end, NFTDetailBloc bloc) {
   if (!start && end) {
     return ButtonGradient(
-      await bloc
-          .getBalanceToken(
-      ofAddress: bloc.wallets.first.address ?? '',
-      tokenAddress: bloc.nftOnAuction.token ?? '',
-    )
-        .then(
-          (value) => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PlaceBid(
-            balance: value,
-          ),
-        ),
-      ),
-    );
+      onPressed: () async {
+        await bloc
+            .getBalanceToken(
+              ofAddress: bloc.wallets.first.address ?? '',
+              tokenAddress: bloc.nftOnAuction.token ?? '',
+            )
+            .then(
+              (value) => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PlaceBid(
+                    balance: value,
+                  ),
+                ),
+              ),
+            );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
@@ -111,8 +113,7 @@ Container _priceContainerOnAuction({
                   ),
                 spaceW4,
                 Text(
-                  '${isBidding ? nftOnAuction.reservePrice :
-                  nftOnAuction.currentPrice} '
+                  '${isBidding ? nftOnAuction.reservePrice : nftOnAuction.currentPrice} '
                   '${nftOnAuction.tokenSymbol ?? ''}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),
