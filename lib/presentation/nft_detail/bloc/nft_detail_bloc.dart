@@ -77,6 +77,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   NFTRepository get _nftRepo => Get.find();
 
   late final NftMarket nftMarket;
+  late final NFTOnAuction nftOnAuction;
   late final String owner;
   List<Wallet> wallets = [];
 
@@ -187,6 +188,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       }
       result.when(
         success: (res) {
+          nftOnAuction = res;
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.token ?? '';
             final address = value.address ?? '';
@@ -246,7 +248,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       case 'getListWalletsCallback':
         final List<dynamic> data = methodCall.arguments;
         if (data.isEmpty) {
-          emit(NoWallet(nftMarket));
           pairSink.add(true);
         } else {
           for (final element in data) {
@@ -259,7 +260,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           } else {
             pairSink.add(true);
           }
-          emit(HaveWallet(nftMarket));
         }
         return walletAddress;
       default:
@@ -382,6 +382,25 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return hexString;
   }
 
+  Future<String> getBidData({
+    required String contractAddress,
+    required String auctionId,
+    required String bidValue,
+    required BuildContext context,
+  }) async {
+    try {
+      hexString = await web3Client.getBidData(
+        contractAddress: contractAddress,
+        auctionId: auctionId,
+        bidValue: bidValue,
+        context: context,
+      );
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+    return hexString;
+  }
+
   Future<String> getGasLimitByData({
     required String fromAddress,
     required String toAddress,
@@ -405,21 +424,39 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return gasLimit;
   }
 
-  Future<void> callWeb3(BuildContext context, int quantity) async {
+  Future<void> callWeb3(BuildContext context, dynamic quantity,
+      MarketType type) async {
     showLoading();
     try {
-      await getBuyNftData(
-        contractAddress: nft_sales_address_dev2,
-        orderId: nftMarket.orderId.toString(),
-        numberOfCopies: quantity.toString(),
-        context: context,
-      ).then(
-        (value) => getGasLimitByData(
-          fromAddress: wallets.first.address ?? '',
-          toAddress: nft_sales_address_dev2,
-          hexString: value,
-        ),
-      );
+      switch (type) {
+        case MarketType.SALE:
+          await getBuyNftData(
+            contractAddress: nft_sales_address_dev2,
+            orderId: nftMarket.orderId.toString(),
+            numberOfCopies: quantity.toString(),
+            context: context,
+          ).then(
+            (value) => getGasLimitByData(
+              fromAddress: wallets.first.address ?? '',
+              toAddress: nft_sales_address_dev2,
+              hexString: value,
+            ),
+          );
+          break;
+        case MarketType.AUCTION:
+          await getBidData(
+            contractAddress: nft_auction_dev2,
+            auctionId: nftOnAuction.auctionId.toString(),
+            bidValue: quantity.toString(),
+            context: context,
+          ).then(
+            (value) => getGasLimitByData(
+              fromAddress: wallets.first.address ?? '',
+              toAddress: nft_auction_dev2,
+              hexString: value,
+            ),
+          );
+      }
       showContent();
     } catch (e) {
       showError();
