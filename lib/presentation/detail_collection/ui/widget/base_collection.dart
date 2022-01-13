@@ -1,6 +1,8 @@
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/widgets/common_bts/base_collection.dart';
+import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -50,29 +52,21 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollViewDetail> {
       body: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          floatingActionButton: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppTheme.getInstance()
-                              .fillColor()
-                              .withOpacity(0.3),
-                          spreadRadius: -5,
-                          blurRadius: 15,
-                          offset:
-                              const Offset(0, 10), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Image.asset(
-                      ImageAssets.img_float_btn,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+          floatingActionButton: FABMarketBase(
+            collectionCallBack: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CreateCollectionScreen(
+                      bloc: CreateCollectionCubit(),
+                    );
+                  },
                 ),
+              );
+            },
+            nftCallBack: () {},
+          ),
           body: Align(
             alignment: Alignment.bottomCenter,
             child: Container(
