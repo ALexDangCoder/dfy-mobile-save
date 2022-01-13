@@ -201,7 +201,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           emit(NftOnAuctionSuccess(res));
           getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
-          getBidding(res.auctionId.toString());
+          getBidding(res.id.toString());
         },
         error: (error) {
           updateStateError();
@@ -306,14 +306,14 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     }
   }
 
-  int getTimeCountDown(NFTOnAuction nftOnAuction) {
+  int getTimeCountDown(int time) {
     int secondEnd = 0;
     int day = 0;
     int hour = 0;
     int minute = 0;
     int second = 0;
     final endDate =
-        DateTime.fromMillisecondsSinceEpoch(nftOnAuction.endTime ?? 0);
+        DateTime.fromMillisecondsSinceEpoch(time);
     final today = DateTime.now();
 
     if (endDate.year > today.year) {
@@ -351,6 +351,17 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       return 0;
     }
   }
+
+  bool isStartAuction(int startTime){
+    final int check = getTimeCountDown(startTime);
+    if(check > 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
 
   Future<String> getBuyNftData({
     required String contractAddress,

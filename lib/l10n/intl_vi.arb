@@ -449,6 +449,10 @@
   "item_from_low_to_high": "Mục từ thấp đến cao",
   "erc_721": "ERC-721",
   "erc_1155": "ERC-1155",
-  "on_sale": "Đang bán"
+  "on_sale": "Đang bán",
+  "auction_ends_in":"Đấu giá kết thúc sau:",
+    "auction_start_in":"Đấu giá bắt đầu sau:",
+    "auction_ends":"Đấu giá kết thúc:",
+    "is_bid":"Giá hiện tại:"
 
 }
