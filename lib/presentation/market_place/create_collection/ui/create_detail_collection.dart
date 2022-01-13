@@ -16,16 +16,19 @@ import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class CreateDetailCollection extends StatefulWidget {
   final CreateCollectionCubit bloc;
+  final int collectionStandard;
   final int collectionType;
 
   const CreateDetailCollection({
     Key? key,
     required this.bloc,
+    required this.collectionStandard,
     required this.collectionType,
   }) : super(key: key);
 
@@ -49,6 +52,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
     // TODO: implement initState
     super.initState();
     widget.bloc.getListCategory();
+    widget.bloc.collectionStandard = widget.collectionStandard;
     widget.bloc.collectionType = widget.collectionType;
     trustWalletChannel.setMethodCallHandler(
       widget.bloc.nativeMethodCallBackTrustWallet,
@@ -158,7 +162,10 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                       top: 8.h,
                       child: GestureDetector(
                         onTap: () async {
-                          await pickImage(imageType: 'cover_photo');
+                          await pickImage(
+                            imageType: 'cover_photo',
+                            tittle: S.current.cover_photo,
+                          );
                         },
                         child: sizedSvgImage(
                           w: 28,
@@ -173,7 +180,10 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
             } else {
               return GestureDetector(
                 onTap: () async {
-                  await pickImage(imageType: 'cover_photo');
+                  await pickImage(
+                    imageType: 'cover_photo',
+                    tittle: S.current.cover_photo,
+                  );
                 },
                 child: DottedBorder(
                   borderType: BorderType.RRect,
@@ -250,7 +260,10 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                         bottom: 0,
                         child: GestureDetector(
                           onTap: () async {
-                            await pickImage(imageType: 'avatar');
+                            await pickImage(
+                              imageType: 'avatar',
+                              tittle: S.current.upload_avatar,
+                            );
                           },
                           child: sizedSvgImage(
                             w: 28,
@@ -268,7 +281,10 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      await pickImage(imageType: 'avatar');
+                      await pickImage(
+                        imageType: 'avatar',
+                        tittle: S.current.upload_avatar,
+                      );
                     },
                     child: DottedBorder(
                       borderType: BorderType.Circle,
@@ -316,7 +332,10 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
         spaceH22,
         GestureDetector(
           onTap: () async {
-            await pickImage(imageType: 'feature_photo');
+            await pickImage(
+              imageType: 'feature_photo',
+              tittle: S.current.upload_featured_photo,
+            );
           },
           child: StreamBuilder<File>(
             stream: widget.bloc.featurePhotoSubject,
@@ -582,21 +601,62 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
     );
   }
 
-  Future<void> pickImage({required String imageType}) async {
+  Future<void> pickImage(
+      {required String imageType, required String tittle}) async {
     try {
       final newImage =
           await ImagePicker().pickImage(source: ImageSource.gallery);
       if (newImage == null) {
         return;
       }
-      final imageTemp = File(newImage.path);
-      final imageSizeInMB = imageTemp.readAsBytesSync().lengthInBytes / 1048576;
-      widget.bloc.loadImage(
-        type: imageType,
-        imageSizeInMB: imageSizeInMB,
-        imagePath: newImage.path,
-        image: imageTemp,
+      final File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: newImage.path,
+        // aspectRatio: CropAspectRatio(ratioX: width, ratioY: height),
+        cropStyle:
+            imageType == 'avatar' ? CropStyle.circle : CropStyle.rectangle,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9
+              ]
+            : [
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio5x3,
+                CropAspectRatioPreset.ratio5x4,
+                CropAspectRatioPreset.ratio7x5,
+                CropAspectRatioPreset.ratio16x9
+              ],
+        androidUiSettings: AndroidUiSettings(
+          activeControlsWidgetColor: AppTheme.getInstance().bgBtsColor(),
+          toolbarColor: AppTheme.getInstance().bgBtsColor(),
+          backgroundColor: AppTheme.getInstance().bgBtsColor(),
+          statusBarColor: Colors.black,
+          toolbarTitle: tittle,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+        ),
+        iosUiSettings: const IOSUiSettings(
+          title: 'Cropper',
+        ),
       );
+      if (croppedFile != null) {
+        final imageTemp = File(croppedFile.path);
+        final imageSizeInMB =
+            imageTemp.readAsBytesSync().lengthInBytes / 1048576;
+        widget.bloc.loadImage(
+          type: imageType,
+          imageSizeInMB: imageSizeInMB,
+          imagePath: newImage.path,
+          image: imageTemp,
+        );
+      }
     } on PlatformException catch (e) {
       throw 'Cant upload image $e';
     }

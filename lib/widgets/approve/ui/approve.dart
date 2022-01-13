@@ -105,6 +105,23 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
         cubit.createCollectionParam =
             widget.createCollectionCubit?.getMapCreateCollection() ?? {};
+        cubit.typeCollection =
+            widget.createCollectionCubit?.collectionType ?? 0;
+        break;
+      case TYPE_CONFIRM_BASE.SEND_NFT:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_TOKEN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_OFFER:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.PLACE_BID:
+        // TODO: Handle this case.
         break;
     }
   }
@@ -211,7 +228,6 @@ class _ApproveState extends State<Approve> {
           });
           break;
         }
-        break;
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
         // TODO: Handle this case.
         break;

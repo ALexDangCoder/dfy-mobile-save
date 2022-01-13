@@ -35,8 +35,9 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   int transactionNonce = 0;
   String transactionData = '';
 
-  String createType = '';
-  int collectionType = -1;
+  String createId = '';
+  int collectionStandard = -1;
+  int collectionType = 0;
 
   String collectionName = '';
   String customUrl = '';
@@ -144,9 +145,9 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   BehaviorSubject<bool> upLoadStatusSubject = BehaviorSubject();
 
   //func
-  void changeSelectedItem(String type) {
-    createType = type;
-    _typeNFTSubject.sink.add(createType);
+  void changeSelectedItem(String _id) {
+    createId = _id;
+    _typeNFTSubject.sink.add(createId);
   }
 
   void validateCreate() {
@@ -465,6 +466,12 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     return st.standard ?? 0;
   }
 
+  //type 0: soft, type 1: hard
+  int getTypeFromID(String id) {
+    final st = listNFT.where((element) => element.id == id).first;
+    return st.type ?? 0;
+  }
+
   /// get list category
   Future<void> getListCategory() async {
     List<Map<String, String>> menuItems = [];
@@ -659,20 +666,36 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
 
   ///Create Collection
   Map<String, dynamic> getMapCreateCollection() {
-    final String standard = collectionType == 0 ? 'ERC-721' : 'ERC-1155';
-    return {
-      'avatar_cid': cidMap['avatar_cid'],
-      'category_id': categoryId,
-      'collection_standard': standard,
-      'cover_cid': cidMap['cover_cid'],
-      'custom_url': customUrl,
-      'description': description,
-      'feature_cid': cidMap['feature_cid'],
-      'name': collectionName,
-      'royalty': royalties,
-      'social_links': socialLinkMap.toString(),
-      'txn_hash': 'txnHash',
-    };
+    final String standard = collectionStandard == 0 ? 'ERC-721' : 'ERC-1155';
+    if (collectionType == 0) {
+      return {
+        'avatar_cid': cidMap['avatar_cid'],
+        'category_id': categoryId,
+        'collection_standard': standard,
+        'cover_cid': cidMap['cover_cid'],
+        'custom_url': customUrl,
+        'description': description,
+        'feature_cid': cidMap['feature_cid'],
+        'name': collectionName,
+        'royalty': royalties,
+        'social_links': socialLinkMap.toString(),
+        'txn_hash': 'txnHash',
+      };
+    } else {
+      return {
+        'avatar_cid': cidMap['avatar_cid'],
+        'bc_txn_hash': 'txnHash',
+        'category_id': categoryId,
+        'category_name' : categoryId,
+        'collection_address': '',
+        'collection_cid' : collectionIPFS,
+        'collection_type_id' : 1,
+        'custom_url': customUrl,
+        'description': description,
+        'name': collectionName,
+        'social_links': socialLinkMap.toString(),
+      };
+    }
   }
 
   ///get Wallet Address

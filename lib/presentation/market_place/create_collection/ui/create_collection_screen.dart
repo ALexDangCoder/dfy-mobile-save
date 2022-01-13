@@ -109,6 +109,11 @@ class CreateCollectionScreen extends StatelessWidget {
                     }
                   },
                 ),
+
+                ///Space bottom + space top + height of the button
+                SizedBox(
+                  height: (64 + 38 + 24).h,
+                )
               ],
             ),
           ),
@@ -124,14 +129,16 @@ class CreateCollectionScreen extends StatelessWidget {
                 fontSize: 20,
                 onTap: () {
                   if (enable) {
-                    final _collectionType =
+                    final _standard =
                         bloc.getStandardFromID(snapshot.data ?? '');
+                    final _type = bloc.getTypeFromID(snapshot.data ?? '');
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => CreateDetailCollection(
                           bloc: CreateCollectionCubit(),
-                          collectionType: _collectionType,
+                          collectionStandard: _standard,
+                          collectionType: _type,
                         ),
                       ),
                     );
@@ -140,7 +147,8 @@ class CreateCollectionScreen extends StatelessWidget {
               );
             },
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
         ),
       ),
     );
@@ -227,7 +235,7 @@ class CreateCollectionScreen extends StatelessWidget {
                   splashRadius: isActive ? null : 0,
                   activeColor: AppTheme.getInstance().fillColor(),
                   value: typeNFTModel.id ?? '',
-                  groupValue: bloc.createType,
+                  groupValue: bloc.createId,
                   onChanged: (value) {
                     if (isActive) {
                       bloc.changeSelectedItem(

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math' hide log;
-import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
@@ -38,7 +37,10 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   String? addressWallet;
   double? balanceWallet;
   String? rawData;
+  //Create Collection
+  int typeCollection = 0;
   late Map<String, dynamic> createCollectionParam;
+
   final Web3Utils web3Client = Web3Utils();
   final BehaviorSubject<String> _addressWalletCoreSubject =
       BehaviorSubject<String>();
@@ -153,9 +155,17 @@ class ApproveCubit extends BaseCubit<ApproveState> {
             break;
           case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
             if (result['isSuccess']) {
-              createCollectionParam['txn_hash'] = result['txHash'];
-              showContent();
-            } else {}
+              if (typeCollection ==0){
+                createCollectionParam['txn_hash'] = result['txHash'];
+                showContent();
+              } else {
+                createCollectionParam['bc_txn_hash'] = result['txHash'];
+                createCollectionParam['collection_address'] = addressWallet;
+                showContent();
+              }
+            } else {
+
+            }
             break;
           default:
             break;
@@ -203,7 +213,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     } on PlatformException {
       showContent();
     }
-    log('>>>>>>>>>>>>>>>>>>>>>>>> END <<<<<<<<<<<<<<<<<<');
   }
 
   Future<void> getListWallets() async {
@@ -230,6 +239,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       AppException('title', e.toString());
     }
   }
+
+  ///CreateCollectionFunc
 
   void dispose() {
     gasPriceSubject.close();
