@@ -50,8 +50,7 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollViewDetail> {
       body: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          floatingActionButton: widget.isOwner ?? false
-              ? GestureDetector(
+          floatingActionButton: GestureDetector(
                   onTap: () {},
                   child: Container(
                     decoration: BoxDecoration(
@@ -73,8 +72,7 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollViewDetail> {
                       fit: BoxFit.fill,
                     ),
                   ),
-                )
-              : const SizedBox.shrink(),
+                ),
           body: Align(
             alignment: Alignment.bottomCenter,
             child: Container(
