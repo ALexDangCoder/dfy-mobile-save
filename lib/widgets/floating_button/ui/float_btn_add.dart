@@ -109,7 +109,7 @@ class FABMarketBase extends StatelessWidget {
             end: Alignment.centerLeft,
             colors: AppTheme.getInstance().colorFab()),
       ),
-      child: const Icon(Icons.add),
+      child: Icon(Icons.add, size: 32.sp),
     );
   }
 

@@ -8,7 +8,8 @@ mixin MarketPlaceRepository {
       getListTypeNftCollectionExplore();
 
   Future<Result<List<CollectionModel>>> getListCollection({
-    //  String? address,
+    String? address,
+    String? category,
     String? name,
     int? sort,
     int? page,
