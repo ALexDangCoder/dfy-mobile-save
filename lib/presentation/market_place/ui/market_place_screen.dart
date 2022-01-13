@@ -166,7 +166,10 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                 // floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
                 floatingActionButton: Padding(
                   padding: EdgeInsets.only(bottom: 114.h),
-                  child: FABMarketBase(),
+                  child: FABMarketBase(
+                    collectionCallBack: () {},
+                    nftCallBack: () {},
+                  ),
                 ),
                 body: Container(
                   width: double.infinity,

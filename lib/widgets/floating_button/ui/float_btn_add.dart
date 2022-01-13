@@ -11,7 +11,13 @@ enum typeCreateFAB {
 }
 
 class FABMarketBase extends StatelessWidget {
-  FABMarketBase({Key? key}) : super(key: key);
+  FABMarketBase({
+    Key? key,
+    required this.collectionCallBack,
+    required this.nftCallBack,
+  }) : super(key: key);
+  final Function() nftCallBack;
+  final Function() collectionCallBack;
   final cubit = FabCubit();
   bool value = false;
 
@@ -39,33 +45,42 @@ class FABMarketBase extends StatelessWidget {
       elevation: 0,
       spaceBetweenChildren: 7,
       overlayOpacity: 0.6,
-      childrenButtonSize: Size(70.w, 70.h),
+      childrenButtonSize: Size(75.w, 75.h),
       overlayColor: Colors.transparent,
       backgroundColor: Colors.transparent,
       spacing: 7,
       children: [
         SpeedDialChild(
-          onTap: () {},
+          onTap: collectionCallBack,
           child: fabCreateCollection(
             isCancel: false,
             typeCreateFab: typeCreateFAB.COLLECTION,
           ),
         ),
         SpeedDialChild(
-          onTap: () {},
+          onTap: nftCallBack,
           child: fabCreateCollection(
             isCancel: false,
             typeCreateFab: typeCreateFAB.NFT,
           ),
         ),
       ],
-      child: StreamBuilder<bool>(
-        stream: cubit.isAddingEvent,
-        initialData: false,
-        builder: (context, snapshot) {
-          return fabAdd();
-        },
-      ),
+      child: fabAddFtFabCancel(),
+    );
+  }
+
+  Widget fabAddFtFabCancel() {
+    return StreamBuilder<bool>(
+      stream: cubit.isAddingEvent,
+      initialData: false,
+      builder: (context, snapshot) {
+        return Stack(
+          children: [
+            Visibility(visible: !snapshot.data!, child: fabAdd()),
+            Visibility(visible: snapshot.data!, child: fabCancel()),
+          ],
+        );
+      },
     );
   }
 
@@ -74,7 +89,7 @@ class FABMarketBase extends StatelessWidget {
       width: 70.w,
       height: 70.h,
       decoration: BoxDecoration(
-        color: Colors.transparent.withOpacity(0.7),
+        color: Colors.transparent.withOpacity(0.6),
         shape: BoxShape.circle,
       ),
       child: Image.asset(ImageAssets.fabCancel),
@@ -83,8 +98,8 @@ class FABMarketBase extends StatelessWidget {
 
   Widget fabAdd() {
     return Container(
-      width: 60.w,
-      height: 60.h,
+      width: 70.w,
+      height: 70.h,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
@@ -96,7 +111,7 @@ class FABMarketBase extends StatelessWidget {
           ],
         ),
       ),
-      child: Icon(Icons.add),
+      child: const Icon(Icons.add),
     );
   }
 
@@ -145,15 +160,17 @@ class FABMarketBase extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: FittedBox(
-                      fit: BoxFit.none,
-                      child: Text(
-                        typeCreateFab == typeCreateFAB.COLLECTION
-                            ? 'Collection'
-                            : 'NFT',
-                        style: textNormalCustom(
-                          Colors.white,
-                          8,
-                          FontWeight.w700,
+                      fit: BoxFit.fill,
+                      child: Expanded(
+                        child: Text(
+                          typeCreateFab == typeCreateFAB.COLLECTION
+                              ? 'Collection'
+                              : 'NFT',
+                          style: textNormalCustom(
+                            Colors.white,
+                            8,
+                            FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
