@@ -39,11 +39,11 @@ import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
 
 void configureDependencies() {
   Get.put(TokenClient(provideDio()));
@@ -92,7 +92,6 @@ void configureDependencies() {
   Get.put<ConfirmRepository>(ConfirmImplement(Get.find()));
 }
 
-
 Dio provideDio({int connectionTimeOut = 60000}) {
   final appConstants = Get.find<AppConstants>();
   final options = BaseOptions(
@@ -113,7 +112,8 @@ Dio provideDio({int connectionTimeOut = 60000}) {
           'pinata_api_key': 'ac8828bff3bcd1c1b828',
           'pinata_secret_api_key':
               'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df',
-          'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZXRfYWRkcmVzcyI6IjB4MzllZTRjMjhlMDljZTZkOTA4NjQzZGRkZWVhZWVmMjM0MTEzOGViYiIsImdyYW50X3R5cGUiOiJ3YWxsZXQiLCJ1c2VyX25hbWUiOiIweDM5ZWU0YzI4ZTA5Y2U2ZDkwODY0M2RkZGVlYWVlZjIzNDExMzhlYmIiLCJzY29wZSI6WyJERUZBVUxUIl0sImF0aSI6ImVmZDVmNjZkLTRmOGMtNGU2ZC1hYmMxLTA3ODBmNjNhOWJlZSIsImV4cCI6MTY0MjA3ODkxNiwianRpIjoiMGYwMzZlZmEtODhlMC00Mzc0LTg0ODAtNTVlMWE1MzIyYjEyIiwiY2xpZW50X2lkIjoidGFpbmQifQ.pKg6nIsuojMYALmzM9GcBnwJ0uZWiSHjyIX7ZlAVLcHsw9bYzhb5qDdF67TIY9beLo4AKEKPORp00_385lcHGlXfIn7EjxpnJI7lR-SODoxShs65jZ9lTjLGgMrSocBwr7MwHwUJaRBoesMYcy1gnv7AE0G3qj0aCCPhEjmLPxd6qWG9cvDE6V9wwaCMn6aZ-5B2vxhKdLk4QyN2BVC_-srVjsem1OoswR1XVvs5QY6VzQIzUaZ8pQA61WUk8PK1XjuRAG7vkkpYdMzh5GPm6CnjlWqehW7rBswPO6ndEM1Pyd80U7ZH8ninkv1LxtTYoGqokwKfDhNO0WbL17kECQ'
+          'headers': 'dmbe',
+          'Authorization': bearTokenViNhieuTien,
         };
         return handler.next(options);
       },

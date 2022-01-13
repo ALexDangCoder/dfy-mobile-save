@@ -9,6 +9,7 @@ import 'package:Dfy/presentation/detail_collection/ui/tab_bar/nfts.dart';
 import 'package:Dfy/presentation/detail_collection/ui/tab_bar/trading_history.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/base_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/filter_activity.dart';
+import 'package:Dfy/presentation/detail_collection/ui/widget/filter_nft_myacc.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/double_extension.dart';
@@ -233,15 +234,25 @@ class _DetailCollectionState extends State<DetailCollection>
                   child: InkWell(
                     onTap: () {
                       if (_tabController.index == 0) {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          context: context,
-                          builder: (context) => FilterNFT(
-                            collectionBloc: detailCollectionBloc,
-                            isOwner: isOwner,
-                          ),
-                        );
+                        if(isOwner){
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context) => FilterNFTMyAcc(
+                              collectionBloc: detailCollectionBloc,
+                            ),
+                          );
+                        }else{
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context) => FilterNFT(
+                              collectionBloc: detailCollectionBloc,
+                            ),
+                          );
+                        }
                       } else {
                         showModalBottomSheet(
                           isScrollControlled: true,

@@ -129,12 +129,16 @@ class _FilterActivityState extends State<FilterActivity> {
                         child: IsBaseCheckBox(
                           title: S.current.transfer,
                           stream: collectionBloc.isTransfer,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                       Expanded(
                         child: IsBaseCheckBox(
                           title: S.current.put_on_market,
                           stream: collectionBloc.isPutOnMarket,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                     ],
@@ -146,12 +150,16 @@ class _FilterActivityState extends State<FilterActivity> {
                         child: IsBaseCheckBox(
                           title: S.current.cancel,
                           stream: collectionBloc.isCancelMarket,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                       Expanded(
                         child: IsBaseCheckBox(
                           title: S.current.buy,
                           stream: collectionBloc.isBuy,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                     ],
@@ -163,12 +171,16 @@ class _FilterActivityState extends State<FilterActivity> {
                         child: IsBaseCheckBox(
                           title: S.current.bid_buy_out,
                           stream: collectionBloc.isBid,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                       Expanded(
                         child: IsBaseCheckBox(
                           title: S.current.receive_offer,
                           stream: collectionBloc.isReceiveOffer,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                     ],
@@ -180,12 +192,16 @@ class _FilterActivityState extends State<FilterActivity> {
                         child: IsBaseCheckBox(
                           title: S.current.sign_contract,
                           stream: collectionBloc.isSignContract,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                       Expanded(
                         child: IsBaseCheckBox(
                           title: S.current.burn,
                           stream: collectionBloc.isBurn,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                     ],
@@ -197,12 +213,16 @@ class _FilterActivityState extends State<FilterActivity> {
                         child: IsBaseCheckBox(
                           title: S.current.like,
                           stream: collectionBloc.isLike,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                       Expanded(
                         child: IsBaseCheckBox(
                           title: S.current.report,
                           stream: collectionBloc.isReport,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                     ],
