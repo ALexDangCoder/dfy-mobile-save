@@ -12,6 +12,7 @@ import 'package:Dfy/presentation/market_place/create_collection/ui/create_collec
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:Dfy/widgets/form/from_search.dart';
 import 'package:Dfy/widgets/item/item_collection/item_colection.dart';
 import 'package:flutter/cupertino.dart';
@@ -76,11 +77,9 @@ class _CollectionListState extends State<CollectionList> {
     collectionBloc.textSearch.sink.add(widget.query);
     _listCollectionController.addListener(_onScroll);
     collectionBloc.getCollection(
-      name: widget.query,
+      name: widget.query.trim(),
       sortFilter: collectionBloc.sortFilter,
     );
-
-
 
     trustWalletChannel
         .setMethodCallHandler(collectionBloc.nativeMethodCallBackTrustWallet);
@@ -91,8 +90,8 @@ class _CollectionListState extends State<CollectionList> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton: GestureDetector(
-        onTap: () {
+      floatingActionButton: FABMarketBase(
+        collectionCallBack: () {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -104,23 +103,7 @@ class _CollectionListState extends State<CollectionList> {
             ),
           );
         },
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: AppTheme.getInstance().fillColor().withOpacity(0.3),
-                spreadRadius: -5,
-                blurRadius: 15,
-                offset: const Offset(0, 10), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Image.asset(
-            ImageAssets.img_float_btn,
-            fit: BoxFit.fill,
-          ),
-        ),
+        nftCallBack: () {},
       ),
       backgroundColor: Colors.transparent,
       body: Align(
@@ -275,7 +258,8 @@ class _CollectionListState extends State<CollectionList> {
                               child: RefreshIndicator(
                                 onRefresh: () async {
                                   await collectionBloc.getCollection(
-                                    name: collectionBloc.textSearch.value,
+                                    name:
+                                        collectionBloc.textSearch.value.trim(),
                                     sortFilter: collectionBloc.sortFilter,
                                   );
                                 },
@@ -295,7 +279,7 @@ class _CollectionListState extends State<CollectionList> {
                                         ),
                                         mainAxisSpacing: 20.h,
                                         crossAxisSpacing: 26.w,
-                                        itemCount:list.length,
+                                        itemCount: list.length,
                                         itemBuilder: (context, index) {
                                           return InkWell(
                                             onTap: () {
@@ -311,7 +295,7 @@ class _CollectionListState extends State<CollectionList> {
                                                                   .addressCollection ??
                                                               '',
                                                       walletAddress:
-                                                          'alo alo alo',//todo address wallet
+                                                          'alo alo alo', //todo address wallet
                                                     );
                                                   },
                                                 ),
@@ -328,8 +312,7 @@ class _CollectionListState extends State<CollectionList> {
                                                   (list[index].avatarCid ?? ''),
                                               owners:
                                                   '${list[index].nftOwnerCount ?? 0}',
-                                              title: snapshot.data?[index]
-                                                      .name
+                                              title: snapshot.data?[index].name
                                                       ?.parseHtml() ??
                                                   '',
                                               urlBackGround: ApiConstants
