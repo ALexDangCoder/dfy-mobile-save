@@ -625,7 +625,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                   width: 23.w,
                 ),
                 Expanded(
-                  child: _buildButtonPlaceBid(context),
+                  child: _buildButtonPlaceBid(context, bloc),
                 ),
               ],
             ),

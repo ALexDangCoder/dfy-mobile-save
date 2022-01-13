@@ -251,7 +251,7 @@
   "reserve_price": "Reserve price",
   "price_step": "Price step",
   "your_balance_bid": "Your balance",
-  "current_bid": "Current bid",
+  "your_bid": "Your bid",
   "loan_to_vl": "Loan to value:",
   "loan_amount": "Loan amount:",
   "interest_rate": "Interest rate (%APR):",
@@ -449,9 +449,11 @@
   "item_from_low_to_high": "Item from low to high",
   "available": "Available",
   "empty_data": "Empty data",
-  "you_enter_greater": "you enter greater than the total amount",
+  "you_enter_greater": "You enter greater than the total amount",
   "you_must": "You must enter the quantity you want to buy",
   "no_des": "No description",
-  "on_sale": "On sale"
+  "on_sale": "On sale",
+  "you_enter_balance": "You enter greater than the total balance ",
+  "you_must_bid": "You must be enter your bid"
 
 }

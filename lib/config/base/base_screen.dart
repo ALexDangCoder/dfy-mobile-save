@@ -49,7 +49,6 @@ abstract class BaseStateScreen<T extends BaseScreen> extends State<T>
 
   void _showTimeoutDialog(String msg) {
     Fluttertoast.showToast(msg: msg);
-
   }
 
 // void _showUnAuthDialog() {

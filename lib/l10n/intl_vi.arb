@@ -287,7 +287,7 @@
   "set_the_nft_quantity_you_want_to_sell": "Số lượng NFT muốn bán",
   "your_balance_bid": "Số dư của bạn",
   "nft_on_auction": "NFT trên phiên đấu giá",
-  "current_bid": "Giá hiện tại",
+  "Your bid": "Bạn đấu giá",
   "loan_to_vl": "Cho vay định giá:",
   "loan_amount": "Giá nợ:",
   "interest_rate": "Lãi (%APR):",
@@ -449,6 +449,7 @@
   "item_from_low_to_high": "Mục từ thấp đến cao",
   "erc_721": "ERC-721",
   "erc_1155": "ERC-1155",
-  "on_sale": "Đang bán"
-
+  "on_sale": "Đang bán",
+  "you_enter_balance": "Bạn nhập lớn số dư trong ví",
+  "you_must_bid": "Bạn phải nhập giá bạn muốn đấu giá"
 }
