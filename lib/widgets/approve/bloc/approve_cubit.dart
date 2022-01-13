@@ -71,8 +71,10 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   /// [gasPriceSubject] contain gas price init, not gas price final
   final BehaviorSubject<double> gasPriceFirstSubject = BehaviorSubject<double>();
 
+  final BehaviorSubject<bool> canActionSubject = BehaviorSubject<bool>();
 
-  final BehaviorSubject<bool> isApprovedSubject = BehaviorSubject.seeded(false);
+
+  final BehaviorSubject<bool> isApprovedSubject = BehaviorSubject<bool>();
 
   Stream<String> get addressWalletCoreStream =>
       _addressWalletCoreSubject.stream;
@@ -82,6 +84,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   Stream<bool> get isApprovedStream => isApprovedSubject.stream;
 
   Stream<double> get balanceWalletStream => _balanceWalletSubject.stream;
+
+  Stream<bool> get canActionStream => canActionSubject.stream;
 
   Stream<double> get gasPriceFirstStream => gasPriceFirstSubject.stream;
 
@@ -161,6 +165,11 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     } on PlatformException {
       //todo
     }
+  }
+
+
+  Future<void> approve ()async {
+    await Future.delayed(Duration(seconds: 2),(){isApprovedSubject.sink.add(true);},);
   }
 
   ///

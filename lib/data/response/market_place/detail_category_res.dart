@@ -62,6 +62,8 @@ class ListCollectionCategoryResponse extends Equatable {
   bool? isWhiteList;
   @JsonKey(name: 'total_nft')
   int? totalNft;
+  @JsonKey(name: 'collection_address')
+  String? collectionAddress;
 
   ListCollectionCategoryResponse(
     this.id,
@@ -74,6 +76,7 @@ class ListCollectionCategoryResponse extends Equatable {
     this.featureCid,
     this.totalNft,
     this.isWhiteList,
+    this.collectionAddress,
   );
 
   factory ListCollectionCategoryResponse.fromJson(Map<String, dynamic> json) =>
@@ -90,6 +93,7 @@ class ListCollectionCategoryResponse extends Equatable {
         isWhiteList: isWhiteList,
         nftOwnerCount: nftOwnerCount,
         totalNft: totalNft,
+        collectionAddress: collectionAddress,
       );
 
   @override

@@ -272,7 +272,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                                         DetailCollection(
                                                       //todo address wallet
                                                       collectionAddress:
-                                                          data[index].id ?? '',
+                                                          data[index].collectionAddress?? '',
                                                     ),
                                                   ),
                                                 );

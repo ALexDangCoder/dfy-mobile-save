@@ -4,6 +4,7 @@ class CollectionCategoryModel {
   int? collectionType;
   String? coverId;
   String? description;
+  String? collectionAddress;
   String? featureId;
   String? id;
   bool? isWhiteList;
@@ -21,5 +22,6 @@ class CollectionCategoryModel {
     this.id,
     this.nftOwnerCount,
     this.totalNft,
+    this.collectionAddress,
   });
 }

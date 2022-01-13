@@ -98,7 +98,7 @@ class _ApproveState extends State<Approve> {
   double gasFee = 0;
   int nonce = 0;
   late final NFTDetailBloc nftDetailBloc;
-  bool gasFeeIsFitToSign = false;
+  bool isCanAction = false;
 
   void initData(TYPE_CONFIRM_BASE typeBase) {
     switch (typeBase) {
@@ -123,7 +123,6 @@ class _ApproveState extends State<Approve> {
 
     /// get wallet information
     cubit.getListWallets();
-
     if (widget.needApprove ?? false) {
       cubit.checkApprove(
         payValue: widget.payValue ?? '',
@@ -131,6 +130,11 @@ class _ApproveState extends State<Approve> {
         spenderAddress: widget.spenderAddress ?? '',
       );
     }
+    cubit.canActionSubject.listen((value) {
+      setState(() {
+        isCanAction = value;
+      });
+    });
     initData(widget.typeApprove);
   }
 
@@ -141,10 +145,29 @@ class _ApproveState extends State<Approve> {
   /// Function approve
 
   Future<void> approve() async {
-    showLoading();
+    bool isShowLoading = false;
     /// function approve
-    ///
-
+    unawaited(cubit.approve());
+    cubit.isApprovedSubject.listen((value) async {
+      final navigator = Navigator.of(context);
+      if (value) {
+        if (isShowLoading) {
+          Navigator.pop(context);
+        }
+        await showLoadSuccess();
+        navigator.pop();
+      }
+      if (!value){
+        if (isShowLoading) {
+          navigator.pop();
+        }
+        await showLoadFail();
+        navigator.pop();
+      }
+    });
+    isShowLoading = true;
+    await showLoading();
+    isShowLoading = false;
   }
 
   ///  Action sign (use this base call NamLV)
@@ -168,7 +191,8 @@ class _ApproveState extends State<Approve> {
             contractAddress: nft_sales_address_dev2,
             nonce: nonce.toString(),
             chainId: Get.find<AppConstants>().chaninId,
-            gasPrice: (cubit.gasPriceFirstSubject.value / 10e8).toStringAsFixed(0),
+            gasPrice:
+                (cubit.gasPriceFirstSubject.value / 10e8).toStringAsFixed(0),
             gasLimit: nftDetailBloc.gasLimit,
             hexString: nftDetailBloc.hexString,
           );
@@ -215,9 +239,9 @@ class _ApproveState extends State<Approve> {
   }
 
   /// show dialog loading
-  void showLoading() {
-    Navigator.push(
-      context,
+  Future <void>  showLoading() async {
+    final navigator = Navigator.of(context);
+    await navigator.push(
       PageRouteBuilder(
         reverseTransitionDuration: Duration.zero,
         transitionDuration: Duration.zero,
@@ -238,56 +262,64 @@ class _ApproveState extends State<Approve> {
   }
 
   /// show dialog Error
-  void showLoadFail() {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        reverseTransitionDuration: Duration.zero,
-        transitionDuration: Duration.zero,
-        pageBuilder: (_, animation, ___) {
-          return Scaffold(
-            backgroundColor: Colors.black.withOpacity(0.4),
-            body: Center(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
-                child: const TransactionSubmitFail(),
+  Future<void> showLoadFail() async {
+    final navigator = Navigator.of(context);
+    unawaited(
+      navigator.push(
+        PageRouteBuilder(
+          reverseTransitionDuration: Duration.zero,
+          transitionDuration: Duration.zero,
+          pageBuilder: (_, animation, ___) {
+            return Scaffold(
+              backgroundColor: Colors.black.withOpacity(0.4),
+              body: Center(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                  child: const TransactionSubmitFail(),
+                ),
               ),
-            ),
-          );
-        },
-        opaque: false,
+            );
+          },
+          opaque: false,
+        ),
       ),
     );
+    await Future.delayed(const Duration(seconds: 1), () {
+      navigator.pop();
+    });
   }
-
 
   /// show dialog success
-  void showLoadSuccess() {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        reverseTransitionDuration: Duration.zero,
-        transitionDuration: Duration.zero,
-        pageBuilder: (_, animation, ___) {
-          return Scaffold(
-            backgroundColor: Colors.black.withOpacity(0.4),
-            body: Center(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
-                child: const TransactionSubmitSuccess(),
+  Future<void> showLoadSuccess() async {
+    final navigator = Navigator.of(context);
+    unawaited(
+      navigator.push(
+        PageRouteBuilder(
+          reverseTransitionDuration: Duration.zero,
+          transitionDuration: Duration.zero,
+          pageBuilder: (_, animation, ___) {
+            return Scaffold(
+              backgroundColor: Colors.black.withOpacity(0.4),
+              body: Center(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                  child: const TransactionSubmitSuccess(),
+                ),
               ),
-            ),
-          );
-        },
-        opaque: false,
+            );
+          },
+          opaque: false,
+        ),
       ),
     );
+    await Future.delayed(const Duration(seconds: 1), () {
+      navigator.pop();
+    });
   }
 
-
   /// show  BottomSheet approve
-  Future<dynamic> showPopupApprove() async {
-    final result = await showModalBottomSheet(
+  void  showPopupApprove()  {
+    showModalBottomSheet(
       backgroundColor: Colors.black,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -298,10 +330,10 @@ class _ApproveState extends State<Approve> {
       context: context,
       builder: (_) {
         return PopUpApprove(
-          approve: () async {
-            await approve();
+          approve: () {
+            approve();
           },
-          addressWallet: cubit.addressWallet ?? '',
+          addressWallet: cubit.addressWallet ?? '432342342342323423',
           accountName: cubit.nameWallet ?? 'Account',
           imageAccount: accountImage,
           balanceWallet: cubit.balanceWallet ?? 0,
@@ -311,7 +343,6 @@ class _ApproveState extends State<Approve> {
         );
       },
     );
-    return result;
   }
 
   @override
@@ -459,18 +490,6 @@ class _ApproveState extends State<Approve> {
                             walletView(),
                             const SizedBox(height: 16),
                             EstimateGasFee(
-                              stateChange: (gasFee) {
-                                WidgetsBinding.instance
-                                    ?.addPostFrameCallback((timeStamp) {
-                                  setState(() {
-                                    if (cubit.balanceWallet != null) {
-                                      gasFeeIsFitToSign =
-                                          gasFee <= (cubit.balanceWallet ?? 0);
-                                    }
-                                  });
-                                  this.gasFee = gasFee;
-                                });
-                              },
                               cubit: cubit,
                               gasLimitStart: widget.gasLimitInit,
                             ),
@@ -507,26 +526,28 @@ class _ApproveState extends State<Approve> {
                                   child: ButtonGold(
                                     haveGradient: !isApproved,
                                     background:
-                                    isApproved ? fillApprovedButton : null,
+                                        isApproved ? fillApprovedButton : null,
                                     textColor: isApproved
                                         ? borderApprovedButton
-                                        : gasFeeIsFitToSign
-                                        ? null
-                                        : disableText,
+                                        : isCanAction
+                                            ? null
+                                            : disableText,
                                     border: isApproved
                                         ? Border.all(
-                                      color: borderApprovedButton,
-                                      width: 2,
-                                    )
+                                            color: borderApprovedButton,
+                                            width: 2,
+                                          )
                                         : null,
                                     title: S.current.approve,
-                                    isEnable: gasFeeIsFitToSign,
+                                    isEnable: isCanAction,
                                     fixSize: false,
                                     haveMargin: false,
                                   ),
-                                  onTap: ()  {
+                                  onTap: () {
+                                    if (!isApproved && isCanAction) {
                                       showPopupApprove();
-                                    },
+                                    }
+                                  },
                                 );
                               },
                             ),
@@ -536,7 +557,10 @@ class _ApproveState extends State<Approve> {
                       ),
                     )
                   else
-                    const SizedBox(height: 0),
+                    const SizedBox(
+                      height: 0,
+                      width: 0,
+                    ),
                   Expanded(
                     child: StreamBuilder<bool>(
                       stream: cubit.isApprovedStream,
@@ -553,12 +577,12 @@ class _ApproveState extends State<Approve> {
                             title: widget.textActiveButton,
                             isEnable: (isApproved ||
                                     !(widget.needApprove ?? false)) &&
-                                gasFeeIsFitToSign,
+                                isCanAction,
                           ),
                           onTap: () {
                             if ((isApproved ||
                                     !(widget.needApprove ?? false)) &&
-                                gasFeeIsFitToSign) {
+                                isCanAction) {
                               signTransaction(
                                 cubit.gasLimit ?? widget.gasLimitInit,
                                 cubit.gasPrice ?? 0,
