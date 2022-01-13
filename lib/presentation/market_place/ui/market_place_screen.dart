@@ -37,6 +37,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
 
   @override
   void dispose() {
+    FABMarketBase.cubit.dispose();
     super.dispose();
   }
 
