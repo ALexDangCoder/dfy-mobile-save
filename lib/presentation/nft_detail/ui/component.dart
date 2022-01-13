@@ -1,5 +1,5 @@
 part of 'nft_detail.dart';
-
+NFTDetailBloc bloc = nftKey.currentState!.bloc;
 Widget _leading(BuildContext context) => InkWell(
   onTap: () {
     Navigator.pop(context);
@@ -12,6 +12,7 @@ Widget _leading(BuildContext context) => InkWell(
 
 Widget _nameNFT({
   required String title,
+  required BuildContext context,
   int quantity = 1,
   String url = '',
   double? price,
@@ -37,7 +38,23 @@ Widget _nameNFT({
               width: 25.h,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () async {
+                await bloc
+                    .getBalanceToken(
+                  ofAddress: bloc.wallets.first.address ?? '',
+                  tokenAddress: bloc.nftOnAuction.token ?? '',
+                )
+                    .then(
+                      (value) => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PlaceBid(
+                        balance: value,
+                      ),
+                    ),
+                  ),
+                );
+              },
               child: roundButton(
                 image: ImageAssets.ic_flag_svg,
                 whiteBackground: true,

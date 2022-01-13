@@ -28,6 +28,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
+import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
 import 'package:Dfy/widgets/count_down_view/ui/nft_countdownn.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
@@ -42,11 +43,11 @@ import 'package:share/share.dart';
 
 part 'auction.dart';
 
+part 'component.dart';
+
 part 'pawn.dart';
 
 part 'sale.dart';
-
-part 'component.dart';
 
 final nftKey = GlobalKey<NFTDetailScreenState>();
 
@@ -86,7 +87,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
     bloc.nftMarketId = widget.marketId ?? '';
     caseTabBar(widget.typeMarket, widget.typeNft);
     onRefresh();
-
     _tabController = TabController(length: _tabPage.length, vsync: this);
   }
 
@@ -97,7 +97,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<HistoryNFT>>(
             stream: bloc.listHistoryStream,
             builder: (
-              BuildContext context,
+              context,
               AsyncSnapshot<List<HistoryNFT>> snapshot,
             ) {
               return HistoryTab(
@@ -108,7 +108,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<OwnerNft>>(
             stream: bloc.listOwnerStream,
             builder: (
-              BuildContext context,
+              context,
               AsyncSnapshot<List<OwnerNft>> snapshot,
             ) {
               return OwnerTab(
@@ -121,7 +121,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<BiddingNft>>(
             stream: bloc.listBiddingStream,
             builder: (
-              BuildContext context,
+              context,
               AsyncSnapshot<List<BiddingNft>> snapshot,
             ) {
               return BidTab(
@@ -152,7 +152,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<HistoryNFT>>(
             stream: bloc.listHistoryStream,
             builder: (
-              BuildContext context,
+              context,
               AsyncSnapshot<List<HistoryNFT>> snapshot,
             ) {
               return HistoryTab(
@@ -163,7 +163,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<OwnerNft>>(
             stream: bloc.listOwnerStream,
             builder: (
-              BuildContext context,
+              context,
               AsyncSnapshot<List<OwnerNft>> snapshot,
             ) {
               return OwnerTab(
@@ -192,7 +192,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<HistoryNFT>>(
             stream: bloc.listHistoryStream,
             builder: (
-              BuildContext context,
+              context,
               AsyncSnapshot<List<HistoryNFT>> snapshot,
             ) {
               return HistoryTab(
@@ -203,7 +203,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<OwnerNft>>(
             stream: bloc.listOwnerStream,
             builder: (
-              BuildContext context,
+              context,
               AsyncSnapshot<List<OwnerNft>> snapshot,
             ) {
               return OwnerTab(
@@ -216,7 +216,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<OfferDetail>>(
             stream: bloc.listOfferStream,
             builder: (
-              BuildContext context,
+              context,
               AsyncSnapshot<List<OfferDetail>> snapshot,
             ) {
               return OfferTab(
@@ -314,10 +314,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonBuyOutOnSale(context,bloc),
+            bottomBar: _buildButtonBuyOutOnSale(context, bloc),
             content: [
               _nameNFT(
                 title: objSale.name ?? '',
+                context: context,
                 quantity: objSale.totalCopies ?? 1,
                 url: objSale.image ?? '',
                 price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
@@ -331,9 +332,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               divide,
               spaceH12,
               _description(
-                objSale.description?.isEmpty ?? true
-                    ? S.current.no_des
-                    : objSale.description ?? S.current.no_des,
+                objSale.description ?? '',
               ),
               spaceH20,
               StreamBuilder<bool>(
@@ -348,7 +347,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           const SizedBox()
                         else
                           _rowCollection(
-                            'DFY',
+                            objSale.symbolToken ?? '',
                             objSale.collectionName ?? '',
                             objSale.ticked == 1,
                           ),
@@ -468,7 +467,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
             bottomBar: _buildButtonSendOffer(context),
             content: [
-              _nameNFT(title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? ''),
+              _nameNFT(context: context,title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? ''),
               _priceContainerOnPawn(nftOnPawn: nftOnPawn),
               _durationRowOnPawn(
                 durationType: nftOnPawn.durationType ?? 0,
@@ -625,31 +624,41 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                   width: 23.w,
                 ),
                 Expanded(
-                  child: _buildButtonPlaceBid(context),
+                  child: _buildButtonPlaceBid(
+                    context,
+                    bloc.isStartAuction(
+                      nftOnAuction.startTime ?? 0,
+                    ),
+                    bloc.isStartAuction(
+                      nftOnAuction.endTime ?? 0,
+                    ),
+                    bloc,
+                  ),
                 ),
               ],
             ),
             content: [
               _nameNFT(
                 title: nftOnAuction.name ?? '',
+                context: context,
                 quantity: nftOnAuction.numberOfCopies ?? 1,
                 url: nftOnAuction.fileCid ?? '',
                 price: (nftOnAuction.reservePrice ?? 0) *
                     (nftOnAuction.usdExchange ?? 1),
               ),
               _priceContainerOnAuction(
-                price: nftOnAuction.reservePrice ?? 0,
-                usdExchange: nftOnAuction.usdExchange ?? 0,
-                urlToken: nftOnAuction.urlToken ?? '',
-                shortName: nftOnAuction.tokenSymbol ?? '',
+                nftOnAuction: nftOnAuction,
               ),
-              _timeContainer(bloc.getTimeCountDown(nftOnAuction)),
+              _timeContainer(
+                bloc.isStartAuction(nftOnAuction.startTime ?? 0),
+                bloc.getTimeCountDown(nftOnAuction.startTime ?? 0),
+                bloc.isStartAuction(nftOnAuction.endTime ?? 0),
+                bloc.getTimeCountDown(nftOnAuction.endTime ?? 0),
+              ),
               divide,
               spaceH12,
               _description(
-                nftOnAuction.description?.isEmpty ?? true
-                    ? S.current.no_des
-                    : nftOnAuction.description ?? S.current.no_des,
+                nftOnAuction.description ?? '',
               ),
               spaceH20,
               StreamBuilder<bool>(

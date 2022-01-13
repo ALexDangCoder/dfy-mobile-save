@@ -9,7 +9,7 @@ class ApiConstants {
   static const String GET_LIST_TOKEN =
       '/nft-market-svc/public-api/market/coin-list';
   static const String DETAIL_CATEGORY = 'nft-market-svc/public-api/collection';
-  static const String GET_PRICE_TOKEN_BY_SYMBOL = '/market/coin-price/';
+  static const String GET_PRICE_TOKEN_BY_SYMBOL = '/nft-market-svc/public-api/market/coin-price';
   static const String GET_DETAIL_NFT_AUCTION =
       '/nft-market-svc/public-api/auction/detail/';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE =
@@ -37,7 +37,7 @@ class ApiConstants {
   static const String GET_LIST_TYPE_NFT = '/hard-nft-svc/public-api/collections/types';
 
 
-  static const String GET_LIST_NFT_COLLECTION = 'nft-market-svc/public-api/collection/list-nft';
+  static const String GET_LIST_NFT_COLLECTION = '/inventory-svc/public-api/collections/list-nft/';
   static const String COLLECTION_DETAIL =
       '/inventory-svc/public-api/collections/';
   static const String COLLECTION_ACTIVITY_LIST =
