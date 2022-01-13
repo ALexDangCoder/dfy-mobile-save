@@ -79,6 +79,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   Timer? debounceTime;
 
   void funFilter({int index = 0}) {
+    sortFilter=index;
     getCollection(
       sortFilter: sortFilter,
       name: textSearch.value.trim(),
