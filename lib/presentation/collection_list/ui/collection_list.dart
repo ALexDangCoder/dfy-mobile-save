@@ -76,7 +76,7 @@ class _CollectionListState extends State<CollectionList> {
     collectionBloc.textSearch.sink.add(widget.query);
     _listCollectionController.addListener(_onScroll);
     collectionBloc.getCollection(
-      name: widget.query,
+      name: widget.query.trim(),
       sortFilter: collectionBloc.sortFilter,
     );
 
@@ -275,7 +275,7 @@ class _CollectionListState extends State<CollectionList> {
                               child: RefreshIndicator(
                                 onRefresh: () async {
                                   await collectionBloc.getCollection(
-                                    name: collectionBloc.textSearch.value,
+                                    name: collectionBloc.textSearch.value.trim(),
                                     sortFilter: collectionBloc.sortFilter,
                                   );
                                 },
