@@ -175,7 +175,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                         builder: (context, snapshot) {
                           final data = snapshot.data;
                           return BaseAppBar(
-                            image: data?.bannerCid ?? '',
+                            image: ApiConstants.BASE_URL_IMAGE+( data?.bannerCid ?? ''),
                             title:
                                 '${widget.exploreCategory.name} ${S.current.categories}',
                             initHeight: 145.h,
