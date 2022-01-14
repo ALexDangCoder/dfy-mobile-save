@@ -9,6 +9,7 @@ import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
@@ -123,7 +124,6 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.PLACE_BID:
         // TODO: Handle this case.
         break;
-        break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         nftDetailBloc = nftKey.currentState!.bloc;
         break;
@@ -183,6 +183,9 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
         // TODO: Handle this case.
         break;
+      case TYPE_CONFIRM_BASE.CANCEL_SALE:
+        // TODO: Handle this case.
+        break;
     }
   }
 
@@ -215,16 +218,15 @@ class _ApproveState extends State<Approve> {
         {
           cubit.showLoading();
           final int n = await nftDetailBloc.getNonceWeb3();
-          await cubit
-              .signTransactionWithData(
-                walletAddress: nftDetailBloc.walletAddress,
-                contractAddress: nft_sales_address_dev2,
-                nonce: n.toString(),
-                chainId: Get.find<AppConstants>().chaninId,
-                gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
-                gasLimit: gasLimitFinal.toStringAsFixed(0),
-                hexString: nftDetailBloc.hexString,
-              );
+          await cubit.signTransactionWithData(
+            walletAddress: nftDetailBloc.walletAddress,
+            contractAddress: nft_sales_address_dev2,
+            nonce: n.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+            gasLimit: gasLimitFinal.toStringAsFixed(0),
+            hexString: nftDetailBloc.hexString,
+          );
           cubit.showLoading();
           break;
         }
@@ -588,16 +590,36 @@ class _ApproveState extends State<Approve> {
                       bloc: cubit,
                       listener: (context, state) {
                         // TODO:
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Cancel thành công (Để tạm)'),
-                        ),);
-                        if (state is SendRawDataSuccess &&
-                            widget.typeApprove ==
-                                TYPE_CONFIRM_BASE.CANCEL_SALE) {
-                          cubit.confirmCancelSaleWithBE(
-                            txnHash: state.txnHash,
-                            marketId: nftDetailBloc.nftMarket.marketId ?? '',
-                          );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Cancel thành công (Để tạm)'),
+                          ),
+                        );
+                        if (state is SendRawDataSuccess) {
+                          switch (widget.typeApprove) {
+                            case TYPE_CONFIRM_BASE.CANCEL_SALE:
+                              {
+                                cubit.confirmCancelSaleWithBE(
+                                  txnHash: state.txnHash,
+                                  marketId:
+                                      nftDetailBloc.nftMarket.marketId ?? '',
+                                );
+                                break;
+                              }
+                            case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+                              {
+                                cubit.createCollection(state.txnHash);
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => CollectionList(query: ''),
+                                  ),
+                                );
+                                break;
+                              }
+                            default:
+                              break;
+                          }
                         }
                       },
                       builder: (context, state) {

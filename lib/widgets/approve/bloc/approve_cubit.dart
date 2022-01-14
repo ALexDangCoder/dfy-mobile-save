@@ -4,13 +4,13 @@ import 'dart:math' hide log;
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
-import 'package:Dfy/data/services/market_place/confirm_service.dart';
+import 'package:Dfy/data/request/collection/create_hard_collection_request.dart';
+import 'package:Dfy/data/request/collection/create_soft_collection_request.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
-import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -41,10 +41,10 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   String? addressWallet;
   double? balanceWallet;
   String? rawData;
+
   //Create Collection
   int typeCollection = 0;
   late Map<String, dynamic> createCollectionParam;
-
 
   ConfirmRepository get _confirmRepository => Get.find();
   final Web3Utils web3Client = Web3Utils();
@@ -159,14 +159,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
             break;
           case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
             if (result['isSuccess']) {
-              if (typeCollection ==0){
-                createCollectionParam['txn_hash'] = result['txHash'];
-                showContent();
-              } else {
-                createCollectionParam['bc_txn_hash'] = result['txHash'];
-                createCollectionParam['collection_address'] = addressWallet;
-                showContent();
-              }
+              emit(SendRawDataSuccess(result['txHash']));
+              showContent();
             } else {
               showError();
             }
@@ -236,12 +230,31 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   }
 
   Future<void> getGasPrice() async {
-    try{
+    try {
       final result = await Web3Utils().getGasPrice();
       gasPriceSubject.sink.add(double.parse(result));
-    } catch(e ){
+    } catch (e) {
       showError();
       AppException('title', e.toString());
+    }
+  }
+
+  Future<void> createCollection(String txHash) async {
+    if (typeCollection == 0) {
+      createCollectionParam['txn_hash'] = txHash;
+      final CreateSoftCollectionRequest data =
+      CreateSoftCollectionRequest.fromJson(createCollectionParam);
+      final response =
+          await _confirmRepository.createSoftCollection(data: data);
+      response.when(success: (e) {}, error: (_) {});
+    } else {
+      createCollectionParam['bc_txn_hash'] = txHash;
+      createCollectionParam['collection_address'] = addressWallet;
+      final CreateHardCollectionRequest data =
+      CreateHardCollectionRequest.fromJson(createCollectionParam);
+      final response =
+          await _confirmRepository.createHardCollection(data: data);
+      response.when(success: (e) {}, error: (_) {});
     }
   }
 

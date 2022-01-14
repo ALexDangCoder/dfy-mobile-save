@@ -25,7 +25,6 @@ import 'package:rxdart/rxdart.dart';
 part 'create_collection_state.dart';
 
 class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
-
   CreateCollectionCubit() : super(CreateCollectionInitial());
 
   final Web3Utils _web3utils = Web3Utils();
@@ -55,6 +54,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   List<TypeNFTModel> listSoftNFT = [];
 
   String categoryId = '';
+  String categoryName = '';
   String avatarPath = '';
   String coverPhotoPath = '';
   String featurePhotoPath = '';
@@ -330,11 +330,22 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   void validateCategory(String value) {
     if (value.isNotEmpty) {
       categoryId = value;
+      getCategoryNameById(value);
       mapCheck['categories'] = true;
     } else {
       categoriesSubject.sink.add(S.current.category_require);
       mapCheck['categories'] = false;
     }
+  }
+
+  ///get category name by ID
+  void getCategoryNameById(String _id) {
+    categoryName = listCategory
+            .where((element) => element.id == categoryId)
+            .toList()
+            .first
+            .name ??
+        '';
   }
 
   ///validate custom URL
@@ -677,8 +688,8 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
         'description': description,
         'feature_cid': cidMap['feature_cid'],
         'name': collectionName,
-        'royalty': royalties,
-        'social_links': socialLinkMap.toString(),
+        'royalty': royalties.toString(),
+        'social_links': socialLinkMap,
         'txn_hash': 'txnHash',
       };
     } else {
@@ -686,14 +697,14 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
         'avatar_cid': cidMap['avatar_cid'],
         'bc_txn_hash': 'txnHash',
         'category_id': categoryId,
-        'category_name' : categoryId,
+        'category_name': categoryName,
         'collection_address': '',
-        'collection_cid' : collectionIPFS,
-        'collection_type_id' : 1,
+        'collection_cid': collectionIPFS,
+        'collection_type_id': 1,
         'custom_url': customUrl,
         'description': description,
         'name': collectionName,
-        'social_links': socialLinkMap.toString(),
+        'social_links': socialLinkMap,
       };
     }
   }
@@ -720,7 +731,6 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   Future<void> getListWallets() async {
     try {
       await trustWalletChannel.invokeMethod('getListWallets', {});
-    } on PlatformException {
-    }
+    } on PlatformException {}
   }
 }

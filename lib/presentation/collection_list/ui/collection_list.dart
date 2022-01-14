@@ -65,11 +65,6 @@ class _CollectionListState extends State<CollectionList> {
   @override
   void initState() {
     super.initState();
-    if (widget.title!.isNotEmpty) {
-      widget.title = S.current.collection_search_result;
-    } else {
-      widget.title = S.current.collection_list;
-    }
     collectionBloc = CollectionBloc();
 
     searchCollection = TextEditingController();
