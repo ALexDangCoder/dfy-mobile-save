@@ -102,7 +102,8 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   Timer? debounceTime;
   String? category;
   int? sortFilter;
-  String? address;
+  int? collectionType;
+  String? addressWallet;
 
   void funFilter() {
     getCollection(
@@ -254,8 +255,9 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         sort: sortFilter,
         size: size,
         page: nextPage,
-        address: address,
+        addressWallet: addressWallet,
         category: category,
+        collectionType: collectionType
       );
     } else {
       result = await _collectionDetailRepository.getListCollectionMarket(
@@ -263,7 +265,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         sort: sortFilter,
         size: size,
         page: nextPage,
-        address: address,
       );
     }
 
@@ -299,9 +300,10 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         name: name,
         sort: sortFilter,
         size: size,
-        page: nextPage,
-        address: address,
+        page: page,
+        addressWallet: addressWallet,
         category: category,
+        collectionType: collectionType
       );
     } else {
       result = await _collectionDetailRepository.getListCollectionMarket(
