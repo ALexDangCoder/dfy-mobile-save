@@ -462,4 +462,7 @@
   "you_must_bid_greater": "Bạn phải nhập giá cao hơn giá hiện tại",
   "item_price": "Giá",
   "address":"Address"
+  "item_price": "Giá",
+  "start_in": "Chưa bắt đầu",
+  "end_in": "Kết thúc"
 }

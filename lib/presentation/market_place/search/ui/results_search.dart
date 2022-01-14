@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/collection.dart';
 import 'package:Dfy/domain/model/nft_item.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,11 +36,13 @@ class ResultCollectionSearch extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            collection.title,
-            style: textNormal(
-              AppTheme.getInstance().whiteColor(),
-              16.sp,
+          Flexible(
+            child: Text(
+              collection.title,
+              style: textNormal(
+                AppTheme.getInstance().whiteColor(),
+                16.sp,
+              ),
             ),
           ),
           Text(
@@ -63,6 +66,8 @@ class ResultNFTSearch extends StatelessWidget {
 
   final NftItem nftItem;
 
+
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -80,11 +85,13 @@ class ResultNFTSearch extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            nftItem.name,
-            style: textNormal(
-              AppTheme.getInstance().whiteColor(),
-              16.sp,
+          Flexible(
+            child: Text(
+              nftItem.name,
+              style: textNormal(
+                AppTheme.getInstance().whiteColor(),
+                16.sp,
+              ),
             ),
           ),
           propertyNFT(nftItem.marketType),

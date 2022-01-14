@@ -45,6 +45,7 @@ class _BuyNFTState extends State<BuyNFT> {
         cubit.amountSink.add(int.parse(value));
         cubit.warnSink.add('');
         cubit.btnSink.add(true);
+        _nftBloc.quantity = int.parse(value);
       } else {
         cubit.warnSink.add(
           S.current.you_enter_greater,

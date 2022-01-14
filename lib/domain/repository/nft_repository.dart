@@ -1,3 +1,4 @@
+import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
@@ -35,9 +36,15 @@ mixin NFTRepository {
   Future<Result<List<BiddingNft>>> getBidding(
     String auctionId,
   );
+
   Future<Result<String>> buyNftRequest(
-      BuyNftRequest nftRequest,
-      );
+    BuyNftRequest nftRequest,
+  );
+
+  Future<Result<String>> bidNftRequest(
+    BidNftRequest bidNftRequest,
+  );
+
   Future<Result<List<OfferDetail>>> getOffer(
     String collateralId,
   );

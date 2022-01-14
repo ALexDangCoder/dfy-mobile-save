@@ -464,6 +464,7 @@
   "you_must_bid": "You must be enter your bid",
   "you_must_bid_greater": "You must bid greater than current price",
   "item_price": "Item price",
-  "address":"Địa chỉ"
-
+  "address":"Địa chỉ",
+  "start_in": "Start In",
+  "end_in": "End In"
 }
