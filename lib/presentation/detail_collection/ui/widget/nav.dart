@@ -43,7 +43,7 @@ class NavCollection extends StatelessWidget {
               spaceW4,
               Expanded(
                 child: Text(
-                  owners,
+                  owners.toLowerCase(),
                   style: textNormalCustom(
                     null,
                     14,
