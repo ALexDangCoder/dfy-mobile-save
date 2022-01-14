@@ -239,6 +239,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                             13,
                             FontWeight.w600,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),

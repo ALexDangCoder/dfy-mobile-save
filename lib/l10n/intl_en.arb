@@ -458,6 +458,7 @@
   "auction_ends_in":"Auction ends in:",
   "auction_start_in":"Auction start in:",
   "auction_ends":"Auction ends:",
+  "auction_win":"Win bid:",
   "is_bid":"Current price:",
   "on_sale": "On sale",
   "you_enter_balance": "You enter greater than the total balance ",

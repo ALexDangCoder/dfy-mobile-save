@@ -721,6 +721,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               _priceContainerOnAuction(
                 nftOnAuction: nftOnAuction,
+                isEnd: !bloc.isStartAuction(nftOnAuction.endTime ?? 0),
               ),
               _timeContainer(
                 bloc.isStartAuction(nftOnAuction.startTime ?? 0),
