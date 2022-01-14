@@ -79,9 +79,7 @@ class CollectionResponseMarket extends Equatable {
         totalNft: totalNft,
         avatarCid: avatarCid,
         coverCid: coverCid,
-        isFeature: isFeature,
         nftOwnerCount: nftOwnerCount,
-        totalVolumeTraded: totalVolumeTraded,
         addressCollection: collectionAddress,
       );
 

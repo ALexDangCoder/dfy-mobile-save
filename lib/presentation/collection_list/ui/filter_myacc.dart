@@ -145,7 +145,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                           Padding(
                             padding: EdgeInsets.only(left: 10.w),
                             child: Text(
-                              S.current.NFTs_collateral,
+                              S.current.address,
                               style:
                                   textNormalCustom(null, 16, FontWeight.w600),
                             ),
@@ -235,7 +235,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                           Padding(
                             padding: EdgeInsets.only(left: 10.w),
                             child: Text(
-                              S.current.category,
+                              S.current.categories,
                               style:
                                   textNormalCustom(null, 16, FontWeight.w600),
                             ),

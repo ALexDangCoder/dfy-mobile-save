@@ -46,8 +46,8 @@ class CollectionDetailError extends StatelessWidget {
             margin: EdgeInsets.only(
               top: 100.h,
             ),
-            height: 140.h,
-            width: 140.w,
+            height: 60.h,
+            width: 60.w,
             child: Image.asset(
               ImageAssets.err_load_category,
               fit: BoxFit.fill,
@@ -70,8 +70,8 @@ class CollectionDetailError extends StatelessWidget {
               cubit.getCollection(collectionAddressDetail: collectionAddress);
             },
             child: SizedBox(
-              height: 60.h,
-              width: 60.w,
+              height: 50.h,
+              width: 50.w,
               child: Image.asset(
                 ImageAssets.reload_category,
                 fit: BoxFit.fill,

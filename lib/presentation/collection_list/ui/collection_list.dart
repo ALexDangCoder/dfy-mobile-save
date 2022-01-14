@@ -29,11 +29,13 @@ import 'item_collection_load.dart';
 class CollectionList extends StatefulWidget {
   final String query;
   String? title;
+  final bool isMyAcc;
 
   CollectionList({
     Key? key,
     required this.query,
     this.title,
+    required this.isMyAcc,
   }) : super(key: key);
 
   @override
@@ -43,7 +45,6 @@ class CollectionList extends StatefulWidget {
 class _CollectionListState extends State<CollectionList> {
   late final CollectionBloc collectionBloc;
   late final TextEditingController searchCollection;
-  bool isMyAcc = false;
 
   final ScrollController _listCollectionController = ScrollController();
   bool loading = true;
@@ -65,7 +66,14 @@ class _CollectionListState extends State<CollectionList> {
   @override
   void initState() {
     super.initState();
-    collectionBloc = CollectionBloc();
+    if (widget.title?.isNotEmpty ?? false) {
+      widget.title = S.current.collection_search_result;
+    } else {
+      widget.title = S.current.collection_list;
+    }
+    collectionBloc = CollectionBloc(
+      isMyAcc: widget.isMyAcc,
+    );
 
     searchCollection = TextEditingController();
     searchCollection.text = widget.query;
@@ -153,7 +161,7 @@ class _CollectionListState extends State<CollectionList> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        if (!isMyAcc) {
+                        if (!widget.isMyAcc) {
                           showModalBottomSheet(
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
@@ -252,8 +260,7 @@ class _CollectionListState extends State<CollectionList> {
                             child: RefreshIndicator(
                               onRefresh: () async {
                                 await collectionBloc.getCollection(
-                                  name:
-                                      collectionBloc.textSearch.value.trim(),
+                                  name: collectionBloc.textSearch.value.trim(),
                                   sortFilter: collectionBloc.sortFilter,
                                 );
                               },
@@ -326,7 +333,7 @@ class _CollectionListState extends State<CollectionList> {
                                             ? Center(
                                                 child: Padding(
                                                   padding: EdgeInsets.only(
-                                                   bottom:  16.h,
+                                                    bottom: 16.h,
                                                   ),
                                                   child:
                                                       CircularProgressIndicator(
