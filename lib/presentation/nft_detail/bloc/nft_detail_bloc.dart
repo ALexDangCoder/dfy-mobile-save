@@ -5,8 +5,10 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
@@ -17,9 +19,10 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
@@ -28,6 +31,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../../main.dart';
 
 class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   NFTDetailBloc() : super(NFTDetailInitial());
@@ -583,10 +588,73 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             ),
           );
       }
-      showContent();
     } catch (e) {
       showError();
       throw AppException(S.current.error, e.toString());
     }
+  }
+
+  //////////////////////
+  ///CANCEL SALE
+
+  List<DetailItemApproveModel> initListApprove() {
+    //todo: Vũ: tạm hardcode
+    final List<DetailItemApproveModel> listApprove = [];
+    if (nftMarket.nftStandard == 'ERC-721') {
+      listApprove.add(
+        DetailItemApproveModel(
+          title: 'NTF',
+          value: nftMarket.name ?? '',
+        ),
+      );
+      listApprove.add(
+        DetailItemApproveModel(
+          title: S.current.quantity,
+          value: '${nftMarket.numberOfCopies}',
+        ),
+      );
+    } else {
+      listApprove.add(
+        DetailItemApproveModel(
+          title: 'NTF',
+          value: nftMarket.name ?? '',
+        ),
+      );
+    }
+    return listApprove;
+  }
+
+  //get limit gas
+
+  //get dataString
+  Future<double> getGasLimitForCancel({
+    required BuildContext context,
+  }) async {
+    try {
+      showLoading();
+      hexString = await web3Client.getCancelListingData(
+        contractAddress: nft_sales_address_dev2,
+        orderId: nftMarket.orderId.toString(),
+        context: context,
+      );
+      gasLimit = await web3Client.getGasLimitByData(
+        from: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
+        toContractAddress: nft_sales_address_dev2,
+        dataString: hexString,
+      );
+
+      showContent();
+      return double.parse(gasLimit);
+    } catch (e) {
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
+  }
+
+  //cancel sale:
+  Future<Map<String, dynamic>> cancelSale({required String transaction}) async {
+    final Map<String, dynamic> res =
+        await web3Client.sendRawTransaction(transaction: transaction);
+    return res;
   }
 }

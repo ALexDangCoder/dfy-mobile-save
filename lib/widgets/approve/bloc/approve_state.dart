@@ -22,3 +22,14 @@ class SignFail extends ApproveState {
   @override
   List<Object?> get props => [];
 }
+
+class SendRawDataSuccess extends ApproveState{
+  String txnHash;
+
+  SendRawDataSuccess(this.txnHash);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [txnHash];
+
+}

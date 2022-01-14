@@ -5,10 +5,13 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/data/services/market_place/confirm_service.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -24,6 +27,7 @@ enum TYPE_CONFIRM_BASE {
   PUT_ON_MARKET,
   SEND_OFFER,
   PLACE_BID,
+  CANCEL_SALE,
   CREATE_COLLECTION,
 }
 
@@ -38,6 +42,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   String? addressWallet;
   double? balanceWallet;
   String? rawData;
+
+  ConfirmRepository get _confirmRepository => Get.find();
   final Web3Utils web3Client = Web3Utils();
   final BehaviorSubject<String> _addressWalletCoreSubject =
       BehaviorSubject<String>();
@@ -169,6 +175,14 @@ class ApproveCubit extends BaseCubit<ApproveState> {
               showContent();
             } else {}
             break;
+          case TYPE_CONFIRM_BASE.CANCEL_SALE:
+            if (result['isSuccess']) {
+              emit(SendRawDataSuccess(result['txHash']));
+              showContent();
+            } else {
+              showError();
+            }
+            break;
           default:
             break;
         }
@@ -220,6 +234,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       final data = {};
       showLoading();
       await trustWalletChannel.invokeMethod('getListWallets', data);
+      showContent();
     } on PlatformException {
       //nothing
     }
@@ -238,6 +253,15 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       showError();
       AppException('title', e.toString());
     }
+  }
+
+  Future<void> confirmCancelSaleWithBE(
+      {required String txnHash, required String marketId}) async {
+    final result = await _confirmRepository.getCancelSaleResponse(
+      id: marketId,
+      txnHash: txnHash,
+    );
+    result.when(success: (suc) {}, error: (err) {});
   }
 
   void dispose() {

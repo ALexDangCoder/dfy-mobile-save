@@ -1,12 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/login/login_with_email/ui/widget/enter_otp.dart';
 import 'package:Dfy/presentation/market_place/login/ui/email_exsited.dart';
 import 'package:Dfy/widgets/button/button_luxury_big_size.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class ConfirmEmail extends StatelessWidget {
@@ -47,7 +45,7 @@ class ConfirmEmail extends StatelessWidget {
                 S.current.verify_account,
                 style: textNormal(
                   AppTheme.getInstance().textThemeColor(),
-                  16.sp,
+                  16,
                 ),
               ),
             ),
@@ -57,7 +55,7 @@ class ConfirmEmail extends StatelessWidget {
                 'Enter Code',
                 style: textNormal(
                   AppTheme.getInstance().textThemeColor(),
-                  16.sp,
+                  16,
                 ).copyWith(fontWeight: FontWeight.w700),
               ),
             ),

@@ -14,6 +14,7 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/ui/buy_nft.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
+import 'package:Dfy/presentation/market_place/login/ui/dialog/warrning_dialog.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
 import 'package:Dfy/presentation/market_place/send_offer/send_offer.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
@@ -26,6 +27,8 @@ import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -316,11 +319,78 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
             bottomBar: _buildButtonBuyOutOnSale(context, bloc),
             content: [
-              _nameNFT(
-                title: objSale.name ?? '',
-                quantity: objSale.totalCopies ?? 1,
-                url: objSale.image ?? '',
-                price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
+              GestureDetector(
+                //todo: để tạm, sau check quyền button cancel hoặc buy
+                onTap: () async {
+                  var nav = Navigator.of(context);
+                  if (bloc.walletAddress.toLowerCase() ==
+                      bloc.nftMarket.owner?.toLowerCase()) {
+                    double gas =
+                        await bloc.getGasLimitForCancel(context: context);
+                    if (gas > 0) {
+                      nav.push(MaterialPageRoute(
+                          builder: (context) => Approve(
+                                listDetail: bloc.initListApprove(),
+                                title: S.current.cancel_sale,
+                                header: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 16.h,
+                                    bottom: 20.h,
+                                  ),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    S.current.cancel_sale_info,
+                                    style: textNormal(
+                                      AppTheme.getInstance().whiteColor(),
+                                      16,
+                                    ).copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                warning: Row(
+                                  children: [
+                                    sizedSvgImage(
+                                        w: 16.67.w,
+                                        h: 16.67.h,
+                                        image: ImageAssets.ic_warning_canel),
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        S.current.customer_cannot,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: textNormal(
+                                          AppTheme.getInstance()
+                                              .currencyDetailTokenColor(),
+                                          14,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                textActiveButton: S.current.cancel_sale,
+                                gasLimitInit: double.parse(bloc.gasLimit),
+                                typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
+                              )),);
+                    }
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) => WarningDialog(
+                        walletAdress: bloc.nftMarket.owner ?? '',
+                      ),
+                    );
+                  }
+                },
+                child: _nameNFT(
+                  title: objSale.name ?? '',
+                  quantity: objSale.totalCopies ?? 1,
+                  url: objSale.image ?? '',
+                  price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1), context: context,
+                ),
               ),
               _priceContainerOnSale(
                 price: objSale.price ?? 0,

@@ -59,21 +59,21 @@ class TokenHasEmail extends StatelessWidget {
                   text: token,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
-                    16.sp,
+                    16,
                   ).copyWith(fontWeight: FontWeight.bold),
                   children: <TextSpan>[
                     TextSpan(
                       text: S.current.already_associated,
                       style: textNormal(
                         AppTheme.getInstance().textThemeColor(),
-                        16.sp,
+                        16,
                       ),
                     ),
                     TextSpan(
                       text: email,
                       style: textNormal(
                         AppTheme.getInstance().textThemeColor(),
-                        16.sp,
+                        16,
                       ).copyWith(fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -91,7 +91,7 @@ class TokenHasEmail extends StatelessWidget {
                 S.current.login_with_this_email,
                 style: textNormal(
                   AppTheme.getInstance().textThemeColor(),
-                  16.sp,
+                  16,
                 ),
                 textAlign: TextAlign.center,
               ),

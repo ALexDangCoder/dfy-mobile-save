@@ -25,8 +25,8 @@ class ListNftBuySellCollectible extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MarketType marketTypeEnum;
-    switch(marketType) {
+    final MarketType? marketTypeEnum;
+    switch (marketType) {
       case 'sale':
         marketTypeEnum = MarketType.SALE;
         break;
@@ -37,8 +37,7 @@ class ListNftBuySellCollectible extends StatelessWidget {
         marketTypeEnum = MarketType.PAWN;
         break;
       default:
-        //todo đang hard code chưa có case all nên fix cứng type sale
-        marketTypeEnum = MarketType.SALE;
+        marketTypeEnum = null;
         break;
     }
     return Column(
@@ -65,8 +64,9 @@ class ListNftBuySellCollectible extends StatelessWidget {
                       : Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const ListNft(),
+                            builder: (context) => ListNft(
+                              marketType: marketTypeEnum,
+                            ),
                           ),
                         );
                 },

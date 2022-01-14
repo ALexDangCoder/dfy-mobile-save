@@ -106,6 +106,9 @@ class _ApproveState extends State<Approve> {
         nftDetailBloc = nftKey.currentState!.bloc;
         getNonce();
         break;
+      case TYPE_CONFIRM_BASE.CANCEL_SALE:
+        nftDetailBloc = nftKey.currentState!.bloc;
+        break;
     }
   }
 
@@ -196,6 +199,23 @@ class _ApproveState extends State<Approve> {
         }
       case TYPE_CONFIRM_BASE.SEND_NFT:
         {
+          break;
+        }
+      case TYPE_CONFIRM_BASE.CANCEL_SALE:
+        {
+          cubit.showLoading();
+          final int n = await nftDetailBloc.getNonceWeb3();
+          await cubit
+              .signTransactionWithData(
+                walletAddress: nftDetailBloc.walletAddress,
+                contractAddress: nft_sales_address_dev2,
+                nonce: n.toString(),
+                chainId: Get.find<AppConstants>().chaninId,
+                gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+                gasLimit: gasLimitFinal.toStringAsFixed(0),
+                hexString: nftDetailBloc.hexString,
+              );
+          cubit.showContent();
           break;
         }
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
@@ -524,28 +544,47 @@ class _ApproveState extends State<Approve> {
                   else
                     const SizedBox(height: 0),
                   Expanded(
-                    child: GestureDetector(
-                      child: ButtonGold(
-                        textColor:
-                            isApproved || !(widget.isShowTwoButton ?? false)
-                                ? null
-                                : disableText,
-                        fixSize: false,
-                        haveMargin: false,
-                        title: widget.textActiveButton,
-                        isEnable: (isApproved ||
-                                !(widget.isShowTwoButton ?? false)) &&
-                            isCanAction,
-                      ),
-                      onTap: () {
-                        if ((isApproved ||
-                                !(widget.isShowTwoButton ?? false)) &&
-                            isCanAction) {
-                          action(
-                            cubit.gasLimit ?? widget.gasLimitInit,
-                            cubit.gasPriceSubject.valueOrNull ?? 0,
+                    child: BlocConsumer<ApproveCubit, ApproveState>(
+                      bloc: cubit,
+                      listener: (context, state) {
+                        // TODO:
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Cancel thành công (Để tạm)'),
+                        ),);
+                        if (state is SendRawDataSuccess &&
+                            widget.typeApprove ==
+                                TYPE_CONFIRM_BASE.CANCEL_SALE) {
+                          cubit.confirmCancelSaleWithBE(
+                            txnHash: state.txnHash,
+                            marketId: nftDetailBloc.nftMarket.marketId ?? '',
                           );
                         }
+                      },
+                      builder: (context, state) {
+                        return GestureDetector(
+                          child: ButtonGold(
+                            textColor:
+                                isApproved || !(widget.isShowTwoButton ?? false)
+                                    ? null
+                                    : disableText,
+                            fixSize: false,
+                            haveMargin: false,
+                            title: widget.textActiveButton,
+                            isEnable: (isApproved ||
+                                    !(widget.isShowTwoButton ?? false)) &&
+                                isCanAction,
+                          ),
+                          onTap: () {
+                            if ((isApproved ||
+                                    !(widget.isShowTwoButton ?? false)) &&
+                                isCanAction) {
+                              action(
+                                cubit.gasLimit ?? widget.gasLimitInit,
+                                cubit.gasPriceSubject.valueOrNull ?? 0,
+                              );
+                            }
+                          },
+                        );
                       },
                     ),
                   ),

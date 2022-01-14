@@ -17,6 +17,7 @@ Widget _nameNFT({
   int quantity = 1,
   String url = '',
   double? price,
+
 }) {
   return Container(
     margin: EdgeInsets.only(
