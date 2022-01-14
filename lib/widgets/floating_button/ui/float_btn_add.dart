@@ -156,8 +156,7 @@ class FABMarketBase extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                     child: FittedBox(
                       fit: BoxFit.fill,
-                      child: Expanded(
-                        child: Text(
+                      child: Text(
                           typeCreateFab == typeCreateFAB.COLLECTION
                               ? 'Collection'
                               : 'NFT',
@@ -170,7 +169,6 @@ class FABMarketBase extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
               ],
             ),
           );

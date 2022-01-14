@@ -15,7 +15,14 @@ class NftItemCubit extends Cubit<NftItemState> {
       final dt = DateTime.fromMillisecondsSinceEpoch(value);
       return dt;
     }
+  }
 
+  bool isNotStartYet({required DateTime startTime}) {
+    if(DateTime.now().isBefore(startTime)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   int daysBetween(DateTime endTimeAuction) {
