@@ -611,7 +611,6 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
       }
       final File? croppedFile = await ImageCropper.cropImage(
         sourcePath: newImage.path,
-        // aspectRatio: CropAspectRatio(ratioX: width, ratioY: height),
         cropStyle:
             imageType == 'avatar' ? CropStyle.circle : CropStyle.rectangle,
         aspectRatioPresets: Platform.isAndroid
@@ -639,11 +638,13 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
           statusBarColor: Colors.black,
           toolbarTitle: tittle,
           toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false,
+          initAspectRatio: imageType == 'avatar'
+              ? CropAspectRatioPreset.square
+              : CropAspectRatioPreset.original,
+          lockAspectRatio: imageType == 'avatar',
         ),
-        iosUiSettings: const IOSUiSettings(
-          title: 'Cropper',
+        iosUiSettings: IOSUiSettings(
+          title: tittle,
         ),
       );
       if (croppedFile != null) {

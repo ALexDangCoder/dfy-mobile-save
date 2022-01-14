@@ -1,6 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_featured.dart';
 import 'package:Dfy/presentation/market_place/ui/header.dart';
@@ -166,7 +168,18 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                 floatingActionButton: Padding(
                   padding: EdgeInsets.only(bottom: 114.h),
                   child: FABMarketBase(
-                    collectionCallBack: () {},
+                    collectionCallBack: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CreateCollectionScreen(
+                              bloc: CreateCollectionCubit(),
+                            );
+                          },
+                        ),
+                      );
+                    },
                     nftCallBack: () {},
                   ),
                 ),
