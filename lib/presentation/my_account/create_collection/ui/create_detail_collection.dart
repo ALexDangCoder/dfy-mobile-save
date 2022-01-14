@@ -4,10 +4,10 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/widget/categories_cool.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/widget/input_row_widget.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/widget/upload_progess_widget.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/widget/categories_cool.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/widget/input_row_widget.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/widget/upload_progess_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
@@ -601,36 +601,46 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
     );
   }
 
-  Future<void> pickImage(
-      {required String imageType, required String tittle}) async {
+  Future<void> pickImage({
+    required String imageType,
+    required String tittle,
+  }) async {
     try {
       final newImage =
           await ImagePicker().pickImage(source: ImageSource.gallery);
       if (newImage == null) {
         return;
       }
+      final List<CropAspectRatioPreset> presetAndroid = imageType == 'avatar'
+          ? [
+              CropAspectRatioPreset.square,
+            ]
+          : [
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9
+            ];
+      final List<CropAspectRatioPreset> presetIos = imageType == 'avatar'
+          ? [
+              CropAspectRatioPreset.square,
+            ]
+          : [
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio5x3,
+              CropAspectRatioPreset.ratio5x4,
+              CropAspectRatioPreset.ratio7x5,
+              CropAspectRatioPreset.ratio16x9,
+            ];
       final File? croppedFile = await ImageCropper.cropImage(
         sourcePath: newImage.path,
         cropStyle:
             imageType == 'avatar' ? CropStyle.circle : CropStyle.rectangle,
-        aspectRatioPresets: Platform.isAndroid
-            ? [
-                CropAspectRatioPreset.square,
-                CropAspectRatioPreset.ratio3x2,
-                CropAspectRatioPreset.original,
-                CropAspectRatioPreset.ratio4x3,
-                CropAspectRatioPreset.ratio16x9
-              ]
-            : [
-                CropAspectRatioPreset.original,
-                CropAspectRatioPreset.square,
-                CropAspectRatioPreset.ratio3x2,
-                CropAspectRatioPreset.ratio4x3,
-                CropAspectRatioPreset.ratio5x3,
-                CropAspectRatioPreset.ratio5x4,
-                CropAspectRatioPreset.ratio7x5,
-                CropAspectRatioPreset.ratio16x9
-              ],
+        aspectRatioPresets: Platform.isAndroid ? presetAndroid : presetIos,
         androidUiSettings: AndroidUiSettings(
           activeControlsWidgetColor: AppTheme.getInstance().bgBtsColor(),
           toolbarColor: AppTheme.getInstance().bgBtsColor(),
@@ -654,7 +664,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
         widget.bloc.loadImage(
           type: imageType,
           imageSizeInMB: imageSizeInMB,
-          imagePath: newImage.path,
+          imagePath: imageTemp.path,
           image: imageTemp,
         );
       }

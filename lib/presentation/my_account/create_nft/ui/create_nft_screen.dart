@@ -3,32 +3,33 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/create_detail_collection.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CreateCollectionScreen extends StatelessWidget {
-  final CreateCollectionCubit bloc;
+class CreateNFTScreen extends StatelessWidget {
+  final CreateNftCubit cubit;
 
-  const CreateCollectionScreen({Key? key, required this.bloc})
-      : super(key: key);
+  const CreateNFTScreen({Key? key, required this.cubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bloc.getListTypeNFT();
     return StateStreamLayout(
-      stream: bloc.stateStream,
+      stream: cubit.stateStream,
       textEmpty: '',
-      retry: () {},
+      retry: () {
+        cubit.getListTypeNFT();
+      },
       error: AppException('', S.current.something_went_wrong),
       child: BaseBottomSheet(
-        title: S.current.create_collection,
+        title: S.current.create_nft,
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Container(
@@ -48,49 +49,15 @@ class CreateCollectionScreen extends StatelessWidget {
                     style: textLabelNFT,
                   ),
                 ),
-                StreamBuilder<List<TypeNFTModel>>(
-                  stream: bloc.listSoftNFTSubject,
-                  builder: (context, snapshot) {
-                    final list = snapshot.data ?? [];
-                    if (list.isNotEmpty) {
+
+                BlocBuilder<CreateNftCubit, CreateNftState>(
+                  bloc: cubit,
+                  builder: (context, state) {
+                    if (state is TypeNFT) {
+                      final List<TypeNFTModel> list = state.listSoftNft;
                       return GridView.builder(
                         padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: list.length,
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
-                        itemBuilder: (context, index) {
-                          return nftItem(
-                            context: context,
-                            typeNFTModel: list[index],
-                          );
-                        },
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  },
-                ),
-                spaceH24,
-                Container(
-                  margin: EdgeInsets.only(
-                    bottom: 16.h,
-                  ),
-                  child: Text(
-                    S.current.hard_nft,
-                    style: textLabelNFT,
-                  ),
-                ),
-                StreamBuilder<List<TypeNFTModel>>(
-                  stream: bloc.listHardNFTSubject,
-                  builder: (context, snapshot) {
-                    final list = snapshot.data ?? [];
-                    if (list.isNotEmpty) {
-                      return GridView.builder(
-                        padding: EdgeInsets.zero,
                         itemCount: list.length,
                         shrinkWrap: true,
                         gridDelegate:
@@ -118,7 +85,7 @@ class CreateCollectionScreen extends StatelessWidget {
             ),
           ),
           floatingActionButton: StreamBuilder<String>(
-            stream: bloc.typeNFTStream,
+            stream: null,
             initialData: '',
             builder: (context, snapshot) {
               final enable = snapshot.data?.isNotEmpty ?? false;
@@ -129,19 +96,9 @@ class CreateCollectionScreen extends StatelessWidget {
                 fontSize: 20,
                 onTap: () {
                   if (enable) {
-                    final _standard =
-                        bloc.getStandardFromID(snapshot.data ?? '');
-                    final _type = bloc.getTypeFromID(snapshot.data ?? '');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreateDetailCollection(
-                          bloc: CreateCollectionCubit(),
-                          collectionStandard: _standard,
-                          collectionType: _type,
-                        ),
-                      ),
-                    );
+                    // final _standard =
+                    // bloc.getStandardFromID(snapshot.data ?? '');
+                    // final _type = bloc.getTypeFromID(snapshot.data ?? '');
                   }
                 },
               );
@@ -150,24 +107,6 @@ class CreateCollectionScreen extends StatelessWidget {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
         ),
-      ),
-    );
-  }
-
-  Widget selectItem({
-    required Widget item1,
-    required Widget item2,
-  }) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: 16.w,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          item1,
-          item2,
-        ],
       ),
     );
   }
@@ -182,7 +121,7 @@ class CreateCollectionScreen extends StatelessWidget {
         GestureDetector(
           onTap: () {
             if (isActive) {
-              bloc.changeSelectedItem(typeNFTModel.id ?? '');
+              cubit.changeId(typeNFTModel.id ?? '');
             }
           },
           child: SizedBox(
@@ -228,19 +167,16 @@ class CreateCollectionScreen extends StatelessWidget {
                   : AppTheme.getInstance().disableRadioColor().withOpacity(0.5),
             ),
             child: StreamBuilder<String>(
-              stream: bloc.typeNFTStream,
-              initialData: '',
+              stream: cubit.selectIdSubject,
               builder: (context, snapshot) {
                 return Radio<String>(
                   splashRadius: isActive ? null : 0,
                   activeColor: AppTheme.getInstance().fillColor(),
                   value: typeNFTModel.id ?? '',
-                  groupValue: bloc.createId,
+                  groupValue: cubit.selectedType,
                   onChanged: (value) {
                     if (isActive) {
-                      bloc.changeSelectedItem(
-                        value ?? '',
-                      );
+                      cubit.changeId(value ?? '');
                     }
                   },
                 );
@@ -258,16 +194,5 @@ class CreateCollectionScreen extends StatelessWidget {
         )
       ],
     );
-  }
-}
-
-String getName(String name) {
-  switch (name) {
-    case 'collection 721':
-      return 'NFT ERC 721';
-    case 'collection 1155':
-      return 'NFT ERC 1155';
-    default:
-      return '';
   }
 }

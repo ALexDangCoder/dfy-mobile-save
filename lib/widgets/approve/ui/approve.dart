@@ -13,7 +13,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
@@ -235,16 +235,15 @@ class _ApproveState extends State<Approve> {
         {
           cubit.showLoading();
           final int n = await nftDetailBloc.getNonceWeb3();
-          await cubit
-              .signTransactionWithData(
-                walletAddress: nftDetailBloc.walletAddress,
-                contractAddress: nft_sales_address_dev2,
-                nonce: n.toString(),
-                chainId: Get.find<AppConstants>().chaninId,
-                gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
-                gasLimit: gasLimitFinal.toStringAsFixed(0),
-                hexString: nftDetailBloc.hexString,
-              );
+          await cubit.signTransactionWithData(
+            walletAddress: nftDetailBloc.walletAddress,
+            contractAddress: nft_sales_address_dev2,
+            nonce: n.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+            gasLimit: gasLimitFinal.toStringAsFixed(0),
+            hexString: nftDetailBloc.hexString,
+          );
           cubit.showContent();
           break;
         }
@@ -600,7 +599,10 @@ class _ApproveState extends State<Approve> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => CollectionList(query: ''),
+                                    builder: (_) => CollectionList(
+                                      query: '',
+                                      isMyAcc: true,
+                                    ),
                                   ),
                                 );
                                 break;
@@ -712,6 +714,8 @@ class _ApproveState extends State<Approve> {
             ),
           ),
         );
+        break;
+      default:
         break;
     }
   }
