@@ -455,7 +455,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               toAddress: nft_sales_address_dev2,
               hexString: value,
             ).then(
-              (value) => Navigator.pushReplacement(
+              (value) => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Approve(
@@ -524,6 +524,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               ),
             ),
           );
+          showContent();
           break;
         case MarketType.AUCTION:
           await getBidData(
@@ -537,7 +538,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               toAddress: nft_auction_dev2,
               hexString: value,
             ).then(
-              (value) => Navigator.pushReplacement(
+              (value) => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Approve(
@@ -587,6 +588,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               ),
             ),
           );
+          showContent();
+          break;
       }
     } catch (e) {
       showError();

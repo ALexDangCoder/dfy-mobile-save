@@ -5,20 +5,17 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
-import 'package:Dfy/data/services/market_place/confirm_service.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
-import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
+import 'package:Dfy/main.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../../../main.dart';
-import 'approve_state.dart';
 
 enum TYPE_CONFIRM_BASE {
   SEND_NFT,
@@ -148,7 +145,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           nameWallet = listWallet.first.name;
           try {
             balanceWallet = await Web3Utils().getBalanceOfBnb(
-                ofAddress: _addressWalletCoreSubject.valueOrNull ?? '');
+              ofAddress: _addressWalletCoreSubject.valueOrNull ?? '',
+            );
             showContent();
           } catch (e) {
             showError();
