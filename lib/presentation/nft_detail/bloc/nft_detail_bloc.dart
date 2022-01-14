@@ -40,6 +40,15 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String gasLimit = '';
   String rawData = '';
   String nftMarketId = '';
+  int quantity = 0;
+  double bidValue = 0;
+
+  NFTRepository get _nftRepo => Get.find();
+
+  late final NftMarket nftMarket;
+  late final NFTOnAuction nftOnAuction;
+  late final String owner;
+  List<Wallet> wallets = [];
 
   late final String walletAddress;
 
@@ -80,13 +89,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     }
     return balance;
   }
-
-  NFTRepository get _nftRepo => Get.find();
-
-  late final NftMarket nftMarket;
-  late final NFTOnAuction nftOnAuction;
-  late final String owner;
-  List<Wallet> wallets = [];
 
   Future<void> getHistory(String collectionAddress, String nftTokenId) async {
     final Result<List<HistoryNFT>> result =

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
@@ -62,13 +63,27 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   NFTRepository get _nftRepo => Get.find();
 
   Future<void> buyNftRequest(BuyNftRequest buyNftRequest) async {
+    showLoading();
     final result = await _nftRepo.buyNftRequest(buyNftRequest);
     result.when(
       success: (res) {
-
+        showContent();
       },
       error: (error) {
+        showError();
+      },
+    );
+  }
 
+  Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
+    showLoading();
+    final result = await _nftRepo.bidNftRequest(bidNftRequest);
+    result.when(
+      success: (res) {
+        showContent();
+      },
+      error: (error) {
+        showError();
       },
     );
   }
@@ -125,15 +140,15 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           addressWallet = listWallet.first.address;
           _nameWalletSubject.sink.add(listWallet.first.name!);
           nameWallet = listWallet.first.name;
-          try{
+          try {
             balanceWallet = await Web3Utils().getBalanceOfBnb(
                 ofAddress: _addressWalletCoreSubject.valueOrNull ?? '');
             showContent();
-          } catch(e ){
+          } catch (e) {
             showError();
             AppException('title', e.toString());
           }
-          _balanceWalletSubject.sink.add(balanceWallet?? 0);
+          _balanceWalletSubject.sink.add(balanceWallet ?? 0);
         }
         break;
       case 'signTransactionWithDataCallback':
@@ -143,18 +158,16 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           case TYPE_CONFIRM_BASE.BUY_NFT:
             if (result['isSuccess']) {
               showContent();
-              emit(BuySuccess(result['txHash']));
+              emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.BUY_NFT));
             } else {
               showContent();
-              emit(BuyFail());
+              emit(SignFail());
             }
             break;
           case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
             if (result['isSuccess']) {
               showContent();
-            } else {
-
-            }
+            } else {}
             break;
           default:
             break;
@@ -218,10 +231,10 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   }
 
   Future<void> getGasPrice() async {
-    try{
+    try {
       final result = await Web3Utils().getGasPrice();
       gasPriceSubject.sink.add(double.parse(result));
-    } catch(e ){
+    } catch (e) {
       showError();
       AppException('title', e.toString());
     }

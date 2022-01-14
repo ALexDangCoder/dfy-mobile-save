@@ -172,6 +172,7 @@ class _PlaceBidState extends State<PlaceBid> {
             cubit.warnSink.add('');
             bidValue = value;
             cubit.btnSink.add(true);
+            nftDetailBloc.bidValue = double.parse(value);
           } else if (widget.balance > double.parse(value) &&
               double.parse(value) < bid) {
             cubit.warnSink.add(S.current.you_must_bid_greater);
