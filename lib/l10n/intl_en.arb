@@ -473,12 +473,15 @@
   "auction_ends_in":"Auction ends in:",
   "auction_start_in":"Auction start in:",
   "auction_ends":"Auction ends:",
+  "auction_win":"Win bid:",
+  "is_bid":"Current price:",
   "you_enter_balance": "You enter greater than the total balance ",
   "you_must_bid": "You must be enter your bid",
   "you_must_bid_greater": "You must bid greater than current price",
   "item_price": "Item price",
   "address":"Địa chỉ",
   "start_in": "Start In",
-  "end_in": "End In",
-  "is_bid": "is_bid:"
+  "purchase_being_processed": "There is a purchase transaction being processed of other user.",
+  "error_might_occur": "Error might occur if you continue",
+  "end_in": "End In"
 }
