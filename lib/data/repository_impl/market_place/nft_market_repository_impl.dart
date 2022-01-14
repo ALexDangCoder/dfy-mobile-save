@@ -1,4 +1,4 @@
-import 'package:Dfy/data/response/nft_market/list_nft_collection_respone.dart';
+
 import 'package:Dfy/data/response/nft_market/list_response_from_api.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/market_place/nft_market_services.dart';
@@ -26,16 +26,5 @@ class NftMarketRepositoryImpl implements NftMarketRepository {
     );
   }
 
-  @override
-  Future<Result<List<NftMarket>>> getListNftCollection(
-      {String? collectionAddress,
-      int? page,
-      int? size,
-      String? nameNft,
-      List<int>? listMarketType,}) {
-    return runCatchingAsync<ListNftCollectionResponse, List<NftMarket>>(
-          () => _client.getListNftCollection(
-              collectionAddress, page, size, nameNft, listMarketType,),
-          (response) => response.toDomain() ?? [],);
-  }
+
 }

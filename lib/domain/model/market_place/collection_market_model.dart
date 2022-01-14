@@ -7,8 +7,6 @@ class CollectionMarketModel {
   String? coverCid;
   int? totalNft;
   int? nftOwnerCount;
-  int? totalVolumeTraded;
-  bool? isFeature;
   String? addressCollection;
 
   CollectionMarketModel({
@@ -20,8 +18,6 @@ class CollectionMarketModel {
     this.coverCid,
     this.totalNft,
     this.nftOwnerCount,
-    this.totalVolumeTraded,
-    this.isFeature,
     this.addressCollection,
   });
 }

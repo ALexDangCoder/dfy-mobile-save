@@ -7,7 +7,7 @@ import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/fillterCollectionModel.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
-import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
+import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -65,7 +65,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       BehaviorSubject.seeded([]);
   int nextPage = 1;
 
-  MarketPlaceRepository get _marketPlaceRepository => Get.find();
+  CollectionDetailRepository get _collectionDetailRepository => Get.find();
   List<CollectionMarketModel> arg = [];
 
   List<String> listAcc = [
@@ -248,7 +248,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       nextPage = 2;
     }
     final Result<List<CollectionMarketModel>> result =
-        await _marketPlaceRepository.getListCollectionMarket(
+        await _collectionDetailRepository.getListCollectionMarket(
       name: name,
       sort: sortFilter,
       size: size,
@@ -283,7 +283,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     isCanLoadMore.add(isLoad);
     emit(LoadingData());
     final Result<List<CollectionMarketModel>> result =
-        await _marketPlaceRepository.getListCollectionMarket(
+        await _collectionDetailRepository.getListCollectionMarket(
       name: name,
       sort: sortFilter,
       size: size,
