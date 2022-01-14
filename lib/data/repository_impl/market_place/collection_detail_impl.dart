@@ -80,7 +80,6 @@ class CollectionDetailImpl implements CollectionDetailRepository {
   @override
   Future<Result<List<CollectionMarketModel>>> getListCollection({
     String? addressWallet,
-    String? category,
     String? name,
     int? collectionType,
     int? sort,
@@ -91,7 +90,6 @@ class CollectionDetailImpl implements CollectionDetailRepository {
         List<CollectionMarketModel>>(
       () => _client.getListCollection(
         addressWallet,
-        category,
         name,
         collectionType,
         sort,
