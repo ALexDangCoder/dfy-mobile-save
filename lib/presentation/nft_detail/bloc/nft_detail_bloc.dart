@@ -592,6 +592,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           break;
       }
     } catch (e) {
+      showError();
       throw AppException(S.current.error, e.toString());
     }
   }
