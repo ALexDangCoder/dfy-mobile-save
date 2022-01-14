@@ -1,8 +1,9 @@
-import 'package:Dfy/domain/model/market_place/collection_detail.dart';
+
+import 'collection_categories_model.dart';
 
 class ListCollectionDetailModel {
   int total;
-  List<CollectionDetailModel> listData;
+  List<CollectionCategoryModel> listData;
 
   ListCollectionDetailModel({required this.total, required this.listData});
 }
