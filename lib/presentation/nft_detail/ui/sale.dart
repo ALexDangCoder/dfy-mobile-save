@@ -75,27 +75,26 @@ Widget _buildButtonBuyOutOnSale(
 ) {
   return ButtonGradient(
     onPressed: () async {
-      _showDialog(context);
-      // if(isBought){
-      //   _showDialog(context);
-      // }
-      // else{
-      //   await bloc
-      //       .getBalanceToken(
-      //     ofAddress: bloc.wallets.first.address ?? '',
-      //     tokenAddress: bloc.nftMarket.token ?? '',
-      //   )
-      //       .then(
-      //         (value) => Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => BuyNFT(
-      //           balance: value,
-      //         ),
-      //       ),
-      //     ),
-      //   );
-      // }
+      if(isBought){
+        _showDialog(context);
+      }
+      else{
+        await bloc
+            .getBalanceToken(
+          ofAddress: bloc.wallets.first.address ?? '',
+          tokenAddress: bloc.nftMarket.token ?? '',
+        )
+            .then(
+              (value) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BuyNFT(
+                balance: value,
+              ),
+            ),
+          ),
+        );
+      }
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
