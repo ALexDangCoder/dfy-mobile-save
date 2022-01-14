@@ -44,6 +44,7 @@ class BaseActivity extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) {
                     return NFTDetailScreen(
+                      key: nftKey,
                       typeMarket: MarketType.NOT_ON_MARKET,
                       marketId: list[index].marketId ?? '',
                     );
@@ -56,6 +57,7 @@ class BaseActivity extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) {
                     return NFTDetailScreen(
+                      key: nftKey,
                       typeMarket: MarketType.SALE,
                       marketId: list[index].marketId ?? '',
                     );
@@ -69,6 +71,7 @@ class BaseActivity extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) {
                     return NFTDetailScreen(
+                      key: nftKey,
                       typeMarket: MarketType.AUCTION,
                       marketId: list[index].marketId ?? '',
                     );
@@ -81,6 +84,7 @@ class BaseActivity extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) {
                     return NFTDetailScreen(
+                      key: nftKey,
                       typeMarket: MarketType.PAWN,
                       marketId: list[index].marketId ?? '',
                     );
@@ -161,6 +165,7 @@ class BaseActivity extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) {
                           return NFTDetailScreen(
+                            key: nftKey,
                             typeMarket: MarketType.NOT_ON_MARKET,
                             marketId: list[index].marketId ?? '',
                           );
@@ -174,6 +179,7 @@ class BaseActivity extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) {
                           return NFTDetailScreen(
+                            key: nftKey,
                             typeMarket: MarketType.SALE,
                             marketId: list[index].marketId ?? '',
                           );
@@ -187,6 +193,7 @@ class BaseActivity extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) {
                           return NFTDetailScreen(
+                            key: nftKey,
                             typeMarket: MarketType.AUCTION,
                             marketId: list[index].marketId ?? '',
                           );
@@ -199,6 +206,7 @@ class BaseActivity extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) {
                           return NFTDetailScreen(
+                            key: nftKey,
                             typeMarket: MarketType.PAWN,
                             marketId: list[index].marketId ?? '',
                           );
