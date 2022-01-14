@@ -335,7 +335,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
     }
 
     ///sort list map by position to show in UI
-    listCollectionFtExploreFtNft
-        .sort((a, b) => a["position"].compareTo(b["position"]));
+    // listCollectionFtExploreFtNft
+    //     .sort((a, b) => a["position"].compareTo(b["position"]));
   }
 }

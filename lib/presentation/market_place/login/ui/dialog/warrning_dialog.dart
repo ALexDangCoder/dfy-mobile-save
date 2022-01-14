@@ -41,7 +41,10 @@ class WarningDialog extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         sizedPngImage(
-                            w: 24, h: 28, image: ImageAssets.ic_warning),
+                          w: 24,
+                          h: 28,
+                          image: ImageAssets.ic_warning,
+                        ),
                         SizedBox(
                           width: 12.h,
                         ),
@@ -49,7 +52,7 @@ class WarningDialog extends StatelessWidget {
                           S.current.warning,
                           style: textNormal(
                             AppTheme.getInstance().whiteColor(),
-                            20.sp,
+                            20,
                           ).copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -65,23 +68,26 @@ class WarningDialog extends StatelessWidget {
                       left: 35,
                     ),
                     child: Text(
-                      S.current.no_permission+
-                      walletAdress + S.current.no_permission2,
+                      S.current.no_permission +
+                          walletAdress +
+                          S.current.no_permission2,
                       style: textNormal(
                         AppTheme.getInstance().whiteColor(),
-                        12.sp,
+                        12,
                       ),
                     ),
                   ),
                   Container(
                     width: double.maxFinite,
                     decoration: BoxDecoration(
-                        border: Border(
-                      top: BorderSide(
+                      border: Border(
+                        top: BorderSide(
                           width: 1.w,
                           color: AppTheme.getInstance()
-                              .whiteBackgroundButtonColor()),
-                    )),
+                              .whiteBackgroundButtonColor(),
+                        ),
+                      ),
+                    ),
                     child: GestureDetector(
                       onTap: () => Navigator.pop(context),
                       behavior: HitTestBehavior.opaque,
@@ -94,7 +100,7 @@ class WarningDialog extends StatelessWidget {
                           'OK',
                           style: textNormal(
                             AppTheme.getInstance().fillColor(),
-                            20.sp,
+                            20,
                           ).copyWith(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
