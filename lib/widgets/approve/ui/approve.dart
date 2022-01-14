@@ -6,7 +6,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
-import 'package:Dfy/data/services/market_place/confirm_service.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -110,7 +109,7 @@ class _ApproveState extends State<Approve> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     cubit = ApproveCubit();
     cubit.type = widget.typeApprove;
     accountImage = cubit.randomAvatar();
@@ -121,7 +120,6 @@ class _ApproveState extends State<Approve> {
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     cubit.getListWallets();
     initData(widget.typeApprove);
-    super.initState();
   }
 
   Future<void> getNonce() async {
@@ -197,17 +195,15 @@ class _ApproveState extends State<Approve> {
           final int n = await nftDetailBloc.getNonceWeb3();
           await cubit
               .signTransactionWithData(
-                walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
+                walletAddress: nftDetailBloc.walletAddress,
                 contractAddress: nft_sales_address_dev2,
                 nonce: n.toString(),
                 chainId: Get.find<AppConstants>().chaninId,
                 gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
                 gasLimit: gasLimitFinal.toStringAsFixed(0),
                 hexString: nftDetailBloc.hexString,
-              )
-              .then((value) => print('ọk'));
+              );
           cubit.showLoading();
-
           break;
         }
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
@@ -571,6 +567,9 @@ class _ApproveState extends State<Approve> {
                       bloc: cubit,
                       listener: (context, state) {
                         // TODO:
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Cancel thành công (Để tạm)'),
+                        ),);
                         if (state is SendRawDataSuccess &&
                             widget.typeApprove ==
                                 TYPE_CONFIRM_BASE.CANCEL_SALE) {
