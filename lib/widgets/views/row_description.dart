@@ -3,7 +3,6 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -119,27 +118,32 @@ Row buildRow({
       ],
     );
 
-Widget buildRowCustom({required String title, required Widget child}) {
+Widget buildRowCustom(
+    {required String title,
+    required Widget child,
+    bool isPadding = true,
+    bool isSpace = true}) {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 16.w),
+    padding:
+        isPadding ? EdgeInsets.symmetric(horizontal: 16.w) : EdgeInsets.zero,
     child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: SizedBox(
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                title,
-                style: textNormalCustom(
-                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
-                  16,
-                  FontWeight.w400,
-                ),
+          flex: 1,
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              title,
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                16,
+                FontWeight.w400,
               ),
             ),
           ),
         ),
-        Expanded(child: child)
+        Expanded(flex: 3,child: child)
       ],
     ),
   );

@@ -26,6 +26,7 @@ class MarketPlaceImpl implements MarketPlaceRepository {
   @override
   Future<Result<List<CollectionModel>>> getListCollection({
     String? address,
+    String? category,
     String? name,
     int? sort,
     int? page,
@@ -33,7 +34,8 @@ class MarketPlaceImpl implements MarketPlaceRepository {
   }) {
     return runCatchingAsync<ListCollectionResponse, List<CollectionModel>>(
       () => _client.getListCollection(
-        //address,
+        address,
+        category,
         name,
         sort,
         page,

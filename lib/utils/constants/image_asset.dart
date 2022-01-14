@@ -280,6 +280,7 @@ class ImageAssets {
   static const String ic_email = '$baseImg/sms.png';
   static const String ic_warning = '$baseImg/warning.png';
   static const String ic_verify_svg = '$baseImg/ic_verify.svg';
+  static const String ic_warning_canel = '$baseImg/warning_cancel.svg';
   static const String create_collection_svg = '$baseImg/create_collection.svg';
   static const String create_collection_1155 =
       '$baseImg/create_collection_1155.svg';

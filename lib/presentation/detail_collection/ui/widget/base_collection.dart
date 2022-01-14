@@ -1,6 +1,8 @@
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/widgets/common_bts/base_collection.dart';
+import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -47,75 +49,64 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollViewDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          floatingActionButton: widget.isOwner ?? false
-              ? GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppTheme.getInstance()
-                              .fillColor()
-                              .withOpacity(0.3),
-                          spreadRadius: -5,
-                          blurRadius: 15,
-                          offset:
-                              const Offset(0, 10), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Image.asset(
-                      ImageAssets.img_float_btn,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                )
-              : const SizedBox.shrink(),
-          body: Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 764.h,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                color: AppTheme.getInstance().bgBtsColor(),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.r),
-                  topRight: Radius.circular(30.r),
+      floatingActionButton: FABMarketBase(
+        collectionCallBack: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return CreateCollectionScreen(
+                  bloc: CreateCollectionCubit(),
+                );
+              },
+            ),
+          );
+        },
+        nftCallBack: () {},
+      ),
+      body: MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 764.h,
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              color: AppTheme.getInstance().bgBtsColor(),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.r),
+                topRight: Radius.circular(30.r),
+              ),
+            ),
+            child: NestedScrollView(
+              physics: const ScrollPhysics(),
+              headerSliverBuilder: (context, innerScroll) => [
+                BaseAppBarCollection(
+                  imageCover: widget.imageCover,
+                  title: widget.title,
+                  initHeight: widget.initHeight,
+                  leading: widget.leading,
+                  actions: widget.actions,
+                  imageAvatar: widget.imageAvatar,
+                  isOwner: widget.isOwner ?? false,
+                  imageVerified: widget.imageVerified,
                 ),
-              ),
-              child: NestedScrollView(
-                physics: const ScrollPhysics(),
-                headerSliverBuilder: (context, innerScroll) => [
-                  BaseAppBarCollection(
-                    imageCover: widget.imageCover,
-                    title: widget.title,
-                    initHeight: widget.initHeight,
-                    leading: widget.leading,
-                    actions: widget.actions,
-                    imageAvatar: widget.imageAvatar,
-                    isOwner: widget.isOwner ?? false,
-                    imageVerified: widget.imageVerified,
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Column(
+                        children: widget.content,
+                      ),
+                    ],
                   ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        Column(
-                          children: widget.content,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverPersistentHeader(
-                    delegate: BaseSliverHeader(widget.tabBar ?? Container()),
-                    pinned: true,
-                  ),
-                ],
-                body: widget.tabBarView ?? Container(),
-              ),
+                ),
+                SliverPersistentHeader(
+                  delegate: BaseSliverHeader(widget.tabBar ?? Container()),
+                  pinned: true,
+                ),
+              ],
+              body: widget.tabBarView ?? Container(),
             ),
           ),
         ),

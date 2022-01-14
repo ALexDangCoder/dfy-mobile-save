@@ -252,6 +252,7 @@
   "price_step": "Price step",
   "your_balance_bid": "Your balance",
   "current_bid": "Current bid",
+  "your_bid": "Your bid",
   "loan_to_vl": "Loan to value:",
   "loan_amount": "Loan amount:",
   "interest_rate": "Interest rate (%APR):",
@@ -401,6 +402,9 @@
   "copied_private_key": "Copied private key!",
   "copied_seed_phrase": "Copied seed phrase!",
   "offer": "Offer",
+  "cancel_sale": "Cancel sale",
+  "cancel_sale_info": "Sale information will be cancelled",
+  "customer_cannot": "Customer can not buy your NFT anymore",
   "feature_soft_nfts": "Featured Soft NFTs",
   "buy_sell_create_collectible_nfts": "Buy, sell, and create collectible NFTs",
   "loading_text": "Loading...",
@@ -449,7 +453,7 @@
   "item_from_low_to_high": "Item from low to high",
   "available": "Available",
   "empty_data": "Empty data",
-  "you_enter_greater": "you enter greater than the total amount",
+  "you_enter_greater": "You enter greater than the total amount",
   "you_must": "You must enter the quantity you want to buy",
   "no_des": "No description",
   "on_sale": "On sale",
@@ -469,5 +473,10 @@
   "auction_ends_in":"Auction ends in:",
   "auction_start_in":"Auction start in:",
   "auction_ends":"Auction ends:",
-  "is_bid":"Current price:"
+  "you_enter_balance": "You enter greater than the total balance ",
+  "you_must_bid": "You must be enter your bid",
+  "you_must_bid_greater": "You must bid greater than current price",
+  "item_price": "Item price",
+  "start_in": "Start In",
+  "end_in": "End In"
 }

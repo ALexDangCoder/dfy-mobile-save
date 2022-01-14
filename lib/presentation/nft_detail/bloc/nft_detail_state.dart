@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_state.dart';
+import 'package:Dfy/data/web3/abi/nft.g.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
@@ -24,26 +25,13 @@ class NftOnSaleFail extends NFTDetailState {
   List<Object?> get props => [];
 }
 
-class Web3Fail extends NFTDetailState {
-  @override
-  List<Object?> get props => [];
-}
-
 class NftOnPawnSuccess extends NFTDetailState {
   final NftOnPawn nftOnPawn;
 
   NftOnPawnSuccess(this.nftOnPawn);
 
   @override
-  List<Object?> get props => [];
-}
-
-
-class HaveWallet extends NftOnSaleSuccess {
-  HaveWallet(NftMarket nftMarket) : super(nftMarket);
-
-  @override
-  List<Object?> get props => [nftMarket];
+  List<Object?> get props => [nftOnPawn];
 }
 
 class NftOnAuctionSuccess extends NFTDetailState {
@@ -52,14 +40,7 @@ class NftOnAuctionSuccess extends NFTDetailState {
   NftOnAuctionSuccess(this.nftOnAuction);
 
   @override
-  List<Object?> get props => [];
-}
-
-class NoWallet extends NftOnSaleSuccess {
-  NoWallet(NftMarket nftMarket) : super(nftMarket);
-
-  @override
-  List<Object?> get props => [nftMarket];
+  List<Object?> get props => [nftOnAuction];
 }
 
 class GetGasLimitSuccess extends NftOnSaleSuccess {
@@ -68,5 +49,5 @@ class GetGasLimitSuccess extends NftOnSaleSuccess {
   GetGasLimitSuccess(NftMarket nftMarket, this.gasLimit) : super(nftMarket);
 
   @override
-  List<Object?> get props => [gasLimit];
+  List<Object?> get props => [gasLimit, nftMarket];
 }

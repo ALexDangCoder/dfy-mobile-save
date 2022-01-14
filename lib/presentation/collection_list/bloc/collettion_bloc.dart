@@ -78,7 +78,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
 
   Timer? debounceTime;
 
-  void funFilter({int index = 0}) {
+  void funFilter() {
     getCollection(
       sortFilter: sortFilter,
       name: textSearch.value.trim(),
@@ -96,7 +96,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     }
     listCheckBoxFilter[index] = true;
     listCheckBoxFilterStream.add(listCheckBoxFilter);
-    sortFilter = index;
+    sortFilter = index + 1;
   }
 
   void funCheckCategory(String name) {
@@ -230,7 +230,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     } else {
       funResetIsCategory();
       listCategoryStream.add(search);
-
     }
   }
 

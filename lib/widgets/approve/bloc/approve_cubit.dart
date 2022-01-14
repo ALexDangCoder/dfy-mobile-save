@@ -3,22 +3,23 @@ import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:Dfy/main.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../../../main.dart';
-import 'approve_state.dart';
 
 enum TYPE_CONFIRM_BASE {
   SEND_NFT,
@@ -27,7 +28,8 @@ enum TYPE_CONFIRM_BASE {
   PUT_ON_MARKET,
   SEND_OFFER,
   PLACE_BID,
-  CREATE_COLLECTION
+  CANCEL_SALE,
+  CREATE_COLLECTION,
 }
 
 class ApproveCubit extends BaseCubit<ApproveState> {
@@ -63,6 +65,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   double? gasPrice;
 
   String? rawData;
+
+  ConfirmRepository get _confirmRepository => Get.find();
 
   bool needApprove = false;
 
@@ -114,10 +118,10 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
     try {
       final result = await web3Client.isApproved(
-          payValue: payValue,
-          tokenAddress: tokenAddress,
-          walletAddres: addressWallet ?? '',
-          spenderAddress: getSpender(),
+        payValue: payValue,
+        tokenAddress: tokenAddress,
+        walletAddres: addressWallet ?? '',
+        spenderAddress: getSpender(),
       );
       isApprovedSubject.sink.add(result);
       response = result;
@@ -132,10 +136,27 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   NFTRepository get _nftRepo => Get.find();
 
   Future<void> buyNftRequest(BuyNftRequest buyNftRequest) async {
+    showLoading();
     final result = await _nftRepo.buyNftRequest(buyNftRequest);
     result.when(
-      success: (res) {},
-      error: (error) {},
+      success: (res) {
+        showContent();
+      },
+      error: (error) {
+        showError();
+      },
+    );
+  }
+  Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
+    showLoading();
+    final result = await _nftRepo.bidNftRequest(bidNftRequest);
+    result.when(
+      success: (res) {
+        showContent();
+      },
+      error: (error) {
+        showError();
+      },
     );
   }
 
@@ -191,10 +212,11 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       from: addressWallet ?? '',
       toContractAddress: contractAddress,
     );
-    final nonce = await web3Client.getTransactionCount(address: addressWallet ?? '');
+    final nonce =
+        await web3Client.getTransactionCount(address: addressWallet ?? '');
     await signTransactionWithData(
       gasLimit: gasLimitApprove,
-      gasPrice: ((gasPriceFirst ?? 0)/1e9).toInt().toString(),
+      gasPrice: ((gasPriceFirst ?? 0) / 1e9).toInt().toString(),
       chainId: Get.find<AppConstants>().chaninId,
       contractAddress: contractAddress,
       walletAddress: addressWallet ?? '',
@@ -243,24 +265,31 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           );
           checkingApprove = false;
           isApprovedSubject.sink.add(resultApprove.boolValue('isSuccess'));
-        }
-        else {
+        } else {
           final result = await sendRawData(rawData ?? '');
 
           switch (type) {
             case TYPE_CONFIRM_BASE.BUY_NFT:
               if (result['isSuccess']) {
                 showContent();
-                emit(BuySuccess(result['txHash']));
+                emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.BUY_NFT));
               } else {
                 showContent();
-                emit(BuyFail());
+                emit(SignFail());
               }
               break;
             case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
               if (result['isSuccess']) {
                 showContent();
               } else {}
+              break;
+            case TYPE_CONFIRM_BASE.CANCEL_SALE:
+              if (result['isSuccess']) {
+                emit(SendRawDataSuccess(result['txHash']));
+                showContent();
+              } else {
+                showError();
+              }
               break;
             default:
               break;
@@ -315,25 +344,25 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       final data = {};
       showLoading();
       await trustWalletChannel.invokeMethod('getListWallets', data);
+      showContent();
     } on PlatformException {
       //nothing
     }
   }
 
-  String getSpender (){
-    String spender = nft_sales_address_dev2;
-    // late String spender;
-    // switch (type) {
-    //   case TYPE_CONFIRM_BASE.BUY_NFT:
-    //     spender = nft_sales_address_dev2;
-    //     break;
-    //   case TYPE_CONFIRM_BASE.PLACE_BID:
-    //     spender = nft_auction_dev2;
-    //     break;
-    //   default:
-    //     spender = '';
-    //     break;
-    // }
+  String getSpender() {
+    late String spender;
+    switch (type) {
+      case TYPE_CONFIRM_BASE.BUY_NFT:
+        spender = nft_sales_address_dev2;
+        break;
+      case TYPE_CONFIRM_BASE.PLACE_BID:
+        spender = nft_auction_dev2;
+        break;
+      default:
+        spender = '';
+        break;
+    }
     return spender;
   }
 
@@ -352,6 +381,15 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       showError();
       AppException('title', e.toString());
     }
+  }
+
+  Future<void> confirmCancelSaleWithBE(
+      {required String txnHash, required String marketId}) async {
+    final result = await _confirmRepository.getCancelSaleResponse(
+      id: marketId,
+      txnHash: txnHash,
+    );
+    result.when(success: (suc) {}, error: (err) {});
   }
 
   void dispose() {

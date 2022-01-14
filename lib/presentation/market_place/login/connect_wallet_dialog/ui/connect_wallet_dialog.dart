@@ -2,18 +2,14 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/wallet_add_feat_seedpharse/ui/add_wallet_ft_seedpharse.dart';
-import 'package:Dfy/presentation/login/ui/login_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_cubit.dart';
-import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-//chứa có wallet sẽ chuyển qua tạo wallet. Có rồi sẽ chuyển qua login
 class ConnectWalletDialog extends StatefulWidget {
   final Widget currentScreen;
 
@@ -72,7 +68,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                           textAlign: TextAlign.center,
                           style: textNormal(
                             AppTheme.getInstance().whiteColor(),
-                            20.sp,
+                            20,
                           ).copyWith(fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -102,7 +98,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                     S.current.cancel,
                                     style: textNormal(
                                       AppTheme.getInstance().whiteColor(),
-                                      20.sp,
+                                      20,
                                     ).copyWith(fontWeight: FontWeight.bold),
                                     textAlign: TextAlign.center,
                                   ),
@@ -159,7 +155,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                     state.contentRightButton,
                                     style: textNormal(
                                       AppTheme.getInstance().fillColor(),
-                                      20.sp,
+                                      20,
                                     ).copyWith(fontWeight: FontWeight.w700),
                                     textAlign: TextAlign.center,
                                   ),

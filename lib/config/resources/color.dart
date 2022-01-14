@@ -77,6 +77,7 @@ const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
 const unselectedTabLabel = Color(0xFF9997FF);
 const bgErrorLoadData = Color(0xFF474666);
+const bgTextField = Color(0x80A7A7A7);
 
 const List<Color> colorsFab = [
   Color.fromRGBO(255, 219, 101, 1),
@@ -198,6 +199,7 @@ abstract class AppColor {
 
   List<Color> listBackgroundMarketColor();
 
+  Color bgTextFormField();
   Color bgProgressingColors();
 }
 
@@ -457,6 +459,9 @@ class LightApp extends AppColor {
   }
 
   @override
+  Color bgTextFormField() {
+    return bgTextField;
+  }
   Color activityDateColor() {
     // TODO: implement activityDateColor
     return dateColor;
@@ -779,6 +784,9 @@ class DarkApp extends AppColor {
   }
 
   @override
+  Color bgTextFormField() {
+    return bgTextField;
+  }
   Color activityDateColor() {
     // TODO: implement activityDateColor
     throw UnimplementedError();

@@ -109,7 +109,7 @@ class FABMarketBase extends StatelessWidget {
             end: Alignment.centerLeft,
             colors: AppTheme.getInstance().colorFab()),
       ),
-      child: const Icon(Icons.add),
+      child: Icon(Icons.add, size: 32.sp),
     );
   }
 
@@ -156,8 +156,7 @@ class FABMarketBase extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                     child: FittedBox(
                       fit: BoxFit.fill,
-                      child: Expanded(
-                        child: Text(
+                      child: Text(
                           typeCreateFab == typeCreateFAB.COLLECTION
                               ? 'Collection'
                               : 'NFT',
@@ -170,7 +169,6 @@ class FABMarketBase extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
               ],
             ),
           );

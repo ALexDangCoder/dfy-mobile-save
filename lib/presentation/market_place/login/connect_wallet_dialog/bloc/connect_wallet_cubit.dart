@@ -18,7 +18,6 @@ class ConnectWalletCubit extends Cubit<ConnectWalletState> {
       await trustWalletChannel.invokeMethod('getConfig',data);
     } on PlatformException catch (e){
       //nothing
-      throw e;
     }
   }
 

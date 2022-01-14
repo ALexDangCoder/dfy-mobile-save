@@ -1,69 +1,145 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
+import 'package:Dfy/presentation/market_place/place_bid/bloc/place_bid_cubit.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
+import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
-import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
+import 'package:Dfy/widgets/form/custom_form.dart';
+import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PlaceBid extends StatefulWidget {
-  const PlaceBid({Key? key}) : super(key: key);
+  const PlaceBid({Key? key, required this.balance}) : super(key: key);
+  final double balance;
 
   @override
   _PlaceBidState createState() => _PlaceBidState();
 }
 
 class _PlaceBidState extends State<PlaceBid> {
+  late final NFTDetailBloc nftDetailBloc;
+  late final NFTOnAuction nftOnAuction;
+  late final PlaceBidCubit cubit;
+  String bidValue = '';
+
+  void initData() {
+    nftDetailBloc = nftKey.currentState!.bloc;
+    nftOnAuction = nftDetailBloc.nftOnAuction;
+    cubit = PlaceBidCubit();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
-      title: S.current.place_a_bid,
-      isImage: true,
-      text: ImageAssets.ic_close,
-      onRightClick: () {
-        Navigator.pop(context);
+    return StateStreamLayout(
+      stream: nftDetailBloc.stateStream,
+      error: AppException(S.current.error, S.current.something_went_wrong),
+      retry: () async {
+        await nftDetailBloc.callWeb3(
+          context,
+          bidValue,
+          MarketType.SALE,
+        );
       },
-      child: Container(
-        padding: EdgeInsets.only(
-          left: 16.w,
-          right: 16.w,
-        ),
-        child: Column(
-          children: [
-            spaceH56,
-            _buildRow(S.current.reserve_price, '\$95,000'),
-            spaceH8,
-            _buildRow(S.current.price_step, '59x22'),
-            spaceH8,
-            _buildRow(S.current.your_balance_bid, '35,000 DFY'),
-            spaceH16,
-            _currentBid,
-            spaceH5,
-            _cardCurrentBid('35000 DFY', ImageAssets.ic_token_dfy_svg, 'DFY'),
-            spaceH344,
-            _spaceButton(context),
-          ],
+      textEmpty: '',
+      child: BaseBottomSheet(
+        title: S.current.place_a_bid,
+        isImage: true,
+        text: ImageAssets.ic_close,
+        onRightClick: () {
+          Navigator.pop(context);
+        },
+        child: Container(
+          padding: EdgeInsets.only(
+            left: 16.w,
+            right: 16.w,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              spaceH20,
+              _buildRow(
+                  nftOnAuction.currentPrice == 0
+                      ? S.current.reserve_price
+                      : S.current.your_bid,
+                  nftOnAuction.currentPrice == 0
+                      ? nftOnAuction.reservePrice ?? 0
+                      : nftOnAuction.currentPrice ?? 0),
+              spaceH8,
+              _buildRow(S.current.buy_out, nftOnAuction.buyOutPrice ?? 0),
+              spaceH8,
+              _buildRow(S.current.price_step, nftOnAuction.priceStep ?? 0),
+              spaceH16,
+              _currentBid(),
+              spaceH5,
+              _cardCurrentBid(
+                nftOnAuction.urlToken ?? '',
+                nftOnAuction.tokenSymbol ?? '',
+                nftOnAuction.currentPrice == 0
+                    ? (nftOnAuction.reservePrice ?? 0)
+                    : (nftOnAuction.currentPrice ?? 0),
+              ),
+              spaceH8,
+              ...[
+                warningAmount(),
+                spaceH8,
+              ],
+              Text(
+                '${S.current.your_balance} ${widget.balance} '
+                '${nftOnAuction.tokenSymbol}',
+                style: textNormalCustom(
+                  Colors.white.withOpacity(0.7),
+                  14,
+                  FontWeight.w400,
+                ),
+              ),
+              spaceH344,
+              _spaceButton(context),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  final Widget _currentBid = Align(
-    alignment: Alignment.centerLeft,
-    child: Text(
-      S.current.current_bid,
+  Widget balance() {
+    return Text(
+      '${S.current.your_balance} ${widget.balance} '
+      '${nftOnAuction.tokenSymbol}',
       style: textNormalCustom(
-        AppTheme.getInstance().textThemeColor(),
-        16,
-        FontWeight.w600,
+        Colors.white.withOpacity(0.7),
+        14,
+        FontWeight.w400,
       ),
-    ),
-  );
+    );
+  }
 
-  Widget _buildRow(String label, String value) {
+  Widget _currentBid() => Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          S.current.your_bid,
+          style: textNormalCustom(
+            AppTheme.getInstance().textThemeColor(),
+            16,
+            FontWeight.w600,
+          ),
+        ),
+      );
+
+  Widget _buildRow(String label, double price) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -76,7 +152,7 @@ class _PlaceBidState extends State<PlaceBid> {
           ),
         ),
         Text(
-          value,
+          '$price ${nftOnAuction.tokenSymbol}',
           style: textNormalCustom(
             AppTheme.getInstance().textThemeColor(),
             16,
@@ -87,89 +163,129 @@ class _PlaceBidState extends State<PlaceBid> {
     );
   }
 
-  Widget _cardCurrentBid(String value, String assets, String nameToken) {
-    return Container(
-      height: 64.h,
-      width: 343.w,
-      padding: EdgeInsets.only(
-        top: 22.h,
-        bottom: 22.h,
-        left: 22.w,
-        right: 22.w,
-      ),
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().itemBtsColors(),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
+  Widget _cardCurrentBid(String url, String nameToken, double bid) {
+    return CustomForm(
+      textValue: (value) {
+        if (value.isNotEmpty) {
+          if (widget.balance > double.parse(value) &&
+              double.parse(value) > bid) {
+            cubit.warnSink.add('');
+            bidValue = value;
+            cubit.btnSink.add(true);
+            nftDetailBloc.bidValue = double.parse(value);
+          } else if (widget.balance > double.parse(value) &&
+              double.parse(value) < bid) {
+            cubit.warnSink.add(S.current.you_must_bid_greater);
+            cubit.btnSink.add(false);
+          } else {
+            cubit.btnSink.add(false);
+            cubit.warnSink.add(S.current.you_enter_balance);
+          }
+        } else {
+          cubit.btnSink.add(false);
+          cubit.warnSink.add(S.current.you_must_bid);
+        }
+      },
+      hintText: S.current.your_bid,
+      suffix: SizedBox(
+        width: 30.w,
+        child: Row(
+          children: [
+            SizedBox(
+              height: 20.h,
+              width: 20.w,
+              child: Image.network(url),
+            ),
+            spaceW2,
+            Text(
+              nameToken,
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor(),
+                14,
+                FontWeight.normal,
+              ),
+            )
+          ],
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            value,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              16,
-              FontWeight.w600,
-            ),
-          ),
-          Row(
-            children: [
-              sizedSvgImage(w: 16, h: 16, image: assets),
-              spaceW4,
-              Text(
-                nameToken,
-                style: textNormalCustom(
-                  AppTheme.getInstance().textThemeColor(),
-                  16,
-                  FontWeight.w400,
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
+      inputType: TextInputType.number,
     );
   }
 
-  Widget _spaceButton(BuildContext context) => Align(
-        alignment: Alignment.bottomCenter,
-        child: ButtonGradient(
-          gradient: RadialGradient(
-            center: const Alignment(0.5, -0.5),
-            radius: 4,
-            colors: AppTheme.getInstance().gradientButtonColor(),
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ConfirmBlockchainCategory(
-                  nameWallet: 'nameWalletllllllllllllàafwf',
-                  nameTokenWallet: 'BNB',
-                  balanceWallet: 0.5,
-                  typeConfirm: TYPE_CONFIRM.PLACE_BID,
-                  addressFrom: '0xaB05Ab79C0F440ad982B1405536aBc8094C80AfB',
-                  addressTo: '0xaB05Ab79C0F440ad982B1405536aBc8094C80AfB',
-                  imageWallet: ImageAssets.image_avatar,
-                  cubitCategory: PlaceBid(),
-                  gasPriceFirstFetch: 0.5 / 1000000000,
-                  gasFeeFirstFetch: 0.5 / 1000000000,
-                  gasLimitFirstFetch: 0.5 / 1000000000,
-                  amount: 0,
+  Widget _spaceButton(BuildContext context) => StreamBuilder<bool>(
+        initialData: false,
+        stream: cubit.btnStream,
+        builder: (ctx, snapshot) {
+          final isEnable = snapshot.data!;
+          if (isEnable) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: ButtonGradient(
+                onPressed: () {
+                  nftDetailBloc.callWeb3(
+                    context,
+                    bidValue,
+                    MarketType.AUCTION,
+                  );
+                },
+                gradient: RadialGradient(
+                  center: const Alignment(0.5, -0.5),
+                  radius: 4,
+                  colors: AppTheme.getInstance().gradientButtonColor(),
+                ),
+                child: Text(
+                  S.current.buy_nft,
+                  style: textNormal(
+                    AppTheme.getInstance().textThemeColor(),
+                    20,
+                  ),
                 ),
               ),
             );
-          },
-          child: Text(
-            S.current.place_a_bid,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              20,
-              FontWeight.w700,
-            ),
-          ),
-        ),
+          } else {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: ErrorButton(
+                child: Center(
+                  child: Text(
+                    S.current.buy_nft,
+                    style: textNormal(
+                      AppTheme.getInstance().textThemeColor(),
+                      20,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+        },
       );
+
+  Widget warningAmount() {
+    return StreamBuilder<String>(
+      initialData: '',
+      stream: cubit.warnStream,
+      builder: (BuildContext context, snapshot) {
+        return Visibility(
+          visible: snapshot.data!.isNotEmpty,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                width: 343.w,
+                // height: 30.h,
+                child: Text(
+                  snapshot.data ?? '',
+                  style: textNormal(AppTheme.getInstance().wrongColor(), 12)
+                      .copyWith(fontWeight: FontWeight.w400),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
