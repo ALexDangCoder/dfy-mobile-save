@@ -45,10 +45,9 @@ class _ListNftState extends State<ListNft> {
     if (widget.marketType != null) {
       _cubit.getListNft(status: _cubit.status(widget.marketType));
     } else {
-      if(widget.queryAllResult != null){
+      if (widget.queryAllResult != null) {
         _cubit.getListNft(name: widget.queryAllResult);
-      }
-      else{
+      } else {
         _cubit.getListNft();
       }
     }
@@ -121,29 +120,52 @@ class _ListNftState extends State<ListNft> {
                               if (_cubit.listData.isNotEmpty) {
                                 return Expanded(
                                   child: RefreshIndicator(
-                                    onRefresh: () async {
-                                      _cubit.refreshPosts();
-                                    },
-                                    child: StaggeredGridView.countBuilder(
-                                      shrinkWrap: true,
-                                      mainAxisSpacing: 20.h,
-                                      itemCount: _cubit.listData.length,
-                                      crossAxisCount: 2,
-                                      itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: EdgeInsets.only(left: 16.w),
-                                          child: GestureDetector(
-                                            onTap: () {},
-                                            child: NFTItemWidget(
-                                              nftMarket: _cubit.listData[index],
-                                            ),
-                                          ),
-                                        );
+                                      onRefresh: () async {
+                                        _cubit.refreshPosts();
                                       },
-                                      staggeredTileBuilder: (int index) =>
-                                          const StaggeredTile.fit(1),
-                                    ),
-                                  ),
+                                      child: Stack(
+                                        children: [
+                                          StaggeredGridView.countBuilder(
+                                            shrinkWrap: true,
+                                            mainAxisSpacing: 20.h,
+                                            itemCount: _cubit.listData.length,
+                                            crossAxisCount: 2,
+                                            itemBuilder: (context, index) {
+                                              return Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 16.w),
+                                                child: GestureDetector(
+                                                  onTap: () {},
+                                                  child: NFTItemWidget(
+                                                    nftMarket:
+                                                        _cubit.listData[index],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            staggeredTileBuilder: (int index) =>
+                                                const StaggeredTile.fit(1),
+                                          ),
+                                          if (state is ListNftLoadMore)
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 520.h),
+                                              child: Center(
+                                                  child: SizedBox(
+                                                height: 24.h,
+                                                width: 24.w,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2.r,
+                                                  color: AppTheme.getInstance()
+                                                      .whiteColor(),
+                                                ),
+                                              )),
+                                            )
+                                          else
+                                            const SizedBox(),
+                                        ],
+                                      )),
                                 );
                               } else {
                                 return Padding(

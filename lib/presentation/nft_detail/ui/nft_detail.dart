@@ -445,7 +445,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
         if (state is NftOnPawnSuccess) {
           final nftOnPawn = state.nftOnPawn;
           return BaseCustomScrollView(
-            typeImage: TypeImage.IMAGE,
+            typeImage:
+                nftOnPawn.nftCollateralDetailDTO?.typeImage ?? TypeImage.IMAGE,
             image: nftOnPawn.nftCollateralDetailDTO?.image ?? '',
             initHeight: 360.h,
             leading: _leading(context),
@@ -467,7 +468,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
             bottomBar: _buildButtonSendOffer(context),
             content: [
-              _nameNFT(context: context,title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? ''),
+              _nameNFT(
+                  context: context,
+                  title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? ''),
               _priceContainerOnPawn(nftOnPawn: nftOnPawn),
               _durationRowOnPawn(
                 durationType: nftOnPawn.durationType ?? 0,
