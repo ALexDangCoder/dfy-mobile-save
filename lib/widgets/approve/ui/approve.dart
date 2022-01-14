@@ -5,23 +5,27 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
+import 'package:Dfy/widgets/approve/ui/component/estimate_gas_fee.dart';
+import 'package:Dfy/widgets/approve/ui/component/pop_up_approve.dart';
 import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -103,6 +107,11 @@ class _ApproveState extends State<Approve> {
         nftDetailBloc = nftKey.currentState!.bloc;
         getNonce();
         break;
+      case TYPE_CONFIRM_BASE.PLACE_BID:
+        nftDetailBloc = nftKey.currentState!.bloc;
+        getNonce();
+        getNonce();
+        break;
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
         cubit.createCollectionParam =
             widget.createCollectionCubit?.getMapCreateCollection() ?? {};
@@ -146,7 +155,6 @@ class _ApproveState extends State<Approve> {
   }
 
   Future<void> getNonce() async {
-    await cubit.getListWallets();
     nonce = await nftDetailBloc.getNonceWeb3();
   }
 
@@ -168,6 +176,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
         {
           showLoading();
+
           Timer(Duration(seconds: 2), () {
             Navigator.pop(context);
             Navigator.pop(context, true);
@@ -194,13 +203,12 @@ class _ApproveState extends State<Approve> {
     switch (widget.typeApprove) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         {
-          final int n = await nftDetailBloc.getNonceWeb3();
           await cubit.signTransactionWithData(
             walletAddress: nftDetailBloc.walletAddress,
             contractAddress: nft_sales_address_dev2,
-            nonce: n.toString(),
+            nonce: nonce.toString(),
             chainId: Get.find<AppConstants>().chaninId,
-            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+            gasPrice: gasPriceFinal.toStringAsFixed(0),
             gasLimit: gasLimitFinal.toStringAsFixed(0),
             hexString: nftDetailBloc.hexString,
           );
@@ -208,6 +216,15 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.PLACE_BID:
         {
+          await cubit.signTransactionWithData(
+            walletAddress: nftDetailBloc.walletAddress,
+            contractAddress: nft_auction_dev2,
+            nonce: nonce.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: gasPriceFinal.toStringAsFixed(0),
+            gasLimit: gasLimitFinal.toStringAsFixed(0),
+            hexString: nftDetailBloc.hexString,
+          );
           break;
         }
       case TYPE_CONFIRM_BASE.SEND_NFT:
@@ -218,16 +235,17 @@ class _ApproveState extends State<Approve> {
         {
           cubit.showLoading();
           final int n = await nftDetailBloc.getNonceWeb3();
-          await cubit.signTransactionWithData(
-            walletAddress: nftDetailBloc.walletAddress,
-            contractAddress: nft_sales_address_dev2,
-            nonce: n.toString(),
-            chainId: Get.find<AppConstants>().chaninId,
-            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toStringAsFixed(0),
-            hexString: nftDetailBloc.hexString,
-          );
-          cubit.showLoading();
+          await cubit
+              .signTransactionWithData(
+                walletAddress: nftDetailBloc.walletAddress,
+                contractAddress: nft_sales_address_dev2,
+                nonce: n.toString(),
+                chainId: Get.find<AppConstants>().chaninId,
+                gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+                gasLimit: gasLimitFinal.toStringAsFixed(0),
+                hexString: nftDetailBloc.hexString,
+              );
+          cubit.showContent();
           break;
         }
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
@@ -247,7 +265,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
         {
           await showPopupApprove();
-          Timer(Duration(seconds: 2), () {
+          Timer(const Duration(seconds: 2), () {
             Navigator.pop(context);
           });
           break;
@@ -366,40 +384,10 @@ class _ApproveState extends State<Approve> {
     return BlocListener(
       bloc: cubit,
       listener: (context, state) {
-        if (state is BuySuccess) {
-          cubit.buyNftRequest(
-            BuyNftRequest(
-              nftDetailBloc.nftMarketId,
-              1,
-              state.txh,
-            ),
-          );
-          cubit.emitJsonNftToWalletCore(
-            contract: cubit.nftMarket.collectionAddress ?? '',
-            id: int.parse(cubit.nftMarket.nftTokenId ?? ''),
-            address: nftDetailBloc.walletAddress,
-          );
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BaseSuccess(
-                title: S.current.buy_nft,
-                content: S.current.congratulation,
-                callback: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainScreen(
-                        index: 1,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          );
+        if (state is SignSuccess) {
+          caseNavigator(state.type, state.txh);
         }
-        if (state is BuyFail) {
+        if (state is SignFail) {
           Fluttertoast.showToast(msg: 'Fail');
         }
       },
@@ -659,6 +647,73 @@ class _ApproveState extends State<Approve> {
         ),
       ),
     );
+  }
+
+  void caseNavigator(TYPE_CONFIRM_BASE type, String data) {
+    switch (type) {
+      case TYPE_CONFIRM_BASE.BUY_NFT:
+        cubit.buyNftRequest(
+          BuyNftRequest(
+            nftDetailBloc.nftMarketId,
+            nftDetailBloc.quantity,
+            data,
+          ),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BaseSuccess(
+              title: S.current.buy_nft,
+              content: S.current.congratulation,
+              callback: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 1,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ).then(
+          (_) => cubit.emitJsonNftToWalletCore(
+            contract: cubit.nftMarket.collectionAddress ?? '',
+            id: int.parse(cubit.nftMarket.nftTokenId ?? ''),
+            address: nftDetailBloc.walletAddress,
+          ),
+        );
+        break;
+      case TYPE_CONFIRM_BASE.PLACE_BID:
+        cubit.bidNftRequest(
+          BidNftRequest(
+            nftDetailBloc.nftMarketId,
+            nftDetailBloc.bidValue,
+            data,
+          ),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BaseSuccess(
+              title: S.current.bidding,
+              content: S.current.congratulation,
+              callback: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 1,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+        break;
+    }
   }
 
   Container containerWithBorder({required Widget child}) {

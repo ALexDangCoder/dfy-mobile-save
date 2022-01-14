@@ -9,7 +9,8 @@ class ApiConstants {
   static const String GET_LIST_TOKEN =
       '/nft-market-svc/public-api/market/coin-list';
   static const String DETAIL_CATEGORY = 'nft-market-svc/public-api/collection';
-  static const String GET_PRICE_TOKEN_BY_SYMBOL = '/nft-market-svc/public-api/market/coin-price';
+  static const String GET_PRICE_TOKEN_BY_SYMBOL =
+      '/nft-market-svc/public-api/market/coin-price';
   static const String GET_DETAIL_NFT_AUCTION =
       '/nft-market-svc/public-api/auction/detail/';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE =
@@ -32,12 +33,14 @@ class ApiConstants {
   static const String GET_LIST_CATEGORY = '/nft-market-svc/public-api/category';
   static const String GET_BOOL_CUSTOM_URL =
       'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=https://marketplace.defiforyou.uk/';
-  static const String GET_LIST_COLLECTION_FILTER = '/nft-market-svc/public-api/collection';
+  static const String GET_LIST_COLLECTION_FILTER =
+      '/nft-market-svc/public-api/collection';
   static const String GET_LIST_NFT = '/nft-market-svc/public-api/search/nft';
-  static const String GET_LIST_TYPE_NFT = '/hard-nft-svc/public-api/collections/types';
+  static const String GET_LIST_TYPE_NFT =
+      '/hard-nft-svc/public-api/collections/types';
 
-
-  static const String GET_LIST_NFT_COLLECTION = '/inventory-svc/public-api/collections/list-nft/';
+  static const String GET_LIST_NFT_COLLECTION =
+      '/inventory-svc/public-api/collections/list-nft/';
   static const String COLLECTION_DETAIL =
       '/inventory-svc/public-api/collections/';
   static const String COLLECTION_ACTIVITY_LIST =
@@ -52,8 +55,8 @@ class ApiConstants {
   static const String GET_OWNER = 'inventory-svc/public-api/v1.0.0/owners';
   static const String GET_BIDDING =
       '/nft-market-svc/public-api/auction/bidding-list';
-  static const String BUY_NFT =
-      '/nft-market-svc/api/market/buy';
+  static const String BUY_NFT = '/nft-market-svc/api/market/buy';
+  static const String BID_NFT = '/nft-market-svc/api/auction/bid';
 
   static const String GET_DETAIL_NFT_ON_PAWN =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts/';

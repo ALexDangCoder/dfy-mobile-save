@@ -56,7 +56,8 @@ class _NFTItemState extends State<NFTItemWidget> {
     cubitNft = NftItemCubit();
     if (widget.nftMarket.marketType == MarketType.AUCTION) {
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
-          value: widget.nftMarket.startTime ?? 0);
+        value: widget.nftMarket.startTime ?? 0,
+      );
       endTimeAuction = cubitNft.parseTimeServerToDateTime(
         // value: (widget.nftMarket.endTime == 0) ? 0 : 0);
         value: 1642637464000,
@@ -306,39 +307,50 @@ class _NFTItemState extends State<NFTItemWidget> {
               SizedBox(
                 width: 5.w,
               ),
-              if (cubitNft.isOutOfTimeAuction(endTime: endTimeAuction!))
-                CountdownTimer(
-                  controller: countdownController,
-                  widgetBuilder: (_, CurrentRemainingTime? time) {
-                    if (time == null) {
-                      return Text(
-                        '00:00:00:00',
-                        style: textNormalCustom(
-                          AppTheme.getInstance().whiteColor(),
-                          13,
-                          FontWeight.w600,
-                        ),
-                      );
-                    }
-                    return Text(
-                      '${time.days ?? 00}:${time.hours}:${time.min}:${time.sec}',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        13,
-                        FontWeight.w600,
-                      ),
-                    );
-                  },
-                )
-              else
+              if (cubitNft.isNotStartYet(startTime: startTimeAuction!)) ...[
                 Text(
-                  '00:00:00:00',
+                  S.current.start_in,
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteColor(),
                     13,
                     FontWeight.w600,
                   ),
                 )
+              ] else ...[
+                if (cubitNft.isOutOfTimeAuction(endTime: endTimeAuction!))
+                  CountdownTimer(
+                    controller: countdownController,
+                    widgetBuilder: (_, CurrentRemainingTime? time) {
+                      if (time == null) {
+                        return Text(
+                          S.current.end_in,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            13,
+                            FontWeight.w600,
+                          ),
+                        );
+                      }
+                      return Text(
+                        '${time.days ?? 00}:${time.hours}:${time.min}:${time.sec}',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          13,
+                          FontWeight.w600,
+                        ),
+                      );
+                    },
+                  )
+                else
+                  Text(
+                    S.current.end_in,
+                    style: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      13,
+                      FontWeight.w600,
+                    ),
+                  )
+              ]
             ],
           ),
         ),
@@ -350,10 +362,12 @@ class _NFTItemState extends State<NFTItemWidget> {
 
   Widget playVideo(TypeImage? type) {
     if (type == TypeImage.VIDEO) {
-      return Center(
+      return Align(
+        alignment: Alignment.bottomRight,
         child: Padding(
           padding: EdgeInsets.only(
-            top: 49.h,
+            top: 90.h,
+            right: 6.w,
           ),
           child: Icon(
             _controller!.value.isPlaying
