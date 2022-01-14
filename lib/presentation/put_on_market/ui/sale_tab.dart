@@ -159,7 +159,7 @@ class _SaleTabState extends State<SaleTab>
                       context,
                       MaterialPageRoute(
                         builder: (context) => Approve(
-                          needApprove: true,
+                          needApprove: false,
                           showPopUp: true,
                           warning: RichText(
                             text: TextSpan(
@@ -178,7 +178,7 @@ class _SaleTabState extends State<SaleTab>
                                     AppTheme.getInstance()
                                         .failTransactionColors()
                                         .withOpacity(0.7),
-                                    14.sp,
+                                    14,
                                   ),
                                 ),
                                 TextSpan(
@@ -187,7 +187,7 @@ class _SaleTabState extends State<SaleTab>
                                     AppTheme.getInstance()
                                         .whiteColor()
                                         .withOpacity(0.7),
-                                    14.sp,
+                                    14,
                                   ),
                                 ),
                               ],

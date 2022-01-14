@@ -664,8 +664,10 @@ class Web3Utils {
       function: function,
       parameters: [
         EthereumAddress.fromHex(spender),
-        BigInt.from(num.parse(
-            '115792089237316195423570985008687907853269984665640564039457')),
+        BigInt.from(
+          num.parse(
+              '115792089237316195423570985008687907853269984665640564039457'),
+        ),
       ],
     );
     return hex.encode(approve.data ?? []);
@@ -727,7 +729,7 @@ class Web3Utils {
     BuildContext context,
   ) async {
     final abiCode = await DefaultAssetBundle.of(context)
-        .loadString('assets/abi/erc20.json');
+        .loadString('assets/abi/erc20_abi.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'erc20'),
       EthereumAddress.fromHex(contract),

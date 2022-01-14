@@ -64,7 +64,6 @@ class Approve extends StatefulWidget {
   final CreateCollectionCubit? createCollectionCubit;
   final String? payValue;
   final String? tokenAddress;
-  final String? spenderAddress;
 
   const Approve({
     Key? key,
@@ -83,7 +82,6 @@ class Approve extends StatefulWidget {
     this.createCollectionCubit,
     this.payValue,
     this.tokenAddress,
-    this.spenderAddress,
   }) : super(key: key);
 
   @override
@@ -122,14 +120,10 @@ class _ApproveState extends State<Approve> {
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
 
     /// get wallet information
+    cubit.needApprove = widget.needApprove ?? false;
+    cubit.payValue = widget.payValue ?? '';
+    cubit.tokenAddress = widget.tokenAddress ?? ' ';
     cubit.getListWallets();
-    if (widget.needApprove ?? false) {
-      cubit.checkApprove(
-        payValue: widget.payValue ?? '',
-        tokenAddress: widget.tokenAddress ?? ' ',
-        spenderAddress: widget.spenderAddress ?? '',
-      );
-    }
     cubit.canActionSubject.listen((value) {
       setState(() {
         isCanAction = value;
@@ -146,18 +140,24 @@ class _ApproveState extends State<Approve> {
 
   Future<void> approve() async {
     bool isShowLoading = false;
+    cubit.checkingApprove = true;
     /// function approve
-    unawaited(cubit.approve());
+    unawaited(
+      cubit.approve(
+          context: context,
+          contractAddress: widget.tokenAddress ?? '',
+      ),
+    );
     cubit.isApprovedSubject.listen((value) async {
       final navigator = Navigator.of(context);
-      if (value) {
+      if (value &&  !cubit.checkingApprove) {
         if (isShowLoading) {
           Navigator.pop(context);
         }
         await showLoadSuccess();
         navigator.pop();
       }
-      if (!value){
+      if (!value && !cubit.checkingApprove) {
         if (isShowLoading) {
           navigator.pop();
         }
@@ -222,8 +222,8 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
         {
-          showLoading();
-          Timer(Duration(seconds: 2), () {
+          unawaited( showLoading());
+          await Timer(Duration(seconds: 1), () {
             Navigator.pop(context);
             Navigator.pop(context);
           });
@@ -239,7 +239,7 @@ class _ApproveState extends State<Approve> {
   }
 
   /// show dialog loading
-  Future <void>  showLoading() async {
+  Future<void> showLoading() async {
     final navigator = Navigator.of(context);
     await navigator.push(
       PageRouteBuilder(
@@ -318,7 +318,7 @@ class _ApproveState extends State<Approve> {
   }
 
   /// show  BottomSheet approve
-  void  showPopupApprove()  {
+  void showPopupApprove() {
     showModalBottomSheet(
       backgroundColor: Colors.black,
       shape: const RoundedRectangleBorder(
@@ -333,7 +333,7 @@ class _ApproveState extends State<Approve> {
           approve: () {
             approve();
           },
-          addressWallet: cubit.addressWallet ?? '432342342342323423',
+          addressWallet: cubit.addressWallet ?? '',
           accountName: cubit.nameWallet ?? 'Account',
           imageAccount: accountImage,
           balanceWallet: cubit.balanceWallet ?? 0,
@@ -547,6 +547,7 @@ class _ApproveState extends State<Approve> {
                                     if (!isApproved && isCanAction) {
                                       showPopupApprove();
                                     }
+                                    //showPopupApprove();
                                   },
                                 );
                               },
@@ -568,10 +569,11 @@ class _ApproveState extends State<Approve> {
                         final isApproved = snapshot.data ?? false;
                         return GestureDetector(
                           child: ButtonGold(
-                            textColor:
-                                isApproved || !(widget.needApprove ?? false)
-                                    ? null
-                                    : disableText,
+                            textColor: (isApproved ||
+                                        !(widget.needApprove ?? false)) &&
+                                    isCanAction
+                                ? null
+                                : disableText,
                             fixSize: false,
                             haveMargin: false,
                             title: widget.textActiveButton,
@@ -585,7 +587,7 @@ class _ApproveState extends State<Approve> {
                                 isCanAction) {
                               signTransaction(
                                 cubit.gasLimit ?? widget.gasLimitInit,
-                                cubit.gasPrice ?? 0,
+                                cubit.gasPrice ?? 1e9,
                               );
                             }
                           },
