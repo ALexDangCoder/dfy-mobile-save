@@ -58,18 +58,17 @@ const _dtFormat5 = 'MMM dd, yyyy';
 const nft_sales_address_dev2 = '0xcE80f7DFEC1589D6cf9a0586446618aAbBC711E7';
 const nft_factory_dev2 = '0x0bcA4DCddE35d2F2aC5a3fAF0baD966639e6EB41';
 const nft_auction_dev2 = '0xdE92A451d22C1D84E874b6B8A5A70AC5f91b6D86';
-const bearTokenViNhieuTien = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZ'
-    'XRfYWRkcmVzcyI6IjB4YWIwNWFiNzljMGY0NDBhZDk4MmIxNDA1NTM2YWJjODA5N'
-    'GM4MGFmYiIsImdyYW50X3R5cGUiOiJ3YWxsZXQiLCJ1c2VyX25hbWUiOiIweGF'
-    'iMDVhYjc5YzBmNDQwYWQ5ODJiMTQwNTUzNmFiYzgwOTRjODBhZmIiLCJzY29wZS'
-    'I6WyJERUZBVUxUIl0sImV4cCI6MTY0MjA3NjgxMiwianRpIjoiYjNhYTkyNGYt'
-    'ZGVmZC00YzYxLTgyZGYtY2RiYThlMWM1ODNlIiwiY2xpZW50X2lkIjoidGFpbmQ'
-    'ifQ.CPDpOdnPYHTVCbBPxT4OzTT57rvSGxbGDUSux7X7g2JcHu_rL-2vjeONXk'
-    'vWxQfi5HREwtCcUbsCMCvicZt7pTRc8CGbBC8Ep4oAqaQRV3tE8KMytVoZXxeO'
-    'nK1JjrNlD6vjjcSRF6XsUoaT2gHK73EUZJ96W9a5FZnGLnPLsEwmNKP9ijXG'
-    '_ZmA0tSgCKdLMGWNDJofmLsZ1ykmFQrc7HLhFCic7X4zkn8OtWLfdh4MWaNnDhi'
-    'XmokB6n6_fFQPsx0tSWOI89BOUV0kd5b5mN1HTC4LEj_xhK8yDt0ffjZBpcI8tg'
-    'KJl_DU26CXtNS92JAIwBO8dybZwYA7NLgn4g';
+const bearTokenViNhieuTien =
+    'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZXRfYWRkcmVzcyI6IjB4Mz'
+    'llZTRjMjhlMDljZTZkOTA4NjQzZGRkZWVhZWVmMjM0MTEzOGViYiIsImdyYW50X3R5cGUiOiJ3'
+    'YWxsZXQiLCJ1c2VyX25hbWUiOiIweDM5ZWU0YzI4ZTA5Y2U2ZDkwODY0M2RkZGVlYWVlZjIzND'
+    'ExMzhlYmIiLCJzY29wZSI6WyJERUZBVUxUIl0sImV4cCI6MTY0MjEyOTI1OSwianRpIjoiNThm'
+    'ZTZlNzktMzhhMC00MjQ3LWFmNjgtMWE3ZDEzZTYzY2ZkIiwiY2xpZW50X2lkIjoidGFpbmQifQ'
+    '.k-1cKByFke8sHli6-3zvdgIEEmrqqtQf_b8aSJFimktPG2jStMgGqbaswjV9aDQw-4uApyLlP'
+    'cRPiyjFdClkchbyJWoKxriq8Z0YjgFV0PDuCGpzJVzzNkSoiAe17HXK5CG6upxxJAfBIY5IQol'
+    'mD-qxDxOSyipyWlvNoTw9I8GlC19w_4HBNBk9xh6kK216y29wuH9eu0gAs6uW_HAw9vwGOFGcq'
+    'EAzJSVyrpACjfBKo2UI9UzbBfjcJackRAQsC6WTtDtyObt1cFR4mxHsnPi7xBIY6hjbTAXcxhG'
+    'yDmng_Pon8S6BVznozIok-kXqdU7Bs3rK1xebiyPFu22hBg';
 
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;

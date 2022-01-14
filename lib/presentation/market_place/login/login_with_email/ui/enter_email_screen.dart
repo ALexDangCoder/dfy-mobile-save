@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -30,7 +28,9 @@ class EnterEmail extends StatelessWidget {
           //todo:
           cubit.checkValidate(emailEditingController.value.text);
           if (cubit.state is ValidateSuccess) {
-            cubit.getNonce(walletAddress: '0xf5e281A56650bb992ebaB15B41583303fE9804e7');
+            cubit.getNonce(
+              walletAddress: '0xf5e281A56650bb992ebaB15B41583303fE9804e7',
+            );
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -57,7 +57,7 @@ class EnterEmail extends StatelessWidget {
                   S.current.enter_email_to_link,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
-                    16.sp,
+                    16,
                   ),
                 ),
               ),
@@ -92,7 +92,7 @@ class EnterEmail extends StatelessWidget {
                         counterText: '',
                         hintStyle: textNormal(
                           AppTheme.getInstance().whiteColor(),
-                          16.sp,
+                          16,
                         ),
                         prefixIcon: ImageIcon(
                           const AssetImage(ImageAssets.ic_email),
@@ -110,12 +110,15 @@ class EnterEmail extends StatelessWidget {
                     builder: (context, state) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 4),
+                          horizontal: 16.0,
+                          vertical: 4,
+                        ),
                         child: Text(
                           state.errText,
                           style: textNormal(
-                                  AppTheme.getInstance().wrongColor(), 12.sp)
-                              .copyWith(fontWeight: FontWeight.w400),
+                            AppTheme.getInstance().wrongColor(),
+                            12,
+                          ).copyWith(fontWeight: FontWeight.w400),
                         ),
                       );
                     },

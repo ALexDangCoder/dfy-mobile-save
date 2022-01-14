@@ -342,7 +342,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                     S.current.cancel_sale_info,
                                     style: textNormal(
                                       AppTheme.getInstance().whiteColor(),
-                                      16.sp,
+                                      16,
                                     ).copyWith(
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -365,7 +365,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                         style: textNormal(
                                           AppTheme.getInstance()
                                               .currencyDetailTokenColor(),
-                                          14.sp,
+                                          14,
                                         ),
                                       ),
                                     ),
@@ -374,7 +374,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                 textActiveButton: S.current.cancel_sale,
                                 gasLimitInit: double.parse(bloc.gasLimit),
                                 typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
-                              )));
+                              )),);
                     }
                   } else {
                     showDialog(
