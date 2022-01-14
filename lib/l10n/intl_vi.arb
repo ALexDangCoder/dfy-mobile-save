@@ -455,6 +455,7 @@
   "auction_ends_in": "Đấu giá kết thúc sau:",
   "auction_start_in": "Đấu giá bắt đầu sau:",
   "auction_ends": "Đấu giá kết thúc:",
+  "auction_win":"Giá chiến thắng:",
   "is_bid": "Giá hiện tại:",
   "on_sale": "Đang bán",
   "you_enter_balance": "Bạn nhập lớn số dư trong ví",
@@ -463,5 +464,7 @@
   "address":"Address",
   "item_price": "Giá",
   "start_in": "Chưa bắt đầu",
+  "purchase_being_processed": "Nft đang được giao dịch bởi một ai đó.",
+    "error_might_occur": "Có lỗi có thể xảy ra nếu bạn tiếp tục",
   "end_in": "Kết thúc"
 }

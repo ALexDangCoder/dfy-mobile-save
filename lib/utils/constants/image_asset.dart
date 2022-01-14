@@ -171,6 +171,7 @@ class ImageAssets {
   static const String import = '$baseImg/Import.png';
   static const String face_id = '$baseImg/face_id.png';
   static const String img_cash = '$baseImg/cash.png';
+  static const String img_warning = '$baseImg/img_warning.png';
 
   ///error feat load nft, collection, category
   static const String err_load_nft = '$baseImg/error_nft.png';
