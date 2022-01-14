@@ -18,7 +18,9 @@ import 'package:rxdart/rxdart.dart';
 import '../../../main.dart';
 
 class CollectionBloc extends BaseCubit<CollectionState> {
-  CollectionBloc() : super(CollectionState()) {
+  final bool isMyAcc;
+
+  CollectionBloc({required this.isMyAcc}) : super(CollectionState()) {
     getListCategory();
   }
 
@@ -71,12 +73,36 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   List<String> listAcc = [
     S.current.all,
   ];
+  BehaviorSubject<List<bool>> listCheckBoxFilterStream =
+      BehaviorSubject.seeded([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
+  List<bool> listCheckBoxFilter = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
   List<FilterCollectionModel> listCategory = [];
 
   CategoryRepository get _categoryRepository => Get.find();
 
   Timer? debounceTime;
+  String? category;
+  int? sortFilter;
+  String? address;
 
   void funFilter() {
     getCollection(
@@ -84,8 +110,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       name: textSearch.value.trim(),
     );
   }
-
-  int? sortFilter;
 
   void funChooseFilter(int index) {
     for (int i = 0; i < 8; i++) {
@@ -150,29 +174,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       error: (error) {},
     );
   }
-
-  BehaviorSubject<List<bool>> listCheckBoxFilterStream =
-      BehaviorSubject.seeded([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-
-  List<bool> listCheckBoxFilter = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ];
 
   void reset() {
     sortFilter = null;
@@ -242,19 +243,30 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     String? name = '',
     int? sortFilter = 0,
     int? size = 10,
-    String address = '',
   }) async {
     if (nextPage == 1) {
       nextPage = 2;
     }
-    final Result<List<CollectionMarketModel>> result =
-        await _collectionDetailRepository.getListCollectionMarket(
-      name: name,
-      sort: sortFilter,
-      size: size,
-      page: nextPage,
-      address: address,
-    );
+    late final Result<List<CollectionMarketModel>> result;
+    if (isMyAcc) {
+      result = await _collectionDetailRepository.getListCollection(
+        name: name,
+        sort: sortFilter,
+        size: size,
+        page: nextPage,
+        address: address,
+        category: category,
+      );
+    } else {
+      result = await _collectionDetailRepository.getListCollectionMarket(
+        name: name,
+        sort: sortFilter,
+        size: size,
+        page: nextPage,
+        address: address,
+      );
+    }
+
     result.when(
       success: (res) {
         final List<CollectionMarketModel> currentList = list.valueOrNull ?? [];
@@ -276,19 +288,30 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     int? sortFilter = 0,
     int? size = 10,
     int? page = 0,
-    String address = '',
     bool isLoad = true,
   }) async {
     nextPage = 1;
     isCanLoadMore.add(isLoad);
     emit(LoadingData());
-    final Result<List<CollectionMarketModel>> result =
-        await _collectionDetailRepository.getListCollectionMarket(
-      name: name,
-      sort: sortFilter,
-      size: size,
-      page: page,
-    );
+    late final Result<List<CollectionMarketModel>> result;
+    if (isMyAcc) {
+      result = await _collectionDetailRepository.getListCollection(
+        name: name,
+        sort: sortFilter,
+        size: size,
+        page: nextPage,
+        address: address,
+        category: category,
+      );
+    } else {
+      result = await _collectionDetailRepository.getListCollectionMarket(
+        name: name,
+        sort: sortFilter,
+        size: size,
+        page: page,
+      );
+    }
+
     result.when(
       success: (res) {
         if (res.isEmpty) {

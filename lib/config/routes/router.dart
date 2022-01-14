@@ -26,7 +26,7 @@ class AppRouter {
       case collectionList:
         return MaterialPageRoute(
           builder: (ctx) => CollectionList(
-            query: '',
+            query: '', isMyAcc: false,
           ),
         );
       case splash:
