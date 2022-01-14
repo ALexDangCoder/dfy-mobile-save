@@ -478,5 +478,6 @@
   "you_must_bid_greater": "You must bid greater than current price",
   "item_price": "Item price",
   "start_in": "Start In",
-  "end_in": "End In"
+  "end_in": "End In",
+  "is_bid": "is_bid:"
 }

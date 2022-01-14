@@ -36,6 +36,9 @@ DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';
 
+
+const int secondShowPopUp = 2;
+
 const String TRANSACTION_TOKEN = '0';
 const String TRANSACTION_NFT = '1';
 
