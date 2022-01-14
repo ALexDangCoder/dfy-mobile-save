@@ -275,7 +275,7 @@ class _CollectionListState extends State<CollectionList> {
                                           left: 21.w,
                                           right: 21.w,
                                           top: 10.h,
-                                          bottom: 20.h,
+                                          bottom: 16.h,
                                         ),
                                         mainAxisSpacing: 20.h,
                                         crossAxisSpacing: 26.w,
@@ -331,8 +331,8 @@ class _CollectionListState extends State<CollectionList> {
                                           return snapshot.data ?? false
                                               ? Center(
                                                   child: Padding(
-                                                    padding: EdgeInsets.all(
-                                                      16.w,
+                                                    padding: EdgeInsets.only(
+                                                     bottom:  16.h,
                                                     ),
                                                     child:
                                                         CircularProgressIndicator(
