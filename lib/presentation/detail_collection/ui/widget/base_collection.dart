@@ -49,66 +49,61 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollViewDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          floatingActionButton: FABMarketBase(
-            collectionCallBack: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return CreateCollectionScreen(
-                      bloc: CreateCollectionCubit(),
-                    );
-                  },
-                ),
-              );
-            },
-            nftCallBack: () {},
-          ),
-          body: Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 764.h,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                color: AppTheme.getInstance().bgBtsColor(),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.r),
-                  topRight: Radius.circular(30.r),
-                ),
-              ),
-              child: NestedScrollView(
-                physics: const ScrollPhysics(),
-                headerSliverBuilder: (context, innerScroll) => [
-                  BaseAppBarCollection(
-                    imageCover: widget.imageCover,
-                    title: widget.title,
-                    initHeight: widget.initHeight,
-                    leading: widget.leading,
-                    actions: widget.actions,
-                    imageAvatar: widget.imageAvatar,
-                    isOwner: widget.isOwner ?? false,
-                    imageVerified: widget.imageVerified,
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        Column(
-                          children: widget.content,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverPersistentHeader(
-                    delegate: BaseSliverHeader(widget.tabBar ?? Container()),
-                    pinned: true,
-                  ),
-                ],
-                body: widget.tabBarView ?? Container(),
-              ),
+      floatingActionButton: FABMarketBase(
+        collectionCallBack: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return CreateCollectionScreen(
+                  bloc: CreateCollectionCubit(),
+                );
+              },
             ),
+          );
+        },
+        nftCallBack: () {},
+      ),
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 764.h,
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            color: AppTheme.getInstance().bgBtsColor(),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.r),
+              topRight: Radius.circular(30.r),
+            ),
+          ),
+          child: NestedScrollView(
+            physics: const ScrollPhysics(),
+            headerSliverBuilder: (context, innerScroll) => [
+              BaseAppBarCollection(
+                imageCover: widget.imageCover,
+                title: widget.title,
+                initHeight: widget.initHeight,
+                leading: widget.leading,
+                actions: widget.actions,
+                imageAvatar: widget.imageAvatar,
+                isOwner: widget.isOwner ?? false,
+                imageVerified: widget.imageVerified,
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Column(
+                      children: widget.content,
+                    ),
+                  ],
+                ),
+              ),
+              SliverPersistentHeader(
+                delegate: BaseSliverHeader(widget.tabBar ?? Container()),
+                pinned: true,
+              ),
+            ],
+            body: widget.tabBarView ?? Container(),
           ),
         ),
       ),
