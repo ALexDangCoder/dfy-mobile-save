@@ -458,6 +458,7 @@
   "auction_ends_in":"Auction ends in:",
   "auction_start_in":"Auction start in:",
   "auction_ends":"Auction ends:",
+  "auction_win":"Win bid:",
   "is_bid":"Current price:",
   "on_sale": "On sale",
   "you_enter_balance": "You enter greater than the total balance ",
@@ -466,5 +467,7 @@
   "item_price": "Item price",
   "address":"Địa chỉ",
   "start_in": "Start In",
+  "purchase_being_processed": "There is a purchase transaction being processed of other user.",
+  "error_might_occur": "Error might occur if you continue",
   "end_in": "End In"
 }

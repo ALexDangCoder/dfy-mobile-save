@@ -26,6 +26,7 @@ class _FilterBtsState extends State<FilterBts> {
     widget.listNftCubit.listCheckBox.add(
       widget.listNftCubit.listCollectionCheck,
     );
+    widget.listNftCubit.checkStatus();
     super.initState();
   }
 

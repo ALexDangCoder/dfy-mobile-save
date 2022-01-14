@@ -44,7 +44,7 @@ class FABMarketBase extends StatelessWidget {
         }
       },
       elevation: 0,
-      buttonSize: Size(65.w, 65.h),
+      buttonSize: Size(50.w, 50.h),
       spaceBetweenChildren: 7,
       overlayOpacity: 0.6,
       childrenButtonSize: Size(75.w, 75.h),

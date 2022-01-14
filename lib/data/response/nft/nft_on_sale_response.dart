@@ -72,6 +72,8 @@ class DetailOnSaleResponse {
   int? orderId;
   @JsonKey(name: 'id_ref')
   String? idRef;
+  @JsonKey(name: 'is_bought_by_other')
+  bool? isBoughtByOther;
   @JsonKey(name: 'file_type')
   String fileType;
   @JsonKey(name: 'txn_hash')
@@ -95,6 +97,7 @@ class DetailOnSaleResponse {
     this.token,
     this.ticked,
     this.owner,
+    this.isBoughtByOther,
     this.description,
     this.fileCid,
     this.marketType,
@@ -184,6 +187,7 @@ class DetailOnSaleResponse {
         numberOfCopies: numberOfCopies,
         totalCopies: totalCopies,
         marketFee: marketFee,
+        isBoughtByOther: isBoughtByOther,
         royalties: royalties,
         typeImage: getTypeImage(fileType),
         txnHash: txnHash,
