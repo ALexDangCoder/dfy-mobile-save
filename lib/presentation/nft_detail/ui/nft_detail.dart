@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_custom_scroll_view.dart';
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -317,7 +318,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonBuyOutOnSale(context, bloc),
+            bottomBar: _buildButtonBuyOutOnSale(
+              context,
+              bloc,
+              objSale.isBoughtByOther ?? false,
+            ),
             content: [
               GestureDetector(
                 //todo: để tạm, sau check quyền button cancel hoặc buy
