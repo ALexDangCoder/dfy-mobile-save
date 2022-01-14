@@ -4,10 +4,13 @@ import 'dart:math';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/data/services/market_place/confirm_service.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -23,6 +26,7 @@ enum TYPE_CONFIRM_BASE {
   PUT_ON_MARKET,
   SEND_OFFER,
   PLACE_BID,
+  CANCEL_SALE,
   CREATE_COLLECTION,
 }
 
@@ -37,6 +41,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   String? addressWallet;
   double? balanceWallet;
   String? rawData;
+
+  ConfirmRepository get _confirmRepository => Get.find();
   final Web3Utils web3Client = Web3Utils();
   final BehaviorSubject<String> _addressWalletCoreSubject =
       BehaviorSubject<String>();
@@ -64,12 +70,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   Future<void> buyNftRequest(BuyNftRequest buyNftRequest) async {
     final result = await _nftRepo.buyNftRequest(buyNftRequest);
     result.when(
-      success: (res) {
-
-      },
-      error: (error) {
-
-      },
+      success: (res) {},
+      error: (error) {},
     );
   }
 
@@ -125,19 +127,21 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           addressWallet = listWallet.first.address;
           _nameWalletSubject.sink.add(listWallet.first.name!);
           nameWallet = listWallet.first.name;
-          try{
+          try {
             balanceWallet = await Web3Utils().getBalanceOfBnb(
                 ofAddress: _addressWalletCoreSubject.valueOrNull ?? '');
             showContent();
-          } catch(e ){
+          } catch (e) {
             showError();
             AppException('title', e.toString());
           }
-          _balanceWalletSubject.sink.add(balanceWallet?? 0);
+          _balanceWalletSubject.sink.add(balanceWallet ?? 0);
         }
         break;
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
+        showContent();
+
         final result = await sendRawData(rawData ?? '');
         switch (type) {
           case TYPE_CONFIRM_BASE.BUY_NFT:
@@ -152,8 +156,14 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
             if (result['isSuccess']) {
               showContent();
+            } else {}
+            break;
+          case TYPE_CONFIRM_BASE.CANCEL_SALE:
+            if (result['isSuccess']) {
+              emit(SendRawDataSuccess(result['txHash']));
+              showContent();
             } else {
-
+              showError();
             }
             break;
           default:
@@ -207,6 +217,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       final data = {};
       showLoading();
       await trustWalletChannel.invokeMethod('getListWallets', data);
+      showContent();
     } on PlatformException {
       //nothing
     }
@@ -218,13 +229,22 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   }
 
   Future<void> getGasPrice() async {
-    try{
+    try {
       final result = await Web3Utils().getGasPrice();
       gasPriceSubject.sink.add(double.parse(result));
-    } catch(e ){
+    } catch (e) {
       showError();
       AppException('title', e.toString());
     }
+  }
+
+  Future<void> confirmCancelSaleWithBE(
+      {required String txnHash, required String marketId}) async {
+    final result = await _confirmRepository.getCancelSaleResponse(
+      id: marketId,
+      txnHash: txnHash,
+    );
+    result.when(success: (suc) {}, error: (err) {});
   }
 
   void dispose() {

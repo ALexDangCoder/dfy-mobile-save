@@ -8,6 +8,8 @@ part 'nft_collection_response.g.dart';
 
 @JsonSerializable()
 class NftCollectionResponse extends Equatable {
+  @JsonKey(name: 'id')
+  String? id;
   @JsonKey(name: 'type')
   int? type;
   @JsonKey(name: 'token')
@@ -107,6 +109,7 @@ class NftCollectionResponse extends Equatable {
   }
 
   NftMarket toDomain() => NftMarket(
+        id: id ?? '',
         marketId: marketId ?? '',
         marketType: getTypeMarket(marketStatus ?? 0),
         typeImage: getTypeImage(fileType ?? ''),
