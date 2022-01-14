@@ -61,51 +61,55 @@ class _NFTItemState extends State<NFTItemWidget> {
     cubitNft = NftItemCubit();
     if (widget.nftMarket.marketType == MarketType.AUCTION) {
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
-        // value: widget.nftMarket.startTime ?? 0,
-        value: 1642637464000,
+        value: widget.nftMarket.startTime ?? 0,
+        // value: 1642637464000,
       );
       endTimeAuction = cubitNft.parseTimeServerToDateTime(
         // value: (widget.nftMarket.endTime == 0) ? 0 : 0,
-        // value: 1642637464000,
-        value: 1942637464000,
+        value: 1642637464000,
+        // value: 1942637464000,
       );
       //todo đang hardcode startTime
-      timeStartStamp = 1642637464000;
+      // timeStartStamp = 1642637464000;
       countdownController = CountdownTimerController(
         endTime: endTimeAuction!.millisecondsSinceEpoch,
       );
 
-      coutdownStartTime = CountdownTimerController(
-        endTime: timeStartStamp,
-      );
-      if (cubitNft.isNotStartYet(startTime: startTimeAuction!)) {
-        ///
-        CountdownTimer(
-          controller: coutdownStartTime,
-          widgetBuilder: (_, CurrentRemainingTime? time) {
-            if (time == null) {
-              //todo gọi checktime
-            } else {
-              Timer.periodic(Duration(seconds: 3), (_) {
-                setState(() {
-                  if (textStartIn == S.current.start_in) {
-                    textStartIn = '${time!.days}:${time!.hours}:'
-                        '${time!.min}:${time!.sec}';
-                  } else {
-                    textStartIn = S.current.start_in;
-                  }
-                });
-              });
-
-              return textStartForAuction(textStartIn);
-            }
-            return Container();
-          },
-        );
-
-        ///
-
-      }
+      // coutdownStartTime = CountdownTimerController(
+      //   endTime: timeStartStamp,
+      // );
+      // if (cubitNft.isNotStartYet(startTime: startTimeAuction!)) {
+      //   ///
+      //   CountdownTimer(
+      //     controller: coutdownStartTime,
+      //     widgetBuilder: (_, CurrentRemainingTime? time) {
+      //       if (time == null) {
+      //         //todo gọi checktime
+      //       } else {
+      //         Timer.periodic(Duration(seconds: 1), (_) {
+      //           if (textStartIn == S.current.start_in) {
+      //             setState(() {
+      //               textStartIn = '${time!.days}:${time!.hours}:'
+      //                   '${time!.min}:${time!.sec}';
+      //             });
+      //
+      //
+      //           } else {
+      //             setState(() {
+      //               textStartIn = S.current.start_in;
+      //             });
+      //           }
+      //         });
+      //       }
+      //       return Container();
+      //
+      //       // return Container();
+      //     },
+      //   );
+      //
+      //   ///
+      //
+      // }
     } else {
       //todo when not auction
     }
@@ -349,10 +353,30 @@ class _NFTItemState extends State<NFTItemWidget> {
                 width: 5.w,
               ),
               if (cubitNft.isNotStartYet(startTime: startTimeAuction!)) ...[
-                textStartForAuction(textStartIn),
-                // Timer.periodic(Duration(seconds: 2), () => setState(() => {
-                //   return textStartForAuction(text);
-                // }));
+                // textStartForAuction(textStartIn)
+                CountdownTimer(
+                  controller: coutdownStartTime,
+                  widgetBuilder: (_, CurrentRemainingTime? time) {
+                    if (time == null) {
+                      return Text(
+                        '00:00:00:00',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          13,
+                          FontWeight.w600,
+                        ),
+                      );
+                    }
+                    return Text(
+                      (time.sec ?? 0) % 3 == 0 ? S.current.start_in : '${time.days ?? 00}:${time.hours}:${time.min}:${time.sec}',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        13,
+                        FontWeight.w600,
+                      ),
+                    );
+                  },
+                )
               ] else ...[
                 if (cubitNft.isOutOfTimeAuction(endTime: endTimeAuction!))
                   CountdownTimer(
