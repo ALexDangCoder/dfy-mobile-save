@@ -1,4 +1,4 @@
-import 'package:Dfy/domain/model/market_place/collection_model.dart';
+import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -76,45 +76,38 @@ class CollectionResponse extends Equatable {
   bool? isWhitelist;
 
   CollectionResponse(
-      this.id,
-      this.txnHash,
-      this.coverCid,
-      this.avatarCid,
-      this.collectionName,
-      this.numberOfItem,
-      this.numberOfOwner,
-      this.walletAddress,
-      this.collectionAddress,
-      this.description,
-      this.nftType,
-      this.collectionId,
-      this.beId,
-      this.standard,
-      this.customUrl,
-      this.featureCid,
-      this.isWhitelist);
+    this.id,
+    this.txnHash,
+    this.coverCid,
+    this.avatarCid,
+    this.collectionName,
+    this.numberOfItem,
+    this.numberOfOwner,
+    this.walletAddress,
+    this.collectionAddress,
+    this.description,
+    this.nftType,
+    this.collectionId,
+    this.beId,
+    this.standard,
+    this.customUrl,
+    this.featureCid,
+    this.isWhitelist,
+  );
 
   factory CollectionResponse.fromJson(Map<String, dynamic> json) =>
       _$CollectionResponseFromJson(json);
 
-  CollectionModel toDomain() => CollectionModel(
-        id,
-        txnHash,
-        coverCid,
-        avatarCid,
-        collectionName,
-        numberOfItem,
-        numberOfOwner,
-        walletAddress,
-        collectionAddress,
-        description,
-        nftType,
-        collectionId,
-        beId,
-        standard,
-        customUrl,
-        featureCid,
-        isWhitelist,
+  CollectionMarketModel toDomain() => CollectionMarketModel(
+        id: id,
+        name: collectionName,
+        description: description,
+        type: nftType,
+        totalNft: numberOfItem,
+        avatarCid: avatarCid,
+        coverCid: coverCid,
+        nftOwnerCount: numberOfOwner,
+        addressCollection: collectionAddress,
       );
 
   @override

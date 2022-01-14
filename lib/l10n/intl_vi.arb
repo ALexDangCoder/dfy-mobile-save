@@ -461,6 +461,7 @@
   "you_enter_balance": "Bạn nhập lớn số dư trong ví",
   "you_must_bid": "Bạn phải nhập giá bạn muốn đấu giá",
   "you_must_bid_greater": "Bạn phải nhập giá cao hơn giá hiện tại",
+  "address":"Address",
   "item_price": "Giá",
   "start_in": "Chưa bắt đầu",
   "purchase_being_processed": "Nft đang được giao dịch bởi một ai đó.",
