@@ -176,7 +176,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                               Expanded(
                                 flex: 3,
                                 child: Text(
-                                  S.current.nft_standard,
+                                  S.current.collection_type,
                                   style: textNormalCustom(
                                     AppTheme.getInstance().whiteWithOpacity(),
                                     14,

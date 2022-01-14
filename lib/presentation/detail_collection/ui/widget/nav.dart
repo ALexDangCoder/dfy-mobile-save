@@ -21,8 +21,9 @@ class NavCollection extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: 16.w,
+        vertical: 16.h,
       ),
-      height: 65.h,
+      //height: 65.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -43,7 +44,7 @@ class NavCollection extends StatelessWidget {
               spaceW4,
               Expanded(
                 child: Text(
-                  owners.toLowerCase(),
+                  owners,
                   style: textNormalCustom(
                     null,
                     14,
@@ -86,7 +87,7 @@ class NavCollection extends StatelessWidget {
               spaceW4,
               Expanded(
                 child: Text(
-                  S.current.owners,
+                  S.current.owners.toLowerCase(),
                   style: textNormalCustom(
                     null,
                     12,
