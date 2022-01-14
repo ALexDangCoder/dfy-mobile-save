@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
@@ -33,9 +34,13 @@ class _NFTItemState extends State<NFTItemWidget> {
   final formatValue = NumberFormat('###,###,###.###', 'en_US');
   late VideoPlayerController? _controller;
   late CountdownTimerController countdownController;
+  late CountdownTimerController coutdownStartTime;
   DateTime? startTimeAuction;
   DateTime? endTimeAuction;
   late NftItemCubit cubitNft;
+  Timer? _timer;
+  late int timeStartStamp;
+  String textStartIn = S.current.start_in;
 
   void onEnd() {
     //todo
@@ -56,15 +61,51 @@ class _NFTItemState extends State<NFTItemWidget> {
     cubitNft = NftItemCubit();
     if (widget.nftMarket.marketType == MarketType.AUCTION) {
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
-        value: widget.nftMarket.startTime ?? 0,
-      );
-      endTimeAuction = cubitNft.parseTimeServerToDateTime(
-        // value: (widget.nftMarket.endTime == 0) ? 0 : 0);
+        // value: widget.nftMarket.startTime ?? 0,
         value: 1642637464000,
       );
+      endTimeAuction = cubitNft.parseTimeServerToDateTime(
+        // value: (widget.nftMarket.endTime == 0) ? 0 : 0,
+        // value: 1642637464000,
+        value: 1942637464000,
+      );
+      //todo đang hardcode startTime
+      timeStartStamp = 1642637464000;
       countdownController = CountdownTimerController(
         endTime: endTimeAuction!.millisecondsSinceEpoch,
       );
+
+      coutdownStartTime = CountdownTimerController(
+        endTime: timeStartStamp,
+      );
+      if (cubitNft.isNotStartYet(startTime: startTimeAuction!)) {
+        ///
+        CountdownTimer(
+          controller: coutdownStartTime,
+          widgetBuilder: (_, CurrentRemainingTime? time) {
+            if (time == null) {
+              //todo gọi checktime
+            } else {
+              Timer.periodic(Duration(seconds: 3), (_) {
+                setState(() {
+                  if (textStartIn == S.current.start_in) {
+                    textStartIn = '${time!.days}:${time!.hours}:'
+                        '${time!.min}:${time!.sec}';
+                  } else {
+                    textStartIn = S.current.start_in;
+                  }
+                });
+              });
+
+              return textStartForAuction(textStartIn);
+            }
+            return Container();
+          },
+        );
+
+        ///
+
+      }
     } else {
       //todo when not auction
     }
@@ -308,14 +349,10 @@ class _NFTItemState extends State<NFTItemWidget> {
                 width: 5.w,
               ),
               if (cubitNft.isNotStartYet(startTime: startTimeAuction!)) ...[
-                Text(
-                  S.current.start_in,
-                  style: textNormalCustom(
-                    AppTheme.getInstance().whiteColor(),
-                    13,
-                    FontWeight.w600,
-                  ),
-                )
+                textStartForAuction(textStartIn),
+                // Timer.periodic(Duration(seconds: 2), () => setState(() => {
+                //   return textStartForAuction(text);
+                // }));
               ] else ...[
                 if (cubitNft.isOutOfTimeAuction(endTime: endTimeAuction!))
                   CountdownTimer(
@@ -323,7 +360,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                     widgetBuilder: (_, CurrentRemainingTime? time) {
                       if (time == null) {
                         return Text(
-                          S.current.end_in,
+                          '00:00:00:00',
                           style: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             13,
@@ -343,7 +380,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                   )
                 else
                   Text(
-                    S.current.end_in,
+                    '00:00:00:00',
                     style: textNormalCustom(
                       AppTheme.getInstance().whiteColor(),
                       13,
@@ -358,6 +395,17 @@ class _NFTItemState extends State<NFTItemWidget> {
     } else {
       return Container();
     }
+  }
+
+  Widget textStartForAuction(String text) {
+    return Text(
+      text,
+      style: textNormalCustom(
+        AppTheme.getInstance().whiteColor(),
+        13,
+        FontWeight.w600,
+      ),
+    );
   }
 
   Widget playVideo(TypeImage? type) {
