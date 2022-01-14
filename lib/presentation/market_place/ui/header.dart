@@ -4,7 +4,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
 import 'package:Dfy/presentation/menu_account/ui/menu_account.dart';
-import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,6 +33,7 @@ class HeaderMarketPlace extends StatelessWidget {
                 color: AppTheme.getInstance().whiteColor(),
               ),
               onTap: () {
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
