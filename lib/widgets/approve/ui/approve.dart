@@ -100,13 +100,15 @@ class _ApproveState extends State<Approve> {
     switch (typeBase) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         nftDetailBloc = nftKey.currentState!.bloc;
-        getNonce();
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_SALE:
+        nftDetailBloc = nftKey.currentState!.bloc;
+        break;
     }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     cubit = ApproveCubit();
     cubit.type = widget.typeApprove;
@@ -121,6 +123,7 @@ class _ApproveState extends State<Approve> {
   }
 
   Future<void> getNonce() async {
+    await cubit.getListWallets();
     nonce = await nftDetailBloc.getNonceWeb3();
   }
 
@@ -166,13 +169,14 @@ class _ApproveState extends State<Approve> {
     switch (widget.typeApprove) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         {
+          final int n = await nftDetailBloc.getNonceWeb3();
           await cubit.signTransactionWithData(
             walletAddress: nftDetailBloc.walletAddress,
             contractAddress: nft_sales_address_dev2,
-            nonce: nonce.toString(),
+            nonce: n.toString(),
             chainId: Get.find<AppConstants>().chaninId,
-            gasPrice: (cubit.gasPriceSubject.value / 10e8).toStringAsFixed(0),
-            gasLimit: nftDetailBloc.gasLimit,
+            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+            gasLimit: gasLimitFinal.toStringAsFixed(0),
             hexString: nftDetailBloc.hexString,
           );
         }
@@ -183,6 +187,23 @@ class _ApproveState extends State<Approve> {
         }
       case TYPE_CONFIRM_BASE.SEND_NFT:
         {
+          break;
+        }
+      case TYPE_CONFIRM_BASE.CANCEL_SALE:
+        {
+          cubit.showLoading();
+          final int n = await nftDetailBloc.getNonceWeb3();
+          await cubit
+              .signTransactionWithData(
+                walletAddress: nftDetailBloc.walletAddress,
+                contractAddress: nft_sales_address_dev2,
+                nonce: n.toString(),
+                chainId: Get.find<AppConstants>().chaninId,
+                gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
+                gasLimit: gasLimitFinal.toStringAsFixed(0),
+                hexString: nftDetailBloc.hexString,
+              );
+          cubit.showLoading();
           break;
         }
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
@@ -542,28 +563,47 @@ class _ApproveState extends State<Approve> {
                   else
                     const SizedBox(height: 0),
                   Expanded(
-                    child: GestureDetector(
-                      child: ButtonGold(
-                        textColor:
-                            isApproved || !(widget.isShowTwoButton ?? false)
-                                ? null
-                                : disableText,
-                        fixSize: false,
-                        haveMargin: false,
-                        title: widget.textActiveButton,
-                        isEnable: (isApproved ||
-                                !(widget.isShowTwoButton ?? false)) &&
-                            isCanAction,
-                      ),
-                      onTap: () {
-                        if ((isApproved ||
-                                !(widget.isShowTwoButton ?? false)) &&
-                            isCanAction) {
-                          action(
-                            cubit.gasLimit ?? widget.gasLimitInit,
-                            cubit.gasPriceSubject.valueOrNull ?? 0,
+                    child: BlocConsumer<ApproveCubit, ApproveState>(
+                      bloc: cubit,
+                      listener: (context, state) {
+                        // TODO:
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Cancel thành công (Để tạm)'),
+                        ),);
+                        if (state is SendRawDataSuccess &&
+                            widget.typeApprove ==
+                                TYPE_CONFIRM_BASE.CANCEL_SALE) {
+                          cubit.confirmCancelSaleWithBE(
+                            txnHash: state.txnHash,
+                            marketId: nftDetailBloc.nftMarket.marketId ?? '',
                           );
                         }
+                      },
+                      builder: (context, state) {
+                        return GestureDetector(
+                          child: ButtonGold(
+                            textColor:
+                                isApproved || !(widget.isShowTwoButton ?? false)
+                                    ? null
+                                    : disableText,
+                            fixSize: false,
+                            haveMargin: false,
+                            title: widget.textActiveButton,
+                            isEnable: (isApproved ||
+                                    !(widget.isShowTwoButton ?? false)) &&
+                                isCanAction,
+                          ),
+                          onTap: () {
+                            if ((isApproved ||
+                                    !(widget.isShowTwoButton ?? false)) &&
+                                isCanAction) {
+                              action(
+                                cubit.gasLimit ?? widget.gasLimitInit,
+                                cubit.gasPriceSubject.valueOrNull ?? 0,
+                              );
+                            }
+                          },
+                        );
                       },
                     ),
                   ),
