@@ -622,13 +622,6 @@ class _ApproveState extends State<Approve> {
   void caseNavigator(TYPE_CONFIRM_BASE type, String data) {
     switch (type) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
-        cubit.buyNftRequest(
-          BuyNftRequest(
-            nftDetailBloc.nftMarketId,
-            nftDetailBloc.quantity,
-            data,
-          ),
-        );
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -656,6 +649,13 @@ class _ApproveState extends State<Approve> {
                 id: int.parse(cubit.nftMarket.nftTokenId ?? ''),
                 address: nftDetailBloc.walletAddress,
               ),
+        );
+        cubit.buyNftRequest(
+          BuyNftRequest(
+            nftDetailBloc.nftMarketId,
+            nftDetailBloc.quantity,
+            data,
+          ),
         );
         break;
       case TYPE_CONFIRM_BASE.PLACE_BID:

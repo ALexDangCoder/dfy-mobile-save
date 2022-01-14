@@ -40,7 +40,9 @@ Widget _nameNFT({
               width: 25.h,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                //TODO
+              },
               child: roundButton(
                 image: ImageAssets.ic_flag_svg,
                 whiteBackground: true,

@@ -79,7 +79,10 @@ class _BuyNFTState extends State<BuyNFT> {
                 AppException(S.current.error, S.current.something_went_wrong),
             retry: () async {
               await _nftBloc.callWeb3(
-                  context, cubit.amountValue, MarketType.SALE);
+                context,
+                cubit.amountValue,
+                MarketType.SALE,
+              );
             },
             textEmpty: '',
             child: BaseBottomSheet(
@@ -247,6 +250,7 @@ class _BuyNFTState extends State<BuyNFT> {
         } else {
           cubit.warnSink.add('');
           cubit.btnSink.add(true);
+          _nftBloc.totalPayment = total;
         }
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
