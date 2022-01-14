@@ -8,7 +8,6 @@ import 'package:Dfy/domain/model/market_place/collection_detail_filter_model.dar
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
-import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -94,8 +93,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       BehaviorSubject.seeded(CollectionDetailModel());
 
   DetailCollectionBloc() : super(CollectionDetailState());
-
-  NftMarketRepository get _nftRepo => Get.find();
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
@@ -357,7 +354,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     required String collectionAddress,
   }) async {
     statusNft.add(LOADING);
-    final Result<List<NftMarket>> result = await _nftRepo.getListNftCollection(
+    final Result<List<NftMarket>> result =
+        await _collectionDetailRepository.getListNftCollection(
       collectionAddress: collectionAddress,
       nameNft: name,
       listMarketType: listMarketType,
