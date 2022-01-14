@@ -328,53 +328,55 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                     double gas =
                         await bloc.getGasLimitForCancel(context: context);
                     if (gas > 0) {
-                      nav.push(MaterialPageRoute(
-                          builder: (context) => Approve(
-                                listDetail: bloc.initListApprove(),
-                                title: S.current.cancel_sale,
-                                header: Container(
-                                  padding: EdgeInsets.only(
-                                    top: 16.h,
-                                    bottom: 20.h,
-                                  ),
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    S.current.cancel_sale_info,
-                                    style: textNormal(
-                                      AppTheme.getInstance().whiteColor(),
-                                      16,
-                                    ).copyWith(
-                                      fontWeight: FontWeight.w600,
+                      nav.push(
+                        MaterialPageRoute(
+                            builder: (context) => Approve(
+                                  listDetail: bloc.initListApprove(),
+                                  title: S.current.cancel_sale,
+                                  header: Container(
+                                    padding: EdgeInsets.only(
+                                      top: 16.h,
+                                      bottom: 20.h,
                                     ),
-                                  ),
-                                ),
-                                warning: Row(
-                                  children: [
-                                    sizedSvgImage(
-                                        w: 16.67.w,
-                                        h: 16.67.h,
-                                        image: ImageAssets.ic_warning_canel),
-                                    SizedBox(
-                                      width: 5.w,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        S.current.customer_cannot,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: textNormal(
-                                          AppTheme.getInstance()
-                                              .currencyDetailTokenColor(),
-                                          14,
-                                        ),
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      S.current.cancel_sale_info,
+                                      style: textNormal(
+                                        AppTheme.getInstance().whiteColor(),
+                                        16,
+                                      ).copyWith(
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                textActiveButton: S.current.cancel_sale,
-                                gasLimitInit: double.parse(bloc.gasLimit),
-                                typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
-                              )),);
+                                  ),
+                                  warning: Row(
+                                    children: [
+                                      sizedSvgImage(
+                                          w: 16.67.w,
+                                          h: 16.67.h,
+                                          image: ImageAssets.ic_warning_canel),
+                                      SizedBox(
+                                        width: 5.w,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          S.current.customer_cannot,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: textNormal(
+                                            AppTheme.getInstance()
+                                                .currencyDetailTokenColor(),
+                                            14,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  textActiveButton: S.current.cancel_sale,
+                                  gasLimitInit: double.parse(bloc.gasLimit),
+                                  typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
+                                )),
+                      );
                     }
                   } else {
                     showDialog(
@@ -389,7 +391,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                   title: objSale.name ?? '',
                   quantity: objSale.totalCopies ?? 1,
                   url: objSale.image ?? '',
-                  price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1), context: context,
+                  price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
                 ),
               ),
               _priceContainerOnSale(
@@ -536,7 +538,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
             bottomBar: _buildButtonSendOffer(context),
             content: [
-              _nameNFT(context: context,title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? ''),
+              _nameNFT(
+                title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
+              ),
               _priceContainerOnPawn(nftOnPawn: nftOnPawn),
               _durationRowOnPawn(
                 durationType: nftOnPawn.durationType ?? 0,
@@ -709,7 +713,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             content: [
               _nameNFT(
                 title: nftOnAuction.name ?? '',
-                context: context,
                 quantity: nftOnAuction.numberOfCopies ?? 1,
                 url: nftOnAuction.fileCid ?? '',
                 price: (nftOnAuction.reservePrice ?? 0) *
