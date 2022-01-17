@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
@@ -12,9 +14,11 @@ class OwnerTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return ListView.builder(
+      shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 16.w),
-      physics: const BouncingScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: listOwner.length,
       itemBuilder: (context, index) {
         return GestureDetector(

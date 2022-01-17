@@ -41,6 +41,7 @@ import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
+import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -82,7 +83,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   late final TabController _tabController;
   late final NFTDetailBloc bloc;
   late final String walletAddress;
-
+  final PageController pageController = PageController();
   @override
   void initState() {
     super.initState();
@@ -125,9 +126,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             StreamBuilder<Evaluation>(
               stream: bloc.evaluationStream,
               builder: (
-                  context,
-                  AsyncSnapshot<Evaluation> snapshot,
-                  ) {
+                context,
+                AsyncSnapshot<Evaluation> snapshot,
+              ) {
                 return EvaluationTab(
                   evaluation: snapshot.data ?? Evaluation(),
                 );
@@ -240,15 +241,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             StreamBuilder<Evaluation>(
               stream: bloc.evaluationStream,
               builder: (
-                  context,
-                  AsyncSnapshot<Evaluation> snapshot,
-                  ) {
-                if(snapshot.data?.id!.isNotEmpty ?? false){
+                context,
+                AsyncSnapshot<Evaluation> snapshot,
+              ) {
+                if (snapshot.data?.id!.isNotEmpty ?? false) {
                   return EvaluationTab(
                     evaluation: snapshot.data!,
                   );
-                }
-                else {
+                } else {
                   return Center(
                     child: ListView(
                       physics: const NeverScrollableScrollPhysics(),
@@ -265,7 +265,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           child: Text(
                             S.current.no_transaction,
                             style: tokenDetailAmount(
-                              color: AppTheme.getInstance().currencyDetailTokenColor(),
+                              color: AppTheme.getInstance()
+                                  .currencyDetailTokenColor(),
                               fontSize: 20,
                             ),
                           ),
@@ -362,11 +363,15 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             initHeight: 360.h,
             leading: _leading(context),
             title: objSale.name ?? '',
-            tabBarView: TabBarView(
+            tabBarView: ExpandedPageViewWidget(
+              pageController: pageController,
               controller: _tabController,
               children: _tabPage,
             ),
             tabBar: TabBar(
+                onTap: (value) {
+                 pageController.animateToPage(value, duration: Duration(milliseconds: 300), curve: Curves.ease); },
+
               controller: _tabController,
               labelColor: Colors.white,
               unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
@@ -587,7 +592,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             initHeight: 360.h,
             leading: _leading(context),
             title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
-            tabBarView: TabBarView(
+            tabBarView: ExpandedPageViewWidget(
+              pageController: pageController,
               controller: _tabController,
               children: _tabPage,
             ),
@@ -740,11 +746,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             initHeight: 360.h,
             leading: _leading(context),
             title: nftOnAuction.name ?? '',
-            tabBarView: TabBarView(
+            tabBarView: ExpandedPageViewWidget(
+              pageController: pageController,
               controller: _tabController,
               children: _tabPage,
             ),
             tabBar: TabBar(
+              onTap: (value) {
+                pageController.animateToPage(value, duration: Duration(milliseconds: 300), curve: Curves.ease); },
               controller: _tabController,
               labelColor: Colors.white,
               unselectedLabelColor: AppTheme.getInstance().titleTabColor(),

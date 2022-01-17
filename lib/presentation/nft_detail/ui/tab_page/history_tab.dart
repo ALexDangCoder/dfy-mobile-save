@@ -36,6 +36,7 @@ class _HistoryTabState extends State<HistoryTab> {
     if (widget.listHistory.isEmpty) {
       return Center(
         child: ListView(
+          shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.symmetric(vertical: 100.h),
           children: [
@@ -60,11 +61,12 @@ class _HistoryTabState extends State<HistoryTab> {
       );
     } else {
       return ListView.builder(
-        physics: const BouncingScrollPhysics(),
+
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: widget.listHistory.length,
+        itemCount: 100,
         itemBuilder: (context, index) {
-          return _buildItemHistory(widget.listHistory[index]);
+          return _buildItemHistory(widget.listHistory[1]);
         },
       );
     }

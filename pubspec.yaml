@@ -112,7 +112,8 @@ dependencies:
   flutter_sticky_header: ^0.6.0
   #flutter_appavailability: ^0.0.21
   photo_view: ^0.13.0
-
+  expandable_page_view: ^1.0.10
+  extended_tabs: ^2.3.0
   url_launcher: ^6.0.17
   #web3
   web3dart: ^2.3.3
