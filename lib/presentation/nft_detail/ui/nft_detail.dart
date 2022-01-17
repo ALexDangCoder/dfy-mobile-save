@@ -5,6 +5,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
+import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
@@ -13,7 +14,6 @@ import 'package:Dfy/domain/model/offer_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/ui/buy_nft.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
 import 'package:Dfy/presentation/market_place/login/ui/dialog/warrning_dialog.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
@@ -121,7 +121,17 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             },
           ),
           if (widget.typeNft == TypeNFT.HARD_NFT)
-            EvaluationTab(bloc: HardNFTBloc()),
+            StreamBuilder<Evaluation>(
+              stream: bloc.evaluationStream,
+              builder: (
+                  context,
+                  AsyncSnapshot<Evaluation> snapshot,
+                  ) {
+                return EvaluationTab(
+                  evaluation: snapshot.data ?? Evaluation(),
+                );
+              },
+            ),
           StreamBuilder<List<BiddingNft>>(
             stream: bloc.listBiddingStream,
             builder: (
@@ -176,7 +186,17 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             },
           ),
           if (widget.typeNft == TypeNFT.HARD_NFT)
-            EvaluationTab(bloc: HardNFTBloc())
+            StreamBuilder<Evaluation>(
+              stream: bloc.evaluationStream,
+              builder: (
+                context,
+                AsyncSnapshot<Evaluation> snapshot,
+              ) {
+                return EvaluationTab(
+                  evaluation: snapshot.data ?? Evaluation(),
+                );
+              },
+            ),
         ];
         _tabTit = [
           Tab(
@@ -216,7 +236,45 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             },
           ),
           if (widget.typeNft == TypeNFT.HARD_NFT)
-            EvaluationTab(bloc: HardNFTBloc()),
+            StreamBuilder<Evaluation>(
+              stream: bloc.evaluationStream,
+              builder: (
+                  context,
+                  AsyncSnapshot<Evaluation> snapshot,
+                  ) {
+                if(snapshot.data?.id!.isNotEmpty ?? false){
+                  return EvaluationTab(
+                    evaluation: snapshot.data!,
+                  );
+                }
+                else {
+                  return Center(
+                    child: ListView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.symmetric(vertical: 100.h),
+                      children: [
+                        Center(
+                          child: sizedPngImage(
+                            w: 94,
+                            h: 94,
+                            image: ImageAssets.icNoTransaction,
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            S.current.no_transaction,
+                            style: tokenDetailAmount(
+                              color: AppTheme.getInstance().currencyDetailTokenColor(),
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
           StreamBuilder<List<OfferDetail>>(
             stream: bloc.listOfferStream,
             builder: (

@@ -88,14 +88,13 @@ class _NFTItemState extends State<NFTItemWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                NFTDetailScreen(
-                  typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
-                  marketId: widget.nftMarket.marketId,
-                  typeNft: widget.nftMarket.typeNFT,
-                  nftId: widget.nftMarket.nftId,
-                  pawnId: widget.nftMarket.pawnId,
-                ),
+            builder: (context) => NFTDetailScreen(
+              typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
+              marketId: widget.nftMarket.marketId,
+              typeNft: widget.nftMarket.typeNFT,
+              nftId: widget.nftMarket.nftId,
+              pawnId: widget.nftMarket.pawnId,
+            ),
           ),
         );
       },
@@ -125,23 +124,19 @@ class _NFTItemState extends State<NFTItemWidget> {
                             ? _controller!.pause()
                             : _controller!.play();
                       } else {
-                        if (widget.nftMarket.typeNFT == TypeNFT.SOFT_NFT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NFTDetailScreen(
-                                key: nftKey,
-                                typeMarket: widget.nftMarket.marketType!,
-                                marketId: widget.nftMarket.marketId,
-                                typeNft: widget.nftMarket.typeNFT,
-                                nftId: widget.nftMarket.nftId,
-                                pawnId: widget.nftMarket.pawnId,
-                              ),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NFTDetailScreen(
+                              typeMarket: widget.nftMarket.marketType ??
+                                  MarketType.SALE,
+                              marketId: widget.nftMarket.marketId,
+                              typeNft: widget.nftMarket.typeNFT,
+                              nftId: widget.nftMarket.nftId,
+                              pawnId: widget.nftMarket.pawnId,
                             ),
-                          );
-                        } else {
-                          ///push Hard nft
-                        }
+                          ),
+                        );
                       }
                     },
                     child: Stack(

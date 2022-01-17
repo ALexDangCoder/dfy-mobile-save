@@ -1,5 +1,6 @@
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
@@ -163,6 +164,7 @@ class DetailHardNftResponse {
         blockchainNetwork: blockChainNetwork,
         typeImage: getTypeImage(fileType ?? ''),
         isWhitelist: isWhiteList,
+        evaluationId: evaluationId,
       );
 
   NFTOnAuction toAuction() => NFTOnAuction(
@@ -189,7 +191,9 @@ class DetailHardNftResponse {
         blockchainNetwork: blockChainNetwork,
         typeImage: getTypeImage(fileType ?? ''),
         isWhitelist: isWhiteList,
+        evaluationId: evaluationId,
       );
+
 }
 
 @JsonSerializable()
