@@ -8,6 +8,7 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
+import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
@@ -69,6 +70,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       BehaviorSubject.seeded([]);
   final BehaviorSubject<List<OfferDetail>> listOfferStream =
       BehaviorSubject.seeded([]);
+  final BehaviorSubject<Evaluation> evaluationStream =
+      BehaviorSubject();
 
   String symbolToken = '';
 
@@ -117,7 +120,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listOwnerStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
       },
     );
   }
@@ -131,7 +134,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listBiddingStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
       },
     );
   }
@@ -145,7 +148,22 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listOfferStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
+      },
+    );
+  }
+
+  ///GetEvaluation
+  Future<void> getEvaluation(String evaluationId, String urlIcon) async {
+    final Result<Evaluation> result =
+        await _nftRepo.getEvaluation(evaluationId);
+    result.when(
+      success: (res) {
+        res.urlToken = urlIcon;
+        evaluationStream.add(res);
+      },
+      error: (error) {
+        showContent();
       },
     );
   }
@@ -176,6 +194,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           emit(NftOnSaleSuccess(res));
           getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
+          }
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.tokenBuyOut ?? '';
             final address = value.address ?? '';
@@ -205,6 +226,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           showContent();
           nftOnAuction = res;
           emit(NftOnAuctionSuccess(res));
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
+          }
           getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getBidding(res.id.toString());
@@ -240,6 +264,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             }
           }
           emit(NftOnPawnSuccess(res));
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            getEvaluation(res.nftCollateralDetailDTO?.evaluationId ?? '',
+                res.urlToken ?? '');
+          }
           getHistory(
             res.nftCollateralDetailDTO?.collectionAddress ?? '',
             res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '',

@@ -2,6 +2,7 @@ import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
+import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
@@ -36,6 +37,9 @@ mixin NFTRepository {
   Future<Result<List<BiddingNft>>> getBidding(
     String auctionId,
   );
+  Future<Result<Evaluation>> getEvaluation(
+      String evaluationId,
+      );
 
   Future<Result<String>> buyNftRequest(
     BuyNftRequest nftRequest,

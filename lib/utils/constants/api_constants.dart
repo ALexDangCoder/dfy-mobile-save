@@ -12,6 +12,8 @@ class ApiConstants {
   static const String GET_PRICE_TOKEN_BY_SYMBOL = '/nft-market-svc/public-api/market/coin-price';
   static const String GET_DETAIL_NFT_AUCTION =
       '/nft-market-svc/public-api/auction/detail/';
+  static const String GET_EVALUATION_HARD_NFT =
+      '/hard-nft-svc/public-api/evaluations/';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE =
       '/nft-market-svc/public-api/home';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE_SEARCH =
