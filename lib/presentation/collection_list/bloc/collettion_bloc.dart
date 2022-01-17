@@ -242,9 +242,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     int? page = 0,
     bool isLoad = true,
   }) async {
-    print('-------------------------------------$addressWallet');
-    print('-------------------------------------$collectionType');
-  //todo filter collection type
     nextPage = 1;
     isCanLoadMore.add(isLoad);
     emit(LoadingData());
