@@ -94,16 +94,19 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     );
   }
 
-  String checkAddress(String address){
-    String data='';
-    if(address==S.current.all){
-      data=S.current.all;
-    }else{
-      data=address.formatAddressWalletConfirm();
+  String checkAddress(String address) {
+    String data = '';
+    if (address == S.current.all) {
+      data = S.current.all;
+    } else {
+      if (address.length > 20) {
+        data = address.formatAddressWalletConfirm();
+      }
     }
     return data;
   }
-  void chooseAddressFilter(String address){
+
+  void chooseAddressFilter(String address) {
     textAddressFilter.sink.add(
       address,
     );
@@ -115,7 +118,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       collectionType = SOFT_COLLECTION;
     } else if (isHardCollection.value && !isSoftCollection.value) {
       collectionType = HARD_COLLECTION;
-    } else  {
+    } else {
       collectionType = null;
     }
     addressWallet = textAddressFilter.value;
@@ -195,7 +198,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   Future<void> getListCollection({
     String? name = '',
     int? sortFilter = 0,
-    int? size = 10,
+    int? size = 20,
   }) async {
     if (nextPage == 1) {
       nextPage = 2;
@@ -238,7 +241,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   Future<void> getCollection({
     String? name = '',
     int? sortFilter = 0,
-    int? size = 10,
+    int? size = 20,
     int? page = 0,
     bool isLoad = true,
   }) async {

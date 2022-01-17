@@ -6,6 +6,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +90,7 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                       ),
                       GestureDetector(
                         onTap: () {
-                     //     widget.collectionBloc.reset();
+                          //     widget.collectionBloc.reset();
                         },
                         child: Container(
                           height: 30.h,
@@ -129,8 +130,7 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                         padding: EdgeInsets.only(left: 10.w),
                         child: Text(
                           S.current.NFTs_collateral,
-                          style:
-                          textNormalCustom(null, 16, FontWeight.w600),
+                          style: textNormalCustom(null, 16, FontWeight.w600),
                         ),
                       ),
                       Center(
@@ -139,52 +139,55 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                             collectionBloc.isChooseAcc.sink.add(true);
                           },
                           child: StreamBuilder<String>(
-                              stream: collectionBloc.textAddressFilter,
-                              builder: (context, snapshot) {
-                                return Container(
-                                  margin: EdgeInsets.only(
-                                    top: 16.h,
-                                    bottom: 12.h,
-                                    // right: 16.w,
-                                    left: 10.w,
+                            stream: collectionBloc.textAddressFilter,
+                            builder: (context, snapshot) {
+                              final String address =
+                              collectionBloc.checkAddress(snapshot.data ?? '');
+                              return Container(
+                                margin: EdgeInsets.only(
+                                  top: 16.h,
+                                  bottom: 12.h,
+                                  // right: 16.w,
+                                  left: 10.w,
+                                ),
+                                height: 46.h,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 15.5.w,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.getInstance()
+                                      .itemBtsColors(),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(12.r),
                                   ),
-                                  height: 46.h,
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 15.5.w,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.getInstance()
-                                        .itemBtsColors(),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(12.r),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            child: Text(
-                                              snapshot.data ?? '',
-                                              style: textNormal(
-                                                null,
-                                                16,
-                                              ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          child: Text(
+                                            address,
+                                            style: textNormal(
+                                              null,
+                                              16,
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      Image.asset(
-                                        ImageAssets.ic_line_down,
-                                        height: 20.67.h,
-                                        width: 20.14.w,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
+                                        ),
+                                      ],
+                                    ),
+                                    Image.asset(
+                                      ImageAssets.ic_line_down,
+                                      height: 20.67.h,
+                                      width: 20.14.w,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                       Padding(
@@ -198,7 +201,8 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                         children: [
                           Expanded(
                             child: IsBaseCheckBox(
-                              funCheckBox: () => collectionBloc.listFilter.clear(),
+                              funCheckBox: () =>
+                                  collectionBloc.listFilter.clear(),
                               funText: () => collectionBloc.listFilter.clear(),
                               title: S.current.on_sell,
                               stream: collectionBloc.isOnSale,
@@ -206,7 +210,8 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                           ),
                           Expanded(
                             child: IsBaseCheckBox(
-                              funCheckBox: () => collectionBloc.listFilter.clear(),
+                              funCheckBox: () =>
+                                  collectionBloc.listFilter.clear(),
                               funText: () => collectionBloc.listFilter.clear(),
                               title: S.current.on_pawn,
                               stream: collectionBloc.isOnPawn,
@@ -219,7 +224,8 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                         children: [
                           Expanded(
                             child: IsBaseCheckBox(
-                              funCheckBox: () => collectionBloc.listFilter.clear(),
+                              funCheckBox: () =>
+                                  collectionBloc.listFilter.clear(),
                               funText: () => collectionBloc.listFilter.clear(),
                               title: S.current.on_auction,
                               stream: collectionBloc.isOnAuction,
@@ -227,7 +233,8 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                           ),
                           Expanded(
                             child: IsBaseCheckBox(
-                              funCheckBox: () => collectionBloc.listFilter.clear(),
+                              funCheckBox: () =>
+                                  collectionBloc.listFilter.clear(),
                               funText: () => collectionBloc.listFilter.clear(),
                               title: S.current.not_on_market,
                               stream: collectionBloc.isNotOnMarket,
@@ -278,10 +285,8 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            collectionBloc.textAddressFilter.sink.add(
-                              collectionBloc.listAcc[index],
-                            );
-                            collectionBloc.isChooseAcc.sink.add(false);
+                            collectionBloc.chooseAddressFilter(
+                                collectionBloc.listAcc[index]);
                           },
                           child: Container(
                             height: 54.h,
@@ -289,7 +294,10 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                               left: 24.w,
                             ),
                             child: Text(
-                              collectionBloc.listAcc[index],
+                              collectionBloc.listAcc[index] == S.current.all
+                                  ? S.current.all
+                                  : collectionBloc.listAcc[index]
+                                      .formatAddressWalletConfirm(),
                               style: textNormalCustom(null, 16, null),
                             ),
                           ),

@@ -147,6 +147,25 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     }
   }
 
+  String checkAddress(String address) {
+    String data = '';
+    if (address == S.current.all) {
+      data = S.current.all;
+    } else {
+      if (address.length > 20) {
+        data = address.formatAddressWalletConfirm();
+      }
+    }
+    return data;
+  }
+
+  void chooseAddressFilter(String address) {
+    textAddressFilter.sink.add(
+      address,
+    );
+    isChooseAcc.sink.add(false);
+  }
+
   String funGetMarket(int marketStatus) {
     String market = '';
     if (marketStatus == SALE) {

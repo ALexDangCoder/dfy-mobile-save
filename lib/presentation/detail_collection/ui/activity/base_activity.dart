@@ -98,7 +98,6 @@ class BaseActivity extends StatelessWidget {
             alignment: Alignment.topLeft,
             children: [
               Container(
-
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(
                     Radius.circular(10.r),
@@ -112,7 +111,7 @@ class BaseActivity extends StatelessWidget {
                   errorWidget: (context, url, error) => Container(
                     color: Colors.yellow,
                     child: Text(
-                      title.substring(0, 1),
+                      title.isEmpty ? title  :title.substring(0, 1),
                       style: textNormalCustom(
                         Colors.black,
                         60,
@@ -221,9 +220,7 @@ class BaseActivity extends StatelessWidget {
                     null,
                     14,
                     FontWeight.w600,
-                  ).copyWith(
-                    overflow: TextOverflow.ellipsis
-                  ),
+                  ).copyWith(overflow: TextOverflow.ellipsis),
                   maxLines: 1,
                 ),
               ),
