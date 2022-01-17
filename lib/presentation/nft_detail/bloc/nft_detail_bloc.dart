@@ -19,14 +19,14 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -46,6 +46,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String rawData = '';
   String nftMarketId = '';
   int quantity = 0;
+  double totalPayment = 0;
   double bidValue = 0;
 
   NFTRepository get _nftRepo => Get.find();
@@ -450,12 +451,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         toContractAddress: toAddress,
         dataString: hexString,
       );
-      emit(
-        GetGasLimitSuccess(
-          nftMarket,
-          gasLimit,
-        ),
-      );
     } catch (e) {
       throw AppException(S.current.error, e.toString());
     }
@@ -486,6 +481,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => Approve(
+                    needApprove: true,
+                    payValue: totalPayment.toString(),
+                    tokenAddress: nftMarket.token,
                     title: S.current.buy_nft,
                     header: Column(
                       children: [
@@ -543,7 +541,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
                         ),
                       ],
                     ),
-                    textActiveButton: S.current.approve,
+                    textActiveButton: S.current.buy_nft,
                     gasLimitInit: double.parse(value),
                     typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
                   ),
@@ -569,6 +567,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => Approve(
+                    needApprove: true,
+                    tokenAddress: nftOnAuction.token,
+                    payValue: bidValue.toString(),
                     title: S.current.place_a_bid,
                     header: Column(
                       children: [

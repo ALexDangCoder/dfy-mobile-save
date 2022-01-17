@@ -332,7 +332,8 @@ class _SearchNFTState extends State<SearchNFT> {
                           MaterialPageRoute(
                             builder: (builder) => CollectionList(
                               query: controller.text,
-                              title: S.current.collection_search_result, isMyAcc: false,
+                              title: S.current.collection_search_result,
+                              isMyAcc: false,
                             ),
                           ),
                         );
@@ -387,6 +388,7 @@ class _SearchNFTState extends State<SearchNFT> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => NFTDetailScreen(
+                                  key: nftKey,
                                   typeMarket:
                                       searchCubit.listNFT[index].marketType!,
                                   marketId: searchCubit.listNFT[index].marketId,

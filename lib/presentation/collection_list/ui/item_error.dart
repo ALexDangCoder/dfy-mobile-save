@@ -18,7 +18,6 @@ class ItemCollectionError extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 164.w,
-      height: 181.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
         color: AppTheme.getInstance().bgErrorLoad(),

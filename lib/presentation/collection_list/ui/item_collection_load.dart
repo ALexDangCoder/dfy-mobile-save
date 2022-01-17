@@ -15,7 +15,6 @@ class ItemCollectionLoad extends StatelessWidget {
       children: [
         Container(
           width: 164.w,
-          height: 181.h,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             color: AppTheme.getInstance().borderItemColor(),

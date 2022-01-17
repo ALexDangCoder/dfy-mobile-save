@@ -31,9 +31,9 @@ mixin CollectionDetailRepository {
   });
 
   Future<Result<List<CollectionMarketModel>>> getListCollection({
-    String? address,
-    String? category,
+    String? addressWallet,
     String? name,
+    int? collectionType,
     int? sort,
     int? page,
     int? size,
