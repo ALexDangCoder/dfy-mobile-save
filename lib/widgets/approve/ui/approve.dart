@@ -19,7 +19,6 @@ import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
@@ -179,6 +178,7 @@ class _ApproveState extends State<Approve> {
     isShowLoading = false;
   }
 
+
   ///  Action sign (use this base call NamLV)
   ///  [gasLimitFinal] is value of gas limit final
   ///  don't use gas limit was passed into constructor
@@ -189,9 +189,10 @@ class _ApproveState extends State<Approve> {
   /// DON'T USE [gasLimitFirst] AND THE FIRST GAS PRICE
   ///  USE [gasLimitFinal] AND [gasPriceFinal]
   Future<void> signTransaction(
-    double gasLimitFinal,
-    double gasPriceFinal,
-  ) async {
+      double gasLimitFinal, double gasPriceFinal) async {
+    final String gasPriceString =
+        (gasPriceFinal = gasPriceFinal / 1e9).toStringAsFixed(0);
+    final String gasLimitString = gasLimitFinal.toStringAsFixed(0);
     switch (widget.typeApprove) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         {
@@ -200,8 +201,8 @@ class _ApproveState extends State<Approve> {
             contractAddress: nft_sales_address_dev2,
             nonce: nonce.toString(),
             chainId: Get.find<AppConstants>().chaninId,
-            gasPrice: gasPriceFinal.toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toStringAsFixed(0),
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
             hexString: nftDetailBloc.hexString,
           );
         }
@@ -213,8 +214,8 @@ class _ApproveState extends State<Approve> {
             contractAddress: nft_auction_dev2,
             nonce: nonce.toString(),
             chainId: Get.find<AppConstants>().chaninId,
-            gasPrice: gasPriceFinal.toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toStringAsFixed(0),
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
             hexString: nftDetailBloc.hexString,
           );
           break;
@@ -232,8 +233,8 @@ class _ApproveState extends State<Approve> {
             contractAddress: nft_sales_address_dev2,
             nonce: nonceFinal.toString(),
             chainId: Get.find<AppConstants>().chaninId,
-            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toStringAsFixed(0),
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
             hexString: nftDetailBloc.hexString,
           );
           break;
@@ -246,8 +247,8 @@ class _ApproveState extends State<Approve> {
             nonce: (widget.createCollectionCubit?.transactionNonce ?? 0)
                 .toString(),
             chainId: Get.find<AppConstants>().chaninId,
-            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toString(),
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
             hexString: widget.createCollectionCubit?.transactionData ?? '',
           );
         }
@@ -262,10 +263,10 @@ class _ApproveState extends State<Approve> {
         }
         break;
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
-        // TODO: Handle this case.
+      // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.SEND_OFFER:
-        // TODO: Handle this case.
+      // TODO: Handle this case.
         break;
     }
   }
@@ -344,7 +345,8 @@ class _ApproveState extends State<Approve> {
         ),
       ),
     );
-    await Future.delayed(const Duration(seconds: secondShowPopUp), () {
+    await Future.delayed(
+        const Duration( seconds: secondShowPopUp), () {
       navigator.pop();
     });
   }
@@ -560,17 +562,17 @@ class _ApproveState extends State<Approve> {
                                   child: ButtonGold(
                                     haveGradient: !isApproved,
                                     background:
-                                        isApproved ? fillApprovedButton : null,
+                                    isApproved ? fillApprovedButton : null,
                                     textColor: isApproved
                                         ? borderApprovedButton
                                         : isCanAction
-                                            ? null
-                                            : disableText,
+                                        ? null
+                                        : disableText,
                                     border: isApproved
                                         ? Border.all(
-                                            color: borderApprovedButton,
-                                            width: 2,
-                                          )
+                                      color: borderApprovedButton,
+                                      width: 2,
+                                    )
                                         : null,
                                     title: S.current.approve,
                                     isEnable: isCanAction,
@@ -604,20 +606,20 @@ class _ApproveState extends State<Approve> {
                         return GestureDetector(
                           child: ButtonGold(
                             textColor: (isApproved ||
-                                        !(widget.needApprove ?? false)) &&
-                                    isCanAction
+                                !(widget.needApprove ?? false)) &&
+                                isCanAction
                                 ? null
                                 : disableText,
                             fixSize: false,
                             haveMargin: false,
                             title: widget.textActiveButton,
                             isEnable: (isApproved ||
-                                    !(widget.needApprove ?? false)) &&
+                                !(widget.needApprove ?? false)) &&
                                 isCanAction,
                           ),
                           onTap: () {
                             if ((isApproved ||
-                                    !(widget.needApprove ?? false)) &&
+                                !(widget.needApprove ?? false)) &&
                                 isCanAction) {
                               signTransaction(
                                 cubit.gasLimit ?? widget.gasLimitInit,
@@ -734,7 +736,7 @@ class _ApproveState extends State<Approve> {
                   fit: BoxFit.cover,
                   image: AssetImage(
                     '${ImageAssets.image_avatar}$accountImage'
-                    '.png',
+                        '.png',
                   ),
                 ),
               ),
