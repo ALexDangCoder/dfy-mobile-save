@@ -1,8 +1,11 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
+import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,17 +15,44 @@ class OwnerTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      physics: const BouncingScrollPhysics(),
-      itemCount: listOwner.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {},
-          child: _buildItemOwner(listOwner[index]),
-        );
-      },
-    );
+    if (listOwner.isNotEmpty) {
+      return ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: listOwner.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {},
+            child: _buildItemOwner(listOwner[index]),
+          );
+        },
+      );
+    } else {
+      return Center(
+        child: ListView(
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(vertical: 100.h),
+          children: [
+            Center(
+              child: sizedPngImage(
+                w: 94,
+                h: 94,
+                image: ImageAssets.icNoTransaction,
+              ),
+            ),
+            Center(
+              child: Text(
+                S.current.no_transaction,
+                style: tokenDetailAmount(
+                  color: AppTheme.getInstance().currencyDetailTokenColor(),
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Widget _buildItemOwner(OwnerNft ownerNft) {
