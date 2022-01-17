@@ -5,6 +5,7 @@ import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/ui/create_detail_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -14,18 +15,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CreateNFTScreen extends StatelessWidget {
+class CreateNFTScreen extends StatefulWidget {
   final CreateNftCubit cubit;
 
   const CreateNFTScreen({Key? key, required this.cubit}) : super(key: key);
 
   @override
+  State<CreateNFTScreen> createState() => _CreateNFTScreenState();
+}
+
+class _CreateNFTScreenState extends State<CreateNFTScreen> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    widget.cubit.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return StateStreamLayout(
-      stream: cubit.stateStream,
+      stream: widget.cubit.stateStream,
       textEmpty: '',
       retry: () {
-        cubit.getListTypeNFT();
+        widget.cubit.getListTypeNFT();
       },
       error: AppException('', S.current.something_went_wrong),
       child: BaseBottomSheet(
@@ -51,7 +63,7 @@ class CreateNFTScreen extends StatelessWidget {
                 ),
 
                 BlocBuilder<CreateNftCubit, CreateNftState>(
-                  bloc: cubit,
+                  bloc: widget.cubit,
                   builder: (context, state) {
                     if (state is TypeNFT) {
                       final List<TypeNFTModel> list = state.listSoftNft;
@@ -85,7 +97,7 @@ class CreateNFTScreen extends StatelessWidget {
             ),
           ),
           floatingActionButton: StreamBuilder<String>(
-            stream: null,
+            stream: widget.cubit.selectIdSubject,
             initialData: '',
             builder: (context, snapshot) {
               final enable = snapshot.data?.isNotEmpty ?? false;
@@ -96,9 +108,15 @@ class CreateNFTScreen extends StatelessWidget {
                 fontSize: 20,
                 onTap: () {
                   if (enable) {
-                    // final _standard =
-                    // bloc.getStandardFromID(snapshot.data ?? '');
-                    // final _type = bloc.getTypeFromID(snapshot.data ?? '');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CreateDetailNFT(
+                          cubit: CreateNftCubit(),
+                          nftType: widget.cubit.selectedNftType,
+                        ),
+                      ),
+                    );
                   }
                 },
               );
@@ -121,7 +139,7 @@ class CreateNFTScreen extends StatelessWidget {
         GestureDetector(
           onTap: () {
             if (isActive) {
-              cubit.changeId(typeNFTModel.id ?? '');
+              widget.cubit.changeId(typeNFTModel.id ?? '');
             }
           },
           child: SizedBox(
@@ -167,16 +185,16 @@ class CreateNFTScreen extends StatelessWidget {
                   : AppTheme.getInstance().disableRadioColor().withOpacity(0.5),
             ),
             child: StreamBuilder<String>(
-              stream: cubit.selectIdSubject,
+              stream: widget.cubit.selectIdSubject,
               builder: (context, snapshot) {
                 return Radio<String>(
                   splashRadius: isActive ? null : 0,
                   activeColor: AppTheme.getInstance().fillColor(),
                   value: typeNFTModel.id ?? '',
-                  groupValue: cubit.selectedType,
+                  groupValue: widget.cubit.selectedId,
                   onChanged: (value) {
                     if (isActive) {
-                      cubit.changeId(value ?? '');
+                      widget.cubit.changeId(value ?? '');
                     }
                   },
                 );

@@ -94,18 +94,18 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
 
   NFTRepository get _nftRepo => Get.find();
 
-  CategoryRepository get _categoryRepository => Get.find();
+  CategoryRepository get categoryRepository => Get.find();
 
   //Stream
   ///Type NFT
-  final BehaviorSubject<String> _typeNFTSubject = BehaviorSubject();
+  final BehaviorSubject<String> typeNFTSubject = BehaviorSubject();
 
-  Stream<String> get typeNFTStream => _typeNFTSubject.stream;
+  Stream<String> get typeNFTStream => typeNFTSubject.stream;
 
   ///CreateButton
-  final BehaviorSubject<bool> _enableCreateSubject = BehaviorSubject();
+  final BehaviorSubject<bool> enableCreateSubject = BehaviorSubject();
 
-  Stream<bool> get enableCreateStream => _enableCreateSubject.stream;
+  Stream<bool> get enableCreateStream => enableCreateSubject.stream;
 
   ///Validate TextField
   BehaviorSubject<String> nameCollectionSubject = BehaviorSubject();
@@ -147,7 +147,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   //func
   void changeSelectedItem(String _id) {
     createId = _id;
-    _typeNFTSubject.sink.add(createId);
+    typeNFTSubject.sink.add(createId);
   }
 
   void validateCreate() {
@@ -163,9 +163,9 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
         mapCheck['twitter'] == false ||
         mapCheck['instagram'] == false ||
         mapCheck['telegram'] == false) {
-      _enableCreateSubject.sink.add(false);
+      enableCreateSubject.sink.add(false);
     } else {
-      _enableCreateSubject.sink.add(true);
+      enableCreateSubject.sink.add(true);
     }
   }
 
@@ -487,7 +487,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   Future<void> getListCategory() async {
     List<Map<String, String>> menuItems = [];
     final Result<List<Category>> result =
-        await _categoryRepository.getListCategory();
+        await categoryRepository.getListCategory();
     result.when(
       success: (res) {
         listCategory = res;
@@ -732,5 +732,32 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     try {
       await trustWalletChannel.invokeMethod('getListWallets', {});
     } on PlatformException {}
+  }
+
+  void dispose() {
+    typeNFTSubject.close();
+    enableCreateSubject.close();
+    nameCollectionSubject.close();
+    customURLSubject.close();
+    descriptionSubject.close();
+    categoriesSubject.close();
+    royaltySubject.close();
+    facebookSubject.close();
+    twitterSubject.close();
+    instagramSubject.close();
+    telegramSubject.close();
+    avatarMessSubject.close();
+    coverPhotoMessSubject.close();
+    featurePhotoMessSubject.close();
+    avatarSubject.close();
+    coverPhotoSubject.close();
+    featurePhotoSubject.close();
+    avatarUploadStatusSubject.close();
+    coverPhotoUploadStatusSubject.close();
+    featurePhotoUploadStatusSubject.close();
+    listCategorySubject.close();
+    listHardNFTSubject.close();
+    listSoftNFTSubject.close();
+    upLoadStatusSubject.close();
   }
 }

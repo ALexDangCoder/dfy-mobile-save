@@ -19,6 +19,7 @@ class CreateCollectionScreen extends StatelessWidget {
   const CreateCollectionScreen({Key? key, required this.bloc})
       : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     bloc.getListTypeNFT();

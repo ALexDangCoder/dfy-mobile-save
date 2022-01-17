@@ -9,10 +9,20 @@ class CreateNftInitial extends CreateNftState {
 }
 
 class TypeNFT extends CreateNftState {
+  final List<TypeNFTModel> listSoftNft;
+
   TypeNFT({this.listSoftNft = const []});
 
-  final List<TypeNFTModel> listSoftNft;
 
   @override
   List<Object?> get props => [listSoftNft];
+}
+
+class MediaFile extends CreateNftState{
+  final File? file;
+  MediaFile({this.file});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [file];
 }
