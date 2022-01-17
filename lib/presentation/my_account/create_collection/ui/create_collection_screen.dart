@@ -221,6 +221,7 @@ class CreateCollectionScreen extends StatelessWidget {
             ),
           ),
         ),
+        spaceH12,
         Flexible(
           child: Theme(
             data: Theme.of(context).copyWith(
@@ -249,6 +250,7 @@ class CreateCollectionScreen extends StatelessWidget {
             ),
           ),
         ),
+        spaceH12,
         Text(
           getName(typeNFTModel.name ?? ''),
           style: textCustom(

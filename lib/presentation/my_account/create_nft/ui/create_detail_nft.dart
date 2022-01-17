@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/ui/widget/properties_row.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
@@ -14,12 +16,38 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:video_player/video_player.dart';
 
-class CreateDetailNFT extends StatelessWidget {
+class CreateDetailNFT extends StatefulWidget {
   final CreateNftCubit cubit;
   final int nftType;
 
   const CreateDetailNFT({Key? key, required this.cubit, required this.nftType})
       : super(key: key);
+
+  @override
+  State<CreateDetailNFT> createState() => _CreateDetailNFTState();
+}
+
+class _CreateDetailNFTState extends State<CreateDetailNFT> {
+  late TextEditingController nameCollectionController;
+  late TextEditingController descriptionCollectionController;
+  late TextEditingController royaltyCollectionController;
+
+  @override
+  void initState() {
+    nameCollectionController = TextEditingController();
+    descriptionCollectionController = TextEditingController();
+    royaltyCollectionController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.cubit.dispose();
+    nameCollectionController.dispose();
+    descriptionCollectionController.dispose();
+    royaltyCollectionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +67,13 @@ class CreateDetailNFT extends StatelessWidget {
                 ),
                 spaceH22,
                 StreamBuilder<String>(
-                  stream: cubit.mediaFileSubject,
+                  stream: widget.cubit.mediaFileSubject,
                   builder: (context, snapshot) {
                     final String type = snapshot.data ?? '';
-
                     if (type.isNotEmpty) {
                       if (type == 'image') {
                         return StreamBuilder<String>(
-                          stream: cubit.imageFileSubject,
+                          stream: widget.cubit.imageFileSubject,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               final File mediaFile = File(snapshot.data ?? '');
@@ -76,7 +103,7 @@ class CreateDetailNFT extends StatelessWidget {
                                     right: 8.h,
                                     child: GestureDetector(
                                       onTap: () {
-                                        cubit.clearData();
+                                        widget.cubit.clearData();
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -98,7 +125,7 @@ class CreateDetailNFT extends StatelessWidget {
                         );
                       } else if (type == 'video') {
                         return StreamBuilder<VideoPlayerController>(
-                          stream: cubit.videoFileSubject,
+                          stream: widget.cubit.videoFileSubject,
                           builder: (context, snapshot) {
                             final _controller = snapshot.data;
                             if (_controller != null) {
@@ -115,7 +142,8 @@ class CreateDetailNFT extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: AspectRatio(
-                                        aspectRatio: _controller.value.aspectRatio,
+                                        aspectRatio:
+                                            _controller.value.aspectRatio,
                                         child: Stack(
                                           alignment: Alignment.bottomCenter,
                                           children: <Widget>[
@@ -134,7 +162,7 @@ class CreateDetailNFT extends StatelessWidget {
                                     right: 8.h,
                                     child: GestureDetector(
                                       onTap: () {
-                                        cubit.clearData();
+                                        widget.cubit.clearData();
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -162,7 +190,7 @@ class CreateDetailNFT extends StatelessWidget {
                     } else {
                       return GestureDetector(
                         onTap: () {
-                          cubit.pickFile();
+                          widget.cubit.pickFile();
                         },
                         child: DottedBorder(
                           borderType: BorderType.RRect,
@@ -205,9 +233,38 @@ class CreateDetailNFT extends StatelessWidget {
                 //     return errorMessage(mess);
                 //   },
                 // ),
-                SizedBox(height: 32.h),
-                SizedBox(height: 32.h),
-                SizedBox(height: 32.h),
+                spaceH16,
+                InputRow(
+                  hint: 'Name of NFT',
+                  leadImg: ImageAssets.ic_edit_square_svg,
+                  textController: nameCollectionController,
+                  onChange: (value) {},
+                ),
+                InputRow(
+                  hint: S.current.description,
+                  leadImg: ImageAssets.ic_edit_square_svg,
+                  textController: nameCollectionController,
+                  onChange: (value) {},
+                ),
+                InputRow(
+                  textController: royaltyCollectionController,
+                  suffixes: '%',
+                  onChange: (value) {},
+                  leadImg: ImageAssets.ic_round_percent_svg,
+                  hint: S.current.royalties,
+                  img2: ImageAssets.ic_round_i,
+                  inputType: TextInputType.number,
+                  onImageTap: () {},
+                ),
+                spaceH16,
+                Text(
+                  'Properties (add more trait for your NFT)',
+                  style: textCustom(
+                    weight: FontWeight.w600,
+                  ),
+                ),
+                spaceH16,
+                propertyRow(),
                 StreamBuilder<bool>(
                   stream: null,
                   initialData: false,

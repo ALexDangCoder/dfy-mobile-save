@@ -31,6 +31,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
     super.dispose();
     widget.cubit.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return StateStreamLayout(
@@ -87,6 +88,14 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                       return const SizedBox.shrink();
                     }
                   },
+                ),
+                spaceH24,
+                Text(
+                  'Defi For You system has not supported NFT transactions on the ERC-1155 standard',
+                  style: textCustom(
+                    fontStyle: FontStyle.italic,
+                    fontSize: 14,
+                  ),
                 ),
 
                 ///Space bottom + space top + height of the button
@@ -177,6 +186,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
             ),
           ),
         ),
+        spaceH12,
         Flexible(
           child: Theme(
             data: Theme.of(context).copyWith(
@@ -202,6 +212,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
             ),
           ),
         ),
+        spaceH12,
         Text(
           getName(typeNFTModel.name ?? ''),
           style: textCustom(
