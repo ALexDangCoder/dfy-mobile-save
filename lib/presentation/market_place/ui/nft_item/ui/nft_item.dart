@@ -213,8 +213,9 @@ class _NFTItemState extends State<NFTItemWidget> {
                               if (widget.nftMarket.urlToken?.isNotEmpty ??
                                   false)
                                 ClipRRect(
-                                  child: CachedNetworkImage(
-                                    imageUrl: widget.nftMarket.urlToken ?? '',
+                                  child: Image.network(
+                                   widget.nftMarket.urlToken ?? '',
+                                    fit: BoxFit.cover,
                                   ),
                                 )
                               else
