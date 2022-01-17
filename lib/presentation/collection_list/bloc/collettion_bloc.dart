@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
-import 'package:Dfy/domain/model/market_place/collection_model.dart';
+import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
+import 'package:Dfy/domain/model/market_place/fillterCollectionModel.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
@@ -21,8 +22,17 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     getListCategory();
   }
 
+  static const int HIGHEST_TRADING_VOLUME = 0;
+  static const int LOWEST_TRADING_VOLUME = 1;
+  static const int NEWEST = 2;
+  static const int OLDEST = 3;
+  static const int OWNER_FROM_HIGH_TO_LOW = 4;
+  static const int OWNER_FROM_LOW_TO_HIGH = 5;
+  static const int ITEM_FROM_HIGH_TO_LOW = 6;
+  static const int ITEM_FROM_LOW_TO_HIGH = 7;
+
   //getlistcollection
-  BehaviorSubject<List<CollectionModel>> list = BehaviorSubject();
+  BehaviorSubject<List<CollectionMarketModel>> list = BehaviorSubject();
 
   BehaviorSubject<bool> isHighestTradingVolume = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isLowestTradingVolume = BehaviorSubject.seeded(false);
@@ -43,42 +53,39 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   BehaviorSubject<bool> isOthersCategory = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCars = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSports = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isAll = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isAllCategory = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isAllCategoryMyAcc = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isChooseAcc = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCanLoadMore = BehaviorSubject.seeded(false);
 
   BehaviorSubject<bool> isMusic = BehaviorSubject.seeded(false);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<String> textAddressFilter =
       BehaviorSubject.seeded(S.current.all);
   BehaviorSubject<String> textSearchCategory = BehaviorSubject.seeded('');
-  BehaviorSubject<List<Category>> listCategoryStream =
+  BehaviorSubject<List<FilterCollectionModel>> listCategoryStream =
       BehaviorSubject.seeded([]);
-
-  List<bool> isListCategory = [false, false, false, false];
+  int nextPage = 1;
 
   MarketPlaceRepository get _marketPlaceRepository => Get.find();
-  List<CollectionModel> arg = [];
+  List<CollectionMarketModel> arg = [];
 
   List<String> listAcc = [
     S.current.all,
   ];
 
-  List<Category> listCategory = [];
+  List<FilterCollectionModel> listCategory = [];
 
   CategoryRepository get _categoryRepository => Get.find();
 
   Timer? debounceTime;
 
-  void funFilter({int index = 0}) {
+  void funFilter() {
     getCollection(
       sortFilter: sortFilter,
-      name: textSearch.value,
+      name: textSearch.value.trim(),
     );
   }
 
-  int sortFilter = -1;
+  int? sortFilter;
 
   void funChooseFilter(int index) {
     for (int i = 0; i < 8; i++) {
@@ -89,7 +96,19 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     }
     listCheckBoxFilter[index] = true;
     listCheckBoxFilterStream.add(listCheckBoxFilter);
-    sortFilter = index;
+    sortFilter = index + 1;
+  }
+
+  void funCheckCategory(String name) {
+    for (int i = 0; i < listCategory.length; i++) {
+      if (name == listCategory[i].name) {
+        if (listCategory[i].isCheck ?? false) {
+          listCategory[i].isCheck = false;
+        } else {
+          listCategory[i].isCheck = true;
+        }
+      }
+    }
   }
 
   void searchCollection(String value) {
@@ -100,9 +119,14 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     }
     debounceTime = Timer(const Duration(milliseconds: 800), () {
       if (textSearch.value.isEmpty) {
-        getCollection(sortFilter: sortFilter);
+        getCollection(
+          sortFilter: sortFilter,
+        );
       } else {
-        getCollection(name: textSearch.value, sortFilter: sortFilter);
+        getCollection(
+          name: textSearch.value.trim(),
+          sortFilter: sortFilter,
+        );
       }
     });
   }
@@ -113,7 +137,14 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         await _categoryRepository.getListCategory();
     result.when(
       success: (res) {
-        listCategory.addAll(res);
+        for (final Category value in res) {
+          listCategory.add(
+            FilterCollectionModel(
+              name: value.name,
+              urlImage: value.avatarCid,
+            ),
+          );
+        }
         listCategoryStream.add(listCategory);
       },
       error: (error) {},
@@ -144,7 +175,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   ];
 
   void reset() {
-    sortFilter = -1;
+    sortFilter = null;
     listCheckBoxFilterStream.add([
       false,
       false,
@@ -161,37 +192,18 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   }
 
   void resetFilterMyAcc() {
-    allCollection(false);
-    isAll.sink.add(false);
-    allCategoryMyAcc(false);
-    isAllCategoryMyAcc.sink.add(false);
-    funOnTapSearchCategory();
+    isHardNft.add(false);
+    isSoftNft.add(false);
     textAddressFilter.add(S.current.all);
+    funOnTapSearchCategory();
+    funResetIsCategory();
   }
 
-  void allCollection(bool value) {
-    isHardNft.sink.add(value);
-    isSoftNft.sink.add(value);
-  }
-
-  void allCategory(bool value) {
-    isArt.sink.add(value);
-    isGame.sink.add(value);
-    isCollectibles.sink.add(value);
-    isUltilities.sink.add(value);
-    isOthersCategory.sink.add(value);
-    isCars.sink.add(value);
-    isSports.sink.add(value);
-    isMusic.sink.add(value);
-  }
-
-  void allCategoryMyAcc(bool value) {
-    isListCategory.addAll([
-      value,
-      value,
-      value,
-      value,
-    ]);
+  void funResetIsCategory() {
+    for (int i = 0; i < listCategory.length; i++) {
+      listCategory[i].isCheck = false;
+    }
+    listCategoryStream.add(listCategory);
   }
 
   void funOnSearch(String value) {
@@ -206,21 +218,17 @@ class CollectionBloc extends BaseCubit<CollectionState> {
 
   void funOnSearchCategory(String value) {
     textSearchCategory.sink.add(value);
-    final List<Category> search = [];
+    final List<FilterCollectionModel> search = [];
     for (final element in listCategory) {
       if (element.name!.toLowerCase().contains(value.toLowerCase())) {
         search.add(element);
       }
     }
     if (value.isEmpty) {
+      funResetIsCategory();
       listCategoryStream.add(listCategory);
-      isListCategory.addAll([
-        false,
-        false,
-        false,
-        false,
-      ]);
     } else {
+      funResetIsCategory();
       listCategoryStream.add(search);
     }
   }
@@ -230,13 +238,57 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     listCategoryStream.add(listCategory);
   }
 
+  Future<void> getListCollection({
+    String? name = '',
+    int? sortFilter = 0,
+    int? size = 10,
+    String address = '',
+  }) async {
+    if (nextPage == 1) {
+      nextPage = 2;
+    }
+    final Result<List<CollectionMarketModel>> result =
+        await _marketPlaceRepository.getListCollectionMarket(
+      name: name,
+      sort: sortFilter,
+      size: size,
+      page: nextPage,
+      address: address,
+    );
+    result.when(
+      success: (res) {
+        final List<CollectionMarketModel> currentList = list.valueOrNull ?? [];
+        if (res.isNotEmpty) {
+          list.sink.add([...currentList, ...res]);
+        } else {
+          isCanLoadMore.add(false);
+        }
+        nextPage++;
+      },
+      error: (error) {
+        emit(LoadingDataFail());
+      },
+    );
+  }
+
   Future<void> getCollection({
     String? name = '',
     int? sortFilter = 0,
+    int? size = 10,
+    int? page = 0,
+    String address = '',
+    bool isLoad = true,
   }) async {
+    nextPage = 1;
+    isCanLoadMore.add(isLoad);
     emit(LoadingData());
-    final Result<List<CollectionModel>> result = await _marketPlaceRepository
-        .getListCollection(name: name, sort: sortFilter);
+    final Result<List<CollectionMarketModel>> result =
+        await _marketPlaceRepository.getListCollectionMarket(
+      name: name,
+      sort: sortFilter,
+      size: size,
+      page: page,
+    );
     result.when(
       success: (res) {
         if (res.isEmpty) {

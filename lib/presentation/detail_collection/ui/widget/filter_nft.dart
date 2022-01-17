@@ -13,12 +13,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FilterNFT extends StatefulWidget {
   final DetailCollectionBloc collectionBloc;
-  final bool isOwner;
 
   const FilterNFT({
     Key? key,
     required this.collectionBloc,
-    required this.isOwner,
   }) : super(key: key);
 
   @override
@@ -124,35 +122,6 @@ class _FilterNFTState extends State<FilterNFT> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (widget.isOwner)
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.w),
-                      child: Text(
-                        S.current.nft_type,
-                        style: textNormalCustom(null, 16, FontWeight.w600),
-                      ),
-                    )
-                  else
-                    const SizedBox.shrink(),
-                  if (widget.isOwner)
-                    Row(
-                      children: [
-                        Expanded(
-                          child: IsBaseCheckBox(
-                            title: S.current.hard_nft,
-                            stream: collectionBloc.isHardNft,
-                          ),
-                        ),
-                        Expanded(
-                          child: IsBaseCheckBox(
-                            title: S.current.soft_nft,
-                            stream: collectionBloc.isSoftNft,
-                          ),
-                        ),
-                      ],
-                    )
-                  else
-                    const SizedBox.shrink(),
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Text(
@@ -166,7 +135,7 @@ class _FilterNFTState extends State<FilterNFT> {
                         child: IsBaseCheckBox(
                           funCheckBox: () => collectionBloc.listFilter.clear(),
                           funText: () => collectionBloc.listFilter.clear(),
-                          title: S.current.on_sale,
+                          title: S.current.on_sell,
                           stream: collectionBloc.isOnSale,
                         ),
                       ),

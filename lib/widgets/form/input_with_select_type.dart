@@ -5,7 +5,7 @@ import 'package:Dfy/utils/extensions/list_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class InputWithSelectType extends StatefulWidget {
   final List<Widget> typeInput;
@@ -123,6 +123,9 @@ class _InputWithSelectTypeState extends State<InputWithSelectType> {
                   );
                   setState(() {
                     chooseIndex = index ?? chooseIndex;
+                    if (widget.onChangeType != null) {
+                      widget.onChangeType!(chooseIndex);
+                    }
                   });
                 },
                 child: Row(
@@ -166,23 +169,26 @@ class DropDown extends StatelessWidget {
 
   final double xPosition;
 
-  const DropDown(
-      {Key? key,
-      required this.height,
-      required this.yPosition,
-      required this.width,
-      required this.xPosition,
-      this.heightOfWidget,
-      required this.typeInput,
-      this.chooseIndex = 0})
-      : super(key: key);
+  const DropDown({
+    Key? key,
+    required this.height,
+    required this.yPosition,
+    required this.width,
+    required this.xPosition,
+    this.heightOfWidget,
+    required this.typeInput,
+    this.chooseIndex = 0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final isBelow =
         (MediaQuery.of(context).size.height - (yPosition + height)) >
             ((heightOfWidget ?? 64) * 3) + 10;
-    final _scrollController = ScrollController();
+    final _scrollController = ScrollController(
+      initialScrollOffset: (heightOfWidget ?? 64) * (chooseIndex ?? 0),
+    );
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(

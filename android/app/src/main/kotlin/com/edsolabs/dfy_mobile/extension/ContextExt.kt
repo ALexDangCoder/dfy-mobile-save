@@ -1,6 +1,7 @@
 package com.edsolabs.dfy_mobile.extension
 
 import android.content.Context
+import android.util.Log
 import com.edsolabs.dfy_mobile.Constant
 import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
 import com.edsolabs.dfy_mobile.data.model.ItemNftModel
@@ -847,4 +848,56 @@ fun Context.signTransactionNft(
     hasMap["symbol"] = symbol
     hasMap["nftId"] = tokenId
     channel?.invokeMethod("signTransactionNftCallback", hasMap)
+}
+
+fun Context.signTransactionWithData(
+    channel: MethodChannel?,
+    walletAddress: String,
+    contractAddress: String,
+    nonce: String,
+    chainId: String,
+    gasPrice: String,
+    gasLimit: String,
+    withData: String
+) {
+    val hasMap = HashMap<String, Any>()
+    val walletModel =
+        AppPreference(this).getListWallet().firstOrNull { it.walletAddress == walletAddress }
+    if (walletModel != null && walletModel.privateKey.isNotEmpty()) {
+        val signerInput = Ethereum.SigningInput.newBuilder().apply {
+            this.nonce = ByteString.copyFrom(BigInteger(nonce).toByteArray())
+            this.chainId = ByteString.copyFrom(BigInteger(chainId).toByteArray())
+            this.gasPrice = BigInteger(
+                gasPrice.handleAmount(decimal = 9)
+            ).toByteString()
+            this.gasLimit = BigInteger(
+                gasLimit
+            ).toByteString()
+            this.toAddress = contractAddress
+            this.transaction = Ethereum.Transaction.newBuilder().apply {
+                transfer = Ethereum.Transaction.Transfer.newBuilder().apply {
+                    this.amount = BigInteger("0").toByteString()
+                    this.data = ByteString.copyFrom((withData).hexStringToByteArray())
+                }.build()
+            }.build()
+            this.privateKey =
+                ByteString.copyFrom(PrivateKey(walletModel.privateKey.toHexBytes()).data())
+        }.build()
+        val output =
+            AnySigner.sign(signerInput, CoinType.SMARTCHAIN, Ethereum.SigningOutput.parser())
+        val value = output.encoded.toByteArray().toHexString(false)
+        hasMap["isSuccess"] = true
+        hasMap["signedTransaction"] = value
+    } else {
+        hasMap["isSuccess"] = false
+        hasMap["signedTransaction"] = ""
+    }
+    hasMap["walletAddress"] = walletAddress
+    hasMap["contractAddress"] = contractAddress
+    hasMap["nonce"] = nonce
+    hasMap["chainId"] = chainId
+    hasMap["gasPrice"] = gasPrice
+    hasMap["gasLimit"] = gasLimit
+    hasMap["withData"] = withData
+    channel?.invokeMethod("signTransactionWithDataCallback", hasMap)
 }

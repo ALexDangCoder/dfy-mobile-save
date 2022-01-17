@@ -1,4 +1,5 @@
 import 'package:Dfy/data/response/collection/collection_res.dart';
+import 'package:Dfy/data/response/collection/list_collection_res_market.dart';
 import 'package:Dfy/data/response/market_place/market_place_res.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:injectable/injectable.dart';
@@ -18,7 +19,20 @@ abstract class MarketPlaceHomeClient {
 
   @GET(ApiConstants.GET_LIST_COLLECTION)
   Future<ListCollectionResponse> getListCollection(
-      @Query('address') String? address,
-      @Query('name') String? name,
-      @Query('sort') int? sort);
+    @Query('address') String? address,
+    @Query('category') String? category,
+    @Query('name') String? name,
+    @Query('sort') int? sort,
+    @Query('page') int? page,
+    @Query('size') int? size,
+  );
+
+  @GET(ApiConstants.GET_LIST_COLLECTION_MARKET)
+  Future<ListCollectionResponseMarket> getListCollectionMarket(
+    @Query('address') String? address,
+    @Query('name') String? name,
+    @Query('sort') int? sort,
+    @Query('page') int? page,
+    @Query('size') int? size,
+  );
 }

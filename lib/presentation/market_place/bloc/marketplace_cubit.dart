@@ -3,8 +3,8 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
 import 'package:Dfy/domain/model/market_place/list_type_nft_collection_explore_model.dart';
 import 'package:Dfy/domain/model/market_place/outstanding_collection_model.dart';
-import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
@@ -28,6 +28,20 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
   List<NftMarket> nftsFeaturedSoft = [];
   List<OutstandingCollection> outstandingCollection = [];
   List<ExploreCategory> exploreCategories = [];
+  List<NftMarket> nftsFeaturedNfts = [];
+
+  void clearAllBeforePullToRefresh() {
+    nftsHotAution.clear();
+    nftsSale.clear();
+    nftsCollateral.clear();
+    nftsHardNft.clear();
+    nftsBuySellCreateCollectible.clear();
+    nftsFeaturedSoft.clear();
+    outstandingCollection.clear();
+    exploreCategories.clear();
+    nftsFeaturedNfts.clear();
+    listCollectionFtExploreFtNft.clear();
+  }
 
   Future<void> getListNftCollectionExplore() async {
     emit(LoadingDataLoading());
@@ -106,7 +120,41 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           'nfts': nftsBuySellCreateCollectible,
           'market_type': getMarketType(e.url!) //todo,
         });
-      } else if (e.name == 'Featured Soft NFTs') {
+      } else if (e.name == 'Featured NFTs') {
+        e.items?.forEach(
+              (element) =>
+              nftsFeaturedNfts.add(
+                NftMarket(
+                  marketId: element.id,
+                  nftId: element.nftId ?? '',
+                  tokenBuyOut: element.token ?? '',
+                  name: element.name ?? '',
+                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+                  price: element.price ?? 0,
+                  marketType: element.marketType == 1
+                      ? MarketType.SALE
+                      : (element.marketType == 2
+                      ? MarketType.AUCTION
+                      : MarketType.PAWN),
+                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
+                      .HARD_NFT,
+                  typeImage: (element.fileType == 'image/jpeg' ||
+                      element.fileType == 'image/gif')
+                      ? TypeImage.IMAGE
+                      : TypeImage.VIDEO,
+                  numberOfCopies: element.numberOfCopies,
+                  totalCopies: element.totalCopies ?? 0,
+                ),
+              ),
+        );
+        listCollectionFtExploreFtNft.add({
+          'name': e.name,
+          'position': e.position,
+          'nfts': nftsFeaturedNfts,
+          'market_type': getMarketType(e.url!) //todo,
+        });
+      }
+      else if (e.name == 'Featured Soft NFTs') {
         //hard nft chưa có
         e.items?.forEach(
               (element) =>
@@ -178,6 +226,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
               (e) =>
               outstandingCollection.add(
                 OutstandingCollection(
+                  collectionAddress: e.collectionAddress,
                   collectionType: e.collectionType,
                   id: e.id,
                   name: e.name,
@@ -194,7 +243,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           'position': e.position,
           'collection': outstandingCollection,
         });
-      } else if (e.name == 'Sale items') {
+      } else if (e.name == 'Sale items' || e.name == 'Sell items') {
         e.items?.forEach(
               (element) =>
               nftsSale.add(

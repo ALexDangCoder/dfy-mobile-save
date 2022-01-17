@@ -11,6 +11,7 @@ const dfTxtColor = Color(0xFF303742);
 const secondTxtColor = Color(0xFF808FA8);
 const highlightTxtColor = Color(0xff303742);
 const backgroundBottomSheetColor = Color(0xff32324c);
+const textErrorLoad = Color(0xffE6E6E6);
 const formColor = Color(0xff6F6FC5);
 const subTitleTxtColor = Color(0xff9097A3);
 const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
@@ -80,12 +81,19 @@ const yellowOpacity = Color(0x1AE4AC1A);
 const darkColor = Color(0xFF33324C);
 const grayBarColor = Color(0xFF828282);
 
+const List<Color> colorsFab = [
+  Color.fromRGBO(255, 219, 101, 1),
+  Color.fromRGBO(228, 172, 26, 1),
+];
+
 ///=========== Using to make change app theme ================================
 const bgTranSubmitColor = Color(0xff585782);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color bgTranSubmit();
+
+  List<Color> colorFab();
 
   Color bgErrorLoad();
 
@@ -192,6 +200,8 @@ abstract class AppColor {
   Color disableRadioColor();
 
   List<Color> listBackgroundMarketColor();
+
+  Color bgProgressingColors();
 
   Color yellowOpacity10();
 
@@ -483,6 +493,18 @@ class LightApp extends AppColor {
   Color colorTextReset() {
     // TODO: implement colorTextReset
     return const Color(0xff585782);
+  }
+
+  @override
+  Color bgProgressingColors() {
+    // TODO: implement bgProgressingColors
+    return const Color(0xFF3E3D5C);
+  }
+
+  @override
+  List<Color> colorFab() {
+    // TODO: implement colorFab
+    return colorsFab;
   }
 
   @override
@@ -823,6 +845,18 @@ class DarkApp extends AppColor {
   @override
   Color gray3Color() {
     return grayBarColor;
+  }
+
+  @override
+  Color bgProgressingColors() {
+    // TODO: implement bgProgressingColors
+    throw UnimplementedError();
+  }
+
+  @override
+  List<Color> colorFab() {
+    // TODO: implement colorFab
+    return colorsFab;
   }
 }
 

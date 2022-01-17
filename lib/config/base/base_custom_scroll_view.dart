@@ -16,7 +16,7 @@ class BaseCustomScrollView extends StatefulWidget {
     this.tabBar,
     this.tabBarView,
     this.bottomBar,
-    this.typeImage,
+    required this.typeImage,
   }) : super(key: key);
   final List<Widget> content;
   final String image;
@@ -27,7 +27,7 @@ class BaseCustomScrollView extends StatefulWidget {
   final Widget? tabBar;
   final Widget? tabBarView;
   final Widget? bottomBar;
-  final TypeImage? typeImage;
+  final TypeImage typeImage;
 
   @override
   _BaseCustomScrollViewState createState() => _BaseCustomScrollViewState();
@@ -75,7 +75,7 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
                 ),
               ),
               child: NestedScrollView(
-                physics: const ScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 headerSliverBuilder: (context, innerScroll) => [
                   BaseAppBar(
                     image: widget.image,
@@ -138,7 +138,7 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 maxWidth: 305.w,
-                minWidth: 253.w,
+                minWidth: 100.w,
               ),
               child: _tabBar,
             ),

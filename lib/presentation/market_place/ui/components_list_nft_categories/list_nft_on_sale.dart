@@ -9,7 +9,7 @@ import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
 import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../nft_item.dart';
+import '../nft_item/ui/nft_item.dart';
 
 class ListNftOnSale extends StatelessWidget {
   const ListNftOnSale({
@@ -38,7 +38,7 @@ class ListNftOnSale extends StatelessWidget {
                     ? S.current.loading_text
                     : (isLoadFail
                         ? S.current.error_text
-                        : S.current.sale_items),
+                        : S.current.sell_items),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
@@ -120,8 +120,10 @@ class ListNftOnSale extends StatelessWidget {
                               : Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const NFTDetailScreen(
-                                      type: MarketType.SALE,
+                                    builder: (context) => NFTDetailScreen(
+                                      typeMarket: MarketType.SALE,
+                                      key: nftKey,
+                                      marketId: cubit.nftsSale[index].marketId,
                                     ),
                                   ),
                                 );

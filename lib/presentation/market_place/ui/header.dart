@@ -10,6 +10,7 @@ import 'package:Dfy/presentation/market_place/login/login_with_email/ui/confirm_
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:Dfy/presentation/market_place/login/ui/connect_wallet.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
+import 'package:Dfy/presentation/menu_account/ui/menu_account.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class HeaderMarketPlace extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const PutOnMarket(),
+                    builder: (context) => const MenuAccount(),
                   ),
                 );
               },

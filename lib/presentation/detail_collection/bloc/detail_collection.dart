@@ -1,21 +1,25 @@
 import 'dart:async';
 
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/data/response/collection_detail/collection_detail_res.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
+import 'package:Dfy/domain/model/market_place/collection_detail_filter_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../main.dart';
 import 'detail_collection_state.dart';
 
 class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
-
 // fillter nft
   static const int PUT_ON_MARKET = 0;
   static const int TRANSFER_ACTIVITY = 1;
@@ -27,6 +31,22 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const int BID_BUY_OUT = 7;
   static const int RECEIVE_OFFER = 8;
   static const int SIGN_CONTRACT = 9;
+  static const int SUCCESS = 1;
+  static const int FAILD = 3;
+  static const int ERORR = 2;
+  static const int LOADING = 0;
+  static const int NOT_ON_MARKET = 0;
+  static const int SALE = 1;
+  static const int AUCTION = 2;
+  static const int PAWN = 3;
+  static const int TYPE721 = 0;
+  static const String FACEBOOK = 'FACEBOOK';
+  static const String INSTAGRAM = 'INSTAGRAM';
+  static const String TELEGRAM = 'TELEGRAM';
+  static const String TWITTER = 'TWITTER';
+  static const String HTTPS = 'https://';
+  static const int SOFT_COLLECTION = 0;
+  static const int HARD_COLLECTION = 1;
 
 //
 
@@ -37,8 +57,18 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   BehaviorSubject<bool> isOnPawn = BehaviorSubject.seeded(false); //3
   BehaviorSubject<bool> isOnAuction = BehaviorSubject.seeded(false); //2
   BehaviorSubject<bool> isNotOnMarket = BehaviorSubject.seeded(false); //0
-
-  List<int> listFilter = [0,1,2,3];
+  BehaviorSubject<bool> isChooseAcc = BehaviorSubject.seeded(false);
+  BehaviorSubject<String> textAddressFilter =
+      BehaviorSubject.seeded(S.current.all);
+  List<String> listAcc = [
+    S.current.all,
+  ];
+  List<int> listFilter = [
+    NOT_ON_MARKET,
+    SALE,
+    AUCTION,
+    PAWN,
+  ];
 
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isShowMoreStream = BehaviorSubject.seeded(false);
@@ -56,7 +86,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   BehaviorSubject<bool> isSignContract = BehaviorSubject.seeded(false);
 
   BehaviorSubject<List<NftMarket>> listNft = BehaviorSubject.seeded([]);
-  BehaviorSubject<int> statusNft = BehaviorSubject.seeded(0);
+  BehaviorSubject<int> statusNft = BehaviorSubject.seeded(LOADING);
+  BehaviorSubject<int> statusActivity = BehaviorSubject.seeded(LOADING);
   BehaviorSubject<List<ActivityCollectionModel>> listActivity =
       BehaviorSubject.seeded([]);
   BehaviorSubject<CollectionDetailModel> collectionDetailModel =
@@ -81,42 +112,91 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
 
   void funFilterNft() {
     if (isOnSale.value) {
-      listFilter.add(1);
+      listFilter.add(SALE);
     }
     if (isOnPawn.value) {
-      listFilter.add(3);
+      listFilter.add(PAWN);
     }
     if (isOnAuction.value) {
-      listFilter.add(2);
+      listFilter.add(AUCTION);
     }
     if (isNotOnMarket.value) {
-      listFilter.add(0);
+      listFilter.add(NOT_ON_MARKET);
     }
     if (listFilter.isNotEmpty) {
       listFilter.clear();
       if (isOnSale.value) {
-        listFilter.add(1);
+        listFilter.add(SALE);
       }
       if (isOnPawn.value) {
-        listFilter.add(3);
+        listFilter.add(PAWN);
       }
       if (isOnAuction.value) {
-        listFilter.add(2);
+        listFilter.add(AUCTION);
       }
       if (isNotOnMarket.value) {
-        listFilter.add(0);
+        listFilter.add(NOT_ON_MARKET);
       }
       getListNft(
-        collectionId: collectionId,
+        collectionAddress: collectionAddress,
         listMarketType: listFilter,
-        name: textSearch.value,
+        name: textSearch.value.trim(),
       );
     } else {
       getListNft(
-        collectionId: collectionId,
-        name: textSearch.value,
+        collectionAddress: collectionAddress,
+        name: textSearch.value.trim(),
       );
     }
+  }
+
+  String funGetMarket(int marketStatus) {
+    String market = '';
+    if (marketStatus == SALE) {
+      market = S.current.sell;
+    } else if (marketStatus == AUCTION) {
+      market = S.current.auction;
+    } else if (marketStatus == PAWN) {
+      market = S.current.pawn;
+    } else {
+      market = S.current.not_on_market;
+    }
+    return market;
+  }
+
+  String funGetTypeNFT(int collectionType) {
+    String typeNft = '';
+    if (collectionType == SOFT_COLLECTION) {
+      typeNft = S.current.erc_721;
+    } else {
+      typeNft = S.current.erc_1155;
+    }
+    return typeNft;
+  }
+
+  String funCheckCopy({
+    required int nftType,
+    required String copy,
+  }) {
+    String myCopy = '';
+    if (nftType == TYPE721) {
+      myCopy = '';
+    } else {
+      myCopy = copy;
+    }
+    return myCopy;
+  }
+
+  String funCheckEach({
+    required int nftType,
+  }) {
+    String each = '';
+    if (nftType == TYPE721) {
+      each = '';
+    } else {
+      each = S.current.activity_each;
+    }
+    return each;
   }
 
   void funFilterActivity() {
@@ -170,7 +250,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   Timer? debounceTime;
 
   void search(String value) {
-
     if (debounceTime != null) {
       if (debounceTime!.isActive) {
         debounceTime!.cancel();
@@ -179,22 +258,24 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     debounceTime = Timer(
       const Duration(milliseconds: 800),
       () {
-        print('----------------------------------------$listFilter');
-        print('-------------------------------------------------$value');
-        if(listFilter.isNotEmpty){
+        if (listFilter.isNotEmpty) {
           getListNft(
-            name: value,
-            collectionId: collectionId,
+            name: value.trim(),
+            collectionAddress: collectionAddress,
             listMarketType: listFilter,
           );
-        }else{
+        } else {
           getListNft(
-            name: value,
-            collectionId: collectionId,
-            listMarketType: [0,1,2,3],
+            name: value.trim(),
+            collectionAddress: collectionAddress,
+            listMarketType: [
+              NOT_ON_MARKET,
+              SALE,
+              AUCTION,
+              PAWN,
+            ],
           );
         }
-
       },
     );
   }
@@ -222,10 +303,26 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     listFilter.clear();
   }
 
-  Future<void> getCollection({String? id = ''}) async {
+  Future<void> getListFilterCollectionDetail({
+    String collectionAddress = '',
+  }) async {
+    final Result<List<CollectionFilterDetailModel>> result =
+        await _collectionDetailRepository.getListFilterCollectionDetail(
+      collectionAddress: collectionAddress,
+    );
+    result.when(
+      success: (res) {
+        //todo fillter
+      },
+      error: (error) {},
+    );
+  }
+
+  Future<void> getCollection({String? collectionAddressDetail = ''}) async {
     emit(LoadingData());
     final Result<CollectionDetailModel> result =
-        await _collectionDetailRepository.getCollectionDetail(id ?? '');
+        await _collectionDetailRepository
+            .getCollectionDetail(collectionAddressDetail ?? '');
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
@@ -233,14 +330,16 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         } else {
           emit(LoadingDataSuccess());
           arg = res;
+          funGetUrl(res.socialLinks ?? []);
           collectionDetailModel.sink.add(arg);
-          collectionId = arg.id ?? '';
-          collectionAddress = arg.collectionAddress ?? '';
+          collectionAddress = collectionAddressDetail ?? '';
+          getListFilterCollectionDetail(
+              collectionAddress: arg.collectionAddress ?? '');
           getListNft(
-            collectionId: arg.id ?? '',
+            collectionAddress: collectionAddressDetail ?? '',
           );
           getListActivityCollection(
-            collectionAddress: arg.collectionAddress ?? '',
+            collectionAddress: collectionAddressDetail ?? '',
           );
         }
       },
@@ -253,28 +352,29 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   Future<void> getListNft({
     List<int>? listMarketType,
     String? name,
-    required String collectionId,
+    int? size = 100,
+    int? page = 0,
+    required String collectionAddress,
   }) async {
-    statusNft.add(0);
+    statusNft.add(LOADING);
     final Result<List<NftMarket>> result = await _nftRepo.getListNftCollection(
-      collectionId: collectionId,
+      collectionAddress: collectionAddress,
       nameNft: name,
       listMarketType: listMarketType,
+      size: size,
+      page: page,
     );
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
-          statusNft.add(2);
-          //erorr
+          statusNft.add(ERORR);
         } else {
           listNft.add(res);
-          statusNft.add(1);
-
-          //success
+          statusNft.add(SUCCESS);
         }
       },
       error: (error) {
-        statusNft.add(3); //fail
+        statusNft.add(FAILD);
       },
     );
   }
@@ -282,38 +382,47 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   Future<void> getListActivityCollection({
     String? collectionAddress = '',
     String? type = '',
+    int? page,
+    int? size,
   }) async {
+    statusActivity.sink.add(LOADING);
     final Result<List<ActivityCollectionModel>> result =
         await _collectionDetailRepository.getCollectionListActivity(
       collectionAddress ?? '',
       type ?? '',
+      page ?? 0,
+      size ?? 0,
     );
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
           listActivity.add([]);
+          statusActivity.add(ERORR);
         } else {
           argActivity.addAll(res);
           listActivity.add(res);
+          statusActivity.add(SUCCESS);
         }
       },
-      error: (error) {},
+      error: (error) {
+        statusActivity.add(FAILD);
+      },
     );
   }
 
-  void funGetUrl(List<SocialLink> link) {
-    for (final SocialLink value in link) {
-      switch (value.type?.toLowerCase()) {
-        case 'facebook':
+  void funGetUrl(List<SocialLinkModel> link) {
+    for (final SocialLinkModel value in link) {
+      switch (value.type?.toUpperCase()) {
+        case FACEBOOK:
           linkUrlFacebook = value.url ?? '';
           break;
-        case 'instagram':
+        case INSTAGRAM:
           linkUrlInstagram = value.url ?? '';
           break;
-        case 'telegram':
+        case TELEGRAM:
           linkUrlTelegram = value.url ?? '';
           break;
-        case 'twitter':
+        case TWITTER:
           linkUrlTwitter = value.url ?? '';
           break;
         default:
@@ -408,8 +517,37 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         return ImageAssets.imgTokenYFII;
       case 'ZEC':
         return ImageAssets.imgTokenZEC;
+      case 'USDT':
+        return ImageAssets.imgTokenUSDT;
       default:
         return '';
+    }
+  }
+
+  Future<void> getListWallets() async {
+    try {
+      final data = {};
+      await trustWalletChannel.invokeMethod('getListWallets', data);
+    } on PlatformException {
+      //nothing
+    }
+  }
+
+  List<Wallet> listWallet = [];
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'getListWalletsCallback':
+        final List<dynamic> data = methodCall.arguments;
+        for (final element in data) {
+          listWallet.add(Wallet.fromJson(element));
+        }
+        for (final element in listWallet) {
+          listAcc.add(element.address?.formatAddressWalletConfirm() ?? '');
+        }
+        break;
+      default:
+        break;
     }
   }
 

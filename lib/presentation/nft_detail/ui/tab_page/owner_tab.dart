@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,7 @@ class OwnerTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
-      physics: const NeverScrollableScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       itemCount: listOwner.length,
       itemBuilder: (context, index) {
         return GestureDetector(
@@ -77,7 +76,7 @@ class OwnerTab extends StatelessWidget {
       case 1:
         return RichText(
           text: TextSpan(
-            text: '1 of 1 on sale for',
+            text: '1 of 1 on sale for ',
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
               14,
@@ -127,7 +126,7 @@ class OwnerTab extends StatelessWidget {
       case 3:
         return RichText(
           text: TextSpan(
-            text: '1 of 1 on pawn for',
+            text: '1 of 1 on pawn for ',
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
               14,

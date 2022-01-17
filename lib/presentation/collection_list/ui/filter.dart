@@ -134,42 +134,42 @@ class _FilterState extends State<Filter> {
                         ),
                         spaceH4,
                         IsBaseCheckBox(
-                          index: 0,
+                          index: CollectionBloc.HIGHEST_TRADING_VOLUME,
                           title: S.current.highest_trading_volume,
                           bloc: collectionBloc,
                         ),
                         IsBaseCheckBox(
-                          index: 1,
+                          index: CollectionBloc.LOWEST_TRADING_VOLUME,
                           title: S.current.lowest_trading_volume,
                           bloc: collectionBloc,
                         ),
                         IsBaseCheckBox(
-                          index: 2,
+                          index: CollectionBloc.NEWEST,
                           title: S.current.newest,
                           bloc: collectionBloc,
                         ),
                         IsBaseCheckBox(
-                          index: 3,
+                          index: CollectionBloc.OLDEST,
                           title: S.current.oldest,
                           bloc: collectionBloc,
                         ),
                         IsBaseCheckBox(
-                          index: 4,
+                          index: CollectionBloc.OWNER_FROM_HIGH_TO_LOW,
                           title: S.current.owner_from_high_to_low,
                           bloc: collectionBloc,
                         ),
                         IsBaseCheckBox(
-                          index: 5,
+                          index: CollectionBloc.OWNER_FROM_LOW_TO_HIGH,
                           title: S.current.owner_from_low_to_high,
                           bloc: collectionBloc,
                         ),
                         IsBaseCheckBox(
-                          index: 6,
+                          index: CollectionBloc.ITEM_FROM_HIGH_TO_LOW,
                           title: S.current.item_from_high_to_low,
                           bloc: collectionBloc,
                         ),
                         IsBaseCheckBox(
-                          index: 7,
+                          index: CollectionBloc.ITEM_FROM_LOW_TO_HIGH,
                           title: S.current.item_from_low_to_high,
                           bloc: collectionBloc,
                         ),
@@ -180,9 +180,7 @@ class _FilterState extends State<Filter> {
             spaceH24,
             GestureDetector(
               onTap: () {
-                collectionBloc.funFilter(
-                  index: collectionBloc.sortFilter + 1,
-                );
+                collectionBloc.funFilter();
                 Navigator.pop(context);
               },
               child: ButtonLuxury(

@@ -21,6 +21,14 @@ class ImageAssets {
   static const String icTokenBnb = '$baseImg/ic_token_bnb.png';
   static const String icTabHomeSelected = '$baseImg/ic_tab_home_selected.svg';
 
+  ///marketplace
+  static const String fabAddCollection = '$baseImg/float_btn_collection.png';
+  static const String fabAddNft = '$baseImg/float_btn_nft.png';
+  static const String fabCancel = '$baseImg/float_btn_cancel.png';
+  static const String folderFAB = '$baseImg/folder.png';
+  static const String nftFAB = '$baseImg/NFT.png';
+  static const String addFAB = '$baseImg/plus.png';
+  // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
 
   static const String imgTokenADA = '$baseImg/ADA.png';
@@ -65,6 +73,7 @@ class ImageAssets {
   static const String imgTokenYFI = '$baseImg/YFI.png';
   static const String imgTokenYFII = '$baseImg/YFII.png';
   static const String imgTokenZEC = '$baseImg/ZEC.png';
+  static const String imgTokenUSDT = '$baseImg/USDT.png';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';
@@ -112,9 +121,11 @@ class ImageAssets {
   static const String ic_token = '$baseImg/ic_token.png';
   static const String ic_circle = '$baseImg/ic_circle.png';
   static const String ic_edit = '$baseImg/ic_edit.png';
+  static const String ic_calendar = '$baseImg/ic_calendar.png';
   static const String ic_import = '$baseImg/ic_import.png';
   static const String ic_import2 = '$baseImg/ic_import2.png';
   static const String ic_line_down = '$baseImg/ic_line_down.png';
+  static const String ic_clock_white = '$baseImg/ic_clock_white.png';
   static const String ic_line_right = '$baseImg/ic_line_right.png';
   static const String ic_percent = '$baseImg/percent.png';
   static const String ic_drop_down = '$baseImg/dropdown.png';
@@ -269,6 +280,8 @@ class ImageAssets {
   static const String ic_telegram_svg = '$baseImg/ic_telegram_svg.svg';
   static const String ic_round_i = '$baseImg/ic_round_i.svg';
   static const String ic_expand_white_svg = '$baseImg/ic_expand_white_svg.svg';
+  static const String ic_camera_svg = '$baseImg/ic_camera_svg.svg';
+
 
   static const String ic_star = '$baseImg/ic_star.png';
 

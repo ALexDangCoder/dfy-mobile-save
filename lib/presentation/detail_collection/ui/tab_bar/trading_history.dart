@@ -1,6 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/list_activity.dart';
@@ -26,10 +25,44 @@ class ActivityCollection extends StatefulWidget {
 class _ActivityCollectionState extends State<ActivityCollection> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<ActivityCollectionModel>>(
-      stream: widget.detailCollectionBloc.listActivity,
+    return StreamBuilder<int>(
+      stream: widget.detailCollectionBloc.statusActivity,
       builder: (context, snapshot) {
-        if(snapshot.data?.isEmpty ?? false){
+        final statusActivity = snapshot.data ?? 0;
+        final list = widget.detailCollectionBloc.listActivity.value;
+        if (statusActivity == DetailCollectionBloc.SUCCESS) {
+          return ListView.builder(
+            itemCount: list.length,
+            padding: EdgeInsets.only(
+              top: 24.h,
+            ),
+            itemBuilder: (context, index) => Container(
+              color: Colors.transparent,
+              padding: EdgeInsets.only(bottom: 24.h),
+              child: ListActivity(
+                urlAvatar:
+                    '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid ?? ''}',
+                copy: '${list[index].numberOfCopies ?? 0}',
+                auctionType: list[index].auctionType ?? 99,
+                addressWalletSend: list[index].fromAddress ?? '',
+                marketStatus: list[index].marketStatus ?? 99,
+                price: '${list[index].price ?? 0}',
+                priceSymbol: list[index].priceSymbol ?? '',
+                title: list[index].nftName ?? '',
+                date: 0.formatDateTimeMy(
+                  list[index].eventDateTime ?? 0,
+                ),
+                addressWallet: list[index].toAddress ?? '',
+                urlSymbol: widget.detailCollectionBloc
+                    .funGetSymbolUrl(list[index].priceSymbol ?? ''),
+                nftType: list[index].nftType ?? 99,
+                typeActivity: list[index].activityType ?? 99,
+                index: index,
+                bloc: widget.detailCollectionBloc,
+              ),
+            ),
+          );
+        } else if (statusActivity == DetailCollectionBloc.FAILD) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -54,46 +87,43 @@ class _ActivityCollectionState extends State<ActivityCollection> {
               ),
             ],
           );
-        }else{
-          return ListView.builder(
-            itemCount: snapshot.data?.length,
-            padding: EdgeInsets.only(
-              top: 24.h,
+        } else if (statusActivity == DetailCollectionBloc.LOADING) {
+          return const Align(
+            alignment: Alignment.bottomCenter,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
             ),
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                print(index);
-              },
-              child: Container(
-                color: Colors.transparent,
-                padding: EdgeInsets.only(bottom: 24.h),
-                child: ListActivity(
-                  urlAvatar:
-                  '${ApiConstants.BASE_URL_IMAGE}${snapshot.data?[index].avatarCid ?? ''}',
-                  copy: '${snapshot.data?[index].numberOfCopies ?? 0}',
-                  auctionType: snapshot.data?[index].activityType ?? 99,
-                  addressWalletSend: snapshot.data?[index].fromAddress ??
-                      'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-                  marketStatus: snapshot.data?[index].marketStatus ?? 99,
-                  price: '${snapshot.data?[index].price ?? 0}',
-                  priceSymbol: snapshot.data?[index].priceSymbol ?? '',
-                  addressMyWallet: widget.addressWallet,
-                  title: snapshot.data?[index].nftName ?? '',
-                  date: 0.formatDateTimeMy(
-                    snapshot.data?[index].eventDateTime ?? 0,
+          );
+        } else {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(top: 80.h),
+              child: Column(
+                children: [
+                  Image(
+                    image: const AssetImage(
+                      ImageAssets.img_search_empty,
+                    ),
+                    height: 120.h,
+                    width: 120.w,
                   ),
-                  addressWallet: snapshot.data?[index].toAddress ??
-                      'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-                  urlSymbol: widget.detailCollectionBloc
-                      .funGetSymbolUrl(snapshot.data?[index].priceSymbol ?? ''),
-                  nft_type: snapshot.data?[index].nftType ?? 99,
-                  typeActivity: snapshot.data?[index].status ?? 99,
-                ),
+                  SizedBox(
+                    height: 17.7.h,
+                  ),
+                  Text(
+                    S.current.no_result_found,
+                    style: textNormal(
+                      AppTheme.getInstance().whiteWithOpacity(),
+                      20.sp,
+                    ),
+                  ),
+                ],
               ),
             ),
           );
         }
-
       },
     );
   }

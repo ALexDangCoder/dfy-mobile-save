@@ -10,58 +10,61 @@ part 'nft_collection_response.g.dart';
 class NftCollectionResponse extends Equatable {
   @JsonKey(name: 'type')
   int? type;
-  @JsonKey(name: 'name')
-  String? name;
-  @JsonKey(name: 'price')
-  double? price;
   @JsonKey(name: 'token')
   String? token;
   @JsonKey(name: 'standard')
   String? standard;
-  @JsonKey(name: 'market_id')
-  String? market_id;
+  @JsonKey(name: 'name')
+  String? name;
   @JsonKey(name: 'id_ref')
-  String? id_ref;
+  String? idRef;
+  @JsonKey(name: 'market_id')
+  String? marketId;
   @JsonKey(name: 'market_type')
-  String? market_type;
+  String? marketType;
   @JsonKey(name: 'file_cid')
-  String? file_cid;
+  String? fileCid;
+  @JsonKey(name: 'cover_cid')
+  String? coverCid;
   @JsonKey(name: 'number_of_copies')
-  int? number_of_copies;
+  int? numberOfCopies;
   @JsonKey(name: 'total_of_copies')
-  int? total_of_copies;
-  @JsonKey(name: 'market_status')
-  int? market_status;
+  int? totalOfCopies;
   @JsonKey(name: 'file_type')
   String? fileType;
-  @JsonKey(name: 'cover_cid')
-  String? cover_cid;
+  @JsonKey(name: 'market_status')
+  int? marketStatus;
   @JsonKey(name: 'is_reserve_price')
-  bool? is_reserve_price;
-  @JsonKey(name: 'start_time')
-  int? start_time;
-  @JsonKey(name: 'end_time')
-  int? end_time;
-
+  bool? isReservePrice;
+  @JsonKey(name: 'startTime')
+  int? startTime;
+  @JsonKey(name: 'endTime')
+  int? endTime;
+  @JsonKey(name: 'expected_loan_amount')
+  double? expectedLoanAmount;
+  @JsonKey(name: 'expected_loan_symbol')
+  String? expectedLoanSymbol;
 
   NftCollectionResponse(
-      this.type,
-      this.name,
-      this.price,
-      this.token,
-      this.standard,
-      this.market_id,
-      this.id_ref,
-      this.market_type,
-      this.file_cid,
-      this.number_of_copies,
-      this.total_of_copies,
-      this.market_status,
-      this.fileType,
-      this.cover_cid,
-      this.is_reserve_price,
-      this.start_time,
-      this.end_time);
+    this.type,
+    this.token,
+    this.standard,
+    this.name,
+    this.idRef,
+    this.marketId,
+    this.marketType,
+    this.fileCid,
+    this.coverCid,
+    this.numberOfCopies,
+    this.totalOfCopies,
+    this.fileType,
+    this.marketStatus,
+    this.isReservePrice,
+    this.startTime,
+    this.endTime,
+    this.expectedLoanAmount,
+    this.expectedLoanSymbol,
+  );
 
   factory NftCollectionResponse.fromJson(Map<String, dynamic> json) =>
       _$NftCollectionResponseFromJson(json);
@@ -96,26 +99,25 @@ class NftCollectionResponse extends Equatable {
       return MarketType.AUCTION;
     } else if (type == 3) {
       return MarketType.PAWN;
-    } else if(type ==1){
+    } else if (type == 1) {
       return MarketType.SALE;
-    }else{
+    } else {
       return MarketType.NOT_ON_MARKET;
     }
   }
 
-
   NftMarket toDomain() => NftMarket(
-        marketId: market_id ?? '',
-        marketType: getTypeMarket(market_status ?? 0),
+        marketId: marketId ?? '',
+        marketType: getTypeMarket(marketStatus ?? 0),
         typeImage: getTypeImage(fileType ?? ''),
-        price: price ?? 0,
+        price: expectedLoanAmount ?? 0,
         typeNFT: getTypeNft(type ?? 0),
-        image: getPath(file_cid ?? ''),
+        image: getPath(fileCid ?? ''),
         tokenBuyOut: token,
         name: name ?? '',
-        totalCopies: total_of_copies,
-        endTime: end_time,
-        startTime: start_time,
-        numberOfCopies: number_of_copies,
+        totalCopies: totalOfCopies ?? 0,
+        endTime: endTime ?? 0,
+        startTime: startTime ?? 0,
+        numberOfCopies: numberOfCopies ?? 0,
       );
 }

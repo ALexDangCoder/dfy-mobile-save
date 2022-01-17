@@ -3,7 +3,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
-import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
+import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
@@ -26,7 +26,7 @@ class ListFeaturedSoftNft extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MarketType marketTypeEnum;
+    final MarketType? marketTypeEnum;
     switch (marketType) {
       case 'sale':
         marketTypeEnum = MarketType.SALE;
@@ -38,8 +38,7 @@ class ListFeaturedSoftNft extends StatelessWidget {
         marketTypeEnum = MarketType.PAWN;
         break;
       default:
-        //todo đang hard code chưa có case all nên fix cứng type sale
-        marketTypeEnum = MarketType.SALE;
+        marketTypeEnum = null;
         break;
     }
     return Column(

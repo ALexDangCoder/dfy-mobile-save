@@ -5,7 +5,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/list_nft/bloc/list_nft_cubit.dart';
-import 'package:Dfy/presentation/market_place/ui/nft_item.dart';
+import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/filter_bts.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -16,13 +16,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ListNft extends StatefulWidget {
-  ListNft({
+  const ListNft({
     Key? key,
     this.marketType,
     this.queryAllResult,
   }) : super(key: key);
-  MarketType? marketType;
-  String? queryAllResult;
+  final MarketType? marketType;
+  final String? queryAllResult;
 
   @override
   _ListNftState createState() => _ListNftState();
@@ -40,11 +40,17 @@ class _ListNftState extends State<ListNft> {
     _debounce = Timer(const Duration(milliseconds: 500), () {});
     _cubit = ListNftCubit();
     _cubit.title.add(_cubit.getTitle(widget.marketType));
+    _cubit.getTokenInf();
     _cubit.getCollectionFilter();
     if (widget.marketType != null) {
-      _cubit.getListNft(status: _cubit.status(widget.marketType!));
+      _cubit.getListNft(status: _cubit.status(widget.marketType));
     } else {
-      _cubit.getListNft(name: widget.queryAllResult);
+      if(widget.queryAllResult != null){
+        _cubit.getListNft(name: widget.queryAllResult);
+      }
+      else{
+        _cubit.getListNft();
+      }
     }
   }
 
@@ -97,72 +103,90 @@ class _ListNftState extends State<ListNft> {
                         ),
                         child: searchBar(),
                       ),
-                      BlocBuilder<ListNftCubit, ListNftState>(
-                        bloc: _cubit,
-                        builder: (context, state) {
-                          if (state is ListNftSuccess) {
-                            if (_cubit.listData.isNotEmpty) {
-                              return Expanded(
-                                child: StaggeredGridView.countBuilder(
-                                  shrinkWrap: true,
-                                  mainAxisSpacing: 20.h,
-                                  itemCount: _cubit.listData.length,
-                                  crossAxisCount: 2,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: EdgeInsets.only(left: 16.w),
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: NFTItemWidget(
-                                          nftMarket: _cubit.listData[index],
+                      NotificationListener<ScrollNotification>(
+                        onNotification: (ScrollNotification scrollInfo) {
+                          if (_cubit.canLoadMoreListNft &&
+                              (scrollInfo.metrics.pixels ==
+                                  scrollInfo.metrics.maxScrollExtent)) {
+                            _cubit.loadMorePosts();
+                          }
+                          return true;
+                        },
+                        child: BlocBuilder<ListNftCubit, ListNftState>(
+                          bloc: _cubit,
+                          builder: (context, state) {
+                            if (state is ListNftSuccess ||
+                                state is ListNftLoadMore ||
+                                state is ListNftRefresh) {
+                              if (_cubit.listData.isNotEmpty) {
+                                return Expanded(
+                                  child: RefreshIndicator(
+                                    onRefresh: () async {
+                                      _cubit.refreshPosts();
+                                    },
+                                    child: StaggeredGridView.countBuilder(
+                                      shrinkWrap: true,
+                                      mainAxisSpacing: 20.h,
+                                      itemCount: _cubit.listData.length,
+                                      crossAxisCount: 2,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: EdgeInsets.only(left: 16.w),
+                                          child: GestureDetector(
+                                            onTap: () {},
+                                            child: NFTItemWidget(
+                                              nftMarket: _cubit.listData[index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      staggeredTileBuilder: (int index) =>
+                                          const StaggeredTile.fit(1),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Padding(
+                                  padding: EdgeInsets.only(top: 150.h),
+                                  child: Column(
+                                    children: [
+                                      Image(
+                                        image: const AssetImage(
+                                          ImageAssets.img_search_empty,
+                                        ),
+                                        height: 120.h,
+                                        width: 120.w,
+                                      ),
+                                      SizedBox(
+                                        height: 17.7.h,
+                                      ),
+                                      Text(
+                                        S.current.no_result_found,
+                                        style: textNormal(
+                                          Colors.white54,
+                                          20.sp,
                                         ),
                                       ),
-                                    );
-                                  },
-                                  staggeredTileBuilder: (int index) =>
-                                      const StaggeredTile.fit(1),
-                                ),
-                              );
-                            } else {
-                              return Padding(
-                                padding: EdgeInsets.only(top: 150.h),
-                                child: Column(
-                                  children: [
-                                    Image(
-                                      image: const AssetImage(
-                                        ImageAssets.img_search_empty,
-                                      ),
-                                      height: 120.h,
-                                      width: 120.w,
-                                    ),
-                                    SizedBox(
-                                      height: 17.7.h,
-                                    ),
-                                    Text(
-                                      S.current.no_result_found,
-                                      style: textNormal(
-                                        Colors.white54,
-                                        20.sp,
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                );
+                              }
+                            } else if (state is ListNftError) {
+                              return Container();
+                            } else if (state is ListNftLoading) {
+                              return SizedBox(
+                                height: 100.h,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 3.r,
+                                    color: AppTheme.getInstance().whiteColor(),
+                                  ),
                                 ),
                               );
                             }
-                          } else if (state is ListNftError) {
-                            return Container();
-                          } else {
-                            return SizedBox(
-                              height: 100.h,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 3.r,
-                                  color: AppTheme.getInstance().whiteColor(),
-                                ),
-                              ),
-                            );
-                          }
-                        },
+                            return const SizedBox();
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -204,14 +228,16 @@ class _ListNftState extends State<ListNft> {
                     controller: controller,
                     onChanged: (value) {
                       _cubit.show();
-                      _onSearchChanged(value);
+                      _onSearchChanged(value.trim());
                     },
                     cursorColor: Colors.white,
                     style: textNormal(
                       Colors.white,
                       16.sp,
                     ),
+                    maxLength: 255,
                     decoration: InputDecoration(
+                      counterText: '',
                       hintText: S.current.name_of_nft,
                       hintStyle: textNormal(
                         Colors.white54,
@@ -233,7 +259,7 @@ class _ListNftState extends State<ListNft> {
                             _cubit.hide();
                           });
                           _cubit.getListNft(
-                            status: _cubit.status(widget.marketType!),
+                            status: _cubit.status(widget.marketType),
                           );
                           FocusScope.of(context).unfocus();
                         },

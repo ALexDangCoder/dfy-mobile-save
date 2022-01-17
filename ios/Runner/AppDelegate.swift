@@ -173,7 +173,7 @@ extension AppDelegate {
         
         if call.method == "signTransactionWithData" {
             if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let contractAddress = arguments["contractAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let withData = arguments["withData"] as? String {
-                signTransactionWithData(walletAddress: walletAddress, contractAddress: contractAddress, nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, withData: withData)
+                result(signTransactionWithData(walletAddress: walletAddress, contractAddress: contractAddress.lowercased(), nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, withData: withData))
             }
         }
         
@@ -816,6 +816,13 @@ extension AppDelegate {
             param["isSuccess"] = false
             param["signedTransaction"] = ""
         }
+        param["walletAddress"] = walletAddress
+        param["contractAddress"] = contractAddress
+        param["nonce"] = nonce
+        param["chainId"] = chainId
+        param["gasPrice"] = gasPrice
+        param["gasLimit"] = gasLimit
+        param["withData"] = withData
         chatChanel?.invokeMethod("signTransactionWithDataCallback", arguments: param)
         return param
     }
