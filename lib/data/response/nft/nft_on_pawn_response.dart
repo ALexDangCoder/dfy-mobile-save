@@ -233,7 +233,11 @@ class NftCollateralDetailResponse {
         totalCopies: totalCopies,
         numberOfCopies: numberOfCopies,
         evaluationId: evaluationId,
-        image: getPath(nftAvatarCid ?? ''),
+        image: getPath(
+          (getTypeImage(typeImage ?? 'image') == TypeImage.IMAGE)
+              ? (image != '' ? (image ?? ''):(nftAvatarCid ?? ''))
+              : (nftAvatarCid ?? ''),
+        ),
         properties: propertiesResponse?.map((e) => e.toDomain()).toList(),
       );
 }

@@ -605,6 +605,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             bottomBar: _buildButtonSendOffer(context),
             content: [
               _nameNFT(
+                url: nftOnPawn.nftCollateralDetailDTO?.image ?? '',
                 context: context,
                 title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
               ),
