@@ -9,27 +9,35 @@ import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class OwnerTab extends StatelessWidget {
+class OwnerTab extends StatefulWidget {
   const OwnerTab({Key? key, required this.listOwner}) : super(key: key);
   final List<OwnerNft> listOwner;
 
   @override
+  State<OwnerTab> createState() => _OwnerTabState();
+}
+
+class _OwnerTabState extends State<OwnerTab>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
-    if (listOwner.isNotEmpty) {
+    if (widget.listOwner.isNotEmpty) {
       return ListView.builder(
+        shrinkWrap: true,
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: listOwner.length,
+        itemCount: widget.listOwner.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {},
-            child: _buildItemOwner(listOwner[index]),
+            child: _buildItemOwner(widget.listOwner[index]),
           );
         },
       );
     } else {
       return Center(
         child: ListView(
+          shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.symmetric(vertical: 100.h),
           children: [
@@ -186,4 +194,7 @@ class OwnerTab extends StatelessWidget {
         return const SizedBox();
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
