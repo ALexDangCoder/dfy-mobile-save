@@ -47,6 +47,7 @@ class NftMarket {
   String? evaluationId;
   bool? isWhitelist;
   int? pawnId;
+  bool? isBoughtByOther;
 
   NftMarket.init();
 
@@ -55,6 +56,7 @@ class NftMarket {
     this.token,
     this.nftId,
     this.tokenBuyOut,
+    this.isBoughtByOther,
     this.name,
     this.image,
     this.price,

@@ -102,33 +102,21 @@ class _NFTItemState extends State<NFTItemWidget> {
       onTap: () {
         if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
           _controller!.pause();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NFTDetailScreen(
-                typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
-                marketId: widget.nftMarket.marketId,
-                typeNft: widget.nftMarket.typeNFT,
-                nftId: widget.nftMarket.nftId,
-                pawnId: widget.nftMarket.pawnId,
-              ),
-            ),
-          );
         }
-        if (widget.nftMarket.typeNFT == TypeNFT.SOFT_NFT) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NFTDetailScreen(
-                key: nftKey,
-                typeMarket: widget.nftMarket.marketType!,
-                marketId: widget.nftMarket.marketId,
-              ),
-            ),
-          );
-        } else {
-          ///push HardNft
-        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                NFTDetailScreen(
+                  key: nftKey,
+                  typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
+                  marketId: widget.nftMarket.marketId,
+                  typeNft: widget.nftMarket.typeNFT,
+                  nftId: widget.nftMarket.nftId,
+                  pawnId: widget.nftMarket.pawnId,
+                ),
+          ),
+        );
       },
       child: Stack(
         children: [
@@ -246,12 +234,16 @@ class _NFTItemState extends State<NFTItemWidget> {
                               SizedBox(
                                 width: 4.18.h,
                               ),
-                              Text(
-                                formatValue.format(widget.nftMarket.price),
-                                style: textNormalCustom(
-                                  Colors.yellow,
-                                  13,
-                                  FontWeight.w600,
+                              SizedBox(
+                                width: 70.w,
+                                child: Text(
+                                  formatValue.format(widget.nftMarket.price),
+                                  style: textNormalCustom(
+                                    Colors.yellow,
+                                    13,
+                                    FontWeight.w600,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],
@@ -266,6 +258,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                             13,
                             FontWeight.w600,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),

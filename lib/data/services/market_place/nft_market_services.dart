@@ -1,4 +1,4 @@
-import 'package:Dfy/data/response/nft_market/list_nft_collection_respone.dart';
+
 import 'package:Dfy/data/response/nft_market/list_response_from_api.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:dio/dio.dart';
@@ -20,11 +20,5 @@ abstract class NftMarketClient {
     @Query('size') String? size,
   );
 
-  @POST(ApiConstants.GET_LIST_NFT_COLLECTION)
-  Future<ListNftCollectionResponse> getListNftCollection(
-      @Field('collection_address') String? collectionAddress,
-      @Field('page') int? page,
-      @Field('size') int? size,
-      @Field('name') String? nameNft,
-      @Field('market_type') List<int>? listMarketType);
+
 }
