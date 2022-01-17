@@ -31,7 +31,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   static const int SOFT_COLLECTION = 0;
   static const int HARD_COLLECTION = 1;
 
-  BehaviorSubject<List<CollectionMarketModel>> list = BehaviorSubject();
+  BehaviorSubject<List<CollectionMarketModel>> list = BehaviorSubject.seeded([]);
   BehaviorSubject<bool> isHighestTradingVolume = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isLowestTradingVolume = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isNewest = BehaviorSubject.seeded(false);
