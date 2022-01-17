@@ -168,14 +168,8 @@ class _NFTItemState extends State<NFTItemWidget> {
                             borderRadius: BorderRadius.circular(10.r),
                             child: (widget.nftMarket.typeImage !=
                                     TypeImage.VIDEO)
-                                ? CachedNetworkImage(
-                                    placeholder: (context, url) => Center(
-                                      child: CircularProgressIndicator(
-                                        color:
-                                            AppTheme.getInstance().bgBtsColor(),
-                                      ),
-                                    ),
-                                    imageUrl: widget.nftMarket.image ?? '',
+                                ? Image.network(
+                                     widget.nftMarket.image ?? '',
                                     fit: BoxFit.cover,
                                   )
                                 : VideoPlayer(_controller!),
