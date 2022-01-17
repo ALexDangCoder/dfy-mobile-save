@@ -44,6 +44,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     required ModelToken token,
     required BuildContext context,
   }) async {
+    emit(LoadingBeforeConfirm());
     final result = await Web3Utils().getTokenGasLimit(
       contract: token.tokenAddress,
       symbol: token.nameShortToken,
@@ -53,21 +54,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       context: context,
     );
     estimateGasFee = double.parse(result);
-    // if (token.nameShortToken == 'BNB') {
-    //   // final result = await Web3Utils()
-    //   //     .getEstimateGasPrice(from: from, to: to, value: value);
-    //   final result = await Web3Utils().getTokenGasLimit(
-    //     contract: token.tokenAddress,
-    //     symbol: token.nameShortToken,
-    //     from: from,
-    //     to: to,
-    //     amount: value,
-    //     context: context,
-    //   );
-    //   estimateGasFee = double.parse(result);
-    // } else {
-    //   estimateGasFee = 45000;
-    // }
+    emit(LoadSuccessBeforeConfirm());
   }
   late double gasLimitNft;
   Future<void> getGasLimitNft({

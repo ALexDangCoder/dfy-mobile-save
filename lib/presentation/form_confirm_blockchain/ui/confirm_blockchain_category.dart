@@ -92,17 +92,17 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
 
   @override
   void initState() {
-    _txtGasLimit = TextEditingController(
-      text: widget.gasLimitFirstFetch.toString(),
-    );
-    _txtGasPrice =
-        TextEditingController(text: widget.gasPriceFirstFetch.toString());
     //if token != bnb will not subtract else subtract, do not delete this line
     if (widget.nameToken != 'BNB') {
       balanceWallet = widget.balanceWallet;
     } else {
       balanceWallet = widget.balanceWallet - widget.amount!.toDouble();
     }
+    _txtGasLimit = TextEditingController(
+      text: widget.gasLimitFirstFetch.toString(),
+    );
+    _txtGasPrice =
+        TextEditingController(text: widget.gasPriceFirstFetch.toString());
     _informationWallet = InformationWallet(
       cubit: cubitFormCustomizeGasFee,
       nameWallet: widget.nameWallet,
@@ -184,14 +184,16 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 backgroundColor: Colors.transparent,
                 content: TransactionSubmitFail(),
               ),
-            ).then((value) => Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
-                    ),
+            ).then(
+              (value) => Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const MainScreen(
+                    index: 1,
                   ),
-                  (route) => route.isFirst,
-                ));
+                ),
+                (route) => route.isFirst,
+              ),
+            );
           } else if (state is FormBlockchainSendTokenLoading) {
             showDialog(
               barrierDismissible: false,
