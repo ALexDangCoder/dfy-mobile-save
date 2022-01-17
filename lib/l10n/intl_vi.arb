@@ -473,7 +473,7 @@
   "you_must_bid_greater": "Bạn phải nhập giá cao hơn giá hiện tại",
   "address":"Address",
   "item_price": "Giá",
-  "start_in": "Chưa bắt đầu",
+  "start_in": "Bắt đầu trong",
   "purchase_being_processed": "Nft đang được giao dịch bởi một ai đó.",
     "error_might_occur": "Có lỗi có thể xảy ra nếu bạn tiếp tục",
   "end_in": "Kết thúc"

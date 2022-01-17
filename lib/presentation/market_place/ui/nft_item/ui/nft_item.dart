@@ -290,9 +290,9 @@ class _NFTItemState extends State<NFTItemWidget> {
   Widget timeCountdown(MarketType? type) {
     if (type == MarketType.AUCTION) {
       return Padding(
-        padding: EdgeInsets.only(top: 119.h, left: 35.5.w),
+        padding: EdgeInsets.only(top: 119.h, left: 26.5.w),
         child: Container(
-          width: 97.w,
+          width: 107.w,
           height: 24.h,
           decoration: BoxDecoration(
             color: const Color(0xFFFFCD28).withOpacity(0.7),
@@ -304,10 +304,8 @@ class _NFTItemState extends State<NFTItemWidget> {
             ),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 7.w,
-              ),
               ImageIcon(
                 const AssetImage(
                   ImageAssets.ic_clock2,
