@@ -8,11 +8,12 @@ class ApiConstants {
   static const String DEFAULT_NFT_SIZE = '12';
   static const String GET_LIST_TOKEN =
       '/nft-market-svc/public-api/market/coin-list';
-  static const String DETAIL_CATEGORY = 'nft-market-svc/public-api/collection';
-  static const String GET_PRICE_TOKEN_BY_SYMBOL =
-      '/nft-market-svc/public-api/market/coin-price';
+  static const String DETAIL_CATEGORY = 'inventory-svc/public-api/collections';
+  static const String GET_PRICE_TOKEN_BY_SYMBOL = '/nft-market-svc/public-api/market/coin-price';
   static const String GET_DETAIL_NFT_AUCTION =
       '/nft-market-svc/public-api/auction/detail/';
+  static const String GET_EVALUATION_HARD_NFT =
+      '/hard-nft-svc/public-api/evaluations/';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE =
       '/nft-market-svc/public-api/home';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE_SEARCH =
@@ -55,8 +56,8 @@ class ApiConstants {
   static const String GET_OWNER = 'inventory-svc/public-api/v1.0.0/owners';
   static const String GET_BIDDING =
       '/nft-market-svc/public-api/auction/bidding-list';
-  static const String BUY_NFT = '/nft-market-svc/api/market/buy';
-  static const String BID_NFT = '/nft-market-svc/api/auction/bid';
+  static const String BUY_NFT =
+      '/nft-market-svc/api/market/buy';
 
   static const String GET_DETAIL_NFT_ON_PAWN =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts/';
@@ -71,6 +72,7 @@ class ApiConstants {
 
   //cacel sale
   static const String CANCEL_SALE = '/nft-market-svc/api/market/cancel';
+  static const String BID_NFT = '/nft-market-svc/api/auction/bid';
 
   //CREATE COLLECTION
   static const String CREATE_SOFT_COLLECTION = '/nft-market-svc/api/collection/create';

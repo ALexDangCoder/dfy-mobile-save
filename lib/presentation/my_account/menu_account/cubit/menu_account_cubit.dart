@@ -1,16 +1,23 @@
+import 'dart:async';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'menu_account_state.dart';
 
+
 class MenuAccountCubit extends BaseCubit<MenuAccountState> {
   MenuAccountCubit() : super(NoLoginState());
 
-  final BehaviorSubject<int> _index = BehaviorSubject<int>.seeded(-1);
+  final BehaviorSubject<String?> _addressWalletSubject =
+      BehaviorSubject.seeded('seedValue');
 
-  Stream<int> get indexStream => _index.stream;
+  Stream<String?> get addressWalletStream => _addressWalletSubject.stream;
 
-  void changeIndex (int index ){
-    _index.sink.add(index);
+  Future<void> logout() async {
+    showLoading();
+    await Future.delayed(const Duration(seconds: 2));
+    _addressWalletSubject.add(null);
+    showContent();
   }
 }

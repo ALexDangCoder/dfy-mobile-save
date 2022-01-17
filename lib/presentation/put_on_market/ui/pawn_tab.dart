@@ -222,7 +222,7 @@ class _PawnTabState extends State<PawnTab>
                         MaterialPageRoute(
                           builder: (context) => Approve(
                             gasLimitInit: 10.0,
-                            isShowTwoButton: true,
+                            needApprove: true,
                             title: S.current.put_on_sale,
                             listDetail: [
                               DetailItemApproveModel(

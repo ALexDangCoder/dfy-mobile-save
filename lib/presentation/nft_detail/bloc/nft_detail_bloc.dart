@@ -5,10 +5,10 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
-import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
+import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
@@ -19,14 +19,14 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -46,6 +46,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String rawData = '';
   String nftMarketId = '';
   int quantity = 0;
+  double totalPayment = 0;
   double bidValue = 0;
 
   NFTRepository get _nftRepo => Get.find();
@@ -69,6 +70,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       BehaviorSubject.seeded([]);
   final BehaviorSubject<List<OfferDetail>> listOfferStream =
       BehaviorSubject.seeded([]);
+  final BehaviorSubject<Evaluation> evaluationStream =
+      BehaviorSubject();
 
   String symbolToken = '';
 
@@ -117,7 +120,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listOwnerStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
       },
     );
   }
@@ -131,7 +134,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listBiddingStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
       },
     );
   }
@@ -145,7 +148,22 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listOfferStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
+      },
+    );
+  }
+
+  ///GetEvaluation
+  Future<void> getEvaluation(String evaluationId, String urlIcon) async {
+    final Result<Evaluation> result =
+        await _nftRepo.getEvaluation(evaluationId);
+    result.when(
+      success: (res) {
+        res.urlToken = urlIcon;
+        evaluationStream.add(res);
+      },
+      error: (error) {
+        showContent();
       },
     );
   }
@@ -176,6 +194,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           emit(NftOnSaleSuccess(res));
           getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
+          }
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.tokenBuyOut ?? '';
             final address = value.address ?? '';
@@ -205,6 +226,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           showContent();
           nftOnAuction = res;
           emit(NftOnAuctionSuccess(res));
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
+          }
           getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getBidding(res.id.toString());
@@ -240,6 +264,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             }
           }
           emit(NftOnPawnSuccess(res));
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            getEvaluation(res.nftCollateralDetailDTO?.evaluationId ?? '',
+                res.urlToken ?? '');
+          }
           getHistory(
             res.nftCollateralDetailDTO?.collectionAddress ?? '',
             res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '',
@@ -423,12 +451,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         toContractAddress: toAddress,
         dataString: hexString,
       );
-      emit(
-        GetGasLimitSuccess(
-          nftMarket,
-          gasLimit,
-        ),
-      );
     } catch (e) {
       throw AppException(S.current.error, e.toString());
     }
@@ -459,6 +481,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => Approve(
+                    needApprove: true,
+                    payValue: totalPayment.toString(),
+                    tokenAddress: nftMarket.token,
                     title: S.current.buy_nft,
                     header: Column(
                       children: [
@@ -516,7 +541,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
                         ),
                       ],
                     ),
-                    textActiveButton: S.current.approve,
+                    textActiveButton: S.current.buy_nft,
                     gasLimitInit: double.parse(value),
                     typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
                   ),
@@ -542,6 +567,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => Approve(
+                    needApprove: true,
+                    tokenAddress: nftOnAuction.token,
+                    payValue: bidValue.toString(),
                     title: S.current.place_a_bid,
                     header: Column(
                       children: [

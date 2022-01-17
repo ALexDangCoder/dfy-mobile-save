@@ -1,8 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/ui/hard_nft_screen.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
@@ -102,17 +100,17 @@ class ListNftHard extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) {
-                                return HardNFTScreen(
-                                  bloc: HardNFTBloc(),
-                                  isAuction: true,
-                                );
-                              },
-                            );
+                            // showModalBottomSheet(
+                            //   isScrollControlled: true,
+                            //   context: context,
+                            //   backgroundColor: Colors.transparent,
+                            //   builder: (context) {
+                            //     return HardNFTScreen(
+                            //       bloc: HardNFTBloc(),
+                            //       isAuction: true,
+                            //     );
+                            //   },
+                            // );
                           },
                           child: Row(
                             children: [
