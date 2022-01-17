@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsService {
   static const _PREF_TRANSACTION_HISTORY = 'pref_transaction_history';
+  static const _PREF_WALLET_LOGIN = 'pref_wallet_login';
   static const _PREF_LANGUAGE = 'pref_language';
   static const _PREF_APPLOCK = 'pref_appLock';
   static const _PREF_FACE_ID = 'pref_face_id';
@@ -75,10 +76,22 @@ class PrefsService {
     return _prefsInstance?.getString(_PREF_TRANSACTION_HISTORY) ?? '';
   }
 
+  static Future<bool> saveWalletLogin(String data) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_WALLET_LOGIN, data);
+  }
+
+  static Future<String> getWalletLogin() async {
+    return _prefsInstance?.getString(_PREF_WALLET_LOGIN) ?? '';
+  }
+
+  static Future<bool> clearWalletLogin() async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_WALLET_LOGIN, '');
+  }
+
   Future<void> clearData() async {
     await _prefsInstance?.clear();
     return;
   }
-
-
 }
