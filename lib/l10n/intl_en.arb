@@ -226,5 +226,6 @@
   "send_nft": "Send NFT",
   "copied_address": "Copied address!",
   "copied_private_key": "Copied private key!",
-  "copied_seed_phrase": "Copied seed phrase!"
+  "copied_seed_phrase": "Copied seed phrase!",
+  "bnb": "BNB"
 }
