@@ -388,6 +388,7 @@ class _SearchNFTState extends State<SearchNFT> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => NFTDetailScreen(
+                                  key: nftKey,
                                   typeMarket:
                                       searchCubit.listNFT[index].marketType!,
                                   marketId: searchCubit.listNFT[index].marketId,

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
@@ -33,14 +34,14 @@ class _NFTItemState extends State<NFTItemWidget> {
   final formatValue = NumberFormat('###,###,###.###', 'en_US');
   late VideoPlayerController? _controller;
   late CountdownTimerController countdownController;
+  late CountdownTimerController coutdownStartTime;
   DateTime? startTimeAuction;
   DateTime? endTimeAuction;
   late NftItemCubit cubitNft;
-
-  void onEnd() {
-    //todo
-    print('onEnd');
-  }
+  late Timer timer;
+  bool isShowStartTimeFtText = false;
+  late int timeStartStamp;
+  String textShowStartFtTime = '';
 
   @override
   void initState() {
@@ -56,15 +57,31 @@ class _NFTItemState extends State<NFTItemWidget> {
     cubitNft = NftItemCubit();
     if (widget.nftMarket.marketType == MarketType.AUCTION) {
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
-        value: widget.nftMarket.startTime ?? 0,
+        // value: widget.nftMarket.startTime ?? 0,
+        // value: 1642637464000,
+        value: 1642471860000,
       );
       endTimeAuction = cubitNft.parseTimeServerToDateTime(
-        // value: (widget.nftMarket.endTime == 0) ? 0 : 0);
-        value: 1642637464000,
+        // value: (widget.nftMarket.endTime == 0) ? 0 : 0,
+        // value: 1642637464000,
+        value: 1642558260000,
       );
+      //todo đang hardcode startTime
+      // timeStartStamp = 1642637464000;
       countdownController = CountdownTimerController(
         endTime: endTimeAuction!.millisecondsSinceEpoch,
       );
+
+      coutdownStartTime = CountdownTimerController(
+        endTime: startTimeAuction!.millisecondsSinceEpoch,
+      );
+
+      ///set time show text start in when auction not start yet
+      timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+        isShowStartTimeFtText = !isShowStartTimeFtText;
+        cubitNft.isNotStartYet(startTime: startTimeAuction!);
+        setState(() {});
+      });
     } else {
       //todo when not auction
     }
@@ -75,6 +92,7 @@ class _NFTItemState extends State<NFTItemWidget> {
     if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
       _controller!.dispose();
     }
+    timer.cancel();
     super.dispose();
   }
 
@@ -90,6 +108,7 @@ class _NFTItemState extends State<NFTItemWidget> {
           MaterialPageRoute(
             builder: (context) =>
                 NFTDetailScreen(
+                  key: nftKey,
                   typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
                   marketId: widget.nftMarket.marketId,
                   typeNft: widget.nftMarket.typeNFT,
@@ -300,13 +319,37 @@ class _NFTItemState extends State<NFTItemWidget> {
                 width: 5.w,
               ),
               if (cubitNft.isNotStartYet(startTime: startTimeAuction!)) ...[
-                Text(
-                  S.current.start_in,
-                  style: textNormalCustom(
-                    AppTheme.getInstance().whiteColor(),
-                    13,
-                    FontWeight.w600,
-                  ),
+                CountdownTimer(
+                  controller: coutdownStartTime,
+                  widgetBuilder: (_, CurrentRemainingTime? time) {
+                    if (time == null) {
+                      return Text(
+                        '00:00:00:00',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          13,
+                          FontWeight.w600,
+                        ),
+                      );
+                    }
+                    return isShowStartTimeFtText
+                        ? Text(
+                            S.current.start_in,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              13,
+                              FontWeight.w600,
+                            ),
+                          )
+                        : Text(
+                            '${time.days ?? 0}:${time.hours ?? 0}:${time.min ?? 0}:${time.sec ?? 0}',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              13,
+                              FontWeight.w600,
+                            ),
+                          );
+                  },
                 )
               ] else ...[
                 if (cubitNft.isOutOfTimeAuction(endTime: endTimeAuction!))
@@ -315,7 +358,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                     widgetBuilder: (_, CurrentRemainingTime? time) {
                       if (time == null) {
                         return Text(
-                          S.current.end_in,
+                          '00:00:00:00',
                           style: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             13,
@@ -324,7 +367,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                         );
                       }
                       return Text(
-                        '${time.days ?? 00}:${time.hours}:${time.min}:${time.sec}',
+                        '${time.days ?? 0}:${time.hours ?? 0}:${time.min ?? 0}:${time.sec}',
                         style: textNormalCustom(
                           AppTheme.getInstance().whiteColor(),
                           13,
@@ -335,7 +378,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                   )
                 else
                   Text(
-                    S.current.end_in,
+                    '00:00:00:00',
                     style: textNormalCustom(
                       AppTheme.getInstance().whiteColor(),
                       13,
@@ -350,6 +393,17 @@ class _NFTItemState extends State<NFTItemWidget> {
     } else {
       return Container();
     }
+  }
+
+  Widget textStartForAuction(String text) {
+    return Text(
+      text,
+      style: textNormalCustom(
+        AppTheme.getInstance().whiteColor(),
+        13,
+        FontWeight.w600,
+      ),
+    );
   }
 
   Widget playVideo(TypeImage? type) {

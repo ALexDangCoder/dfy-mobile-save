@@ -14,6 +14,5 @@ abstract class DetailCategoryClient {
   Future<DetailCategoryResponse> getListCollectInCategory(
       @Query('size') int size,
       @Query('category') String category,
-      @Query('page') int page,
-      );
+      @Query('page') int page,);
 }

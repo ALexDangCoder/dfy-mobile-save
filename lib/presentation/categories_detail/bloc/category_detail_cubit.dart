@@ -1,7 +1,7 @@
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
+import 'package:Dfy/domain/model/market_place/collection_categories_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
 import 'package:Dfy/domain/model/market_place/list_collection_detail_model.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
@@ -11,49 +11,63 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:rxdart/rxdart.dart';
 
+enum LoadMoreType {
+  CAN_LOAD_MORE,
+  LOAD_MORE_FAIL,
+  NOT_CAN_LOAD_MORE,
+}
+
+
 class CategoryDetailCubit extends BaseCubit<CategoryState> {
   CategoryDetailCubit() : super(LoadingCategoryState());
 
   int nextPage = 1;
+  bool loading = false;
 
   CategoryRepository get _categoryService => Get.find();
 
   DetailCategoryRepository get _detailCategoryService => Get.find();
 
-  final BehaviorSubject<List<CollectionDetailModel>> _listCollectionSubject =
-      BehaviorSubject<List<CollectionDetailModel>>();
+  final BehaviorSubject<List<CollectionCategoryModel>> _listCollectionSubject =
+      BehaviorSubject<List<CollectionCategoryModel>>();
   final BehaviorSubject<Category> _categorySubject =
       BehaviorSubject<Category>();
-  final BehaviorSubject<bool> _canLoadMoreSubject = BehaviorSubject<bool>();
+  final BehaviorSubject<LoadMoreType> canLoadMoreSubject = BehaviorSubject<LoadMoreType>();
 
-  Stream<List<CollectionDetailModel>> get listCollectionStream =>
+  Stream<List<CollectionCategoryModel>> get listCollectionStream =>
       _listCollectionSubject.stream;
 
   Stream<Category> get categoryStream => _categorySubject.stream;
 
-  Stream<bool> get canLoadMoreStream => _canLoadMoreSubject.stream;
+  Stream<LoadMoreType> get canLoadMoreStream => canLoadMoreSubject.stream;
 
   Future<void> getListCollection(String id) async {
-    final Result<ListCollectionDetailModel> result =
-        await _detailCategoryService.getListCollectInCategory(10, id, nextPage);
-    result.map(
-      success: (result) {
-        final List<CollectionDetailModel> currentList =
-            _listCollectionSubject.valueOrNull ?? [];
-        if (result.data.listData.isNotEmpty) {
-          _listCollectionSubject.sink
-              .add([...currentList, ...result.data.listData]);
-        }
-        if (currentList.length + result.data.listData.length ==
-            result.data.total) {
-          _canLoadMoreSubject.sink.add(false);
-        }
-        nextPage++;
-      },
-      error: (error) {
-        //print(error);
-      },
-    );
+    if (state is! ErrorCategoryState && loading == false){
+      loading = true;
+      final Result<ListCollectionDetailModel> result =
+      await _detailCategoryService.getListCollectInCategory(10, id, nextPage);
+      result.map(
+        success: (result) {
+          final List<CollectionCategoryModel> currentList =
+              _listCollectionSubject.valueOrNull ?? [];
+          if (result.data.listData.isNotEmpty) {
+            _listCollectionSubject.sink
+                .add([...currentList, ...result.data.listData]);
+          }
+          if (currentList.length + result.data.listData.length ==
+              result.data.total) {
+            canLoadMoreSubject.sink.add(LoadMoreType.NOT_CAN_LOAD_MORE);
+          }
+          emit(LoadListCollectionSuccessState());
+          nextPage++;
+        },
+        error: (error) {
+          emit(LoadListCollectionFailState());
+          canLoadMoreSubject.sink.add(LoadMoreType.LOAD_MORE_FAIL);
+        },
+      );
+      loading = false;
+    }
   }
 
   Future<void> getCategory(String id) async {
@@ -63,7 +77,7 @@ class CategoryDetailCubit extends BaseCubit<CategoryState> {
       success: (response) {
         if (response.isNotEmpty) {
           _categorySubject.sink.add(response.first);
-          emit(LoadedCategoryState());
+          emit(LoadingListCollectionState());
         }
         else {
           emit(ErrorCategoryState());
@@ -81,6 +95,9 @@ class CategoryDetailCubit extends BaseCubit<CategoryState> {
   }
 
   Future<void> getData(String id) async {
+    nextPage = 1;
+    _listCollectionSubject.sink.add([]);
+    canLoadMoreSubject.sink.add(LoadMoreType.CAN_LOAD_MORE);
     await getCategory(id);
     await getListCollection(id);
   }
