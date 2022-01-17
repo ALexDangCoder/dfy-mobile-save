@@ -38,6 +38,7 @@ import 'package:Dfy/widgets/count_down_view/ui/nft_countdownn.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
+import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
@@ -451,6 +452,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                   }
                 },
                 child: _nameNFT(
+                  context: context,
                   title: objSale.name ?? '',
                   quantity: objSale.totalCopies ?? 1,
                   url: objSale.image ?? '',
@@ -603,6 +605,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             bottomBar: _buildButtonSendOffer(context),
             content: [
               _nameNFT(
+                context: context,
                 title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
               ),
               _priceContainerOnPawn(nftOnPawn: nftOnPawn),
@@ -776,6 +779,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
             content: [
               _nameNFT(
+                context: context,
                 title: nftOnAuction.name ?? '',
                 quantity: nftOnAuction.numberOfCopies ?? 1,
                 url: nftOnAuction.fileCid ?? '',

@@ -119,7 +119,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listOwnerStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
       },
     );
   }
@@ -133,7 +133,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listBiddingStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
       },
     );
   }
@@ -147,7 +147,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listOfferStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
       },
     );
   }
@@ -162,7 +162,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         evaluationStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
       },
     );
   }
