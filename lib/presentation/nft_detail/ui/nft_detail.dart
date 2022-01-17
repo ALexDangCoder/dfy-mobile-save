@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Dfy/config/base/base_custom_scroll_view.dart';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
@@ -126,9 +128,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             StreamBuilder<Evaluation>(
               stream: bloc.evaluationStream,
               builder: (
-                  context,
-                  AsyncSnapshot<Evaluation> snapshot,
-                  ) {
+                context,
+                AsyncSnapshot<Evaluation> snapshot,
+              ) {
                 return EvaluationTab(
                   evaluation: snapshot.data ?? Evaluation(),
                 );
@@ -241,15 +243,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             StreamBuilder<Evaluation>(
               stream: bloc.evaluationStream,
               builder: (
-                  context,
-                  AsyncSnapshot<Evaluation> snapshot,
-                  ) {
-                if(snapshot.data?.id!.isNotEmpty ?? false){
+                context,
+                AsyncSnapshot<Evaluation> snapshot,
+              ) {
+                if (snapshot.data?.id!.isNotEmpty ?? false) {
                   return EvaluationTab(
                     evaluation: snapshot.data!,
                   );
-                }
-                else {
+                } else {
                   return Center(
                     child: ListView(
                       physics: const NeverScrollableScrollPhysics(),
@@ -266,7 +267,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           child: Text(
                             S.current.no_transaction,
                             style: tokenDetailAmount(
-                              color: AppTheme.getInstance().currencyDetailTokenColor(),
+                              color: AppTheme.getInstance()
+                                  .currencyDetailTokenColor(),
                               fontSize: 20,
                             ),
                           ),
@@ -389,6 +391,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 quantity: objSale.totalCopies ?? 1,
                 url: objSale.image ?? '',
                 price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
+                context: context,
               ),
               _priceContainerOnSale(
                 price: objSale.price ?? 0,
