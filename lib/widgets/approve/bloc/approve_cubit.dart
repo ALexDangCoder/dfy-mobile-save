@@ -267,7 +267,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           isApprovedSubject.sink.add(resultApprove.boolValue('isSuccess'));
         } else {
           final result = await sendRawData(rawData ?? '');
-
           switch (type) {
             case TYPE_CONFIRM_BASE.BUY_NFT:
               if (result['isSuccess']) {

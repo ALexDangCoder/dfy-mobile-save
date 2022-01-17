@@ -19,7 +19,6 @@ import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
@@ -179,7 +178,6 @@ class _ApproveState extends State<Approve> {
     isShowLoading = false;
   }
 
-
   ///  Action sign (use this base call NamLV)
   ///  [gasLimitFinal] is value of gas limit final
   ///  don't use gas limit was passed into constructor
@@ -189,8 +187,11 @@ class _ApproveState extends State<Approve> {
   /// user can edit gas limit and gas price so
   /// DON'T USE [gasLimitFirst] AND THE FIRST GAS PRICE
   ///  USE [gasLimitFinal] AND [gasPriceFinal]
-  Future<void> signTransaction(double gasLimitFinal,
-      double gasPriceFinal,) async {
+  Future<void> signTransaction(
+      double gasLimitFinal, double gasPriceFinal) async {
+    final String gasPriceString =
+        (gasPriceFinal = gasPriceFinal / 1e9).toStringAsFixed(0);
+    final String gasLimitString = gasLimitFinal.toStringAsFixed(0);
     switch (widget.typeApprove) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         {
@@ -198,11 +199,9 @@ class _ApproveState extends State<Approve> {
             walletAddress: nftDetailBloc.walletAddress,
             contractAddress: nft_sales_address_dev2,
             nonce: nonce.toString(),
-            chainId: Get
-                .find<AppConstants>()
-                .chaninId,
-            gasPrice: gasPriceFinal.toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toStringAsFixed(0),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
             hexString: nftDetailBloc.hexString,
           );
         }
@@ -213,11 +212,9 @@ class _ApproveState extends State<Approve> {
             walletAddress: nftDetailBloc.walletAddress,
             contractAddress: nft_auction_dev2,
             nonce: nonce.toString(),
-            chainId: Get
-                .find<AppConstants>()
-                .chaninId,
-            gasPrice: gasPriceFinal.toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toStringAsFixed(0),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
             hexString: nftDetailBloc.hexString,
           );
           break;
@@ -230,16 +227,13 @@ class _ApproveState extends State<Approve> {
         {
           cubit.showLoading();
           final int n = await nftDetailBloc.getNonceWeb3();
-          await cubit
-              .signTransactionWithData(
+          await cubit.signTransactionWithData(
             walletAddress: nftDetailBloc.walletAddress,
             contractAddress: nft_sales_address_dev2,
             nonce: n.toString(),
-            chainId: Get
-                .find<AppConstants>()
-                .chaninId,
-            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toStringAsFixed(0),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
             hexString: nftDetailBloc.hexString,
           );
           cubit.showContent();
@@ -252,11 +246,9 @@ class _ApproveState extends State<Approve> {
             contractAddress: nft_sales_address_dev2,
             nonce: (widget.createCollectionCubit?.transactionNonce ?? 0)
                 .toString(),
-            chainId: Get
-                .find<AppConstants>()
-                .chaninId,
-            gasPrice: (gasPriceFinal / 10e8).toStringAsFixed(0),
-            gasLimit: gasLimitFinal.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
             hexString: widget.createCollectionCubit?.transactionData ?? '',
           );
         }
@@ -271,10 +263,10 @@ class _ApproveState extends State<Approve> {
         }
         break;
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
-      // TODO: Handle this case.
+        // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.SEND_OFFER:
-      // TODO: Handle this case.
+        // TODO: Handle this case.
         break;
     }
   }
@@ -353,8 +345,7 @@ class _ApproveState extends State<Approve> {
         ),
       ),
     );
-    await Future.delayed(
-        const Duration( seconds: secondShowPopUp), () {
+    await Future.delayed(const Duration(seconds: secondShowPopUp), () {
       navigator.pop();
     });
   }
@@ -444,46 +435,45 @@ class _ApproveState extends State<Approve> {
                             ),
                             widget.header ?? const SizedBox(height: 0),
                             ...(widget.listDetail ?? []).map(
-                                  (item) =>
-                                  Column(
+                              (item) => Column(
+                                children: [
+                                  Row(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            flex: widget.flexTitle ?? 4,
-                                            child: Text(
-                                              item.title,
-                                              style: textNormal(
-                                                AppTheme.getInstance()
-                                                    .whiteColor()
-                                                    .withOpacity(0.7),
-                                                14,
-                                              ),
-                                            ),
+                                      Expanded(
+                                        flex: widget.flexTitle ?? 4,
+                                        child: Text(
+                                          item.title,
+                                          style: textNormal(
+                                            AppTheme.getInstance()
+                                                .whiteColor()
+                                                .withOpacity(0.7),
+                                            14,
                                           ),
-                                          Expanded(
-                                            flex: widget.flexContent ?? 6,
-                                            child: Text(
-                                              item.value,
-                                              style: item.isToken ?? false
-                                                  ? textNormalCustom(
-                                                AppTheme.getInstance()
-                                                    .fillColor(),
-                                                20,
-                                                FontWeight.w600,
-                                              )
-                                                  : textNormal(
-                                                AppTheme.getInstance()
-                                                    .whiteColor(),
-                                                16,
-                                              ),
-                                            ),
-                                          )
-                                        ],
+                                        ),
                                       ),
-                                      const SizedBox(height: 16)
+                                      Expanded(
+                                        flex: widget.flexContent ?? 6,
+                                        child: Text(
+                                          item.value,
+                                          style: item.isToken ?? false
+                                              ? textNormalCustom(
+                                                  AppTheme.getInstance()
+                                                      .fillColor(),
+                                                  20,
+                                                  FontWeight.w600,
+                                                )
+                                              : textNormal(
+                                                  AppTheme.getInstance()
+                                                      .whiteColor(),
+                                                  16,
+                                                ),
+                                        ),
+                                      )
                                     ],
                                   ),
+                                  const SizedBox(height: 16)
+                                ],
+                              ),
                             ),
                             if (widget.warning != null)
                               Column(
@@ -539,17 +529,17 @@ class _ApproveState extends State<Approve> {
                                   child: ButtonGold(
                                     haveGradient: !isApproved,
                                     background:
-                                    isApproved ? fillApprovedButton : null,
+                                        isApproved ? fillApprovedButton : null,
                                     textColor: isApproved
                                         ? borderApprovedButton
                                         : isCanAction
-                                        ? null
-                                        : disableText,
+                                            ? null
+                                            : disableText,
                                     border: isApproved
                                         ? Border.all(
-                                      color: borderApprovedButton,
-                                      width: 2,
-                                    )
+                                            color: borderApprovedButton,
+                                            width: 2,
+                                          )
                                         : null,
                                     title: S.current.approve,
                                     isEnable: isCanAction,
@@ -583,20 +573,20 @@ class _ApproveState extends State<Approve> {
                         return GestureDetector(
                           child: ButtonGold(
                             textColor: (isApproved ||
-                                !(widget.needApprove ?? false)) &&
-                                isCanAction
+                                        !(widget.needApprove ?? false)) &&
+                                    isCanAction
                                 ? null
                                 : disableText,
                             fixSize: false,
                             haveMargin: false,
                             title: widget.textActiveButton,
                             isEnable: (isApproved ||
-                                !(widget.needApprove ?? false)) &&
+                                    !(widget.needApprove ?? false)) &&
                                 isCanAction,
                           ),
                           onTap: () {
                             if ((isApproved ||
-                                !(widget.needApprove ?? false)) &&
+                                    !(widget.needApprove ?? false)) &&
                                 isCanAction) {
                               signTransaction(
                                 cubit.gasLimit ?? widget.gasLimitInit,
@@ -625,30 +615,27 @@ class _ApproveState extends State<Approve> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                BaseSuccess(
-                  title: S.current.buy_nft,
-                  content: S.current.congratulation,
-                  callback: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                        const MainScreen(
-                          index: 1,
-                        ),
-                      ),
-                    );
-                  },
-                ),
+            builder: (context) => BaseSuccess(
+              title: S.current.buy_nft,
+              content: S.current.congratulation,
+              callback: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 1,
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ).then(
-              (_) =>
-              cubit.emitJsonNftToWalletCore(
-                contract: cubit.nftMarket.collectionAddress ?? '',
-                id: int.parse(cubit.nftMarket.nftTokenId ?? ''),
-                address: nftDetailBloc.walletAddress,
-              ),
+          (_) => cubit.emitJsonNftToWalletCore(
+            contract: cubit.nftMarket.collectionAddress ?? '',
+            id: int.parse(cubit.nftMarket.nftTokenId ?? ''),
+            address: nftDetailBloc.walletAddress,
+          ),
         );
         cubit.buyNftRequest(
           BuyNftRequest(
@@ -669,22 +656,20 @@ class _ApproveState extends State<Approve> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                BaseSuccess(
-                  title: S.current.bidding,
-                  content: S.current.congratulation,
-                  callback: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                        const MainScreen(
-                          index: 1,
-                        ),
-                      ),
-                    );
-                  },
-                ),
+            builder: (context) => BaseSuccess(
+              title: S.current.bidding,
+              content: S.current.congratulation,
+              callback: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 1,
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         );
         break;
@@ -718,7 +703,7 @@ class _ApproveState extends State<Approve> {
                   fit: BoxFit.cover,
                   image: AssetImage(
                     '${ImageAssets.image_avatar}$accountImage'
-                        '.png',
+                    '.png',
                   ),
                 ),
               ),

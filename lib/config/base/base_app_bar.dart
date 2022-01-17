@@ -63,6 +63,7 @@ class _BaseSpaceState extends State<BaseSpace> {
       });
       _controller!.setLooping(true);
       _controller!.initialize().then((_) => setState(() {}));
+      _controller!.play();
     }
   }
 

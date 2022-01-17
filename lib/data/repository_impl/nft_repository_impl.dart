@@ -2,6 +2,7 @@ import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
+import 'package:Dfy/data/response/nft/evaluation_response.dart';
 import 'package:Dfy/data/response/nft/hard_nft_respone.dart';
 import 'package:Dfy/data/response/nft/history_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_auction_response.dart';
@@ -12,6 +13,7 @@ import 'package:Dfy/data/response/nft/owner_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/nft_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
+import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
@@ -129,4 +131,13 @@ class NFTRepositoryImpl implements NFTRepository {
       (response) => response.toString(),
     );
   }
+
+  @override
+  Future<Result<Evaluation>> getEvaluation(String evaluationId) {
+    return runCatchingAsync<EvaluationResponse, Evaluation>(
+          () => _nftClient.getEvaluation(evaluationId),
+          (response) => response.item!.toDomain(),
+    );
+  }
+
 }
