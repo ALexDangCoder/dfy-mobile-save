@@ -18,7 +18,7 @@ import '../../../main.dart';
 class CollectionBloc extends BaseCubit<CollectionState> {
   final bool isMyAcc;
 
-  CollectionBloc({required this.isMyAcc}) : super(CollectionState()) {}
+  CollectionBloc({required this.isMyAcc}) : super(CollectionState());
 
   static const int HIGHEST_TRADING_VOLUME = 0;
   static const int LOWEST_TRADING_VOLUME = 1;
@@ -94,14 +94,29 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     );
   }
 
+  String checkAddress(String address){
+    String data='';
+    if(address==S.current.all){
+      data=S.current.all;
+    }else{
+      data=address.formatAddressWalletConfirm();
+    }
+    return data;
+  }
+  void chooseAddressFilter(String address){
+    textAddressFilter.sink.add(
+      address,
+    );
+    isChooseAcc.sink.add(false);
+  }
+
   void funFilterMyAcc() {
-    if (isHardCollection.value && isSoftCollection.value) {
-      collectionType = null;
-    } else if (!isHardCollection.value && !isSoftCollection.value) {
-    } else if (isHardCollection.value) {
-      collectionType = HARD_COLLECTION;
-    } else if (isSoftCollection.value) {
+    if (!isHardCollection.value && isSoftCollection.value) {
       collectionType = SOFT_COLLECTION;
+    } else if (isHardCollection.value && !isSoftCollection.value) {
+      collectionType = HARD_COLLECTION;
+    } else  {
+      collectionType = null;
     }
     addressWallet = textAddressFilter.value;
     if (addressWallet == S.current.all) {
@@ -109,7 +124,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     } else {
       addressWallet = textAddressFilter.value;
     }
-
     getCollection();
   }
 
@@ -242,12 +256,10 @@ class CollectionBloc extends BaseCubit<CollectionState> {
           size: size,
           page: page,
           addressWallet: addressWallet,
-          collectionType: collectionType,
         );
       } else {
         result = await _collectionDetailRepository.getListCollection(
           name: name,
-          sort: sortFilter,
           size: size,
           page: page,
           addressWallet: addressWallet,
@@ -298,7 +310,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
           listWallet.add(Wallet.fromJson(element));
         }
         for (final element in listWallet) {
-          listAcc.add(element.address?.formatAddressWalletConfirm() ?? '');
+          listAcc.add(element.address ?? '');
         }
         break;
       default:

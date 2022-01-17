@@ -6,6 +6,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -149,6 +150,8 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                               child: StreamBuilder<String>(
                                 stream: bloc.textAddressFilter,
                                 builder: (context, snapshot) {
+                                  final String address =
+                                      bloc.checkAddress(snapshot.data ?? '');
                                   return Container(
                                     margin: EdgeInsets.only(
                                       top: 16.h,
@@ -175,7 +178,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                                           children: [
                                             SizedBox(
                                               child: Text(
-                                                snapshot.data ?? '',
+                                                address,
                                                 style: textNormal(
                                                   null,
                                                   16,
@@ -231,7 +234,6 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                     GestureDetector(
                       onTap: () {
                         bloc.funFilterMyAcc();
-
                         Navigator.pop(context);
                       },
                       child: ButtonLuxury(
@@ -270,10 +272,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            bloc.textAddressFilter.sink.add(
-                              bloc.listAcc[index],
-                            );
-                            bloc.isChooseAcc.sink.add(false);
+                            bloc.chooseAddressFilter(bloc.listAcc[index]);
                           },
                           child: Container(
                             height: 54.h,
@@ -281,7 +280,10 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                               left: 24.w,
                             ),
                             child: Text(
-                              bloc.listAcc[index],
+                              bloc.listAcc[index] == S.current.all
+                                  ? S.current.all
+                                  : bloc.listAcc[index]
+                                      .formatAddressWalletConfirm(),
                               style: textNormalCustom(null, 16, null),
                             ),
                           ),
