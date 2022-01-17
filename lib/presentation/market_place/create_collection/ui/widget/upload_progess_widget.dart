@@ -217,7 +217,7 @@ class _UploadProgressState extends State<UploadProgress>
                             ),
                           ),
                         );
-                      })
+                      },)
                 ],
               ),
             ),

@@ -1,4 +1,3 @@
-import 'package:Dfy/config/resources/color.dart';
 import 'package:flutter/material.dart';
 
 class ModalProgressHUD extends StatelessWidget {

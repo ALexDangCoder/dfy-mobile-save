@@ -122,7 +122,7 @@ Widget buildRowCustom(
     {required String title,
     required Widget child,
     bool isPadding = true,
-    bool isSpace = true}) {
+    bool isSpace = true,}) {
   return Padding(
     padding:
         isPadding ? EdgeInsets.symmetric(horizontal: 16.w) : EdgeInsets.zero,
@@ -130,7 +130,6 @@ Widget buildRowCustom(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          flex: 1,
           child: Align(
             alignment: Alignment.topLeft,
             child: Text(

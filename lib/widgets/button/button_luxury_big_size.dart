@@ -2,7 +2,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 //Vẫn là button Luxury nhưng Size lớn hơn :D
 class ButtonLuxuryBigSize extends StatelessWidget {

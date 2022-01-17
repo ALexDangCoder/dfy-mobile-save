@@ -45,7 +45,7 @@ class CheckBoxCreateSeedPhrase extends StatelessWidget {
                             .add(false);
                       }
                       bLocCreateSeedPhrase.validateNameWallet(
-                          bLocCreateSeedPhrase.nameWallet.value);
+                          bLocCreateSeedPhrase.nameWallet.value,);
                     },
                     activeColor: AppTheme.getInstance().fillColor(),
                   ),

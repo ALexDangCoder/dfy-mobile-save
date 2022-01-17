@@ -5,7 +5,7 @@ import 'package:Dfy/utils/extensions/list_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
 
 class InputWithSelectType extends StatefulWidget {
   final List<Widget> typeInput;
@@ -29,7 +29,7 @@ class InputWithSelectType extends StatefulWidget {
       this.onChangeType,
       this.keyboardType,
       this.inputFormatters,
-      this.maxSize})
+      this.maxSize,})
       : super(key: key);
 
   @override
@@ -51,7 +51,7 @@ class _InputWithSelectTypeState extends State<InputWithSelectType> {
   void findDropDownSize() {
     height = dropdownKey.currentContext?.size?.height ?? 0;
     width = dropdownKey.currentContext?.size?.width ?? 0;
-    Offset offset =
+    final Offset offset =
         (dropdownKey.currentContext?.findRenderObject() as RenderBox)
             .localToGlobal(Offset.zero);
     xPosition = offset.dx;

@@ -36,11 +36,7 @@ void showSuccessfulByTitle({
             Center(
               child: Text(
                 title,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: textNormalCustom(Colors.white, 20, FontWeight.bold),
               ),
             ),
             spaceH20,

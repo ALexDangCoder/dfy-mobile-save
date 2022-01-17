@@ -1,8 +1,6 @@
 import 'package:intl/intl.dart';
 
-
 extension formatInt on int {
-
   String formatDateTimeMy(int date) {
     var millis = date;
     var dt = DateTime.fromMillisecondsSinceEpoch(millis);
@@ -10,4 +8,3 @@ extension formatInt on int {
     return d24;
   }
 }
-

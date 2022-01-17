@@ -974,7 +974,7 @@ class WalletCubit extends BaseCubit<WalletState> {
   /// transaction
   final List<DetailHistoryTransaction> listDetailTransaction = [];
   Future<void> getTransactionHistory(
-      String walletAddress, String contract) async {
+      String walletAddress, String contract,) async {
     final transactionHistory = await PrefsService.getHistoryTransaction();
     if (transactionHistory.isNotEmpty) {
       transactionFromJson(transactionHistory).forEach((element) {

@@ -8,7 +8,7 @@ class ItemMenuModel {
       {required this.icon,
       required this.routeName,
       required this.title,
-      required this.children});
+      required this.children,});
 
   factory ItemMenuModel.createChild({
     required String routeName,

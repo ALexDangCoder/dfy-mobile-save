@@ -204,7 +204,7 @@ class _ChangeWalletNameState extends State<ChangeWalletName> {
                                         );
                                         if (snapshot.data ?? false) {
                                           widget.bloc.walletName.sink.add(widget
-                                              .textEditingController.text);
+                                              .textEditingController.text,);
                                           widget.bloc.changeNameWallet(
                                             walletAddress:
                                                 widget.bloc.addressWallet.value,

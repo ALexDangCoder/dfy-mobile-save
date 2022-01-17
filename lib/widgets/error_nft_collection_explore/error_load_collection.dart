@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ErrorLoadCollection extends StatelessWidget {
-  const ErrorLoadCollection({Key? key, required this.callback}) : super(key: key);
+  const ErrorLoadCollection({Key? key, required this.callback})
+      : super(key: key);
   final Function() callback;
 
   @override

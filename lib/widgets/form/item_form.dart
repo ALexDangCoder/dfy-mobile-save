@@ -128,7 +128,7 @@ class ItemForm extends StatelessWidget {
                   onChanged: (value) {
                     cubit?.showTxtWarningSeed(value, FormType.PRIVATE_KEY);
                     importCubit?.showTxtWarningSeed(
-                        value, FormType.PRIVATE_KEY);
+                        value, FormType.PRIVATE_KEY,);
                   },
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
@@ -147,9 +147,9 @@ class ItemForm extends StatelessWidget {
                           child: Text(
                             suffix,
                             textAlign: TextAlign.center,
-                            style:
-                                textNormal(AppTheme.getInstance().fillColor(), 16)
-                                    .copyWith(
+                            style: textNormal(
+                                    AppTheme.getInstance().fillColor(), 16,)
+                                .copyWith(
                               fontWeight: FontWeight.w400,
                             ),
                           ),

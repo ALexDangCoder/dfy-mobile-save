@@ -9,7 +9,6 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/c
 import 'package:Dfy/presentation/import_account/bloc/import_cubit.dart';
 import 'package:Dfy/presentation/import_account/bloc/import_state.dart';
 import 'package:Dfy/presentation/import_account/ui/choice_import_dialog.dart';
-import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';

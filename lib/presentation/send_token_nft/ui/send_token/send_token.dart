@@ -6,13 +6,13 @@ import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_c
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/double_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:Dfy/utils/extensions/double_extension.dart';
 
 class SendToken extends StatefulWidget {
   final String walletAddress;
@@ -111,13 +111,13 @@ class _SendTokenState extends State<SendToken> {
                           ).then((_) => {
                                 txtToAddressToken.text =
                                     tokenCubit.handleValueFromQR(
-                                        value: txtToAddressToken.text),
+                                        value: txtToAddressToken.text,),
                                 tokenCubit.checkHaveVlAddressFormToken(
                                   tokenCubit.handleValueFromQR(
-                                      value: txtToAddressToken.text),
+                                      value: txtToAddressToken.text,),
                                   type: typeSend.SEND_TOKEN,
                                 ),
-                              });
+                              },);
                         },
                       ),
                       txtWaringAddress(),
@@ -333,39 +333,41 @@ class _SendTokenState extends State<SendToken> {
                         );
                       },
                       child: Padding(
-                          padding: EdgeInsets.only(
-                            // top: 15.h,
-                            right: 15.w,
+                        padding: EdgeInsets.only(
+                          // top: 15.h,
+                          right: 15.w,
+                        ),
+                        child: Container(
+                          constraints: BoxConstraints(
+                            minWidth: 55.w,
                           ),
-                          child: Container(
-                            constraints: BoxConstraints(
-                              minWidth: 55.w,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  S.current.max,
-                                  style: textNormal(
-                                    const Color.fromRGBO(228, 172, 26, 1),
-                                    16,
-                                  ).copyWith(fontWeight: FontWeight.w600),
-                                ),
-                                spaceW4,
-                                SizedBox(
-                                  height: 20.h,
-                                  width: 20.h,
-                                  child: CircleAvatar(
-                                    radius: 30.0.r,
-                                    backgroundImage: NetworkImage(
-                                        widget.modelToken.iconToken),
-                                    backgroundColor: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                S.current.max,
+                                style: textNormal(
+                                  const Color.fromRGBO(228, 172, 26, 1),
+                                  16,
+                                ).copyWith(fontWeight: FontWeight.w600),
+                              ),
+                              spaceW4,
+                              SizedBox(
+                                height: 20.h,
+                                width: 20.h,
+                                child: CircleAvatar(
+                                  radius: 30.0.r,
+                                  backgroundImage: NetworkImage(
+                                    widget.modelToken.iconToken,
                                   ),
+                                  backgroundColor: Colors.transparent,
                                 ),
-                              ],
-                            ),
-                          )),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     )
                   : Padding(
                       padding: EdgeInsets.only(top: 15.h, right: 20.w),

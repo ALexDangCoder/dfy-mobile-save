@@ -20,7 +20,7 @@ class ButtonTransparent extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.all(Radius.circular(22.r)),
-          border: Border.all(color: AppTheme.getInstance().fillColor())),
+          border: Border.all(color: AppTheme.getInstance().fillColor()),),
       child: Material(
         color: Colors.transparent,
         child: InkWell(

@@ -106,15 +106,14 @@ class _NFTItemState extends State<NFTItemWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                NFTDetailScreen(
-                  key: nftKey,
-                  typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
-                  marketId: widget.nftMarket.marketId,
-                  typeNft: widget.nftMarket.typeNFT,
-                  nftId: widget.nftMarket.nftId,
-                  pawnId: widget.nftMarket.pawnId,
-                ),
+            builder: (context) => NFTDetailScreen(
+              key: nftKey,
+              typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
+              marketId: widget.nftMarket.marketId,
+              typeNft: widget.nftMarket.typeNFT,
+              nftId: widget.nftMarket.nftId,
+              pawnId: widget.nftMarket.pawnId,
+            ),
           ),
         );
       },

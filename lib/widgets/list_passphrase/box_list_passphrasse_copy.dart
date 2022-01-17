@@ -81,7 +81,7 @@ class _BoxListPassWordPhraseCopyState extends State<BoxListPassWordPhraseCopy> {
                 GestureDetector(
                   onTap: () {
                     FlutterClipboard.copy(
-                        widget.bLocCreateSeedPhrase.passPhrase);
+                        widget.bLocCreateSeedPhrase.passPhrase,);
                     fToast.showToast(
                       child: Copied(
                         title: S.current.copied_seed_phrase,

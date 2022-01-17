@@ -7,7 +7,6 @@ import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'send_token_state.dart';
@@ -210,7 +209,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
   final regexId = RegExp(r'^[0-9]*$');
 
   void checkValidateQuantity(
-      {required String value, required String quantityCopy}) {
+      {required String value, required String quantityCopy,}) {
     if (value.isEmpty) {
       _flagQuantity = false;
       isValidQuantityFormSink.add(true);

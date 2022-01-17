@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:Dfy/data/response/nonce/nonce_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/nonce_model.dart';
 import 'package:Dfy/domain/repository/market_place/nonce_repository.dart';

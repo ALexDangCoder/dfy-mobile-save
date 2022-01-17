@@ -155,7 +155,7 @@ class _EvaluationTabState extends State<EvaluationTab>
                                                       1
                                                   : 0,
                                               duration: const Duration(
-                                                  milliseconds: 300),
+                                                  milliseconds: 300,),
                                             );
                                           },
                                           child: roundButton(
@@ -164,7 +164,7 @@ class _EvaluationTabState extends State<EvaluationTab>
                                         ),
                                       ),
                                     );
-                                  }),
+                                  },),
                             ],
                           ),
                           spaceH12,
@@ -291,7 +291,7 @@ class _EvaluationTabState extends State<EvaluationTab>
   }
 
   Widget smallImage(
-      {required String img, required bool isCurrentImg, required int index}) {
+      {required String img, required bool isCurrentImg, required int index,}) {
     return InkWell(
       onTap: () {
         widget.bloc.changeImage(img);

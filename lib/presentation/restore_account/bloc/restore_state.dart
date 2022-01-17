@@ -1,5 +1,4 @@
-import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/domain/model/wallet.dart';
+
 import 'package:equatable/equatable.dart';
 
 abstract class RestoreState extends Equatable {}

@@ -384,7 +384,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   }
 
   Future<void> confirmCancelSaleWithBE(
-      {required String txnHash, required String marketId}) async {
+      {required String txnHash, required String marketId,}) async {
     final result = await _confirmRepository.getCancelSaleResponse(
       id: marketId,
       txnHash: txnHash,

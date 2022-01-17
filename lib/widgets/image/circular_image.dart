@@ -3,12 +3,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Container circularImage(
+SizedBox circularImage(
   String img, {
   required double height,
   required double width,
 }) {
-  return Container(
+  return SizedBox(
     width: width.w,
     height: height.w,
     child: ClipRRect(

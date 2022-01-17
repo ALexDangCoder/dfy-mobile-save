@@ -226,7 +226,7 @@ class _NftProductState extends State<NftProduct> {
           style: textNormalCustom(
               AppTheme.getInstance().successTransactionColors(),
               13.sp,
-              FontWeight.w600),
+              FontWeight.w600,),
         );
       case NFT_CATEGORY.AUCTION:
         return Text(
@@ -234,7 +234,7 @@ class _NftProductState extends State<NftProduct> {
           style: textNormalCustom(
               AppTheme.getInstance().failTransactionColors(),
               13.sp,
-              FontWeight.w600),
+              FontWeight.w600,),
         );
       default:
         return Text(

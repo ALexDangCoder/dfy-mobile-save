@@ -93,7 +93,7 @@ class FormAddFtAmount extends StatelessWidget {
                 bothTxtFormAddFtAmount(
                   isYellowText: true,
                   txtLeft: S.current.quantity,
-                  txtRight: quantity.toString() + ' ${S.current.of_all} ' + '1',
+                  txtRight: '$quantity ${S.current.of_all} 1',
                 ),
               ],
             ),
@@ -147,19 +147,17 @@ class FormAddFtAmount extends StatelessWidget {
             ),
           ),
         ),
-        isYellowText
-            ? Expanded(
+        if (isYellowText) Expanded(
                 flex: 2,
                 child: Text(
                   txtRight,
                   style: textNormalCustom(
-                    Color(0xffE4AC1A),
+                    const Color(0xffE4AC1A),
                     20,
                     FontWeight.w600,
                   ),
                 ),
-              )
-            : Expanded(
+              ) else Expanded(
                 flex: 2,
                 child: Text(
                   txtRight,

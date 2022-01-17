@@ -107,7 +107,7 @@ class FABMarketBase extends StatelessWidget {
         gradient: LinearGradient(
             begin: Alignment.centerRight,
             end: Alignment.centerLeft,
-            colors: AppTheme.getInstance().colorFab()),
+            colors: AppTheme.getInstance().colorFab(),),
       ),
       child: Icon(Icons.add, size: 32.sp),
     );

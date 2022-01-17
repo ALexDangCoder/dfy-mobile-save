@@ -1,13 +1,8 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/abi/token.g.dart';
-import 'package:Dfy/data/web3/web3_utils.dart';
-import 'package:Dfy/domain/model/model_token.dart';
-import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_state.dart';
-import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../main.dart';
 
 enum DurationType { MONTH, WEEK }
 
@@ -67,7 +62,6 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   void changeTokenPawn({Token? token, double? value}) {
     tokenPawn = token;
     valueTokenInputPawn = value;
-    print(valueTokenInputPawn);
 
     updateStreamContinuePawn();
   }
@@ -75,13 +69,11 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   void changeDurationPawn({DurationType? type, int? value}) {
     typeDuration = type;
     valueDuration = value;
-    print(valueDuration);
     updateStreamContinuePawn();
   }
 
   void changeQuantityPawn({required int value}) {
     quantityPawn = value;
-    print(quantityPawn);
     updateStreamContinuePawn();
   }
 

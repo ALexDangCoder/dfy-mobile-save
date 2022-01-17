@@ -14,8 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:list_tile_switch/list_tile_switch.dart';
 
 import 'component/custom_calandar.dart';
 
@@ -316,7 +314,7 @@ class _AuctionTabState extends State<AuctionTab>
                             ),
                           ),
                         );
-                        if (result != null) print(result);
+                        if (result != null) {}
                       },
                       child: TextField(
                         style: textNormal(

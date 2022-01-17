@@ -14,7 +14,7 @@ class InputNumberOfQuantity extends StatefulWidget {
       this.canEdit = false,
       this.quantity = 1,
       this.onchangeText,
-      this.maxLength = 25})
+      this.maxLength = 25,})
       : super(key: key);
 
   @override
@@ -53,7 +53,7 @@ class _InputNumberOfQuantityState extends State<InputNumberOfQuantity> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(20)),
-          color: AppTheme.getInstance().backgroundBTSColor()),
+          color: AppTheme.getInstance().backgroundBTSColor(),),
       height: 64,
       child: Center(
         child: TextField(
