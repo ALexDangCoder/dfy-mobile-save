@@ -147,6 +147,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       },
     );
   }
+
   Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
     showLoading();
     final result = await _nftRepo.bidNftRequest(bidNftRequest);
@@ -226,6 +227,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   }
 
   ///
+  /// //biến check success hay không
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'getListWalletsCallback':
@@ -285,10 +287,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
               break;
             case TYPE_CONFIRM_BASE.CANCEL_SALE:
               if (result['isSuccess']) {
-                emit(SendRawDataSuccess(result['txHash']));
-                showContent();
+                emit(SendRawData(result['txHash'], isSuccess: true));
               } else {
-                showError();
+                emit(SendRawData(result['txHash']));
               }
               break;
             default:
@@ -383,8 +384,10 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     }
   }
 
-  Future<void> confirmCancelSaleWithBE(
-      {required String txnHash, required String marketId}) async {
+  Future<void> confirmCancelSaleWithBE({
+    required String txnHash,
+    required String marketId,
+  }) async {
     final result = await _confirmRepository.getCancelSaleResponse(
       id: marketId,
       txnHash: txnHash,

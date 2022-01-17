@@ -471,10 +471,11 @@
   "you_enter_balance": "Bạn nhập lớn số dư trong ví",
   "you_must_bid": "Bạn phải nhập giá bạn muốn đấu giá",
   "you_must_bid_greater": "Bạn phải nhập giá cao hơn giá hiện tại",
-  "address":"Address",
+  "address":"Địa chỉ",
   "item_price": "Giá",
   "start_in": "Chưa bắt đầu",
   "purchase_being_processed": "Nft đang được giao dịch bởi một ai đó.",
     "error_might_occur": "Có lỗi có thể xảy ra nếu bạn tiếp tục",
-  "end_in": "Kết thúc"
+  "end_in": "Kết thúc",
+  "cancel_success": "Hủy bán thành công"
 }

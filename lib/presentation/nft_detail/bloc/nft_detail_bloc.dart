@@ -269,7 +269,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           }
           walletAddress = wallets.first.address ?? '';
 
-          if (wallets.first.address == owner) {
+          if (wallets.first.address?.toLowerCase() == owner.toLowerCase()) {
             pairSink.add(false);
           } else {
             pairSink.add(true);

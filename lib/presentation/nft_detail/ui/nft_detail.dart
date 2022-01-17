@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Dfy/config/base/base_custom_scroll_view.dart';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
@@ -84,7 +86,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
 
   @override
   void initState() {
-    super.initState();
     bloc = NFTDetailBloc();
     trustWalletChannel
         .setMethodCallHandler(bloc.nativeMethodCallBackTrustWallet);
@@ -92,6 +93,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
     caseTabBar(widget.typeMarket, widget.typeNft);
     onRefresh();
     _tabController = TabController(length: _tabPage.length, vsync: this);
+    super.initState();
   }
 
   void caseTabBar(MarketType type, TypeNFT? typeNft) {
@@ -324,80 +326,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               objSale.isBoughtByOther ?? false,
             ),
             content: [
-              GestureDetector(
-                //todo: để tạm, sau check quyền button cancel hoặc buy
-                onTap: () async {
-                  var nav = Navigator.of(context);
-                  if (bloc.walletAddress.toLowerCase() ==
-                      bloc.nftMarket.owner?.toLowerCase()) {
-                    double gas =
-                        await bloc.getGasLimitForCancel(context: context);
-                    if (gas > 0) {
-                      nav.push(
-                        MaterialPageRoute(
-                            builder: (context) => Approve(
-                                  listDetail: bloc.initListApprove(),
-                                  title: S.current.cancel_sale,
-                                  header: Container(
-                                    padding: EdgeInsets.only(
-                                      top: 16.h,
-                                      bottom: 20.h,
-                                    ),
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      S.current.cancel_sale_info,
-                                      style: textNormal(
-                                        AppTheme.getInstance().whiteColor(),
-                                        16,
-                                      ).copyWith(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                  warning: Row(
-                                    children: [
-                                      sizedSvgImage(
-                                          w: 16.67.w,
-                                          h: 16.67.h,
-                                          image: ImageAssets.ic_warning_canel),
-                                      SizedBox(
-                                        width: 5.w,
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          S.current.customer_cannot,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: textNormal(
-                                            AppTheme.getInstance()
-                                                .currencyDetailTokenColor(),
-                                            14,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  textActiveButton: S.current.cancel_sale,
-                                  gasLimitInit: double.parse(bloc.gasLimit),
-                                  typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
-                                )),
-                      );
-                    }
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) => WarningDialog(
-                        walletAdress: bloc.nftMarket.owner ?? '',
-                      ),
-                    );
-                  }
-                },
-                child: _nameNFT(
-                  title: objSale.name ?? '',
-                  quantity: objSale.totalCopies ?? 1,
-                  url: objSale.image ?? '',
-                  price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
-                ),
+              _nameNFT(
+                title: objSale.name ?? '',
+                quantity: objSale.totalCopies ?? 1,
+                url: objSale.image ?? '',
+                price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
               ),
               _priceContainerOnSale(
                 price: objSale.price ?? 0,
