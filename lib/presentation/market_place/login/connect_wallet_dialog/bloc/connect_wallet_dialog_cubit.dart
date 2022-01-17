@@ -12,12 +12,12 @@ part 'connect_wallet_dialog_state.dart';
 
 class ConnectWalletDialogCubit extends Cubit<ConnectWalletDialogState> {
   ConnectWalletDialogCubit() : super(ConnectWalletDialogInitial());
-  BehaviorSubject<bool> isLogin = BehaviorSubject();
+  // BehaviorSubject<bool> isLogin = BehaviorSubject();
 
-  Future<void> checkLoginStatus() async {
-    final bool check = await PrefsService.getLoginStatus();
-    isLogin.sink.add(check);
-  }
+  // Future<void> checkLoginStatus() async {
+  //   final bool check = await PrefsService.getLoginStatus();
+  //   isLogin.sink.add(check);
+  // }
 
   Future<void> getListWallet() async {
     try {

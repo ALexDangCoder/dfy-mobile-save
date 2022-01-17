@@ -1,9 +1,11 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/main.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,6 +19,7 @@ class LoginCubit extends BaseCubit<LoginState> {
   bool isAppLock = true;
   bool isFaceID = false;
   BehaviorSubject<bool> isFaceIDStream = BehaviorSubject();
+
   bool hidePassword() {
     return hidePass = !hidePass;
   }
@@ -29,7 +32,6 @@ class LoginCubit extends BaseCubit<LoginState> {
         loginSuccess = await methodCall.arguments['isCorrect'];
         if (loginSuccess == true) {
           emit(LoginPasswordSuccess());
-          await PrefsService.saveLoginStatus(true);
         } else {
           emit(LoginPasswordError());
         }
@@ -46,8 +48,7 @@ class LoginCubit extends BaseCubit<LoginState> {
 
   Future<void> getConfig() async {
     try {
-      final data = {
-      };
+      final data = {};
       await trustWalletChannel.invokeMethod('getConfig', data);
     } on PlatformException {
       //nothing
@@ -90,5 +91,12 @@ class LoginCubit extends BaseCubit<LoginState> {
     if (authenticated == true) {
       emit(LoginSuccess());
     }
+  }
+
+  LoginRepository get _loginRepo => Get.find();
+
+  Future<void> loginMarketPlace() async {
+    final result = await _loginRepo.login('signature', '');
+    result.when(success: (data) {}, error: (err) {});
   }
 }

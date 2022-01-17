@@ -80,12 +80,5 @@ class PrefsService {
     return;
   }
 
-  static Future<bool> saveLoginStatus(bool isLogin) async {
-    final prefs = await _instance;
-    return prefs.setBool(_PREF_IS_LOGIN, isLogin);
-  }
 
-  static Future<bool> getLoginStatus() async {
-    return _prefsInstance?.getBool(_PREF_IS_LOGIN) ?? false;
-  }
 }

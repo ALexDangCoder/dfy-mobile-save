@@ -21,7 +21,7 @@ class ApiConstants {
   static const String GET_NONCE =
       '/defi-user-service/public-api/v1.0.0/users/nonce?';
   static const String LOGIN_EMAIL =
-      '/defi-user-service/public-api/v1.0.0/users/nonce?';
+      '/defi-user-service/public-api/v1.0.0/users/login';
   static const String URL_BASE = 'https://defiforyou.mypinata.cloud/ipfs/';
   static const String GET_LIST_COLLECTION =
       '/inventory-svc/public-api/collections';

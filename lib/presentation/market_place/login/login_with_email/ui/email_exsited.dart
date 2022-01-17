@@ -8,7 +8,6 @@ import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../main.dart';
 
 class EmailExisted extends StatefulWidget {
   final String email;
@@ -36,7 +35,7 @@ class _EmailExistedState extends State<EmailExisted> {
           showDialog(
             context: context,
             builder: (context) => const ConnectWalletDialog(
-              currentScreen: MarketPlaceScreen(),
+              navigationTo: MarketPlaceScreen(),
             ),
           );
         },
