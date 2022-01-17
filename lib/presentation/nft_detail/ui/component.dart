@@ -17,6 +17,7 @@ Widget _nameNFT({
   int quantity = 1,
   String url = '',
   double? price,
+  required BuildContext context
 
 }) {
   return Container(
@@ -41,7 +42,14 @@ Widget _nameNFT({
             ),
             InkWell(
               onTap: () {
-                //TODO
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const ComingSoon();
+                    },
+                  ),
+                );
               },
               child: roundButton(
                 image: ImageAssets.ic_flag_svg,

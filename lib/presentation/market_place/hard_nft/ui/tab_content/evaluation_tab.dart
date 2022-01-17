@@ -1,11 +1,12 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/information_widget.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/related_document_widget.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class EvaluationTab extends StatefulWidget {
-  final HardNFTBloc bloc;
+  final Evaluation evaluation;
 
-  const EvaluationTab({Key? key, required this.bloc}) : super(key: key);
+  const EvaluationTab({Key? key, required this.evaluation}) : super(key: key);
 
   @override
   _EvaluationTabState createState() => _EvaluationTabState();
@@ -25,11 +26,15 @@ class _EvaluationTabState extends State<EvaluationTab>
     with AutomaticKeepAliveClientMixin {
   late ItemScrollController scrollController;
 
+  late final HardNFTBloc bloc;
+
   @override
   void initState() {
     // TODO: implement initState
-    widget.bloc.changeImage('');
+    bloc = HardNFTBloc();
     scrollController = ItemScrollController();
+    bloc.getListImage(widget.evaluation);
+    bloc.changeImage('');
     super.initState();
   }
 
@@ -54,20 +59,29 @@ class _EvaluationTabState extends State<EvaluationTab>
                 spaceH24,
                 textRow(
                   name: S.current.evaluated_by,
-                  value: 'The London Evaluation',
+                  value: widget.evaluation.evaluator?.name ?? '',
                   clickAble: true,
                 ),
                 textRow(
                   name: S.current.evaluated_time,
-                  value: DateTime.now().stringFromDateTime,
+                  value: formatDateTime.format(
+                    DateTime.fromMillisecondsSinceEpoch(
+                      widget.evaluation.evaluatedTime ?? 0,
+                    ),
+                  ),
                 ),
                 textRow(
                   name: S.current.maximum_amount,
-                  value: ' ${1200000.stringIntFormat} USDT',
-                  token: ImageAssets.ic_token_dfy_svg,
+                  value: '${widget.evaluation.evaluatedPrice ?? 0} '
+                      '${widget.evaluation.evaluatedSymbol}',
+                  token: widget.evaluation.urlToken,
                 ),
-                textRow(name: S.current.depreciation, value: '20%'),
-                textRow(name: S.current.conclusion, value: 'Fast & furious'),
+                textRow(
+                    name: S.current.depreciation,
+                    value: '${widget.evaluation.depreciationPercent}%'),
+                textRow(
+                    name: S.current.addition_info,
+                    value: widget.evaluation.additionalInformation ?? ''),
                 Text(
                   S.current.images_videos,
                   style: tokenDetailAmount(
@@ -77,11 +91,8 @@ class _EvaluationTabState extends State<EvaluationTab>
                 ),
                 spaceH16,
                 StreamBuilder<String>(
-                  stream: widget.bloc.imageStream,
-                  initialData:
-                      'https://cdn11.bigcommerce.com/s-yrkef1j7/images/stencil/'
-                          '1280x1280/products/294/37821/QQ20190807220008__01'
-                          '299.1565241023.png?c=2',
+                  stream: bloc.imageStream,
+                  initialData: widget.evaluation.media?.first.urlImage,
                   builder: (context, snapShot) {
                     if (snapShot.hasData) {
                       final String img = snapShot.data ?? '';
@@ -103,7 +114,7 @@ class _EvaluationTabState extends State<EvaluationTab>
                                 ),
                               ),
                               StreamBuilder<bool>(
-                                stream: widget.bloc.showPreStream,
+                                stream: bloc.showPreStream,
                                 initialData: false,
                                 builder: (context, snapPre) {
                                   return Visibility(
@@ -113,17 +124,14 @@ class _EvaluationTabState extends State<EvaluationTab>
                                       left: 16.w,
                                       child: InkWell(
                                         onTap: () {
-                                          widget.bloc.preImage();
+                                          bloc.preImage();
                                           scrollController.scrollTo(
-                                            index:
-                                                widget.bloc.currentIndexImage >
-                                                        2
-                                                    ? widget.bloc
-                                                            .currentIndexImage -
-                                                        1
-                                                    : 0,
+                                            index: bloc.currentIndexImage > 2
+                                                ? bloc.currentIndexImage - 1
+                                                : 0,
                                             duration: const Duration(
-                                                milliseconds: 300,),
+                                              milliseconds: 300,
+                                            ),
                                           );
                                         },
                                         child: roundButton(
@@ -135,7 +143,7 @@ class _EvaluationTabState extends State<EvaluationTab>
                                 },
                               ),
                               StreamBuilder<bool>(
-                                  stream: widget.bloc.showNextStream,
+                                  stream: bloc.showNextStream,
                                   initialData: true,
                                   builder: (context, snapNext) {
                                     return Visibility(
@@ -145,14 +153,10 @@ class _EvaluationTabState extends State<EvaluationTab>
                                         right: 16.w,
                                         child: InkWell(
                                           onTap: () {
-                                            widget.bloc.nextImage();
+                                            bloc.nextImage();
                                             scrollController.scrollTo(
-                                              index: widget.bloc
-                                                          .currentIndexImage >
-                                                      2
-                                                  ? widget.bloc
-                                                          .currentIndexImage -
-                                                      1
+                                              index: bloc.currentIndexImage > 2
+                                                  ? bloc.currentIndexImage - 1
                                                   : 0,
                                               duration: const Duration(
                                                   milliseconds: 300),
@@ -173,14 +177,13 @@ class _EvaluationTabState extends State<EvaluationTab>
                             child: ScrollablePositionedList.builder(
                               itemScrollController: scrollController,
                               scrollDirection: Axis.horizontal,
-                              itemCount: widget.bloc.listImg.length,
+                              itemCount: bloc.listImg.length,
                               itemBuilder: (context, index) {
                                 return Row(
                                   children: [
                                     smallImage(
-                                      img: widget.bloc.listImg[index],
-                                      isCurrentImg:
-                                          widget.bloc.listImg[index] == img,
+                                      img: bloc.listImg[index],
+                                      isCurrentImg: bloc.listImg[index] == img,
                                       index: index,
                                     ),
                                     spaceW8,
@@ -201,7 +204,7 @@ class _EvaluationTabState extends State<EvaluationTab>
             ),
           ),
           StreamBuilder<bool>(
-            stream: widget.bloc.showMoreStream,
+            stream: bloc.showMoreStream,
             initialData: false,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -217,8 +220,8 @@ class _EvaluationTabState extends State<EvaluationTab>
                               left: 16.w,
                               right: 16.w,
                             ),
-                            child: const InformationWidget(
-                              object: 'test',
+                            child: InformationWidget(
+                              object: widget.evaluation,
                             ),
                           ),
                           Container(
@@ -226,14 +229,16 @@ class _EvaluationTabState extends State<EvaluationTab>
                               left: 16.w,
                               right: 16.w,
                             ),
-                            child: const RelatedDocument(),
+                            child: RelatedDocument(
+                              evaluation: widget.evaluation,
+                            ),
                           ),
                         ],
                       ),
                     ),
                     InkWell(
                       onTap: () {
-                        widget.bloc.showInformation();
+                        bloc.showInformation();
                       },
                       child: Container(
                         padding: EdgeInsets.only(
@@ -294,7 +299,7 @@ class _EvaluationTabState extends State<EvaluationTab>
       {required String img, required bool isCurrentImg, required int index}) {
     return InkWell(
       onTap: () {
-        widget.bloc.changeImage(img);
+        bloc.changeImage(img);
         scrollController.scrollTo(
           index: index > 2 ? index - 1 : 0,
           duration: const Duration(milliseconds: 300),
@@ -373,9 +378,13 @@ class _EvaluationTabState extends State<EvaluationTab>
                     )
                   : Row(
                       children: [
-                        sizedSvgImage(w: 20, h: 20, image: token),
+                        Image(
+                          image: NetworkImage(token),
+                          height: 20.h,
+                          width: 20.w,
+                        ),
                         Text(
-                          value,
+                          ' $value',
                           style: tokenDetailAmount(
                             color: AppTheme.getInstance().whiteColor(),
                             fontSize: 16,

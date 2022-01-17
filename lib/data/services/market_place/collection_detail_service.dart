@@ -46,9 +46,9 @@ abstract class CollectionDetailService {
 
   @GET(ApiConstants.GET_LIST_COLLECTION)
   Future<ListCollectionResponse> getListCollection(
-    @Query('address') String? address,
-    @Query('category') String? category,
+    @Query('wallet_address') String? addressWallet,
     @Query('name') String? name,
+    @Query('collection_type') int? collectionType,
     @Query('sort') int? sort,
     @Query('page') int? page,
     @Query('size') int? size,
