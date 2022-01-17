@@ -38,14 +38,10 @@ class _NFTItemState extends State<NFTItemWidget> {
   DateTime? startTimeAuction;
   DateTime? endTimeAuction;
   late NftItemCubit cubitNft;
-  Timer? _timer;
+  late Timer timer;
+  bool isShowStartTimeFtText = false;
   late int timeStartStamp;
-  String textStartIn = S.current.start_in;
-
-  void onEnd() {
-    //todo
-    print('onEnd');
-  }
+  String textShowStartFtTime = '';
 
   @override
   void initState() {
@@ -61,13 +57,14 @@ class _NFTItemState extends State<NFTItemWidget> {
     cubitNft = NftItemCubit();
     if (widget.nftMarket.marketType == MarketType.AUCTION) {
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
-        value: widget.nftMarket.startTime ?? 0,
+        // value: widget.nftMarket.startTime ?? 0,
         // value: 1642637464000,
+        value: 1642471860000,
       );
       endTimeAuction = cubitNft.parseTimeServerToDateTime(
         // value: (widget.nftMarket.endTime == 0) ? 0 : 0,
-        value: 1642637464000,
-        // value: 1942637464000,
+        // value: 1642637464000,
+        value: 1642558260000,
       );
       //todo đang hardcode startTime
       // timeStartStamp = 1642637464000;
@@ -75,41 +72,16 @@ class _NFTItemState extends State<NFTItemWidget> {
         endTime: endTimeAuction!.millisecondsSinceEpoch,
       );
 
-      // coutdownStartTime = CountdownTimerController(
-      //   endTime: timeStartStamp,
-      // );
-      // if (cubitNft.isNotStartYet(startTime: startTimeAuction!)) {
-      //   ///
-      //   CountdownTimer(
-      //     controller: coutdownStartTime,
-      //     widgetBuilder: (_, CurrentRemainingTime? time) {
-      //       if (time == null) {
-      //         //todo gọi checktime
-      //       } else {
-      //         Timer.periodic(Duration(seconds: 1), (_) {
-      //           if (textStartIn == S.current.start_in) {
-      //             setState(() {
-      //               textStartIn = '${time!.days}:${time!.hours}:'
-      //                   '${time!.min}:${time!.sec}';
-      //             });
-      //
-      //
-      //           } else {
-      //             setState(() {
-      //               textStartIn = S.current.start_in;
-      //             });
-      //           }
-      //         });
-      //       }
-      //       return Container();
-      //
-      //       // return Container();
-      //     },
-      //   );
-      //
-      //   ///
-      //
-      // }
+      coutdownStartTime = CountdownTimerController(
+        endTime: startTimeAuction!.millisecondsSinceEpoch,
+      );
+
+      ///set time show text start in when auction not start yet
+      timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+        isShowStartTimeFtText = !isShowStartTimeFtText;
+        cubitNft.isNotStartYet(startTime: startTimeAuction!);
+        setState(() {});
+      });
     } else {
       //todo when not auction
     }
@@ -120,6 +92,7 @@ class _NFTItemState extends State<NFTItemWidget> {
     if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
       _controller!.dispose();
     }
+    timer.cancel();
     super.dispose();
   }
 
@@ -353,7 +326,6 @@ class _NFTItemState extends State<NFTItemWidget> {
                 width: 5.w,
               ),
               if (cubitNft.isNotStartYet(startTime: startTimeAuction!)) ...[
-                // textStartForAuction(textStartIn)
                 CountdownTimer(
                   controller: coutdownStartTime,
                   widgetBuilder: (_, CurrentRemainingTime? time) {
@@ -367,14 +339,23 @@ class _NFTItemState extends State<NFTItemWidget> {
                         ),
                       );
                     }
-                    return Text(
-                      (time.sec ?? 0) % 3 == 0 ? S.current.start_in : '${time.days ?? 00}:${time.hours}:${time.min}:${time.sec}',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        13,
-                        FontWeight.w600,
-                      ),
-                    );
+                    return isShowStartTimeFtText
+                        ? Text(
+                            S.current.start_in,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              13,
+                              FontWeight.w600,
+                            ),
+                          )
+                        : Text(
+                            '${time.days ?? 0}:${time.hours ?? 0}:${time.min ?? 0}:${time.sec ?? 0}',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              13,
+                              FontWeight.w600,
+                            ),
+                          );
                   },
                 )
               ] else ...[
@@ -393,7 +374,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                         );
                       }
                       return Text(
-                        '${time.days ?? 00}:${time.hours}:${time.min}:${time.sec}',
+                        '${time.days ?? 0}:${time.hours ?? 0}:${time.min ?? 0}:${time.sec}',
                         style: textNormalCustom(
                           AppTheme.getInstance().whiteColor(),
                           13,
