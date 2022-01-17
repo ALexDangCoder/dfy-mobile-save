@@ -294,6 +294,8 @@
   "soft_nft_collection": "Soft NFT",
   "private_warning": "Invalid private key",
   "tran_submit": "Transaction submitted",
+  "authentic":"Authentic",
+  "fake":"Fake",
   "waiting_for_cf": "Waiting for confirmation",
   "buy_nft": "Buy NFT",
   "oopps_omething_went_wrong": "Oopps! \nSomething went wrong",

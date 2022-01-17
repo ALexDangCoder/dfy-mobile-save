@@ -28,7 +28,9 @@ class InformationWidget extends StatelessWidget {
             name: S.current.asset_type, value: object.assetType?.name ?? ''),
         textRow(
           name: S.current.authenticity_check,
-          value: (object.authenticityType == 1) ? 'Authentic' : 'Fake',
+          value: (object.authenticityType == 1)
+              ? S.current.authentic
+              : S.current.fake,
         ),
         if (object.properties?.isNotEmpty ?? false)
           ListView.builder(
