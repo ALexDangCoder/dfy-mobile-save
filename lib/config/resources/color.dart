@@ -89,6 +89,9 @@ const bgTranSubmitColor = Color(0xff585782);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
+
+  Color getPurpleColor();
+
   Color bgTranSubmit();
 
   List<Color> colorFab();
@@ -201,6 +204,8 @@ abstract class AppColor {
 
   Color bgTextFormField();
   Color bgProgressingColors();
+
+  Color yellowColor();
 }
 
 class LightApp extends AppColor {
@@ -502,6 +507,18 @@ class LightApp extends AppColor {
     // TODO: implement colorFab
     return colorsFab;
   }
+
+  @override
+  Color yellowColor() {
+    // TODO: implement yellowColor
+    return fillYellowColor;
+  }
+
+  @override
+  Color getPurpleColor() {
+    // TODO: implement purple;
+    return purple;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -533,6 +550,12 @@ class DarkApp extends AppColor {
   @override
   Color dfBtnColor() {
     return Colors.white.withOpacity(0.8);
+  }
+
+  @override
+  Color getPurpleColor() {
+    // TODO: implement purple;
+    return purple;
   }
 
   @override
@@ -826,6 +849,12 @@ class DarkApp extends AppColor {
   List<Color> colorFab() {
     // TODO: implement colorFab
     return colorsFab;
+  }
+
+  @override
+  Color yellowColor() {
+    // TODO: implement yellowColor
+    return fillYellowColor;
   }
 }
 

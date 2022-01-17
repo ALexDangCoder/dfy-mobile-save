@@ -76,7 +76,7 @@ class _PickTimeState extends State<PickTime> {
                         contentPadding: EdgeInsets.only(bottom: 5),
                       ),
                       style: textNormalCustom(
-                        fillYellowColor,
+                        AppTheme.getInstance().yellowColor(),
                         28,
                         FontWeight.w600,
                       ),
@@ -98,7 +98,7 @@ class _PickTimeState extends State<PickTime> {
                     child: Text(
                       ':',
                       style: textNormalCustom(
-                        fillYellowColor,
+                        AppTheme.getInstance().yellowColor(),
                         28,
                         FontWeight.w600,
                       ),
@@ -114,7 +114,7 @@ class _PickTimeState extends State<PickTime> {
                         contentPadding: EdgeInsets.only(bottom: 5),
                       ),
                       style: textNormalCustom(
-                        fillYellowColor,
+                        AppTheme.getInstance().yellowColor(),
                         28,
                         FontWeight.w600,
                       ),
@@ -179,7 +179,7 @@ class _PickTimeState extends State<PickTime> {
                       child: Text(
                         S.current.ok,
                         style: textNormalCustom(
-                          fillYellowColor,
+                          AppTheme.getInstance().yellowColor(),
                           20,
                           FontWeight.w700,
                         ),

@@ -13,6 +13,7 @@ import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
+import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
@@ -62,6 +63,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   double? gasLimit;
 
+  double? gasLimitFirst;
+
   double? gasPrice;
 
   String? rawData;
@@ -75,6 +78,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   String? tokenAddress;
 
   bool checkingApprove = false;
+
+  String? tokenApproveData;
 
   final Web3Utils web3Client = Web3Utils();
   final BehaviorSubject<String> _addressWalletCoreSubject =
@@ -147,6 +152,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       },
     );
   }
+
   Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
     showLoading();
     final result = await _nftRepo.bidNftRequest(bidNftRequest);
@@ -198,30 +204,30 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     }
   }
 
+  Future<void> gesGasLimitFirst(String hexString) async {
+    showLoading();
+    final gasLimitFirstResult =
+        await getGasLimitByType(type: type, hexString: hexString);
+    gasLimitFirst = gasLimitFirstResult;
+    gasLimit = gasLimitFirstResult;
+    gasPrice = gasPriceFirst;
+    showContent();
+  }
+
   Future<void> approve({
     required String contractAddress,
     required BuildContext context,
   }) async {
-    final data = await web3Client.getTokenApproveData(
-      context: context,
-      spender: getSpender(),
-      contractAddress: contractAddress,
-    );
-    final gasLimitApprove = await web3Client.getGasLimitByData(
-      dataString: data,
-      from: addressWallet ?? '',
-      toContractAddress: contractAddress,
-    );
     final nonce =
         await web3Client.getTransactionCount(address: addressWallet ?? '');
     await signTransactionWithData(
-      gasLimit: gasLimitApprove,
-      gasPrice: ((gasPriceFirst ?? 0) / 1e9).toInt().toString(),
+      gasLimit: (gasLimit ?? 0).toInt().toString(),
+      gasPrice: ((gasPrice ?? 0) / 1e9).toInt().toString(),
       chainId: Get.find<AppConstants>().chaninId,
       contractAddress: contractAddress,
       walletAddress: addressWallet ?? '',
       nonce: nonce.count.toString(),
-      hexString: data,
+      hexString: tokenApproveData ?? '',
     );
   }
 
@@ -239,8 +245,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           addressWallet = listWallet.first.address;
           _nameWalletSubject.sink.add(listWallet.first.name!);
           nameWallet = listWallet.first.name;
+          await getGasPrice();
           if (needApprove) {
-            await checkApprove(
+            final result = await checkApprove(
               payValue: payValue ?? '',
               tokenAddress: tokenAddress ?? ' ',
             );
@@ -344,7 +351,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       final data = {};
       showLoading();
       await trustWalletChannel.invokeMethod('getListWallets', data);
-      showContent();
     } on PlatformException {
       //nothing
     }

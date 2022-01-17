@@ -417,16 +417,16 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     required String toAddress,
     required String hexString,
   }) async {
-    try {
-      gasLimit = await web3Client.getGasLimitByData(
-        from: fromAddress,
-        toContractAddress: toAddress,
-        dataString: hexString,
-      );
-    } catch (e) {
-      throw AppException(S.current.error, e.toString());
-    }
-    return gasLimit;
+    // try {
+    //   gasLimit = await web3Client.getGasLimitByData(
+    //     from: fromAddress,
+    //     toContractAddress: toAddress,
+    //     dataString: hexString,
+    //   );
+    // } catch (e) {
+    //   throw AppException(S.current.error, e.toString());
+    // }
+    return '100';
   }
 
   Future<void> callWeb3(

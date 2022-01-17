@@ -336,6 +336,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                       nav.push(
                         MaterialPageRoute(
                             builder: (context) => Approve(
+                              hexString: bloc.hexString,
                                   listDetail: bloc.initListApprove(),
                                   title: S.current.cancel_sale,
                                   header: Container(

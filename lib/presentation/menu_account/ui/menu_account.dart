@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -11,7 +10,6 @@ import 'package:Dfy/presentation/menu_account/cubit/menu_account_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -444,7 +442,7 @@ class _MenuAccountState extends State<MenuAccount> {
                       child: Text(
                         S.current.login,
                         style: textNormalCustom(
-                          fillYellowColor,
+                          AppTheme.getInstance().yellowColor(),
                           16,
                           FontWeight.w700,
                         ),

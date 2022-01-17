@@ -203,7 +203,7 @@ void _showDialog(BuildContext context) {
                     child: Text(
                       S.current.continue_s,
                       style: textNormalCustom(
-                        fillYellowColor,
+                        AppTheme.getInstance().yellowColor(),
                         20,
                         FontWeight.w700,
                       ),
