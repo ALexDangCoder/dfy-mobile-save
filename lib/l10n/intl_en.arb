@@ -457,7 +457,6 @@
   "empty_data": "Empty data",
   "you_enter_greater": "You enter greater than the total amount",
   "you_must": "You must enter the quantity you want to buy",
-  "no_des": "No description",
   "on_sale": "On sale",
   "give_this_site_permission_to_access_your_nft": "Give this site permission to access your NFTs",
   "profile_setting": "Profile setting",
@@ -492,4 +491,18 @@
   "nft_fail": "An error occurred while transferring NFT to your wallet",
   "resend_code": "Resend code",
   "cancel_success": "Cancel sale successfully"
+  "how_to_create_hard_nft": "How to create hard NFT",
+  "skip": "Skip",
+  "step": "Step",
+  "create_an_unauth_hard_nft": "Create an unauthenticated",
+  "send_evalue_to_evaluator": "Send evaluation request",
+  "to_evaluator": "to evaluator",
+  "receive_accept_result_blockchain": "Receive and accept evaluation result",
+  "on_blockchain": "on blockchain",
+  "put_hard_nft_market": "Put hard NFT on",
+  "marketplace": "Marketplace",
+  "to_take_profit": "to take profit",
+  "next": "Next",
+  "get_started": "Get started",
+  "custom_url" : "Custom URL"
 }

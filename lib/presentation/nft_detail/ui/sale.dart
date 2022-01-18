@@ -71,71 +71,50 @@ Container _priceContainerOnSale({
 Widget _buildButtonBuyOutOnSale(
   BuildContext context,
   NFTDetailBloc bloc,
-  bool isBought,) {
-  return StreamBuilder<bool>(
-    stream: bloc.pairStream,
-    builder: (context, snapshot) {
-      if(snapshot.hasData){
-        final bool isOwner = !snapshot.data! ;
-        return ButtonGradient(
-          onPressed: () async {
-            if (isOwner) {
-              final nav = Navigator.of(context);
-              double gas = await bloc.getGasLimitForCancel(context: context);
-              if (gas > 0) {
-                unawaited(
-                  nav.push(
-                    MaterialPageRoute(
-                      builder: (context) => approveWidget(),
-                    ),
-                  ),
-                );
-              }
-              return;
-            }
-            if (isBought) {
-              _showDialog(context);
-            } else {
-              await bloc
-                  .getBalanceToken(
-                ofAddress: bloc.wallets.first.address ?? '',
-                tokenAddress: bloc.nftMarket.token ?? '',
-              )
-                  .then(
-                    (value) => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BuyNFT(
-                      balance: value,
-                    ),
+  NftMarket nftMarket,
+  bool isBought,
+) {
+  return ButtonGradient(
+    onPressed: () async {
+      if (isBought) {
+        _showDialog(context, nftMarket);
+      } else {
+        await bloc
+            .getBalanceToken(
+              ofAddress: bloc.wallets.first.address ?? '',
+              tokenAddress: bloc.nftMarket.token ?? '',
+            )
+            .then(
+              (value) => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BuyNFT(
+                    nftMarket: nftMarket,
+                    balance: value,
+                    walletAddress: bloc.wallets.first.address ?? '',
                   ),
                 ),
-              );
-            }
-          },
-          gradient: RadialGradient(
-            center: const Alignment(0.5, -0.5),
-            radius: 4,
-            colors: AppTheme.getInstance().gradientButtonColor(),
-          ),
-          child: Text(
-            isOwner ? S.current.cancel_sale : S.current.buy_nft,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              16,
-              FontWeight.w700,
-            ),
-          ),
-        );
-      }else{
-        return const SizedBox.shrink();
+              ),
+            );
       }
-
-    }
+    },
+    gradient: RadialGradient(
+      center: const Alignment(0.5, -0.5),
+      radius: 4,
+      colors: AppTheme.getInstance().gradientButtonColor(),
+    ),
+    child: Text(
+      S.current.buy_nft,
+      style: textNormalCustom(
+        AppTheme.getInstance().textThemeColor(),
+        16,
+        FontWeight.w700,
+      ),
+    ),
   );
 }
 
-void _showDialog(BuildContext context) {
+void _showDialog(BuildContext context, NftMarket nftMarket) {
   showDialog(
     context: context,
     builder: (BuildContext ctx) {
@@ -243,7 +222,9 @@ void _showDialog(BuildContext context) {
                             context,
                             MaterialPageRoute(
                               builder: (context) => BuyNFT(
+                                nftMarket: nftMarket,
                                 balance: value,
+                                walletAddress: bloc.wallets.first.address ?? '',
                               ),
                             ),
                           ),

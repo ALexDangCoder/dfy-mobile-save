@@ -12,7 +12,7 @@ import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
@@ -101,15 +101,15 @@ class _ApproveState extends State<Approve> {
   void initData(TYPE_CONFIRM_BASE typeBase) {
     switch (typeBase) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
-        nftDetailBloc = nftKey.currentState!.bloc;
+        nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
         getNonce();
         break;
       case TYPE_CONFIRM_BASE.PLACE_BID:
-        nftDetailBloc = nftKey.currentState!.bloc;
+        nftKey.currentState?.bloc ?? NFTDetailBloc();
         getNonce();
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
-        nftDetailBloc = nftKey.currentState!.bloc;
+        nftKey.currentState?.bloc ?? NFTDetailBloc();
         break;
     }
   }
@@ -395,7 +395,7 @@ class _ApproveState extends State<Approve> {
                 title: state.message,
                 content: S.current.buy_fail,
                 onTapBtn: () {
-                  Navigator.popUntil(context, (route) => false);
+                  Navigator.popUntil(context, (route) => true);
                 },
               ),
             ),
@@ -656,6 +656,11 @@ class _ApproveState extends State<Approve> {
   void caseNavigator(TYPE_CONFIRM_BASE type, String data) {
     switch (type) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
+        cubit.importNft(
+          contract: nftDetailBloc.nftMarket.collectionAddress ?? '',
+          id: int.parse(nftDetailBloc.nftMarket.nftTokenId ?? ''),
+          address: nftDetailBloc.walletAddress,
+        );
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -673,12 +678,6 @@ class _ApproveState extends State<Approve> {
                 );
               },
             ),
-          ),
-        ).then(
-          (_) => cubit.importNft(
-            contract: cubit.nftMarket.collectionAddress ?? '',
-            id: int.parse(cubit.nftMarket.nftTokenId ?? ''),
-            address: nftDetailBloc.walletAddress,
           ),
         );
         cubit.buyNftRequest(

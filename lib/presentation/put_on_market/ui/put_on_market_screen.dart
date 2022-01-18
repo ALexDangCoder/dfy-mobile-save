@@ -9,8 +9,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../main.dart';
-
 class PutOnMarket extends StatefulWidget {
   final bool? canSetQuantity;
   final int? quantity;
@@ -52,7 +50,6 @@ class _PutOnMarketState extends State<PutOnMarket>
       }
     });
   }
-
 
   @override
   void dispose() {
@@ -172,6 +169,4 @@ class _PutOnMarketState extends State<PutOnMarket>
       ),
     );
   }
-
-
 }

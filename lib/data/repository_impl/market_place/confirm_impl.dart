@@ -1,3 +1,5 @@
+import 'package:Dfy/data/request/collection/create_hard_collection_request.dart';
+import 'package:Dfy/data/request/collection/create_soft_collection_request.dart';
 import 'package:Dfy/data/response/market_place/confirm_res.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/market_place/confirm_service.dart';
@@ -10,10 +12,31 @@ class ConfirmImplement implements ConfirmRepository {
   ConfirmImplement(this._confirmClient);
 
   @override
-  Future<Result<ConfirmModel>> getCancelSaleResponse(
-      {required String id, required String txnHash,}) {
+  Future<Result<ConfirmModel>> getCancelSaleResponse({
+    required String id,
+    required String txnHash,
+  }) {
     return runCatchingAsync<ConfirmResponse, ConfirmModel>(
-          () => _confirmClient.cancelSale(id, txnHash),
-          (response) => response.toDomain(),
-    );  }
+      () => _confirmClient.cancelSale(id, txnHash),
+      (response) => response.toDomain(),
+    );
+  }
+
+  @override
+  Future<Result<ConfirmModel>> createSoftCollection(
+      {required CreateSoftCollectionRequest data}) {
+    return runCatchingAsync<ConfirmResponse, ConfirmModel>(
+      () => _confirmClient.createSoftCollection(data),
+      (response) => response.toDomain(),
+    );
+  }
+
+  @override
+  Future<Result<ConfirmModel>> createHardCollection(
+      {required CreateHardCollectionRequest data}) {
+    return runCatchingAsync<ConfirmResponse, ConfirmModel>(
+      () => _confirmClient.createHardCollection(data),
+      (response) => response.toDomain(),
+    );
+  }
 }

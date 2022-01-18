@@ -190,6 +190,12 @@ class ImageAssets {
   static const String img_cash = '$baseImg/cash.png';
   static const String img_warning = '$baseImg/img_warning.png';
 
+  ///image for on boarding screen
+  static const String content1 = '$baseImg/content1.png';
+  static const String content2 = '$baseImg/content2.png';
+  static const String content3 = '$baseImg/content3.png';
+  static const String content4 = '$baseImg/content4.png';
+
   ///error feat load nft, collection, category
   static const String err_load_nft = '$baseImg/error_nft.png';
   static const String err_load_collection = '$baseImg/error_collection.png';
@@ -300,9 +306,14 @@ class ImageAssets {
   static const String ic_round_i = '$baseImg/ic_round_i.svg';
   static const String ic_expand_white_svg = '$baseImg/ic_expand_white_svg.svg';
   static const String ic_camera_svg = '$baseImg/ic_camera_svg.svg';
-
-
   static const String ic_star = '$baseImg/ic_star.png';
+
+
+  //MyAccount
+  static const String rec_plus_svg = '$baseImg/rec_plus_svg.svg';
+  static const String x_svg = '$baseImg/x_svg.svg';
+
+
 
   static SvgPicture svgAssets(
     String name, {

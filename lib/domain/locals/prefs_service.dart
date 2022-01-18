@@ -83,21 +83,26 @@ class PrefsService {
   }
 
   static String getWalletLogin() {
-    return _prefsInstance?.getString(_PREF_WALLET_LOGIN) ?? '';
+    return _prefsInstance?.getString(_PREF_WALLET_LOGIN) ??
+        jsonLoginModelEmpty();
   }
 
   static Future<bool> clearWalletLogin() async {
     final prefs = await _instance;
     return prefs.setString(
       _PREF_WALLET_LOGIN,
-      loginToJson(
-        LoginModel(
-          accessToken: '',
-          expiresIn: 0,
-          refreshToken: '',
-          scope: '',
-          tokenType: '',
-        ),
+      jsonLoginModelEmpty(),
+    );
+  }
+
+  static String jsonLoginModelEmpty() {
+    return loginToJson(
+      LoginModel(
+        accessToken: '',
+        expiresIn: 0,
+        refreshToken: '',
+        scope: '',
+        tokenType: '',
       ),
     );
   }
