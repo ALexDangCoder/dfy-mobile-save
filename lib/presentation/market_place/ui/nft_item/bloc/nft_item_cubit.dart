@@ -1,15 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 
 part 'nft_item_state.dart';
 
 class NftItemCubit extends Cubit<NftItemState> {
   NftItemCubit() : super(NftItemInitial());
 
-
   DateTime parseTimeServerToDateTime({required int value}) {
-    if(value == 0) {
+    if (value == 0) {
       return DateTime.now(); //todo dang hardcode
     } else {
       final dt = DateTime.fromMillisecondsSinceEpoch(value);
@@ -18,7 +16,7 @@ class NftItemCubit extends Cubit<NftItemState> {
   }
 
   bool isNotStartYet({required DateTime startTime}) {
-    if(DateTime.now().isBefore(startTime)) {
+    if (DateTime.now().isBefore(startTime)) {
       return true;
     } else {
       return false;
@@ -35,7 +33,7 @@ class NftItemCubit extends Cubit<NftItemState> {
     // final int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
     // final int endTimestamp = endTime.millisecondsSinceEpoch;
     //nếu endtime trước hôm nay -> quá hạn
-    if(endTime.isBefore(DateTime.now())) {
+    if (endTime.isBefore(DateTime.now())) {
       return false;
     } else {
       return true;

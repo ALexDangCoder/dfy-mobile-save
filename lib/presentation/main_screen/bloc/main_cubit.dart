@@ -1,5 +1,3 @@
-
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -8,7 +6,6 @@ import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_state.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
-
 
 class MainCubit extends BaseCubit<MainState> {
   MainCubit() : super(MainStateInitial());
@@ -24,7 +21,6 @@ class MainCubit extends BaseCubit<MainState> {
 
   Sink<int> get walletSink => _walletIndex.sink;
 
-
   Future<void> init({dynamic args}) async {}
 
   int checkAppLock() {
@@ -34,7 +30,8 @@ class MainCubit extends BaseCubit<MainState> {
       return 1;
     }
   }
-  bool checkWalletExist(){
+
+  bool checkWalletExist() {
     if (PrefsService.getFirstAppConfig() == 'false') {
       return true;
     } else {
@@ -42,19 +39,16 @@ class MainCubit extends BaseCubit<MainState> {
     }
   }
 
-
   TokenRepository get _tokenRepository => Get.find();
 
-  Future<void> getListTokenSupport() async{
+  Future<void> getListTokenSupport() async {
     final Result<List<TokenInf>> result = await _tokenRepository.getListToken();
     result.when(
       success: (res) {
         final String encodeData = TokenInf.encode(res);
         PrefsService.saveListTokenSupport(encodeData);
       },
-      error: (error) {
-
-      },
+      error: (error) {},
     );
   }
 

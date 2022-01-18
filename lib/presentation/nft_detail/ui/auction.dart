@@ -1,25 +1,26 @@
 part of 'nft_detail.dart';
 
-Widget _buildButtonPlaceBid(
-    BuildContext context, bool start, bool end, NFTDetailBloc bloc) {
+Widget _buildButtonPlaceBid(BuildContext context, bool start, bool end,
+    NFTDetailBloc bloc, NFTOnAuction nftOnAuction) {
   if (!start && end) {
     return ButtonGradient(
       onPressed: () async {
         await bloc
             .getBalanceToken(
-          ofAddress: bloc.wallets.first.address ?? '',
-          tokenAddress: bloc.nftOnAuction.token ?? '',
-        )
+              ofAddress: bloc.wallets.first.address ?? '',
+              tokenAddress: bloc.nftOnAuction.token ?? '',
+            )
             .then(
               (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PlaceBid(
-                balance: value,
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PlaceBid(
+                    nftOnAuction: nftOnAuction,
+                    balance: value,
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),

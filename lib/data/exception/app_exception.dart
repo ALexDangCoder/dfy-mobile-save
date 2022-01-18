@@ -1,4 +1,3 @@
-
 import 'package:Dfy/generated/l10n.dart';
 
 class AppException implements Exception {
