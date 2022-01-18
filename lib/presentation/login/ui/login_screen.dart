@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:Dfy/config/resources/color.dart';
@@ -8,6 +9,7 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/alert_dialog/ui/alert_import_pop_up.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
+import 'package:Dfy/presentation/login/bloc/login_for_market_place.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
 import 'package:Dfy/presentation/market_place/login/ui/token_has_email.dart';
@@ -209,30 +211,34 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
-                    listener: (context, state) {
+                    listener: (context, state) async {
+                      final nav = Navigator.of(context);
                       //todo
                       if (state is LoginPasswordSuccess &&
                           widget.isFromConnectDialog) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                widget.navigationToScreen ??
-                                const MainScreen(
-                                  index: 1,
-                                ),
-                          ),
-                          (route) => route.isFirst,
+                        _cubit.showLoading();
+                        _cubit.getWallet();
+                        await _cubit.signWallet(
+                          walletAddress: _cubit.walletAddress,
                         );
+                        await _cubit.loginAndSaveInfo(
+                          walletAddress: _cubit.walletAddress,
+                          signature: _cubit.signature,
+                        );
+                        _cubit.showContent();
+                        nav.pop();
                         return;
                       }
                       if (state is LoginPasswordSuccess) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => const MainScreen(
-                              index: 1,
+                        unawaited(
+                          nav.pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => const MainScreen(
+                                index: 1,
+                              ),
                             ),
+                            (route) => route.isFirst,
                           ),
-                          (route) => route.isFirst,
                         );
                       }
                       if (state is LoginPasswordError) {

@@ -491,6 +491,6 @@
   "nft_fail": "An error occurred while transferring NFT to your wallet",
   "resend_code": "Resend code",
   "dont_have_wallet": "You don’t have any wallet. Create now",
-  "need_login": "You are not logged in.\nLog in nào"
+  "need_login": "You are not logged in.\nLog in"
 
 }

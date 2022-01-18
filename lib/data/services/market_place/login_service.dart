@@ -11,7 +11,7 @@ abstract class LoginClient {
   @factoryMethod
   factory LoginClient(Dio dio, {String baseUrl}) = _LoginClient;
 
-  @POST(ApiConstants.LOGIN_EMAIL)
+  @POST(ApiConstants.LOGIN_MARKET)
   Future<LoginResponse> login(@Field('signature') String signature,
       @Field('walletAddress') String walletAddress);
 }

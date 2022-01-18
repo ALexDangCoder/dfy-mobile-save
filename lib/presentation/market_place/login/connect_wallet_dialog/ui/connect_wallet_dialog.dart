@@ -140,6 +140,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               const MainScreen(
+                                            isFormConnectWlDialog: true,
                                             index: 2,
                                           ),
                                         ),
