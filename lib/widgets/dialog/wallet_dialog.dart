@@ -19,8 +19,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 ///             );
 
 class WalletDialogLogin extends StatelessWidget {
-  const WalletDialogLogin({Key? key, required this.callback}) : super(key: key);
+  const WalletDialogLogin({
+    Key? key,
+    required this.callback,
+    required this.nameWallet,
+    required this.addressWallet,
+    required this.moneyWallet,
+    required this.shortNameToken,
+    required this.imgWallet,
+  }) : super(key: key);
   final Function()? callback;
+  final String addressWallet;
+  final String nameWallet;
+  final double moneyWallet;
+  final String shortNameToken;
+  final String imgWallet;
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +62,11 @@ class WalletDialogLogin extends StatelessWidget {
                 txtConnectWallet(),
                 spaceH27,
                 informationWallet(
-                  addressWallet: '0x5D3034094Eb47C3302d5BaE8D8422F34a04E79a5',
-                  nameWallet: 'QuynhDTN',
-                  moneyWallet: 0.0036,
-                  nameToken: 'BNB',
+                  addressWallet: addressWallet,
+                  nameWallet: nameWallet,
+                  moneyWallet: moneyWallet,
+                  nameToken: shortNameToken,
+                  imgWallet: imgWallet,
                 )
               ],
             ),
@@ -93,11 +107,12 @@ class WalletDialogLogin extends StatelessWidget {
     required String nameWallet,
     required String addressWallet,
     required double moneyWallet,
+    required String imgWallet,
   }) {
     return Row(
       children: [
         circularImage(
-          ImageAssets.ic_line_down,
+          imgWallet,
           height: 40,
           width: 40,
         ),
