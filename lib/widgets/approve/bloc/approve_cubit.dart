@@ -16,7 +16,7 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
-import 'package:Dfy/widgets/approve/extension/call_core_login_extension.dart';
+import 'package:Dfy/widgets/approve/extension/call_core_logic_extension.dart';
 import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
