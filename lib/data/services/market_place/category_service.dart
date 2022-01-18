@@ -1,8 +1,8 @@
 import 'package:Dfy/data/response/collection/list_category_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/http.dart';
-import 'package:dio/dio.dart';
 
 part 'category_service.g.dart';
 
@@ -16,6 +16,6 @@ abstract class CategoryService {
 
   @GET(ApiConstants.GET_LIST_CATEGORY)
   Future<ListCategoryResponse> getCategory(
-      @Query('name') String name,
-      );
+    @Query('name') String name,
+  );
 }

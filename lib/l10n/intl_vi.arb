@@ -13,7 +13,7 @@
   "search": "Tìm kiếm...",
   "start_date": "Ngày bắt đầu",
   "end_date": "Ngày kết thúc",
-  "start_time": "Thời gian bắt đầu",
+  "start_time": "Thời gian bắt đầu ",
   "end_time": "Thời gian kết thúc",
   "put_on_sell": "Đưa ra bán",
   "sell": "Bán",
@@ -403,6 +403,8 @@
   "feature_soft_nfts": "Featured Soft NFTs",
   "buy_sell_create_collectible_nfts": "Mua, bán và tạo cácNFT sưu tập",
   "loading_text": "Đang tải...",
+  "error_text": "Lỗi tải...",
+  "resend_code": "Gửi lại mã",
   "nfts_search_result": "NFT kết quả tìm kiếm",
   "collection_search_result": "Collection kết quả tìm kiếm",
   "sort_by": "Sắp xếp theo",
@@ -415,7 +417,6 @@
   "item_from_high_to_low": "Mục từ cao đến thấp",
   "you_enter_greater": "Bạn nhập lớn hơn tổng số bản",
   "you_must": "Bạn phải nhập vào số lượng bạn muốn mua",
-  "error_text": "Lỗi tải...",
   "could_not_load_data": "Không thể tải dữ liệu",
   "create_collection": "Tạo bộ sưu tập",
   "coming_soon": "COMING SOON",
@@ -477,5 +478,9 @@
   "purchase_being_processed": "Nft đang được giao dịch bởi một ai đó.",
   "error_might_occur": "Có lỗi có thể xảy ra nếu bạn tiếp tục",
   "end_in": "Kết thúc",
-  "view_type": "Xem theo"
+  "view_type": "Xem theo",
+   "connect": "Kết nối",
+  "buy_fail": "Mua thất bại",
+  "nft_success": "NFT đã chuyển vào ví của bạn thành công",
+  "nft_fail": "Đã có lỗi xảy ra khi chuyển NFT vào ví của bạn"
 }
