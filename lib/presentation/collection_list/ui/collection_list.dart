@@ -29,11 +29,13 @@ import 'item_collection_load.dart';
 class CollectionList extends StatefulWidget {
   final String query;
   String? title;
+  final bool isMyAcc;
 
   CollectionList({
     Key? key,
     required this.query,
     this.title,
+    required this.isMyAcc,
   }) : super(key: key);
 
   @override
@@ -43,7 +45,6 @@ class CollectionList extends StatefulWidget {
 class _CollectionListState extends State<CollectionList> {
   late final CollectionBloc collectionBloc;
   late final TextEditingController searchCollection;
-  bool isMyAcc = false;
 
   final ScrollController _listCollectionController = ScrollController();
   bool loading = true;
@@ -65,12 +66,14 @@ class _CollectionListState extends State<CollectionList> {
   @override
   void initState() {
     super.initState();
-    if (widget.title!.isNotEmpty) {
+    if (widget.title?.isNotEmpty ?? false) {
       widget.title = S.current.collection_search_result;
     } else {
       widget.title = S.current.collection_list;
     }
-    collectionBloc = CollectionBloc();
+    collectionBloc = CollectionBloc(
+      isMyAcc: widget.isMyAcc,
+    );
 
     searchCollection = TextEditingController();
     searchCollection.text = widget.query;
@@ -108,283 +111,280 @@ class _CollectionListState extends State<CollectionList> {
       backgroundColor: Colors.transparent,
       body: Align(
         alignment: Alignment.bottomCenter,
-        child: SafeArea(
-          child: GestureDetector(
-            onTap: () {
-              final FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
-            },
-            child: Container(
-              height: 764.h,
-              decoration: BoxDecoration(
-                color: AppTheme.getInstance().bgBtsColor(),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.h),
-                  topRight: Radius.circular(30.h),
-                ),
+        child: GestureDetector(
+          onTap: () {
+            final FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: Container(
+            height: 764.h,
+            decoration: BoxDecoration(
+              color: AppTheme.getInstance().bgBtsColor(),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.h),
+                topRight: Radius.circular(30.h),
               ),
-              child: Column(
-                children: [
-                  spaceH16,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            left: 16.w,
-                          ),
-                          width: 28.w,
-                          height: 28.h,
-                          child: Image.asset(
-                            ImageAssets.ic_back,
-                          ),
+            ),
+            child: Column(
+              children: [
+                spaceH16,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          left: 16.w,
+                        ),
+                        width: 28.w,
+                        height: 28.h,
+                        child: Image.asset(
+                          ImageAssets.ic_back,
                         ),
                       ),
-                      Text(
-                        widget.title ?? S.current.collection_list,
-                        style: textNormalCustom(
-                          null,
-                          20.sp,
-                          FontWeight.w700,
-                        ).copyWith(
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        maxLines: 1,
+                    ),
+                    Text(
+                      widget.title ?? S.current.collection_list,
+                      style: textNormalCustom(
+                        null,
+                        20.sp,
+                        FontWeight.w700,
+                      ).copyWith(
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          if (!isMyAcc) {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              context: context,
-                              builder: (context) => Filter(
-                                collectionBloc: collectionBloc,
-                              ),
-                            );
-                          } else {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              context: context,
-                              builder: (context) => FilterMyAcc(
-                                collectionBloc: collectionBloc,
-                              ),
-                            );
-                          }
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(right: 16.w),
-                          width: 24.w,
-                          height: 24.h,
-                          child: Image.asset(ImageAssets.ic_filter),
-                        ),
-                      ),
-                    ],
-                  ),
-                  spaceH20,
-                  line,
-                  spaceH12,
-                  FormSearchBase(
-                    onChangedFunction: collectionBloc.funOnSearch,
-                    onTapFunction: collectionBloc.funOnTapSearch,
-                    urlIcon: ImageAssets.ic_search,
-                    hint: S.current.name_of_collection,
-                    textSearchStream: collectionBloc.textSearch,
-                    textSearch: searchCollection,
-                  ),
-                  spaceH10,
-                  BlocBuilder<CollectionBloc, CollectionState>(
-                    bloc: collectionBloc,
-                    builder: (context, state) {
-                      if (state is LoadingData) {
-                        return Expanded(
-                          child: StaggeredGridView.countBuilder(
-                            padding: EdgeInsets.only(
-                              left: 21.w,
-                              right: 21.w,
-                              top: 10.h,
-                              bottom: 20.h,
+                      maxLines: 1,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (!widget.isMyAcc) {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context) => Filter(
+                              collectionBloc: collectionBloc,
                             ),
-                            mainAxisSpacing: 20.h,
-                            crossAxisSpacing: 26.w,
-                            itemCount: 10,
-                            itemBuilder: (context, index) {
-                              return const ItemCollectionLoad();
-                            },
-                            crossAxisCount: 2,
-                            staggeredTileBuilder: (int index) =>
-                                const StaggeredTile.fit(1),
-                          ),
-                        );
-                      } else if (state is LoadingDataFail) {
-                        return Expanded(
-                          child: StaggeredGridView.countBuilder(
-                            padding: EdgeInsets.only(
-                              left: 21.w,
-                              right: 21.w,
-                              top: 10.h,
-                              bottom: 20.h,
+                          );
+                        } else {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context) => FilterMyAcc(
+                              collectionBloc: collectionBloc,
                             ),
-                            mainAxisSpacing: 20.h,
-                            crossAxisSpacing: 26.w,
-                            itemCount: 10,
-                            itemBuilder: (context, index) {
-                              return ItemCollectionError(cubit: collectionBloc);
-                            },
-                            crossAxisCount: 2,
-                            staggeredTileBuilder: (int index) =>
-                                const StaggeredTile.fit(1),
-                          ),
-                        );
-                      } else if (state is LoadingDataSuccess) {
-                        if (collectionBloc.list.value.length < 9) {
-                          collectionBloc.isCanLoadMore.add(false);
+                          );
                         }
-                        return StreamBuilder(
-                          stream: collectionBloc.list,
-                          builder: (
-                            context,
-                            AsyncSnapshot<List<CollectionMarketModel>> snapshot,
-                          ) {
-                            final list = snapshot.data ?? [];
-                            return Expanded(
-                              child: RefreshIndicator(
-                                onRefresh: () async {
-                                  await collectionBloc.getCollection(
-                                    name:
-                                        collectionBloc.textSearch.value.trim(),
-                                    sortFilter: collectionBloc.sortFilter,
-                                  );
-                                },
-                                child: SingleChildScrollView(
-                                  controller: _listCollectionController,
-                                  child: Column(
-                                    children: [
-                                      StaggeredGridView.countBuilder(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        padding: EdgeInsets.only(
-                                          left: 21.w,
-                                          right: 21.w,
-                                          top: 10.h,
-                                          bottom: 20.h,
-                                        ),
-                                        mainAxisSpacing: 20.h,
-                                        crossAxisSpacing: 26.w,
-                                        itemCount: list.length,
-                                        itemBuilder: (context, index) {
-                                          return InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return DetailCollection(
-                                                      collectionAddress:
-                                                          collectionBloc
-                                                                  .list
-                                                                  .value[index]
-                                                                  .addressCollection ??
-                                                              '',
-                                                      walletAddress:
-                                                          'alo alo alo', //todo address wallet
-                                                    );
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                            child: ItemCollection(
-                                              items:
-                                                  '${list[index].totalNft ?? 0}',
-                                              text: list[index]
-                                                      .description
-                                                      ?.parseHtml() ??
-                                                  '',
-                                              urlIcon: ApiConstants.URL_BASE +
-                                                  (list[index].avatarCid ?? ''),
-                                              owners:
-                                                  '${list[index].nftOwnerCount ?? 0}',
-                                              title: snapshot.data?[index].name
-                                                      ?.parseHtml() ??
-                                                  '',
-                                              urlBackGround: ApiConstants
-                                                      .URL_BASE +
-                                                  (list[index].coverCid ?? ''),
-                                            ),
-                                          );
-                                        },
-                                        crossAxisCount: 2,
-                                        staggeredTileBuilder: (int index) =>
-                                            const StaggeredTile.fit(1),
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 16.w),
+                        width: 24.w,
+                        height: 24.h,
+                        child: Image.asset(ImageAssets.ic_filter),
+                      ),
+                    ),
+                  ],
+                ),
+                spaceH20,
+                line,
+                spaceH12,
+                FormSearchBase(
+                  onChangedFunction: collectionBloc.funOnSearch,
+                  onTapFunction: collectionBloc.funOnTapSearch,
+                  urlIcon: ImageAssets.ic_search,
+                  hint: S.current.name_of_collection,
+                  textSearchStream: collectionBloc.textSearch,
+                  textSearch: searchCollection,
+                ),
+                spaceH10,
+                BlocBuilder<CollectionBloc, CollectionState>(
+                  bloc: collectionBloc,
+                  builder: (context, state) {
+                    if (state is LoadingData) {
+                      return Expanded(
+                        child: StaggeredGridView.countBuilder(
+                          padding: EdgeInsets.only(
+                            left: 21.w,
+                            right: 21.w,
+                            top: 10.h,
+                            bottom: 20.h,
+                          ),
+                          mainAxisSpacing: 20.h,
+                          crossAxisSpacing: 26.w,
+                          itemCount: 10,
+                          itemBuilder: (context, index) {
+                            return const ItemCollectionLoad();
+                          },
+                          crossAxisCount: 2,
+                          staggeredTileBuilder: (int index) =>
+                              const StaggeredTile.fit(1),
+                        ),
+                      );
+                    } else if (state is LoadingDataFail) {
+                      return Expanded(
+                        child: StaggeredGridView.countBuilder(
+                          padding: EdgeInsets.only(
+                            left: 21.w,
+                            right: 21.w,
+                            top: 10.h,
+                            bottom: 20.h,
+                          ),
+                          mainAxisSpacing: 20.h,
+                          crossAxisSpacing: 26.w,
+                          itemCount: 10,
+                          itemBuilder: (context, index) {
+                            return ItemCollectionError(cubit: collectionBloc);
+                          },
+                          crossAxisCount: 2,
+                          staggeredTileBuilder: (int index) =>
+                              const StaggeredTile.fit(1),
+                        ),
+                      );
+                    } else if (state is LoadingDataSuccess) {
+                      if (collectionBloc.list.value.length < 9) {
+                        collectionBloc.isCanLoadMore.add(false);
+                      }
+                      return StreamBuilder(
+                        stream: collectionBloc.list,
+                        builder: (
+                          context,
+                          AsyncSnapshot<List<CollectionMarketModel>> snapshot,
+                        ) {
+                          final list = snapshot.data ?? [];
+                          return Expanded(
+                            child: RefreshIndicator(
+                              onRefresh: () async {
+                                await collectionBloc.getCollection(
+                                  name: collectionBloc.textSearch.value.trim(),
+                                  sortFilter: collectionBloc.sortFilter,
+                                );
+                              },
+                              child: SingleChildScrollView(
+                                controller: _listCollectionController,
+                                child: Column(
+                                  children: [
+                                    StaggeredGridView.countBuilder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      padding: EdgeInsets.only(
+                                        left: 21.w,
+                                        right: 21.w,
+                                        top: 10.h,
+                                        bottom: 16.h,
                                       ),
-                                      StreamBuilder<bool>(
-                                        stream: collectionBloc.isCanLoadMore,
-                                        builder: (context, snapshot) {
-                                          return snapshot.data ?? false
-                                              ? Center(
-                                                  child: Padding(
-                                                    padding: EdgeInsets.all(
-                                                      16.w,
-                                                    ),
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      strokeWidth: 3,
-                                                      color:
-                                                          AppTheme.getInstance()
-                                                              .whiteColor(),
-                                                    ),
+                                      mainAxisSpacing: 20.h,
+                                      crossAxisSpacing: 26.w,
+                                      itemCount: list.length,
+                                      itemBuilder: (context, index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) {
+                                                  return DetailCollection(
+                                                    collectionAddress:
+                                                        collectionBloc
+                                                                .list
+                                                                .value[index]
+                                                                .addressCollection ??
+                                                            '',
+                                                    walletAddress:
+                                                        'alo alo alo', //todo address wallet
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          child: ItemCollection(
+                                            items:
+                                                '${list[index].totalNft ?? 0}',
+                                            text: list[index]
+                                                    .description
+                                                    ?.parseHtml() ??
+                                                '',
+                                            urlIcon: ApiConstants.URL_BASE +
+                                                (list[index].avatarCid ?? ''),
+                                            owners:
+                                                '${list[index].nftOwnerCount ?? 0}',
+                                            title: snapshot.data?[index].name
+                                                    ?.parseHtml() ??
+                                                '',
+                                            urlBackGround: ApiConstants
+                                                    .URL_BASE +
+                                                (list[index].coverCid ?? ''),
+                                          ),
+                                        );
+                                      },
+                                      crossAxisCount: 2,
+                                      staggeredTileBuilder: (int index) =>
+                                          const StaggeredTile.fit(1),
+                                    ),
+                                    StreamBuilder<bool>(
+                                      stream: collectionBloc.isCanLoadMore,
+                                      builder: (context, snapshot) {
+                                        return snapshot.data ?? false
+                                            ? Center(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                    bottom: 16.h,
                                                   ),
-                                                )
-                                              : const SizedBox.shrink();
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    strokeWidth: 3,
+                                                    color:
+                                                        AppTheme.getInstance()
+                                                            .whiteColor(),
+                                                  ),
+                                                ),
+                                              )
+                                            : const SizedBox.shrink();
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
-                            );
-                          },
-                        );
-                      } else {
-                        return Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 150.h),
-                            child: Column(
-                              children: [
-                                Image(
-                                  image: const AssetImage(
-                                    ImageAssets.img_search_empty,
-                                  ),
-                                  height: 120.h,
-                                  width: 120.w,
-                                ),
-                                SizedBox(
-                                  height: 17.7.h,
-                                ),
-                                Text(
-                                  S.current.no_result_found,
-                                  style: textNormal(
-                                    Colors.white54,
-                                    20.sp,
-                                  ),
-                                ),
-                              ],
                             ),
+                          );
+                        },
+                      );
+                    } else {
+                      return Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 150.h),
+                          child: Column(
+                            children: [
+                              Image(
+                                image: const AssetImage(
+                                  ImageAssets.img_search_empty,
+                                ),
+                                height: 120.h,
+                                width: 120.w,
+                              ),
+                              SizedBox(
+                                height: 17.7.h,
+                              ),
+                              Text(
+                                S.current.no_result_found,
+                                style: textNormal(
+                                  Colors.white54,
+                                  20.sp,
+                                ),
+                              ),
+                            ],
                           ),
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
           ),
         ),

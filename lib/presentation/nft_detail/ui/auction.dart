@@ -5,7 +5,21 @@ Widget _buildButtonPlaceBid(
   if (!start && end) {
     return ButtonGradient(
       onPressed: () async {
-
+        await bloc
+            .getBalanceToken(
+          ofAddress: bloc.wallets.first.address ?? '',
+          tokenAddress: bloc.nftOnAuction.token ?? '',
+        )
+            .then(
+              (value) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PlaceBid(
+                balance: value,
+              ),
+            ),
+          ),
+        );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
@@ -60,6 +74,7 @@ Widget _buildButtonBuyOut(BuildContext context) {
 
 Container _priceContainerOnAuction({
   required NFTOnAuction nftOnAuction,
+  required bool isEnd,
 }) {
   final bool isBidding = nftOnAuction.isBidByOther ?? false;
   return Container(
@@ -71,7 +86,9 @@ Container _priceContainerOnAuction({
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isBidding ? S.current.reserve_price : S.current.is_bid,
+          isBidding
+              ? S.current.reserve_price
+              : (isEnd ? S.current.auction_win : S.current.is_bid),
           style: textNormalCustom(
             AppTheme.getInstance().textThemeColor().withOpacity(0.7),
             14,

@@ -2,18 +2,15 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/market_place/fillterCollectionModel.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
-import 'package:Dfy/widgets/form/from_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'item_fillter_category.dart';
 
 class FilterMyAcc extends StatefulWidget {
   final CollectionBloc collectionBloc;
@@ -28,18 +25,14 @@ class FilterMyAcc extends StatefulWidget {
 }
 
 class _FilterMyAccState extends State<FilterMyAcc> {
-  late final TextEditingController searchFilter;
-
   @override
   void initState() {
     super.initState();
-    searchFilter = TextEditingController();
-    searchFilter.text = widget.collectionBloc.textSearchCategory.value;
   }
 
   @override
   Widget build(BuildContext context) {
-    final collectionBloc = widget.collectionBloc;
+    final bloc = widget.collectionBloc;
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
       child: Stack(
@@ -51,7 +44,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
               if (!currentFocus.hasPrimaryFocus) {
                 currentFocus.unfocus();
               }
-              collectionBloc.isChooseAcc.sink.add(false);
+              bloc.isChooseAcc.sink.add(false);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -107,7 +100,6 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                           GestureDetector(
                             onTap: () {
                               widget.collectionBloc.resetFilterMyAcc();
-                              searchFilter.text = '';
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(
@@ -145,7 +137,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                           Padding(
                             padding: EdgeInsets.only(left: 10.w),
                             child: Text(
-                              S.current.NFTs_collateral,
+                              S.current.address,
                               style:
                                   textNormalCustom(null, 16, FontWeight.w600),
                             ),
@@ -153,55 +145,58 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                           Center(
                             child: InkWell(
                               onTap: () {
-                                collectionBloc.isChooseAcc.sink.add(true);
+                                bloc.isChooseAcc.sink.add(true);
                               },
                               child: StreamBuilder<String>(
-                                  stream: collectionBloc.textAddressFilter,
-                                  builder: (context, snapshot) {
-                                    return Container(
-                                      margin: EdgeInsets.only(
-                                        top: 16.h,
-                                        bottom: 12.h,
-                                        // right: 16.w,
-                                        left: 10.w,
+                                stream: bloc.textAddressFilter,
+                                builder: (context, snapshot) {
+                                  final String address =
+                                      bloc.checkAddress(snapshot.data ?? '');
+                                  return Container(
+                                    margin: EdgeInsets.only(
+                                      top: 16.h,
+                                      bottom: 12.h,
+                                      // right: 16.w,
+                                      left: 10.w,
+                                    ),
+                                    height: 46.h,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 15.5.w,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.getInstance()
+                                          .itemBtsColors(),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(12.r),
                                       ),
-                                      height: 46.h,
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 15.5.w,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: AppTheme.getInstance()
-                                            .itemBtsColors(),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(12.r),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                child: Text(
-                                                  snapshot.data ?? '',
-                                                  style: textNormal(
-                                                    null,
-                                                    16,
-                                                  ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              child: Text(
+                                                address,
+                                                style: textNormal(
+                                                  null,
+                                                  16,
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                          Image.asset(
-                                            ImageAssets.ic_line_down,
-                                            height: 20.67.h,
-                                            width: 20.14.w,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }),
+                                            ),
+                                          ],
+                                        ),
+                                        Image.asset(
+                                          ImageAssets.ic_line_down,
+                                          height: 20.67.h,
+                                          width: 20.14.w,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                           Padding(
@@ -217,7 +212,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                               Expanded(
                                 child: IsBaseCheckBox(
                                   title: S.current.hard_nft,
-                                  stream: collectionBloc.isHardNft,
+                                  stream: bloc.isHardCollection,
                                   funText: () {},
                                   funCheckBox: () {},
                                 ),
@@ -225,68 +220,20 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                               Expanded(
                                 child: IsBaseCheckBox(
                                   title: S.current.soft_nft,
-                                  stream: collectionBloc.isSoftNft,
+                                  stream: bloc.isSoftCollection,
                                   funText: () {},
                                   funCheckBox: () {},
                                 ),
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10.w),
-                            child: Text(
-                              S.current.category,
-                              style:
-                                  textNormalCustom(null, 16, FontWeight.w600),
-                            ),
-                          ),
-                          spaceH12,
                         ],
-                      ),
-                    ),
-                    FormSearchBase(
-                      onChangedFunction: collectionBloc.funOnSearchCategory,
-                      onTapFunction: collectionBloc.funOnTapSearchCategory,
-                      urlIcon: ImageAssets.ic_search,
-                      hint: S.current.name_of_collection,
-                      textSearchStream: collectionBloc.textSearchCategory,
-                      textSearch: searchFilter,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: 3.w,
-                      ),
-                      height: 210.h,
-                      width: double.infinity,
-                      child: StreamBuilder<List<FilterCollectionModel>>(
-                        stream: widget.collectionBloc.listCategoryStream,
-                        builder: (context, snapshot) {
-                          final list = snapshot.data ?? [];
-                          return ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: list.length > 4 ? 4 : list.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  collectionBloc
-                                      .funCheckCategory(list[index].name ?? '');
-                                  setState(() {});
-                                },
-                                child: ItemCategoryFilter(
-                                  filterModel: list[index],
-                                  bloc: collectionBloc,
-                                ),
-                              );
-                            },
-                          );
-                        },
                       ),
                     ),
                     spaceH24,
                     GestureDetector(
                       onTap: () {
+                        bloc.funFilterMyAcc();
                         Navigator.pop(context);
                       },
                       child: ButtonLuxury(
@@ -301,7 +248,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
           ),
           StreamBuilder<bool>(
             initialData: false,
-            stream: collectionBloc.isChooseAcc,
+            stream: bloc.isChooseAcc,
             builder: (ctx, snapshot) {
               return Visibility(
                 visible: snapshot.data ?? false,
@@ -316,19 +263,16 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                       ),
                     ),
                     width: 343.w,
-                    height: 177.h,
+                    height: 123.h,
                     child: ListView.builder(
                       padding: EdgeInsets.only(
                         top: 24.h,
                       ),
-                      itemCount: collectionBloc.listAcc.length,
+                      itemCount: bloc.listAcc.length,
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            collectionBloc.textAddressFilter.sink.add(
-                              collectionBloc.listAcc[index],
-                            );
-                            collectionBloc.isChooseAcc.sink.add(false);
+                            bloc.chooseAddressFilter(bloc.listAcc[index]);
                           },
                           child: Container(
                             height: 54.h,
@@ -336,7 +280,10 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                               left: 24.w,
                             ),
                             child: Text(
-                              collectionBloc.listAcc[index],
+                              bloc.listAcc[index] == S.current.all
+                                  ? S.current.all
+                                  : bloc.listAcc[index]
+                                      .formatAddressWalletConfirm(),
                               style: textNormalCustom(null, 16, null),
                             ),
                           ),

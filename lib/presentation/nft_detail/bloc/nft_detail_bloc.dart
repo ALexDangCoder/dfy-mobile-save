@@ -7,6 +7,8 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
+import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
@@ -24,10 +26,13 @@ import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../../main.dart';
 
 class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   NFTDetailBloc() : super(NFTDetailInitial());
@@ -40,6 +45,16 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String gasLimit = '';
   String rawData = '';
   String nftMarketId = '';
+  int quantity = 0;
+  double totalPayment = 0;
+  double bidValue = 0;
+
+  NFTRepository get _nftRepo => Get.find();
+
+  late final NftMarket nftMarket;
+  late final NFTOnAuction nftOnAuction;
+  late final String owner;
+  List<Wallet> wallets = [];
 
   late final String walletAddress;
 
@@ -55,6 +70,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       BehaviorSubject.seeded([]);
   final BehaviorSubject<List<OfferDetail>> listOfferStream =
       BehaviorSubject.seeded([]);
+  final BehaviorSubject<Evaluation> evaluationStream =
+      BehaviorSubject();
 
   String symbolToken = '';
 
@@ -81,13 +98,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return balance;
   }
 
-  NFTRepository get _nftRepo => Get.find();
-
-  late final NftMarket nftMarket;
-  late final NFTOnAuction nftOnAuction;
-  late final String owner;
-  List<Wallet> wallets = [];
-
   Future<void> getHistory(String collectionAddress, String nftTokenId) async {
     final Result<List<HistoryNFT>> result =
         await _nftRepo.getHistory(collectionAddress, nftTokenId);
@@ -110,7 +120,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listOwnerStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
       },
     );
   }
@@ -124,7 +134,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listBiddingStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
       },
     );
   }
@@ -138,7 +148,22 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         listOfferStream.add(res);
       },
       error: (error) {
-        updateStateError();
+        showContent();
+      },
+    );
+  }
+
+  ///GetEvaluation
+  Future<void> getEvaluation(String evaluationId, String urlIcon) async {
+    final Result<Evaluation> result =
+        await _nftRepo.getEvaluation(evaluationId);
+    result.when(
+      success: (res) {
+        res.urlToken = urlIcon;
+        evaluationStream.add(res);
+      },
+      error: (error) {
+        showContent();
       },
     );
   }
@@ -169,6 +194,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           emit(NftOnSaleSuccess(res));
           getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
+          }
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.tokenBuyOut ?? '';
             final address = value.address ?? '';
@@ -198,6 +226,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           showContent();
           nftOnAuction = res;
           emit(NftOnAuctionSuccess(res));
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
+          }
           getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getBidding(res.id.toString());
@@ -233,6 +264,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             }
           }
           emit(NftOnPawnSuccess(res));
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            getEvaluation(res.nftCollateralDetailDTO?.evaluationId ?? '',
+                res.urlToken ?? '');
+          }
           getHistory(
             res.nftCollateralDetailDTO?.collectionAddress ?? '',
             res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '',
@@ -416,12 +451,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         toContractAddress: toAddress,
         dataString: hexString,
       );
-      emit(
-        GetGasLimitSuccess(
-          nftMarket,
-          gasLimit,
-        ),
-      );
     } catch (e) {
       throw AppException(S.current.error, e.toString());
     }
@@ -448,10 +477,13 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               toAddress: nft_sales_address_dev2,
               hexString: value,
             ).then(
-              (value) => Navigator.pushReplacement(
+              (value) => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Approve(
+                    needApprove: true,
+                    payValue: totalPayment.toString(),
+                    tokenAddress: nftMarket.token,
                     title: S.current.buy_nft,
                     header: Column(
                       children: [
@@ -509,7 +541,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
                         ),
                       ],
                     ),
-                    textActiveButton: S.current.approve,
+                    textActiveButton: S.current.buy_nft,
                     gasLimitInit: double.parse(value),
                     typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
                   ),
@@ -517,6 +549,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               ),
             ),
           );
+          showContent();
           break;
         case MarketType.AUCTION:
           await getBidData(
@@ -530,10 +563,13 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               toAddress: nft_auction_dev2,
               hexString: value,
             ).then(
-              (value) => Navigator.pushReplacement(
+              (value) => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Approve(
+                    needApprove: true,
+                    tokenAddress: nftOnAuction.token,
+                    payValue: bidValue.toString(),
                     title: S.current.place_a_bid,
                     header: Column(
                       children: [
@@ -580,11 +616,76 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               ),
             ),
           );
+          showContent();
+          break;
       }
-      showContent();
     } catch (e) {
       showError();
       throw AppException(S.current.error, e.toString());
     }
+  }
+
+  //////////////////////
+  ///CANCEL SALE
+
+  List<DetailItemApproveModel> initListApprove() {
+    //todo: Vũ: tạm hardcode
+    final List<DetailItemApproveModel> listApprove = [];
+    if (nftMarket.nftStandard == 'ERC-721') {
+      listApprove.add(
+        DetailItemApproveModel(
+          title: 'NTF',
+          value: nftMarket.name ?? '',
+        ),
+      );
+      listApprove.add(
+        DetailItemApproveModel(
+          title: S.current.quantity,
+          value: '${nftMarket.numberOfCopies}',
+        ),
+      );
+    } else {
+      listApprove.add(
+        DetailItemApproveModel(
+          title: 'NTF',
+          value: nftMarket.name ?? '',
+        ),
+      );
+    }
+    return listApprove;
+  }
+
+  //get limit gas
+
+  //get dataString
+  Future<double> getGasLimitForCancel({
+    required BuildContext context,
+  }) async {
+    try {
+      showLoading();
+      hexString = await web3Client.getCancelListingData(
+        contractAddress: nft_sales_address_dev2,
+        orderId: nftMarket.orderId.toString(),
+        context: context,
+      );
+      gasLimit = await web3Client.getGasLimitByData(
+        from: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
+        toContractAddress: nft_sales_address_dev2,
+        dataString: hexString,
+      );
+
+      showContent();
+      return double.parse(gasLimit);
+    } catch (e) {
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
+  }
+
+  //cancel sale:
+  Future<Map<String, dynamic>> cancelSale({required String transaction}) async {
+    final Map<String, dynamic> res =
+        await web3Client.sendRawTransaction(transaction: transaction);
+    return res;
   }
 }

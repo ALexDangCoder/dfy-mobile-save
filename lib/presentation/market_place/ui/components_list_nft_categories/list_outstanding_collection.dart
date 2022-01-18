@@ -1,5 +1,4 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
@@ -53,6 +52,7 @@ class ListOutstandingCollection extends StatelessWidget {
                             builder: (ctx) => CollectionList(
                               query: '',
                               title: '',
+                              isMyAcc: true,
                             ),
                           ),
                         );

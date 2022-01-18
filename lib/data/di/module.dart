@@ -2,6 +2,7 @@ import 'package:Dfy/data/di/flutter_transformer.dart';
 import 'package:Dfy/data/repository_impl/category_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/collection_detail_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/collection_filter_repository_impl.dart';
+import 'package:Dfy/data/repository_impl/market_place/confirm_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/detail_category_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/login_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/marketplace_impl.dart';
@@ -14,6 +15,7 @@ import 'package:Dfy/data/repository_impl/token_repository_impl.dart';
 import 'package:Dfy/data/services/market_place/category_service.dart';
 import 'package:Dfy/data/services/market_place/collection_detail_service.dart';
 import 'package:Dfy/data/services/market_place/collection_filter_service.dart';
+import 'package:Dfy/data/services/market_place/confirm_service.dart';
 import 'package:Dfy/data/services/market_place/detail_category_service.dart';
 import 'package:Dfy/data/services/market_place/login_service.dart';
 import 'package:Dfy/data/services/market_place/marketplace_client.dart';
@@ -29,6 +31,7 @@ import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
+import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/market_place/detail_category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
@@ -84,6 +87,10 @@ void configureDependencies() {
 
   Get.put(DetailCategoryClient(provideDio(connectionTimeOut: 40000)));
   Get.put<DetailCategoryRepository>(DetailCategoryRepositoryImpl(Get.find()));
+
+  //get confirm (cancal sale, cancelpawn,....)
+  Get.put(ConfirmClient(provideDio()));
+  Get.put<ConfirmRepository>(ConfirmImplement(Get.find()));
 }
 
 Dio provideDio({int connectionTimeOut = 60000}) {

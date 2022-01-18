@@ -163,6 +163,7 @@ class DetailHardNftResponse {
         blockchainNetwork: blockChainNetwork,
         typeImage: getTypeImage(fileType ?? ''),
         isWhitelist: isWhiteList,
+        evaluationId: evaluationId,
       );
 
   NFTOnAuction toAuction() => NFTOnAuction(
@@ -189,6 +190,7 @@ class DetailHardNftResponse {
         blockchainNetwork: blockChainNetwork,
         typeImage: getTypeImage(fileType ?? ''),
         isWhitelist: isWhiteList,
+        evaluationId: evaluationId,
       );
 }
 

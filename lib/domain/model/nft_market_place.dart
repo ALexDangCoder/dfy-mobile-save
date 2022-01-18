@@ -2,6 +2,7 @@ import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 
 class NftMarket {
+  String? id;
   String? nftId;
   String? marketId;
   String? name;
@@ -46,13 +47,16 @@ class NftMarket {
   String? evaluationId;
   bool? isWhitelist;
   int? pawnId;
+  bool? isBoughtByOther;
 
   NftMarket.init();
 
   NftMarket({
+    this.id,
     this.token,
     this.nftId,
     this.tokenBuyOut,
+    this.isBoughtByOther,
     this.name,
     this.image,
     this.price,

@@ -31,6 +31,23 @@ class ImageAssets {
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
 
+
+  // menu icon
+
+
+  static const String ic_token_symbol = '$baseImg/ic_token_symbol.png';
+  static const String ic_profile_circle = '$baseImg/ic_profile_circle.png';
+  static const String ic_logout = '$baseImg/ic_logout.png';
+  static const String ic_about = '$baseImg/ic_about.png';
+  static const String ic_card = '$baseImg/ic_card.png';
+  static const String ic_activity = '$baseImg/ic_activity.png';
+  static const String ic_faq = '$baseImg/ic_FAQ.png';
+  static const String ic_folder = '$baseImg/ic_folder.png';
+  static const String ic_graph = '$baseImg/ic_graph.png';
+  static const String ic_nft = '$baseImg/ic_nft.png';
+  static const String ic_setting = '$baseImg/ic_setting.png';
+
+
   static const String imgTokenADA = '$baseImg/ADA.png';
   static const String imgTokenATOM = '$baseImg/ATOM.png';
   static const String imgTokenBAND = '$baseImg/BAND.png';
@@ -171,6 +188,7 @@ class ImageAssets {
   static const String import = '$baseImg/Import.png';
   static const String face_id = '$baseImg/face_id.png';
   static const String img_cash = '$baseImg/cash.png';
+  static const String img_warning = '$baseImg/img_warning.png';
 
   ///error feat load nft, collection, category
   static const String err_load_nft = '$baseImg/error_nft.png';
@@ -263,6 +281,7 @@ class ImageAssets {
   static const String ic_email = '$baseImg/sms.png';
   static const String ic_warning = '$baseImg/warning.png';
   static const String ic_verify_svg = '$baseImg/ic_verify.svg';
+  static const String ic_warning_canel = '$baseImg/warning_cancel.svg';
   static const String create_collection_svg = '$baseImg/create_collection.svg';
   static const String create_collection_1155 =
       '$baseImg/create_collection_1155.svg';

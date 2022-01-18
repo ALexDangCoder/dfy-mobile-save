@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/login/ui/email_exsited.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/widget/enter_otp.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
@@ -58,7 +59,7 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
                 S.current.verify_account,
                 style: textNormal(
                   AppTheme.getInstance().textThemeColor(),
-                  16.sp,
+                  16,
                 ),
               ),
             ),
@@ -68,7 +69,7 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
                 'Enter Code',
                 style: textNormal(
                   AppTheme.getInstance().textThemeColor(),
-                  16.sp,
+                  16,
                 ).copyWith(fontWeight: FontWeight.w700),
               ),
             ),
@@ -82,11 +83,10 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
                 fieldWidth: 50,
                 activeFillColor: const Color(0x1AE4AC1A),
                 activeColor: const Color(0XFFE4AC1A),
-                selectedColor:const Color(0x1AE4AC1A),
+                selectedColor: const Color(0x1AE4AC1A),
                 selectedFillColor: const Color(0x1AE4AC1A),
                 errorBorderColor: const Color(0xFF585782),
                 disabledColor: const Color(0XFF33324C),
-
               ),
               animationDuration: Duration(milliseconds: 300),
               enableActiveFill: true,

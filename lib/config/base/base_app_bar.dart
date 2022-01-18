@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:Dfy/widgets/views/custom_image_network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
@@ -63,6 +63,7 @@ class _BaseSpaceState extends State<BaseSpace> {
       });
       _controller!.setLooping(true);
       _controller!.initialize().then((_) => setState(() {}));
+      _controller!.play();
     }
   }
 
@@ -131,9 +132,8 @@ class _BaseSpaceState extends State<BaseSpace> {
             height: height,
             width: double.infinity,
             child: (widget.typeImage == TypeImage.IMAGE)
-                ? CachedNetworkImage(
-                    imageUrl: widget.image,
-                    fit: BoxFit.cover,
+                ? CustomImageNetwork(
+                    image: widget.image,
                   )
                 : VideoPlayer(_controller!),
           ),

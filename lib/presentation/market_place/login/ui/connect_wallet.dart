@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
+import 'package:Dfy/presentation/market_place/login/ui/email_exsited.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
 import 'package:Dfy/presentation/market_place/login/ui/token_has_email.dart';
@@ -20,7 +21,14 @@ class ConnectWallet extends StatelessWidget {
       floatingActionButton: ButtonLuxuryBigSize(
         title: S.current.connect_wallet,
         isEnable: true,
-        onTap: () {},
+        onTap: () => showDialog(
+          context: context,
+          builder: (context) => const ConnectWalletDialog(
+            currentScreen: EmailExisted(
+              email: 'vuhanam',
+            ),
+          ),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: BaseBottomSheet(
@@ -40,7 +48,7 @@ class ConnectWallet extends StatelessWidget {
               S.current.connect_to_continue,
               style: textNormal(
                 AppTheme.getInstance().textThemeColor(),
-                16.sp,
+                16,
               ),
             ),
           ],

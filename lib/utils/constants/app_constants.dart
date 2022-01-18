@@ -36,6 +36,9 @@ DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';
 
+
+const int secondShowPopUp = 2;
+
 const String TRANSACTION_TOKEN = '0';
 const String TRANSACTION_NFT = '1';
 
@@ -55,21 +58,11 @@ const _dtFormat4 = 'yyyy-MM-dd';
 const _dtFormat5 = 'MMM dd, yyyy';
 
 //contract
-const nft_sales_address_dev2 = '0xcE80f7DFEC1589D6cf9a0586446618aAbBC711E7';
+const nft_sales_address_dev2 = '0xcE80f7DFEC1589D6cf9a0586446618aAbBC711E7'; /// buy
 const nft_factory_dev2 = '0x0bcA4DCddE35d2F2aC5a3fAF0baD966639e6EB41';
 const nft_auction_dev2 = '0xdE92A451d22C1D84E874b6B8A5A70AC5f91b6D86';
-const bearTokenViNhieuTien = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZ'
-    'XRfYWRkcmVzcyI6IjB4YWIwNWFiNzljMGY0NDBhZDk4MmIxNDA1NTM2YWJjODA5N'
-    'GM4MGFmYiIsImdyYW50X3R5cGUiOiJ3YWxsZXQiLCJ1c2VyX25hbWUiOiIweGF'
-    'iMDVhYjc5YzBmNDQwYWQ5ODJiMTQwNTUzNmFiYzgwOTRjODBhZmIiLCJzY29wZS'
-    'I6WyJERUZBVUxUIl0sImV4cCI6MTY0MjA3NjgxMiwianRpIjoiYjNhYTkyNGYt'
-    'ZGVmZC00YzYxLTgyZGYtY2RiYThlMWM1ODNlIiwiY2xpZW50X2lkIjoidGFpbmQ'
-    'ifQ.CPDpOdnPYHTVCbBPxT4OzTT57rvSGxbGDUSux7X7g2JcHu_rL-2vjeONXk'
-    'vWxQfi5HREwtCcUbsCMCvicZt7pTRc8CGbBC8Ep4oAqaQRV3tE8KMytVoZXxeO'
-    'nK1JjrNlD6vjjcSRF6XsUoaT2gHK73EUZJ96W9a5FZnGLnPLsEwmNKP9ijXG'
-    '_ZmA0tSgCKdLMGWNDJofmLsZ1ykmFQrc7HLhFCic7X4zkn8OtWLfdh4MWaNnDhi'
-    'XmokB6n6_fFQPsx0tSWOI89BOUV0kd5b5mN1HTC4LEj_xhK8yDt0ffjZBpcI8tg'
-    'KJl_DU26CXtNS92JAIwBO8dybZwYA7NLgn4g';
+const bearTokenViNhieuTien =
+    'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZXRfYWRkcmVzcyI6IjB4MzllZTRjMjhlMDljZTZkOTA4NjQzZGRkZWVhZWVmMjM0MTEzOGViYiIsImdyYW50X3R5cGUiOiJ3YWxsZXQiLCJ1c2VyX25hbWUiOiIweDM5ZWU0YzI4ZTA5Y2U2ZDkwODY0M2RkZGVlYWVlZjIzNDExMzhlYmIiLCJzY29wZSI6WyJERUZBVUxUIl0sImV4cCI6MTY0MjE3ODU0MywianRpIjoiZTdlYjRjZWYtNGY3MC00YjFhLWJjZGEtMDg0YjdiOTQ5Yjk0IiwiY2xpZW50X2lkIjoidGFpbmQifQ.p2svN_bhHI06IoyXh4SCAmehWk1GlHEUQOBRwnD5Pn_Nq7U59xasr6NSpZb0GWePC8qZdrGj3Bo_JbMqazE_nzLFsjxo1dBD0uK3v_zob-ZYhACn6sz_EMgvrcggbFI8mrihDJRLLDrN_-v83ZaPXpxHPs9Qq5DEA3sfoUxcqcK6UMYbf_ZSpfjww004P50gNyZ-n6uDH0BHDuWF5q-LCC4QR1txNepLmx5pNHI_eCrxPrVy6RzdmNjjSkOPId3vdK0doZRfuWaUCdY1FM3nNjOn1hZuY7w05AoGYdILn1lZQ9ofRQLAqHrPns0mDoyXELgZGH05OkZfpNbjXBwkpQ';
 
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;

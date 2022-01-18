@@ -8,5 +8,4 @@ part 'account_service.g.dart';
 abstract class AccountClient {
   @factoryMethod
   factory AccountClient(Dio dio, {String baseUrl}) = _AccountClient;
-
 }

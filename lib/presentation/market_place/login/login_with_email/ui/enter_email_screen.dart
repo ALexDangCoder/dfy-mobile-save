@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -21,7 +19,6 @@ class EnterEmail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String errText = '';
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: ButtonLuxuryBigSize(
@@ -32,7 +29,8 @@ class EnterEmail extends StatelessWidget {
           cubit.checkValidate(emailEditingController.value.text);
           if (cubit.state is ValidateSuccess) {
             cubit.getNonce(
-                walletAddress: '0xf5e281A56650bb992ebaB15B41583303fE9804e7');
+              walletAddress: '0xf5e281A56650bb992ebaB15B41583303fE9804e7',
+            );
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -59,7 +57,7 @@ class EnterEmail extends StatelessWidget {
                   S.current.enter_email_to_link,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
-                    16.sp,
+                    16,
                   ),
                 ),
               ),
@@ -94,7 +92,7 @@ class EnterEmail extends StatelessWidget {
                         counterText: '',
                         hintStyle: textNormal(
                           AppTheme.getInstance().whiteColor(),
-                          16.sp,
+                          16,
                         ),
                         prefixIcon: ImageIcon(
                           const AssetImage(ImageAssets.ic_email),
@@ -104,33 +102,26 @@ class EnterEmail extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 4,
-                    ),
-                    child:
-                        BlocConsumer<LoginWithEmailCubit, LoginWithEmailState>(
-                      bloc: cubit,
-                      listener: (context, state) {
-                        if (state is EmailInvalid) {
-                          errText = state.errText;
-                        } else if (state is EmailTooLong) {
-                          errText = state.errText;
-                        } else if (state is ValidateSuccess) {
-                          errText = '';
-                        }
-                      },
-                      builder: (context, state) {
-                        return Text(
-                          errText,
+                  BlocConsumer<LoginWithEmailCubit, LoginWithEmailState>(
+                    bloc: cubit,
+                    listener: (context, state) {
+                      // TODO: implement listener
+                    },
+                    builder: (context, state) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 4,
+                        ),
+                        child: Text(
+                          state.errText,
                           style: textNormal(
                             AppTheme.getInstance().wrongColor(),
-                            12.sp,
+                            12,
                           ).copyWith(fontWeight: FontWeight.w400),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               )

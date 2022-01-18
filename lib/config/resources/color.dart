@@ -44,7 +44,7 @@ const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
 const borderApprovedButton  = Color(0xff39984E);
 const disableText = Color(0xff979797);
-const fillApprovedButton = Color(0xffD4ECD9);
+const fillApprovedButton = Color(0xffd4ecd9);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
 const errorColor = Color(0xFFCDCDCD);
 const dialogColor = Color(0xff585782);
@@ -77,6 +77,7 @@ const shadowTabIcon = Color(0xFF6C6CF4);
 const divideColor = Color(0xFF8f8fad);
 const unselectedTabLabel = Color(0xFF9997FF);
 const bgErrorLoadData = Color(0xFF474666);
+const bgTextField = Color(0x80A7A7A7);
 const yellowOpacity = Color(0x1AE4AC1A);
 const darkColor = Color(0xFF33324C);
 const grayBarColor = Color(0xFF828282);
@@ -201,6 +202,7 @@ abstract class AppColor {
 
   List<Color> listBackgroundMarketColor();
 
+  Color bgTextFormField();
   Color bgProgressingColors();
 
   Color yellowOpacity10();
@@ -466,6 +468,9 @@ class LightApp extends AppColor {
   }
 
   @override
+  Color bgTextFormField() {
+    return bgTextField;
+  }
   Color activityDateColor() {
     // TODO: implement activityDateColor
     return dateColor;
@@ -803,6 +808,9 @@ class DarkApp extends AppColor {
   }
 
   @override
+  Color bgTextFormField() {
+    return bgTextField;
+  }
   Color activityDateColor() {
     // TODO: implement activityDateColor
     throw UnimplementedError();
