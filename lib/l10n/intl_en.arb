@@ -457,7 +457,6 @@
   "empty_data": "Empty data",
   "you_enter_greater": "You enter greater than the total amount",
   "you_must": "You must enter the quantity you want to buy",
-  "no_des": "No description",
   "on_sale": "On sale",
   "give_this_site_permission_to_access_your_nft": "Give this site permission to access your NFTs",
   "profile_setting": "Profile setting",
@@ -488,6 +487,6 @@
   "end_in": "End In",
   "buy_fail": "Mua thất bại",
   "nft_success": "NFT successfully transferred to your wallet",
-  "nft_fail": "An error occurred while transferring NFT to your wallet"
+  "nft_fail": "An error occurred while transferring NFT to your wallet",
   "resend_code": "Resend code"
 }

@@ -23,7 +23,11 @@ class _StakingState extends State<StakingScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=> showDialog(context: context, builder: (context) => ConnectWalletDialog(navigationTo: StakingScreen())),
+      onTap: () => showDialog(
+          context: context,
+          builder: (context) => const ConnectWalletDialog(
+                currentScreen: StakingScreen(),
+              )),
       child: const ComingScreen(),
     );
   }
