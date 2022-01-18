@@ -1,7 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:cool_dropdown/cool_dropdown.dart';
@@ -25,6 +25,8 @@ class CategoriesCool extends StatelessWidget {
             return CoolDropdown(
               gap: 8.h,
               isTriangle: false,
+              dropdownItemMainAxis: MainAxisAlignment.start,
+              resultMainAxis: MainAxisAlignment.start,
               dropdownItemHeight: 54.h,
               dropdownHeight: dropdownItemList.length < 4
                   ? (54 * dropdownItemList.length).h

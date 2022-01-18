@@ -4,28 +4,30 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/widget/categories_cool.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/widget/input_row_widget.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/widget/upload_progess_widget.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/widget/categories_cool.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/widget/input_row_widget.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/widget/upload_progess_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
+import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class CreateDetailCollection extends StatefulWidget {
   final CreateCollectionCubit bloc;
+  final int collectionStandard;
   final int collectionType;
 
   const CreateDetailCollection({
     Key? key,
     required this.bloc,
+    required this.collectionStandard,
     required this.collectionType,
   }) : super(key: key);
 
@@ -49,6 +51,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
     // TODO: implement initState
     super.initState();
     widget.bloc.getListCategory();
+    widget.bloc.collectionStandard = widget.collectionStandard;
     widget.bloc.collectionType = widget.collectionType;
     trustWalletChannel.setMethodCallHandler(
       widget.bloc.nativeMethodCallBackTrustWallet,
@@ -158,7 +161,10 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                       top: 8.h,
                       child: GestureDetector(
                         onTap: () async {
-                          await pickImage(imageType: 'cover_photo');
+                          await widget.bloc.pickImage(
+                            imageType: 'cover_photo',
+                            tittle: S.current.cover_photo,
+                          );
                         },
                         child: sizedSvgImage(
                           w: 28,
@@ -173,7 +179,10 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
             } else {
               return GestureDetector(
                 onTap: () async {
-                  await pickImage(imageType: 'cover_photo');
+                  await widget.bloc.pickImage(
+                    imageType: 'cover_photo',
+                    tittle: S.current.cover_photo,
+                  );
                 },
                 child: DottedBorder(
                   borderType: BorderType.RRect,
@@ -250,7 +259,10 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                         bottom: 0,
                         child: GestureDetector(
                           onTap: () async {
-                            await pickImage(imageType: 'avatar');
+                            await widget.bloc.pickImage(
+                              imageType: 'avatar',
+                              tittle: S.current.upload_avatar,
+                            );
                           },
                           child: sizedSvgImage(
                             w: 28,
@@ -268,7 +280,10 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      await pickImage(imageType: 'avatar');
+                      await widget.bloc.pickImage(
+                        imageType: 'avatar',
+                        tittle: S.current.upload_avatar,
+                      );
                     },
                     child: DottedBorder(
                       borderType: BorderType.Circle,
@@ -316,7 +331,10 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
         spaceH22,
         GestureDetector(
           onTap: () async {
-            await pickImage(imageType: 'feature_photo');
+            await widget.bloc.pickImage(
+              imageType: 'feature_photo',
+              tittle: S.current.upload_featured_photo,
+            );
           },
           child: StreamBuilder<File>(
             stream: widget.bloc.featurePhotoSubject,
@@ -419,7 +437,15 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
           leadImg: ImageAssets.ic_link_svg,
           hint: 'app.defiforyou/uk/marketplace/....',
           img2: ImageAssets.ic_round_i,
-          onImageTap: () {},
+          onImageTap: () {
+            showDialog(
+              context: context,
+              builder: (_) => InfoPopup(
+                name: S.current.custom_url,
+                content: S.current.custom_url_info,
+              ),
+            );
+          },
         ),
         StreamBuilder<String>(
           stream: widget.bloc.customURLSubject,
@@ -475,7 +501,15 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
           hint: S.current.royalties,
           img2: ImageAssets.ic_round_i,
           inputType: TextInputType.number,
-          onImageTap: () {},
+          onImageTap: () {
+            showDialog(
+              context: context,
+              builder: (_) => InfoPopup(
+                name: S.current.royalties,
+                content: S.current.royalties_info,
+              ),
+            );
+          },
         ),
         StreamBuilder<String>(
           stream: widget.bloc.royaltySubject,
@@ -580,25 +614,5 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
         ),
       ],
     );
-  }
-
-  Future<void> pickImage({required String imageType}) async {
-    try {
-      final newImage =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (newImage == null) {
-        return;
-      }
-      final imageTemp = File(newImage.path);
-      final imageSizeInMB = imageTemp.readAsBytesSync().lengthInBytes / 1048576;
-      widget.bloc.loadImage(
-        type: imageType,
-        imageSizeInMB: imageSizeInMB,
-        imagePath: newImage.path,
-        image: imageTemp,
-      );
-    } on PlatformException catch (e) {
-      throw 'Cant upload image $e';
-    }
   }
 }
