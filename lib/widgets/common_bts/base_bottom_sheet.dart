@@ -46,7 +46,7 @@ class BaseBottomSheet extends StatelessWidget {
         body: Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            height: bottomBar != null ? 682.h : 764.h,
+            height: bottomBar != null ? 665.h : 764.h,
             width: 375.w,
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
