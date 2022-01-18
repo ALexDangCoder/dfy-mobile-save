@@ -6,16 +6,13 @@ import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail_filter_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
-import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../main.dart';
 import 'detail_collection_state.dart';
 
 class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
@@ -49,19 +46,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
 
 //
 
-  BehaviorSubject<bool> isHardNft = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isSoftNft = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isAll = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isOwner = BehaviorSubject.seeded(false);
 
   BehaviorSubject<bool> isOnSale = BehaviorSubject.seeded(false); //1
   BehaviorSubject<bool> isOnPawn = BehaviorSubject.seeded(false); //3
   BehaviorSubject<bool> isOnAuction = BehaviorSubject.seeded(false); //2
   BehaviorSubject<bool> isNotOnMarket = BehaviorSubject.seeded(false); //0
-  BehaviorSubject<bool> isChooseAcc = BehaviorSubject.seeded(false);
-  BehaviorSubject<String> textAddressFilter =
-      BehaviorSubject.seeded(S.current.all);
-  List<String> listAcc = [
-    S.current.all,
-  ];
   List<int> listFilter = [
     NOT_ON_MARKET,
     SALE,
@@ -159,11 +150,19 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     return data;
   }
 
-  void chooseAddressFilter(String address) {
-    textAddressFilter.sink.add(
-      address,
-    );
-    isChooseAcc.sink.add(false);
+  void chooseViewTypeFilter() {
+    // if(isAll.value){
+    //   isOwner.sink.add(false);
+    // }else{
+    //   isOwner.sink.add(true);
+    // }
+  }
+  void chooseViewTypeFilterAll() {
+    if(isOwner.value){
+      isAll.sink.add(false);
+    }else{
+      isAll.sink.add(true);
+    }
   }
 
   String funGetMarket(int marketStatus) {
@@ -309,14 +308,21 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     isSignContract.sink.add(value);
   }
 
-  void reset() {
-    isHardNft.sink.add(false);
+  void resetFilterNft() {
     isOnSale.sink.add(false);
-    isSoftNft.sink.add(false);
     isOnPawn.sink.add(false);
     isOnAuction.sink.add(false);
     isNotOnMarket.sink.add(false);
     listFilter.clear();
+  }
+
+  void resetFilterMyAcc() {
+    isOnSale.sink.add(false);
+    isOnPawn.sink.add(false);
+    isOnAuction.sink.add(false);
+    isNotOnMarket.sink.add(false);
+    isAll.sink.add(false);
+    isOwner.sink.add(false);
   }
 
   Future<void> getListFilterCollectionDetail({
@@ -541,36 +547,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     }
   }
 
-  Future<void> getListWallets() async {
-    try {
-      final data = {};
-      await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {
-      //nothing
-    }
-  }
-
-  List<Wallet> listWallet = [];
-
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    switch (methodCall.method) {
-      case 'getListWalletsCallback':
-        final List<dynamic> data = methodCall.arguments;
-        for (final element in data) {
-          listWallet.add(Wallet.fromJson(element));
-        }
-        for (final element in listWallet) {
-          listAcc.add(element.address?.formatAddressWalletConfirm() ?? '');
-        }
-        break;
-      default:
-        break;
-    }
-  }
-
   void dispone() {
-    isHardNft.close();
-    isSoftNft.close();
     isOnSale.close();
     isOnPawn.close();
     isOnAuction.close();

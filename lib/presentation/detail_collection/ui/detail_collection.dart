@@ -19,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
-import '../../../main.dart';
 import 'widget/body_collection.dart';
 import 'widget/filter_nft.dart';
 
@@ -49,10 +48,6 @@ class _DetailCollectionState extends State<DetailCollection>
     detailCollectionBloc.getCollection(
       collectionAddressDetail: widget.collectionAddress,
     );
-
-    trustWalletChannel.setMethodCallHandler(
-        detailCollectionBloc.nativeMethodCallBackTrustWallet);
-    detailCollectionBloc.getListWallets();
 
     _tabController = TabController(length: 2, vsync: this);
   }
@@ -343,8 +338,8 @@ class _DetailCollectionState extends State<DetailCollection>
               tabBarView: TabBarView(
                 controller: _tabController,
                 children: [
-                 // Container(),
-                 // Container(),
+                  // Container(),
+                  // Container(),
                   NFTSCollection(
                     detailCollectionBloc: detailCollectionBloc,
                   ),

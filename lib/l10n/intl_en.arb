@@ -485,5 +485,7 @@
   "start_in": "Start In",
   "purchase_being_processed": "There is a purchase transaction being processed of other user.",
   "error_might_occur": "Error might occur if you continue",
-  "end_in": "End In"
+  "end_in": "End In",
+  "view_type": "View type"
+
 }

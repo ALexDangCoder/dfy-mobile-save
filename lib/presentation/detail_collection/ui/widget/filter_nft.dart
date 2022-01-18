@@ -86,7 +86,7 @@ class _FilterNFTState extends State<FilterNFT> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      widget.collectionBloc.reset();
+                      widget.collectionBloc.resetFilterNft();
                     },
                     child: Container(
                       height: 30.h,
