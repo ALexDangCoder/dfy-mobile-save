@@ -489,7 +489,9 @@ class _FilterBtsState extends State<FilterBts> {
               children: [
                 SizedBox(
                   child: Text(
-                    address,
+                    address.length == 3
+                        ? address
+                        : address.formatAddress(index: 9),
                     style: textNormal(
                       null,
                       16,

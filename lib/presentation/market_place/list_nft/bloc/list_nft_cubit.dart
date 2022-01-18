@@ -190,7 +190,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
 
   void getAddressWallet(MarketType? marketType , String? queryAllResult ) {
     /// get SharePreF
-    walletAddress = '';
+    walletAddress = '0xe3E354a41F01CC084679cb52d0EDC50C1C58EEff';
     email = '';
     if(email.isEmpty){
       showDropdownAddress = false;

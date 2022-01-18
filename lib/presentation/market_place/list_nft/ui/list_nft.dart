@@ -96,7 +96,7 @@ class _ListNftState extends State<ListNft> {
                     context: context,
                     builder: (_) {
                       return FilterBts(
-                        listNftCubit: _cubit, isLogin: true,//_cubit.getLogin(),
+                        listNftCubit: _cubit, isLogin:_cubit.getLogin(),
                       );
                     },
                   );
