@@ -42,7 +42,7 @@ Color whiteOpacityZeroFire = Colors.white.withOpacity(0.5);
 const borderItemColors = Color(0xff474666);
 const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
-const borderApprovedButton  = Color(0xff39984E);
+const borderApprovedButton = Color(0xff39984E);
 const disableText = Color(0xff979797);
 const fillApprovedButton = Color(0xffd4ecd9);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
@@ -162,6 +162,8 @@ abstract class AppColor {
 
   Color textThemeColor();
 
+  Color whiteOpacityDot5();
+
   Color suffixColor();
 
   Color errorColorButton();
@@ -203,6 +205,7 @@ abstract class AppColor {
   List<Color> listBackgroundMarketColor();
 
   Color bgTextFormField();
+
   Color bgProgressingColors();
 
   Color yellowOpacity10();
@@ -471,6 +474,7 @@ class LightApp extends AppColor {
   Color bgTextFormField() {
     return bgTextField;
   }
+
   Color activityDateColor() {
     // TODO: implement activityDateColor
     return dateColor;
@@ -479,13 +483,13 @@ class LightApp extends AppColor {
   @override
   Color whiteWithOpacitySevenZero() {
     // TODO: implement whiteWithOpacitySevenZero
-   return Colors.white.withOpacity(0.7);
+    return Colors.white.withOpacity(0.7);
   }
 
   @override
   Color amountTextColor() {
     // TODO: implement amountTextColor
-  return amountColor;
+    return amountColor;
   }
 
   @override
@@ -525,6 +529,11 @@ class LightApp extends AppColor {
   @override
   Color gray3Color() {
     return grayBarColor;
+  }
+
+  @override
+  Color whiteOpacityDot5() {
+    return whiteColor().withOpacity(0.5);
   }
 }
 
@@ -811,6 +820,7 @@ class DarkApp extends AppColor {
   Color bgTextFormField() {
     return bgTextField;
   }
+
   Color activityDateColor() {
     // TODO: implement activityDateColor
     throw UnimplementedError();
@@ -865,6 +875,11 @@ class DarkApp extends AppColor {
   List<Color> colorFab() {
     // TODO: implement colorFab
     return colorsFab;
+  }
+
+  @override
+  Color whiteOpacityDot5() {
+    return whiteColor().withOpacity(0.5);
   }
 }
 
