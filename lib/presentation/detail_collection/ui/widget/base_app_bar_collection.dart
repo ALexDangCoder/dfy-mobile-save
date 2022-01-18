@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -99,14 +98,14 @@ class BaseSpace extends StatelessWidget {
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
-          CachedNetworkImage(
+          Image.network(
+            imageCover,
             fit: BoxFit.cover,
             width: double.infinity,
             height: 145.h,
-            errorWidget: (context, url, error) => Container(
+            errorBuilder: (context, url, error) => Container(
               color: AppTheme.getInstance().selectDialogColor(),
             ),
-            imageUrl: imageCover,
           ),
           Positioned(
             top: 105.h,
@@ -130,10 +129,10 @@ class BaseSpace extends StatelessWidget {
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: CachedNetworkImage(
-                      imageUrl: imageAvatar,
+                    child: Image.network(
+                      imageAvatar,
                       fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => Container(
+                      errorBuilder: (context, url, error) => Container(
                         color: AppTheme.getInstance().selectDialogColor(),
                       ),
                     ),

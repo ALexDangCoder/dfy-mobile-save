@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'price_service.g.dart';
+
 @RestApi()
 abstract class PriceClient {
   @factoryMethod

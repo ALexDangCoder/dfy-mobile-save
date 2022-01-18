@@ -29,9 +29,8 @@ abstract class NFTClient {
 
   @GET('${ApiConstants.GET_EVALUATION_HARD_NFT}{evaluationId}')
   Future<EvaluationResponse> getEvaluation(
-      @Path('evaluationId') String evaluationId,
-      );
-
+    @Path('evaluationId') String evaluationId,
+  );
 
   @GET(ApiConstants.GET_LIST_TYPE_NFT)
   Future<ListTypeNFTResponse> getListTypeNFT();

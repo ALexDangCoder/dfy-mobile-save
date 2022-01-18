@@ -205,7 +205,7 @@ class DetailAuctionResponse {
         currentWinner: currentWinner,
         description: description,
         endTime: endTime,
-        fileCid: getPath(fileCid??''),
+        fileCid: getPath(fileCid ?? ''),
         typeImage: getTypeImage(fileType ?? ''),
         id: id,
         idRef: idRef,

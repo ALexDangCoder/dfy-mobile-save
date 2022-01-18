@@ -25,13 +25,13 @@ import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:Dfy/widgets/approve/ui/component/estimate_gas_fee.dart';
 import 'package:Dfy/widgets/approve/ui/component/pop_up_approve.dart';
+import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 ///  Appbar                                   :                  title
@@ -387,7 +387,18 @@ class _ApproveState extends State<Approve> {
           caseNavigator(state.type, state.txh);
         }
         if (state is SignFail) {
-          Fluttertoast.showToast(msg: 'Fail');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BaseFail(
+                title: state.message,
+                content: S.current.buy_fail,
+                onTapBtn: () {
+                  Navigator.popUntil(context, (route) => false);
+                },
+              ),
+            ),
+          );
         }
       },
       child: Scaffold(
@@ -631,7 +642,7 @@ class _ApproveState extends State<Approve> {
             ),
           ),
         ).then(
-          (_) => cubit.emitJsonNftToWalletCore(
+          (_) => cubit.importNft(
             contract: cubit.nftMarket.collectionAddress ?? '',
             id: int.parse(cubit.nftMarket.nftTokenId ?? ''),
             address: nftDetailBloc.walletAddress,

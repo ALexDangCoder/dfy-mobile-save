@@ -19,6 +19,10 @@ class SignSuccess extends ApproveState {
 }
 
 class SignFail extends ApproveState {
+  final String message;
+
+  SignFail(this.message);
+
   @override
   List<Object?> get props => [];
 }
