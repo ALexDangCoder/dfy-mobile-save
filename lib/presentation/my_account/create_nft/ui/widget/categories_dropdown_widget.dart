@@ -17,10 +17,10 @@ class CategoriesDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        StreamBuilder<List<Map<String, String>>>(
-          stream: null,
+        StreamBuilder<List<Map<String, dynamic>>>(
+          stream: cubit.listCollectionSubject,
           builder: (context, snapshot) {
-            final List<Map<String, String>> dropdownItemList =
+            final List<Map<String, dynamic>> dropdownItemList =
                 snapshot.data ?? [];
             return CoolDropdown(
               gap: 8.h,
@@ -88,7 +88,7 @@ class CategoriesDropDown extends StatelessWidget {
           child: SizedBox(
             height: 64.h,
             child:
-            sizedSvgImage(w: 20, h: 20, image: ImageAssets.ic_folder_svg),
+                sizedSvgImage(w: 20, h: 20, image: ImageAssets.ic_folder_svg),
           ),
         ),
       ],

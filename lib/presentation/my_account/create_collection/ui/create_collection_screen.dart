@@ -26,7 +26,9 @@ class CreateCollectionScreen extends StatelessWidget {
     return StateStreamLayout(
       stream: bloc.stateStream,
       textEmpty: '',
-      retry: () {},
+      retry: () {
+        bloc.getListTypeNFT();
+      },
       error: AppException('', S.current.something_went_wrong),
       child: BaseBottomSheet(
         title: S.current.create_collection,

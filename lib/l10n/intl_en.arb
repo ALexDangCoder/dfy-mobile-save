@@ -489,5 +489,6 @@
   "buy_fail": "Mua thất bại",
   "nft_success": "NFT successfully transferred to your wallet",
   "nft_fail": "An error occurred while transferring NFT to your wallet",
-  "resend_code": "Resend code"
+  "resend_code": "Resend code",
+  "custom_url" : "Custom URL"
 }

@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
@@ -12,13 +8,10 @@ import 'package:Dfy/presentation/my_account/create_nft/ui/widget/properties_row.
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/upload_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
-import 'package:Dfy/widgets/common/dotted_border.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
-import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
-import 'package:video_player/video_player.dart';
 
 class CreateDetailNFT extends StatefulWidget {
   final CreateNftCubit cubit;
@@ -41,6 +34,7 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
     nameCollectionController = TextEditingController();
     descriptionCollectionController = TextEditingController();
     royaltyCollectionController = TextEditingController();
+    widget.cubit.getListCollection();
     super.initState();
   }
 

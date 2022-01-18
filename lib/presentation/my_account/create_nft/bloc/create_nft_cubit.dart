@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
+import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pick_media_file.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,11 +24,14 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   VideoPlayerController? _controller;
 
+  CollectionDetailRepository get _collectionDetailRepository => Get.find();
+
   NFTRepository get _nftRepo => Get.find();
 
   List<TypeNFTModel> listNft = [];
   List<TypeNFTModel> listSoftNft = [];
   List<TypeNFTModel> listHardNft = [];
+  List<CollectionMarketModel> listCollectionModel = [];
 
   String selectedId = '';
   int selectedNftType = 0;
@@ -48,6 +54,9 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   ///Error text image file size
   final BehaviorSubject<String> fileErrorTextSubject = BehaviorSubject();
+
+  final BehaviorSubject<List<Map<String,dynamic>>> listCollectionSubject =
+      BehaviorSubject();
 
   Future<void> getListTypeNFT() async {
     showLoading();
@@ -92,7 +101,7 @@ extension CreateDetailNFF on CreateNftCubit {
         }
       case 'video':
         {
-          if(_controller==null){
+          if (_controller == null) {
             _controller = VideoPlayerController.file(File(path));
             await _controller?.setLooping(true);
             await _controller?.initialize();
@@ -116,6 +125,21 @@ extension CreateDetailNFF on CreateNftCubit {
     mediaFileSubject.sink.add('');
   }
 
+  ///get collection list (my acc)
+  Future<void> getListCollection() async {
+    final Result<List<CollectionMarketModel>> result =
+        await _collectionDetailRepository.getListCollection(
+          addressWallet: '0x7Cf759534595a8059f25fc319f570A077c41F116',
+        );
+    result.when(
+      success: (res) {
+        final listDropDown = res.map((e) => e.toDropDownMap()).toList();
+        listCollectionSubject.sink.add(listDropDown);
+      },
+      error: (_) {},
+    );
+  }
+
   void dispose() {
     selectIdSubject.close();
     mediaFileSubject.close();
@@ -123,5 +147,6 @@ extension CreateDetailNFF on CreateNftCubit {
     fileErrorTextSubject.close();
     videoFileSubject.close();
     _controller?.dispose();
+    listCollectionSubject.close();
   }
 }

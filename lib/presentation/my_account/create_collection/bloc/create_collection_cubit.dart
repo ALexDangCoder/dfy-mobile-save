@@ -16,6 +16,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -766,5 +767,24 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     listHardNFTSubject.close();
     listSoftNFTSubject.close();
     upLoadStatusSubject.close();
+  }
+}
+extension PickImage on CreateCollectionCubit{
+  Future<void> pickImage({
+    required String imageType,
+    required String tittle,
+  }) async {
+    final filePath = await pickImageFunc(imageType: imageType, tittle: tittle);
+    if (filePath.isNotEmpty) {
+      final imageTemp = File(filePath);
+      final imageSizeInMB =
+          imageTemp.readAsBytesSync().lengthInBytes / 1048576;
+      loadImage(
+        type: imageType,
+        imageSizeInMB: imageSizeInMB,
+        imagePath: imageTemp.path,
+        image: imageTemp,
+      );
+    }
   }
 }

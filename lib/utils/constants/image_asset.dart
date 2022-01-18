@@ -305,6 +305,8 @@ class ImageAssets {
 
   //MyAccount
   static const String rec_plus_svg = '$baseImg/rec_plus_svg.svg';
+  static const String x_svg = '$baseImg/x_svg.svg';
+
 
 
   static SvgPicture svgAssets(
