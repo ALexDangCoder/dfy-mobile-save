@@ -61,6 +61,11 @@ extension FormatAddressConfirm on String {
     )}';
     return result;
   }
+
+  String formatStringTooLong() {
+    final String result = '${substring(0, 12)} ...';
+    return result;
+  }
 }
 
 extension StringParse on String {

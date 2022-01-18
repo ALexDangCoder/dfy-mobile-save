@@ -7,7 +7,6 @@ import 'package:Dfy/widgets/image/circular_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 ///how to use
 ///         showDialog(
 ///              context: context,
@@ -109,7 +108,9 @@ class WalletDialogLogin extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  (nameWallet.length > 12) ? '${nameWallet.substring(0, 12)} ...' : nameWallet ,
+                  (nameWallet.length > 12)
+                      ? nameWallet.formatStringTooLong()
+                      : nameWallet,
                   overflow: TextOverflow.ellipsis,
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteColor(),
