@@ -15,21 +15,20 @@ import 'menu_account_state.dart';
 class MenuAccountCubit extends BaseCubit<MenuAccountState> {
   MenuAccountCubit() : super(NoLoginState());
 
-  final BehaviorSubject<String?> _addressWalletSubject =
-      BehaviorSubject.seeded('seedValue');
-
-  Stream<String?> get addressWalletStream => _addressWalletSubject.stream;
+  final BehaviorSubject<String> _addressWalletSubject =
+      BehaviorSubject();
+  Stream<String> get addressWalletStream => _addressWalletSubject.stream;
 
   final BehaviorSubject<String> _emailSubject =
-  BehaviorSubject.seeded('seedValue');
+  BehaviorSubject();
 
-  Stream<String?> get emailStream => _emailSubject.stream;
+  Stream<String> get emailStream => _emailSubject.stream;
 
   Future<void> logout() async {
     showLoading();
     await PrefsService.clearWalletLogin();
-    _addressWalletSubject.add(null);
     showContent();
+    emit(NoLoginState());
   }
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
@@ -45,8 +44,12 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
             else {
               _addressWalletSubject.sink.add(wallet.address ?? '');
             }
+            if (state is LogonState){
+              await getEmail();
+            }else{
+              showContent();
+            }
           }
-          await getEmail();
         }
         break;
     }
@@ -65,7 +68,16 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
     final account = PrefsService.getWalletLogin();
     final Map<String, dynamic> mapLoginState = jsonDecode(account);
     if (mapLoginState.stringValueOrEmpty('accessToken') != '') {
-      getWallets();
+      emit(LogonState());
+    }
+    getWallets();
+  }
+
+  int  getIndexLogin (){
+    if (_addressWalletSubject.valueOrNull  == null) {
+      return 3;
+    }else {
+      return 2;
     }
   }
 
@@ -82,5 +94,6 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
 
   void dispose() {
     _addressWalletSubject.close();
+    _emailSubject.close();
   }
 }
