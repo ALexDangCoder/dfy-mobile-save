@@ -41,12 +41,12 @@ extension CallCoreExtensi on ApproveCubit{
             balanceWallet = await web3Client.getBalanceOfBnb(
               ofAddress: addressWalletCoreSubject.valueOrNull ?? '',
             );
-            showContent();
+            balanceWalletSubject.sink.add(balanceWallet ?? 0);
+            emit(GotDataApprove());
           } catch (e) {
             showError();
             AppException('title', e.toString());
           }
-          balanceWalletSubject.sink.add(balanceWallet ?? 0);
         }
         break;
       case 'signTransactionWithDataCallback':
@@ -133,7 +133,6 @@ extension CallCoreExtensi on ApproveCubit{
   Future<void> getListWallets() async {
     try {
       final data = {};
-      showLoading();
       await trustWalletChannel.invokeMethod('getListWallets', data);
     } on PlatformException {
       //nothing

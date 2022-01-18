@@ -36,7 +36,8 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
 
   void _onScroll() {
     if (((cubit.canLoadMoreSubject.valueOrNull ?? LoadMoreType.CAN_LOAD_MORE) ==
-        LoadMoreType.CAN_LOAD_MORE) && _listCollectionController.hasClients) {
+            LoadMoreType.CAN_LOAD_MORE) &&
+        _listCollectionController.hasClients) {
       final thresholdReached = _listCollectionController.position.pixels ==
           _listCollectionController.position.maxScrollExtent;
       if (thresholdReached) {
@@ -83,7 +84,10 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(height: 145.h, color: colorSkeletonLight),
+                        Container(
+                          height: 145.h,
+                          color: AppTheme.getInstance().skeletonLight(),
+                        ),
                         const SizedBox(height: 12),
                         Container(
                           width: 200.w,
@@ -91,7 +95,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                           margin: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: colorSkeletonLight,
+                            color: AppTheme.getInstance().skeletonLight(),
                           ),
                         ),
                         const SizedBox(height: 6),
@@ -100,7 +104,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                           margin: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: colorSkeletonLight,
+                            color: AppTheme.getInstance().skeletonLight(),
                           ),
                         ),
                         const SizedBox(height: 32),
@@ -175,7 +179,8 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                         builder: (context, snapshot) {
                           final data = snapshot.data;
                           return BaseAppBar(
-                            image: ApiConstants.BASE_URL_IMAGE+( data?.bannerCid ?? ''),
+                            image: ApiConstants.BASE_URL_IMAGE +
+                                (data?.bannerCid ?? ''),
                             title:
                                 '${widget.exploreCategory.name} ${S.current.categories}',
                             initHeight: 145.h,
@@ -271,8 +276,10 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                                     builder: (context) =>
                                                         DetailCollection(
                                                       //todo address wallet
-                                                      collectionAddress:
-                                                          data[index].collectionAddress?? '',
+                                                      collectionAddress: data[
+                                                                  index]
+                                                              .collectionAddress ??
+                                                          '',
                                                     ),
                                                   ),
                                                 );

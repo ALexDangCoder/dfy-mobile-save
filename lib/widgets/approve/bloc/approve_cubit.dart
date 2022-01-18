@@ -122,7 +122,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     required String payValue,
     required String tokenAddress,
   }) async {
-    showLoading();
     bool response = false;
 
     try {
@@ -138,7 +137,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       isApprovedSubject.sink.add(false);
       response = false;
     }
-    showContent();
     return response;
   }
 
