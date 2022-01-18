@@ -14,7 +14,6 @@ class ListTokenResponse extends Equatable {
   @JsonKey(name: 'rows')
   List<TokenResponse>? rows;
 
-
   ListTokenResponse(this.rc, this.total, this.rows);
 
   factory ListTokenResponse.fromJson(Map<String, dynamic> json) =>

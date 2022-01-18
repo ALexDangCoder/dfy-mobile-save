@@ -190,7 +190,7 @@ class _ApproveState extends State<Approve> {
   Future<void> signTransaction(
       double gasLimitFinal, double gasPriceFinal) async {
     final String gasPriceString =
-    (gasPriceFinal = gasPriceFinal / 1e9).toStringAsFixed(0);
+        (gasPriceFinal = gasPriceFinal / 1e9).toStringAsFixed(0);
     final String gasLimitString = gasLimitFinal.toStringAsFixed(0);
     switch (widget.typeApprove) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
@@ -263,10 +263,10 @@ class _ApproveState extends State<Approve> {
         }
         break;
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
-      // TODO: Handle this case.
+        // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.SEND_OFFER:
-      // TODO: Handle this case.
+        // TODO: Handle this case.
         break;
     }
   }
@@ -394,7 +394,7 @@ class _ApproveState extends State<Approve> {
                 title: state.message,
                 content: S.current.buy_fail,
                 onTapBtn: () {
-                  Navigator.popUntil(context, (route) => false);
+                  Navigator.popUntil(context, (route) => true);
                 },
               ),
             ),
@@ -446,7 +446,7 @@ class _ApproveState extends State<Approve> {
                             ),
                             widget.header ?? const SizedBox(height: 0),
                             ...(widget.listDetail ?? []).map(
-                                  (item) => Column(
+                              (item) => Column(
                                 children: [
                                   Row(
                                     children: [
@@ -468,16 +468,16 @@ class _ApproveState extends State<Approve> {
                                           item.value,
                                           style: item.isToken ?? false
                                               ? textNormalCustom(
-                                            AppTheme.getInstance()
-                                                .fillColor(),
-                                            20,
-                                            FontWeight.w600,
-                                          )
+                                                  AppTheme.getInstance()
+                                                      .fillColor(),
+                                                  20,
+                                                  FontWeight.w600,
+                                                )
                                               : textNormal(
-                                            AppTheme.getInstance()
-                                                .whiteColor(),
-                                            16,
-                                          ),
+                                                  AppTheme.getInstance()
+                                                      .whiteColor(),
+                                                  16,
+                                                ),
                                         ),
                                       )
                                     ],
@@ -540,17 +540,17 @@ class _ApproveState extends State<Approve> {
                                   child: ButtonGold(
                                     haveGradient: !isApproved,
                                     background:
-                                    isApproved ? fillApprovedButton : null,
+                                        isApproved ? fillApprovedButton : null,
                                     textColor: isApproved
                                         ? borderApprovedButton
                                         : isCanAction
-                                        ? null
-                                        : disableText,
+                                            ? null
+                                            : disableText,
                                     border: isApproved
                                         ? Border.all(
-                                      color: borderApprovedButton,
-                                      width: 2,
-                                    )
+                                            color: borderApprovedButton,
+                                            width: 2,
+                                          )
                                         : null,
                                     title: S.current.approve,
                                     isEnable: isCanAction,
@@ -584,20 +584,20 @@ class _ApproveState extends State<Approve> {
                         return GestureDetector(
                           child: ButtonGold(
                             textColor: (isApproved ||
-                                !(widget.needApprove ?? false)) &&
-                                isCanAction
+                                        !(widget.needApprove ?? false)) &&
+                                    isCanAction
                                 ? null
                                 : disableText,
                             fixSize: false,
                             haveMargin: false,
                             title: widget.textActiveButton,
                             isEnable: (isApproved ||
-                                !(widget.needApprove ?? false)) &&
+                                    !(widget.needApprove ?? false)) &&
                                 isCanAction,
                           ),
                           onTap: () {
                             if ((isApproved ||
-                                !(widget.needApprove ?? false)) &&
+                                    !(widget.needApprove ?? false)) &&
                                 isCanAction) {
                               signTransaction(
                                 cubit.gasLimit ?? widget.gasLimitInit,
@@ -713,7 +713,7 @@ class _ApproveState extends State<Approve> {
                   fit: BoxFit.cover,
                   image: AssetImage(
                     '${ImageAssets.image_avatar}$accountImage'
-                        '.png',
+                    '.png',
                   ),
                 ),
               ),
@@ -815,4 +815,3 @@ class _ApproveState extends State<Approve> {
     );
   }
 }
-

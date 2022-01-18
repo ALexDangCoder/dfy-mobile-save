@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/di/module.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:r_crypto/r_crypto.dart';
 
 MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
 
@@ -131,11 +135,15 @@ class _MyAppState extends State<MyApp> {
       case 'signTransactionWithDataCallback':
         print('signTransactionWithDataCallback ${methodCall.arguments}');
         break;
+      case 'signWalletCallback':
+        print('signWalletCallback ${methodCall.arguments}');
+        break;
     }
   }
 
   void callAllApi() {
     getConfig();
+    setLoginModel();
   }
 
   void getConfig() {
@@ -256,6 +264,46 @@ class _MyAppState extends State<MyApp> {
         'walletAddress': '0x6A587Aa17b562d0714650e0E7DCC7E964d3Dc148',
       };
       await trustWalletChannel.invokeMethod('getTokens', data);
+    } on PlatformException {}
+  }
+
+  Future<LoginModel> getLoginModel() async {
+    final login = PrefsService.getWalletLogin();
+    return loginFromJson(login);
+  }
+
+  Future<void> clearLoginModel() async {
+    await PrefsService.clearWalletLogin();
+  }
+
+  Future<void> setLoginModel() async {
+    await PrefsService.saveWalletLogin(
+      loginToJson(
+        LoginModel(
+          accessToken:
+              'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZXRfYWRkcmVzcyI6IjB4MzllZTRjMjhlMDljZTZkOTA4NjQzZGRkZWVhZWVmMjM0MTEzOGViYiIsImdyYW50X3R5cGUiOiJ3YWxsZXQiLCJ1c2VyX25hbWUiOiIweDM5ZWU0YzI4ZTA5Y2U2ZDkwODY0M2RkZGVlYWVlZjIzNDExMzhlYmIiLCJzY29wZSI6WyJERUZBVUxUIl0sImV4cCI6MTY0MjQ0ODA3MCwianRpIjoiODZmZTI2YzMtYjZkOS00MmEyLWEyYzItOGZmNmRmMGNlZmY5IiwiY2xpZW50X2lkIjoidGFpbmQifQ.EGWteyKesggdnBGgNu6f4aJQLKAQuxPAhTe4o9tcJyvNuFJh5g_FG5f93fTc2bfuz0aYquIaJq8WOi1N9139oqHr6F_QJ5uWmBviTWdbm7FVSMw7nIIbf_1VmlRzJu-2Pll91rDPeYfsqt06wfY1I4qRj1y661DKR4KfGfGGvOpj4NAUoWk0sIx-dPzEvsbN9RYQ7al0UXIyRnKO4qZYwKvT4rfKIt0pFRWINaqa1hIUDQhKP1gcdVU8c6LtDvlWmwGiSbnCj7x2cDeF5cXSzksrhFFV_14y1uiDDs-6EW-6ZqAX4h8Rlt_qtSaXRkL0XlPdRvs6sfIaklURa-uvEA',
+          expiresIn: 35998,
+          refreshToken:
+              'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZXRfYWRkcmVzcyI6IjB4MzllZTRjMjhlMDljZTZkOTA4NjQzZGRkZWVhZWVmMjM0MTEzOGViYiIsImdyYW50X3R5cGUiOiJ3YWxsZXQiLCJ1c2VyX25hbWUiOiIweDM5ZWU0YzI4ZTA5Y2U2ZDkwODY0M2RkZGVlYWVlZjIzNDExMzhlYmIiLCJzY29wZSI6WyJERUZBVUxUIl0sImF0aSI6Ijg2ZmUyNmMzLWI2ZDktNDJhMi1hMmMyLThmZjZkZjBjZWZmOSIsImV4cCI6MTY0MjQ0ODA3MCwianRpIjoiZGZmOTY1NjYtNzQ2NS00ZjE5LTkyZDQtNzgwODczOTdiMWJhIiwiY2xpZW50X2lkIjoidGFpbmQifQ.nGrRE7FeOg29PUTiPA6MSTnRVaAVZ6VhtkrrtiKTptfcrfc-1F80rkBtKRdTAW_4YJtkP2UsrIGM3tSlzSqj9WiP9jBCkjDpNvUtoddwiyJLdlaeHDeuGroO8pKMckBaAVKHlFcfGXknVA4rFRh33s_Y83aXIZOVPyVCloPpJUXu_5wJQ2_4tnFhvD4aCbXysc6QarHUMmYjpU4MBC4JiK0pXNQS5-idIiuKIxcxLmolW_ufDWhXBRjeQBiEC9QfGujJeSeZ0Y-P3dDWPKfuy3Vk437eU5L46LKR5sthFoCALTAI6BBaQr6Roh821X2embO2lKuZRIumJ1N8-gXVlA',
+          scope: 'DEFAULT',
+          tokenType: 'bearer',
+        ),
+      ),
+    );
+  }
+
+  void signWallet(String walletAddress, String nonce) {
+    try {
+      final List<int> listNonce = nonce.codeUnits;
+      final Uint8List bytesNonce = Uint8List.fromList(listNonce);
+      final List<int> listSha3 =
+          rHash.hashList(HashType.KECCAK_256, bytesNonce);
+      final Uint8List bytesSha3 = Uint8List.fromList(listSha3);
+      final data = {
+        "walletAddress": walletAddress,
+        "bytesSha3": bytesSha3,
+      };
+      trustWalletChannel.invokeMethod('signWallet', data);
     } on PlatformException {}
   }
 }

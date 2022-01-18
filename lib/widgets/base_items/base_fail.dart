@@ -14,7 +14,8 @@ class BaseFail extends StatelessWidget {
   const BaseFail({
     Key? key,
     required this.title,
-    required this.content, required this.onTapBtn,
+    required this.content,
+    required this.onTapBtn,
   }) : super(key: key);
   final String title;
   final String content;
@@ -23,48 +24,48 @@ class BaseFail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseBottomSheet(
-        title: title,
-        text: ImageAssets.ic_back,
-        isImage: true,
-        bottomBar: GestureDetector(
-          onTap: onTapBtn,
-          child: ButtonGold(
-            title: S.current.complete,
-            isEnable: true,
+      title: title,
+      child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          SizedBox(
+            height: 80.h,
           ),
-        ),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 80.h,
+          SizedBox(
+            height: 228.h,
+            width: 305.w,
+            child: Image.asset(ImageAssets.img_fail),
+          ),
+          spaceH20,
+          Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: 16.w,
             ),
-            SizedBox(
-              height: 228.h,
-              width: 305.w,
-              child: Image.asset(ImageAssets.img_fail),
-            ),
-            spaceH20,
-            Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: 16.w,
-              ),
-              child: Center(
-                child: Text(
-                  content,
-                  style: textNormalCustom(
-                    AppTheme.getInstance().whiteColor(),
-                    32,
-                    FontWeight.w700,
-                  ),
-                  textAlign: TextAlign.center,
+            child: Center(
+              child: Text(
+                content,
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  32,
+                  FontWeight.w700,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(
-              height: 213.h,
+          ),
+          SizedBox(
+            height: 185.h,
+          ),
+          GestureDetector(
+            onTap: onTapBtn,
+            child: ButtonGold(
+              title: S.current.complete,
+              isEnable: true,
             ),
-          ],
-        ));
+          ),
+          spaceH38
+        ],
+      ),
+    );
   }
 }
-

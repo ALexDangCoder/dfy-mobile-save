@@ -1,5 +1,4 @@
 import 'package:Dfy/config/base/base_state.dart';
-import 'package:Dfy/data/web3/abi/nft.g.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';

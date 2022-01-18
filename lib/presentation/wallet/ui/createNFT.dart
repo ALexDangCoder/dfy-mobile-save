@@ -25,8 +25,7 @@ class CreateNFT extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return const ComingSoon(
-              );
+              return const ComingSoon();
             },
           ),
         );

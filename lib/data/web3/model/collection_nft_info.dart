@@ -71,12 +71,11 @@ class ListNft {
   }
 }
 
-
 class CollectionShow {
   String? name;
   String? symbol;
   String? contract;
   List<NftInfo>? listNft;
 
-  CollectionShow({this.name,this.symbol,this.contract,this.listNft});
+  CollectionShow({this.name, this.symbol, this.contract, this.listNft});
 }

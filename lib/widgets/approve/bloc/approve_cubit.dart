@@ -79,14 +79,14 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   final Web3Utils web3Client = Web3Utils();
   final BehaviorSubject<String> _addressWalletCoreSubject =
-  BehaviorSubject<String>();
+      BehaviorSubject<String>();
   final BehaviorSubject<String> _nameWalletSubject = BehaviorSubject<String>();
   final BehaviorSubject<double> _balanceWalletSubject =
-  BehaviorSubject<double>();
+      BehaviorSubject<double>();
 
   /// [gasPriceSubject] contain gas price init, not gas price final
   final BehaviorSubject<double> gasPriceFirstSubject =
-  BehaviorSubject<double>();
+      BehaviorSubject<double>();
 
   final BehaviorSubject<bool> canActionSubject = BehaviorSubject<bool>();
 
@@ -205,7 +205,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       toContractAddress: contractAddress,
     );
     final nonce =
-    await web3Client.getTransactionCount(address: addressWallet ?? '');
+        await web3Client.getTransactionCount(address: addressWallet ?? '');
     await signTransactionWithData(
       gasLimit: gasLimitApprove,
       gasPrice: ((gasPriceFirst ?? 0) / 1e9).toInt().toString(),
@@ -287,7 +287,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           }
         }
         break;
-    //todo
+      //todo
       case 'importNftCallback':
         final int code = await methodCall.arguments['code'];
         switch (code) {
@@ -389,13 +389,13 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     required int id,
   }) async {
     final res = await
-    web3Client.importNFT(contract: contract, address: address, id: id);
+        web3Client.importNFT(contract: contract, address: address, id: id);
     if (!res.isSuccess) {
     } else {
       await emitJsonNftToWalletCore(
-        contract: contract,
-        address: address,
-        id: id,
+          contract: contract,
+          address: address,
+          id: id,
       );
     }
   }
@@ -408,4 +408,3 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     isApprovedSubject.close();
   }
 }
-

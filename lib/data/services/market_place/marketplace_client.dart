@@ -1,9 +1,8 @@
-
 import 'package:Dfy/data/response/market_place/market_place_res.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/http.dart';
-import 'package:dio/dio.dart';
 
 part 'marketplace_client.g.dart';
 
@@ -15,6 +14,4 @@ abstract class MarketPlaceHomeClient {
 
   @GET(ApiConstants.GET_LIST_NFT_COLLECTION_EXPLORE)
   Future<MarketPlaceResponse> getListNftCollectionExplore();
-
-
 }

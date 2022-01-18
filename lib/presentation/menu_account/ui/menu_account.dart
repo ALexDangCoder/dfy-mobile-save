@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
@@ -11,7 +10,6 @@ import 'package:Dfy/presentation/menu_account/cubit/menu_account_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -218,7 +216,9 @@ class _MenuAccountState extends State<MenuAccount> {
                                 return Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const SizedBox (height: 6,),
+                                    const SizedBox(
+                                      height: 6,
+                                    ),
                                     SizedBox(
                                       height: 72,
                                       width: 72,
@@ -421,7 +421,12 @@ class _MenuAccountState extends State<MenuAccount> {
 
   Container header() {
     return Container(
-      margin: const EdgeInsets.only(right: 20, left: 27, top: 20,bottom: 20,),
+      margin: const EdgeInsets.only(
+        right: 20,
+        left: 27,
+        top: 20,
+        bottom: 20,
+      ),
       // EdgeInsets.only(left: 0),
       child: Stack(
         children: [

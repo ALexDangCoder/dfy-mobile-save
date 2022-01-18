@@ -35,32 +35,36 @@ class _HistoryTabState extends State<HistoryTab> {
   Widget build(BuildContext context) {
     if (widget.listHistory.isEmpty) {
       return Center(
-        child: ListView(
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            Center(
-              child: sizedPngImage(
-                w: 94,
-                h: 94,
-                image: ImageAssets.icNoTransaction,
-              ),
-            ),
-            Center(
-              child: Text(
-                S.current.no_transaction,
-                style: tokenDetailAmount(
-                  color: AppTheme.getInstance().currencyDetailTokenColor(),
-                  fontSize: 20,
+        child: SizedBox(
+          height: 300.h,
+          child: ListView(
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(vertical: 100.h),
+            children: [
+              Center(
+                child: sizedPngImage(
+                  w: 94,
+                  h: 94,
+                  image: ImageAssets.icNoTransaction,
                 ),
               ),
-            ),
-          ],
+              Center(
+                child: Text(
+                  S.current.no_transaction,
+                  style: tokenDetailAmount(
+                    color: AppTheme.getInstance().currencyDetailTokenColor(),
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     } else {
       return ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 16.w),
-        physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         itemCount: widget.listHistory.length,
         itemBuilder: (context, index) {

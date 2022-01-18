@@ -1,5 +1,4 @@
 import 'package:Dfy/data/response/market_place/confirm_res.dart';
-import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
