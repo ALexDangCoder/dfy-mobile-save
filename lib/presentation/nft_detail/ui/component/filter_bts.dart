@@ -85,15 +85,17 @@ class _FilterBtsState extends State<FilterBts> {
                           ),
                         ),
                       if (widget.isLogin) spaceH10,
-                      StreamBuilder<String>(
-                        builder: (
-                          BuildContext context,
-                          AsyncSnapshot<String> snapshot,
-                        ) {
-                          return boxAddress(snapshot.data ?? '');
-                        },
-                      ),
-                      spaceH10,
+                      if (widget.isLogin)
+                        StreamBuilder<String>(
+                          stream: widget.listNftCubit.addressStream,
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<String> snapshot,
+                          ) {
+                            return boxAddress(snapshot.data ?? '');
+                          },
+                        ),
+                      if (widget.isLogin) spaceH10,
                       Text(
                         S.current.nft_type,
                         style: textNormalCustom(
@@ -297,6 +299,7 @@ class _FilterBtsState extends State<FilterBts> {
                   ),
                 ),
                 StreamBuilder<bool>(
+                  stream: widget.listNftCubit.isShowDropDownStream,
                   builder:
                       (BuildContext context, AsyncSnapshot<bool> snapshot) {
                     return Visibility(
