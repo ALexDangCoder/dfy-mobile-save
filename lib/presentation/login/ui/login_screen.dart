@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
     controller = TextEditingController();
     trustWalletChannel
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
+    _cubit.getWallet();
     controller.addListener(() {
       if (mounted) {
         setState(() {
@@ -217,7 +218,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (state is LoginPasswordSuccess &&
                           widget.isFromConnectDialog) {
                         _cubit.showLoading();
-                        _cubit.getWallet();
                         await _cubit.signWallet(
                           walletAddress: _cubit.walletAddress,
                         );

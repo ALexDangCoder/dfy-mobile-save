@@ -45,7 +45,7 @@ class LoginCubit extends BaseCubit<LoginState> {
         break;
       case 'getListWalletsCallback':
         walletAddress =
-            await (methodCall.arguments as List).first.walletAddress;
+            await (methodCall.arguments as List).first['walletAddress'];
         break;
       case 'signWalletCallback':
         signature = await methodCall.arguments['signature'];
