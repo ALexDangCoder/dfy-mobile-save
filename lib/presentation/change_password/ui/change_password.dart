@@ -69,16 +69,9 @@ class _ChangePasswordState extends State<ChangePassword> {
               context: context,
             );
           } else {
-            showDialog(
-              context: context,
-              builder: (_) => Dialog(
-                backgroundColor: Colors.transparent,
-                child: WalletDialogLogin(
-                  callback: () {},
-                ),
-              ),
+            _showDialog(
+              alert: S.current.change_pw_fail,
             );
-            // _showDialog(alert: S.current.change_pw_fail,);
           }
         },
         builder: (context, state) {
