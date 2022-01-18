@@ -1,15 +1,15 @@
-import 'dart:async';
-import 'dart:ui';
 
-import 'package:Dfy/config/resources/color.dart';
+import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
+
+import 'estimate_gas_fee.dart';
 
 class PopUpApprove extends StatelessWidget {
   const PopUpApprove({
@@ -21,6 +21,7 @@ class PopUpApprove extends StatelessWidget {
     required this.gasFee,
     required this.purposeText,
     required this.approve,
+    required this.cubit,
   }) : super(key: key);
 
   final int imageAccount;
@@ -30,6 +31,7 @@ class PopUpApprove extends StatelessWidget {
   final double balanceWallet;
   final double gasFee;
   final Function approve;
+  final ApproveCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,6 @@ class PopUpApprove extends StatelessWidget {
           ),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 18),
             SizedBox(
@@ -96,7 +97,7 @@ class PopUpApprove extends StatelessWidget {
                           fit: BoxFit.cover,
                           image: AssetImage(
                             '${ImageAssets.image_avatar}$imageAccount'
-                            '.png',
+                                '.png',
                           ),
                         ),
                       ),
@@ -146,39 +147,8 @@ class PopUpApprove extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppTheme.getInstance().whiteBackgroundButtonColor(),
-                ),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${S.current.estimate_gas_fee}:',
-                    style: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                    ).copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    '$gasFee BNB',
-                    style: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                    ).copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
+            EstimateGasFee(
+              cubit: cubit,
             ),
             const SizedBox(height: 36),
             Row(
@@ -190,9 +160,9 @@ class PopUpApprove extends StatelessWidget {
                     },
                     child: ButtonGold(
                       haveGradient: false,
-                      textColor: fillYellowColor,
+                      textColor: AppTheme.getInstance().yellowColor(),
                       border: Border.all(
-                        color: fillYellowColor,
+                        color: AppTheme.getInstance().yellowColor(),
                       ),
                       radiusButton: 15,
                       textSize: 16,
