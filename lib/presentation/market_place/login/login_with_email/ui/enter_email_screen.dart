@@ -114,7 +114,9 @@ class EnterEmail extends StatelessWidget {
                           vertical: 4,
                         ),
                         child: Text(
-                          state.errText,
+                          //todo
+                          '',
+                          // state.errText,
                           style: textNormal(
                             AppTheme.getInstance().wrongColor(),
                             12,
