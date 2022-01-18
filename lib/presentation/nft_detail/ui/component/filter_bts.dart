@@ -135,7 +135,7 @@ class _FilterBtsState extends State<FilterBts> {
                         ),
                       ),
                       spaceH12,
-                      if (widget.isLogin)
+                      if (!widget.isLogin)
                         CheckBoxFilter(
                           cubit: widget.listNftCubit,
                           nameCkcFilter: S.current.on_sell,
