@@ -272,8 +272,8 @@ class BuyNFT extends StatelessWidget {
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16.w),
                           child: ButtonGradient(
-                            onPressed: () {
-                              nftDetailCubit.callWeb3(
+                            onPressed: () async {
+                             await nftDetailCubit.callWeb3(
                                 context,
                                 cubit.amountValue,
                                 MarketType.SALE,
