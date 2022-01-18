@@ -1,4 +1,3 @@
-import 'package:Dfy/data/response/collection_detail/collection_detail_response.dart';
 import 'package:Dfy/domain/model/market_place/collection_categories_model.dart';
 import 'package:Dfy/domain/model/market_place/list_collection_detail_model.dart';
 import 'package:equatable/equatable.dart';

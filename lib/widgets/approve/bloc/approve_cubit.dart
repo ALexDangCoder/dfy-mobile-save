@@ -11,11 +11,12 @@ import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
-import 'package:flutter/material.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -147,6 +148,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       },
     );
   }
+
   Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
     showLoading();
     final result = await _nftRepo.bidNftRequest(bidNftRequest);
@@ -162,21 +164,11 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   Future<void> emitJsonNftToWalletCore({
     required String contract,
-    int? id,
+    required int id,
     required String address,
   }) async {
-    final listNft = <Map<String, dynamic>>[];
-    listNft.add({
-      'id': '${nftMarket.nftTokenId}',
-      'contract': '${nftMarket.collectionAddress}',
-      'uri': nftMarket.image,
-    });
-    final result = {
-      'name': nftMarket.name,
-      'symbol': nftMarket.symbolToken,
-      'contract': nftMarket.collectionAddress,
-      'listNft': listNft,
-    };
+    final result = await web3Client
+        .getCollectionInfo(contract: contract, address: address, id: id);
     await importNftIntoWalletCore(
       jsonNft: json.encode(result),
       address: address,
@@ -274,7 +266,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
                 emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.BUY_NFT));
               } else {
                 showContent();
-                emit(SignFail());
+                emit(SignFail(S.current.buy_nft));
               }
               break;
             case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
@@ -300,13 +292,13 @@ class ApproveCubit extends BaseCubit<ApproveState> {
         final int code = await methodCall.arguments['code'];
         switch (code) {
           case 200:
-            Fluttertoast.showToast(msg: 'Success');
+            await Fluttertoast.showToast(msg: S.current.nft_success);
             break;
           case 400:
-            Fluttertoast.showToast(msg: 'Fail');
+            await Fluttertoast.showToast(msg: S.current.nft_fail);
             break;
           case 401:
-            Fluttertoast.showToast(msg: 'Fail');
+            await Fluttertoast.showToast(msg: S.current.nft_fail);
             break;
         }
         break;
@@ -389,6 +381,23 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       txnHash: txnHash,
     );
     result.when(success: (suc) {}, error: (err) {});
+  }
+
+  Future<void> importNft({
+    required String contract,
+    required String address,
+    required int id,
+  }) async {
+    final res = await
+        web3Client.importNFT(contract: contract, address: address, id: id);
+    if (!res.isSuccess) {
+    } else {
+      await emitJsonNftToWalletCore(
+          contract: contract,
+          address: address,
+          id: id,
+      );
+    }
   }
 
   void dispose() {

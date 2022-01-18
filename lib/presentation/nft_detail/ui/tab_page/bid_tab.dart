@@ -12,24 +12,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
-class BidTab extends StatelessWidget {
+class BidTab extends StatefulWidget {
   const BidTab({Key? key, required this.listBidding, required this.symbolToken})
       : super(key: key);
   final List<BiddingNft> listBidding;
   final String symbolToken;
 
   @override
+  State<BidTab> createState() => _BidTabState();
+}
+
+class _BidTabState extends State<BidTab> with AutomaticKeepAliveClientMixin{
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       physics: const ScrollPhysics(),
-      itemCount: listBidding.length,
+      itemCount: widget.listBidding.length,
       itemBuilder: (context, index) {
-        return _buildItemBid(listBidding[index]);
+        return _buildItemBid(widget.listBidding[index]);
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   Widget _buildItemBid(BiddingNft biddingNft) {
     return BaseItem(
@@ -84,7 +92,7 @@ class BidTab extends StatelessWidget {
                     ),
                     spaceW4,
                     Text(
-                      '${biddingNft.bidValue} $symbolToken',
+                      '${biddingNft.bidValue} ${widget.symbolToken}',
                       style: textNormalCustom(
                         AppTheme.getInstance().textThemeColor(),
                         16,
@@ -137,3 +145,4 @@ class BidTab extends StatelessWidget {
     }
   }
 }
+

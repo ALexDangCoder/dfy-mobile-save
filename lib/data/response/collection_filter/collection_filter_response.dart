@@ -17,7 +17,11 @@ class CollectionFilterResponse extends Equatable {
   String? avatarCid;
 
   CollectionFilterResponse(
-      this.id, this.name, this.owner, this.avatarCid,);
+    this.id,
+    this.name,
+    this.owner,
+    this.avatarCid,
+  );
 
   factory CollectionFilterResponse.fromJson(Map<String, dynamic> json) =>
       _$CollectionFilterResponseFromJson(json);
@@ -30,6 +34,7 @@ class CollectionFilterResponse extends Equatable {
   String getPath() {
     return ApiConstants.BASE_URL_IMAGE + (avatarCid ?? '');
   }
+
   CollectionFilter toDomain() => CollectionFilter(
         name: name ?? '',
         avatarCid: getPath(),

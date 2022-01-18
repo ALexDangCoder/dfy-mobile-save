@@ -69,6 +69,7 @@ class _ListNftState extends State<ListNft> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: false,
       floatingActionButton: FABMarketBase(
         collectionCallBack: () {
           Navigator.push(

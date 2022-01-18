@@ -96,23 +96,22 @@ class OfferDetailResponse {
   Map<String, dynamic> toJson() => _$OfferDetailResponseToJson(this);
 
   OfferDetail toDomain() => OfferDetail(
-    id: id,
-    addressLender: addressLender,
-    reputation: reputation,
-    supplyCurrency: currencyResponse!.toDomain(),
-    duration: duration,
-    durationType: durationType,
-    interestPerYear: interestPerYear,
-    riskDefault: riskDefault,
-    status: status,
-    collateralId: collateralId,
-    bcCollateralId: bcCollateralId,
-    bcOfferId: bcOfferId,
-    liquidationThreshold: liquidationThreshold,
-    createAt: createAt,
-    name: name,
-  );
-
+        id: id,
+        addressLender: addressLender,
+        reputation: reputation,
+        supplyCurrency: currencyResponse!.toDomain(),
+        duration: duration,
+        durationType: durationType,
+        interestPerYear: interestPerYear,
+        riskDefault: riskDefault,
+        status: status,
+        collateralId: collateralId,
+        bcCollateralId: bcCollateralId,
+        bcOfferId: bcOfferId,
+        liquidationThreshold: liquidationThreshold,
+        createAt: createAt,
+        name: name,
+      );
 }
 
 @JsonSerializable()
@@ -124,7 +123,6 @@ class CurrencyResponse {
   @JsonKey(name: 'tokenAddress')
   String? tokenAddress;
 
-
   CurrencyResponse(this.symbol, this.amount, this.tokenAddress);
 
   factory CurrencyResponse.fromJson(Map<String, dynamic> json) =>
@@ -133,8 +131,8 @@ class CurrencyResponse {
   Map<String, dynamic> toJson() => _$CurrencyResponseToJson(this);
 
   SupplyCurrency toDomain() => SupplyCurrency(
-    symbol: symbol,
-    amount: amount,
-    tokenAddress: tokenAddress,
-  );
+        symbol: symbol,
+        amount: amount,
+        tokenAddress: tokenAddress,
+      );
 }
