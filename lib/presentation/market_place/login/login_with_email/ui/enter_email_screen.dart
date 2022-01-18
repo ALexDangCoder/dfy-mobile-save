@@ -12,10 +12,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
-class EnterEmail extends StatelessWidget {
-  EnterEmail({Key? key, required this.cubit}) : super(key: key);
-  final TextEditingController emailEditingController = TextEditingController();
+class EnterEmail extends StatefulWidget {
+  const EnterEmail({Key? key, required this.cubit}) : super(key: key);
   final LoginWithEmailCubit cubit;
+
+  @override
+  State<EnterEmail> createState() => _EnterEmailState();
+}
+
+class _EnterEmailState extends State<EnterEmail> {
+  final TextEditingController emailEditingController = TextEditingController();
+  bool isValidateSuccess = false;
+  @override
+  void initState() {
+    super.initState();
+    widget.cubit.validateStream.listen((event) {
+      if(event == ''){
+        isValidateSuccess = true;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +42,10 @@ class EnterEmail extends StatelessWidget {
         isEnable: true,
         onTap: () {
           //todo:
-          cubit.checkValidate(emailEditingController.value.text);
-          if (cubit.state is ValidateSuccess) {
-            cubit.getNonce(
-              walletAddress: '0xf5e281A56650bb992ebaB15B41583303fE9804e7',
+          if(isValidateSuccess){
+            widget.cubit.checkValidate(emailEditingController.value.text);
+            widget.cubit.getNonce(
+              walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
             );
             Navigator.push(
               context,
@@ -82,7 +98,7 @@ class EnterEmail extends StatelessWidget {
                         16,
                       ),
                       onChanged: (value) {
-                        cubit.checkValidate(value);
+                        widget.cubit.checkValidate(value);
                       },
                       controller: emailEditingController,
                       cursorColor: AppTheme.getInstance().textThemeColor(),
@@ -102,12 +118,9 @@ class EnterEmail extends StatelessWidget {
                       ),
                     ),
                   ),
-                  BlocConsumer<LoginWithEmailCubit, LoginWithEmailState>(
-                    bloc: cubit,
-                    listener: (context, state) {
-                      // TODO: implement listener
-                    },
-                    builder: (context, state) {
+                  StreamBuilder<String>(
+                    stream: widget.cubit.validateStream,
+                    builder: (context, snapshot) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16.0,
@@ -115,7 +128,7 @@ class EnterEmail extends StatelessWidget {
                         ),
                         child: Text(
                           //todo
-                          '',
+                          snapshot.data ?? '',
                           // state.errText,
                           style: textNormal(
                             AppTheme.getInstance().wrongColor(),
@@ -123,7 +136,7 @@ class EnterEmail extends StatelessWidget {
                           ).copyWith(fontWeight: FontWeight.w400),
                         ),
                       );
-                    },
+                    }
                   ),
                 ],
               )
