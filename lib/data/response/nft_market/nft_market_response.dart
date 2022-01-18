@@ -39,8 +39,6 @@ class NftMarketResponse extends Equatable {
   @JsonKey(name: 'pawn_id')
   int? pawnId;
 
-
-
   NftMarketResponse(
     this.id,
     this.name,
@@ -109,7 +107,7 @@ class NftMarketResponse extends Equatable {
         endTime: endTime,
         startTime: startTime,
         numberOfCopies: numberOfCopy,
-    collectionAddress: collectionAddress,
-    pawnId: pawnId,
+        collectionAddress: collectionAddress,
+        pawnId: pawnId,
       );
 }

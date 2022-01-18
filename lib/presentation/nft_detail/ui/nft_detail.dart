@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:Dfy/config/base/base_custom_scroll_view.dart';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
@@ -85,6 +83,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   late final TabController _tabController;
   late final NFTDetailBloc bloc;
   late final String walletAddress;
+  final PageController pageController = PageController();
 
   @override
   void initState() {
@@ -105,9 +104,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<HistoryNFT>>(
             stream: bloc.listHistoryStream,
             builder: (
-              context,
-              AsyncSnapshot<List<HistoryNFT>> snapshot,
-            ) {
+                context,
+                AsyncSnapshot<List<HistoryNFT>> snapshot,
+                ) {
               return HistoryTab(
                 listHistory: snapshot.data ?? [],
               );
@@ -116,9 +115,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           StreamBuilder<List<OwnerNft>>(
             stream: bloc.listOwnerStream,
             builder: (
-              context,
-              AsyncSnapshot<List<OwnerNft>> snapshot,
-            ) {
+                context,
+                AsyncSnapshot<List<OwnerNft>> snapshot,
+                ) {
               return OwnerTab(
                 listOwner: snapshot.data ?? [],
               );
@@ -128,9 +127,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             StreamBuilder<Evaluation>(
               stream: bloc.evaluationStream,
               builder: (
-                context,
-                AsyncSnapshot<Evaluation> snapshot,
-              ) {
+                  context,
+                  AsyncSnapshot<Evaluation> snapshot,
+                  ) {
                 return EvaluationTab(
                   evaluation: snapshot.data ?? Evaluation(),
                 );
@@ -243,9 +242,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             StreamBuilder<Evaluation>(
               stream: bloc.evaluationStream,
               builder: (
-                context,
-                AsyncSnapshot<Evaluation> snapshot,
-              ) {
+                  context,
+                  AsyncSnapshot<Evaluation> snapshot,
+                  ) {
                 if (snapshot.data?.id!.isNotEmpty ?? false) {
                   return EvaluationTab(
                     evaluation: snapshot.data!,
@@ -365,11 +364,15 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             initHeight: 360.h,
             leading: _leading(context),
             title: objSale.name ?? '',
-            tabBarView: TabBarView(
+            tabBarView: ExpandedPageViewWidget(
+              pageController: pageController,
               controller: _tabController,
               children: _tabPage,
             ),
             tabBar: TabBar(
+              onTap: (value) {
+                pageController.animateToPage(value, duration: Duration(milliseconds: 5), curve: Curves.ease); },
+
               controller: _tabController,
               labelColor: Colors.white,
               unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
@@ -516,12 +519,13 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           final nftOnPawn = state.nftOnPawn;
           return BaseCustomScrollView(
             typeImage:
-                nftOnPawn.nftCollateralDetailDTO?.typeImage ?? TypeImage.IMAGE,
+            nftOnPawn.nftCollateralDetailDTO?.typeImage ?? TypeImage.IMAGE,
             image: nftOnPawn.nftCollateralDetailDTO?.image ?? '',
             initHeight: 360.h,
             leading: _leading(context),
             title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
-            tabBarView: TabBarView(
+            tabBarView: ExpandedPageViewWidget(
+              pageController: pageController,
               controller: _tabController,
               children: _tabPage,
             ),
@@ -574,7 +578,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         buildRow(
                           title: S.current.collection_address,
                           detail: nftOnPawn
-                                  .nftCollateralDetailDTO?.collectionAddress ??
+                              .nftCollateralDetailDTO?.collectionAddress ??
                               '',
                           type: TextType.RICH_BLUE,
                           isShowCopy: true,
@@ -583,7 +587,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         buildRow(
                           title: S.current.nft_token_id,
                           detail: nftOnPawn.nftCollateralDetailDTO?.nftTokenId
-                                  .toString() ??
+                              .toString() ??
                               '',
                           type: TextType.NORMAL,
                         ),
@@ -591,11 +595,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         buildRow(
                           title: S.current.nft_standard,
                           detail:
-                              (nftOnPawn.nftCollateralDetailDTO?.nftStandard ??
-                                          '0') ==
-                                      '0'
-                                  ? 'ERC - 721'
-                                  : 'ERC - 1155',
+                          (nftOnPawn.nftCollateralDetailDTO?.nftStandard ??
+                              '0') ==
+                              '0'
+                              ? 'ERC - 721'
+                              : 'ERC - 1155',
                           type: TextType.NORMAL,
                         ),
                         spaceH12,
@@ -674,11 +678,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             initHeight: 360.h,
             leading: _leading(context),
             title: nftOnAuction.name ?? '',
-            tabBarView: TabBarView(
+            tabBarView: ExpandedPageViewWidget(
+              pageController: pageController,
               controller: _tabController,
               children: _tabPage,
             ),
             tabBar: TabBar(
+              onTap: (value) {
+                pageController.animateToPage(value, duration: Duration(milliseconds: 5), curve: Curves.ease); },
               controller: _tabController,
               labelColor: Colors.white,
               unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
@@ -842,3 +849,4 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
     }
   }
 }
+

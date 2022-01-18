@@ -24,13 +24,10 @@ class ResultCollectionSearch extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         clipBehavior: Clip.hardEdge,
-        child: CachedNetworkImage(
-          imageUrl: collection.avatar,
+        child: Image.network(
+           collection.avatar,
           fit: BoxFit.cover,
-          placeholder: (context, url) => CircularProgressIndicator(
-            color: AppTheme.getInstance().whiteColor(),
-          ),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
+          errorBuilder: (context, url, error) => const Icon(Icons.error),
         ),
       ),
       title: Row(

@@ -3,7 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_dialog_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -21,11 +21,12 @@ class ConnectWalletDialog extends StatefulWidget {
 }
 
 class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
-  late final ConnectWalletCubit cubit;
-
+  late final ConnectWalletDialogCubit cubit;
+  String contentDialog = '';
+  String contentRightBtn = '';
   @override
   void initState() {
-    cubit = ConnectWalletCubit();
+    cubit = ConnectWalletDialogCubit();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     cubit.getListWallet();
@@ -48,7 +49,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                 color: AppTheme.getInstance().bgBtsColor(),
                 borderRadius: const BorderRadius.all(Radius.circular(36)),
               ),
-              child: BlocConsumer<ConnectWalletCubit, ConnectWalletState>(
+              child: BlocConsumer<ConnectWalletDialogCubit, ConnectWalletDialogState>(
                 bloc: cubit,
                 listener: (context, state) {},
                 builder: (context, state) {
@@ -64,7 +65,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                           left: 41.5,
                         ),
                         child: Text(
-                          state.contentDialog,
+                          contentDialog,
                           textAlign: TextAlign.center,
                           style: textNormal(
                             AppTheme.getInstance().whiteColor(),
@@ -152,7 +153,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                     top: 17,
                                   ),
                                   child: Text(
-                                    state.contentRightButton,
+                                    contentRightBtn,
                                     style: textNormal(
                                       AppTheme.getInstance().fillColor(),
                                       20,

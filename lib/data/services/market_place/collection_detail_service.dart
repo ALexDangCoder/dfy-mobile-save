@@ -5,9 +5,9 @@ import 'package:Dfy/data/response/collection_detail/collection_detail_filter_res
 import 'package:Dfy/data/response/collection_detail/collection_detail_response.dart';
 import 'package:Dfy/data/response/nft_market/list_nft_collection_respone.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/http.dart';
-import 'package:dio/dio.dart';
 
 part 'collection_detail_service.g.dart';
 

@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -89,8 +88,7 @@ class ItemCollection extends StatelessWidget {
                   top: 4.h,
                 ),
                 child: Text(
-                  '$items ${itemsKey ?? S.current.items} • $owners ${ownersKey
-                      ?? S.current.owners.toLowerCase()}',
+                  '$items ${itemsKey ?? S.current.items} • $owners ${ownersKey ?? S.current.owners.toLowerCase()}',
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteWithOpacity(),
                     12.sp,
@@ -142,17 +140,9 @@ class ItemCollection extends StatelessWidget {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              child: CachedNetworkImage(
-                imageUrl: urlIcon,
+              child: Image.network(
+                urlIcon,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.getInstance().borderItemColor(),
-                  ),
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: AppTheme.getInstance().selectDialogColor(),
-                ),
               ),
             ),
           ),

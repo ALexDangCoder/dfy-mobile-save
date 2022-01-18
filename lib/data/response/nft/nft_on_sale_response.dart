@@ -25,7 +25,6 @@ class OnSaleResponse extends Equatable {
 
   @override
   List<Object?> get props => [];
-
 }
 
 @JsonSerializable()

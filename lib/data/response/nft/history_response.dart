@@ -22,6 +22,7 @@ class HistoryResponse extends Equatable {
 
   @override
   List<Object?> get props => [];
+
   List<HistoryNFT>? toDomain() => item?.map((e) => e.toDomain()).toList();
 }
 
@@ -68,29 +69,28 @@ class DetailHistoryResponse {
   @JsonKey(name: 'walletAddress')
   String? walletAddress;
 
-
   DetailHistoryResponse(
-      this.collectionAddress,
-      this.eventDateTime,
-      this.eventName,
-      this.eventType,
-      this.exceptedLoan,
-      this.fromAddress,
-      this.historyType,
-      this.idRef,
-      this.isYou,
-      this.marketId,
-      this.nftStandard,
-      this.nftTokenId,
-      this.price,
-      this.priceSymbol,
-      this.processing,
-      this.quantity,
-      this.toAddress,
-      this.token,
-      this.txnHash,
-      this.walletAddress,
-      );
+    this.collectionAddress,
+    this.eventDateTime,
+    this.eventName,
+    this.eventType,
+    this.exceptedLoan,
+    this.fromAddress,
+    this.historyType,
+    this.idRef,
+    this.isYou,
+    this.marketId,
+    this.nftStandard,
+    this.nftTokenId,
+    this.price,
+    this.priceSymbol,
+    this.processing,
+    this.quantity,
+    this.toAddress,
+    this.token,
+    this.txnHash,
+    this.walletAddress,
+  );
 
   factory DetailHistoryResponse.fromJson(Map<String, dynamic> json) =>
       _$DetailHistoryResponseFromJson(json);
@@ -98,27 +98,26 @@ class DetailHistoryResponse {
   Map<String, dynamic> toJson() => _$DetailHistoryResponseToJson(this);
 
   List<Object?> get props => [];
+
   HistoryNFT toDomain() => HistoryNFT(
-    eventDateTime: eventDateTime,
-    eventName: eventName,
-    eventType: eventType,
-    exceptedLoan: exceptedLoan,
-    fromAddress: fromAddress,
-    historyType: historyType,
-    idRef: idRef,
-    isYou: isYou,
-    marketId: marketId,
-    nftStandard: nftStandard,
-    nftTokenId: nftTokenId,
-    price: price,
-    priceSymbol: priceSymbol,
-    processing: processing,
-    quantity: quantity,
-    toAddress: toAddress,
-    token: token,
-    txnHash: txnHash,
-    walletAddress: walletAddress,
-
-  );
-
+        eventDateTime: eventDateTime,
+        eventName: eventName,
+        eventType: eventType,
+        exceptedLoan: exceptedLoan,
+        fromAddress: fromAddress,
+        historyType: historyType,
+        idRef: idRef,
+        isYou: isYou,
+        marketId: marketId,
+        nftStandard: nftStandard,
+        nftTokenId: nftTokenId,
+        price: price,
+        priceSymbol: priceSymbol,
+        processing: processing,
+        quantity: quantity,
+        toAddress: toAddress,
+        token: token,
+        txnHash: txnHash,
+        walletAddress: walletAddress,
+      );
 }
