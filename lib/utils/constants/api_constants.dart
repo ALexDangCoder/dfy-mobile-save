@@ -74,4 +74,8 @@ class ApiConstants {
   static const String CANCEL_SALE = '/nft-market-svc/api/market/cancel';
   static const String BID_NFT = '/nft-market-svc/api/auction/bid';
 
+  //CREATE COLLECTION
+  static const String CREATE_SOFT_COLLECTION = '/nft-market-svc/api/collection/create';
+  static const String CREATE_HARD_COLLECTION = '/hard-nft-svc/api/collections/create-hard-collection';
+
 }
