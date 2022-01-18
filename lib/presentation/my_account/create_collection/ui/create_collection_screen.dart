@@ -3,8 +3,8 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/create_detail_collection.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/create_detail_collection.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -19,13 +19,16 @@ class CreateCollectionScreen extends StatelessWidget {
   const CreateCollectionScreen({Key? key, required this.bloc})
       : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     bloc.getListTypeNFT();
     return StateStreamLayout(
       stream: bloc.stateStream,
       textEmpty: '',
-      retry: () {},
+      retry: () {
+        bloc.getListTypeNFT();
+      },
       error: AppException('', S.current.something_went_wrong),
       child: BaseBottomSheet(
         title: S.current.create_collection,
@@ -109,6 +112,11 @@ class CreateCollectionScreen extends StatelessWidget {
                     }
                   },
                 ),
+
+                ///Space bottom + space top + height of the button
+                SizedBox(
+                  height: (64 + 38 + 24).h,
+                )
               ],
             ),
           ),
@@ -124,14 +132,16 @@ class CreateCollectionScreen extends StatelessWidget {
                 fontSize: 20,
                 onTap: () {
                   if (enable) {
-                    final _collectionType =
+                    final _standard =
                         bloc.getStandardFromID(snapshot.data ?? '');
+                    final _type = bloc.getTypeFromID(snapshot.data ?? '');
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => CreateDetailCollection(
                           bloc: CreateCollectionCubit(),
-                          collectionType: _collectionType,
+                          collectionStandard: _standard,
+                          collectionType: _type,
                         ),
                       ),
                     );
@@ -213,6 +223,7 @@ class CreateCollectionScreen extends StatelessWidget {
             ),
           ),
         ),
+        spaceH12,
         Flexible(
           child: Theme(
             data: Theme.of(context).copyWith(
@@ -228,7 +239,7 @@ class CreateCollectionScreen extends StatelessWidget {
                   splashRadius: isActive ? null : 0,
                   activeColor: AppTheme.getInstance().fillColor(),
                   value: typeNFTModel.id ?? '',
-                  groupValue: bloc.createType,
+                  groupValue: bloc.createId,
                   onChanged: (value) {
                     if (isActive) {
                       bloc.changeSelectedItem(
@@ -241,6 +252,7 @@ class CreateCollectionScreen extends StatelessWidget {
             ),
           ),
         ),
+        spaceH12,
         Text(
           getName(typeNFTModel.name ?? ''),
           style: textCustom(

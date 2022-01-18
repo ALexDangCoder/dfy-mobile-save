@@ -7,7 +7,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
@@ -35,12 +35,12 @@ class _UploadProgressState extends State<UploadProgress>
   void initState() {
     // TODO: implement initState
     super.initState();
-    final int rdA = Random().nextInt(5);
+    final int rdA = Random().nextInt(3);
     final int rdC = Random().nextInt(3);
-    final int rdF = Random().nextInt(7);
+    final int rdF = Random().nextInt(3);
     _avatarAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: rdA + 3),
+      duration: Duration(seconds: rdA + 5),
     );
     _coverAnimationController = AnimationController(
       vsync: this,
@@ -48,9 +48,45 @@ class _UploadProgressState extends State<UploadProgress>
     );
     _featureAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: rdF + 3),
+      duration: Duration(seconds: rdF + 7),
     );
-    widget.bloc.cidCreate();
+    widget.bloc.cidCreate(context);
+    widget.bloc.upLoadStatusSubject.listen((value) {
+      if(value==1){
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => Approve(
+              gasLimitInit: double.parse(widget.bloc.gasLimit),
+              createCollectionCubit: widget.bloc,
+              listDetail: [
+                DetailItemApproveModel(
+                  title: '${S.current.name}:',
+                  value: widget.bloc.collectionName,
+                ),
+                DetailItemApproveModel(
+                  title: 'URL:',
+                  value: widget.bloc.customUrl,
+                ),
+                DetailItemApproveModel(
+                  title: '${S.current.categories}:',
+                  value: widget.bloc.categoryId,
+                ),
+                DetailItemApproveModel(
+                  title: '${S.current.royalties}:',
+                  value:
+                  '${widget.bloc.royalties.toString()} %',
+                ),
+              ],
+              title: S.current.create_collection,
+              textActiveButton: S.current.create,
+              typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
+            ),
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -154,51 +190,15 @@ class _UploadProgressState extends State<UploadProgress>
                     ),
                   ),
                   line,
-                  StreamBuilder<bool>(
-                      stream: widget.bloc.upLoadStatusSubject,
-                      initialData: false,
-                      builder: (context, snapshot) {
-                        final isComplete = snapshot.data ?? false;
+                  StreamBuilder<int>(
+                    stream: widget.bloc.upLoadStatusSubject,
+                    initialData: -1,
+                    builder: (context, snapshot) {
+                      final isComplete = snapshot.data ?? -1;
                         return InkWell(
-                          onTap: () async {
-                            if (isComplete) {
-                              final navigator = Navigator.of(context);
-                              await widget.bloc.sendDataWeb3(context);
-                              navigator.pop();
-                              unawaited(
-                                navigator.push(
-                                  MaterialPageRoute(
-                                    builder: (_) => Approve(
-                                      gasLimitInit:
-                                          double.parse(widget.bloc.gasLimit),
-                                      createCollectionCubit: widget.bloc,
-                                      listDetail: [
-                                        DetailItemApproveModel(
-                                          title: '${S.current.name}:',
-                                          value: widget.bloc.collectionName,
-                                        ),
-                                        DetailItemApproveModel(
-                                          title: 'URL:',
-                                          value: widget.bloc.customUrl,
-                                        ),
-                                        DetailItemApproveModel(
-                                          title: '${S.current.categories}:',
-                                          value: widget.bloc.categoryId,
-                                        ),
-                                        DetailItemApproveModel(
-                                          title: '${S.current.royalties}:',
-                                          value:
-                                              '${widget.bloc.royalties.toString()} %',
-                                        ),
-                                      ],
-                                      title: S.current.create_collection,
-                                      textActiveButton: S.current.create,
-                                      typeApprove:
-                                          TYPE_CONFIRM_BASE.CREATE_COLLECTION,
-                                    ),
-                                  ),
-                                ),
-                              );
+                          onTap: () {
+                            if (isComplete == 0) {
+                              Navigator.pop(context);
                             }
                           },
                           child: SizedBox(
@@ -207,9 +207,9 @@ class _UploadProgressState extends State<UploadProgress>
                               child: Text(
                                 'OK',
                                 style: textCustom(
-                                  color: isComplete
-                                      ? AppTheme.getInstance().fillColor()
-                                      : AppTheme.getInstance().disableColor(),
+                                  color: isComplete == -1
+                                      ? AppTheme.getInstance().disableColor()
+                                      : AppTheme.getInstance().fillColor(),
                                   weight: FontWeight.w700,
                                   fontSize: 20,
                                 ),
@@ -217,7 +217,8 @@ class _UploadProgressState extends State<UploadProgress>
                             ),
                           ),
                         );
-                      })
+                      },
+                  )
                 ],
               ),
             ),
