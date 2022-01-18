@@ -74,43 +74,70 @@ Widget _buildButtonBuyOutOnSale(
   NftMarket nftMarket,
   bool isBought,
 ) {
-  return ButtonGradient(
-    onPressed: () async {
-      if (isBought) {
-        _showDialog(context, nftMarket);
-      } else {
-        await bloc
-            .getBalanceToken(
-              ofAddress: bloc.wallets.first.address ?? '',
-              tokenAddress: bloc.nftMarket.token ?? '',
-            )
-            .then(
-              (value) => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BuyNFT(
-                    nftMarket: nftMarket,
-                    balance: value,
-                    walletAddress: bloc.wallets.first.address ?? '',
+  return StreamBuilder<bool>(
+    stream: bloc.pairStream,
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        final bool isOwner = !snapshot.data!;
+        return ButtonGradient(
+          onPressed: () async {
+            if (isOwner) {
+              final nav = Navigator.of(context);
+              double gas = await bloc.getGasLimitForCancel(context: context);
+              if (gas > 0) {
+                unawaited(
+                  nav.push(
+                    MaterialPageRoute(
+                      builder: (context) => approveWidget(
+                        bloc,
+                        gas,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            );
+                );
+              }
+              return;
+            }
+            if (isBought) {
+              _showDialog(context, nftMarket);
+            } else {
+              await bloc
+                  .getBalanceToken(
+                    ofAddress: bloc.wallets.first.address ?? '',
+                    tokenAddress: bloc.nftMarket.token ?? '',
+                  )
+                  .then(
+                    (value) => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BuyNFT(
+                          nftMarket: nftMarket,
+                          balance: value,
+                          walletAddress: bloc.wallets.first.address ?? '',
+                        ),
+                      ),
+                    ),
+                  );
+            }
+          },
+          gradient: RadialGradient(
+            center: const Alignment(0.5, -0.5),
+            radius: 4,
+            colors: AppTheme.getInstance().gradientButtonColor(),
+          ),
+          child: Text(
+            isOwner ? S.current.cancel_sale : S.current.buy_nft,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w700,
+            ),
+          ),
+        );
+      } else {
+        return const SizedBox.shrink();
       }
     },
-    gradient: RadialGradient(
-      center: const Alignment(0.5, -0.5),
-      radius: 4,
-      colors: AppTheme.getInstance().gradientButtonColor(),
-    ),
-    child: Text(
-      S.current.buy_nft,
-      style: textNormalCustom(
-        AppTheme.getInstance().textThemeColor(),
-        16,
-        FontWeight.w700,
-      ),
-    ),
   );
 }
 
@@ -240,7 +267,7 @@ void _showDialog(BuildContext context, NftMarket nftMarket) {
   );
 }
 
-Approve approveWidget() {
+Approve approveWidget(NFTDetailBloc bloc, double gasLimit) {
   return Approve(
     listDetail: bloc.initListApprove(),
     title: S.current.cancel_sale,
@@ -281,7 +308,7 @@ Approve approveWidget() {
       ],
     ),
     textActiveButton: S.current.cancel_sale,
-    gasLimitInit: double.parse(bloc.gasLimit),
+    gasLimitInit: gasLimit,
     typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
   );
 }

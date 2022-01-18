@@ -490,7 +490,7 @@
   "nft_success": "NFT successfully transferred to your wallet",
   "nft_fail": "An error occurred while transferring NFT to your wallet",
   "resend_code": "Resend code",
-  "cancel_success": "Cancel sale successfully"
+  "cancel_success": "Cancel sale successfully",
   "how_to_create_hard_nft": "How to create hard NFT",
   "skip": "Skip",
   "step": "Step",
