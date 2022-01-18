@@ -13,6 +13,7 @@ import 'package:video_player/video_player.dart';
 
 Widget uploadWidget(CreateNftCubit cubit) {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
         'Upload file',

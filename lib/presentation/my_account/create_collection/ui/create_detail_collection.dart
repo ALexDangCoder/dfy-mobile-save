@@ -9,6 +9,7 @@ import 'package:Dfy/presentation/my_account/create_collection/ui/widget/categori
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/upload_progess_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -605,60 +606,9 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
     required String imageType,
     required String tittle,
   }) async {
-    try {
-      final newImage =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (newImage == null) {
-        return;
-      }
-      final List<CropAspectRatioPreset> presetAndroid = imageType == 'avatar'
-          ? [
-              CropAspectRatioPreset.square,
-            ]
-          : [
-              CropAspectRatioPreset.square,
-              CropAspectRatioPreset.ratio3x2,
-              CropAspectRatioPreset.original,
-              CropAspectRatioPreset.ratio4x3,
-              CropAspectRatioPreset.ratio16x9
-            ];
-      final List<CropAspectRatioPreset> presetIos = imageType == 'avatar'
-          ? [
-              CropAspectRatioPreset.square,
-            ]
-          : [
-              CropAspectRatioPreset.original,
-              CropAspectRatioPreset.square,
-              CropAspectRatioPreset.ratio3x2,
-              CropAspectRatioPreset.ratio4x3,
-              CropAspectRatioPreset.ratio5x3,
-              CropAspectRatioPreset.ratio5x4,
-              CropAspectRatioPreset.ratio7x5,
-              CropAspectRatioPreset.ratio16x9,
-            ];
-      final File? croppedFile = await ImageCropper.cropImage(
-        sourcePath: newImage.path,
-        cropStyle:
-            imageType == 'avatar' ? CropStyle.circle : CropStyle.rectangle,
-        aspectRatioPresets: Platform.isAndroid ? presetAndroid : presetIos,
-        androidUiSettings: AndroidUiSettings(
-          activeControlsWidgetColor: AppTheme.getInstance().bgBtsColor(),
-          toolbarColor: AppTheme.getInstance().bgBtsColor(),
-          backgroundColor: AppTheme.getInstance().bgBtsColor(),
-          statusBarColor: Colors.black,
-          toolbarTitle: tittle,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: imageType == 'avatar'
-              ? CropAspectRatioPreset.square
-              : CropAspectRatioPreset.original,
-          lockAspectRatio: imageType == 'avatar',
-        ),
-        iosUiSettings: IOSUiSettings(
-          title: tittle,
-        ),
-      );
-      if (croppedFile != null) {
-        final imageTemp = File(croppedFile.path);
+    final filePath = await pickImageFunc(imageType: imageType, tittle: tittle);
+      if (filePath.isNotEmpty) {
+        final imageTemp = File(filePath);
         final imageSizeInMB =
             imageTemp.readAsBytesSync().lengthInBytes / 1048576;
         widget.bloc.loadImage(
@@ -668,8 +618,5 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
           image: imageTemp,
         );
       }
-    } on PlatformException catch (e) {
-      throw 'Cant upload image $e';
     }
-  }
 }

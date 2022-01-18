@@ -30,12 +30,17 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   String selectedId = '';
   int selectedNftType = 0;
 
+  ///Detail NFT var
+  String nftName = '';
+  String description = '';
+  int royalty = 0;
+
+  ///Stream
   ///id of nft
   final BehaviorSubject<String> selectIdSubject = BehaviorSubject();
 
-  ///have type and path of Media file
+  ///Media file
   final BehaviorSubject<String> mediaFileSubject = BehaviorSubject();
-
   final BehaviorSubject<String> imageFileSubject = BehaviorSubject();
   final BehaviorSubject<VideoPlayerController> videoFileSubject =
       BehaviorSubject();

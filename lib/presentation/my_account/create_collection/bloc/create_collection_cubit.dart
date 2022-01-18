@@ -141,8 +141,8 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   BehaviorSubject<List<TypeNFTModel>> listHardNFTSubject = BehaviorSubject();
   BehaviorSubject<List<TypeNFTModel>> listSoftNFTSubject = BehaviorSubject();
 
-  ///Enable OK button upload Image
-  BehaviorSubject<bool> upLoadStatusSubject = BehaviorSubject();
+  ///Status upload image: -1 pending, 0 fail, 1 success
+  BehaviorSubject<int> upLoadStatusSubject = BehaviorSubject();
 
   //func
   void changeSelectedItem(String _id) {
@@ -590,8 +590,8 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   }
 
   ///Create CID map
-  Future<void> cidCreate() async {
-    upLoadStatusSubject.sink.add(false);
+  Future<void> cidCreate(BuildContext context) async {
+    upLoadStatusSubject.sink.add(-1);
     coverPhotoUploadStatusSubject.sink.add(-1);
     avatarUploadStatusSubject.sink.add(-1);
     featurePhotoUploadStatusSubject.sink.add(-1);
@@ -611,7 +611,14 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     cidMap['cover_cid'] = coverCid;
     cidMap['avatar_cid'] = avatarCid;
     cidMap['feature_cid'] = featureCid;
-    upLoadStatusSubject.sink.add(true);
+    if (coverPhotoUploadStatusSubject.value == 0 ||
+        avatarUploadStatusSubject.value == 0 ||
+        featurePhotoUploadStatusSubject.value == 0) {
+      upLoadStatusSubject.sink.add(0);
+    } else {
+      await sendDataWeb3(context);
+      upLoadStatusSubject.sink.add(1);
+    }
   }
 
   ///GET IPFS collection
