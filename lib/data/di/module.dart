@@ -24,6 +24,8 @@ import 'package:Dfy/data/services/price_service.dart';
 import 'package:Dfy/data/services/search_market/search_market_client.dart';
 import 'package:Dfy/data/services/token_service.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
@@ -36,7 +38,6 @@ import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:get/get.dart';
@@ -99,14 +100,18 @@ Dio provideDio({int connectionTimeOut = 60000}) {
     InterceptorsWrapper(
       onRequest:
           (RequestOptions options, RequestInterceptorHandler handler) async {
+        final accessToken =
+            loginFromJson(PrefsService.getWalletLogin()).accessToken;
         options.baseUrl = appConstants.baseUrl;
         options.headers['Content-Type'] = 'application/json';
+        if ((accessToken ?? '').isNotEmpty) {
+          options.headers.remove('Authorization');
+          options.headers['Authorization'] = 'Bearer $accessToken';
+        }
         options.headers = {
           'pinata_api_key': 'ac8828bff3bcd1c1b828',
           'pinata_secret_api_key':
-              'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df',
-          'headers':'dmbe',
-          'Authorization': bearTokenViNhieuTien,
+              'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
         };
         return handler.next(options);
       },

@@ -1,3 +1,4 @@
+import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -81,13 +82,24 @@ class PrefsService {
     return prefs.setString(_PREF_WALLET_LOGIN, data);
   }
 
-  static Future<String> getWalletLogin() async {
+  static String getWalletLogin() {
     return _prefsInstance?.getString(_PREF_WALLET_LOGIN) ?? '';
   }
 
   static Future<bool> clearWalletLogin() async {
     final prefs = await _instance;
-    return prefs.setString(_PREF_WALLET_LOGIN, '');
+    return prefs.setString(
+      _PREF_WALLET_LOGIN,
+      loginToJson(
+        LoginModel(
+          accessToken: '',
+          expiresIn: 0,
+          refreshToken: '',
+          scope: '',
+          tokenType: '',
+        ),
+      ),
+    );
   }
 
   Future<void> clearData() async {

@@ -261,12 +261,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<LoginModel> getLoginModel() async {
-    final login = await PrefsService.getWalletLogin();
+    final login = PrefsService.getWalletLogin();
     return loginFromJson(login);
   }
 
-  void setLoginModel() {
-    PrefsService.saveWalletLogin(
+  Future<void> clearLoginModel() async {
+    await PrefsService.clearWalletLogin();
+  }
+
+  Future<void> setLoginModel() async {
+    await PrefsService.saveWalletLogin(
       loginToJson(
         LoginModel(
           accessToken:
