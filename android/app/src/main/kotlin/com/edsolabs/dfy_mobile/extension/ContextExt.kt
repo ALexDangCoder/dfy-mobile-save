@@ -1,7 +1,6 @@
 package com.edsolabs.dfy_mobile.extension
 
 import android.content.Context
-import android.util.Log
 import com.edsolabs.dfy_mobile.Constant
 import com.edsolabs.dfy_mobile.data.local.prefs.AppPreference
 import com.edsolabs.dfy_mobile.data.model.ItemNftModel
@@ -13,10 +12,7 @@ import io.flutter.plugin.common.MethodChannel
 import org.json.JSONArray
 import org.json.JSONObject
 import wallet.core.java.AnySigner
-import wallet.core.jni.AnyAddress
-import wallet.core.jni.CoinType
-import wallet.core.jni.HDWallet
-import wallet.core.jni.PrivateKey
+import wallet.core.jni.*
 import wallet.core.jni.proto.Ethereum
 import java.math.BigInteger
 import java.security.InvalidParameterException
@@ -900,4 +896,33 @@ fun Context.signTransactionWithData(
     hasMap["gasLimit"] = gasLimit
     hasMap["withData"] = withData
     channel?.invokeMethod("signTransactionWithDataCallback", hasMap)
+}
+
+fun Context.signWallet(
+    channel: MethodChannel?,
+    walletAddress: String,
+    bytesSha3: ByteArray
+) {
+    val hasMap = HashMap<String, Any>()
+    val walletModel =
+        AppPreference(this).getListWallet().firstOrNull { it.walletAddress == walletAddress }
+    if (walletModel != null && walletModel.privateKey.isNotEmpty()) {
+        val privateKey = PrivateKey(walletModel.privateKey.toHexBytes())
+        val originalMessageHashInHexCore =
+            privateKey.sign(
+                bytesSha3,
+                Curve.SECP256K1
+            ).toHexString(false)
+        val signature = StringBuilder()
+        signature.append(
+            originalMessageHashInHexCore.subSequence(
+                0,
+                originalMessageHashInHexCore.length - 2
+            )
+        ).append("1c")
+        hasMap["signature"] = signature.toString()
+    } else {
+        hasMap["signature"] = ""
+    }
+    channel?.invokeMethod("signWalletCallback", hasMap)
 }
