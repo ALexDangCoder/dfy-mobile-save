@@ -7,7 +7,6 @@ import 'package:Dfy/data/repository_impl/market_place/detail_category_impl.dart'
 import 'package:Dfy/data/repository_impl/market_place/login_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/marketplace_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/nft_market_repository_impl.dart';
-import 'package:Dfy/data/repository_impl/market_place/nonce_impl.dart';
 import 'package:Dfy/data/repository_impl/nft_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/price_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/search_market/search_market_impl.dart';
@@ -20,7 +19,6 @@ import 'package:Dfy/data/services/market_place/detail_category_service.dart';
 import 'package:Dfy/data/services/market_place/login_service.dart';
 import 'package:Dfy/data/services/market_place/marketplace_client.dart';
 import 'package:Dfy/data/services/market_place/nft_market_services.dart';
-import 'package:Dfy/data/services/market_place/nonce_service.dart';
 import 'package:Dfy/data/services/nft_service.dart';
 import 'package:Dfy/data/services/price_service.dart';
 import 'package:Dfy/data/services/search_market/search_market_client.dart';
@@ -54,11 +52,6 @@ void configureDependencies() {
   Get.put(MarketPlaceHomeClient(provideDio()));
   Get.put<MarketPlaceRepository>(
     MarketPlaceImpl(Get.find()),
-  );
-  //nonce
-  Get.put(NonceClient(provideDio()));
-  Get.put<NonceRepository>(
-    NonceImpl(Get.find()),
   );
   //login
   Get.put(LoginClient(provideDio()));

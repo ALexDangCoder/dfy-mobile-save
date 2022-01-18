@@ -20,7 +20,16 @@ class LoginCubit extends BaseCubit<LoginState> {
   bool isFaceID = false;
   String signature = '';
   String walletAddress = '';
+  int nonce = 0;
   BehaviorSubject<bool> isFaceIDStream = BehaviorSubject();
+
+  BehaviorSubject<bool> isLoginSuccessSubject = BehaviorSubject();
+
+  BehaviorSubject<String> signatureSubject = BehaviorSubject();
+
+  Stream<bool> get isLoginSuccessStream => isLoginSuccessSubject.stream;
+
+  Stream<String> get signatureStream => signatureSubject.stream;
 
   bool hidePassword() {
     return hidePass = !hidePass;
@@ -44,11 +53,12 @@ class LoginCubit extends BaseCubit<LoginState> {
         isFaceIDStream.add(isFaceID);
         break;
       case 'getListWalletsCallback':
-        walletAddress =
-            await (methodCall.arguments as List).first['walletAddress'];
+        walletAddress = (methodCall.arguments as List)
+            .first['walletAddress'];
         break;
       case 'signWalletCallback':
         signature = await methodCall.arguments['signature'];
+        signatureSubject.sink.add(signature);
         break;
       default:
         break;

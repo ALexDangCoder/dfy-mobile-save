@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:Dfy/config/resources/color.dart';
@@ -51,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
     controller = TextEditingController();
     trustWalletChannel
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
-    _cubit.getWallet();
+
     controller.addListener(() {
       if (mounted) {
         setState(() {
@@ -65,6 +66,34 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     _cubit.getConfig();
     _cubit.checkBiometrics();
+
+    //login for market place:
+    if (widget.isFromConnectDialog) {
+      _cubit.getWallet();
+    }
+    _cubit.isLoginSuccessStream.listen((event) {
+      if (event) {
+        _cubit.getSignature(
+          walletAddress: _cubit.walletAddress,
+        );
+      }
+    });
+    _cubit.signatureStream.listen(
+      (event) {
+        if (event.isNotEmpty) {
+          _cubit
+              .loginAndSaveInfo(
+                walletAddress: _cubit.walletAddress,
+                signature: event,
+              )
+              .then(
+                (value) => Navigator.pop(
+                  context,
+                ),
+              );
+        }
+      },
+    );
   }
 
   @override
@@ -217,16 +246,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       //todo
                       if (state is LoginPasswordSuccess &&
                           widget.isFromConnectDialog) {
-                        _cubit.showLoading();
-                        await _cubit.signWallet(
-                          walletAddress: _cubit.walletAddress,
-                        );
-                        await _cubit.loginAndSaveInfo(
-                          walletAddress: _cubit.walletAddress,
-                          signature: _cubit.signature,
-                        );
-                        _cubit.showContent();
-                        nav.pop();
+                        _cubit.isLoginSuccessSubject.sink.add(true);
                         return;
                       }
                       if (state is LoginPasswordSuccess) {
