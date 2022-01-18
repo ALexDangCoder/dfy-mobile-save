@@ -11,7 +11,6 @@ import 'package:Dfy/presentation/menu_account/cubit/menu_account_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +37,7 @@ class _MenuAccountState extends State<MenuAccount> {
     for (int i = 0; i < listItemMenu.length; i++) {
       openTab.add(false);
     }
+    cubit.initData();
     super.initState();
   }
 
@@ -164,6 +164,14 @@ class _MenuAccountState extends State<MenuAccount> {
     ),
   ];
   List<bool> openTab = [];
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    cubit.dispose();
+    super.dispose();
+  }
 
   //todo
   @override
