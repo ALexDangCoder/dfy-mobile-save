@@ -20,7 +20,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'widget/body_collection.dart';
-import 'widget/filter_nft.dart';
 
 class DetailCollection extends StatefulWidget {
   const DetailCollection({
@@ -234,26 +233,15 @@ class _DetailCollectionState extends State<DetailCollection>
                   ),
                   child: InkWell(
                     onTap: () {
-                      if (_tabController.index == 0) {
-                        if (isMyAcc) {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => FilterNFTMyAcc(
-                              collectionBloc: detailCollectionBloc,
-                            ),
-                          );
-                        } else {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => FilterNFT(
-                              collectionBloc: detailCollectionBloc,
-                            ),
-                          );
-                        }
+                      if (_tabController.index == DetailCollectionBloc.TABNFT) {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) => FilterNFTMyAcc(
+                            collectionBloc: detailCollectionBloc,
+                          ),
+                        );
                       } else {
                         showModalBottomSheet(
                           isScrollControlled: true,

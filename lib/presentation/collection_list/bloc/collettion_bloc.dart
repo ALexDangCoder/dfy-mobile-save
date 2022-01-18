@@ -31,7 +31,8 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   static const int SOFT_COLLECTION = 0;
   static const int HARD_COLLECTION = 1;
 
-  BehaviorSubject<List<CollectionMarketModel>> list = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<CollectionMarketModel>> list =
+      BehaviorSubject.seeded([]);
   BehaviorSubject<bool> isHighestTradingVolume = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isLowestTradingVolume = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isNewest = BehaviorSubject.seeded(false);
@@ -131,11 +132,8 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   }
 
   void funChooseFilter(int index) {
-    for (int i = 0; i < 8; i++) {
-      if (index == i) {
-      } else {
-        listCheckBoxFilter[i] = false;
-      }
+    for (int i = 0; i < listCheckBoxFilter.length; i++) {
+      listCheckBoxFilter[i] = false;
     }
     listCheckBoxFilter[index] = true;
     listCheckBoxFilterStream.add(listCheckBoxFilter);

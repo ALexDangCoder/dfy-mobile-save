@@ -43,11 +43,14 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const String HTTPS = 'https://';
   static const int SOFT_COLLECTION = 0;
   static const int HARD_COLLECTION = 1;
+  static const int TABNFT = 0;
+  static const int ALL = 0;
+  static const int OWNER = 1;
+  static const bool ALL_FILTER_NFT = false;
+  static const bool OWNER_FILTER_NFT = true;
 
 //
-
-  BehaviorSubject<bool> isAll = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOwner = BehaviorSubject.seeded(false);
+  List<bool> listViewTypeFilterNft = [false, false];
 
   BehaviorSubject<bool> isOnSale = BehaviorSubject.seeded(false); //1
   BehaviorSubject<bool> isOnPawn = BehaviorSubject.seeded(false); //3
@@ -62,6 +65,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
 
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isShowMoreStream = BehaviorSubject.seeded(false);
+  BehaviorSubject<List<bool>> listViewTypeFilterNftStream =
+      BehaviorSubject.seeded([false, false]);
 
   //filter activity
   BehaviorSubject<bool> isTransfer = BehaviorSubject.seeded(false);
@@ -97,6 +102,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String collectionId = '';
   String collectionAddress = '';
   String typeActivity = '';
+  bool owner = false;
 
   void funFilterNft() {
     if (isOnSale.value) {
@@ -150,18 +156,16 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     return data;
   }
 
-  void chooseViewTypeFilter() {
-    // if(isAll.value){
-    //   isOwner.sink.add(false);
-    // }else{
-    //   isOwner.sink.add(true);
-    // }
-  }
-  void chooseViewTypeFilterAll() {
-    if(isOwner.value){
-      isAll.sink.add(false);
-    }else{
-      isAll.sink.add(true);
+  void chooseViewTypeFilterAll(int index) {
+    for (int i = 0; i < listViewTypeFilterNft.length; i++) {
+      listViewTypeFilterNft[i] = false;
+    }
+    listViewTypeFilterNft[index] = true;
+    listViewTypeFilterNftStream.add(listViewTypeFilterNft);
+    if (index == OWNER) {
+      owner = OWNER_FILTER_NFT;
+    } else {
+      owner = ALL_FILTER_NFT;
     }
   }
 
@@ -308,21 +312,15 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     isSignContract.sink.add(value);
   }
 
-  void resetFilterNft() {
+  void resetFilterNFTMyAcc() {
     isOnSale.sink.add(false);
     isOnPawn.sink.add(false);
     isOnAuction.sink.add(false);
     isNotOnMarket.sink.add(false);
     listFilter.clear();
-  }
-
-  void resetFilterMyAcc() {
-    isOnSale.sink.add(false);
-    isOnPawn.sink.add(false);
-    isOnAuction.sink.add(false);
-    isNotOnMarket.sink.add(false);
-    isAll.sink.add(false);
-    isOwner.sink.add(false);
+    listViewTypeFilterNft.clear();
+    listViewTypeFilterNft.addAll([false, false]);
+    listViewTypeFilterNftStream.add(listViewTypeFilterNft);
   }
 
   Future<void> getListFilterCollectionDetail({
@@ -386,6 +384,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       listMarketType: listMarketType,
       size: size,
       page: page,
+      owner: owner,
     );
     result.when(
       success: (res) {

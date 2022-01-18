@@ -11,6 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'check_box_select_one.dart';
+
 class FilterNFTMyAcc extends StatefulWidget {
   final DetailCollectionBloc collectionBloc;
 
@@ -86,7 +88,7 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      widget.collectionBloc.resetFilterMyAcc();
+                      widget.collectionBloc.resetFilterNFTMyAcc();
                     },
                     child: Container(
                       height: 30.h,
@@ -129,25 +131,28 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                       style: textNormalCustom(null, 16, FontWeight.w600),
                     ),
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.all,
-                          stream: collectionBloc.isAll,
-                          funCheckBox:collectionBloc.chooseViewTypeFilterAll,
-                          funText:collectionBloc.chooseViewTypeFilterAll,
-                        ),
-                      ),
-                      Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.owner,
-                          stream: collectionBloc.isOwner,
-                          funCheckBox: collectionBloc.chooseViewTypeFilter,
-                          funText: collectionBloc.chooseViewTypeFilter,
-                        ),
-                      ),
-                    ],
+                  StreamBuilder<List<bool>>(
+                    stream: collectionBloc.listViewTypeFilterNftStream,
+                    builder: (context, snapshot) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: IsCheckBoxSelectOne(
+                              title: S.current.all,
+                              index: DetailCollectionBloc.ALL,
+                              bloc: collectionBloc,
+                            ),
+                          ),
+                          Expanded(
+                            child: IsCheckBoxSelectOne(
+                              title: S.current.owner,
+                              bloc: collectionBloc,
+                              index: DetailCollectionBloc.OWNER,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
