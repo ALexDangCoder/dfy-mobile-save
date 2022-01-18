@@ -159,6 +159,8 @@ abstract class AppColor {
 
   Color textThemeColor();
 
+  Color whiteOpacityDot5();
+
   Color suffixColor();
 
   Color errorColorButton();
@@ -502,6 +504,11 @@ class LightApp extends AppColor {
     // TODO: implement colorFab
     return colorsFab;
   }
+
+  @override
+  Color whiteOpacityDot5() {
+    return whiteColor().withOpacity(0.5);
+  }
 }
 
 class DarkApp extends AppColor {
@@ -826,6 +833,11 @@ class DarkApp extends AppColor {
   List<Color> colorFab() {
     // TODO: implement colorFab
     return colorsFab;
+  }
+
+  @override
+  Color whiteOpacityDot5() {
+    return whiteColor().withOpacity(0.5);
   }
 }
 

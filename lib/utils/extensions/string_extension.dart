@@ -53,6 +53,14 @@ extension FormatAddressConfirm on String {
     )}';
     return result;
   }
+
+  String formatAddressDialog() {
+    final String result = '${substring(0, 5)}...${substring(
+      length - 4,
+      length,
+    )}';
+    return result;
+  }
 }
 
 extension StringParse on String {

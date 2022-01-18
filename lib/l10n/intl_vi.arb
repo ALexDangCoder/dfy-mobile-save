@@ -476,5 +476,6 @@
   "start_in": "Bắt đầu trong",
   "purchase_being_processed": "Nft đang được giao dịch bởi một ai đó.",
     "error_might_occur": "Có lỗi có thể xảy ra nếu bạn tiếp tục",
-  "end_in": "Kết thúc"
+  "end_in": "Kết thúc",
+  "connect": "Kết nối"
 }
